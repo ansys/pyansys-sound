@@ -1,8 +1,0 @@
-remote_theme: ansys/jekyll-theme-corp
-
-plugins:
-- jekyll-remote-theme 
-
-collections:
-  glossary:
-    output: false
