@@ -1,7 +1,7 @@
-Pypydpf-sound Library
+PyDPF Sound 
 =====================
 
-A Python wrapper for Ansys pydpf-sound Library
+A Python wrapper for Ansys DPF Sound library.
 
 
 How to install
@@ -16,7 +16,7 @@ User installation can be performed by running:
 
 .. code:: bash
 
-    python -m pip install ansys-pydpf-sound-library
+    python -m pip install ansys-pydpf-sound
 
 For developers
 ^^^^^^^^^^^^^^
@@ -31,7 +31,7 @@ need to follow these steps:
 
    .. code:: bash
 
-      git clone https://github.com/ansys/pypydpf-sound
+      git clone https://github.com/ansys/pydpf-sound
 
 #. Create a fresh-clean Python environment and activate it. Refer to the
    official `venv`_ documentation if you require further information:
