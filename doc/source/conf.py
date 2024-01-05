@@ -4,7 +4,7 @@ import os
 
 from ansys_sphinx_theme import get_version_match
 from ansys_sphinx_theme import pyansys_logo_black as logo
-from ansys.pydpf_sound.library import __version__
+from ansys.dpf.sound import __version__
 
 
 # Project information
@@ -17,7 +17,7 @@ cname = os.getenv("DOCUMENTATION_CNAME", "docs.pyansys.com")
 # Select desired logo, theme, and declare the html title
 html_logo = logo
 html_theme = "ansys_sphinx_theme"
-html_short_title = html_title = "pydpf-sound"
+html_short_title = html_title = "PyDPF Sound"
 
 # specify the location of your github repo
 html_theme_options = {
