@@ -15,7 +15,7 @@ This example shows how to load and write wav files, access the corresponding dat
 #
 # Load Ansys libraries.
 
-from ansys.pydpf_sound.library.sound_helpers import write_wav_signal, load_wav_signal
+from ansys.dpf.sound.sound_helpers import write_wav_signal, load_wav_signal
 import ansys.dpf.core as dpf
 import matplotlib.pyplot as plt
 import sys

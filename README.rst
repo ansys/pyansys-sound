@@ -54,7 +54,7 @@ User installation can be performed by running:
 For developers
 ^^^^^^^^^^^^^^
 
-Installing Pypydpf-sound Library in developer mode allows
+Installing Pydpf-sound Library in developer mode allows
 you to modify the source and enhance it.
 
 Before contributing to the project, please refer to the `PyAnsys Developer's guide`_. You will
@@ -93,7 +93,7 @@ need to follow these steps:
 
    .. code:: bash
 
-      python -m pip install --editable ansys-pydpf-sound-library
+      python -m pip install --editable ansys-pydpf-sound
 
 #. Install additional requirements (if needed):
 

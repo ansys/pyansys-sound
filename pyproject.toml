@@ -13,7 +13,7 @@ default_section = "THIRDPARTY"
 src_paths = ["doc", "src", "tests"]
 
 [tool.coverage.run]
-source = ["ansys.pydpf_sound"]
+source = ["ansys.dpf.sound"]
 
 [tool.coverage.report]
 show_missing = true

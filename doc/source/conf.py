@@ -8,7 +8,7 @@ from ansys.pydpf_sound.library import __version__
 
 
 # Project information
-project = "ansys-pydpf-sound-library"
+project = "ansys-dpf-sound"
 copyright = f"(c) {datetime.now().year} ANSYS, Inc. All rights reserved"
 author = "ANSYS, Inc."
 release = version = __version__
@@ -17,11 +17,11 @@ cname = os.getenv("DOCUMENTATION_CNAME", "docs.pyansys.com")
 # Select desired logo, theme, and declare the html title
 html_logo = logo
 html_theme = "ansys_sphinx_theme"
-html_short_title = html_title = "pypydpf-sound-library"
+html_short_title = html_title = "pydpf-sound"
 
 # specify the location of your github repo
 html_theme_options = {
-    "github_url": "https://github.com/ansys/pypydpf-sound",
+    "github_url": "https://github.com/ansys/pydpf-sound",
     "show_prev_next": False,
     "show_breadcrumbs": True,
     "additional_breadcrumbs": [

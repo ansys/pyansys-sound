@@ -3,9 +3,9 @@
 from setuptools import find_namespace_packages, setup
 
 setup(
-    name="ansys-pydpf-sound-library",
+    name="ansys-dpf-sound",
     version="0.1.dev0",
-    url="https://github.com/ansys/pypydpf-sound",
+    url="https://github.com/ansys/pydpf-sound",
     author="ANSYS, Inc.",
     author_email="pyansys.support@ansys.com",
     maintainer="PyAnsys developers",
