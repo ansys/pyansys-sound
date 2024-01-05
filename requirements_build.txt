@@ -1,4 +1,0 @@
-build==0.10.0
-twine==4.0.2
-ansys-dpf-core==0.10.1
-matplotlib==3.8.2 

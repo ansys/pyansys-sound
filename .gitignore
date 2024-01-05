@@ -157,3 +157,12 @@ cython_debug/
 #.idea/
 
 # End of https://www.toptal.com/developers/gitignore/api/python
+doc/source/sg_execution_times.rst
+doc/source/examples/gallery_examples/001_load_write_wav_files_codeobj.pickle
+doc/source/examples/gallery_examples/001_load_write_wav_files.ipynb
+doc/source/examples/gallery_examples/001_load_write_wav_files.py.md5
+doc/source/examples/gallery_examples/001_load_write_wav_files.rst
+doc/source/examples/gallery_examples/index.rst
+doc/source/examples/gallery_examples/sg_execution_times.rst
+doc/source/examples/gallery_examples/images/sphx_glr_001_load_write_wav_files_001.png
+doc/source/examples/gallery_examples/images/thumb/sphx_glr_001_load_write_wav_files_thumb.png

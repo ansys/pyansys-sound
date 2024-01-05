@@ -1,3 +1,0 @@
-pytest==7.3.0
-pytest-cov==4.0.0
-ansys-dpf-core==0.10.1
