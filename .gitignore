@@ -166,3 +166,5 @@ doc/source/examples/gallery_examples/index.rst
 doc/source/examples/gallery_examples/sg_execution_times.rst
 doc/source/examples/gallery_examples/images/sphx_glr_001_load_write_wav_files_001.png
 doc/source/examples/gallery_examples/images/thumb/sphx_glr_001_load_write_wav_files_thumb.png
+doc/source/api/_autosummary/ansys.dpf.sound.sound_helpers.load_wav_signal.rst
+doc/source/api/_autosummary/ansys.dpf.sound.sound_helpers.write_wav_signal.rst
