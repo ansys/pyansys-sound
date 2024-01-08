@@ -44,7 +44,7 @@ except Exception as e:
     sys.exit("Error while loading dpf_sound.dll ! Aborting.")
 
 # %%
-# Load a wav signal usging load_wav_signal, it will be returned as a [DPF Field Container](https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html)
+# Load a wav signal using load_wav_signal, it will be returned as a `DPF Field Container <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_
 
 # Modify the input path according to your needs
 fc_signal = load_wav_signal(r"C:\example_files\flute.wav")
