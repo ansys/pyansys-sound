@@ -1,12 +1,4 @@
-"""
-.. _load_write_wav_iles_example:
-
-Load / Write Wav Files
---------------------------
-
-This example shows how to load and write wav files, access the corresponding data and display it using numpy.
-
-"""
+"""This example shows how to load and write wav files, access the corresponding data and display it using numpy."""  # noqa: E501
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
@@ -14,11 +6,12 @@ This example shows how to load and write wav files, access the corresponding dat
 # DPF server, and retrieving the example files.
 #
 # Load Ansys libraries.
+import sys
 
-from ansys.dpf.sound.sound_helpers import write_wav_signal, load_wav_signal
 import ansys.dpf.core as dpf
 import matplotlib.pyplot as plt
-import sys
+
+from ansys.dpf.sound.sound_helpers import load_wav_signal, write_wav_signal
 
 # Start a DPF server and copy the example files into the current working directory.
 dpf.server_context.set_default_server_context(dpf.AvailableServerContexts.premium)
@@ -30,10 +23,12 @@ s = dpf.start_local_server(ansys_path=path_to_dpf_server)
 
 # %%
 # Load DPF Sound plugin Actually loading the DPF Sound plugin
+path_to_dll = r"C:\ansys_dpf_server_win_v2024.1.pre0\ansys\dpf\server_2024_1_pre0\Acoustics\SAS\ads\dpf_sound.dll"  # noqa: E501
+
 try:
     # Make sure the path below is correct
     dpf.load_library(
-        r"C:\ansys_dpf_server_win_v2024.1.pre0\ansys\dpf\server_2024_1_pre0\Acoustics\SAS\ads\dpf_sound.dll",
+        path_to_dll,
         "dpf_sound",
     )
     print("DPF Sound successfully loaded")
@@ -44,7 +39,8 @@ except Exception as e:
     sys.exit("Error while loading dpf_sound.dll ! Aborting.")
 
 # %%
-# Load a wav signal using load_wav_signal, it will be returned as a `DPF Field Container <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_
+# Load a wav signal using load_wav_signal, it will be returned as a
+# `DPF Field Container <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_ # noqa: E501
 
 # Modify the input path according to your needs
 fc_signal = load_wav_signal(r"tests\data\flute.wav")
@@ -54,7 +50,8 @@ fc_signal = load_wav_signal(r"tests\data\flute.wav")
 fc_signal_modified = dpf.FieldsContainer.deep_copy(fc_signal)
 fc_signal_modified[0].data = fc_signal[0].data * 0.2
 
-# Obtaining the [Time Frequency support](https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.time_freq_support.html) that contains the associated times of the signal
+# Obtaining the [Time Frequency support](https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.time_freq_support.html) # noqa: E501
+# that contains the associated times of the signal
 time_support = fc_signal[0].time_freq_support.time_frequencies.data
 
 plt.plot(time_support, fc_signal[0].data, label="Original Signal")
@@ -68,8 +65,6 @@ plt.show()
 # %%
 # Write the modified signal in memory using write_wav_signal
 
-write_wav_signal(
-    r"tests\data\flute_modified.wav", fc_signal_modified, "int16"
-)
+write_wav_signal(r"tests\data\flute_modified.wav", fc_signal_modified, "int16")
 
 print("End of script reached")

@@ -1,5 +1,5 @@
 ****************
-PyDPF Sound 
+PyDPF Sound
 ****************
 
 |pyansys| |python| |MIT| |black|

@@ -16,7 +16,6 @@ def load_wav_signal(
     input_path:
         The input path of the .wav file.
     """
-
     op_load_wav = Operator("load_wav_sas")  # For loading WAVs
 
     # Loading a WAV file
@@ -49,9 +48,10 @@ def write_wav_signal(
     data:
         Signal to save: fields_container with each channel as a field.
     bit_depth:
-        Bit depth. Supported values are: 'float32', 'int32', 'int16', 'int8'. This means that the samples will be respectively coded into the wav file using 32 bits (32-bit IEEE Float), 32 bits (int), 16 bits (int) or 8 bits (int).
+        Bit depth. Supported values are: 'float32', 'int32', 'int16', 'int8'.
+        This means that the samples will be respectively coded into the wav file
+        using 32 bits (32-bit IEEE Float), 32 bits (int), 16 bits (int) or 8 bits (int).
     """
-
     op_write_wav = Operator("write_wav_sas")  # For writing WAV
 
     data_source_out = DataSources()
