@@ -25,7 +25,7 @@ dpf.server_context.set_default_server_context(dpf.AvailableServerContexts.premiu
 print("Server Context successfully created")
 
 # Change this path according to your needs
-path_to_dpf_server = r"C:\Program Files\ANSYS Inc\v242"
+path_to_dpf_server = r"C:\ansys_dpf_server_win_v2024.1.pre0\ansys\dpf\server_2024_1_pre0"
 s = dpf.start_local_server(ansys_path=path_to_dpf_server)
 
 # %%
@@ -33,7 +33,7 @@ s = dpf.start_local_server(ansys_path=path_to_dpf_server)
 try:
     # Make sure the path below is correct
     dpf.load_library(
-        r"C:\Program Files\ANSYS Inc\v242\Acoustics\SAS\ads\dpf_sound.dll",
+        r"C:\ansys_dpf_server_win_v2024.1.pre0\ansys\dpf\server_2024_1_pre0\Acoustics\SAS\ads\dpf_sound.dll",
         "dpf_sound",
     )
     print("DPF Sound successfully loaded")
@@ -47,7 +47,7 @@ except Exception as e:
 # Load a wav signal using load_wav_signal, it will be returned as a `DPF Field Container <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_
 
 # Modify the input path according to your needs
-fc_signal = load_wav_signal(r"C:\example_files\flute.wav")
+fc_signal = load_wav_signal(r"tests\data\flute.wav")
 
 # %%
 # Create a modified version of the signal and plot the signals
@@ -69,7 +69,7 @@ plt.show()
 # Write the modified signal in memory using write_wav_signal
 
 write_wav_signal(
-    r"C:\example_files\flute_modified.wav", fc_signal_modified, "int16"
+    r"tests\data\flute_modified.wav", fc_signal_modified, "int16"
 )
 
 print("End of script reached")
