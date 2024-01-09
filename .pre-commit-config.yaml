@@ -31,7 +31,6 @@ repos:
   rev: v4.4.0
   hooks:
   - id: check-merge-conflict
-  - id: requirements-txt-fixer
   - id: trailing-whitespace
 
 - repo: https://github.com/python-jsonschema/check-jsonschema
