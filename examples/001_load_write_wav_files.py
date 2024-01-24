@@ -1,4 +1,11 @@
-"""This example shows how to load and write wav files, access the corresponding data and display it using numpy."""  # noqa: E501
+"""
+.. _load_write_wav_files_example:
+
+Load / Write Wav Files 
+----------------------
+
+This example shows how to load and write wav files, access the corresponding data and display it using numpy.
+"""
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
@@ -18,12 +25,12 @@ dpf.server_context.set_default_server_context(dpf.AvailableServerContexts.premiu
 print("Server Context successfully created")
 
 # Change this path according to your needs
-path_to_dpf_server = r"C:\ansys_dpf_server_win_v2024.1.pre0\ansys\dpf\server_2024_1_pre0"
+path_to_dpf_server = r"C:\Program Files\ANSYS Inc\v231"
 s = dpf.start_local_server(ansys_path=path_to_dpf_server)
 
 # %%
 # Load DPF Sound plugin Actually loading the DPF Sound plugin
-path_to_dll = r"C:\ansys_dpf_server_win_v2024.1.pre0\ansys\dpf\server_2024_1_pre0\Acoustics\SAS\ads\dpf_sound.dll"  # noqa: E501
+path_to_dll = r"C:\ansys_dpf_sound_win_v2024_2_0.pre0\DPF_Sound\Acoustics\SAS\ads\dpf_sound.dll"  # noqa: E501
 
 try:
     # Make sure the path below is correct
@@ -43,7 +50,7 @@ except Exception as e:
 # `DPF Field Container <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_ # noqa: E501
 
 # Modify the input path according to your needs
-fc_signal = load_wav_signal(r"tests\data\flute.wav")
+fc_signal = load_wav_signal(r"C:\ANSYSDev\PyDev\pydpf-sound\tests\data\flute.wav")
 
 # %%
 # Create a modified version of the signal and plot the signals
@@ -65,6 +72,6 @@ plt.show()
 # %%
 # Write the modified signal in memory using write_wav_signal
 
-write_wav_signal(r"tests\data\flute_modified.wav", fc_signal_modified, "int16")
+write_wav_signal(r"C:\ANSYSDev\PyDev\pydpf-sound\tests\data\flute_modified.wav", fc_signal_modified, "int16")
 
 print("End of script reached")

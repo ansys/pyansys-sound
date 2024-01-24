@@ -164,3 +164,4 @@ doc/source/examples/gallery_examples/
 doc/source/api/_autosummary/
 doc/source/examples/gallery_examples/001_load_write_wav_files.py
 doc/source/examples/gallery_examples/001_load_write_wav_files.py
+tests/data/flute_modified.wav
