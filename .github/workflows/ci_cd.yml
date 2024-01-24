@@ -16,6 +16,8 @@ concurrency:
 
 env:
   MAIN_PYTHON_VERSION: '3.10'
+  ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG: ghcr.io/ansys-internal/pydpf-sound/ansys-dpf-sound:latest
+  DPF_SOUND_CONT_NAME: ansys-dpf-sound
 
 jobs:
 
@@ -39,7 +41,7 @@ jobs:
 
   doc-build:
     name: "Building library documentation"
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Windows, pydpfsound]
     needs: doc-style
     steps:
       - name: "Install Git and checkout project"
@@ -50,15 +52,43 @@ jobs:
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
+      - name: Create Python venv and activate it
+        run: |
+          python -m venv .venv
+          .\.venv\Scripts\Activate.ps1
+
       - name: "Install pydpf-sound"
         run: |
           pip install --upgrade pip
           pip install .[doc]
 
-      # - name: "Run Ansys documentation building action"
-      #   uses: ansys/actions/doc-build@v5
-      #   with:
-      #     python-version: ${{ env.MAIN_PYTHON_VERSION }}
-      #     checkout: false
-      #     skip-install: true
-      #     sphinxopts: -j auto
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download DPF-Sound service container
+        run: docker pull $env:ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG
+
+      - name: Start DPF-Sound service and verify start
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          docker run -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ secrets.LICENSE_SERVER }}"" -dp 50052 :50052 ${{ env.DPF_SOUND_CONT_NAME }} --entrypoint powershell
+          python -c "from ansys.dpf.sound. connect import validate_dpf_sound; validate_dpf_sound()"
+
+      - name: "Run Ansys documentation building action"
+        uses: ansys/actions/doc-build@v5
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          checkout: false
+          skip-install: true
+          sphinxopts: -j auto
+
+      - name: Stop the DPF-Sound service
+        if: always()
+        run: |
+          docker stop $env:DPF_SOUND_CONT_NAME
+          docker logs $env:DPF_SOUND_CONT_NAME
+          docker rm $env:DPF_SOUND_CONT_NAME
