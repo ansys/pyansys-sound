@@ -25,13 +25,12 @@ repos:
   hooks:
   - id: pydocstyle
     additional_dependencies: [toml]
-    exclude: "tests/"
+    exclude: "^(tests/|examples/)"
 
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v4.4.0
   hooks:
   - id: check-merge-conflict
-  - id: requirements-txt-fixer
   - id: trailing-whitespace
 
 - repo: https://github.com/python-jsonschema/check-jsonschema
