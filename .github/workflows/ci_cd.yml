@@ -59,10 +59,10 @@ jobs:
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
-      - name: "Run Ansys documentation building action"
-        uses: ansys/actions/doc-build@v5
-        with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-          checkout: false
-          skip-install: true
-          sphinxopts: -j auto
+      # - name: "Run Ansys documentation building action"
+      #   uses: ansys/actions/doc-build@v5
+      #   with:
+      #     python-version: ${{ env.MAIN_PYTHON_VERSION }}
+      #     checkout: false
+      #     skip-install: true
+      #     sphinxopts: -j auto
