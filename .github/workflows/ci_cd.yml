@@ -54,10 +54,6 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install .[doc]
-      - name: "Run Ansys documentation building action"
-        uses: ansys/actions/doc-build@v5.0
-        with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
       # - name: "Run Ansys documentation building action"
       #   uses: ansys/actions/doc-build@v5
