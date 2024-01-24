@@ -1,10 +1,14 @@
+# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+
 """
 .. _load_write_wav_files_example:
 
-Load / Write Wav Files 
+Load / Write Wav Files
 ----------------------
 
-This example shows how to load and write wav files, access the corresponding data and display it using numpy.
+This example shows how to load and write wav files.
+It also show how to access the corresponding data and display it using numpy.
+
 """
 # %%
 # Set up analysis
@@ -30,7 +34,7 @@ s = dpf.start_local_server(ansys_path=path_to_dpf_server)
 
 # %%
 # Load DPF Sound plugin Actually loading the DPF Sound plugin
-path_to_dll = r"C:\ansys_dpf_sound_win_v2024_2_0.pre0\DPF_Sound\Acoustics\SAS\ads\dpf_sound.dll"  # noqa: E501
+path_to_dll = r"C:\ansys_dpf_sound_win_v2024.2.pre0\ansys\dpf\server_2024_2_pre0\Acoustics\SAS\ads\dpf_sound.dll"  # noqa: E501
 
 try:
     # Make sure the path below is correct
@@ -72,6 +76,8 @@ plt.show()
 # %%
 # Write the modified signal in memory using write_wav_signal
 
-write_wav_signal(r"C:\ANSYSDev\PyDev\pydpf-sound\tests\data\flute_modified.wav", fc_signal_modified, "int16")
+write_wav_signal(
+    r"C:\ANSYSDev\PyDev\pydpf-sound\tests\data\flute_modified.wav", fc_signal_modified, "int16"
+)
 
 print("End of script reached")
