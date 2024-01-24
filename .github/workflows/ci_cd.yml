@@ -76,7 +76,7 @@ jobs:
         run: |
           .\.venv\Scripts\Activate.ps1
           docker run -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ secrets.LICENSE_SERVER }}"" -dp 50052 :50052 ${{ env.DPF_SOUND_CONT_NAME }} --entrypoint powershell
-          python -c "from ansys.dpf.sound. connect import validate_dpf_sound; validate_dpf_sound()"
+          python -c "from ansys.dpf.sound.connect import validate_dpf_sound; validate_dpf_sound()"
 
       - name: "Run Ansys documentation building action"
         uses: ansys/actions/doc-build@v5
