@@ -1,9 +1,16 @@
 """Test if DPF Sound is available."""
 
-from ansys.dpf.core import Operator
+from ansys.dpf.core import Operator, connect_to_server
+import os
+from ansys.dpf.sound.connect import validate_dpf_sound
 
 
-def validate_dpf_sound() -> None:
+DEFAULT_PORT: int = int(os.environ.get("ANSRV_DPF_SOUND_PORT", 678))
+
+
+def validate_dpf_sound(port=None) -> None:
     """Validate that DPF Sound is available."""
-    Operator("load_wav_sas")
+    port = port if port is not None else DEFAULT_PORT
+    server = connect_to_server(port=port)
+    Operator("load_wav_sas", server=server)
     print("DPF Sound is available and running.")

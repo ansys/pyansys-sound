@@ -19,6 +19,7 @@ env:
   ANSRV_DPF_SOUND_IMAGE: 'ghcr.io/ansys-internal/pydpf-sound'
   ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG: ghcr.io/ansys-internal/pydpf-sound/ansys-dpf-sound:latest
   ANSRV_DPF_SOUND_LICENSE_SERVER: ${{ secrets.LICENSE_SERVER }}
+  ANSRV_DPF_SOUND_PORT: 678
   DPF_SOUND_CONT_NAME: ansys-dpf-sound
   RESET_IMAGE_CACHE: 0
 
@@ -79,7 +80,7 @@ jobs:
       - name: Start DPF-Sound service and verify start
         run: |
           .\.venv\Scripts\Activate.ps1
-          docker run --detach --name ${{ env.DPF_SOUND_CONT_NAME }} -e ANSYS_DPF_ACCEPT_LA=Y -e ANSYSLMD_LICENSE_FILE=${{ env.ANSRV_DPF_SOUND_LICENSE_SERVER }} -dp 50052:50052 --entrypoint powershell
+          docker run -d -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=${{ env.ANSRV_DPF_SOUND_LICENSE_SERVER }}" -p ${{ env.ANSRV_DPF_SOUND_PORT }}:50052 ${{ env.ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG }} --entrypoint powershell
           python -c "from ansys.dpf.sound.connect import validate_dpf_sound; validate_dpf_sound()"
 
       - name: "Run Ansys documentation building action"
