@@ -16,8 +16,11 @@ concurrency:
 
 env:
   MAIN_PYTHON_VERSION: '3.10'
+  ANSRV_DPF_SOUND_IMAGE: 'ghcr.io/ansys-internal/pydpf-sound'
   ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG: ghcr.io/ansys-internal/pydpf-sound/ansys-dpf-sound:latest
+  ANSRV_DPF_SOUND_LICENSE_SERVER: ${{ secrets.LICENSE_SERVER }}
   DPF_SOUND_CONT_NAME: ansys-dpf-sound
+  RESET_IMAGE_CACHE: 0
 
 jobs:
 
@@ -52,12 +55,12 @@ jobs:
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
-      - name: Create Python venv and activate it
+      - name: "Create Python venv and activate it" 
         run: |
           python -m venv .venv
           .\.venv\Scripts\Activate.ps1
 
-      - name: "Install pydpf-sound"
+      - name: "Install packages for documentation build"
         run: |
           .\.venv\Scripts\Activate.ps1
           pip install --upgrade pip
@@ -76,7 +79,7 @@ jobs:
       - name: Start DPF-Sound service and verify start
         run: |
           .\.venv\Scripts\Activate.ps1
-          docker run -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ secrets.LICENSE_SERVER }}" -dp 50052 :50052 ${{ env.DPF_SOUND_CONT_NAME }} --entrypoint powershell
+          docker run --detach --name ${{ env.DPF_SOUND_CONT_NAME }} -e ANSYS_DPF_ACCEPT_LA=Y -e ANSYSLMD_LICENSE_FILE=${{ env.ANSRV_DPF_SOUND_LICENSE_SERVER }} -dp 50052:50052 --entrypoint powershell
           python -c "from ansys.dpf.sound.connect import validate_dpf_sound; validate_dpf_sound()"
 
       - name: "Run Ansys documentation building action"
