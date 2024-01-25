@@ -1,9 +1,8 @@
 """Test if DPF Sound is available."""
 
-from ansys.dpf.core import Operator, connect_to_server, load_library
 import os
-from ansys.dpf.sound.connect import validate_dpf_sound
 
+from ansys.dpf.core import Operator, connect_to_server, load_library
 
 DEFAULT_PORT: int = int(os.environ.get("ANSRV_DPF_SOUND_PORT", 678))
 
