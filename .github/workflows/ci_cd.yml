@@ -55,7 +55,7 @@ jobs:
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
-      - name: "Create Python venv and activate it" 
+      - name: "Create Python venv and activate it"
         run: |
           python -m venv .venv
           .\.venv\Scripts\Activate.ps1
