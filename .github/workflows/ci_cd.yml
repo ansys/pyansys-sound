@@ -79,7 +79,7 @@ jobs:
       - name: Start DPF-Sound service and verify start
         run: |
           .\.venv\Scripts\Activate.ps1
-          docker run --detach --name ${{ env.DPF_SOUND_CONT_NAME }} -e ANSYS_DPF_ACCEPT_LA=Y -e ANSYSLMD_LICENSE_FILE=${{ env.ANSRV_DPF_SOUND_LICENSE_SERVER }} -dp 50052:50052 ansys-dpf-sound --entrypoint powershell
+          docker run --detach --name ${{ env.DPF_SOUND_CONT_NAME }} -e ANSYS_DPF_ACCEPT_LA=Y -e ANSYSLMD_LICENSE_FILE=${{ env.ANSRV_DPF_SOUND_LICENSE_SERVER }} -dp 50052:50052 $env:ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG --entrypoint powershell
           python -c "from ansys.dpf.sound.connect import validate_dpf_sound; validate_dpf_sound()"
 
       - name: "Run Ansys documentation building action"
