@@ -19,7 +19,7 @@ env:
   ANSRV_DPF_SOUND_IMAGE: 'ghcr.io/ansys-internal/pydpf-sound'
   ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG: ghcr.io/ansys-internal/pydpf-sound/ansys-dpf-sound:latest
   ANSRV_DPF_SOUND_LICENSE_SERVER: ${{ secrets.LICENSE_SERVER }}
-  ANSRV_DPF_SOUND_PORT: 678
+  ANSRV_DPF_SOUND_PORT: 6780
   DPF_SOUND_CONT_NAME: ansys-dpf-sound
   RESET_IMAGE_CACHE: 0
 
