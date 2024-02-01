@@ -32,8 +32,10 @@ connect_to_or_start_server()
 # Load a wav signal using load_wav_signal, it will be returned as a
 # `DPF Field Container <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_ # noqa: E501
 
-# Modify the input path according to your needs
+# Returning the input data of the example file
 path_flute_wav = get_absolute_path_for_flute_wav()
+
+# Loading the wav file
 fc_signal = load_wav_signal(path_flute_wav)
 
 # %%
