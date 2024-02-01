@@ -16,6 +16,7 @@ concurrency:
 
 env:
   MAIN_PYTHON_VERSION: '3.10'
+  PACKAGE_NAME: 'ansys.dpf.sound'
   ANSRV_DPF_SOUND_IMAGE: 'ghcr.io/ansys-internal/pydpf-sound'
   ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG: ghcr.io/ansys-internal/pydpf-sound/ansys-dpf-sound:latest
   ANSRV_DPF_SOUND_LICENSE_SERVER: ${{ secrets.LICENSE_SERVER }}
@@ -42,6 +43,109 @@ jobs:
         uses: ansys/actions/doc-style@v5.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+  smoke-tests:
+    name: Build and Smoke tests
+    runs-on: ${{ matrix.os }}
+    needs: [code-style]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest]
+        python-version: ['3.9', '3.10', '3.11', '3.12']
+        should-release:
+          - ${{ github.event_name == 'push' && contains(github.ref, 'refs/tags') }}
+        exclude:
+          - should-release: false
+            os: macos-latest
+    steps:
+      - name: Build wheelhouse and perform smoke test
+        uses: ansys/actions/build-wheelhouse@v5
+        with:
+          library-name: ${{ env.PACKAGE_NAME }}
+          operating-system: ${{ matrix.os }}
+          python-version: ${{ matrix.python-version }}
+
+# =================================================================================================
+# vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv    RUNNING ON SELF-HOSTED RUNNER    vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+# =================================================================================================
+
+  testing-windows:
+    name: Testing and coverage (Windows)
+    needs: [smoke-tests]
+    runs-on: [self-hosted, Windows, pydpfsound]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }} # self-hosted has an issue with 3.11
+
+      - name: Set up headless display
+        uses: pyvista/setup-headless-display-action@v2
+
+      - name: Create Python venv
+        run: |
+          python -m venv .venv
+          .\.venv\Scripts\Activate.ps1
+
+      - name: Install packages for testing
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          python -m pip install --upgrade pip
+          pip install --upgrade build wheel
+          pip install .[tests]
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download DPF-Sound service container
+        run: docker pull $env:ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG
+
+      - name: Start DPF-Sound service and verify start
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          docker run -d --name ${{ env.DPF_SOUND_CONT_NAME }} -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ env.ANSRV_DPF_SOUND_LICENSE_SERVER }}" -p ${{ env.ANSRV_DPF_SOUND_PORT }}:50052 --dns '8.8.8.8' ${{ env.ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG }}
+          python -c "from ansys.dpf.sound.connect import validate_dpf_sound; validate_dpf_sound()"
+
+      - name: Testing
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          pytest -v
+
+      - name: Upload integration test logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-logs
+          path: tests/integration/logs
+          retention-days: 7
+
+      - name: Upload Coverage Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: .cov/html
+          retention-days: 7
+
+      - name: Stop the DPF-Sound service
+        run: |
+          docker stop $env:DPF_SOUND_CONT_NAME
+          docker logs $env:DPF_SOUND_CONT_NAME
+          docker rm $env:DPF_SOUND_CONT_NAME
+
+      - name: Stop any remaining containers
+        run: |
+          $dockerContainers = docker ps -a -q
+          if (-not [string]::IsNullOrEmpty($dockerContainers)) {
+              docker stop $dockerContainers
+              docker rm $dockerContainers
+          }
 
   doc-build:
     name: "Building library documentation"
