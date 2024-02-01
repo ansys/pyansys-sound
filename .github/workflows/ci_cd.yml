@@ -113,9 +113,9 @@ jobs:
       - name: Stop the DPF-Sound service
         if: always()
         run: |
-          docker stop $env:DPF_SOUND_CONT_NAME
-          docker logs $env:DPF_SOUND_CONT_NAME
-          docker rm $env:DPF_SOUND_CONT_NAME
+          docker stop $env:ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG
+          docker logs $env:ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG
+          docker rm $env:ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG
 
       - name: Stop any remaining containers
         if: always()
