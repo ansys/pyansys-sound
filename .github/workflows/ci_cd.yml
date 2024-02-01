@@ -80,7 +80,7 @@ jobs:
       - name: Start DPF-Sound service and verify start
         run: |
           .\.venv\Scripts\Activate.ps1
-          docker run -d -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ env.ANSRV_DPF_SOUND_LICENSE_SERVER }}" -p ${{ env.ANSRV_DPF_SOUND_PORT }}:50052 --dns '8.8.8.8' ${{ env.ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG }}
+          docker run -d --name ${{ env.DPF_SOUND_CONT_NAME }} -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ env.ANSRV_DPF_SOUND_LICENSE_SERVER }}" -p ${{ env.ANSRV_DPF_SOUND_PORT }}:50052 --dns '8.8.8.8' ${{ env.ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG }}
           python -c "from ansys.dpf.sound.connect import validate_dpf_sound; validate_dpf_sound()"
 
       - name: Build the documentation (HTML)
@@ -113,9 +113,9 @@ jobs:
       - name: Stop the DPF-Sound service
         if: always()
         run: |
-          docker stop $env:ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG
-          docker logs $env:ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG
-          docker rm $env:ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG
+          docker stop $env:DPF_SOUND_CONT_NAME
+          docker logs $env:DPF_SOUND_CONT_NAME
+          docker rm $env:DPF_SOUND_CONT_NAME
 
       - name: Stop any remaining containers
         if: always()
