@@ -17,37 +17,14 @@ It also show how to access the corresponding data and display it using numpy.
 # DPF server, and retrieving the example files.
 #
 # Load Ansys libraries.
-import sys
-
 import ansys.dpf.core as dpf
 import matplotlib.pyplot as plt
 
+from ansys.dpf.sound.server_helpers import connect_to_or_start_server
 from ansys.dpf.sound.sound_helpers import load_wav_signal, write_wav_signal
 
-# Start a DPF server and copy the example files into the current working directory.
-dpf.server_context.set_default_server_context(dpf.AvailableServerContexts.premium)
-print("Server Context successfully created")
-
-# Change this path according to your needs
-path_to_dpf_server = r"C:\Program Files\ANSYS Inc\v231"
-s = dpf.start_local_server(ansys_path=path_to_dpf_server)
-
-# %%
-# Load DPF Sound plugin Actually loading the DPF Sound plugin
-path_to_dll = r"C:\ansys_dpf_sound_win_v2024.2.pre0\ansys\dpf\server_2024_2_pre0\Acoustics\SAS\ads\dpf_sound.dll"  # noqa: E501
-
-try:
-    # Make sure the path below is correct
-    dpf.load_library(
-        path_to_dll,
-        "dpf_sound",
-    )
-    print("DPF Sound successfully loaded")
-
-except Exception as e:
-    # If we didn't manage to load the DLL, we end up here
-    print(e.args)
-    sys.exit("Error while loading dpf_sound.dll ! Aborting.")
+# Connect to remote or start a local server
+connect_to_or_start_server()
 
 # %%
 # Load a wav signal using load_wav_signal, it will be returned as a
