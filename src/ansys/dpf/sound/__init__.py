@@ -11,6 +11,6 @@ except ModuleNotFoundError:
 
 __version__ = importlib_metadata.version(__name__.replace(".", "-"))
 
-from . import server_helpers
+from . import examples_helpers, server_helpers
 
-__all__ = "server_helpers"
+__all__ = "server_helpers, example_helpers"
