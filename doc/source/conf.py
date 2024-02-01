@@ -143,3 +143,8 @@ source_suffix = ".rst"
 
 # The master toctree document.
 master_doc = "index"
+
+
+from sphinx.builders.latex import LaTeXBuilder
+
+LaTeXBuilder.supported_image_types = ["image/png", "image/pdf", "image/svg+xml"]
