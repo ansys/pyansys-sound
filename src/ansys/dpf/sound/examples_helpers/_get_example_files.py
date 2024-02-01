@@ -1,7 +1,5 @@
 """Helpers to get examples files for PyDPF Sound."""
-
-import os
-from os import path
+import pathlib
 
 
 def get_absolute_path_for_flute_wav() -> str:
@@ -12,9 +10,5 @@ def get_absolute_path_for_flute_wav() -> str:
     :
         Absolute path to flute.wav .
     """
-    # Directory of the current file
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-
     # Obtaining flute.wav path based on the current path
-    full_path_flute_wav = path.realpath(dir_path + "../../../../../../tests/data/flute.wav")
-    return full_path_flute_wav
+    return pathlib.Path(__file__).parents[5].joinpath("tests/data/flute.wav")
