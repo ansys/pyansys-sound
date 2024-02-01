@@ -49,14 +49,14 @@ EXPOSE 50052
 
 SHELL ["cmd", "/S", "/C"]
 
-#RUN setx /m PATH "%PATH%;C:\\ansys\\sound"
-RUN setx /m PATH "%PATH%;C:\\ansys\\dpf\\server_${DPF_PACKAGE_VERSION_NO_DOTS}\\Acoustics\\SAS"
+# Setting DPF Sound folder path in the environment variables
+ENV DPF_PACKAGE_VERSION_NO_DOTS=$DPF_PACKAGE_VERSION_NO_DOTS
+RUN setx /m PATH "%PATH%;C:\\ansys\\dpf\\server_%DPF_PACKAGE_VERSION_NO_DOTS%\\Acoustics\\SAS\\ads"
 
+# Copying all the files from ansys to C:\ansys in the container
 COPY ansys C:\\ansys
-# COPY ansys ansys_inc
 
-# Probably need to change the path below
-# WORKDIR C:\\ansys_inc\\ansys\\dpf\\server_${DPF_PACKAGE_VERSION_NO_DOTS}\\aisol\\bin\\winx64\\
+# Working directory
 WORKDIR C:\\ansys\\dpf\\server_${DPF_PACKAGE_VERSION_NO_DOTS}\\aisol\\bin\\winx64\\
 
 # Define the entry point for the docker container.
