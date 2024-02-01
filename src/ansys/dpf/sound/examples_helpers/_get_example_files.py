@@ -12,6 +12,9 @@ def get_absolute_path_for_flute_wav() -> str:
     :
         Absolute path to flute.wav .
     """
-    print(os.getcwd())
-    full_path_flute_wav = path.abspath("tests/data/flute.wav")
+    # Directory of the current file
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+
+    # Obtaining flute.wav path based on the current path
+    full_path_flute_wav = path.realpath(dir_path + "../../../../../../tests/data/flute.wav")
     return full_path_flute_wav
