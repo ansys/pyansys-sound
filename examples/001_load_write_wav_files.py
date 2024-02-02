@@ -26,7 +26,7 @@ from ansys.dpf.sound.server_helpers import connect_to_or_start_server
 from ansys.dpf.sound.sound_helpers import load_wav_signal, write_wav_signal
 
 # Connect to remote or start a local server
-connect_to_or_start_server(ansys_path=r"C:\TempDocker\ansys\dpf\server_2024_2_pre0")
+connect_to_or_start_server()
 path_flute_wav = get_absolute_path_for_flute_wav()
 
 # %%
