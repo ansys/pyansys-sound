@@ -17,4 +17,8 @@ def get_absolute_path_for_flute_wav() -> str:
             p = parent / "tests/data/flute.wav"
             break
 
+    print(p)
+    print(p)
+    print(p)
+    print(p)
     return p
