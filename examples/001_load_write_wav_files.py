@@ -28,8 +28,6 @@ from ansys.dpf.sound.sound_helpers import load_wav_signal, write_wav_signal
 # Connect to remote or start a local server
 connect_to_or_start_server(ansys_path=r"C:\TempDocker\ansys\dpf\server_2024_2_pre0")
 
-# Returning the input data of the example file
-path_flute_wav = get_absolute_path_for_flute_wav()
 # %%
 # Load a wav signal using load_wav_signal, it will be returned as a
 # `DPF Field Container <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_ # noqa: E501
