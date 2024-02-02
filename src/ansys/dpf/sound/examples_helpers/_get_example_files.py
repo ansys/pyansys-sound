@@ -1,5 +1,7 @@
 """Helpers to get examples files for PyDPF Sound."""
+import os
 import pathlib
+import sys
 
 
 def get_absolute_path_for_flute_wav() -> str:
@@ -17,8 +19,10 @@ def get_absolute_path_for_flute_wav() -> str:
             p = parent / "tests/data/flute.wav"
             break
 
-    print(p)
-    print(p)
+    os.getcwd()
+    print("Current Workingdir : {}".format(os.getcwd()))
+    print("Sys prefix : {}".format(sys.prefix))
+    print("Sys base prefix : {}".format(sys.base_prefix))
     print(p)
     print(p)
     return p
