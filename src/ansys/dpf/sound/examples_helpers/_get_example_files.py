@@ -11,4 +11,7 @@ def get_absolute_path_for_flute_wav() -> str:
         Absolute path to flute.wav .
     """
     # Obtaining flute.wav path based on the current path
+    print(pathlib.Path(__file__).parents[5].joinpath("tests/data/flute.wav"))
+    print(pathlib.Path(__file__).parents[5].joinpath("tests/data/flute.wav"))
+    print(pathlib.Path(__file__).parents[5].joinpath("tests/data/flute.wav"))
     return pathlib.Path(__file__).parents[5].joinpath("tests/data/flute.wav")
