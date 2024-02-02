@@ -37,7 +37,7 @@ path_flute_wav = get_absolute_path_for_flute_wav()
 path_flute_wav = get_absolute_path_for_flute_wav()
 
 # Loading the wav file
-fc_signal = load_wav_signal("../tests/data/flute.wav")
+fc_signal = load_wav_signal("c:/flute.wav")
 
 # %%
 # Create a modified version of the signal and plot the signals
