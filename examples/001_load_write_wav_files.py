@@ -27,7 +27,6 @@ from ansys.dpf.sound.sound_helpers import load_wav_signal, write_wav_signal
 
 # Connect to remote or start a local server
 connect_to_or_start_server()
-path_flute_wav = get_absolute_path_for_flute_wav()
 
 # %%
 # Load a wav signal using load_wav_signal, it will be returned as a
@@ -37,7 +36,7 @@ path_flute_wav = get_absolute_path_for_flute_wav()
 path_flute_wav = get_absolute_path_for_flute_wav()
 
 # Loading the wav file
-fc_signal = load_wav_signal("c:\\ansys\\flute.wav")
+fc_signal = load_wav_signal(path_flute_wav)
 
 # %%
 # Create a modified version of the signal and plot the signals
@@ -59,6 +58,6 @@ plt.show()
 # %%
 # Write the modified signal in memory using write_wav_signal
 
-write_wav_signal("flute_modified.wav", fc_signal_modified, "int16")
+write_wav_signal("c:\\data\\flute_modified.wav", fc_signal_modified, "int16")
 
 print("End of script reached")
