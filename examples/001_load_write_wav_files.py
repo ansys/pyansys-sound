@@ -57,7 +57,8 @@ plt.show()
 
 # %%
 # Write the modified signal in memory using write_wav_signal
-
-write_wav_signal("c:\\data\\flute_modified.wav", fc_signal_modified, "int16")
+# Write the output signal in the same folder as the input, with a "_modified" suffix
+output_path = path_flute_wav[:-4] + "_modified.wav"
+write_wav_signal(output_path, fc_signal_modified, "int16")
 
 print("End of script reached")

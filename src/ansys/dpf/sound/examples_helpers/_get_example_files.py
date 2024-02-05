@@ -22,4 +22,4 @@ def get_absolute_path_for_flute_wav() -> str:
             p = parent / "tests/data/flute.wav"
             break
 
-    return p
+    return p.as_posix()
