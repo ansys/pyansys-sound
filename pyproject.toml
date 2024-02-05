@@ -69,3 +69,8 @@ source = ["ansys.dpf.sound"]
 
 [tool.coverage.report]
 show_missing = true
+
+[tool.pytest.ini_options]
+minversion = "7.1"
+addopts = "-ra --cov=ansys.dpf.sound --cov-report html:.cov/html --cov-report xml:.cov/xml --cov-report term -vv"
+testpaths = ["tests"]
