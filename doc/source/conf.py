@@ -60,6 +60,7 @@ extensions = [
     "sphinx_autodoc_typehints",
     "sphinx_gallery.gen_gallery",
     "sphinx_design",
+    "sphinx.ext.imgconverter",
     "pyvista.ext.viewer_directive",
 ]
 
@@ -143,3 +144,27 @@ source_suffix = ".rst"
 
 # The master toctree document.
 master_doc = "index"
+
+# -- Options for LaTeX output ------------------------------------------------
+latex_elements = {}
+
+# Grouping the document tree into LaTeX files. List of tuples
+# (source start file, target name, title,
+#  author, documentclass [howto, manual, or own class]).
+latex_documents = [
+    (
+        master_doc,
+        f"{project}-Documentation-{__version__}.tex",
+        f"{project} Documentation",
+        author,
+        "manual",
+    ),
+]
+
+# Fix to resolve hyperlink warnings when building PDF
+# ( https://stackoverflow.com/questions/67485567/sphinx-cross-reference-in-latex)
+latex_elements = {
+    "preamble": r"""
+\renewcommand{\hyperref}[2][]{#2}
+"""
+}

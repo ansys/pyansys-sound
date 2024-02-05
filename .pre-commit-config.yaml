@@ -19,6 +19,7 @@ repos:
   rev: v2.2.4
   hooks:
   - id: codespell
+    exclude: Docker
 
 - repo: https://github.com/pycqa/pydocstyle
   rev: 6.3.0

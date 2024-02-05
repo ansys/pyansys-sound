@@ -17,44 +17,26 @@ It also show how to access the corresponding data and display it using numpy.
 # DPF server, and retrieving the example files.
 #
 # Load Ansys libraries.
-import sys
 
 import ansys.dpf.core as dpf
 import matplotlib.pyplot as plt
 
+from ansys.dpf.sound.examples_helpers import get_absolute_path_for_flute_wav
+from ansys.dpf.sound.server_helpers import connect_to_or_start_server
 from ansys.dpf.sound.sound_helpers import load_wav_signal, write_wav_signal
 
-# Start a DPF server and copy the example files into the current working directory.
-dpf.server_context.set_default_server_context(dpf.AvailableServerContexts.premium)
-print("Server Context successfully created")
-
-# Change this path according to your needs
-path_to_dpf_server = r"C:\Program Files\ANSYS Inc\v231"
-s = dpf.start_local_server(ansys_path=path_to_dpf_server)
-
-# %%
-# Load DPF Sound plugin Actually loading the DPF Sound plugin
-path_to_dll = r"C:\ansys_dpf_sound_win_v2024.2.pre0\ansys\dpf\server_2024_2_pre0\Acoustics\SAS\ads\dpf_sound.dll"  # noqa: E501
-
-try:
-    # Make sure the path below is correct
-    dpf.load_library(
-        path_to_dll,
-        "dpf_sound",
-    )
-    print("DPF Sound successfully loaded")
-
-except Exception as e:
-    # If we didn't manage to load the DLL, we end up here
-    print(e.args)
-    sys.exit("Error while loading dpf_sound.dll ! Aborting.")
+# Connect to remote or start a local server
+connect_to_or_start_server()
 
 # %%
 # Load a wav signal using load_wav_signal, it will be returned as a
 # `DPF Field Container <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_ # noqa: E501
 
-# Modify the input path according to your needs
-fc_signal = load_wav_signal(r"C:\ANSYSDev\PyDev\pydpf-sound\tests\data\flute.wav")
+# Returning the input data of the example file
+path_flute_wav = get_absolute_path_for_flute_wav()
+
+# Loading the wav file
+fc_signal = load_wav_signal(path_flute_wav)
 
 # %%
 # Create a modified version of the signal and plot the signals
@@ -75,9 +57,8 @@ plt.show()
 
 # %%
 # Write the modified signal in memory using write_wav_signal
-
-write_wav_signal(
-    r"C:\ANSYSDev\PyDev\pydpf-sound\tests\data\flute_modified.wav", fc_signal_modified, "int16"
-)
+# Write the output signal in the same folder as the input, with a "_modified" suffix
+output_path = path_flute_wav[:-4] + "_modified.wav"
+write_wav_signal(output_path, fc_signal_modified, "int16")
 
 print("End of script reached")
