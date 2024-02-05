@@ -1,4 +1,4 @@
-API Reference
+Api reference
 =============
 
 This section describes the public classes, methods, and attributes of the PyDPF Sound API.
