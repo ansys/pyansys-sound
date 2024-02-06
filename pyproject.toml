@@ -35,6 +35,7 @@ tests = [
     "ansys-dpf-core==0.10.1",
     "pytest==7.4.3",
     "pytest-cov==4.1.0",
+    "pytest-dependency==0.6.0"
 ]
 doc = [
     "Sphinx==7.2.6",
@@ -68,3 +69,8 @@ source = ["ansys.dpf.sound"]
 
 [tool.coverage.report]
 show_missing = true
+
+[tool.pytest.ini_options]
+minversion = "7.1"
+addopts = "-ra --cov=ansys.dpf.sound --cov-report html:.cov/html --cov-report xml:.cov/xml --cov-report term -vv"
+testpaths = ["tests"]
