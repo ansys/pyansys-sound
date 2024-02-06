@@ -126,6 +126,13 @@ jobs:
           path: .cov/html
           retention-days: 7
 
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: .cov/xml
+
+
       - name: Stop the DPF-Sound service
         run: |
           docker stop $env:DPF_SOUND_CONT_NAME
