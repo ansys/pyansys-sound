@@ -20,6 +20,4 @@ def get_absolute_path_for_flute_wav() -> str:
     for parent in pathlib.Path(__file__).parents:  # pragma: no cover
         if (parent / "tests/data/flute.wav").exists():
             p = parent / "tests/data/flute.wav"
-            break
-
-    return p.as_posix()
+            return p.as_posix()
