@@ -1,4 +1,4 @@
-Load / Write Wav Files
+Load / write wav files
 -----------------------
 
 .. module:: ansys.dpf.sound.sound_helpers
