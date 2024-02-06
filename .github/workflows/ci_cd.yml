@@ -119,13 +119,6 @@ jobs:
           .\.venv\Scripts\Activate.ps1
           pytest -v
 
-      - name: Upload integration test logs
-        uses: actions/upload-artifact@v4
-        with:
-          name: integration-test-logs
-          path: tests/integration/logs
-          retention-days: 7
-
       - name: Upload Coverage Results
         uses: actions/upload-artifact@v4
         with:
