@@ -53,8 +53,7 @@ doc = [
     "jupyter_sphinx==0.4.0",
     "sphinx-autobuild==2021.3.14",
     "cairosvg==2.7.1",
-    "sphinxcontrib-svg2pdfconverter==1.2.2",
-    "pycairo==1.26.0"
+    "sphinxcontrib-svg2pdfconverter==1.2.2
 ]
 
 [tool.black]
