@@ -60,7 +60,6 @@ extensions = [
     "sphinx_autodoc_typehints",
     "sphinx_gallery.gen_gallery",
     "sphinx_design",
-    "sphinxcontrib.cairosvgconverter",
     "pyvista.ext.viewer_directive",
 ]
 
