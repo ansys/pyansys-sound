@@ -12,7 +12,7 @@ def get_absolute_path_for_flute_wav() -> str:
         Absolute path to flute.wav .
     """
     # In case of CI/CD pipelines
-    port_in_env = os.environ.get("ANSRV_DPF_SOUND_PORT", 6780)
+    port_in_env = os.environ.get("ANSRV_DPF_SOUND_PORT")
     if port_in_env is not None:
         return "C:\\data\\flute.wav"
 
