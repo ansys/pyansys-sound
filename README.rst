@@ -29,6 +29,8 @@ PyDPF Sound
    :alt: Black
 
 
+.. index_start
+
 PyDPF Sound enables the post-processing and the analysis of Sounds based on
 `Ansys DPF`_ and the DPF Sound plugin. It is a Python wrapper which
 implements classes on top of DPF Sound operators. For

@@ -16,13 +16,12 @@ concurrency:
 
 env:
   MAIN_PYTHON_VERSION: '3.10'
-  PACKAGE_NAME: 'ansys.dpf.sound'
+  PACKAGE_NAME: 'ansys-dpf-sound'
   ANSRV_DPF_SOUND_IMAGE: 'ghcr.io/ansys-internal/pydpf-sound'
   ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG: ghcr.io/ansys-internal/pydpf-sound/ansys-dpf-sound:latest
   ANSRV_DPF_SOUND_LICENSE_SERVER: ${{ secrets.LICENSE_SERVER }}
   ANSRV_DPF_SOUND_PORT: 6780
   DPF_SOUND_CONT_NAME: ansys-dpf-sound
-  RESET_IMAGE_CACHE: 0
 
 jobs:
 
@@ -51,8 +50,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest]
-        python-version: ['3.10', '3.11', '3.12'] # 3.9 to be added
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        python-version: ['3.9', '3.10', '3.11', '3.12']
         should-release:
           - ${{ github.event_name == 'push' && contains(github.ref, 'refs/tags') }}
         exclude:
@@ -193,6 +192,12 @@ jobs:
           cd doc
           .\make.bat html
 
+      - name: Build the documentation (PDF)
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          cd doc
+          .\make.bat pdf
+
       - name: Upload HTML documentation
         uses: actions/upload-artifact@v4
         with:
@@ -200,23 +205,12 @@ jobs:
           path: doc/_build/html
           retention-days: 7
 
-      # TO REACTIVATE
-      # TO REACTIVATE
-      # TO REACTIVATE
-      # TO REACTIVATE
-      # - name: Build the documentation (PDF)
-      #   run: |
-      #     .\.venv\Scripts\Activate.ps1
-      #     cd doc
-      #     .\make.bat pdf
-
-      # - name: Upload PDF documentation
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: documentation-pdf
-      #     path: doc/_build/latex/ansys-dpf-sound*.pdf
-      #     retention-days: 7
-
+      - name: Upload PDF documentation
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation-pdf
+          path: doc/_build/latex/ansys-dpf-sound*.pdf
+          retention-days: 7
 
       - name: Stop the DPF-Sound service
         if: always()
@@ -233,3 +227,4 @@ jobs:
               docker stop $dockerContainers
               docker rm $dockerContainers
           }
+
