@@ -1,35 +1,7 @@
 """Sound helpers."""
-__all__ = ("load_wav_signal", "write_wav_signal")
+__all__ = "write_wav_signal"
 
 from ansys.dpf.core import DataSources, Operator, fields_container
-
-
-def load_wav_signal(
-    input_path: str = "",
-) -> fields_container:
-    """Load a wav file from its input path.
-
-    Load a .wav file stored in memory using DPF Sound capabilities
-
-    Parameters
-    ----------
-    input_path:
-        The input path of the .wav file.
-    """
-    op_load_wav = Operator("load_wav_sas")  # For loading WAVs
-
-    # Loading a WAV file
-    data_source_in = DataSources()
-
-    # Creating input path
-    data_source_in.add_file_path(input_path, ".wav")
-
-    # Loading wav file and storing it into a container
-    op_load_wav.connect(0, data_source_in)
-
-    # Obtaining the output as a fieldsContainer
-    fc_signal = op_load_wav.get_output(0, "fields_container")
-    return fc_signal
 
 
 def write_wav_signal(

@@ -31,13 +31,13 @@ class LoadWav(SignalUtilitiesAbstract):
         Calls the appropriate DPF Sound operator to load the wav file.
         """
         if self.path_to_wav == "":
-            raise RuntimeError("Path for loading wav file is not specified. Use LoadWav.set_path")
+            raise RuntimeError("Path for loading wav file is not specified. Use LoadWav.set_path.")
 
         # Loading a WAV file
         data_source_in = DataSources()
 
         # Creating input path
-        data_source_in.add_file_path(self.path, ".wav")
+        data_source_in.add_file_path(self.path_to_wav, ".wav")
 
         # Loading wav file and storing it into a container
         self.operator.connect(0, data_source_in)
@@ -77,3 +77,7 @@ class LoadWav(SignalUtilitiesAbstract):
             Path to the wav file to load.
         """
         self.path_to_wav = path_to_wav
+
+    def get_path(self) -> str:
+        """Get the path of the wav to load."""
+        return self.path_to_wav

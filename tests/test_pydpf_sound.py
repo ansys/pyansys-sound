@@ -18,6 +18,12 @@ def test_pydpf_sound_compute():
 
 
 @pytest.mark.dependency(depends=["test_pydpf_sound_instanciate"])
+def test_pydpf_sound_plot():
+    pydpf_sound = PyDpfSound()
+    assert pydpf_sound.plot() == None
+
+
+@pytest.mark.dependency(depends=["test_pydpf_sound_instanciate"])
 def test_pydpf_sound_get_output():
     pydpf_sound = PyDpfSound()
     out = pydpf_sound.get_output()
