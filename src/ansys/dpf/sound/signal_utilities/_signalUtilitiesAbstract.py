@@ -2,7 +2,7 @@
 from ..pydpf_sound import PyDpfSound
 
 
-class SignalUtilities(PyDpfSound):
+class SignalUtilitiesAbstract(PyDpfSound):
     """
     Abstract mother class for signal utilities.
 

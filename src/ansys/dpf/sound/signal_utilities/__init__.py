@@ -3,6 +3,6 @@
 Helper functions related to signal management.
 """
 
-from ._signalUtilities import SignalUtilities
+from ._signalUtilitiesAbstract import SignalUtilitiesAbstract
 
-__all__ = "SignalUtilities"
+__all__ = "SignalUtilitiesAbstract"
