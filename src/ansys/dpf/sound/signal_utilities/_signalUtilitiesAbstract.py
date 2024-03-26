@@ -14,4 +14,4 @@ class SignalUtilitiesAbstract(PyDpfSound):
 
         Init the class.
         """
-        PyDpfSound.__init__(self)
+        super().__init__()
