@@ -33,6 +33,7 @@ class WriteWav(SignalUtilitiesAbstract):
         super().__init__()
         self.path_to_write = path_to_write
         self.signal = signal
+        self.bit_depth = ""
         self.set_bit_depth(bit_depth=bit_depth)
         self.operator = Operator("write_wav_sas")
 
@@ -46,9 +47,6 @@ class WriteWav(SignalUtilitiesAbstract):
 
         if self.signal == None:
             raise RuntimeError("No signal is specified for writing, use WriteWav.set_signal.")
-
-        if self.bit_depth == "":
-            raise RuntimeError("No bit depth is specified for writing, use WriteWav.set_bit_depth.")
 
         data_source_out = DataSources()
         data_source_out.add_file_path(self.path_to_write, ".wav")
@@ -64,7 +62,7 @@ class WriteWav(SignalUtilitiesAbstract):
 
         This class does not output anything as it only writes data.
         """
-        warnings.warn("No output for this class")
+        warnings.warn(UserWarning("No output for this class"))
         return None
 
     def get_output_as_nparray(self):
@@ -72,7 +70,7 @@ class WriteWav(SignalUtilitiesAbstract):
 
         This class does not output anything as it only writes data.
         """
-        warnings.warn("No output for this class")
+        warnings.warn(UserWarning("No output for this class"))
         return None
 
     def plot(self):
@@ -80,7 +78,7 @@ class WriteWav(SignalUtilitiesAbstract):
 
         This class does not plot anything as it only writes data.
         """
-        warnings.warn("No plot for this class")
+        warnings.warn(UserWarning("No plot for this class"))
 
     def set_signal(self, signal):
         """Setter for the signal.
@@ -116,10 +114,10 @@ class WriteWav(SignalUtilitiesAbstract):
         Sets the bit depth.
         """
         if (
-            self.bit_depth != "int8"
-            and self.bit_depth != "int16"
-            and self.bit_depth != "int32"
-            and self.bit_depth != "float32"
+            bit_depth != "int8"
+            and bit_depth != "int16"
+            and bit_depth != "int32"
+            and bit_depth != "float32"
         ):
             raise RuntimeError(
                 "Invalid bit depth, accepted values are 'float32', 'int32', 'int16', 'int8'."
