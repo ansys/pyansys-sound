@@ -17,13 +17,12 @@ It also show how to access the corresponding data and display it using numpy.
 # DPF server, and retrieving the example files.
 #
 # Load Ansys libraries.
-
 import ansys.dpf.core as dpf
 import matplotlib.pyplot as plt
 
 from ansys.dpf.sound.examples_helpers import get_absolute_path_for_flute_wav
 from ansys.dpf.sound.server_helpers import connect_to_or_start_server
-from ansys.dpf.sound.sound_helpers import load_wav_signal, write_wav_signal
+from ansys.dpf.sound.signal_utilities import LoadWav, WriteWav
 
 # Connect to remote or start a local server
 connect_to_or_start_server()
@@ -36,7 +35,10 @@ connect_to_or_start_server()
 path_flute_wav = get_absolute_path_for_flute_wav()
 
 # Loading the wav file
-fc_signal = load_wav_signal(path_flute_wav)
+wav_loader = LoadWav(path_flute_wav)
+wav_loader.compute()
+fc_signal = wav_loader.get_output()
+
 
 # %%
 # Create a modified version of the signal and plot the signals
@@ -59,6 +61,8 @@ plt.show()
 # Write the modified signal in memory using write_wav_signal
 # Write the output signal in the same folder as the input, with a "_modified" suffix
 output_path = path_flute_wav[:-4] + "_modified.wav"
-write_wav_signal(output_path, fc_signal_modified, "int16")
 
+wav_writer = WriteWav(path_to_write=output_path, signal=fc_signal_modified, bit_depth="int16")
+wav_writer.compute()
+wav_writer.get_output()
 print("End of script reached")
