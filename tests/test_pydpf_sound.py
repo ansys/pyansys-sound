@@ -1,4 +1,3 @@
-from ansys.dpf.core import FieldsContainer
 import numpy as np
 import pytest
 
@@ -27,7 +26,7 @@ def test_pydpf_sound_plot():
 def test_pydpf_sound_get_output():
     pydpf_sound = PyDpfSound()
     out = pydpf_sound.get_output()
-    assert type(out) == type(FieldsContainer)
+    assert out == None
 
 
 @pytest.mark.dependency(depends=["test_pydpf_sound_instanciate"])

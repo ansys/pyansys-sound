@@ -1,5 +1,5 @@
 """PyDpf sound interface."""
-from ansys.dpf.core import FieldsContainer, fields_container
+from ansys.dpf.core import FieldsContainer
 import numpy as np
 from numpy.typing import ArrayLike
 
@@ -16,7 +16,7 @@ class PyDpfSound:
 
         This function inits the class by filling its attributes.
         """
-        self.output = FieldsContainer
+        self.output = None
 
     def plot(self):
         """Plot stuff.
@@ -32,7 +32,7 @@ class PyDpfSound:
         """
         return None
 
-    def get_output(self) -> fields_container:
+    def get_output(self) -> None | FieldsContainer:
         """Output stuff.
 
         Method for returning output.

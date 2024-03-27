@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 import numpy as np
 import pytest
 
@@ -27,7 +29,7 @@ def test_load_wav_compute(dpf_sound_test_server):
 @pytest.mark.dependency(depends=["test_load_wav_compute"])
 def test_load_wav_get_output(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
-    wav_loader.compute()
+    # wav_loader.compute()
 
     # Loading a wav signal using load_wav_signal
     fc = wav_loader.get_output()
@@ -46,7 +48,7 @@ def test_load_wav_get_output(dpf_sound_test_server):
 @pytest.mark.dependency(depends=["test_load_wav_compute"])
 def test_load_wav_get_output_as_nparray(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
-    wav_loader.compute()
+    # wav_loader.compute()
 
     # Loading a wav signal using load_wav_signal
     np_arr = wav_loader.get_output_as_nparray()
@@ -76,3 +78,11 @@ def test_load_wav_get_set_path(dpf_sound_test_server):
     wav_loader = LoadWav()
     wav_loader.set_path(pytest.data_path_flute_in_container)
     assert wav_loader.get_path() == pytest.data_path_flute_in_container
+
+
+@patch("matplotlib.pyplot.show")
+@pytest.mark.dependency(depends=["test_load_wav_compute"])
+def test_load_wav_plot(mock_show, dpf_sound_test_server):
+    wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
+    wav_loader.compute()
+    wav_loader.plot()

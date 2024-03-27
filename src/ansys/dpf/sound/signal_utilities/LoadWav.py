@@ -1,5 +1,6 @@
 """Load Wav."""
 from ansys.dpf.core import DataSources, Operator, fields_container
+import matplotlib.pyplot as plt
 import numpy as np
 from numpy import typing as npt
 
@@ -45,19 +46,26 @@ class LoadWav(SignalUtilitiesAbstract):
         # Runs the operator
         self.operator.run()
 
+        # Stores output in the variable
+        self.output = self.operator.get_output(0, "fields_container")
+
     def get_output(self) -> fields_container:
         """Return the loaded wav signal as a fields container.
 
         Returns the loaded wav signal in a dpf.FieldsContainer
         """
-        return self.operator.get_output(0, "fields_container")
+        if self.output == None:
+            # Computing output if needed
+            self.compute()
+
+        return self.output
 
     def get_output_as_nparray(self) -> npt.ArrayLike:
         """Return the loaded wav signal as a numpy array.
 
         Returns the loaded wav signal in a np.array
         """
-        fc = self.operator.get_output(0, "fields_container")
+        fc = self.get_output()
 
         num_channels = len(fc)
         np_array = fc[0].data
@@ -67,6 +75,25 @@ class LoadWav(SignalUtilitiesAbstract):
                 np_array = np.vstack((np_array, fc[i].data))
 
         return np.transpose(np_array)
+
+    def plot(self):
+        """Plot signals.
+
+        Plots the loaded signals in one plot.
+        """
+        fc_signal = self.get_output()
+        time_data = fc_signal[0].time_freq_support.time_frequencies.data
+        time_unit = fc_signal[0].time_freq_support.time_frequencies.unit
+        num_channels = len(fc_signal)
+        unit = fc_signal[0].unit
+
+        for i in range(num_channels):
+            plt.plot(time_data, fc_signal[i].data, label="Channel {}".format(i))
+        plt.title(fc_signal[0].name)
+        plt.legend()
+        plt.xlabel(time_unit)
+        plt.ylabel(unit)
+        plt.show()
 
     def set_path(self, path_to_wav):
         """Set the path of the wav to load.
