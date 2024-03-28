@@ -1,4 +1,6 @@
 """Load Wav."""
+import warnings
+
 from ansys.dpf.core import DataSources, Operator, fields_container
 import matplotlib.pyplot as plt
 import numpy as np
@@ -56,7 +58,7 @@ class LoadWav(SignalUtilitiesAbstract):
         """
         if self.output == None:
             # Computing output if needed
-            self.process()
+            warnings.warn(UserWarning("Output has not been yet processed, use LoadWav.process()."))
 
         return self.output
 

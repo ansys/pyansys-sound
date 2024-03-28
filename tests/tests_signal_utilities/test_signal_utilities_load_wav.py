@@ -31,6 +31,10 @@ def test_load_wav_get_output(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
 
     # Loading a wav signal using LoadWav class
+    with pytest.warns(UserWarning, match="No output for this class"):
+        fc = wav_loader.get_output()
+
+    wav_loader.process()
     fc = wav_loader.get_output()
 
     # Extracting data
