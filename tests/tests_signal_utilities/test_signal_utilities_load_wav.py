@@ -29,9 +29,8 @@ def test_load_wav_compute(dpf_sound_test_server):
 @pytest.mark.dependency(depends=["test_load_wav_compute"])
 def test_load_wav_get_output(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
-    # wav_loader.compute()
 
-    # Loading a wav signal using load_wav_signal
+    # Loading a wav signal using LoadWav class
     fc = wav_loader.get_output()
 
     # Extracting data
@@ -50,7 +49,7 @@ def test_load_wav_get_output_as_nparray(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     # wav_loader.compute()
 
-    # Loading a wav signal using load_wav_signal
+    # Loading a wav signal using LoadWav
     np_arr = wav_loader.get_output_as_nparray()
 
     # Checking data size and some random samples
@@ -64,7 +63,7 @@ def test_load_wav_get_output_as_nparray(dpf_sound_test_server):
     wav_loader_stereo = LoadWav(pytest.data_path_white_noise_in_container)
     wav_loader_stereo.compute()
 
-    # Loading a wav signal using load_wav_signal
+    # Loading a wav signal using LoadWav
     np_arr = wav_loader_stereo.get_output_as_nparray()
 
     assert np.shape(np_arr) == (480000, 2)
