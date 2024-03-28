@@ -1,4 +1,6 @@
 """PyDpf sound interface."""
+import warnings
+
 from ansys.dpf.core import FieldsContainer
 import numpy as np
 from numpy.typing import ArrayLike
@@ -23,6 +25,7 @@ class PyDpfSound:
 
         This method plots stuff.
         """
+        warnings.warn(UserWarning("Nothing to plot."))
         return None
 
     def process(self):
@@ -30,6 +33,7 @@ class PyDpfSound:
 
         This method processes stuff.
         """
+        warnings.warn(UserWarning("Nothing to process."))
         return None
 
     def get_output(self) -> None | FieldsContainer:
@@ -37,6 +41,7 @@ class PyDpfSound:
 
         Method for returning output.
         """
+        warnings.warn(UserWarning("Nothing to output."))
         return self.output
 
     def get_output_as_nparray(self) -> ArrayLike:
@@ -44,4 +49,5 @@ class PyDpfSound:
 
         Method for returning output as np array.
         """
+        warnings.warn(UserWarning("Nothing to output."))
         return np.empty(0)

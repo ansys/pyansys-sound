@@ -1,6 +1,5 @@
 """Write Wav."""
 
-import warnings
 
 from ansys.dpf.core import DataSources, Operator, fields_container
 
@@ -56,29 +55,6 @@ class WriteWav(SignalUtilitiesAbstract):
         self.operator.connect(2, self.bit_depth)
 
         self.operator.run()
-
-    def get_output(self):
-        """Output for the class.
-
-        This class does not output anything as it only writes data.
-        """
-        warnings.warn(UserWarning("No output for this class"))
-        return None
-
-    def get_output_as_nparray(self):
-        """Output for the class.
-
-        This class does not output anything as it only writes data.
-        """
-        warnings.warn(UserWarning("No output for this class"))
-        return None
-
-    def plot(self):
-        """Plot for the class.
-
-        This class does not plot anything as it only writes data.
-        """
-        warnings.warn(UserWarning("No plot for this class"))
 
     def set_signal(self, signal):
         """Setter for the signal.

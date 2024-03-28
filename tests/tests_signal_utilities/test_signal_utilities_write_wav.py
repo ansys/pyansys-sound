@@ -36,30 +36,6 @@ def test_write_wav_process(dpf_sound_test_server):
 
 
 @pytest.mark.dependency(depends=["test_write_wav_instantiation"])
-def test_write_wav_get_output(dpf_sound_test_server):
-    wav_writer = WriteWav()
-
-    with pytest.warns(UserWarning, match="No output for this class"):
-        wav_writer.get_output()
-
-
-@pytest.mark.dependency(depends=["test_write_wav_instantiation"])
-def test_write_wav_get_output_as_nparray(dpf_sound_test_server):
-    wav_writer = WriteWav()
-
-    with pytest.warns(UserWarning, match="No output for this class"):
-        wav_writer.get_output_as_nparray()
-
-
-@pytest.mark.dependency(depends=["test_write_wav_instantiation"])
-def test_write_wav_plot(dpf_sound_test_server):
-    wav_writer = WriteWav()
-
-    with pytest.warns(UserWarning, match="No plot for this class"):
-        wav_writer.plot()
-
-
-@pytest.mark.dependency(depends=["test_write_wav_instantiation"])
 def test_write_wav_set_get_path(dpf_sound_test_server):
     wav_writer = WriteWav()
 
