@@ -14,7 +14,7 @@ class WriteWav(SignalUtilitiesAbstract):
     """
 
     def __init__(
-        self, signal: fields_container = None, path_to_write: str = "", bit_depth: str = "int16"
+        self, signal: fields_container = None, path_to_write: str = "", bit_depth: str = "float32"
     ):
         """Create a write wav class.
 

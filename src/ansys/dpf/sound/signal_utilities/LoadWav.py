@@ -89,6 +89,7 @@ class LoadWav(SignalUtilitiesAbstract):
 
         for i in range(num_channels):
             plt.plot(time_data, fc_signal[i].data, label="Channel {}".format(i))
+
         plt.title(fc_signal[0].name)
         plt.legend()
         plt.xlabel(time_unit)
