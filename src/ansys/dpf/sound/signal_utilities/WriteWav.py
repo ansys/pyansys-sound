@@ -37,7 +37,7 @@ class WriteWav(SignalUtilitiesAbstract):
         self.set_bit_depth(bit_depth=bit_depth)
         self.operator = Operator("write_wav_sas")
 
-    def compute(self):
+    def process(self):
         """Write the wav file.
 
         Calls the appropriate DPF Sound operator to writes the wav file.

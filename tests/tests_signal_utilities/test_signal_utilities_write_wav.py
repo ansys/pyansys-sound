@@ -12,27 +12,27 @@ def test_write_wav_instantiation(dpf_sound_test_server):
 
 
 @pytest.mark.dependency(depends=["test_write_wav_instantiation"])
-def test_write_wav_compute(dpf_sound_test_server):
+def test_write_wav_process(dpf_sound_test_server):
     wav_writer = WriteWav()
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
 
     # Error 1
     with pytest.raises(RuntimeError) as excinfo:
-        wav_writer.compute()
+        wav_writer.process()
     assert str(excinfo.value) == "Path for write wav file is not specified. Use WriteWav.set_path."
 
     wav_writer.set_path(r"C:\data\flute_modified.wav")
 
     # Error 2
     with pytest.raises(RuntimeError) as excinfo:
-        wav_writer.compute()
+        wav_writer.process()
     assert str(excinfo.value) == "No signal is specified for writing, use WriteWav.set_signal."
 
-    wav_loader.compute()
+    wav_loader.process()
     wav_writer.set_signal(wav_loader.get_output())
 
     # Computing, no error expected
-    wav_writer.compute()
+    wav_writer.process()
 
 
 @pytest.mark.dependency(depends=["test_write_wav_instantiation"])

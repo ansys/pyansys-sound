@@ -26,7 +26,7 @@ class LoadWav(SignalUtilitiesAbstract):
         self.path_to_wav = path_to_wav
         self.operator = Operator("load_wav_sas")
 
-    def compute(self):
+    def process(self):
         """Load the wav file.
 
         Calls the appropriate DPF Sound operator to load the wav file.
@@ -56,7 +56,7 @@ class LoadWav(SignalUtilitiesAbstract):
         """
         if self.output == None:
             # Computing output if needed
-            self.compute()
+            self.process()
 
         return self.output
 

@@ -13,20 +13,20 @@ def test_load_wav_instantiation(dpf_sound_test_server):
 
 
 @pytest.mark.dependency(depends=["test_load_wav_instantiation"])
-def test_load_wav_compute(dpf_sound_test_server):
+def test_load_wav_process(dpf_sound_test_server):
     # Should not return an error
     wav_loader_good = LoadWav(pytest.data_path_flute_in_container)
-    wav_loader_good.compute()
+    wav_loader_good.process()
 
     # Should return an error
     wav_loader_bad = LoadWav()
 
     with pytest.raises(RuntimeError) as excinfo:
-        wav_loader_bad.compute()
+        wav_loader_bad.process()
     assert str(excinfo.value) == "Path for loading wav file is not specified. Use LoadWav.set_path."
 
 
-@pytest.mark.dependency(depends=["test_load_wav_compute"])
+@pytest.mark.dependency(depends=["test_load_wav_process"])
 def test_load_wav_get_output(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
 
@@ -44,10 +44,10 @@ def test_load_wav_get_output(dpf_sound_test_server):
     assert data[136047] == -0.084686279296875
 
 
-@pytest.mark.dependency(depends=["test_load_wav_compute"])
+@pytest.mark.dependency(depends=["test_load_wav_process"])
 def test_load_wav_get_output_as_nparray(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
-    # wav_loader.compute()
+    # wav_loader.process()
 
     # Loading a wav signal using LoadWav
     np_arr = wav_loader.get_output_as_nparray()
@@ -61,7 +61,7 @@ def test_load_wav_get_output_as_nparray(dpf_sound_test_server):
 
     # Tests with a stereo signal
     wav_loader_stereo = LoadWav(pytest.data_path_white_noise_in_container)
-    wav_loader_stereo.compute()
+    wav_loader_stereo.process()
 
     # Loading a wav signal using LoadWav
     np_arr = wav_loader_stereo.get_output_as_nparray()
@@ -80,8 +80,8 @@ def test_load_wav_get_set_path(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-@pytest.mark.dependency(depends=["test_load_wav_compute"])
+@pytest.mark.dependency(depends=["test_load_wav_process"])
 def test_load_wav_plot(mock_show, dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
-    wav_loader.compute()
+    wav_loader.process()
     wav_loader.plot()

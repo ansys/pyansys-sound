@@ -11,9 +11,9 @@ def test_pydpf_sound_instanciate():
 
 
 @pytest.mark.dependency(depends=["test_pydpf_sound_instanciate"])
-def test_pydpf_sound_compute():
+def test_pydpf_sound_process():
     pydpf_sound = PyDpfSound()
-    assert pydpf_sound.compute() == None
+    assert pydpf_sound.process() == None
 
 
 @pytest.mark.dependency(depends=["test_pydpf_sound_instanciate"])

@@ -25,10 +25,10 @@ class PyDpfSound:
         """
         return None
 
-    def compute(self):
-        """Compute stuff.
+    def process(self):
+        """Process stuff.
 
-        This method computes stuff.
+        This method processes stuff.
         """
         return None
 
