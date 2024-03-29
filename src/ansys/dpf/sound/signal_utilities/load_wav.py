@@ -3,7 +3,6 @@ import warnings
 
 from ansys.dpf.core import DataSources, Operator, fields_container
 import matplotlib.pyplot as plt
-import numpy as np
 from numpy import typing as npt
 
 from . import SignalUtilitiesAbstract
@@ -69,14 +68,7 @@ class LoadWav(SignalUtilitiesAbstract):
         """
         fc = self.get_output()
 
-        num_channels = len(fc)
-        np_array = fc[0].data
-
-        if num_channels > 1:
-            for i in range(1, num_channels):
-                np_array = np.vstack((np_array, fc[i].data))
-
-        return np.transpose(np_array)
+        return self.convert_fields_container_to_np_array(fc)
 
     def plot(self):
         """Plot signals.
