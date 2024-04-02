@@ -54,11 +54,6 @@ def test_apply_gain_get_output(dpf_sound_test_server):
     gain_applier.process()
     f_out = gain_applier.get_output()
 
-    print(f_out.data[1000])
-    print(f_out.data[3456])
-    print(f_out.data[30000])
-    print(f_out.data[60000])
-
     assert len(f_out.data) == 156048
     assert f_out.data[1000] == 0.00024298533389810473
     assert f_out.data[3456] == -0.005102692171931267
