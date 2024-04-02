@@ -5,6 +5,7 @@ Helper functions related to signal management.
 
 from ._signalUtilitiesAbstract import SignalUtilitiesAbstract  # isort:skip
 from .apply_gain import ApplyGain
+from .crop_signal import CropSignal
 from .load_wav import LoadWav
 from .resample import Resample
 from .sum_signals import SumSignals
@@ -19,4 +20,5 @@ __all__ = (
     "ZeroPad",
     "ApplyGain",
     "SumSignals",
+    "CropSignal",
 )

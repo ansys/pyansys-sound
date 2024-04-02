@@ -21,7 +21,7 @@ class ApplyGain(SignalUtilitiesAbstract):
         Parameters
         ----------
         signal:
-            Signal to resample as a DPF Field or FieldsContainer.
+            Signals on which to apply gain as a DPF Field or FieldsContainer.
         gain:
             Gain value in decibels (dB) or linear unit. By default, gain is specified in decibels.
         gain:
