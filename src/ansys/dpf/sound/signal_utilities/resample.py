@@ -2,8 +2,6 @@
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
-import matplotlib.pyplot as plt
-import numpy as np
 from numpy import typing as npt
 
 from . import SignalUtilitiesAbstract
@@ -73,35 +71,6 @@ class Resample(SignalUtilitiesAbstract):
             return output.data
 
         return self.convert_fields_container_to_np_array(output)
-
-        return np.transpose(np_array)
-
-    def plot(self):
-        """Plot signals.
-
-        Plots the resampled signals in one plot.
-        """
-        output = self.get_output()
-
-        if type(output) == Field:
-            num_channels = 0
-            field = output
-        else:
-            num_channels = len(output)
-            field = output[0]
-
-        time_data = field.time_freq_support.time_frequencies.data
-        time_unit = field.time_freq_support.time_frequencies.unit
-        unit = field.unit
-
-        for i in range(num_channels):
-            plt.plot(time_data, output[i].data, label="Channel {}".format(i))
-
-        plt.title(field.name)
-        plt.legend()
-        plt.xlabel(time_unit)
-        plt.ylabel(unit)
-        plt.show()
 
     def set_sampling_frequency(self, new_sampling_frequency: float):
         """Set the new sampling frequency.

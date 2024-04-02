@@ -78,3 +78,11 @@ def test_write_wav_set_get_signal(dpf_sound_test_server):
     assert fc_from_get.name == "testField"
     assert len(fc_from_get) == 1
     assert fc_from_get[0].data[0, 2] == 42
+
+
+@pytest.mark.dependency(depends=["test_write_wav_instantiation"])
+def test_write_wav_plot(dpf_sound_test_server):
+    wav_writer = WriteWav()
+
+    with pytest.warns(UserWarning, match="Nothing to plot."):
+        wav_writer.plot()

@@ -1,5 +1,6 @@
 """Write Wav."""
 
+import warnings
 
 from ansys.dpf.core import DataSources, FieldsContainer, Operator
 
@@ -107,3 +108,10 @@ class WriteWav(SignalUtilitiesAbstract):
         Gets the bit_depth.
         """
         return self.bit_depth
+
+    def plot(self):
+        """Plot the output.
+
+        Nothing to plot for this class.
+        """
+        warnings.warn(UserWarning("Nothing to plot."))

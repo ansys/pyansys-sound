@@ -2,7 +2,6 @@
 import warnings
 
 from ansys.dpf.core import DataSources, FieldsContainer, Operator
-import matplotlib.pyplot as plt
 from numpy import typing as npt
 
 from . import SignalUtilitiesAbstract
@@ -69,26 +68,6 @@ class LoadWav(SignalUtilitiesAbstract):
         fc = self.get_output()
 
         return self.convert_fields_container_to_np_array(fc)
-
-    def plot(self):
-        """Plot signals.
-
-        Plots the loaded signals in one plot.
-        """
-        fc_signal = self.get_output()
-        time_data = fc_signal[0].time_freq_support.time_frequencies.data
-        time_unit = fc_signal[0].time_freq_support.time_frequencies.unit
-        num_channels = len(fc_signal)
-        unit = fc_signal[0].unit
-
-        for i in range(num_channels):
-            plt.plot(time_data, fc_signal[i].data, label="Channel {}".format(i))
-
-        plt.title(fc_signal[0].name)
-        plt.legend()
-        plt.xlabel(time_unit)
-        plt.ylabel(unit)
-        plt.show()
 
     def set_path(self, path_to_wav: str):
         """Set the path of the wav to load.
