@@ -1,7 +1,7 @@
 """Load Wav."""
 import warnings
 
-from ansys.dpf.core import DataSources, Operator, fields_container
+from ansys.dpf.core import DataSources, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 from numpy import typing as npt
 
@@ -14,7 +14,7 @@ class LoadWav(SignalUtilitiesAbstract):
     This class loads wav signals.
     """
 
-    def __init__(self, path_to_wav=""):
+    def __init__(self, path_to_wav: str = ""):
         """Create a load wav class.
 
         Parameters
@@ -50,7 +50,7 @@ class LoadWav(SignalUtilitiesAbstract):
         # Stores output in the variable
         self.output = self.operator.get_output(0, "fields_container")
 
-    def get_output(self) -> fields_container:
+    def get_output(self) -> FieldsContainer:
         """Return the loaded wav signal as a fields container.
 
         Returns the loaded wav signal in a dpf.FieldsContainer
@@ -90,7 +90,7 @@ class LoadWav(SignalUtilitiesAbstract):
         plt.ylabel(unit)
         plt.show()
 
-    def set_path(self, path_to_wav):
+    def set_path(self, path_to_wav: str):
         """Set the path of the wav to load.
 
         Parameters

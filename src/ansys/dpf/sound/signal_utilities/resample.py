@@ -103,7 +103,7 @@ class Resample(SignalUtilitiesAbstract):
         plt.ylabel(unit)
         plt.show()
 
-    def set_sampling_frequency(self, new_sampling_frequency):
+    def set_sampling_frequency(self, new_sampling_frequency: float):
         """Set the new sampling frequency.
 
         Parameters
@@ -120,10 +120,10 @@ class Resample(SignalUtilitiesAbstract):
         """Get the sampling frequency."""
         return self.new_sampling_frequency
 
-    def set_signal(self, signal):
+    def set_signal(self, signal: Field | FieldsContainer):
         """Set the signal."""
         self.signal = signal
 
-    def get_signal(self):
+    def get_signal(self) -> Field | FieldsContainer:
         """Get the signal."""
         return self.signal

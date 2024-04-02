@@ -1,7 +1,7 @@
 """Write Wav."""
 
 
-from ansys.dpf.core import DataSources, Operator, fields_container
+from ansys.dpf.core import DataSources, FieldsContainer, Operator
 
 from . import SignalUtilitiesAbstract
 
@@ -13,7 +13,7 @@ class WriteWav(SignalUtilitiesAbstract):
     """
 
     def __init__(
-        self, signal: fields_container = None, path_to_write: str = "", bit_depth: str = "float32"
+        self, signal: FieldsContainer = None, path_to_write: str = "", bit_depth: str = "float32"
     ):
         """Create a write wav class.
 
@@ -56,7 +56,7 @@ class WriteWav(SignalUtilitiesAbstract):
 
         self.operator.run()
 
-    def set_signal(self, signal):
+    def set_signal(self, signal: FieldsContainer):
         """Setter for the signal.
 
         Sets the value of the signal to write in memory.
@@ -70,21 +70,21 @@ class WriteWav(SignalUtilitiesAbstract):
         """
         return self.signal
 
-    def set_path(self, path_to_write):
+    def set_path(self, path_to_write: str):
         """Setter for the write path.
 
         Sets the path for writing the signal in memory.
         """
         self.path_to_write = path_to_write
 
-    def get_path(self):
+    def get_path(self) -> str:
         """Getter for the write path.
 
         Gets the path for writing the signal in memory.
         """
         return self.path_to_write
 
-    def set_bit_depth(self, bit_depth):
+    def set_bit_depth(self, bit_depth: str):
         """Setter for the bit depth.
 
         Sets the bit depth.
@@ -101,7 +101,7 @@ class WriteWav(SignalUtilitiesAbstract):
 
         self.bit_depth = bit_depth
 
-    def get_bit_depth(self):
+    def get_bit_depth(self) -> str:
         """Getter for the bit depth.
 
         Gets the bit_depth.
