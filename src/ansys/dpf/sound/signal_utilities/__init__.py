@@ -7,5 +7,6 @@ from ._signalUtilitiesAbstract import SignalUtilitiesAbstract  # isort:skip
 from .load_wav import LoadWav
 from .resample import Resample
 from .write_wav import WriteWav
+from .zero_pad import ZeroPad
 
-__all__ = ("SignalUtilitiesAbstract", "LoadWav", "WriteWav", "Resample")
+__all__ = ("SignalUtilitiesAbstract", "LoadWav", "WriteWav", "Resample", "ZeroPad")

@@ -1,4 +1,4 @@
-"""Resample."""
+"""Zero pad."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -7,40 +7,38 @@ from numpy import typing as npt
 from . import SignalUtilitiesAbstract
 
 
-class Resample(SignalUtilitiesAbstract):
-    """Resample.
+class ZeroPad(SignalUtilitiesAbstract):
+    """ZeroPad.
 
-    This class resamples signals.
+    This class zero pads (adds zeros at the end of) signals.
     """
 
-    def __init__(
-        self, signal: Field | FieldsContainer = None, new_sampling_frequency: float = 44100.0
-    ):
+    def __init__(self, signal: Field | FieldsContainer = None, duration_zeros: float = 0.0):
         """Create a load wav class.
 
         Parameters
         ----------
         signal:
             Signal to resample as a DPF Field or FieldsContainer.
-        new_sampling_frequency:
-            New sampling frequency to use
+        duration_zeros:
+            Duration, in seconds, of the zeros to append to the input signal
         """
         super().__init__()
         self.signal = signal
-        self.new_sampling_frequency = 0.0
-        self.set_sampling_frequency(new_sampling_frequency)
-        self.operator = Operator("resample")
+        self.duration_zeros = 0.0
+        self.set_duration_zeros(duration_zeros)
+        self.operator = Operator("append_zeros_to_signal")
 
     def process(self):
-        """Resample the signal.
+        """Zero pad the signal.
 
-        Calls the appropriate DPF Sound operator to resample the signal.
+        Calls the appropriate DPF Sound operator to append zeros to the signal.
         """
         if self.get_signal() == None:
-            raise RuntimeError("No signal to resample. Use Resample.set_signal().")
+            raise RuntimeError("No signal to zero-pad. Use ZeroPad.set_signal().")
 
         self.operator.connect(0, self.get_signal())
-        self.operator.connect(1, float(self.get_sampling_frequency()))
+        self.operator.connect(1, float(self.get_duration_zeros()))
 
         # Runs the operator
         self.operator.run()
@@ -52,20 +50,20 @@ class Resample(SignalUtilitiesAbstract):
             self.output = self.operator.get_output(0, "field")
 
     def get_output(self) -> FieldsContainer | Field:
-        """Return the resampled signal as a fields container.
+        """Return the zero-padded signal as a fields container.
 
-        Returns the resampled signal in a dpf.FieldsContainer
+        Returns the zero-padded signal in a dpf.FieldsContainer
         """
         if self.output == None:
             # Computing output if needed
-            warnings.warn(UserWarning("Output has not been yet processed, use Resample.process()."))
+            warnings.warn(UserWarning("Output has not been yet processed, use ZeroPad.process()."))
 
         return self.output
 
     def get_output_as_nparray(self) -> npt.ArrayLike:
-        """Return the resampled signal as a numpy array.
+        """Return the zero-padded signal as a numpy array.
 
-        Returns the resampled signal in a np.array
+        Returns the zero-padded signal in a np.array
         """
         output = self.get_output()
 
@@ -74,22 +72,22 @@ class Resample(SignalUtilitiesAbstract):
 
         return self.convert_fields_container_to_np_array(output)
 
-    def set_sampling_frequency(self, new_sampling_frequency: float):
-        """Set the new sampling frequency.
+    def set_duration_zeros(self, new_duration_zeros: float):
+        """Set the new duration of zeros.
 
         Parameters
         ----------
-        new_sampling_frequency:
-            New sampling frequency.
+        new_duration_zeros:
+            New duration for the zero padding (in seconds).
         """
-        if new_sampling_frequency < 0.0:
-            raise RuntimeError("Sampling frequency must be strictly greater than 0.0.")
+        if new_duration_zeros < 0.0:
+            raise RuntimeError("Zero duration must be strictly greater than 0.0.")
 
-        self.new_sampling_frequency = new_sampling_frequency
+        self.duration_zeros = new_duration_zeros
 
-    def get_sampling_frequency(self) -> float:
+    def get_duration_zeros(self) -> float:
         """Get the sampling frequency."""
-        return self.new_sampling_frequency
+        return self.duration_zeros
 
     def set_signal(self, signal: Field | FieldsContainer):
         """Set the signal."""
