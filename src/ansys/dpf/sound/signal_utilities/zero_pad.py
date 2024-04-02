@@ -14,7 +14,7 @@ class ZeroPad(SignalUtilitiesAbstract):
     """
 
     def __init__(self, signal: Field | FieldsContainer = None, duration_zeros: float = 0.0):
-        """Create a load wav class.
+        """Create a zero pad class.
 
         Parameters
         ----------

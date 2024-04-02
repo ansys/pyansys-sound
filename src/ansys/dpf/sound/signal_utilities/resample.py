@@ -16,7 +16,7 @@ class Resample(SignalUtilitiesAbstract):
     def __init__(
         self, signal: Field | FieldsContainer = None, new_sampling_frequency: float = 44100.0
     ):
-        """Create a load wav class.
+        """Create a resample class.
 
         Parameters
         ----------
