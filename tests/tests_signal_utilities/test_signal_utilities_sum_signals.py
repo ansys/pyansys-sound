@@ -77,11 +77,6 @@ def test_sum_signals_get_output_as_np_array(dpf_sound_test_server):
 def test_sum_signals_set_get_signals(dpf_sound_test_server):
     sum_gain = SumSignals()
 
-    # Error
-    with pytest.raises(RuntimeError) as excinfo:
-        sum_gain.set_signals(True)
-    assert str(excinfo.value) == "Input must be a DPF Fields Container."
-
     fc = FieldsContainer()
     fc.labels = ["channel"]
     f = Field()

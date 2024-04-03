@@ -65,8 +65,6 @@ class SumSignals(SignalUtilitiesAbstract):
 
     def set_signals(self, signals: FieldsContainer):
         """Set the signals to sum."""
-        if type(signals) != FieldsContainer:
-            raise RuntimeError("Input must be a DPF Fields Container.")
         self.signals = signals
 
     def get_signals(self) -> Field | FieldsContainer:
