@@ -59,4 +59,5 @@ class SignalUtilitiesAbstract(PyDpfSound):
         plt.legend()
         plt.xlabel(time_unit)
         plt.ylabel(unit)
+        plt.grid(True)
         plt.show()
