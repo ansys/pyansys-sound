@@ -1,4 +1,4 @@
-"""Apply gain."""
+"""Create Sound Field."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -28,7 +28,8 @@ class CropSignal(SignalUtilitiesAbstract):
             End time of the part to crop, in seconds.
         """
         super().__init__()
-        self.signal = signal
+        self.signal = None
+        self.set_signal(signal=signal)
         self.start_time = 0.0
         self.set_start_time(start_time)
         self.end_time = 0.0

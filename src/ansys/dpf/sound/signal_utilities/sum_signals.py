@@ -22,7 +22,8 @@ class SumSignals(SignalUtilitiesAbstract):
             Input signals to sum, each field of the signal will be summed.
         """
         super().__init__()
-        self.signals = signals
+        self.signals = None
+        self.set_signals(signals=signals)
         self.operator = Operator("sum_signals")
 
     def process(self):

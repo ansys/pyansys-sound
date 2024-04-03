@@ -31,8 +31,10 @@ class WriteWav(SignalUtilitiesAbstract):
             using 32 bits (32-bit IEEE Float), 32 bits (int), 16 bits (int) or 8 bits (int).
         """
         super().__init__()
-        self.path_to_write = path_to_write
-        self.signal = signal
+        self.path_to_write = ""
+        self.set_path(path_to_write=path_to_write)
+        self.signal = None
+        self.set_signal(signal=signal)
         self.bit_depth = ""
         self.set_bit_depth(bit_depth=bit_depth)
         self.operator = Operator("write_wav_sas")

@@ -23,7 +23,8 @@ class LoadWav(SignalUtilitiesAbstract):
             Can be set during the instantiation of the object or with LoadWav.set_path().
         """
         super().__init__()
-        self.path_to_wav = path_to_wav
+        self.path_to_wav = ""
+        self.set_path(path_to_wav=path_to_wav)
         self.operator = Operator("load_wav_sas")
 
     def process(self):

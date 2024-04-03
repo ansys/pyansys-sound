@@ -26,7 +26,8 @@ class Resample(SignalUtilitiesAbstract):
             New sampling frequency to use
         """
         super().__init__()
-        self.signal = signal
+        self.signal = None
+        self.set_signal(signal=signal)
         self.new_sampling_frequency = 0.0
         self.set_sampling_frequency(new_sampling_frequency)
         self.operator = Operator("resample")

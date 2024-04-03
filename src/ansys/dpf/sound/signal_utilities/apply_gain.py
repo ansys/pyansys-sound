@@ -29,7 +29,8 @@ class ApplyGain(SignalUtilitiesAbstract):
             If value is false, the gain is in a linear unit.
         """
         super().__init__()
-        self.signal = signal
+        self.signal = None
+        self.set_signal(signal=signal)
         self.gain = 0.0
         self.set_gain(gain)
         self.gain_in_db = True

@@ -24,7 +24,8 @@ class ZeroPad(SignalUtilitiesAbstract):
             Duration, in seconds, of the zeros to append to the input signal
         """
         super().__init__()
-        self.signal = signal
+        self.signal = None
+        self.set_signal(signal=signal)
         self.duration_zeros = 0.0
         self.set_duration_zeros(duration_zeros)
         self.operator = Operator("append_zeros_to_signal")
