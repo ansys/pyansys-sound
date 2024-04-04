@@ -17,7 +17,6 @@ It also show how to access the corresponding data and display it using numpy.
 # DPF server, and retrieving the example files.
 #
 # Load Ansys libraries.
-import os
 
 import ansys.dpf.core as dpf
 
@@ -26,8 +25,7 @@ from ansys.dpf.sound.server_helpers import connect_to_or_start_server
 from ansys.dpf.sound.signal_utilities import LoadWav, WriteWav
 
 # Connect to remote or start a local server
-os.environ["ANSRV_DPF_SOUND_PORT"] = "6780"
-connect_to_or_start_server(port=6780)
+connect_to_or_start_server()
 
 # %%
 # Load a wav signal using LoadWav class, it will be returned as a
@@ -44,7 +42,6 @@ fc_signal = wav_loader.get_output()
 # %%
 # Plotting the loaded signal
 wav_loader.plot()
-
 
 # %%
 # Create a modified version of the signal
