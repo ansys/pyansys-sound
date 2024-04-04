@@ -32,6 +32,11 @@ class PyDpfSound:
         """Process stuff.
 
         This method processes stuff.
+
+        Returns
+        -------
+        None
+                None.
         """
         warnings.warn(UserWarning("Nothing to process."))
         return None
@@ -40,6 +45,11 @@ class PyDpfSound:
         """Output stuff.
 
         Method for returning output.
+
+        Returns
+        -------
+        FieldsContainer
+                Empty fields container.
         """
         warnings.warn(UserWarning("Nothing to output."))
         return self.output
@@ -48,6 +58,11 @@ class PyDpfSound:
         """Output stuff as nparray.
 
         Method for returning output as np array.
+
+        Returns
+        -------
+        np.array
+                Empty numpy array.
         """
         warnings.warn(UserWarning("Nothing to output."))
         return np.empty(0)

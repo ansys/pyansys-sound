@@ -61,7 +61,10 @@ class ApplyGain(SignalUtilitiesAbstract):
     def get_output(self) -> FieldsContainer | Field:
         """Return the signal with a gain as a fields container.
 
-        Returns the signal with a gain in a dpf.FieldsContainer
+        Returns
+        -------
+        FieldsContainer
+                Signal with applied gain as a FieldContainer.
         """
         if self.output == None:
             # Computing output if needed
@@ -74,7 +77,10 @@ class ApplyGain(SignalUtilitiesAbstract):
     def get_output_as_nparray(self) -> npt.ArrayLike:
         """Return the signal with a gain as a numpy array.
 
-        Returns the signal with a gain signal in a np.array
+        Returns
+        -------
+        np.array
+                Signal with applied gain as a numpy array.
         """
         output = self.get_output()
 
@@ -94,7 +100,13 @@ class ApplyGain(SignalUtilitiesAbstract):
         self.gain = new_gain
 
     def get_gain(self) -> float:
-        """Get the gain."""
+        """Get the gain.
+
+        Returns
+        -------
+        float
+                Gain value.
+        """
         return self.gain
 
     def set_gain_in_db(self, new_gain_in_db: bool):
@@ -111,7 +123,13 @@ class ApplyGain(SignalUtilitiesAbstract):
         self.gain_in_db = new_gain_in_db
 
     def get_gain_in_db(self) -> bool:
-        """Get the gain."""
+        """Get the gain.
+
+        Returns
+        -------
+        bool
+                Boolean value that indicates if the gain is in dB.
+        """
         return self.gain_in_db
 
     def set_signal(self, signal: Field | FieldsContainer):
@@ -119,5 +137,11 @@ class ApplyGain(SignalUtilitiesAbstract):
         self.signal = signal
 
     def get_signal(self) -> Field | FieldsContainer:
-        """Get the signal."""
+        """Get the signal.
+
+        Returns
+        -------
+        FieldsContainer | Field
+                The signal as a Field or a FieldsContainer
+        """
         return self.signal

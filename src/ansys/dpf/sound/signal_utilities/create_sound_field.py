@@ -60,7 +60,10 @@ class CreateSoundField(SignalUtilitiesAbstract):
     def get_output(self) -> Field:
         """Return the data as a field.
 
-        Returns the data in a dpf.Field
+        Returns
+        -------
+        Field
+                The data in a DPF Field.
         """
         if self.output == None:
             # Computing output if needed
@@ -73,7 +76,10 @@ class CreateSoundField(SignalUtilitiesAbstract):
     def get_output_as_nparray(self) -> npt.ArrayLike:
         """Return the data as a numpy array.
 
-        Returns the data in a np.array
+        Returns
+        -------
+        np.array
+                The data in a numpy array.
         """
         output = self.get_output()
         return output.data
@@ -91,7 +97,13 @@ class CreateSoundField(SignalUtilitiesAbstract):
         self.sampling_frequency = new_sampling_frequency
 
     def get_sampling_frequency(self) -> float:
-        """Get the sampling frequency."""
+        """Get the sampling frequency.
+
+        Returns
+        -------
+        float
+                The sampling frequency.
+        """
         return self.sampling_frequency
 
     def set_unit(self, new_unit: str):
@@ -105,7 +117,13 @@ class CreateSoundField(SignalUtilitiesAbstract):
         self.unit = new_unit
 
     def get_unit(self) -> str:
-        """Get the unit."""
+        """Get the unit.
+
+        Returns
+        -------
+        str
+                The unit.
+        """
         return self.unit
 
     def set_data(self, data: npt.ArrayLike):
@@ -113,5 +131,11 @@ class CreateSoundField(SignalUtilitiesAbstract):
         self.data = data
 
     def get_data(self) -> npt.ArrayLike:
-        """Get the data."""
+        """Get the data.
+
+        Returns
+        -------
+        np.array
+                The data as a numpy array.
+        """
         return self.data

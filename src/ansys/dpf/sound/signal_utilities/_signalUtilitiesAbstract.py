@@ -24,6 +24,11 @@ class SignalUtilitiesAbstract(PyDpfSound):
         """Convert fields container to numpy array.
 
         Converts a multichannel signal contained in a DPF Fields Container into a numpy array.
+
+        Returns
+        -------
+        np.array
+                The fields container as a numpy array.
         """
         num_channels = len(fc)
         np_array = fc[0].data
