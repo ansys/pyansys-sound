@@ -129,6 +129,7 @@ exclude_patterns = [
     ".DS_Store",
     # because we include this in examples/index.rst
     "examples/gallery_examples/index.rst",
+    "*convert_fields_container_to_np_array.rst",
 ]
 
 
