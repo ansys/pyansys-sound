@@ -53,7 +53,10 @@ class ZeroPad(SignalUtilitiesAbstract):
     def get_output(self) -> FieldsContainer | Field:
         """Return the zero-padded signal as a fields container.
 
-        Returns the zero-padded signal in a dpf.FieldsContainer
+        Returns
+        -------
+        FieldsContainer
+                The zero-padded signal signal in a dpf.FieldsContainer.
         """
         if self.output == None:
             # Computing output if needed
@@ -64,7 +67,10 @@ class ZeroPad(SignalUtilitiesAbstract):
     def get_output_as_nparray(self) -> npt.ArrayLike:
         """Return the zero-padded signal as a numpy array.
 
-        Returns the zero-padded signal in a np.array
+        Returns
+        -------
+        np.array
+                The zero-padded signal signal in a np.array.
         """
         output = self.get_output()
 
@@ -87,7 +93,13 @@ class ZeroPad(SignalUtilitiesAbstract):
         self.duration_zeros = new_duration_zeros
 
     def get_duration_zeros(self) -> float:
-        """Get the sampling frequency."""
+        """Get the sampling frequency.
+
+        Returns
+        -------
+        float
+                The sampling frequency.
+        """
         return self.duration_zeros
 
     def set_signal(self, signal: Field | FieldsContainer):
@@ -95,5 +107,11 @@ class ZeroPad(SignalUtilitiesAbstract):
         self.signal = signal
 
     def get_signal(self) -> Field | FieldsContainer:
-        """Get the signal."""
+        """Get the signal.
+
+        Returns
+        -------
+        FieldsContainer | Field
+                The signal as a Field or a FieldsContainer
+        """
         return self.signal

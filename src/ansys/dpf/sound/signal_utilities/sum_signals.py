@@ -45,7 +45,10 @@ class SumSignals(SignalUtilitiesAbstract):
     def get_output(self) -> Field:
         """Return the summed signals as a field.
 
-        Returns the summed signals in a dpf.Field
+        Returns
+        -------
+        Field
+                The summed signal in a Field.
         """
         if self.output == None:
             # Computing output if needed
@@ -58,7 +61,10 @@ class SumSignals(SignalUtilitiesAbstract):
     def get_output_as_nparray(self) -> npt.ArrayLike:
         """Return the signal with a gain as a numpy array.
 
-        Returns the signal with a gain signal in a np.array
+        Returns
+        -------
+        np.array
+                The summed signal in a numpy array.
         """
         output = self.get_output()
         return output.data
@@ -67,6 +73,12 @@ class SumSignals(SignalUtilitiesAbstract):
         """Set the signals to sum."""
         self.signals = signals
 
-    def get_signals(self) -> Field | FieldsContainer:
-        """Get the signal."""
+    def get_signals(self) -> FieldsContainer:
+        """Get the signal.
+
+        Returns
+        -------
+        FieldsContainer
+                The signal as a FieldsContainer
+        """
         return self.signals

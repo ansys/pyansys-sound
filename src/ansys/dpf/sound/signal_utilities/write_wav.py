@@ -66,10 +66,13 @@ class WriteWav(SignalUtilitiesAbstract):
         """
         self.signal = signal
 
-    def get_signal(self):
+    def get_signal(self) -> FieldsContainer:
         """Getter for the signal.
 
-        Returns the signal that is to be written in memory.
+        Returns
+        -------
+        FieldsContainer
+                The signal that is to be written in memory as a FieldsContainer.
         """
         return self.signal
 
@@ -83,7 +86,10 @@ class WriteWav(SignalUtilitiesAbstract):
     def get_path(self) -> str:
         """Getter for the write path.
 
-        Gets the path for writing the signal in memory.
+        Returns
+        -------
+        str
+                The path for writing the signal in memory.
         """
         return self.path_to_write
 
@@ -107,7 +113,10 @@ class WriteWav(SignalUtilitiesAbstract):
     def get_bit_depth(self) -> str:
         """Getter for the bit depth.
 
-        Gets the bit_depth.
+        Returns
+        -------
+        str
+                The bit depth.
         """
         return self.bit_depth
 

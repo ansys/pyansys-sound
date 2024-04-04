@@ -53,7 +53,10 @@ class LoadWav(SignalUtilitiesAbstract):
     def get_output(self) -> FieldsContainer:
         """Return the loaded wav signal as a fields container.
 
-        Returns the loaded wav signal in a dpf.FieldsContainer
+        Returns
+        -------
+        FieldsContainer
+                The loaded wav signal in a dpf.FieldsContainer.
         """
         if self.output == None:
             # Computing output if needed
@@ -64,7 +67,10 @@ class LoadWav(SignalUtilitiesAbstract):
     def get_output_as_nparray(self) -> npt.ArrayLike:
         """Return the loaded wav signal as a numpy array.
 
-        Returns the loaded wav signal in a np.array
+        Returns
+        -------
+        np.array
+                The loaded wav signal in a numpy array.
         """
         fc = self.get_output()
 
@@ -81,5 +87,11 @@ class LoadWav(SignalUtilitiesAbstract):
         self.path_to_wav = path_to_wav
 
     def get_path(self) -> str:
-        """Get the path of the wav to load."""
+        """Get the path of the wav to load.
+
+        Returns
+        -------
+        str
+                The path to the wav to load.
+        """
         return self.path_to_wav

@@ -55,7 +55,10 @@ class Resample(SignalUtilitiesAbstract):
     def get_output(self) -> FieldsContainer | Field:
         """Return the resampled signal as a fields container.
 
-        Returns the resampled signal in a dpf.FieldsContainer
+        Returns
+        -------
+        FieldsContainer
+                The resampled signal in a dpf.FieldsContainer.
         """
         if self.output == None:
             # Computing output if needed
@@ -66,7 +69,10 @@ class Resample(SignalUtilitiesAbstract):
     def get_output_as_nparray(self) -> npt.ArrayLike:
         """Return the resampled signal as a numpy array.
 
-        Returns the resampled signal in a np.array
+        Returns
+        -------
+        np.array
+                The resampled signal in a numpy array.
         """
         output = self.get_output()
 
@@ -89,7 +95,13 @@ class Resample(SignalUtilitiesAbstract):
         self.new_sampling_frequency = new_sampling_frequency
 
     def get_sampling_frequency(self) -> float:
-        """Get the sampling frequency."""
+        """Get the sampling frequency.
+
+        Returns
+        -------
+        float
+                The sampling frequency.
+        """
         return self.new_sampling_frequency
 
     def set_signal(self, signal: Field | FieldsContainer):
@@ -97,5 +109,11 @@ class Resample(SignalUtilitiesAbstract):
         self.signal = signal
 
     def get_signal(self) -> Field | FieldsContainer:
-        """Get the signal."""
+        """Get the signal.
+
+        Returns
+        -------
+        FieldsContainer | Field
+                The signal as a Field or a FieldsContainer
+        """
         return self.signal

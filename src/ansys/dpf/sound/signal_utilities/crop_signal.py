@@ -60,7 +60,10 @@ class CropSignal(SignalUtilitiesAbstract):
     def get_output(self) -> FieldsContainer | Field:
         """Return the cropped signal as a fields container.
 
-        Returns the cropped signal in a dpf.FieldsContainer
+        Returns
+        -------
+        FieldsContainer | Field
+                The cropped signal in a dpf.FieldsContainer.
         """
         if self.output == None:
             # Computing output if needed
@@ -73,7 +76,10 @@ class CropSignal(SignalUtilitiesAbstract):
     def get_output_as_nparray(self) -> npt.ArrayLike:
         """Return the cropped signal as a numpy array.
 
-        Returns the cropped signal in a np.array
+        Returns
+        -------
+        np.array
+                The cropped signal in a numpy array.
         """
         output = self.get_output()
 
@@ -95,7 +101,13 @@ class CropSignal(SignalUtilitiesAbstract):
         self.start_time = new_start
 
     def get_start_time(self) -> float:
-        """Get the start time."""
+        """Get the start time.
+
+        Returns
+        -------
+        float
+                The start time.
+        """
         return self.start_time
 
     def set_end_time(self, new_end: bool):
@@ -115,7 +127,13 @@ class CropSignal(SignalUtilitiesAbstract):
         self.end_time = new_end
 
     def get_end_time(self) -> float:
-        """Get the end time."""
+        """Get the end time.
+
+        Returns
+        -------
+        float
+                The end time.
+        """
         return self.end_time
 
     def set_signal(self, signal: Field | FieldsContainer):
@@ -123,5 +141,11 @@ class CropSignal(SignalUtilitiesAbstract):
         self.signal = signal
 
     def get_signal(self) -> Field | FieldsContainer:
-        """Get the signal."""
+        """Get the signal.
+
+        Returns
+        -------
+        FieldsContainer | Field
+                The signal as a Field or a FieldsContainer
+        """
         return self.signal
