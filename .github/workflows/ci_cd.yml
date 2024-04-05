@@ -193,19 +193,19 @@ jobs:
           .\make.bat clean
           .\make.bat html
 
-      - name: Build the documentation (PDF)
-        run: |
-          .\.venv\Scripts\Activate.ps1
-          cd doc
-          .\make.bat clean
-          .\make.bat pdf
-
       - name: Upload HTML documentation
         uses: actions/upload-artifact@v4
         with:
           name: documentation-html
           path: doc/_build/html
           retention-days: 7
+
+      - name: Build the documentation (PDF)
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          cd doc
+          .\make.bat clean
+          .\make.bat pdf
 
       - name: Upload PDF documentation
         uses: actions/upload-artifact@v4
