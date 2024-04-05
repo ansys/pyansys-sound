@@ -1,9 +1,8 @@
 """Sphinx documentation configuration file."""
 from datetime import datetime
 import os
-from pathlib import Path
 
-from ansys_sphinx_theme import get_autoapi_templates_dir_relative_path, get_version_match
+from ansys_sphinx_theme import get_version_match
 from ansys_sphinx_theme import pyansys_logo_black as logo
 import numpy as np
 import pyvista
@@ -55,7 +54,6 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "numpydoc",
-    "autoapi.extension",
     "sphinx.ext.intersphinx",
     "sphinx_copybutton",
     "sphinx.ext.napoleon",
@@ -146,25 +144,6 @@ source_suffix = ".rst"
 
 # The master toctree document.
 master_doc = "index"
-
-# Configuration for Sphinx autoapi
-autoapi_type = "python"
-autoapi_dirs = ["../../src/ansys/"]
-autoapi_root = "api"
-autoapi_options = [
-    "members",
-    "undoc-members",
-    "show-inheritance",
-    "show-module-summary",
-    "special-members",
-]
-autoapi_template_dir = get_autoapi_templates_dir_relative_path(Path(__file__))
-suppress_warnings = ["autoapi.python_import_resolution"]
-autoapi_python_use_implicit_namespaces = True
-autoapi_render_in_single_page = ["class", "enum", "exception"]
-autoapi_own_page_level = "class"
-autoapi_ignore = ["*_visitors*"]
-autoapi_keep_files = True
 
 # -- Options for LaTeX output ------------------------------------------------
 latex_elements = {}
