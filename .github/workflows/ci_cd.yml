@@ -190,12 +190,14 @@ jobs:
         run: |
           .\.venv\Scripts\Activate.ps1
           cd doc
+          .\make.bat clean
           .\make.bat html
 
       - name: Build the documentation (PDF)
         run: |
           .\.venv\Scripts\Activate.ps1
           cd doc
+          .\make.bat clean
           .\make.bat pdf
 
       - name: Upload HTML documentation
