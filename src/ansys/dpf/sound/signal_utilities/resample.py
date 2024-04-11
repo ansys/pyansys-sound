@@ -1,4 +1,5 @@
 """Resample."""
+
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -26,22 +27,71 @@ class Resample(SignalUtilitiesAbstract):
             New sampling frequency to use
         """
         super().__init__()
-        self.signal = None
-        self.set_signal(signal=signal)
-        self.new_sampling_frequency = 0.0
-        self.set_sampling_frequency(new_sampling_frequency)
+        self.__signal = signal
+        self.__new_sampling_frequency = new_sampling_frequency
         self.operator = Operator("resample")
+
+    @property
+    def new_sampling_frequency(self):
+        """Property new sampling frequency."""
+        return self.__new_sampling_frequency
+
+    @new_sampling_frequency.setter
+    def new_sampling_frequency(self, new_sampling_frequency: float):
+        """Set the new sampling frequency.
+
+        Parameters
+        ----------
+        new_sampling_frequency:
+            New sampling frequency.
+        """
+        if new_sampling_frequency < 0.0:
+            raise RuntimeError("Sampling frequency must be strictly greater than 0.0.")
+
+        self.__new_sampling_frequency = new_sampling_frequency
+
+    @new_sampling_frequency.getter
+    def new_sampling_frequency(self) -> float:
+        """Get the sampling frequency.
+
+        Returns
+        -------
+        float
+                The sampling frequency.
+        """
+        return self.__new_sampling_frequency
+
+    @property
+    def signal(self):
+        """Property signal."""
+        return self.__signal
+
+    @signal.setter
+    def signal(self, signal: Field | FieldsContainer):
+        """Set the signal."""
+        self.__signal = signal
+
+    @signal.getter
+    def signal(self) -> Field | FieldsContainer:
+        """Get the signal.
+
+        Returns
+        -------
+        FieldsContainer | Field
+            The signal as a Field or a FieldsContainer
+        """
+        return self.__signal
 
     def process(self):
         """Resample the signal.
 
         Calls the appropriate DPF Sound operator to resample the signal.
         """
-        if self.get_signal() == None:
+        if self.signal == None:
             raise RuntimeError("No signal to resample. Use Resample.set_signal().")
 
-        self.operator.connect(0, self.get_signal())
-        self.operator.connect(1, float(self.get_sampling_frequency()))
+        self.operator.connect(0, self.signal)
+        self.operator.connect(1, float(self.new_sampling_frequency))
 
         # Runs the operator
         self.operator.run()
@@ -80,40 +130,3 @@ class Resample(SignalUtilitiesAbstract):
             return output.data
 
         return self.convert_fields_container_to_np_array(output)
-
-    def set_sampling_frequency(self, new_sampling_frequency: float):
-        """Set the new sampling frequency.
-
-        Parameters
-        ----------
-        new_sampling_frequency:
-            New sampling frequency.
-        """
-        if new_sampling_frequency < 0.0:
-            raise RuntimeError("Sampling frequency must be strictly greater than 0.0.")
-
-        self.new_sampling_frequency = new_sampling_frequency
-
-    def get_sampling_frequency(self) -> float:
-        """Get the sampling frequency.
-
-        Returns
-        -------
-        float
-                The sampling frequency.
-        """
-        return self.new_sampling_frequency
-
-    def set_signal(self, signal: Field | FieldsContainer):
-        """Set the signal."""
-        self.signal = signal
-
-    def get_signal(self) -> Field | FieldsContainer:
-        """Get the signal.
-
-        Returns
-        -------
-        FieldsContainer | Field
-                The signal as a Field or a FieldsContainer
-        """
-        return self.signal

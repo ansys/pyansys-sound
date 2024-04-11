@@ -27,11 +27,11 @@ def test_resample_process(dpf_sound_test_server):
     fc = wav_loader.get_output()
 
     # Testing input fields container (no error expected)
-    resampler.set_signal(fc)
+    resampler.signal = fc
     resampler.process()
 
     # Testing input field (no error expected)
-    resampler.set_signal(fc[0])
+    resampler.signal = fc[0]
     resampler.process()
 
 
@@ -52,7 +52,7 @@ def test_resample_get_output(dpf_sound_test_server):
 
     assert len(fc_out) == 1
 
-    resampler.set_signal(fc_signal[0])
+    resampler.signal = fc_signal[0]
     resampler.process()
     f_out = resampler.get_output()
 
@@ -78,7 +78,7 @@ def test_resample_get_output_as_np_array(dpf_sound_test_server):
     assert out_arr[30000] == 0.02302781119942665
     assert out_arr[60000] == -0.4175410866737366
 
-    resampler.set_signal(fc_signal)
+    resampler.signal = fc_signal
     resampler.process()
     out_arr = resampler.get_output_as_nparray()
 
@@ -98,8 +98,8 @@ def test_resample_set_get_signal(dpf_sound_test_server):
     f.data = 42 * np.ones(3)
     fc.add_field({"channel": 0}, f)
     fc.name = "testField"
-    resampler.set_signal(fc)
-    fc_from_get = resampler.get_signal()
+    resampler.signal = fc
+    fc_from_get = resampler.signal
 
     assert fc_from_get.name == "testField"
     assert len(fc_from_get) == 1
@@ -112,11 +112,11 @@ def test_resample_set_get_sampling_frequency(dpf_sound_test_server):
 
     # Error
     with pytest.raises(RuntimeError) as excinfo:
-        resampler.set_sampling_frequency(-12.0)
+        resampler.new_sampling_frequency = -12.0
     assert str(excinfo.value) == "Sampling frequency must be strictly greater than 0.0."
 
-    resampler.set_sampling_frequency(1234.0)
-    assert resampler.get_sampling_frequency() == 1234.0
+    resampler.new_sampling_frequency = 1234.0
+    assert resampler.new_sampling_frequency == 1234.0
 
 
 @patch("matplotlib.pyplot.show")
@@ -129,6 +129,6 @@ def test_resample_plot(mock_show, dpf_sound_test_server):
     resampler.process()
     resampler.plot()
 
-    resampler.set_signal(fc_signal[0])
+    resampler.signal = fc_signal[0]
     resampler.process()
     resampler.plot()
