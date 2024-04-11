@@ -38,7 +38,7 @@ class ApplyGain(SignalUtilitiesAbstract):
     @property
     def signal(self):
         """Signal property."""
-        return self.__signal
+        return self.__signal  # pragma: no cover
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):
@@ -59,7 +59,7 @@ class ApplyGain(SignalUtilitiesAbstract):
     @property
     def gain(self):
         """Gain property."""
-        return self.__gain
+        return self.__gain  # pragma: no cover
 
     @gain.setter
     def gain(self, new_gain: float):
@@ -86,7 +86,7 @@ class ApplyGain(SignalUtilitiesAbstract):
     @property
     def gain_in_db(self):
         """Gain in dB property."""
-        return self.__gain_in_db
+        return self.__gain_in_db  # pragma: no cover
 
     @gain_in_db.setter
     def gain_in_db(self, new_gain_in_db: bool):

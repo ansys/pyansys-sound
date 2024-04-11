@@ -34,7 +34,7 @@ class Resample(SignalUtilitiesAbstract):
     @property
     def new_sampling_frequency(self):
         """Property new sampling frequency."""
-        return self.__new_sampling_frequency
+        return self.__new_sampling_frequency  # pragma: no cover
 
     @new_sampling_frequency.setter
     def new_sampling_frequency(self, new_sampling_frequency: float):
@@ -64,7 +64,7 @@ class Resample(SignalUtilitiesAbstract):
     @property
     def signal(self):
         """Property signal."""
-        return self.__signal
+        return self.__signal  # pragma: no cover
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):

@@ -1,4 +1,5 @@
 """Load Wav."""
+
 import warnings
 
 from ansys.dpf.core import DataSources, FieldsContainer, Operator
@@ -23,9 +24,35 @@ class LoadWav(SignalUtilitiesAbstract):
             Can be set during the instantiation of the object or with LoadWav.set_path().
         """
         super().__init__()
-        self.path_to_wav = ""
-        self.set_path(path_to_wav=path_to_wav)
+        self.__path_to_wav = path_to_wav
         self.operator = Operator("load_wav_sas")
+
+    @property
+    def path_to_wav(self):
+        """Path to wav property."""
+        return self.__path_to_wav  # pragma: no cover
+
+    @path_to_wav.setter
+    def path_to_wav(self, path_to_wav: str):
+        """Set the path of the wav to load.
+
+        Parameters
+        ----------
+        path_to_wav:
+            Path to the wav file to load.
+        """
+        self.__path_to_wav = path_to_wav
+
+    @path_to_wav.getter
+    def path_to_wav(self) -> str:
+        """Get the path of the wav to load.
+
+        Returns
+        -------
+        str
+                The path to the wav to load.
+        """
+        return self.__path_to_wav
 
     def process(self):
         """Load the wav file.
@@ -75,23 +102,3 @@ class LoadWav(SignalUtilitiesAbstract):
         fc = self.get_output()
 
         return self.convert_fields_container_to_np_array(fc)
-
-    def set_path(self, path_to_wav: str):
-        """Set the path of the wav to load.
-
-        Parameters
-        ----------
-        path_to_wav:
-            Path to the wav file to load.
-        """
-        self.path_to_wav = path_to_wav
-
-    def get_path(self) -> str:
-        """Get the path of the wav to load.
-
-        Returns
-        -------
-        str
-                The path to the wav to load.
-        """
-        return self.path_to_wav

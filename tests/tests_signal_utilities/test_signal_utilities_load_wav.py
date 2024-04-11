@@ -81,8 +81,8 @@ def test_load_wav_get_output_as_nparray(dpf_sound_test_server):
 @pytest.mark.dependency(depends=["test_load_wav_instantiation"])
 def test_load_wav_get_set_path(dpf_sound_test_server):
     wav_loader = LoadWav()
-    wav_loader.set_path(pytest.data_path_flute_in_container)
-    assert wav_loader.get_path() == pytest.data_path_flute_in_container
+    wav_loader.path_to_wav = pytest.data_path_flute_in_container
+    assert wav_loader.path_to_wav == pytest.data_path_flute_in_container
 
 
 @patch("matplotlib.pyplot.show")
