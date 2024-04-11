@@ -1,4 +1,5 @@
 """Apply gain."""
+
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -29,25 +30,100 @@ class ApplyGain(SignalUtilitiesAbstract):
             If value is false, the gain is in a linear unit.
         """
         super().__init__()
-        self.signal = None
-        self.set_signal(signal=signal)
-        self.gain = 0.0
-        self.set_gain(gain)
-        self.gain_in_db = True
-        self.set_gain_in_db(gain_in_db)
+        self.__signal = signal
+        self.__gain = gain
+        self.__gain_in_db = gain_in_db
         self.operator = Operator("apply_gain")
+
+    @property
+    def signal(self):
+        """Signal property."""
+        return self.__signal
+
+    @signal.setter
+    def signal(self, signal: Field | FieldsContainer):
+        """Set the signal."""
+        self.__signal = signal
+
+    @signal.getter
+    def signal(self) -> Field | FieldsContainer:
+        """Get the signal.
+
+        Returns
+        -------
+        FieldsContainer | Field
+                The signal as a Field or a FieldsContainer
+        """
+        return self.__signal
+
+    @property
+    def gain(self):
+        """Gain property."""
+        return self.__gain
+
+    @gain.setter
+    def gain(self, new_gain: float):
+        """Set the new gain.
+
+        Parameters
+        ----------
+        new_gain:
+            New gain.
+        """
+        self.__gain = new_gain
+
+    @gain.getter
+    def gain(self) -> float:
+        """Get the gain.
+
+        Returns
+        -------
+        float
+                Gain value.
+        """
+        return self.__gain
+
+    @property
+    def gain_in_db(self):
+        """Gain in dB property."""
+        return self.__gain_in_db
+
+    @gain_in_db.setter
+    def gain_in_db(self, new_gain_in_db: bool):
+        """Set the new gain_in_db value.
+
+        Parameters
+        ----------
+        new_gain_in_db:
+            True to set the gain in dB, false otherwise.
+        """
+        if type(new_gain_in_db) is not bool:
+            raise RuntimeError("new_gain_in_db must be a boolean value, either True or False.")
+
+        self.__gain_in_db = new_gain_in_db
+
+    @gain_in_db.getter
+    def gain_in_db(self) -> bool:
+        """Get the gain in dB.
+
+        Returns
+        -------
+        bool
+                Boolean value that indicates if the gain is in dB.
+        """
+        return self.__gain_in_db
 
     def process(self):
         """Apply gain to the signal.
 
         Calls the appropriate DPF Sound operator to apply gain to the signal.
         """
-        if self.get_signal() == None:
+        if self.signal == None:
             raise RuntimeError("No signal on which to apply gain. Use ApplyGain.set_signal().")
 
-        self.operator.connect(0, self.get_signal())
-        self.operator.connect(1, float(self.get_gain()))
-        self.operator.connect(2, bool(self.get_gain_in_db()))
+        self.operator.connect(0, self.signal)
+        self.operator.connect(1, float(self.gain))
+        self.operator.connect(2, bool(self.gain_in_db))
 
         # Runs the operator
         self.operator.run()
@@ -88,60 +164,3 @@ class ApplyGain(SignalUtilitiesAbstract):
             return output.data
 
         return self.convert_fields_container_to_np_array(output)
-
-    def set_gain(self, new_gain: float):
-        """Set the new gain.
-
-        Parameters
-        ----------
-        new_gain:
-            New gain.
-        """
-        self.gain = new_gain
-
-    def get_gain(self) -> float:
-        """Get the gain.
-
-        Returns
-        -------
-        float
-                Gain value.
-        """
-        return self.gain
-
-    def set_gain_in_db(self, new_gain_in_db: bool):
-        """Set the new gain_in_db value.
-
-        Parameters
-        ----------
-        new_gain_in_db:
-            True to set the gain in dB, false otherwise.
-        """
-        if type(new_gain_in_db) is not bool:
-            raise RuntimeError("new_gain_in_db must be a boolean value, either True or False.")
-
-        self.gain_in_db = new_gain_in_db
-
-    def get_gain_in_db(self) -> bool:
-        """Get the gain.
-
-        Returns
-        -------
-        bool
-                Boolean value that indicates if the gain is in dB.
-        """
-        return self.gain_in_db
-
-    def set_signal(self, signal: Field | FieldsContainer):
-        """Set the signal."""
-        self.signal = signal
-
-    def get_signal(self) -> Field | FieldsContainer:
-        """Get the signal.
-
-        Returns
-        -------
-        FieldsContainer | Field
-                The signal as a Field or a FieldsContainer
-        """
-        return self.signal

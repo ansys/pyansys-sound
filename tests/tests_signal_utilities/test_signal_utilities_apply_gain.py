@@ -25,11 +25,11 @@ def test_apply_gain_process(dpf_sound_test_server):
     fc = wav_loader.get_output()
 
     # Testing input fields container (no error expected)
-    gain_applier.set_signal(fc)
+    gain_applier.signal = fc
     gain_applier.process()
 
     # Testing input field (no error expected)
-    gain_applier.set_signal(fc[0])
+    gain_applier.signal = fc[0]
     gain_applier.process()
 
 
@@ -50,7 +50,7 @@ def test_apply_gain_get_output(dpf_sound_test_server):
 
     assert len(fc_out) == 1
 
-    gain_applier.set_signal(fc_signal[0])
+    gain_applier.signal = fc_signal[0]
     gain_applier.process()
     f_out = gain_applier.get_output()
 
@@ -76,7 +76,7 @@ def test_apply_gain_get_output_as_np_array(dpf_sound_test_server):
     assert out_arr[30000] == 0.29461970925331116
     assert out_arr[60000] == -0.09051203727722168
 
-    gain_applier.set_signal(fc_signal)
+    gain_applier.signal = fc_signal
     gain_applier.process()
     out_arr = gain_applier.get_output_as_nparray()
 
@@ -96,8 +96,8 @@ def test_apply_gain_set_get_signal(dpf_sound_test_server):
     f.data = 42 * np.ones(3)
     fc.add_field({"channel": 0}, f)
     fc.name = "testField"
-    gain_applier.set_signal(fc)
-    fc_from_get = gain_applier.get_signal()
+    gain_applier.signal = fc
+    fc_from_get = gain_applier.signal
 
     assert fc_from_get.name == "testField"
     assert len(fc_from_get) == 1
@@ -108,8 +108,8 @@ def test_apply_gain_set_get_signal(dpf_sound_test_server):
 def test_apply_gain_set_get_gain(dpf_sound_test_server):
     gain_applier = ApplyGain()
 
-    gain_applier.set_gain(1234.0)
-    assert gain_applier.get_gain() == 1234.0
+    gain_applier.gain = 1234.0
+    assert gain_applier.gain == 1234.0
 
 
 @pytest.mark.dependency(depends=["test_apply_gain_instantiation"])
@@ -118,8 +118,8 @@ def test_apply_gain_set_get_gain_in_db(dpf_sound_test_server):
 
     # Error 1
     with pytest.raises(RuntimeError) as excinfo:
-        gain_applier.set_gain_in_db(1234.0)
+        gain_applier.gain_in_db = 1234.0
     assert str(excinfo.value) == "new_gain_in_db must be a boolean value, either True or False."
 
-    gain_applier.set_gain_in_db(False)
-    assert gain_applier.get_gain_in_db() == False
+    gain_applier.gain_in_db = False
+    assert gain_applier.gain_in_db == False
