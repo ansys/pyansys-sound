@@ -32,12 +32,87 @@ class CreateSoundField(SignalUtilitiesAbstract):
             Unit of the data.
         """
         super().__init__()
-        self.data = data
-        self.sampling_frequency = 0.0
-        self.set_sampling_frequency(sampling_frequency)
-        self.unit = 0.0
-        self.set_unit(unit)
+        self.__data = data
+        self.__sampling_frequency = sampling_frequency
+        self.__unit = unit
         self.operator = Operator("create_field_from_vector")
+
+    @property
+    def data(self):
+        """Data property."""
+        return self.__data  # pragma: no cover
+
+    @data.setter
+    def data(self, data: npt.ArrayLike):
+        """Set the data."""
+        self.__data = data
+
+    @data.getter
+    def data(self) -> npt.ArrayLike:
+        """Get the data.
+
+        Returns
+        -------
+        np.array
+                The data as a numpy array.
+        """
+        return self.__data
+
+    @property
+    def unit(self):
+        """Unit property."""
+        return self.__unit  # pragma: no cover
+
+    @unit.getter
+    def unit(self, new_unit: str):
+        """Set the new unit.
+
+        Parameters
+        ----------
+        new_unit:
+            New unit as a string.
+        """
+        self.__unit = new_unit
+
+    @unit.getter
+    def unit(self) -> str:
+        """Get the unit.
+
+        Returns
+        -------
+        str
+                The unit.
+        """
+        return self.__unit
+
+    @property
+    def sampling_frequency(self):
+        """Sampling frequency property."""
+        return self.__sampling_frequency  # pragma: no cover
+
+    @sampling_frequency.setter
+    def sampling_frequency(self, new_sampling_frequency: float):
+        """Set the new sampling frequency.
+
+        Parameters
+        ----------
+        new_sampling_frequency:
+            New sampling frequency (in Hz).
+        """
+        if new_sampling_frequency < 0.0:
+            raise RuntimeError("Sampling frequency must be greater than or equal to 0.0.")
+        self.__sampling_frequency = new_sampling_frequency
+
+    @sampling_frequency.getter
+    def sampling_frequency(self) -> float:
+        """Get the sampling frequency.
+
+        Returns
+        -------
+        float
+                The sampling frequency.
+        """
+        return self.__sampling_frequency
 
     def process(self):
         """Create the sound field.
@@ -47,9 +122,9 @@ class CreateSoundField(SignalUtilitiesAbstract):
         if np.size(self.get_data()) == 0:
             raise RuntimeError("No data to use. Use CreateSoundField.set_data().")
 
-        self.operator.connect(0, self.get_data().tolist())
-        self.operator.connect(1, float(self.get_sampling_frequency()))
-        self.operator.connect(2, str(self.get_unit()))
+        self.operator.connect(0, self.data.tolist())
+        self.operator.connect(1, float(self.sampling_frequency))
+        self.operator.connect(2, str(self.unit))
 
         # Runs the operator
         self.operator.run()
@@ -83,59 +158,3 @@ class CreateSoundField(SignalUtilitiesAbstract):
         """
         output = self.get_output()
         return output.data
-
-    def set_sampling_frequency(self, new_sampling_frequency: float):
-        """Set the new sampling frequency.
-
-        Parameters
-        ----------
-        new_sampling_frequency:
-            New sampling frequency (in Hz).
-        """
-        if new_sampling_frequency < 0.0:
-            raise RuntimeError("Sampling frequency must be greater than or equal to 0.0.")
-        self.sampling_frequency = new_sampling_frequency
-
-    def get_sampling_frequency(self) -> float:
-        """Get the sampling frequency.
-
-        Returns
-        -------
-        float
-                The sampling frequency.
-        """
-        return self.sampling_frequency
-
-    def set_unit(self, new_unit: str):
-        """Set the new unit.
-
-        Parameters
-        ----------
-        new_unit:
-            New unit as a string.
-        """
-        self.unit = new_unit
-
-    def get_unit(self) -> str:
-        """Get the unit.
-
-        Returns
-        -------
-        str
-                The unit.
-        """
-        return self.unit
-
-    def set_data(self, data: npt.ArrayLike):
-        """Set the data."""
-        self.data = data
-
-    def get_data(self) -> npt.ArrayLike:
-        """Get the data.
-
-        Returns
-        -------
-        np.array
-                The data as a numpy array.
-        """
-        return self.data

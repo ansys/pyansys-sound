@@ -21,7 +21,7 @@ def test_create_sound_field_process(dpf_sound_test_server):
 
     # No error
     arr = np.ones(100)
-    sound_field_creator.set_data(arr)
+    sound_field_creator.data = arr
     sound_field_creator.process()
 
 
@@ -58,8 +58,8 @@ def test_create_sound_field_get_output_as_np_array(dpf_sound_test_server):
 @pytest.mark.dependency(depends=["test_create_sound_field_instantiation"])
 def test_create_sound_field_set_get_data(dpf_sound_test_server):
     sound_field_creator = CreateSoundField()
-    sound_field_creator.set_data(np.ones(100))
-    data = sound_field_creator.get_data()
+    sound_field_creator.data = np.ones(100)
+    data = sound_field_creator.data
     assert len(data) == 100
     assert data[0] == 1.0
     assert data[50] == 1.0
@@ -72,16 +72,16 @@ def test_create_sound_field_set_get_sampling_frequency(dpf_sound_test_server):
 
     # Error 1
     with pytest.raises(RuntimeError) as excinfo:
-        sound_field_creator.set_sampling_frequency(-1234.0)
+        sound_field_creator.sampling_frequency = -1234.0
     assert str(excinfo.value) == "Sampling frequency must be greater than or equal to 0.0."
 
-    sound_field_creator.set_sampling_frequency(1234.0)
-    assert sound_field_creator.get_sampling_frequency() == 1234.0
+    sound_field_creator.sampling_frequency = 1234.0
+    assert sound_field_creator.sampling_frequency == 1234.0
 
 
 @pytest.mark.dependency(depends=["test_create_sound_field_instantiation"])
 def test_create_sound_field_set_get_unit(dpf_sound_test_server):
     sound_field_creator = CreateSoundField()
 
-    sound_field_creator.set_unit("MyUnit")
-    assert sound_field_creator.get_unit() == "MyUnit"
+    sound_field_creator.unit = "MyUnit"
+    assert sound_field_creator.unit == "MyUnit"

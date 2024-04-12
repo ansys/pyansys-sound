@@ -83,8 +83,8 @@ def test_sum_signals_set_get_signals(dpf_sound_test_server):
     f.data = 42 * np.ones(3)
     fc.add_field({"channel": 0}, f)
     fc.name = "testField"
-    sum_gain.set_signals(fc)
-    fc_from_get = sum_gain.get_signals()
+    sum_gain.signals = fc
+    fc_from_get = sum_gain.signals
 
     assert fc_from_get.name == "testField"
     assert len(fc_from_get) == 1

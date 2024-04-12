@@ -22,19 +22,39 @@ class SumSignals(SignalUtilitiesAbstract):
             Input signals to sum, each field of the signal will be summed.
         """
         super().__init__()
-        self.signals = None
-        self.set_signals(signals=signals)
+        self.__signals = signals
         self.operator = Operator("sum_signals")
+
+    @property
+    def signals(self):
+        """Signals property."""
+        return self.__signals  # pragma: no cover
+
+    @signals.setter
+    def signals(self, signals: FieldsContainer):
+        """Set the signals to sum."""
+        self.__signals = signals
+
+    @signals.getter
+    def signals(self) -> FieldsContainer:
+        """Get the signal.
+
+        Returns
+        -------
+        FieldsContainer
+                The signal as a FieldsContainer
+        """
+        return self.__signals
 
     def process(self):
         """Sum signals.
 
         Calls the appropriate DPF Sound operator to sum signals.
         """
-        if self.get_signals() == None:
+        if self.signals == None:
             raise RuntimeError("No signal on which to apply gain. Use SumSignals.set_signal().")
 
-        self.operator.connect(0, self.get_signals())
+        self.operator.connect(0, self.signals)
 
         # Runs the operator
         self.operator.run()
@@ -68,17 +88,3 @@ class SumSignals(SignalUtilitiesAbstract):
         """
         output = self.get_output()
         return output.data
-
-    def set_signals(self, signals: FieldsContainer):
-        """Set the signals to sum."""
-        self.signals = signals
-
-    def get_signals(self) -> FieldsContainer:
-        """Get the signal.
-
-        Returns
-        -------
-        FieldsContainer
-                The signal as a FieldsContainer
-        """
-        return self.signals

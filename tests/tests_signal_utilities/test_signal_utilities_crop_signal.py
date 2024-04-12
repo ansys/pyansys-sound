@@ -25,11 +25,11 @@ def test_crop_signal_process(dpf_sound_test_server):
     fc = wav_loader.get_output()
 
     # Testing input fields container (no error expected)
-    signal_cropper.set_signal(fc)
+    signal_cropper.signal = fc
     signal_cropper.process()
 
     # Testing input field (no error expected)
-    signal_cropper.set_signal(fc[0])
+    signal_cropper.signal = fc[0]
     signal_cropper.process()
 
 
@@ -50,7 +50,7 @@ def test_crop_signal_get_output(dpf_sound_test_server):
 
     assert len(fc_out) == 1
 
-    signal_cropper.set_signal(fc_signal[0])
+    signal_cropper.signal = fc_signal[0]
     signal_cropper.process()
     f_out = signal_cropper.get_output()
     data = f_out.data
@@ -83,7 +83,7 @@ def test_crop_signal_get_output_as_np_array(dpf_sound_test_server):
     assert data[10000] == 0.0308837890625
     assert data[44000] == 0.47772216796875
 
-    signal_cropper.set_signal(fc_signal[0])
+    signal_cropper.signal = fc_signal[0]
     signal_cropper.process()
     data = signal_cropper.get_output_as_nparray()
     # Checking data size and some random samples
@@ -103,8 +103,8 @@ def test_crop_signal_set_get_signal(dpf_sound_test_server):
     f.data = 42 * np.ones(3)
     fc.add_field({"channel": 0}, f)
     fc.name = "testField"
-    signal_cropper.set_signal(fc)
-    fc_from_get = signal_cropper.get_signal()
+    signal_cropper.signal = fc
+    fc_from_get = signal_cropper.signal
 
     assert fc_from_get.name == "testField"
     assert len(fc_from_get) == 1
@@ -117,21 +117,21 @@ def test_crop_signal_set_get_start_end_times(dpf_sound_test_server):
 
     # Error
     with pytest.raises(RuntimeError) as excinfo:
-        signal_cropper.set_start_time(-12.0)
+        signal_cropper.start_time = -12.0
     assert str(excinfo.value) == "Start time must be greater than or equal to 0.0."
 
     # Error
     with pytest.raises(RuntimeError) as excinfo:
-        signal_cropper.set_end_time(-12.0)
+        signal_cropper.end_time - 12.0
     assert str(excinfo.value) == "End time must be greater than or equal to 0.0."
 
-    signal_cropper.set_start_time(1.0)
+    signal_cropper.start_time = 1.0
 
     # Error
     with pytest.raises(RuntimeError) as excinfo:
-        signal_cropper.set_end_time(0.5)
+        signal_cropper.end_time = 0.5
     assert str(excinfo.value) == "End time must be greater than or equal to the start time."
 
-    signal_cropper.set_end_time(1234.0)
-    assert signal_cropper.get_start_time() == 1.0
-    assert signal_cropper.get_end_time() == 1234.0
+    signal_cropper.end_time = 1234.0
+    assert signal_cropper.start_time == 1.0
+    assert signal_cropper.end_time == 1234.0
