@@ -27,8 +27,8 @@ class Resample(SignalUtilitiesAbstract):
             New sampling frequency to use
         """
         super().__init__()
-        self.__signal = signal
-        self.__new_sampling_frequency = new_sampling_frequency
+        self.signal = signal
+        self.new_sampling_frequency = new_sampling_frequency
         self.operator = Operator("resample")
 
     @property

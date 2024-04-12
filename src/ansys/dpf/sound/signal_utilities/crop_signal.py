@@ -28,9 +28,9 @@ class CropSignal(SignalUtilitiesAbstract):
             End time of the part to crop, in seconds.
         """
         super().__init__()
-        self.__signal = signal
-        self.__start_time = start_time
-        self.__end_time = end_time
+        self.signal = signal
+        self.start_time = start_time
+        self.end_time = end_time
         self.operator = Operator("get_cropped_signal")
 
     @property

@@ -30,9 +30,9 @@ class ApplyGain(SignalUtilitiesAbstract):
             If value is false, the gain is in a linear unit.
         """
         super().__init__()
-        self.__signal = signal
-        self.__gain = gain
-        self.__gain_in_db = gain_in_db
+        self.signal = signal
+        self.gain = gain
+        self.gain_in_db = gain_in_db
         self.operator = Operator("apply_gain")
 
     @property

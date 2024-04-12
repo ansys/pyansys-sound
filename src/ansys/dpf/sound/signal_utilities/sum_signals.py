@@ -22,7 +22,7 @@ class SumSignals(SignalUtilitiesAbstract):
             Input signals to sum, each field of the signal will be summed.
         """
         super().__init__()
-        self.__signals = signals
+        self.signals = signals
         self.operator = Operator("sum_signals")
 
     @property

@@ -32,9 +32,9 @@ class CreateSoundField(SignalUtilitiesAbstract):
             Unit of the data.
         """
         super().__init__()
-        self.__data = data
-        self.__sampling_frequency = sampling_frequency
-        self.__unit = unit
+        self.data = data
+        self.sampling_frequency = sampling_frequency
+        self.unit = unit
         self.operator = Operator("create_field_from_vector")
 
     @property
