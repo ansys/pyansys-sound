@@ -25,7 +25,7 @@ def test_sum_signals_process(dpf_sound_test_server):
     fc = wav_loader.get_output()
 
     # Testing input fields container (no error expected)
-    sum_gain.set_signals(fc)
+    sum_gain.signals = fc
     sum_gain.process()
 
 
