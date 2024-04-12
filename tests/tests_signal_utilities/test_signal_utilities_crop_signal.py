@@ -133,5 +133,8 @@ def test_crop_signal_set_get_start_end_times(dpf_sound_test_server):
     assert str(excinfo.value) == "End time must be greater than or equal to the start time."
 
     signal_cropper.end_time = 1234.0
-    assert signal_cropper.start_time == 1.0
-    assert signal_cropper.end_time == 1234.0
+
+    start_time = signal_cropper.start_time
+    end_time = signal_cropper.end_time
+    assert start_time == 1.0
+    assert end_time == 1234.0
