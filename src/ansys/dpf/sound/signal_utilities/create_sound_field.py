@@ -119,7 +119,7 @@ class CreateSoundField(SignalUtilitiesAbstract):
 
         Calls the appropriate DPF Sound operator to create the sound field.
         """
-        if np.size(self.get_data()) == 0:
+        if np.size(self.data) == 0:
             raise RuntimeError("No data to use. Use CreateSoundField.set_data().")
 
         self.operator.connect(0, self.data.tolist())
