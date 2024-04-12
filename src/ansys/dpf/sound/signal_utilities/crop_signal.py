@@ -52,7 +52,7 @@ class CropSignal(SignalUtilitiesAbstract):
         self.__start_time = new_start
 
     @start_time.getter
-    def get_start_time(self) -> float:
+    def start_time(self) -> float:
         """Get the start time.
 
         Returns
@@ -85,7 +85,7 @@ class CropSignal(SignalUtilitiesAbstract):
         self.__end_time = new_end
 
     @end_time.getter
-    def get_end_time(self) -> float:
+    def end_time(self) -> float:
         """Get the end time.
 
         Returns
