@@ -122,7 +122,7 @@ def test_crop_signal_set_get_start_end_times(dpf_sound_test_server):
 
     # Error
     with pytest.raises(RuntimeError) as excinfo:
-        signal_cropper.end_time - 12.0
+        signal_cropper.end_time = -12.0
     assert str(excinfo.value) == "End time must be greater than or equal to 0.0."
 
     signal_cropper.start_time = 1.0

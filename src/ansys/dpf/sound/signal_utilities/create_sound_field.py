@@ -63,7 +63,7 @@ class CreateSoundField(SignalUtilitiesAbstract):
         """Unit property."""
         return self.__unit  # pragma: no cover
 
-    @unit.getter
+    @unit.setter
     def unit(self, new_unit: str):
         """Set the new unit.
 
