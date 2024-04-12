@@ -25,7 +25,7 @@ def test_zero_pad_process(dpf_sound_test_server):
     fc = wav_loader.get_output()
 
     # Testing input fields container (no error expected)
-    zero_pad.set_signal(fc)
+    zero_pad.signal = fc
     zero_pad.process()
 
     # Testing input field (no error expected)
@@ -50,7 +50,7 @@ def test_zero_pad_get_output(dpf_sound_test_server):
 
     assert len(fc_out) == 1
 
-    zero_pad.set_signal(fc_signal[0])
+    zero_pad.signal = fc_signal[0]
     zero_pad.process()
     f_out = zero_pad.get_output()
 
@@ -80,7 +80,7 @@ def test_zero_pad_get_output_as_np_array(dpf_sound_test_server):
     assert out_arr[156048] == 0.0
     assert out_arr[600000] == 0.0
 
-    zero_pad.set_signal(fc_signal)
+    zero_pad.signal = fc_signal
     zero_pad.process()
     out_arr = zero_pad.get_output_as_nparray()
 
@@ -102,8 +102,8 @@ def test_zero_pad_set_get_signal(dpf_sound_test_server):
     f.data = 42 * np.ones(3)
     fc.add_field({"channel": 0}, f)
     fc.name = "testField"
-    zero_pad.set_signal(fc)
-    fc_from_get = zero_pad.get_signal()
+    zero_pad.signal = fc
+    fc_from_get = zero_pad.signal
 
     assert fc_from_get.name == "testField"
     assert len(fc_from_get) == 1
@@ -116,7 +116,7 @@ def test_zero_pad_set_get_duration_zeros(dpf_sound_test_server):
 
     # Error
     with pytest.raises(RuntimeError) as excinfo:
-        zero_pad.set_duration_zeros(-12.0)
+        zero_pad.duration_zeros - 12.0
     assert str(excinfo.value) == "Zero duration must be strictly greater than 0.0."
-    zero_pad.set_duration_zeros(1234.0)
-    assert zero_pad.get_duration_zeros() == 1234.0
+    zero_pad.duration_zeros = 1234.0
+    assert zero_pad.duration_zeros == 1234.0

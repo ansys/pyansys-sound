@@ -24,22 +24,71 @@ class ZeroPad(SignalUtilitiesAbstract):
             Duration, in seconds, of the zeros to append to the input signal
         """
         super().__init__()
-        self.signal = None
-        self.set_signal(signal=signal)
-        self.duration_zeros = 0.0
-        self.set_duration_zeros(duration_zeros)
+        self.signal = signal
+        self.duration_zeros = duration_zeros
         self.operator = Operator("append_zeros_to_signal")
+
+    @property
+    def signal(self):
+        """Signal property."""
+        return self.__signal
+
+    @signal.setter
+    def signal(self, signal: Field | FieldsContainer):
+        """Set the signal."""
+        self.__signal = signal
+
+    @signal.getter
+    def signal(self) -> Field | FieldsContainer:
+        """Get the signal.
+
+        Returns
+        -------
+        FieldsContainer | Field
+                The signal as a Field or a FieldsContainer
+        """
+        return self.__signal
+
+    @property
+    def duration_zeros(self):
+        """Duration zeros property."""
+        return self.__duration_zeros
+
+    @duration_zeros.setter
+    def duration_zeros(self, new_duration_zeros: float):
+        """Set the new duration of zeros.
+
+        Parameters
+        ----------
+        new_duration_zeros:
+            New duration for the zero padding (in seconds).
+        """
+        if new_duration_zeros < 0.0:
+            raise RuntimeError("Zero duration must be strictly greater than 0.0.")
+
+        self.__duration_zeros = new_duration_zeros
+
+    @duration_zeros.getter
+    def duration_zeros(self) -> float:
+        """Get the sampling frequency.
+
+        Returns
+        -------
+        float
+                The sampling frequency.
+        """
+        return self.__duration_zeros
 
     def process(self):
         """Zero pad the signal.
 
         Calls the appropriate DPF Sound operator to append zeros to the signal.
         """
-        if self.get_signal() == None:
+        if self.signal == None:
             raise RuntimeError("No signal to zero-pad. Use ZeroPad.set_signal().")
 
-        self.operator.connect(0, self.get_signal())
-        self.operator.connect(1, float(self.get_duration_zeros()))
+        self.operator.connect(0, self.signal)
+        self.operator.connect(1, float(self.duration_zeros))
 
         # Runs the operator
         self.operator.run()
@@ -78,40 +127,3 @@ class ZeroPad(SignalUtilitiesAbstract):
             return output.data
 
         return self.convert_fields_container_to_np_array(output)
-
-    def set_duration_zeros(self, new_duration_zeros: float):
-        """Set the new duration of zeros.
-
-        Parameters
-        ----------
-        new_duration_zeros:
-            New duration for the zero padding (in seconds).
-        """
-        if new_duration_zeros < 0.0:
-            raise RuntimeError("Zero duration must be strictly greater than 0.0.")
-
-        self.duration_zeros = new_duration_zeros
-
-    def get_duration_zeros(self) -> float:
-        """Get the sampling frequency.
-
-        Returns
-        -------
-        float
-                The sampling frequency.
-        """
-        return self.duration_zeros
-
-    def set_signal(self, signal: Field | FieldsContainer):
-        """Set the signal."""
-        self.signal = signal
-
-    def get_signal(self) -> Field | FieldsContainer:
-        """Get the signal.
-
-        Returns
-        -------
-        FieldsContainer | Field
-                The signal as a Field or a FieldsContainer
-        """
-        return self.signal
