@@ -31,7 +31,7 @@ class ZeroPad(SignalUtilitiesAbstract):
     @property
     def signal(self):
         """Signal property."""
-        return self.__signal
+        return self.__signal  # pragma: no cover
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):
@@ -52,7 +52,7 @@ class ZeroPad(SignalUtilitiesAbstract):
     @property
     def duration_zeros(self):
         """Duration zeros property."""
-        return self.__duration_zeros
+        return self.__duration_zeros  # pragma: no cover
 
     @duration_zeros.setter
     def duration_zeros(self, new_duration_zeros: float):

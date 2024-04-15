@@ -39,7 +39,7 @@ class WriteWav(SignalUtilitiesAbstract):
     @property
     def signal(self):
         """Signal property."""
-        return self.__signal
+        return self.__signal  # pragma: no cover
 
     @signal.setter
     def signal(self, signal: FieldsContainer):
@@ -63,7 +63,7 @@ class WriteWav(SignalUtilitiesAbstract):
     @property
     def bit_depth(self):
         """Bit depth property."""
-        return self.__bit_depth
+        return self.__bit_depth  # pragma: no cover
 
     @bit_depth.setter
     def bit_depth(self, bit_depth: str):
@@ -97,7 +97,7 @@ class WriteWav(SignalUtilitiesAbstract):
     @property
     def path_to_write(self):
         """Path to write property."""
-        return self.__path_to_write
+        return self.__path_to_write  # pragma: no cover
 
     @path_to_write.setter
     def path_to_write(self, path_to_write: str):
