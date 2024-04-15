@@ -116,7 +116,7 @@ def test_zero_pad_set_get_duration_zeros(dpf_sound_test_server):
 
     # Error
     with pytest.raises(RuntimeError) as excinfo:
-        zero_pad.duration_zeros - 12.0
+        zero_pad.duration_zeros = -12.0
     assert str(excinfo.value) == "Zero duration must be strictly greater than 0.0."
     zero_pad.duration_zeros = 1234.0
     assert zero_pad.duration_zeros == 1234.0
