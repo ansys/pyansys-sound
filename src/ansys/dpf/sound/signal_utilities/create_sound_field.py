@@ -130,7 +130,7 @@ class CreateSoundField(SignalUtilitiesAbstract):
         self.operator.run()
 
         # Stores output in the variable
-        self.output = self.operator.get_output(0, "field")
+        self._output = self.operator.get_output(0, "field")
 
     def get_output(self) -> Field:
         """Return the data as a field.
@@ -140,13 +140,13 @@ class CreateSoundField(SignalUtilitiesAbstract):
         Field
                 The data in a DPF Field.
         """
-        if self.output == None:
+        if self._output == None:
             # Computing output if needed
             warnings.warn(
                 UserWarning("Output has not been yet processed, use CreateSoundField.process().")
             )
 
-        return self.output
+        return self._output
 
     def get_output_as_nparray(self) -> npt.ArrayLike:
         """Return the data as a numpy array.

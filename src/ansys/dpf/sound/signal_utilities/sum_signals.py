@@ -60,7 +60,7 @@ class SumSignals(SignalUtilitiesAbstract):
         self.operator.run()
 
         # Stores output in the variable
-        self.output = self.operator.get_output(0, "field")
+        self._output = self.operator.get_output(0, "field")
 
     def get_output(self) -> Field:
         """Return the summed signals as a field.
@@ -70,13 +70,13 @@ class SumSignals(SignalUtilitiesAbstract):
         Field
                 The summed signal in a Field.
         """
-        if self.output == None:
+        if self._output == None:
             # Computing output if needed
             warnings.warn(
                 UserWarning("Output has not been yet processed, use SumSignals.process().")
             )
 
-        return self.output
+        return self._output
 
     def get_output_as_nparray(self) -> npt.ArrayLike:
         """Return the signal with a gain as a numpy array.

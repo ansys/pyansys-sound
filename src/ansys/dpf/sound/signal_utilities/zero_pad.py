@@ -95,9 +95,9 @@ class ZeroPad(SignalUtilitiesAbstract):
 
         # Stores output in the variable
         if type(self.signal) == FieldsContainer:
-            self.output = self.operator.get_output(0, "fields_container")
+            self._output = self.operator.get_output(0, "fields_container")
         elif type(self.signal) == Field:
-            self.output = self.operator.get_output(0, "field")
+            self._output = self.operator.get_output(0, "field")
 
     def get_output(self) -> FieldsContainer | Field:
         """Return the zero-padded signal as a fields container.
@@ -107,11 +107,11 @@ class ZeroPad(SignalUtilitiesAbstract):
         FieldsContainer
                 The zero-padded signal signal in a dpf.FieldsContainer.
         """
-        if self.output == None:
+        if self._output == None:
             # Computing output if needed
             warnings.warn(UserWarning("Output has not been yet processed, use ZeroPad.process()."))
 
-        return self.output
+        return self._output
 
     def get_output_as_nparray(self) -> npt.ArrayLike:
         """Return the zero-padded signal as a numpy array.

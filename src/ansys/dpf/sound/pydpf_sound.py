@@ -18,7 +18,7 @@ class PyDpfSound:
 
         This function inits the class by filling its attributes.
         """
-        self.output = None
+        self._output = None
 
     def plot(self):
         """Plot stuff.
@@ -52,7 +52,7 @@ class PyDpfSound:
                 Empty fields container.
         """
         warnings.warn(UserWarning("Nothing to output."))
-        return self.output
+        return self._output
 
     def get_output_as_nparray(self) -> ArrayLike:
         """Output stuff as nparray.

@@ -75,7 +75,7 @@ class LoadWav(SignalUtilitiesAbstract):
         self.operator.run()
 
         # Stores output in the variable
-        self.output = self.operator.get_output(0, "fields_container")
+        self._output = self.operator.get_output(0, "fields_container")
 
     def get_output(self) -> FieldsContainer:
         """Return the loaded wav signal as a fields container.
@@ -85,11 +85,11 @@ class LoadWav(SignalUtilitiesAbstract):
         FieldsContainer
                 The loaded wav signal in a dpf.FieldsContainer.
         """
-        if self.output == None:
+        if self._output == None:
             # Computing output if needed
             warnings.warn(UserWarning("Output has not been yet processed, use LoadWav.process()."))
 
-        return self.output
+        return self._output
 
     def get_output_as_nparray(self) -> npt.ArrayLike:
         """Return the loaded wav signal as a numpy array.
