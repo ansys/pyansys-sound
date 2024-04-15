@@ -29,7 +29,7 @@ def test_zero_pad_process(dpf_sound_test_server):
     zero_pad.process()
 
     # Testing input field (no error expected)
-    zero_pad.set_signal(fc[0])
+    zero_pad.signal = fc[0]
     zero_pad.process()
 
 
