@@ -88,7 +88,7 @@ numpydoc_validate = True
 numpydoc_validation_checks = {
     "GL06",  # Found unknown section
     "GL07",  # Sections are in the wrong order.
-    "GL08",  # The object does not have a docstring
+    # "GL08",  # The object does not have a docstring
     "GL09",  # Deprecation warning should precede extended summary
     "GL10",  # reST directives {directives} must be followed by two colons
     "SS01",  # No summary found
@@ -117,7 +117,7 @@ sphinx_gallery_conf = {
     # directory where function granular galleries are stored
     "backreferences_dir": None,
     # Modules for which function level galleries are created.  In
-    "doc_module": "ansys-pydpf-sound",
+    "doc_module": "ansys-dpf-sound",
     "image_scrapers": (DynamicScraper(), "matplotlib"),
     "ignore_pattern": r"__init__\.py",
     "thumbnail_size": (350, 350),
@@ -129,6 +129,7 @@ exclude_patterns = [
     ".DS_Store",
     # because we include this in examples/index.rst
     "examples/gallery_examples/index.rst",
+    "*convert_fields_container_to_np_array.rst",
 ]
 
 

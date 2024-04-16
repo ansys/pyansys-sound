@@ -10,6 +10,7 @@ STR_DPF_SOUND_DLL = "dpf_sound.dll"
 
 def pytest_configure():
     pytest.data_path_flute_in_container = "C:\\data\\flute.wav"
+    pytest.data_path_white_noise_in_container = "C:\\data\\white_noise.wav"
 
 
 @pytest.fixture(scope="session")
