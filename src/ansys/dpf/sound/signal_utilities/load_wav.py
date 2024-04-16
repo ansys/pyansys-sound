@@ -5,10 +5,10 @@ import warnings
 from ansys.dpf.core import DataSources, FieldsContainer, Operator
 from numpy import typing as npt
 
-from . import SignalUtilitiesAbstract
+from . import SignalUtilitiesParent
 
 
-class LoadWav(SignalUtilitiesAbstract):
+class LoadWav(SignalUtilitiesParent):
     """Load wav.
 
     This class loads wav signals.

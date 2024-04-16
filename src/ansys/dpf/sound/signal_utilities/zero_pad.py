@@ -4,10 +4,10 @@ import warnings
 from ansys.dpf.core import Field, FieldsContainer, Operator
 from numpy import typing as npt
 
-from . import SignalUtilitiesAbstract
+from . import SignalUtilitiesParent
 
 
-class ZeroPad(SignalUtilitiesAbstract):
+class ZeroPad(SignalUtilitiesParent):
     """ZeroPad.
 
     This class zero pads (adds zeros at the end of) signals.

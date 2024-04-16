@@ -6,7 +6,7 @@ import numpy as np
 from ..pydpf_sound import PyDpfSound
 
 
-class SignalUtilitiesAbstract(PyDpfSound):
+class SignalUtilitiesParent(PyDpfSound):
     """
     Abstract mother class for signal utilities.
 

@@ -4,10 +4,10 @@ import warnings
 
 from ansys.dpf.core import DataSources, FieldsContainer, Operator
 
-from . import SignalUtilitiesAbstract
+from . import SignalUtilitiesParent
 
 
-class WriteWav(SignalUtilitiesAbstract):
+class WriteWav(SignalUtilitiesParent):
     """Write wav.
 
     This class writes wav signals.

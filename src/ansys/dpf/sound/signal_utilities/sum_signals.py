@@ -4,10 +4,10 @@ import warnings
 from ansys.dpf.core import Field, FieldsContainer, Operator
 from numpy import typing as npt
 
-from . import SignalUtilitiesAbstract
+from . import SignalUtilitiesParent
 
 
-class SumSignals(SignalUtilitiesAbstract):
+class SumSignals(SignalUtilitiesParent):
     """Sum Signals.
 
     This class sum signals.

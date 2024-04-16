@@ -5,10 +5,10 @@ import warnings
 from ansys.dpf.core import Field, FieldsContainer, Operator
 from numpy import typing as npt
 
-from . import SignalUtilitiesAbstract
+from . import SignalUtilitiesParent
 
 
-class Resample(SignalUtilitiesAbstract):
+class Resample(SignalUtilitiesParent):
     """Resample.
 
     This class resamples signals.

@@ -4,10 +4,10 @@ import warnings
 from ansys.dpf.core import Field, FieldsContainer, Operator
 from numpy import typing as npt
 
-from . import SignalUtilitiesAbstract
+from . import SignalUtilitiesParent
 
 
-class CropSignal(SignalUtilitiesAbstract):
+class CropSignal(SignalUtilitiesParent):
     """Crop Signal.
 
     This class crops signals.

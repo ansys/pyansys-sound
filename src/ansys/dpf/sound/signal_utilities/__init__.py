@@ -3,7 +3,7 @@
 Helper functions related to signal management.
 """
 
-from ._signalUtilitiesAbstract import SignalUtilitiesAbstract  # isort:skip
+from ._signalUtilitiesParent import SignalUtilitiesParent  # isort:skip
 from .apply_gain import ApplyGain
 from .create_sound_field import CreateSoundField
 from .crop_signal import CropSignal
@@ -14,7 +14,7 @@ from .write_wav import WriteWav
 from .zero_pad import ZeroPad
 
 __all__ = (
-    "SignalUtilitiesAbstract",
+    "SignalUtilitiesParent",
     "LoadWav",
     "WriteWav",
     "Resample",

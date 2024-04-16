@@ -5,10 +5,10 @@ import warnings
 from ansys.dpf.core import Field, FieldsContainer, Operator
 from numpy import typing as npt
 
-from . import SignalUtilitiesAbstract
+from . import SignalUtilitiesParent
 
 
-class ApplyGain(SignalUtilitiesAbstract):
+class ApplyGain(SignalUtilitiesParent):
     """Apply gain.
 
     This class applies a gain to signals.

@@ -5,10 +5,10 @@ from ansys.dpf.core import Field, Operator
 import numpy as np
 from numpy import typing as npt
 
-from . import SignalUtilitiesAbstract
+from . import SignalUtilitiesParent
 
 
-class CreateSoundField(SignalUtilitiesAbstract):
+class CreateSoundField(SignalUtilitiesParent):
     """Create a sound field.
 
     This class creates a DPF Field with Sound metadata from a vector.
