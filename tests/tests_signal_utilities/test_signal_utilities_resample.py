@@ -4,6 +4,7 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
+from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 from ansys.dpf.sound.signal_utilities import LoadWav, Resample
 
 
@@ -19,7 +20,7 @@ def test_resample_process(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
 
     # Error 1
-    with pytest.raises(RuntimeError) as excinfo:
+    with pytest.raises(PyDpfSoundException) as excinfo:
         resampler.process()
     assert str(excinfo.value) == "No signal to resample. Use Resample.set_signal()."
 
@@ -43,7 +44,7 @@ def test_resample_get_output(dpf_sound_test_server):
     resampler = Resample(signal=fc_signal, new_sampling_frequency=88100.0)
 
     with pytest.warns(
-        UserWarning, match="Output has not been yet processed, use Resample.process()."
+        PyDpfSoundWarning, match="Output has not been yet processed, use Resample.process()."
     ):
         fc_out = resampler.get_output()
 
@@ -111,7 +112,7 @@ def test_resample_set_get_sampling_frequency(dpf_sound_test_server):
     resampler = Resample()
 
     # Error
-    with pytest.raises(RuntimeError) as excinfo:
+    with pytest.raises(PyDpfSoundException) as excinfo:
         resampler.new_sampling_frequency = -12.0
     assert str(excinfo.value) == "Sampling frequency must be strictly greater than 0.0."
 

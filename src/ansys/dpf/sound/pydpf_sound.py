@@ -25,7 +25,7 @@ class PyDpfSound:
 
         This method plots stuff.
         """
-        warnings.warn(UserWarning("Nothing to plot."))
+        warnings.warn(PyDpfSoundWarning("Nothing to plot."))
         return None
 
     def process(self):
@@ -38,7 +38,7 @@ class PyDpfSound:
         None
                 None.
         """
-        warnings.warn(UserWarning("Nothing to process."))
+        warnings.warn(PyDpfSoundWarning("Nothing to process."))
         return None
 
     def get_output(self) -> None | FieldsContainer:
@@ -51,7 +51,7 @@ class PyDpfSound:
         FieldsContainer
                 Empty fields container.
         """
-        warnings.warn(UserWarning("Nothing to output."))
+        warnings.warn(PyDpfSoundWarning("Nothing to output."))
         return self._output
 
     def get_output_as_nparray(self) -> ArrayLike:
@@ -64,5 +64,21 @@ class PyDpfSound:
         np.array
                 Empty numpy array.
         """
-        warnings.warn(UserWarning("Nothing to output."))
+        warnings.warn(PyDpfSoundWarning("Nothing to output."))
         return np.empty(0)
+
+
+class PyDpfSoundException(Exception):
+    """PyDPF Sound Exception."""
+
+    def __init__(self, *args: object) -> None:
+        """Init method."""
+        super().__init__(*args)
+
+
+class PyDpfSoundWarning(Warning):
+    """PyDPF Sound Warning."""
+
+    def __init__(self, *args: object) -> None:
+        """Init method."""
+        super().__init__(*args)

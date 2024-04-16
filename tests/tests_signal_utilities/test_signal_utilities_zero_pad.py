@@ -2,6 +2,7 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
+from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 from ansys.dpf.sound.signal_utilities import LoadWav, ZeroPad
 
 
@@ -17,7 +18,7 @@ def test_zero_pad_process(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
 
     # Error 1
-    with pytest.raises(RuntimeError) as excinfo:
+    with pytest.raises(PyDpfSoundException) as excinfo:
         zero_pad.process()
     assert str(excinfo.value) == "No signal to zero-pad. Use ZeroPad.set_signal()."
 
@@ -41,7 +42,7 @@ def test_zero_pad_get_output(dpf_sound_test_server):
     zero_pad = ZeroPad(signal=fc_signal, duration_zeros=12.0)
 
     with pytest.warns(
-        UserWarning, match="Output has not been yet processed, use ZeroPad.process()."
+        PyDpfSoundWarning, match="Output has not been yet processed, use ZeroPad.process()."
     ):
         fc_out = zero_pad.get_output()
 
@@ -115,7 +116,7 @@ def test_zero_pad_set_get_duration_zeros(dpf_sound_test_server):
     zero_pad = ZeroPad()
 
     # Error
-    with pytest.raises(RuntimeError) as excinfo:
+    with pytest.raises(PyDpfSoundException) as excinfo:
         zero_pad.duration_zeros = -12.0
     assert str(excinfo.value) == "Zero duration must be strictly greater than 0.0."
     zero_pad.duration_zeros = 1234.0

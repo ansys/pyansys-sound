@@ -5,6 +5,7 @@ from ansys.dpf.core import Field, FieldsContainer, Operator
 from numpy import typing as npt
 
 from . import SignalUtilitiesParent
+from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
 class SumSignals(SignalUtilitiesParent):
@@ -52,7 +53,9 @@ class SumSignals(SignalUtilitiesParent):
         Calls the appropriate DPF Sound operator to sum signals.
         """
         if self.signals == None:
-            raise RuntimeError("No signal on which to apply gain. Use SumSignals.set_signal().")
+            raise PyDpfSoundException(
+                "No signal on which to apply gain. Use SumSignals.set_signal()."
+            )
 
         self.operator.connect(0, self.signals)
 
@@ -73,7 +76,7 @@ class SumSignals(SignalUtilitiesParent):
         if self._output == None:
             # Computing output if needed
             warnings.warn(
-                UserWarning("Output has not been yet processed, use SumSignals.process().")
+                PyDpfSoundWarning("Output has not been yet processed, use SumSignals.process().")
             )
 
         return self._output

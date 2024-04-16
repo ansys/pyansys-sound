@@ -6,6 +6,7 @@ from ansys.dpf.core import Field, FieldsContainer, Operator
 from numpy import typing as npt
 
 from . import SignalUtilitiesParent
+from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
 class Resample(SignalUtilitiesParent):
@@ -46,7 +47,7 @@ class Resample(SignalUtilitiesParent):
             New sampling frequency.
         """
         if new_sampling_frequency < 0.0:
-            raise RuntimeError("Sampling frequency must be strictly greater than 0.0.")
+            raise PyDpfSoundException("Sampling frequency must be strictly greater than 0.0.")
 
         self.__new_sampling_frequency = new_sampling_frequency
 
@@ -88,7 +89,7 @@ class Resample(SignalUtilitiesParent):
         Calls the appropriate DPF Sound operator to resample the signal.
         """
         if self.signal == None:
-            raise RuntimeError("No signal to resample. Use Resample.set_signal().")
+            raise PyDpfSoundException("No signal to resample. Use Resample.set_signal().")
 
         self.operator.connect(0, self.signal)
         self.operator.connect(1, float(self.new_sampling_frequency))
@@ -112,7 +113,9 @@ class Resample(SignalUtilitiesParent):
         """
         if self._output == None:
             # Computing output if needed
-            warnings.warn(UserWarning("Output has not been yet processed, use Resample.process()."))
+            warnings.warn(
+                PyDpfSoundWarning("Output has not been yet processed, use Resample.process().")
+            )
 
         return self._output
 

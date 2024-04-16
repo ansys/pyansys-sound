@@ -3,6 +3,7 @@ from unittest.mock import patch
 import numpy as np
 import pytest
 
+from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 from ansys.dpf.sound.signal_utilities import LoadWav
 
 
@@ -21,7 +22,7 @@ def test_load_wav_process(dpf_sound_test_server):
     # Should return an error
     wav_loader_bad = LoadWav()
 
-    with pytest.raises(RuntimeError) as excinfo:
+    with pytest.raises(PyDpfSoundException) as excinfo:
         wav_loader_bad.process()
     assert str(excinfo.value) == "Path for loading wav file is not specified. Use LoadWav.set_path."
 
@@ -32,7 +33,7 @@ def test_load_wav_get_output(dpf_sound_test_server):
 
     # Loading a wav signal using LoadWav class
     with pytest.warns(
-        UserWarning, match="Output has not been yet processed, use LoadWav.process()."
+        PyDpfSoundWarning, match="Output has not been yet processed, use LoadWav.process()."
     ):
         fc = wav_loader.get_output()
 
