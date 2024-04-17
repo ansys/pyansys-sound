@@ -40,4 +40,11 @@ fc_signal = wav_loader.get_output()
 # %%
 # Instantiate Stft class
 
-stft = Stft(fc_signal)
+stft = Stft(fc_signal, fft_size=1024)
+
+
+stft.process()
+
+# stft.get_output_as_nparray()
+
+stft.plot()

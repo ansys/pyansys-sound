@@ -1,10 +1,14 @@
 """Short-time Fourier Transform."""
 
+import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
+import matplotlib.pyplot as plt
+import numpy as np
+from numpy import typing as npt
 
 from . import SpectrogramProcessingParent
-from ..pydpf_sound import PyDpfSoundException
+from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
 class Stft(SpectrogramProcessingParent):
@@ -15,9 +19,9 @@ class Stft(SpectrogramProcessingParent):
 
     def __init__(
         self,
-        signal: Field | FieldsContainer = None,
+        signal: Field = None,
         fft_size: float = 2048,
-        window_type: str = "HANNING",
+        window_type: str = "HANN",
         window_overlap: float = 0.5,
     ):
         """Create an apply gain class.
@@ -25,14 +29,15 @@ class Stft(SpectrogramProcessingParent):
         Parameters
         ----------
         signal:
-            Signals on which to apply gain as a DPF Field or FieldsContainer.
+            Mono signal on which to compute the STFT as a DPF Field.
         fft_size:
             Size (as an integer) of the FFT to compute the STFT.
             Use a power of 2 for better performance.
         window_type:
             The window used for the FFT computation, as a string.
             Allowed input strings are :
-            'BLACKMANHARRIS', 'HANN','BLACKMAN', 'HAMMING', 'KAISER', 'BARTLETT', 'RECTANGULAR'.
+            'HANNING', 'BLACKMANHARRIS', 'HANN','BLACKMAN', 'HAMMING', 'KAISER', 'BARTLETT' and
+            'RECTANGULAR'.
             If no parameter is specified, the default value is 'HANNING'.
         window_overlap:
             The overlap value between two successive FFT computations (value between 0 and 1).
@@ -41,6 +46,9 @@ class Stft(SpectrogramProcessingParent):
         """
         super().__init__()
         self.signal = signal
+        self.fft_size = fft_size
+        self.window_overlap = window_overlap
+        self.window_type = window_type
         self.operator = Operator("compute_stft")
 
     @property
@@ -49,18 +57,18 @@ class Stft(SpectrogramProcessingParent):
         return self.__signal  # pragma: no cover
 
     @signal.setter
-    def signal(self, signal: Field | FieldsContainer):
+    def signal(self, signal: Field):
         """Set the signal."""
         self.__signal = signal
 
     @signal.getter
-    def signal(self) -> Field | FieldsContainer:
+    def signal(self) -> Field:
         """Get the signal.
 
         Returns
         -------
-        FieldsContainer | Field
-                The signal as a Field or a FieldsContainer
+        Field
+                The signal as a Field.
         """
         return self.__signal
 
@@ -73,7 +81,7 @@ class Stft(SpectrogramProcessingParent):
     def fft_size(self, fft_size):
         """Set the fft size."""
         if fft_size < 0:
-            raise PyDpfSoundException("Fft size must be greater than 0.0")
+            raise PyDpfSoundException("Fft size must be greater than 0.0.")
         self.__fft_size = fft_size
 
     @fft_size.getter
@@ -99,13 +107,14 @@ class Stft(SpectrogramProcessingParent):
             window_type != "BLACKMANHARRIS"
             and window_type != "HANN"
             and window_type != "HAMMING"
+            and window_type != "HANNING"
             and window_type != "KAISER"
             and window_type != "BARTLETT"
             and window_type != "RECTANGULAR"
         ):
             raise PyDpfSoundException(
-                "Invalid window type, accepted values are 'BLACKMANHARRIS', 'HANN','BLACKMAN', \
-                    'HAMMING', 'KAISER', 'BARTLETT', 'RECTANGULAR'."
+                "Invalid window type, accepted values are 'HANNING', 'BLACKMANHARRIS', 'HANN', \
+                    'BLACKMAN','HAMMING', 'KAISER', 'BARTLETT', 'RECTANGULAR'."
             )
 
         self.__window_type = window_type
@@ -144,3 +153,121 @@ class Stft(SpectrogramProcessingParent):
                 The window overlap.
         """
         return self.__window_overlap
+
+    def process(self):
+        """Compute the STFT.
+
+        Calls the appropriate DPF Sound operator to compute the STFT of the signal.
+        """
+        if self.signal == None:
+            raise PyDpfSoundException("No signal for STFT. Use Stft.set_signal().")
+
+        self.operator.connect(0, self.signal)
+        self.operator.connect(1, int(self.fft_size))
+        self.operator.connect(2, str(self.window_type))
+        self.operator.connect(3, float(self.window_overlap))
+
+        # Runs the operator
+        self.operator.run()
+
+        # Stores output in the variable
+        self._output = self.operator.get_output(0, "fields_container")
+
+    def get_output(self) -> FieldsContainer:
+        """Return the STFT as a fields container.
+
+        Returns
+        -------
+        FieldsContainer
+                The STFT of the signal in a DPF FieldsContainer.
+        """
+        if self._output == None:
+            # Computing output if needed
+            warnings.warn(
+                PyDpfSoundWarning("Output has not been yet processed, use Stft.process().")
+            )
+
+        return self._output
+
+    def get_output_as_nparray(self) -> npt.ArrayLike:
+        """Return the STFT of the signal as a numpy array.
+
+        Returns
+        -------
+        np.array
+                The STFT of the signal in a numpy array.
+        """
+        output = self.get_output()
+
+        num_time_index = len(output.get_available_ids_for_label("time"))
+
+        f1 = output.get_field({"complex": 0, "time": 50, "channel_number": 0})
+        f2 = output.get_field({"complex": 1, "time": 50, "channel_number": 0})
+
+        out_as_np_array = f1.data + 1j * f2.data
+        for i in range(num_time_index):
+            f1 = output.get_field({"complex": 0, "time": i, "channel_number": 0})
+            f2 = output.get_field({"complex": 1, "time": i, "channel_number": 0})
+            tmp_arr = f1.data + 1j * f2.data
+            out_as_np_array = np.vstack((out_as_np_array, tmp_arr))
+
+        # return out_as_np_array
+        return np.transpose(out_as_np_array)
+
+    def get_stft_magnitude_as_nparray(self) -> npt.ArrayLike:
+        """Return the amplitude of the STFT.
+
+        Returns
+        -------
+        np.array
+                The Amplitude of the STFT of the signal in a numpy array.
+        """
+        output = self.get_output_as_nparray()
+        return np.absolute(output)
+
+    def get_stft_phase_as_nparray(self) -> npt.ArrayLike:
+        """Return the phase of the STFT.
+
+        Returns
+        -------
+        np.array
+                The Phase of the STFT of the signal in a numpy array.
+        """
+        output = self.get_output_as_nparray()
+        return np.arctan2(np.imag(output), np.real(output))
+
+    def plot(self):
+        """Plot signals.
+
+        Plots the STFT amplitude and the associated phase.
+        """
+        out = self.get_output_as_nparray()
+
+        # Extracting first half of the STFT (second half is symmetrical)
+        half_nfft = int(np.shape(out)[0] / 2) + 1
+        magnitude = self.get_stft_magnitude_as_nparray()
+        magnitude = 20 * np.log10(magnitude[0:half_nfft, :])
+        phase = self.get_stft_phase_as_nparray()
+        phase = phase[0:half_nfft, :]
+        fs = 1.0 / (
+            self.signal.time_freq_support.time_frequencies.data[1]
+            - self.signal.time_freq_support.time_frequencies.data[0]
+        )
+        time_step = np.floor(self.fft_size * (1.0 - self.window_overlap) + 0.5) / fs
+        num_time_index = len(self.get_output().get_available_ids_for_label("time"))
+        extent = [0, time_step * num_time_index, 0.0, fs / 2.0]
+        # Plotting
+        f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
+        p = ax1.imshow(magnitude, origin="lower", aspect="auto", cmap="jet", extent=extent)
+        f.colorbar(p, ax=ax1, label="dB")
+        ax1.set_title("Amplitude")
+        ax1.set_xlabel("Time (s)")
+        ax1.set_ylabel("Frequency (Hz)")
+        p = ax2.imshow(phase, origin="lower", aspect="auto", cmap="jet", extent=extent)
+        f.colorbar(p, ax=ax2, label="rad")
+        ax2.set_title("Phase")
+        ax2.set_xlabel("Time (s)")
+        ax2.set_ylabel("Frequency (Hz)")
+
+        f.suptitle("STFT")
+        plt.show()
