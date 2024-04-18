@@ -111,7 +111,7 @@ class Istft(SpectrogramProcessingParent):
     def plot(self):
         """Plot signals.
 
-        Plots the STFT amplitude and the associated phase.
+        Plots the signal resulting from ISTFT.
         """
         output = self.get_output()
         field = output

@@ -1,7 +1,6 @@
 """Signal Utilities."""
 from ansys.dpf.core import Field
 import matplotlib.pyplot as plt
-import numpy as np
 
 from ..pydpf_sound import PyDpfSound
 
@@ -19,25 +18,6 @@ class SignalUtilitiesParent(PyDpfSound):
         Init the class.
         """
         super().__init__()
-
-    def convert_fields_container_to_np_array(self, fc):
-        """Convert fields container to numpy array.
-
-        Converts a multichannel signal contained in a DPF Fields Container into a numpy array.
-
-        Returns
-        -------
-        np.array
-                The fields container as a numpy array.
-        """
-        num_channels = len(fc)
-        np_array = fc[0].data
-
-        if num_channels > 1:
-            for i in range(1, num_channels):
-                np_array = np.vstack((np_array, fc[i].data))
-
-        return np.transpose(np_array)
 
     def plot(self):
         """Plot signals.
