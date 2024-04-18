@@ -19,7 +19,7 @@ class Stft(SpectrogramProcessingParent):
 
     def __init__(
         self,
-        signal: Field = None,
+        signal: Field | FieldsContainer = None,
         fft_size: float = 2048,
         window_type: str = "HANN",
         window_overlap: float = 0.5,
@@ -29,7 +29,7 @@ class Stft(SpectrogramProcessingParent):
         Parameters
         ----------
         signal:
-            Mono signal on which to compute the STFT as a DPF Field.
+            Mono signal on which to compute the STFT as a DPF Field or Fields Container.
         fft_size:
             Size (as an integer) of the FFT to compute the STFT.
             Use a power of 2 for better performance.
@@ -57,9 +57,17 @@ class Stft(SpectrogramProcessingParent):
         return self.__signal  # pragma: no cover
 
     @signal.setter
-    def signal(self, signal: Field):
+    def signal(self, signal: Field | FieldsContainer):
         """Set the signal."""
-        self.__signal = signal
+        if type(signal) == FieldsContainer:
+            if len(signal) > 1:
+                raise PyDpfSoundException(
+                    "Input as FieldsContainer can only have one Field (mono signal)."
+                )
+            else:
+                self.__signal = signal[0]
+        else:
+            self.__signal = signal
 
     @signal.getter
     def signal(self) -> Field:
@@ -255,7 +263,10 @@ class Stft(SpectrogramProcessingParent):
         )
         time_step = np.floor(self.fft_size * (1.0 - self.window_overlap) + 0.5) / fs
         num_time_index = len(self.get_output().get_available_ids_for_label("time"))
+
+        # Boundaries of the plot
         extent = [0, time_step * num_time_index, 0.0, fs / 2.0]
+
         # Plotting
         f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
         p = ax1.imshow(magnitude, origin="lower", aspect="auto", cmap="jet", extent=extent)
