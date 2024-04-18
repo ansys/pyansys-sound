@@ -37,18 +37,16 @@ class Istft(SpectrogramProcessingParent):
     @stft.setter
     def stft(self, stft: FieldsContainer):
         """Set the stft."""
-        if type(stft) != FieldsContainer:
-            raise PyDpfSoundException(
-                "Input as FieldsContainer can only have one Field (mono signal)."
-            )
+        if type(stft) != FieldsContainer and stft != None:
+            raise PyDpfSoundException("Input must be a Fields container.")
 
-        if (
+        if stft != None and (
             not stft.has_label("time")
             or not stft.has_label("complex")
             or not stft.has_label("channel_number")
         ):
             raise PyDpfSoundException(
-                "sTFT is in the wrong format, make sure it has been computed with the Stft class."
+                "STFT is in the wrong format, make sure it has been computed with the Stft class."
             )
 
         self.__stft = stft
