@@ -23,7 +23,7 @@ def test_stft_process(dpf_sound_test_server):
     # Error 1
     with pytest.raises(PyDpfSoundException) as excinfo:
         stft.process()
-    assert str(excinfo.value) == "No signal for STFT. Use Stft.set_signal()."
+    assert str(excinfo.value) == "No signal for STFT. Use Stft.signal."
 
     wav_loader.process()
     fc = wav_loader.get_output()

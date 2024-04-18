@@ -168,7 +168,7 @@ class Stft(SpectrogramProcessingParent):
         Calls the appropriate DPF Sound operator to compute the STFT of the signal.
         """
         if self.signal == None:
-            raise PyDpfSoundException("No signal for STFT. Use Stft.set_signal().")
+            raise PyDpfSoundException("No signal for STFT. Use Stft.signal.")
 
         self.operator.connect(0, self.signal)
         self.operator.connect(1, int(self.fft_size))

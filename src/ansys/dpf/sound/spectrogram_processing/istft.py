@@ -68,7 +68,7 @@ class Istft(SpectrogramProcessingParent):
         Calls the appropriate DPF Sound operator to compute the Inverse STFT of the stft.
         """
         if self.stft == None:
-            raise PyDpfSoundException("No stft for ISTFT. Use Istft.set_stft().")
+            raise PyDpfSoundException("No stft for ISTFT. Use Istft.stft.")
 
         self.operator.connect(0, self.stft)
 

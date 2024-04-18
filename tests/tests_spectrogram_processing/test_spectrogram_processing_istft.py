@@ -26,7 +26,7 @@ def test_istft_process(dpf_sound_test_server):
     # Error 1
     with pytest.raises(PyDpfSoundException) as excinfo:
         istft.process()
-    assert str(excinfo.value) == "No stft for ISTFT. Use Istft.set_stft()."
+    assert str(excinfo.value) == "No stft for ISTFT. Use Istft.stft."
 
     # Testing input fields container (no error expected)
     istft.stft = stft.get_output()
