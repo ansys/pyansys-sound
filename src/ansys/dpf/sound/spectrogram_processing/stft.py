@@ -24,7 +24,7 @@ class Stft(SpectrogramProcessingParent):
         window_type: str = "HANN",
         window_overlap: float = 0.5,
     ):
-        """Create an apply gain class.
+        """Create an STFT class.
 
         Parameters
         ----------
