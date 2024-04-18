@@ -105,8 +105,6 @@ def test_stft_set_get_signal(dpf_sound_test_server):
 
     fc.add_field({"channel": 1}, fc[0])
 
-    stft.signal = fc
-
     # Error
     with pytest.raises(PyDpfSoundException) as excinfo:
         stft.signal = fc
@@ -148,8 +146,8 @@ def test_stft_set_get_window_type(dpf_sound_test_server):
         stft.window_type = "InvalidWindow"
     assert (
         str(excinfo.value)
-        == "Invalid window type, accepted values are 'BLACKMANHARRIS', 'HANN','BLACKMAN', \
-                    'HAMMING', 'KAISER', 'BARTLETT', 'RECTANGULAR'."
+        == "Invalid window type, accepted values are 'HANNING', 'BLACKMANHARRIS', 'HANN', \
+                    'BLACKMAN','HAMMING', 'KAISER', 'BARTLETT', 'RECTANGULAR'."
     )
 
     stft.window_type = "KAISER"
