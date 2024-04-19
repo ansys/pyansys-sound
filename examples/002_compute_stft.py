@@ -3,8 +3,8 @@
 """
 .. _compute_stft_example:
 
-Compute the STFT and ISTFT.
-------------
+Compute the STFT and ISTFT
+--------------------------
 
 This example shows how to compute a STFT (Short-Time Fourier Transform) of a signal.
 
