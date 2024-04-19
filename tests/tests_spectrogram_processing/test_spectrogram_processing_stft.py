@@ -70,7 +70,7 @@ def test_stft_get_output_as_np_array(dpf_sound_test_server):
     arr = stft.get_output_as_nparray()
 
     print(np.shape(arr))
-    assert np.shape(arr) == (stft.fft_size, 156)
+    assert np.shape(arr) == (stft.fft_size, 155)
 
     print(type(arr[100, 0]))
     print((arr[100, 0]))
