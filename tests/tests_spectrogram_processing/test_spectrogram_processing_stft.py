@@ -69,17 +69,12 @@ def test_stft_get_output_as_np_array(dpf_sound_test_server):
     stft.process()
     arr = stft.get_output_as_nparray()
 
-    print(np.shape(arr))
     assert np.shape(arr) == (stft.fft_size, 155)
 
-    print(type(arr[100, 0]))
-    print((arr[100, 0]))
-    print((arr[200, 0]))
-    print((arr[300, 0]))
     assert type(arr[100, 0]) == np.complex128
-    assert arr[100, 0] == (-1.0736324787139893 - 1.4027032852172852j)
-    assert arr[200, 0] == (0.511505126953125 + 0.3143689036369324j)
-    assert arr[300, 0] == (-0.03049434721469879 - 0.49174121022224426j)
+    assert arr[100, 50] == (-1.0736324787139893 - 1.4027032852172852j)
+    assert arr[200, 50] == (0.511505126953125 + 0.3143689036369324j)
+    assert arr[300, 50] == (-0.03049434721469879 - 0.49174121022224426j)
 
 
 @pytest.mark.dependency(depends=["test_stft_instantiation"])
