@@ -272,7 +272,6 @@ class Stft(SpectrogramProcessingParent):
         p = ax1.imshow(magnitude, origin="lower", aspect="auto", cmap="jet", extent=extent)
         f.colorbar(p, ax=ax1, label="dB")
         ax1.set_title("Amplitude")
-        ax1.set_xlabel("Time (s)")
         ax1.set_ylabel("Frequency (Hz)")
         p = ax2.imshow(phase, origin="lower", aspect="auto", cmap="jet", extent=extent)
         f.colorbar(p, ax=ax2, label="rad")

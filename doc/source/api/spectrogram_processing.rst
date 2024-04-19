@@ -6,4 +6,6 @@ Spectrogram Processing
 .. autosummary::
     :toctree: _autosummary
 
-    SpectrogramProcessingParent
+    Stft
+    Istft
+    IsolateOrders

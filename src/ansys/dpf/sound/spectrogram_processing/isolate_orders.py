@@ -127,7 +127,7 @@ class IsolateOrders(SpectrogramProcessingParent):
         """Set the orders."""
         if type(orders) == list:
             f = Field()
-            f.data = orders
+            f.append(orders, 1)
             self.__orders = f
         elif type(orders):
             self.__orders = orders
@@ -247,8 +247,7 @@ class IsolateOrders(SpectrogramProcessingParent):
 
         if self.rpm_profile == None:
             raise PyDpfSoundException(
-                "No RPM profile for order isolation. \
-                                      Use IsolateOrder.rpm_profile."
+                "No RPM profile for order isolation. Use IsolateOrder.rpm_profile."
             )
 
         if self.orders == None:

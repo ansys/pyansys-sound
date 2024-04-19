@@ -129,7 +129,7 @@ def test_isolate_orders_set_get_signal(dpf_sound_test_server):
     isolate_orders.signal = fc
     f = isolate_orders.signal
 
-    assert len(f) == 3
+    assert len(f[0]) == 3
     assert f.data[0, 2] == 42
 
 
@@ -181,24 +181,23 @@ def test_isolate_orders_set_get_rpm_profile(dpf_sound_test_server):
     isolate_orders = IsolateOrders()
 
     rpm = Field()
-    rpm.data = [1, 23, 45, 5656587]
+    rpm.append([1, 23, 45], 1)
 
     isolate_orders.rpm_profile = rpm
-    assert isolate_orders.rpm.data[2] == 45
+    assert isolate_orders.rpm_profile.data[0, 2] == 45
 
 
 @pytest.mark.dependency(depends=["test_isolate_orders_instantiation"])
-def test_isolate_orders_set_get_ORDERS(dpf_sound_test_server):
+def test_isolate_orders_set_get_orders(dpf_sound_test_server):
     isolate_orders = IsolateOrders()
-
     orders = Field()
-    orders.data = [1, 23, 45, 5656587]
+    orders.append([1, 2, 45], 1)
 
     isolate_orders.orders = orders
-    assert isolate_orders.orders.data[2] == 45
+    assert isolate_orders.orders.data[0, 2] == 45
 
-    isolate_orders.orders = orders.data
-    assert isolate_orders.orders.data[2] == 45
+    isolate_orders.orders = [1, 2, 45]
+    assert isolate_orders.orders.data[0, 2] == 45
 
 
 @pytest.mark.dependency(depends=["test_isolate_orders_instantiation"])
