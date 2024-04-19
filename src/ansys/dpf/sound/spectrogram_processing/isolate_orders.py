@@ -75,13 +75,13 @@ class IsolateOrders(SpectrogramProcessingParent):
         self.__signal = signal
 
     @signal.getter
-    def signal(self) -> Field:
+    def signal(self) -> Field | FieldsContainer:
         """Get the signal.
 
         Returns
         -------
         Field
-                The signal as a Field.
+                The signal as a Field or a FieldsContainer.
         """
         return self.__signal
 
@@ -112,7 +112,7 @@ class IsolateOrders(SpectrogramProcessingParent):
         return self.__orders  # pragma: no cover
 
     @orders.getter
-    def orders(self) -> list:
+    def orders(self) -> Field:
         """Get the orders.
 
         Returns
@@ -123,9 +123,14 @@ class IsolateOrders(SpectrogramProcessingParent):
         return self.__orders
 
     @orders.setter
-    def orders(self, orders: Field):
+    def orders(self, orders: Field | list):
         """Set the orders."""
-        self.__orders = orders
+        if type(orders) == list:
+            f = Field()
+            f.data = orders
+            self.__orders = f
+        elif type(orders):
+            self.__orders = orders
 
     @property
     def fft_size(self):
@@ -175,7 +180,7 @@ class IsolateOrders(SpectrogramProcessingParent):
         self.__window_type = window_type
 
     @window_type.getter
-    def window_type(self) -> float:
+    def window_type(self) -> str:
         """Get the window type.
 
         Returns
