@@ -209,11 +209,11 @@ class Stft(SpectrogramProcessingParent):
 
         num_time_index = len(output.get_available_ids_for_label("time"))
 
-        f1 = output.get_field({"complex": 0, "time": 50, "channel_number": 0})
-        f2 = output.get_field({"complex": 1, "time": 50, "channel_number": 0})
+        f1 = output.get_field({"complex": 0, "time": 0, "channel_number": 0})
+        f2 = output.get_field({"complex": 1, "time": 0, "channel_number": 0})
 
         out_as_np_array = f1.data + 1j * f2.data
-        for i in range(num_time_index):
+        for i in range(1, num_time_index):
             f1 = output.get_field({"complex": 0, "time": i, "channel_number": 0})
             f2 = output.get_field({"complex": 1, "time": i, "channel_number": 0})
             tmp_arr = f1.data + 1j * f2.data
