@@ -130,7 +130,7 @@ def test_isolate_orders_set_get_signal(dpf_sound_test_server):
     f = isolate_orders.signal
 
     assert len(f[0]) == 3
-    assert f.data[0, 2] == 42
+    assert f[0].data[0, 2] == 42
 
 
 @pytest.mark.dependency(depends=["test_isolate_orders_instantiation"])
@@ -223,5 +223,12 @@ def test_isolate_orders_plot(mock_show, dpf_sound_test_server):
     rpm_profile = fc[1]
     rpm_profile.time_freq_support = signal.time_freq_support
     isolate_orders = IsolateOrders(signal=signal, rpm_profile=rpm_profile, orders=[2, 4])
+    isolate_orders.process()
+    isolate_orders.plot()
+
+    fc_bis = FieldsContainer()
+    fc_bis.add_label("channel_number")
+    fc_bis.add_field({"channel_number": 0}, signal)
+    isolate_orders.signal = fc_bis
     isolate_orders.process()
     isolate_orders.plot()
