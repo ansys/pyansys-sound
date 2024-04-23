@@ -32,7 +32,7 @@ class CropSignal(SignalUtilitiesParent):
         self.signal = signal
         self.start_time = start_time
         self.end_time = end_time
-        self.operator = Operator("get_cropped_signal")
+        self.__operator = Operator("get_cropped_signal")
 
     @property
     def start_time(self):
@@ -125,18 +125,18 @@ class CropSignal(SignalUtilitiesParent):
         if self.signal == None:
             raise PyDpfSoundException("No signal to crop. Use CropSignal.set_signal().")
 
-        self.operator.connect(0, self.signal)
-        self.operator.connect(1, float(self.start_time))
-        self.operator.connect(2, float(self.end_time))
+        self.__operator.connect(0, self.signal)
+        self.__operator.connect(1, float(self.start_time))
+        self.__operator.connect(2, float(self.end_time))
 
         # Runs the operator
-        self.operator.run()
+        self.__operator.run()
 
         # Stores output in the variable
         if type(self.signal) == FieldsContainer:
-            self._output = self.operator.get_output(0, "fields_container")
+            self._output = self.__operator.get_output(0, "fields_container")
         elif type(self.signal) == Field:
-            self._output = self.operator.get_output(0, "field")
+            self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> FieldsContainer | Field:
         """Return the cropped signal as a fields container.
