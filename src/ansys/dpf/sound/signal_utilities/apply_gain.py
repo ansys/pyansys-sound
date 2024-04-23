@@ -34,7 +34,7 @@ class ApplyGain(SignalUtilitiesParent):
         self.signal = signal
         self.gain = gain
         self.gain_in_db = gain_in_db
-        self.operator = Operator("apply_gain")
+        self.__operator = Operator("apply_gain")
 
     @property
     def signal(self):
@@ -126,18 +126,18 @@ class ApplyGain(SignalUtilitiesParent):
                 "No signal on which to apply gain. Use ApplyGain.set_signal()."
             )
 
-        self.operator.connect(0, self.signal)
-        self.operator.connect(1, float(self.gain))
-        self.operator.connect(2, bool(self.gain_in_db))
+        self.__operator.connect(0, self.signal)
+        self.__operator.connect(1, float(self.gain))
+        self.__operator.connect(2, bool(self.gain_in_db))
 
         # Runs the operator
-        self.operator.run()
+        self.__operator.run()
 
         # Stores output in the variable
         if type(self.signal) == FieldsContainer:
-            self._output = self.operator.get_output(0, "fields_container")
+            self._output = self.__operator.get_output(0, "fields_container")
         elif type(self.signal) == Field:
-            self._output = self.operator.get_output(0, "field")
+            self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> FieldsContainer | Field:
         """Return the signal with a gain as a fields container.

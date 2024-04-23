@@ -30,7 +30,7 @@ class Resample(SignalUtilitiesParent):
         super().__init__()
         self.signal = signal
         self.new_sampling_frequency = new_sampling_frequency
-        self.operator = Operator("resample")
+        self.__operator = Operator("resample")
 
     @property
     def new_sampling_frequency(self):
@@ -91,17 +91,17 @@ class Resample(SignalUtilitiesParent):
         if self.signal == None:
             raise PyDpfSoundException("No signal to resample. Use Resample.set_signal().")
 
-        self.operator.connect(0, self.signal)
-        self.operator.connect(1, float(self.new_sampling_frequency))
+        self.__operator.connect(0, self.signal)
+        self.__operator.connect(1, float(self.new_sampling_frequency))
 
         # Runs the operator
-        self.operator.run()
+        self.__operator.run()
 
         # Stores output in the variable
         if type(self.signal) == FieldsContainer:
-            self._output = self.operator.get_output(0, "fields_container")
+            self._output = self.__operator.get_output(0, "fields_container")
         elif type(self.signal) == Field:
-            self._output = self.operator.get_output(0, "field")
+            self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> FieldsContainer | Field:
         """Return the resampled signal as a fields container.

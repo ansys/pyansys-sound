@@ -27,7 +27,7 @@ class Istft(SpectrogramProcessingParent):
         """
         super().__init__()
         self.stft = stft
-        self.operator = Operator("compute_istft")
+        self.__operator = Operator("compute_istft")
 
     @property
     def stft(self):
@@ -70,13 +70,13 @@ class Istft(SpectrogramProcessingParent):
         if self.stft == None:
             raise PyDpfSoundException("No stft for ISTFT. Use Istft.stft.")
 
-        self.operator.connect(0, self.stft)
+        self.__operator.connect(0, self.stft)
 
         # Runs the operator
-        self.operator.run()
+        self.__operator.run()
 
         # Stores output in the variable
-        self._output = self.operator.get_output(0, "field")
+        self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> Field:
         """Return the STFT as a field.

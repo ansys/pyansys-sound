@@ -49,7 +49,7 @@ class Stft(SpectrogramProcessingParent):
         self.fft_size = fft_size
         self.window_overlap = window_overlap
         self.window_type = window_type
-        self.operator = Operator("compute_stft")
+        self.__operator = Operator("compute_stft")
 
     @property
     def signal(self):
@@ -170,16 +170,16 @@ class Stft(SpectrogramProcessingParent):
         if self.signal == None:
             raise PyDpfSoundException("No signal for STFT. Use Stft.signal.")
 
-        self.operator.connect(0, self.signal)
-        self.operator.connect(1, int(self.fft_size))
-        self.operator.connect(2, str(self.window_type))
-        self.operator.connect(3, float(self.window_overlap))
+        self.__operator.connect(0, self.signal)
+        self.__operator.connect(1, int(self.fft_size))
+        self.__operator.connect(2, str(self.window_type))
+        self.__operator.connect(3, float(self.window_overlap))
 
         # Runs the operator
-        self.operator.run()
+        self.__operator.run()
 
         # Stores output in the variable
-        self._output = self.operator.get_output(0, "fields_container")
+        self._output = self.__operator.get_output(0, "fields_container")
 
     def get_output(self) -> FieldsContainer:
         """Return the STFT as a fields container.

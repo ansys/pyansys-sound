@@ -35,7 +35,7 @@ class WriteWav(SignalUtilitiesParent):
         self.path_to_write = path_to_write
         self.signal = signal
         self.bit_depth = bit_depth
-        self.operator = Operator("write_wav_sas")
+        self.__operator = Operator("write_wav_sas")
 
     @property
     def signal(self):
@@ -137,11 +137,11 @@ class WriteWav(SignalUtilitiesParent):
         data_source_out = DataSources()
         data_source_out.add_file_path(self.path_to_write, ".wav")
 
-        self.operator.connect(0, self.signal)
-        self.operator.connect(1, data_source_out)
-        self.operator.connect(2, self.bit_depth)
+        self.__operator.connect(0, self.signal)
+        self.__operator.connect(1, data_source_out)
+        self.__operator.connect(2, self.bit_depth)
 
-        self.operator.run()
+        self.__operator.run()
 
     def plot(self):
         """Plot the output.

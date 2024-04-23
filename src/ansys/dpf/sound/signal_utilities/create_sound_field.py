@@ -36,7 +36,7 @@ class CreateSoundField(SignalUtilitiesParent):
         self.data = data
         self.sampling_frequency = sampling_frequency
         self.unit = unit
-        self.operator = Operator("create_field_from_vector")
+        self.__operator = Operator("create_field_from_vector")
 
     @property
     def data(self):
@@ -123,15 +123,15 @@ class CreateSoundField(SignalUtilitiesParent):
         if np.size(self.data) == 0:
             raise PyDpfSoundException("No data to use. Use CreateSoundField.set_data().")
 
-        self.operator.connect(0, self.data.tolist())
-        self.operator.connect(1, float(self.sampling_frequency))
-        self.operator.connect(2, str(self.unit))
+        self.__operator.connect(0, self.data.tolist())
+        self.__operator.connect(1, float(self.sampling_frequency))
+        self.__operator.connect(2, str(self.unit))
 
         # Runs the operator
-        self.operator.run()
+        self.__operator.run()
 
         # Stores output in the variable
-        self._output = self.operator.get_output(0, "field")
+        self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> Field:
         """Return the data as a field.

@@ -62,7 +62,7 @@ class IsolateOrders(SpectrogramProcessingParent):
         self.window_type = window_type
         self.window_overlap = window_overlap
         self.width_selection = width_selection
-        self.operator = Operator("isolate_orders")
+        self.__operator = Operator("isolate_orders")
 
     @property
     def signal(self):
@@ -253,22 +253,22 @@ class IsolateOrders(SpectrogramProcessingParent):
         if self.orders == None:
             raise PyDpfSoundException("No orders for order isolation. Use IsolateOrder.orders.")
 
-        self.operator.connect(0, self.signal)
-        self.operator.connect(1, self.rpm_profile)
-        self.operator.connect(2, self.orders)
-        self.operator.connect(3, self.fft_size)
-        self.operator.connect(4, self.window_type)
-        self.operator.connect(5, self.window_overlap)
-        self.operator.connect(6, self.width_selection)
+        self.__operator.connect(0, self.signal)
+        self.__operator.connect(1, self.rpm_profile)
+        self.__operator.connect(2, self.orders)
+        self.__operator.connect(3, self.fft_size)
+        self.__operator.connect(4, self.window_type)
+        self.__operator.connect(5, self.window_overlap)
+        self.__operator.connect(6, self.width_selection)
 
         # Runs the operator
-        self.operator.run()
+        self.__operator.run()
 
         # Stores output in the variable
         if type(self.signal) == FieldsContainer:
-            self._output = self.operator.get_output(0, "fields_container")
+            self._output = self.__operator.get_output(0, "fields_container")
         elif type(self.signal) == Field:
-            self._output = self.operator.get_output(0, "field")
+            self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> Field | FieldsContainer:
         """Return the temporal signal of the isolated orders as a Field or Fields Container.
