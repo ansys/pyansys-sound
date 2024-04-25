@@ -111,7 +111,9 @@ class XtractDenoiser(XtractParent):
 
     @overload
     def process(self):
-        """Process the denoising."""
+        """Process the denoising.
+        TODO
+        """
 
         if self.__input_signal is None:
             raise PyDpfSoundException("Input signal is not set.")
@@ -127,7 +129,7 @@ class XtractDenoiser(XtractParent):
         self.__operator.run()
 
         # Stores the output in the variable
-        if type(self.__input_parameters) == Field:
+        if type(self.__input_signal) == Field:
             self.__output_denoised_signals = self.__operator.get_output(0, "field")
             self.__output_noise_signals = self.__operator.get_output(1, "field")
         else:
@@ -136,7 +138,9 @@ class XtractDenoiser(XtractParent):
 
     @overload
     def get_output(self) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
-        """Get the output of the denoising."""
+        """Get the output of the denoising.
+        TODO
+        """
 
         if self.__output_denoised_signals == None or self.__output_noise_signals == None :
             warnings.warn(
@@ -147,7 +151,9 @@ class XtractDenoiser(XtractParent):
 
     @overload
     def get_output_as_nparray(self) -> Tuple[npt.ArrayLike, npt.ArrayLike]:
-        """Get the output of the denoising as numpy arrays."""
+        """Get the output of the denoising as numpy arrays.
+        TODO
+        """
         l_output_denoised_signals = self.get_output()[0]
         l_output_noise_signals = self.get_output()[1]
 
