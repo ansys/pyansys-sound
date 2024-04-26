@@ -183,7 +183,7 @@ class XtractTransient(XtractParent):
         return self.__output_transient_signals, self.__output_non_transient_signals
     
     @overload
-    def get_output_as_nparray(self) -> Tuple[np.ArrayLike, np.ArrayLike]:
+    def get_output_as_nparray(self) -> Tuple[npt.ArrayLike, npt.ArrayLike]:
         """Get the output of the transient extraction as numpy arrays.
         
         Returns
