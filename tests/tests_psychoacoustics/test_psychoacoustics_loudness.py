@@ -1,8 +1,10 @@
 from unittest.mock import patch
 
+from ansys.dpf.core import Field, FieldsContainer
+import numpy as np
 import pytest
 
-from ansys.dpf.sound.psychoacoustics.loudness import Loudness
+from ansys.dpf.sound.psychoacoustics import Loudness
 from ansys.dpf.sound.pydpf_sound import PyDpfSoundException
 from ansys.dpf.sound.signal_utilities import LoadWav
 
@@ -79,7 +81,8 @@ def test_loudness_get_loudness_sone(dpf_sound_test_server):
     loudnessComputer.process()
 
     loudnessSone = loudnessComputer.get_loudness_sone()
-    assert loudnessSone
+    assert len(loudnessSone) == 1
+    assert loudnessSone[0].data[0] == 39.58000183105469
 
 
 pytest.mark.dependency(depends=["test_loudness_process"])
@@ -101,7 +104,8 @@ def test_loudness_get_loudness_phon(dpf_sound_test_server):
     loudnessComputer.process()
 
     loudnessPhon = loudnessComputer.get_loudness_phon()
-    assert loudnessPhon
+    assert len(loudnessPhon) == 1
+    assert loudnessPhon[0].data[0] == 93.0669937133789
 
 
 @pytest.mark.dependency(depends=["test_loudness_process"])
@@ -121,7 +125,11 @@ def test_loudness_get_specific_loudness(dpf_sound_test_server):
     loudnessComputer.process()
 
     specificLoudness = loudnessComputer.get_specific_loudness()
-    assert specificLoudness
+    assert len(specificLoudness) == 1
+    assert len(specificLoudness[0].data) == 240
+    assert specificLoudness[0].data[0] == 0
+    assert specificLoudness[0].data[9] == 0.15664348006248474
+    assert specificLoudness[0].data[40] == 1.3235466480255127
 
 
 @pytest.mark.dependency(depends=["test_loudness_process"])
@@ -209,3 +217,20 @@ def test_loudness_plot_from_field(mock_show, dpf_sound_test_server):
 
     # plot
     loudnessComputer.plot()
+
+
+@pytest.mark.dependency(depends=["test_loudness_instantiation"])
+def test_loudness_set_get_signal(dpf_sound_test_server):
+    loudnessComputer = Loudness()
+    fc = FieldsContainer()
+    fc.labels = ["channel"]
+    f = Field()
+    f.data = 42 * np.ones(3)
+    fc.add_field({"channel": 0}, f)
+    fc.name = "testField"
+    loudnessComputer.signal = fc
+    fc_from_get = loudnessComputer.signal
+
+    assert fc_from_get.name == "testField"
+    assert len(fc_from_get) == 1
+    assert fc_from_get[0].data[0, 2] == 42

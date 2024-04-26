@@ -30,12 +30,23 @@ class Loudness(PsychoacousticsParent):
     @property
     def signal(self):
         """Signal property."""
-        return self.__signal
+        return self.__signal  # pragma: no cover*
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):
         """Set the signal."""
         self.__signal = signal
+
+    @signal.getter
+    def signal(self) -> Field | FieldsContainer:
+        """Get the signal.
+
+        Returns
+        -------
+        FieldsContainer | Field
+                The signal as a Field or a FieldsContainer
+        """
+        return self.__signal
 
     def process(self):
         """Compute the loudness.
@@ -67,13 +78,12 @@ class Loudness(PsychoacousticsParent):
     def get_output(self) -> tuple[FieldsContainer] | tuple[Field]:
         """Return the loudness in a tuple of fields container.
 
-        First element is the loudness in Sone.
-        Second element is the loudness in Phon.
-        Third element is the Specific loudness, in Sone vs Bark bands
-
         Returns
         -------
-        tuple(FieldsContainer) | tuple(Field)
+            tuple(FieldsContainer) | tuple(Field)
+                First element is the loudness in Sone.
+                Second element is the loudness in Phon.
+                Third element is the Specific loudness, in Sone vs Bark bands
         """
         if self._output == None:
             # Computing output if needed
@@ -180,6 +190,6 @@ class Loudness(PsychoacousticsParent):
         plt.title("Specific loudness")
         plt.legend()
         plt.xlabel("Bark band index")
-        plt.ylabel("sones/Bark")
+        plt.ylabel("Sones/Bark")
         plt.grid(True)
         plt.show()
