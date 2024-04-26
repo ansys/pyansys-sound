@@ -8,8 +8,6 @@ import matplotlib.pyplot as plt
 from numpy import typing as npt
 
 from . import XtractParent
-
-from . import XtractParent
 from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
