@@ -1,4 +1,4 @@
-"""Create Sound Field."""
+"""Crop signal."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
