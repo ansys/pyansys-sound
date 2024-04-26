@@ -1,4 +1,4 @@
-"""Zero pad."""
+"""Zero Pad."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -9,7 +9,7 @@ from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
 class ZeroPad(SignalUtilitiesParent):
-    """ZeroPad.
+    """Zero Pad.
 
     This class zero pads (adds zeros at the end of) signals.
     """
