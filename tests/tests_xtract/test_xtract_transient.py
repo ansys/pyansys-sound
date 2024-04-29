@@ -8,8 +8,6 @@ from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 from ansys.dpf.sound.signal_utilities import LoadWav
 from ansys.dpf.sound.xtract.xtract_transient import XtractTransient
 
-def test_for_fun():
-    assert 1 == 1
 
 def test_xtract_transient_instantiation(dpf_sound_test_server):
     xtract_transient = XtractTransient()
@@ -26,18 +24,14 @@ def test_xtract_transient_initialization():
     # Test initialization with custom values
     input_signal = FieldsContainer()
     input_parameters = FieldsContainer()
-    output_transient_signals = FieldsContainer()
-    output_non_transient_signals = FieldsContainer()
     xtract = XtractTransient(
         input_signal=input_signal,
         input_parameters=input_parameters,
-        output_transient_signals=output_transient_signals,
-        output_non_transient_signals=output_non_transient_signals
     )
     assert xtract.input_signal == input_signal
     assert xtract.input_parameters == input_parameters
-    assert xtract.output_transient_signals == output_transient_signals
-    assert xtract.output_non_transient_signals == output_non_transient_signals
+    assert xtract.output_transient_signals is None
+    assert xtract.output_non_transient_signals is None
 
 def test_xtract_transient_process():
     # Test the process method

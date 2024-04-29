@@ -8,8 +8,6 @@ from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 from ansys.dpf.sound.signal_utilities import LoadWav
 from ansys.dpf.sound.xtract.xtract import Xtract
 
-def test_for_fun():
-    assert 1 == 1
 
 def test_xtract_instantiation(dpf_sound_test_server):
     xtract = Xtract()
