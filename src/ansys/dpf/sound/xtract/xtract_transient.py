@@ -20,9 +20,7 @@ class XtractTransient(XtractParent):
     def __init__(
         self,
         input_signal: FieldsContainer | Field = None,
-        input_parameters: GenericDataContainer = None,
-        output_transient_signals: FieldsContainer | Field = None,
-        output_non_transient_signals: FieldsContainer | Field = None
+        input_parameters: GenericDataContainer = None
     ):
         """Create a XtractTransient class.
 
@@ -43,8 +41,11 @@ class XtractTransient(XtractParent):
         super().__init__()
         self.__input_signal = input_signal
         self.__input_parameters = input_parameters
-        self.__output_transient_signals = output_transient_signals
-        self.__output_non_transient_signals = output_non_transient_signals
+
+        # Def output fields
+        self.__output_transient_signals = None
+        self.__output_non_transient_signals = None
+
         self.__operator = Operator("xtract_transient")
 
     @property
