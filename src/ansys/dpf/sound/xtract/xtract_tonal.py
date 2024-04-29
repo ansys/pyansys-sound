@@ -120,11 +120,8 @@ class XtractTonal(XtractParent):
         """Set output non tonal signals."""
         self.__output_non_tonal_signals = value
 
-    @overload
     def process(self):
         """Process the tonal analysis.
-        
-        TODO
         """
         
         if self.__input_signal is None:
@@ -147,10 +144,8 @@ class XtractTonal(XtractParent):
             self.__output_tonal_signals = self.__operator.get_output(0, "fields_container")
             self.__output_non_tonal_signals = self.__operator.get_output(1, "fields_container")
 
-    @overload
     def get_output(self) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
         """Get the output of the tonal.
-        TODO
         """
         if self.__output_tonal_signals == None or self.__output_non_tonal_signals == None:
             warnings.warn(
@@ -159,7 +154,6 @@ class XtractTonal(XtractParent):
 
         return self.__output_tonal_signals, self.__output_non_tonal_signals
     
-    @overload
     def get_output_as_nparray(self) -> Tuple[npt.ArrayLike, npt.ArrayLike]:
         """Get the output of the tonal as numpy arrays.
         
@@ -181,7 +175,6 @@ class XtractTonal(XtractParent):
         
         return self.convert_fields_container_to_np_array(l_output_tonal_signals), self.convert_fields_container_to_np_array(l_output_non_tonal_signals)
     
-    @overload
     def plot(self):
         """Plot the output of the tonal analysis.
         

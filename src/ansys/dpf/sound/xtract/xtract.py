@@ -139,7 +139,6 @@ class Xtract(XtractParent):
         """Set parameters of the transient extraction step."""
         self.__parameters_transient = value
 
-    @overload
     def process(self):
         """Process the XTRACT algorithm.
         
@@ -165,8 +164,6 @@ class Xtract(XtractParent):
             self.__transient_signal = self.__operator.get_output(2, "fields_container")
             self.__remainder_signal = self.__operator.get_output(3, "fields_container")
 
-
-    @overload
     def get_output(self) -> Tuple[FieldsContainer, FieldsContainer, FieldsContainer, FieldsContainer] | Tuple[Field, Field, Field, Field]:
         """Get the output of the XTRACT algorithm.
         
@@ -182,7 +179,6 @@ class Xtract(XtractParent):
         
         return self.__noise_signal, self.__tonal_signal, self.__transient_signal, self.__remainder_signal
     
-    @overload
     def get_output_as_nparray(self) -> Tuple[npt.ArrayLike, npt.ArrayLike, npt.ArrayLike, npt.ArrayLike]:
         """Get the output of the XTRACT algorithm as numpy arrays.
         
@@ -206,8 +202,6 @@ class Xtract(XtractParent):
         
         return self.convert_fields_container_to_np_array(l_output_noise_signal), self.convert_fields_container_to_np_array(l_output_tonal_signal), self.convert_fields_container_to_np_array(l_output_transient_signal), self.convert_fields_container_to_np_array(l_output_remainder_signal)
     
-
-    @overload
     def plot(self):
         """Plot the XTRACT algorithm results.
         
