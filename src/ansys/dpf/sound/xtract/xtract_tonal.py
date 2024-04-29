@@ -167,6 +167,11 @@ class XtractTonal(XtractParent):
         Tuple[npt.ArrayLike, npt.ArrayLike]
             Tonal and non tonal signals as numpy arrays.
         """
+        if self.__output_tonal_signals == None or self.__output_non_tonal_signals == None:
+            warnings.warn(
+                PyDpfSoundWarning("Output tonal or non tonal signals are not set")
+            )
+
         l_output_tonal_signals = self.get_output()[0]
         l_output_non_tonal_signals = self.get_output()[1]
 
@@ -176,7 +181,7 @@ class XtractTonal(XtractParent):
         return self.convert_fields_container_to_np_array(l_output_tonal_signals), self.convert_fields_container_to_np_array(l_output_non_tonal_signals)
     
     @overload
-    def plot_output(self):
+    def plot(self):
         """Plot the output of the tonal analysis.
         
         Plot the tonal and non tonal signals.

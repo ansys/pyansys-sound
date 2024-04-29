@@ -189,7 +189,7 @@ class XtractDenoiser(XtractParent):
             plt.plot(l_time_data, l_output_denoised_signals.data[l_i], label=f"Channel {l_i}")
             plt.xlabel("Time (" + l_time_unit + ")")
             plt.ylabel("Amplitude (" + l_unit + ")")
-            plt.title("Denoised signal")
+            plt.title("Denoised signal")        
             plt.show()
 
         ################

@@ -167,8 +167,169 @@ class Xtract(XtractParent):
 
 
     @overload
-    def get_output(self):
+    def get_output(self) -> Tuple[FieldsContainer, FieldsContainer, FieldsContainer, FieldsContainer] | Tuple[Field, Field, Field, Field]:
+        """Get the output of the XTRACT algorithm.
+        
+        Returns
+        -------
+        Tuple[FieldsContainer, FieldsContainer, FieldsContainer, FieldsContainer] | Tuple[Field, Field, Field, Field]
+            Noise signal, tonal signal, transient signal, and remainder signal, as fields or fields_containers.
         """
-        TODO
-        """
+        if (self.__noise_signal is None) or (self.__tonal_signal is None) or (self.__transient_signal is None) or (self.__remainder_signal is None):
+            warnings.warn(
+                PyDpfSoundWarning("No output available.")
+            )
+        
         return self.__noise_signal, self.__tonal_signal, self.__transient_signal, self.__remainder_signal
+    
+    @overload
+    def get_output_as_nparray(self) -> Tuple[npt.ArrayLike, npt.ArrayLike, npt.ArrayLike, npt.ArrayLike]:
+        """Get the output of the XTRACT algorithm as numpy arrays.
+        
+        Returns
+        -------
+        Tuple[np.array, np.array, np.array, np.array]
+            Noise signal, tonal signal, transient signal, and remainder signal, as numpy arrays.
+        """
+        if (self.__noise_signal is None) or (self.__tonal_signal is None) or (self.__transient_signal is None) or (self.__remainder_signal is None):
+            warnings.warn(
+                PyDpfSoundWarning("No output available.")
+            )
+
+        l_output_noise_signal = self.get_output()[0]
+        l_output_tonal_signal = self.get_output()[1]
+        l_output_transient_signal = self.get_output()[2]
+        l_output_remainder_signal = self.get_output()[3]
+
+        if type(l_output_noise_signal) == Field:
+            return l_output_noise_signal.data, l_output_tonal_signal.data, l_output_transient_signal.data, l_output_remainder_signal.data
+        
+        return self.convert_fields_container_to_np_array(l_output_noise_signal), self.convert_fields_container_to_np_array(l_output_tonal_signal), self.convert_fields_container_to_np_array(l_output_transient_signal), self.convert_fields_container_to_np_array(l_output_remainder_signal)
+    
+
+    @overload
+    def plot(self):
+        """Plot the XTRACT algorithm results.
+        
+        """
+        ################
+        #
+        # Plot noise signal
+        #
+        l_output_noise_signal = self.get_output()[0]
+
+        if type(l_output_noise_signal) == Field:
+            l_i_nb_channels = 0
+            field = l_output_noise_signal
+        else:
+            l_i_nb_channels = len(l_output_noise_signal)
+            field = l_output_noise_signal[0]
+        
+        l_time_data = field.time_freq_support.time_frequencies.data
+        l_time_unit = field.time_freq_support.time_frequencies.unit
+        l_unit = field.unit
+
+        for l_i in range(l_i_nb_channels):
+            plt.plot(l_time_data, l_output_noise_signal[l_i].data, label=f"Channel {l_i}")
+            plt.xlabel(f"Time ({l_time_unit})")
+            plt.ylabel(f"Amplitude ({l_unit})")
+            plt.title("Noise signal")
+            plt.show()
+
+        ################
+        # Delete intermediate variables
+        del l_i_nb_channels, field, l_output_noise_signal
+        del l_time_data, l_time_unit, l_unit
+
+        ################
+        #
+        # Plot tonal signal
+        #
+        l_output_tonal_signal = self.get_output()[1]
+
+        if type(l_output_tonal_signal) == Field:
+            l_i_nb_channels = 0
+            field = l_output_tonal_signal
+        else:
+            l_i_nb_channels = len(l_output_tonal_signal)
+            field = l_output_tonal_signal[0]
+
+        l_time_data = field.time_freq_support.time_frequencies.data
+        l_time_unit = field.time_freq_support.time_frequencies.unit
+        l_unit = field.unit
+
+        for l_i in range(l_i_nb_channels):
+            plt.plot(l_time_data, l_output_tonal_signal[l_i].data, label=f"Channel {l_i}")
+            plt.xlabel(f"Time ({l_time_unit})")
+            plt.ylabel(f"Amplitude ({l_unit})")
+            plt.title("Tonal signal")
+            plt.show()
+
+        ################
+        # Delete intermediate variables
+        del l_i_nb_channels, field, l_output_tonal_signal
+        del l_time_data, l_time_unit, l_unit
+
+        ################
+        #
+        # Plot transient signal
+        #
+        l_output_transient_signal = self.get_output()[2]
+
+        if type(l_output_transient_signal) == Field:
+            l_i_nb_channels = 0
+            field = l_output_transient_signal
+        else:
+            l_i_nb_channels = len(l_output_transient_signal)
+            field = l_output_transient_signal[0]
+        
+        l_time_data = field.time_freq_support.time_frequencies.data
+        l_time_unit = field.time_freq_support.time_frequencies.unit
+        l_unit = field.unit
+
+        for l_i in range(l_i_nb_channels):
+            plt.plot(l_time_data, l_output_transient_signal[l_i].data, label=f"Channel {l_i}")
+            plt.xlabel(f"Time ({l_time_unit})")
+            plt.ylabel(f"Amplitude ({l_unit})")
+            plt.title("Transient signal")
+            plt.show()
+        
+        ################
+        # Delete intermediate variables
+        del l_i_nb_channels, field, l_output_transient_signal
+        del l_time_data, l_time_unit, l_unit
+
+        ################
+        #
+        # Plot remainder signal
+        #
+        l_output_remainder_signal = self.get_output()[3]
+
+        if type(l_output_remainder_signal) == Field:
+            l_i_nb_channels = 0
+            field = l_output_remainder_signal
+        else:
+            l_i_nb_channels = len(l_output_remainder_signal)
+            field = l_output_remainder_signal[0]
+        
+        l_time_data = field.time_freq_support.time_frequencies.data
+        l_time_unit = field.time_freq_support.time_frequencies.unit
+        l_unit = field.unit
+
+        for l_i in range(l_i_nb_channels):
+            plt.plot(l_time_data, l_output_remainder_signal[l_i].data, label=f"Channel {l_i}")
+            plt.xlabel(f"Time ({l_time_unit})")
+            plt.ylabel(f"Amplitude ({l_unit})")
+            plt.title("Remainder signal")
+            plt.show()
+        
+        ################
+        # Delete intermediate variables
+        del l_i_nb_channels, field, l_output_remainder_signal
+        del l_time_data, l_time_unit, l_unit
+
+
+
+        
+        
+    

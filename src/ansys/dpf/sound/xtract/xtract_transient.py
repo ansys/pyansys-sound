@@ -167,12 +167,12 @@ class XtractTransient(XtractParent):
             self.__output_non_transient_signals = self.__operator.get_output(1, "fields_container")
 
     @overload
-    def get_output(self) -> Tuple[FieldsContainer | FieldsContainer] | Tuple[Field | Field]:
+    def get_output(self) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
         """Get the output of the transient extraction.
         
         Returns
         -------
-        Tuple[FieldsContainer | FieldsContainer] | Tuple[Field | Field]
+        Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
             Transient signal(s) and non-transient signal(s), as a field or fields_container (depending on the input).
         """
         if self.__output_transient_signals is None or self.__output_non_transient_signals is None:
@@ -200,7 +200,7 @@ class XtractTransient(XtractParent):
         return self.convert_fields_container_to_np_array(l_output_transient_signals), self.convert_fields_container_to_np_array(l_output_non_transient_signals)
     
     @overload
-    def plot_output(self):
+    def plot(self):
         """Plot signals.
 
         Plot the transient signal and the non-transient signal.
