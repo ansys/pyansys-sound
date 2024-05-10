@@ -55,7 +55,6 @@ loudness_phon_value = loudness_phon[0].data[0]
 file_name = os.path.basename(path_flute_wav)
 print("\nThe loudness of sound file %s is %.1f sones or %.1f phons.\n" % (file_name, loudness_sone_value, loudness_phon_value))
 
-
 # %%
 # Plotting the specific loudness
 loudness.plot()
