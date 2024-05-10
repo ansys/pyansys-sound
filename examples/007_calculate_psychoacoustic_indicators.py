@@ -7,7 +7,7 @@ Calculate psychoacoustic indicators
 -----------------------------------
 
 This example shows how to calculate psychoacoustic indicators.
-It also show how to plot specific loudness.
+It also shows how to plot specific loudness.
 
 """
 # %%
