@@ -51,7 +51,7 @@ class Loudness(PsychoacousticsParent):
     def process(self):
         """Compute the loudness.
 
-        Calls the appropriate DPF Sound operaot to compute the loudness of the signal.
+        Calls the appropriate DPF Sound operator to compute the loudness of the signal.
         """
         if self.__signal == None:
             raise PyDpfSoundException("No signal for loudness computation. Use Loudness.signal")

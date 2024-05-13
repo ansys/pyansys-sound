@@ -57,7 +57,7 @@ def test_loudness_get_output(dpf_sound_test_server):
     loudnessComputer.process()
 
     (loudnessSone, loudnessPhon, SpecificLoudness) = loudnessComputer.get_output()
-    assert loudnessSone
+    assert loudnessSone != None
     assert loudnessPhon != None
     assert SpecificLoudness != None
 

@@ -7,3 +7,4 @@ Psychoacoustics
     :toctree: _autosummary
 
     Loudness
+    LoudnessVsTime
