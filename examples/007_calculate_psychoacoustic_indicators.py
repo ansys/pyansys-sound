@@ -19,12 +19,11 @@ It also shows how to plot specific loudness.
 # Load Ansys libraries.
 
 import os
-import ansys.dpf.core as dpf
 
 from ansys.dpf.sound.examples_helpers import get_absolute_path_for_flute_wav
-from ansys.dpf.sound.server_helpers import connect_to_or_start_server
-from ansys.dpf.sound.signal_utilities import LoadWav, WriteWav
 from ansys.dpf.sound.psychoacoustics.loudness import Loudness
+from ansys.dpf.sound.server_helpers import connect_to_or_start_server
+from ansys.dpf.sound.signal_utilities import LoadWav
 
 # Connect to remote or start a local server
 server = connect_to_or_start_server()
@@ -53,7 +52,10 @@ loudness_sone_value = loudness_sone[0].data[0]
 loudness_phon = loudness.get_loudness_phon()
 loudness_phon_value = loudness_phon[0].data[0]
 file_name = os.path.basename(path_flute_wav)
-print("\nThe loudness of sound file %s is %.1f sones or %.1f phons.\n" % (file_name, loudness_sone_value, loudness_phon_value))
+print(
+    "\nThe loudness of sound file %s is %.1f sones or %.1f phons.\n"
+    % (file_name, loudness_sone_value, loudness_phon_value)
+)
 
 # %%
 # Plotting the specific loudness
