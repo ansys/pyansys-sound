@@ -9,7 +9,7 @@ from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
 class CropSignal(SignalUtilitiesParent):
-    """Crop Signal.
+    """Crop signal.
 
     This class crops signals.
     """

@@ -31,12 +31,12 @@ class Istft(SpectrogramProcessingParent):
 
     @property
     def stft(self):
-        """Stft property."""
+        """STFT property."""
         return self.__stft  # pragma: no cover
 
     @stft.setter
     def stft(self, stft: FieldsContainer):
-        """Set the stft."""
+        """Set the STFT."""
         if type(stft) != FieldsContainer and stft != None:
             raise PyDpfSoundException("Input must be a Fields container.")
 
@@ -46,19 +46,19 @@ class Istft(SpectrogramProcessingParent):
             or not stft.has_label("channel_number")
         ):
             raise PyDpfSoundException(
-                "STFT is in the wrong format, make sure it has been computed with the Stft class."
+                "STFT is in the wrong format, make sure it has been computed with the stft class."
             )
 
         self.__stft = stft
 
     @stft.getter
     def stft(self) -> FieldsContainer:
-        """Get the stft.
+        """Get the STFT.
 
         Returns
         -------
         FieldsContainer
-                The stft as a FieldsContainer.
+                The STFT as a FieldsContainer.
         """
         return self.__stft
 
