@@ -1,9 +1,9 @@
 """Xtract tonal module."""
 
+from typing import Tuple
 import warnings
-from typing import overload, Tuple
 
-from ansys.dpf.core import Field, FieldsContainer, Operator, GenericDataContainer
+from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operator
 import matplotlib.pyplot as plt
 from numpy import typing as npt
 
@@ -13,30 +13,34 @@ from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
 class XtractTonal(XtractParent):
     """Xtract tonal class.
-    
+
     Signal tonal analysis using the XTRACT algorithm.
     """
 
     def __init__(
-            self,
-            input_signal: FieldsContainer | Field = None,
-            input_parameters: GenericDataContainer = None
+        self,
+        input_signal: FieldsContainer | Field = None,
+        input_parameters: GenericDataContainer = None,
     ):
         """Create a XtractTonal class.
 
         Parameters
         ----------
         input_signal:
-            Signal(s) from which we want to extract tonal components, as a field or fields_container. When inputting a fields_container, each signal (each field of the fields_container) is processed individually.
+            Signal(s) from which we want to extract tonal components,
+            as a field or fields_container.
+            When inputting a fields_container,
+            each signal (each field of the fields_container) is processed individually.
         input_parameters:
             Structure that contains the parameters of the algorithm:
-				- Nfft (int) in number of samples
-				- Regularity setting (float) in percent
-				- Maximum slope (float) in dB/Hz
-				- Minimum duration (float) in seconds
-				- Intertonal gap (float) in Hz
-				- Local smergence (float) in dB
-			This structure is of type Xtract_tonal_parameters (see this class for more details).
+                                - Nfft (int) in number of samples
+                                - Regularity setting (float) in percent
+                                - Maximum slope (float) in dB/Hz
+                                - Minimum duration (float) in seconds
+                                - Intertonal gap (float) in Hz
+                                - Local smergence (float) in dB
+                        This structure is of type Xtract_tonal_parameters
+                        (see this class for more details).
         output_tonal_signals:
             Tonal signal(s), as a field or fields_container (depending on the input).
         """
@@ -53,13 +57,16 @@ class XtractTonal(XtractParent):
     @property
     def input_signal(self) -> FieldsContainer | Field:
         """Get input signal.
-        
+
         Returns
         -------
         FieldsContainer | Field
-            Signal(s) from which we want to extract tonal components, as a field or fields_container. When inputting a fields_container, each signal (each field of the fields_container) is processed individually.
+            Signal(s) from which we want to extract tonal components,
+            as a field or fields_container.
+            When inputting a fields_container, each signal (each field of the fields_container)
+            is processed individually.
         """
-        return self.__input_signal # pragma: no cover
+        return self.__input_signal  # pragma: no cover
 
     @input_signal.setter
     def input_signal(self, value: FieldsContainer | Field):
@@ -69,7 +76,7 @@ class XtractTonal(XtractParent):
     @property
     def input_parameters(self) -> GenericDataContainer:
         """Get input parameters.
-        
+
         Returns
         -------
         GenericDataContainer
@@ -87,18 +94,18 @@ class XtractTonal(XtractParent):
     def input_parameters(self, value: GenericDataContainer):
         """Set input parameters."""
         self.__input_parameters = value
-    
+
     @property
     def output_tonal_signals(self) -> FieldsContainer | Field:
         """Get output tonal signals.
-        
+
         Returns
         -------
         FieldsContainer | Field
             Tonal signal(s), as a field or fields_container (depending on the input).
         """
-        return self.__output_tonal_signals # pragma: no cover
-    
+        return self.__output_tonal_signals  # pragma: no cover
+
     @output_tonal_signals.setter
     def output_tonal_signals(self, value: FieldsContainer | Field):
         """Set output tonal signals."""
@@ -107,29 +114,27 @@ class XtractTonal(XtractParent):
     @property
     def output_non_tonal_signals(self) -> FieldsContainer | Field:
         """Get output non tonal signals.
-        
+
         Returns
         -------
         FieldsContainer | Field
             Non tonal signal(s), as a field or fields_container (depending on the input).
         """
-        return self.__output_non_tonal_signals # pragma: no cover
-    
+        return self.__output_non_tonal_signals  # pragma: no cover
+
     @output_non_tonal_signals.setter
     def output_non_tonal_signals(self, value: FieldsContainer | Field):
         """Set output non tonal signals."""
         self.__output_non_tonal_signals = value
 
     def process(self):
-        """Process the tonal analysis.
-        """
-        
+        """Process the tonal analysis."""
         if self.__input_signal is None:
             raise PyDpfSoundException("No input signal for tonal analysis.")
-        
+
         if self.__input_parameters is None:
             raise PyDpfSoundException("Input parameters are not set.")
-        
+
         self.__operator.connect(0, self.__input_signal)
         self.__operator.connect(1, self.__input_parameters)
 
@@ -145,39 +150,36 @@ class XtractTonal(XtractParent):
             self.__output_non_tonal_signals = self.__operator.get_output(1, "fields_container")
 
     def get_output(self) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
-        """Get the output of the tonal.
-        """
+        """Get the output of the tonal."""
         if self.__output_tonal_signals == None or self.__output_non_tonal_signals == None:
-            warnings.warn(
-                PyDpfSoundWarning("Output tonal or non tonal signals are not set")
-            )
+            warnings.warn(PyDpfSoundWarning("Output tonal or non tonal signals are not set"))
 
         return self.__output_tonal_signals, self.__output_non_tonal_signals
-    
+
     def get_output_as_nparray(self) -> Tuple[npt.ArrayLike, npt.ArrayLike]:
         """Get the output of the tonal as numpy arrays.
-        
+
         Returns
         -------
         Tuple[npt.ArrayLike, npt.ArrayLike]
             Tonal and non tonal signals as numpy arrays.
         """
         if self.__output_tonal_signals == None or self.__output_non_tonal_signals == None:
-            warnings.warn(
-                PyDpfSoundWarning("Output tonal or non tonal signals are not set")
-            )
+            warnings.warn(PyDpfSoundWarning("Output tonal or non tonal signals are not set"))
 
         l_output_tonal_signals = self.get_output()[0]
         l_output_non_tonal_signals = self.get_output()[1]
 
         if type(l_output_tonal_signals) == Field:
             return l_output_tonal_signals.data, l_output_non_tonal_signals.data
-        
-        return self.convert_fields_container_to_np_array(l_output_tonal_signals), self.convert_fields_container_to_np_array(l_output_non_tonal_signals)
-    
+
+        return self.convert_fields_container_to_np_array(
+            l_output_tonal_signals
+        ), self.convert_fields_container_to_np_array(l_output_non_tonal_signals)
+
     def plot(self):
         """Plot the output of the tonal analysis.
-        
+
         Plot the tonal and non tonal signals.
         """
         ################
@@ -221,7 +223,7 @@ class XtractTonal(XtractParent):
         else:
             l_i_nb_channels = len(l_output_non_tonal_signals)
             field = l_output_non_tonal_signals[0]
-        
+
         l_time_data = field.time_freq_support.time_frequencies.data
         l_time_unit = field.time_freq_support.time_frequencies.unit
         l_unit = field.unit
@@ -237,7 +239,3 @@ class XtractTonal(XtractParent):
         # Delete intermediate variables
         del l_i_nb_channels, field, l_output_non_tonal_signals
         del l_time_data, l_time_unit, l_unit
-
-
-
-
