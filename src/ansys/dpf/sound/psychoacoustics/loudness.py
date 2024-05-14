@@ -136,6 +136,26 @@ class Loudness(PsychoacousticsParent):
 
         return self._output[0]
 
+    def get_loudness_sone_as_float(self) -> float:
+        """Return the loudness in sone as a float.
+
+        Returns
+        -------
+            float
+                Loudness value in sone
+        """
+        if self._output == None:
+            # Computing output if needed
+            warnings.warn(
+                PyDpfSoundWarning("Output has not been processed yet, use Loudness.process().")
+            )
+            return None
+
+        loudness_data = self._output[0]
+        loudness_float = loudness_data[0].data[0]
+
+        return loudness_float
+
     def get_loudness_phon(self) -> Field | FieldsContainer:
         """Return the loudness in Phon.
 
@@ -151,6 +171,26 @@ class Loudness(PsychoacousticsParent):
             return None
 
         return self._output[1]
+
+    def get_loudness_phon_as_float(self) -> float:
+        """Return the loudness level in phon as a float.
+
+        Returns
+        -------
+            float
+                Loudness level value in phon
+        """
+        if self._output == None:
+            # Computing output if needed
+            warnings.warn(
+                PyDpfSoundWarning("Output has not been processed yet, use Loudness.process().")
+            )
+            return None
+
+        loudness_data = self._output[1]
+        loudness_level_float = loudness_data[0].data[0]
+
+        return loudness_level_float
 
     def get_specific_loudness(self) -> Field | FieldsContainer:
         """Return the Specific loudness.
