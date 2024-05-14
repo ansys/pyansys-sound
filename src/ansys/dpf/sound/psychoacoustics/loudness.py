@@ -120,23 +120,7 @@ class Loudness(PsychoacousticsParent):
             self.convert_fields_container_to_np_array(output[2]),
         )
 
-    def get_loudness_sone(self) -> Field | FieldsContainer:
-        """Return the loudness in Sone.
-
-        Returns
-        -------
-            tuple(FieldsContainer) | tuple(Field)
-        """
-        if self._output == None:
-            # Computing output if needed
-            warnings.warn(
-                PyDpfSoundWarning("Output has not been yet processed, use Loudness.process().")
-            )
-            return None
-
-        return self._output[0]
-
-    def get_loudness_sone_as_float(self) -> float:
+    def get_loudness_sone(self) -> float:
         """Return the loudness in sone as a float.
 
         Returns
@@ -145,34 +129,22 @@ class Loudness(PsychoacousticsParent):
                 Loudness value in sone
         """
         if self._output == None:
-            # Computing output if needed
             warnings.warn(
                 PyDpfSoundWarning("Output has not been processed yet, use Loudness.process().")
             )
             return None
 
         loudness_data = self._output[0]
-        loudness_float = loudness_data[0].data[0]
+
+        if type(loudness_data) == FieldsContainer:
+            # Extract field from fields container
+            loudness_data = loudness_data[0]
+
+        loudness_float = loudness_data.data[0]
 
         return loudness_float
 
-    def get_loudness_phon(self) -> Field | FieldsContainer:
-        """Return the loudness in Phon.
-
-        Returns
-        -------
-            tuple(FieldsContainer) | tuple(Field)
-        """
-        if self._output == None:
-            # Computing output if needed
-            warnings.warn(
-                PyDpfSoundWarning("Output has not been yet processed, use Loudness.process().")
-            )
-            return None
-
-        return self._output[1]
-
-    def get_loudness_phon_as_float(self) -> float:
+    def get_loudness_phon(self) -> float:
         """Return the loudness level in phon as a float.
 
         Returns
@@ -181,14 +153,18 @@ class Loudness(PsychoacousticsParent):
                 Loudness level value in phon
         """
         if self._output == None:
-            # Computing output if needed
             warnings.warn(
                 PyDpfSoundWarning("Output has not been processed yet, use Loudness.process().")
             )
             return None
 
         loudness_data = self._output[1]
-        loudness_level_float = loudness_data[0].data[0]
+
+        if type(loudness_data) == FieldsContainer:
+            # Extract field from fields container
+            loudness_data = loudness_data[0]
+
+        loudness_level_float = loudness_data.data[0]
 
         return loudness_level_float
 

@@ -47,13 +47,13 @@ loudness.process()
 
 # %%
 # Getting value in sone or in phon
-loudness_sone_value = loudness.get_loudness_sone_as_float()
-loudness_phon_value = loudness.get_loudness_phon_as_float()
+loudness_sone = loudness.get_loudness_sone()
+loudness_phon = loudness.get_loudness_phon()
 file_name = os.path.basename(path_flute_wav)
 print(
     f"\nThe loudness of sound file {file_name} "
-    f"is{loudness_sone_value: .1f} sones "
-    f"or{loudness_phon_value: .1f} phons.\n"
+    f"is{loudness_sone: .1f} sones "
+    f"or{loudness_phon: .1f} phons.\n"
 )
 
 # %%
