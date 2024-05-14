@@ -3,6 +3,7 @@ import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
+import numpy as np
 from numpy import typing as npt
 
 from . import PsychoacousticsParent
@@ -112,7 +113,7 @@ class Loudness(PsychoacousticsParent):
             return None
 
         if type(output[0]) == Field:
-            return (output[0].data, output[1].data, output[2].data)
+            return (np.array(output[0].data), np.array(output[1].data), np.array(output[2].data))
 
         return (
             self.convert_fields_container_to_np_array(output[0]),
@@ -120,12 +121,12 @@ class Loudness(PsychoacousticsParent):
             self.convert_fields_container_to_np_array(output[2]),
         )
 
-    def get_loudness_sone(self) -> Field | FieldsContainer:
+    def get_loudness_sone(self) -> float:
         """Return the loudness in Sone.
 
         Returns
         -------
-            tuple(FieldsContainer) | tuple(Field)
+            float
         """
         if self._output == None:
             # Computing output if needed
@@ -134,14 +135,14 @@ class Loudness(PsychoacousticsParent):
             )
             return None
 
-        return self._output[0]
+        return self._output[0][0].data[0]
 
-    def get_loudness_phon(self) -> Field | FieldsContainer:
+    def get_loudness_phon(self) -> float:
         """Return the loudness in Phon.
 
         Returns
         -------
-            tuple(FieldsContainer) | tuple(Field)
+            float
         """
         if self._output == None:
             # Computing output if needed
@@ -150,7 +151,7 @@ class Loudness(PsychoacousticsParent):
             )
             return None
 
-        return self._output[1]
+        return self._output[1][0].data[0]
 
     def get_specific_loudness(self) -> Field | FieldsContainer:
         """Return the Specific loudness.
@@ -176,16 +177,23 @@ class Loudness(PsychoacousticsParent):
         specific_loudness = self.get_specific_loudness()
 
         if type(specific_loudness) == Field:
-            num_channels = 0
             field = specific_loudness
+            bark_bands = field.time_freq_support.time_frequencies.data
+            specific_loudness_as_nparray = self.get_output_as_nparray()[2]
+            plt.plot(bark_bands, specific_loudness_as_nparray)
         else:
             num_channels = len(specific_loudness)
             field = specific_loudness[0]
+            bark_bands = field.time_freq_support.time_frequencies.data
+            specific_loudness_as_nparray = self.get_output_as_nparray()[2]
 
-        bark_bands = field.time_freq_support.time_frequencies.data
-
-        for i in range(num_channels):
-            plt.plot(bark_bands, specific_loudness[i].data, label="Channel {}".format(i))
+            if num_channels == 1:
+                plt.plot(bark_bands, specific_loudness_as_nparray)
+            else:
+                for i in range(num_channels):
+                    plt.plot(
+                        bark_bands, specific_loudness_as_nparray[i], label="Channel {}".format(i)
+                    )
 
         plt.title("Specific loudness")
         plt.legend()

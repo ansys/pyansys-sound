@@ -81,8 +81,7 @@ def test_loudness_get_loudness_sone(dpf_sound_test_server):
     loudnessComputer.process()
 
     loudnessSone = loudnessComputer.get_loudness_sone()
-    assert len(loudnessSone) == 1
-    assert loudnessSone[0].data[0] == 39.58000183105469
+    assert loudnessSone == 39.58000183105469
 
 
 pytest.mark.dependency(depends=["test_loudness_process"])
@@ -104,8 +103,7 @@ def test_loudness_get_loudness_phon(dpf_sound_test_server):
     loudnessComputer.process()
 
     loudnessPhon = loudnessComputer.get_loudness_phon()
-    assert len(loudnessPhon) == 1
-    assert loudnessPhon[0].data[0] == 93.0669937133789
+    assert loudnessPhon == 93.0669937133789
 
 
 @pytest.mark.dependency(depends=["test_loudness_process"])
@@ -149,10 +147,13 @@ def test_loudness_get_output_as_nparray_from_field_container(dpf_sound_test_serv
     loudnessComputer.process()
 
     (loudnessSone, loudnessPhon, SpecificLoudness) = loudnessComputer.get_output_as_nparray()
+    assert type(loudnessSone) == np.ndarray
     assert len(loudnessSone) == 1
     assert loudnessSone[0] == 39.58000183105469
+    assert type(loudnessPhon) == np.ndarray
     assert len(loudnessPhon) == 1
     assert loudnessPhon[0] == 93.0669937133789
+    assert type(SpecificLoudness) == np.ndarray
     assert len(SpecificLoudness) == 240
     assert SpecificLoudness[0] == 0
     assert SpecificLoudness[9] == 0.15664348006248474
@@ -173,10 +174,13 @@ def test_loudness_get_output_as_nparray_from_field(dpf_sound_test_server):
     loudnessComputer.process()
 
     (loudnessSone, loudnessPhon, SpecificLoudness) = loudnessComputer.get_output_as_nparray()
+    assert type(loudnessSone) == np.ndarray
     assert len(loudnessSone) == 1
     assert loudnessSone[0] == 39.58000183105469
+    assert type(loudnessPhon) == np.ndarray
     assert len(loudnessPhon) == 1
     assert loudnessPhon[0] == 93.0669937133789
+    assert type(SpecificLoudness) == np.ndarray
     assert len(SpecificLoudness) == 240
     assert SpecificLoudness[0] == 0
     assert SpecificLoudness[9] == 0.15664348006248474
