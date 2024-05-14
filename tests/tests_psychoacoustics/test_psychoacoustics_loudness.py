@@ -81,7 +81,7 @@ def test_loudness_get_loudness_sone(dpf_sound_test_server):
     loudnessComputer.process()
 
     loudnessSone = loudnessComputer.get_loudness_sone()
-    assert len(loudnessSone) == 1
+    assert type(loudnessSone) == np.float64
     assert loudnessSone == 39.58000183105469
 
 
@@ -104,7 +104,7 @@ def test_loudness_get_loudness_phon(dpf_sound_test_server):
     loudnessComputer.process()
 
     loudnessPhon = loudnessComputer.get_loudness_phon()
-    assert len(loudnessPhon) == 1
+    assert type(loudnessPhon) == np.float64
     assert loudnessPhon == 93.0669937133789
 
 
