@@ -324,7 +324,7 @@ def test_loudness_plot_from_fields_container(mock_show, dpf_sound_test_server):
     loudness_computer.plot()
 
     # Add a second signal in the fields container
-    wav_loader = LoadWav(pytest.data_path_flute_modified_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute2_in_container)
     wav_loader.process()
     fc.add_field({"channel_number": 1}, wav_loader.get_output()[0])
 
