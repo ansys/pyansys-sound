@@ -21,7 +21,7 @@ It also shows how to plot specific loudness.
 import os
 
 from ansys.dpf.sound.examples_helpers import (
-    get_absolute_path_for_flute_modified_wav,
+    get_absolute_path_for_flute2_wav,
     get_absolute_path_for_flute_wav,
 )
 from ansys.dpf.sound.psychoacoustics.loudness import Loudness_ISO532_1_stationary
@@ -69,8 +69,8 @@ loudness.plot()
 # Calculate ISO 532-1 loudness for several signals at once
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load another wav file.
-path_flute_modified_wav = get_absolute_path_for_flute_modified_wav()
-wav_loader = LoadWav(path_flute_modified_wav)
+path_flute2_wav = get_absolute_path_for_flute2_wav()
+wav_loader = LoadWav(path_flute2_wav)
 wav_loader.process()
 
 # Store the second signal with the first one.
@@ -87,7 +87,7 @@ loudness.process()
 # Get values in sone or in phon.
 loudness_sone2 = loudness.get_loudness_sone(1)
 loudness_level_phon2 = loudness.get_loudness_level_phon(1)
-file_name2 = os.path.basename(path_flute_modified_wav)
+file_name2 = os.path.basename(path_flute2_wav)
 print(
     f"\nThe loudness of sound file {file_name} "
     f"is{loudness_sone: .1f} sones "
