@@ -1,4 +1,4 @@
-"""Compute Loudness."""
+"""Compute ISO 532-1 loudness for stationary sounds."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -10,7 +10,7 @@ from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
 class Loudness_ISO532_1_stationary(PsychoacousticsParent):
-    """ISO 532-1 Loudness for stationary sounds.
+    """ISO 532-1 loudness for stationary sounds.
 
     This class computes the loudness of a signal following standard ISO 532-1 for stationary
     sounds.

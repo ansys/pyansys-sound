@@ -6,4 +6,4 @@ Psychoacoustics
 .. autosummary::
     :toctree: _autosummary
 
-    Loudness
+    Loudness_ISO532_1_stationary
