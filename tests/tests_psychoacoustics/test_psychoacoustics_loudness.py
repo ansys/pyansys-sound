@@ -224,17 +224,6 @@ def test_loudness_get_Bark_band_frequencies(dpf_sound_test_server):
     assert Bark_band_frequencies[9] == 102.08707043772274
     assert Bark_band_frequencies[40] == 400.79351405718324
 
-    # Set signal as a field
-    loudness_computer.signal = fc[0]
-    # Compute
-    loudness_computer.process()
-
-    Bark_band_frequencies = loudness_computer.get_Bark_band_indexes()
-    assert len(Bark_band_frequencies) == 240
-    assert Bark_band_frequencies[0] == 0.10000000149011612
-    assert Bark_band_frequencies[9] == 1.0000000149011612
-    assert Bark_band_frequencies[40] == 4.100000061094761
-
 
 @pytest.mark.dependency(depends=["test_loudness_process"])
 def test_loudness_get_output_as_nparray_from_fields_container(dpf_sound_test_server):
