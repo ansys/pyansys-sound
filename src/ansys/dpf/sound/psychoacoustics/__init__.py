@@ -4,9 +4,9 @@ Helper functions related to psychoacoustics indicators computation.
 """
 
 from ._psychoacoustics_parent import PsychoacousticsParent
-from .loudness import Loudness
+from .loudness import Loudness_ISO532_1_stationary
 
 __all__ = (
     "PsychoacousticsParent",
-    "Loudness",
+    "Loudness_ISO532_1_stationary",
 )
