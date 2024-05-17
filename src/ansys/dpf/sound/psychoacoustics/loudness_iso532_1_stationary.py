@@ -278,7 +278,7 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
     def _get_output_parameter(self, channel_index: int, output_id: str) -> float | npt.ArrayLike:
         """Return individual loudness result.
 
-        Returns the loudness or loudness level in phon as a float, or the specific loudness as an
+        Returns the loudness or loudness level in phon as a float, or the specific loudness as a
         numpy array, according to specified output_id, and for the specified channel.
 
         Parameters
