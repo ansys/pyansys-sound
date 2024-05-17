@@ -312,8 +312,7 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
             # fc_loudness_scalar can only be a field if signal is monophonic
             if channel_index > 0:
                 raise PyDpfSoundException(
-                    f"Signal is monophonic. Specified channel index ({channel_index})"
-                    " does not exist."
+                    f"Specified channel index ({channel_index}) does not exist."
                 )
             f_loudness_result = fc_loudness_result
 
