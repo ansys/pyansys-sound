@@ -269,7 +269,7 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
 
         plt.title("Specific loudness")
         plt.xlabel("Bark band index")
-        plt.ylabel("N' (sones/Bark)")
+        plt.ylabel("N' (sone/Bark)")
         plt.grid(True)
         if num_channels > 1:
             plt.legend()
