@@ -22,7 +22,7 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
         Parameters
         ----------
         signal: Field | FieldsContainer
-            Signal in Pa on which to compute the Loudness, as a DPF Field or Fields Container.
+            Signal in Pa on which to compute loudness, as a DPF Field or Fields Container.
         """
         super().__init__()
         self.signal = signal
@@ -40,7 +40,7 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
         Parameters
         -------
         signal: FieldsContainer | Field
-            Signal in Pa on which to compute the Loudness, as a DPF Field or Fields Container.
+            Signal in Pa on which to compute loudness, as a DPF Field or Fields Container.
 
         """
         self.__signal = signal
@@ -57,12 +57,14 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
         return self.__signal
 
     def process(self):
-        """Compute the loudness.
+        """Compute loudness.
 
         Calls the appropriate DPF Sound operator to compute the loudness of the signal.
         """
         if self.__signal == None:
-            raise PyDpfSoundException("No signal for loudness computation. Use Loudness.signal.")
+            raise PyDpfSoundException(
+                "No signal for loudness computation. Use Loudness_ISO532_1_stationary.signal."
+            )
 
         self.__operator.connect(0, self.signal)
 
@@ -95,7 +97,9 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
         """
         if self._output == None:
             warnings.warn(
-                PyDpfSoundWarning("Output has not been processed yet, use Loudness.process().")
+                PyDpfSoundWarning(
+                    "Output has not been processed yet, use Loudness_ISO532_1_stationary.process()."
+                )
             )
 
         return self._output
@@ -114,7 +118,9 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
 
         if output == None:
             warnings.warn(
-                PyDpfSoundWarning("Output has not been processed yet, use Loudness.process().")
+                PyDpfSoundWarning(
+                    "Output has not been processed yet, use Loudness_ISO532_1_stationary.process()."
+                )
             )
             return None
 
@@ -192,7 +198,9 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
 
         if output == None:
             warnings.warn(
-                PyDpfSoundWarning("Output has not been processed yet, use Loudness.process().")
+                PyDpfSoundWarning(
+                    "Output has not been processed yet, use Loudness_ISO532_1_stationary.process()."
+                )
             )
             return None
 
@@ -233,7 +241,9 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
         index is displayed.
         """
         if self._output == None:
-            raise PyDpfSoundException("Output has not been processed yet, use Loudness.process().")
+            raise PyDpfSoundException(
+                "Output has not been processed yet, use Loudness_ISO532_1_stationary.process()."
+            )
 
         specific_loudness = self.get_output()[2]
 
@@ -289,7 +299,9 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
         """
         if self._output == None:
             warnings.warn(
-                PyDpfSoundWarning("Output has not been processed yet, use Loudness.process().")
+                PyDpfSoundWarning(
+                    "Output has not been processed yet, use Loudness_ISO532_1_stationary.process()."
+                )
             )
             return None
 
