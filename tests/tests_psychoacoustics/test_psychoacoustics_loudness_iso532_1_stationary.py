@@ -69,9 +69,7 @@ def test_loudness_iso532_1_stationary_get_output(dpf_sound_test_server):
     assert specific_loudness != None
 
 
-pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_process"])
-
-
+@pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_process"])
 def test_loudness_iso532_1_stationary_get_loudness_sone(dpf_sound_test_server):
     loudness_computer = Loudness_ISO532_1_stationary()
     # Get a signal
@@ -116,9 +114,7 @@ def test_loudness_iso532_1_stationary_get_loudness_sone(dpf_sound_test_server):
     assert loudness_sone == 39.58000183105469
 
 
-pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_process"])
-
-
+@pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_process"])
 def test_loudness_iso532_1_stationary_get_loudness_level_phon(dpf_sound_test_server):
     loudness_computer = Loudness_ISO532_1_stationary()
     # Get a signal
