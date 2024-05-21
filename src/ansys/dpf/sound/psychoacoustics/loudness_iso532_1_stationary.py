@@ -3,6 +3,8 @@ import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
+import numpy
+from numpy import copy
 from numpy import typing as npt
 
 from . import PsychoacousticsParent
@@ -117,11 +119,6 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
         output = self.get_output()
 
         if output == None:
-            warnings.warn(
-                PyDpfSoundWarning(
-                    "Output has not been processed yet, use Loudness_ISO532_1_stationary.process()."
-                )
-            )
             return None
 
         if type(output[0]) == Field:
@@ -184,7 +181,7 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
         """
         return self._get_output_parameter(channel_index, "specific")
 
-    def get_Bark_band_indexes(self) -> npt.ArrayLike:
+    def get_bark_band_indexes(self) -> npt.ArrayLike:
         """Return Bark band indexes.
 
         Returns the Bark band indexes used for loudness calculation as a numpy array.
@@ -197,21 +194,16 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
         output = self.get_output()
 
         if output == None:
-            warnings.warn(
-                PyDpfSoundWarning(
-                    "Output has not been processed yet, use Loudness_ISO532_1_stationary.process()."
-                )
-            )
             return None
 
         specific_loudness = output[2]
 
         if type(specific_loudness) == Field:
-            return specific_loudness.time_freq_support.time_frequencies.data
+            return copy(specific_loudness.time_freq_support.time_frequencies.data)
         else:
-            return specific_loudness[0].time_freq_support.time_frequencies.data
+            return copy(specific_loudness[0].time_freq_support.time_frequencies.data)
 
-    def get_Bark_band_frequencies(self) -> npt.ArrayLike:
+    def get_bark_band_frequencies(self) -> npt.ArrayLike:
         """Return Bark band frequencies.
 
         Return the frequencies corresponding to Bark band indexes as a numpy array.
@@ -225,14 +217,14 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
         npt.ArrayLike
             Array of Bark band frequencies.
         """
-        Bark_band_indexes = self.get_Bark_band_indexes()
+        bark_band_indexes = self.get_bark_band_indexes()
 
-        for iBark in range(len(Bark_band_indexes)):
-            if Bark_band_indexes[iBark] < 2:
-                Bark_band_indexes[iBark] = (Bark_band_indexes[iBark] - 0.3) / 0.85
-            elif Bark_band_indexes[iBark] > 20.1:
-                Bark_band_indexes[iBark] = (Bark_band_indexes[iBark] + 4.422) / 1.22
-        return 1920 * (Bark_band_indexes + 0.53) / (26.28 - Bark_band_indexes)
+        for ibark in range(len(bark_band_indexes)):
+            if bark_band_indexes[ibark] < 2:
+                bark_band_indexes[ibark] = (bark_band_indexes[ibark] - 0.3) / 0.85
+            elif bark_band_indexes[ibark] > 20.1:
+                bark_band_indexes[ibark] = (bark_band_indexes[ibark] + 4.422) / 1.22
+        return 1920 * (bark_band_indexes + 0.53) / (26.28 - bark_band_indexes)
 
     def plot(self):
         """Plot specific loudness.
@@ -245,18 +237,14 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
                 "Output has not been processed yet, use Loudness_ISO532_1_stationary.process()."
             )
 
-        specific_loudness = self.get_output()[2]
+        bark_band_indexes = self.get_bark_band_indexes()
+        specific_loudness_as_nparray = self.get_output_as_nparray()[2]
 
-        if type(specific_loudness) == Field:
+        if type(self._output[2]) == Field:
             num_channels = 1
-            bark_band_indexes = specific_loudness.time_freq_support.time_frequencies.data
-            specific_loudness_as_nparray = self.get_output_as_nparray()[2]
             plt.plot(bark_band_indexes, specific_loudness_as_nparray)
         else:
-            num_channels = len(specific_loudness)
-            bark_band_indexes = specific_loudness[0].time_freq_support.time_frequencies.data
-            specific_loudness_as_nparray = self.get_output_as_nparray()[2]
-
+            num_channels = len(self._output[2])
             if num_channels == 1:
                 plt.plot(bark_band_indexes, specific_loudness_as_nparray)
             else:
@@ -297,38 +285,30 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
             Loudness or loudness level value (float, in sone or phon, respectively), or specific
             loudness (numpy array, in sone/Bark).
         """
-        if self._output == None:
-            warnings.warn(
-                PyDpfSoundWarning(
-                    "Output has not been processed yet, use Loudness_ISO532_1_stationary.process()."
-                )
-            )
+        loudness_data = self.get_output_as_nparray()
+        if loudness_data == None:
             return None
 
-        # Extract specified result from output field or fields container
-        if output_id == "sone":
-            fc_loudness_result = self._output[0]
-        elif output_id == "phon":
-            fc_loudness_result = self._output[1]
-        elif output_id == "specific":
-            fc_loudness_result = self._output[2]
-
-        # Get the result corresponding to specified channel
-        if type(fc_loudness_result) == FieldsContainer:
-            if channel_index > len(fc_loudness_result) - 1:
-                raise PyDpfSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
-            f_loudness_result = fc_loudness_result[channel_index]
-        elif type(fc_loudness_result) == Field:
-            # fc_loudness_result can only be a field if signal is just 1 channel
-            if channel_index > 0:
-                raise PyDpfSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
-            f_loudness_result = fc_loudness_result
-
-        if output_id == "specific":
-            return f_loudness_result.data
+        # Check if input signal was mono or multichannel.
+        if type(loudness_data[0][0]) == numpy.float64:
+            channel_max = 0
         else:
-            return f_loudness_result.data[0]
+            channel_max = len(loudness_data[0][0]) - 1
+
+        # Check that specified channel index exists.
+        if channel_index > channel_max:
+            raise PyDpfSoundException(f"Specified channel index ({channel_index}) does not exist.")
+
+        # Return output parameter (loudness, loudness level, or specific loudness) for the specified
+        # channel.
+        if output_id == "specific":
+            if channel_max > 0:
+                return loudness_data[2][:, channel_index]
+            else:
+                return loudness_data[2]
+        else:
+            unit_index = output_id == "phon"
+            if channel_max > 0:
+                return loudness_data[unit_index][0][channel_index]
+            else:
+                return loudness_data[unit_index][0]

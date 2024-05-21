@@ -85,20 +85,6 @@ def test_loudness_iso532_1_stationary_get_loudness_sone(dpf_sound_test_server):
         output = loudness_computer.get_loudness_sone()
     assert output == None
 
-    # Set signal as a fields container
-    loudness_computer.signal = fc
-    # Compute
-    loudness_computer.process()
-
-    # Request second channel's loudness while signal is mono -> error
-    with pytest.raises(
-        PyDpfSoundException, match="Specified channel index \\(1\\) does not exist."
-    ):
-        loudness_sone = loudness_computer.get_loudness_sone(1)
-
-    loudness_sone = loudness_computer.get_loudness_sone(0)
-    assert loudness_sone == 39.58000183105469
-
     # Set signal as a field
     loudness_computer.signal = fc[0]
     # Compute
@@ -112,6 +98,29 @@ def test_loudness_iso532_1_stationary_get_loudness_sone(dpf_sound_test_server):
 
     loudness_sone = loudness_computer.get_loudness_sone(0)
     assert loudness_sone == 39.58000183105469
+
+    # Set signal as a fields container
+    loudness_computer.signal = fc
+    # Compute
+    loudness_computer.process()
+
+    loudness_sone = loudness_computer.get_loudness_sone(0)
+    assert loudness_sone == 39.58000183105469
+
+    wav_loader = LoadWav(pytest.data_path_flute2_in_container)
+    wav_loader.process()
+
+    # Store the second signal with the first one.
+    fc_two_signals = fc
+    fc_two_signals.add_field({"channel_number": 1}, wav_loader.get_output()[0])
+
+    # Compute
+    loudness_computer.process()
+
+    loudness_sone = loudness_computer.get_loudness_sone(0)
+    assert loudness_sone == 39.58000183105469
+    loudness_sone = loudness_computer.get_loudness_sone(1)
+    assert loudness_sone == 16.18000030517578
 
 
 @pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_process"])
@@ -166,9 +175,25 @@ def test_loudness_iso532_1_stationary_get_specific_loudness(dpf_sound_test_serve
     assert specific_loudness[9] == 0.15664348006248474
     assert specific_loudness[40] == 1.3235466480255127
 
+    wav_loader = LoadWav(pytest.data_path_flute2_in_container)
+    wav_loader.process()
+
+    # Store the second signal with the first one.
+    fc_two_signals = fc
+    fc_two_signals.add_field({"channel_number": 1}, wav_loader.get_output()[0])
+
+    # Compute
+    loudness_computer.process()
+
+    specific_loudness = loudness_computer.get_specific_loudness(1)
+    assert len(specific_loudness) == 240
+    assert specific_loudness[0] == 0
+    assert specific_loudness[9] == 0.008895192295312881
+    assert specific_loudness[40] == 0.4043666124343872
+
 
 @pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_process"])
-def test_loudness_iso532_1_stationary_get_Bark_band_indexes(dpf_sound_test_server):
+def test_loudness_iso532_1_stationary_get_bark_band_indexes(dpf_sound_test_server):
     loudness_computer = Loudness_ISO532_1_stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -180,7 +205,7 @@ def test_loudness_iso532_1_stationary_get_Bark_band_indexes(dpf_sound_test_serve
         PyDpfSoundWarning,
         match="Output has not been processed yet, use Loudness_ISO532_1_stationary.process().",
     ):
-        output = loudness_computer.get_Bark_band_indexes()
+        output = loudness_computer.get_bark_band_indexes()
     assert output == None
 
     # Set signal as a fields container
@@ -188,26 +213,26 @@ def test_loudness_iso532_1_stationary_get_Bark_band_indexes(dpf_sound_test_serve
     # Compute
     loudness_computer.process()
 
-    Bark_band_indexes = loudness_computer.get_Bark_band_indexes()
-    assert len(Bark_band_indexes) == 240
-    assert Bark_band_indexes[0] == 0.10000000149011612
-    assert Bark_band_indexes[9] == 1.0000000149011612
-    assert Bark_band_indexes[40] == 4.100000061094761
+    bark_band_indexes = loudness_computer.get_bark_band_indexes()
+    assert len(bark_band_indexes) == 240
+    assert bark_band_indexes[0] == 0.10000000149011612
+    assert bark_band_indexes[9] == 1.0000000149011612
+    assert bark_band_indexes[40] == 4.100000061094761
 
     # Set signal as a field
     loudness_computer.signal = fc[0]
     # Compute
     loudness_computer.process()
 
-    Bark_band_indexes = loudness_computer.get_Bark_band_indexes()
-    assert len(Bark_band_indexes) == 240
-    assert Bark_band_indexes[0] == 0.10000000149011612
-    assert Bark_band_indexes[9] == 1.0000000149011612
-    assert Bark_band_indexes[40] == 4.100000061094761
+    bark_band_indexes = loudness_computer.get_bark_band_indexes()
+    assert len(bark_band_indexes) == 240
+    assert bark_band_indexes[0] == 0.10000000149011612
+    assert bark_band_indexes[9] == 1.0000000149011612
+    assert bark_band_indexes[40] == 4.100000061094761
 
 
-@pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_get_Bark_band_indexes"])
-def test_loudness_iso532_1_stationary_get_Bark_band_frequencies(dpf_sound_test_server):
+@pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_get_bark_band_indexes"])
+def test_loudness_iso532_1_stationary_get_bark_band_frequencies(dpf_sound_test_server):
     loudness_computer = Loudness_ISO532_1_stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -219,11 +244,11 @@ def test_loudness_iso532_1_stationary_get_Bark_band_frequencies(dpf_sound_test_s
     # Compute
     loudness_computer.process()
 
-    Bark_band_frequencies = loudness_computer.get_Bark_band_frequencies()
-    assert len(Bark_band_frequencies) == 240
-    assert Bark_band_frequencies[0] == 21.33995930840456
-    assert Bark_band_frequencies[9] == 102.08707043772274
-    assert Bark_band_frequencies[40] == 400.79351405718324
+    bark_band_frequencies = loudness_computer.get_bark_band_frequencies()
+    assert len(bark_band_frequencies) == 240
+    assert bark_band_frequencies[0] == 21.33995930840456
+    assert bark_band_frequencies[9] == 102.08707043772274
+    assert bark_band_frequencies[40] == 400.79351405718324
 
 
 @pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_process"])
