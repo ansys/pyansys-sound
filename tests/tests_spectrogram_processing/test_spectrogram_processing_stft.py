@@ -1,5 +1,3 @@
-from unittest.mock import patch
-
 from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
@@ -149,9 +147,8 @@ def test_stft_set_get_window_type(dpf_sound_test_server):
     assert stft.window_type == "KAISER"
 
 
-@patch("matplotlib.pyplot.show")
 @pytest.mark.dependency(depends=["test_stft_process"])
-def test_stft_plot(mock_show, dpf_sound_test_server):
+def test_stft_plot(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()

@@ -1,5 +1,3 @@
-from unittest.mock import patch
-
 from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
@@ -112,9 +110,8 @@ def test_istft_set_get_signal(dpf_sound_test_server):
     assert out_stft.has_label("complex")
 
 
-@patch("matplotlib.pyplot.show")
 @pytest.mark.dependency(depends=["test_istft_process"])
-def test_istft_plot(mock_show, dpf_sound_test_server):
+def test_istft_plot(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     stft = Stft(signal=wav_loader.get_output())

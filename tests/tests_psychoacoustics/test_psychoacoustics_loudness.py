@@ -1,5 +1,3 @@
-from unittest.mock import patch
-
 from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
@@ -183,9 +181,8 @@ def test_loudness_get_output_as_nparray_from_field(dpf_sound_test_server):
     assert SpecificLoudness[40] == 1.3235466480255127
 
 
-@patch("matplotlib.pyplot.show")
 @pytest.mark.dependency(depends=["test_loudness_process"])
-def test_loudness_plot_from_field_container(mock_show, dpf_sound_test_server):
+def test_loudness_plot_from_field_container(dpf_sound_test_server):
     loudnessComputer = Loudness()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -201,9 +198,8 @@ def test_loudness_plot_from_field_container(mock_show, dpf_sound_test_server):
     loudnessComputer.plot()
 
 
-@patch("matplotlib.pyplot.show")
 @pytest.mark.dependency(depends=["test_loudness_process"])
-def test_loudness_plot_from_field(mock_show, dpf_sound_test_server):
+def test_loudness_plot_from_field(dpf_sound_test_server):
     loudnessComputer = Loudness()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)

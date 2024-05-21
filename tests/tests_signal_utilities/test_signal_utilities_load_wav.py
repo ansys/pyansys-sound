@@ -1,5 +1,3 @@
-from unittest.mock import patch
-
 import numpy as np
 import pytest
 
@@ -86,9 +84,8 @@ def test_load_wav_get_set_path(dpf_sound_test_server):
     assert wav_loader.path_to_wav == pytest.data_path_flute_in_container
 
 
-@patch("matplotlib.pyplot.show")
 @pytest.mark.dependency(depends=["test_load_wav_process"])
-def test_load_wav_plot(mock_show, dpf_sound_test_server):
+def test_load_wav_plot(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
     wav_loader.process()
     wav_loader.plot()

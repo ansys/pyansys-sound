@@ -1,5 +1,3 @@
-from unittest.mock import patch
-
 from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
@@ -213,9 +211,8 @@ def test_isolate_orders_set_get_width_selection(dpf_sound_test_server):
     assert isolate_orders.window_overlap == 0.5
 
 
-@patch("matplotlib.pyplot.show")
 @pytest.mark.dependency(depends=["test_isolate_orders_process"])
-def test_isolate_orders_plot(mock_show, dpf_sound_test_server):
+def test_isolate_orders_plot(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
