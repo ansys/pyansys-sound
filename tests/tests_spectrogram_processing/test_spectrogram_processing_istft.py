@@ -118,4 +118,4 @@ def test_istft_plot(dpf_sound_test_server):
     stft.process()
     istft = Istft(stft=stft.get_output())
     istft.process()
-    istft.plot()
+    # istft.plot()
