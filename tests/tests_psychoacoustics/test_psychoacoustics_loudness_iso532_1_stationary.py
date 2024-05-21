@@ -50,6 +50,9 @@ def test_loudness_iso532_1_stationary_get_output(dpf_sound_test_server):
     wav_loader.process()
     fc = wav_loader.get_output()
 
+    # Set signal
+    loudness_computer.signal = fc
+
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyDpfSoundWarning,
@@ -58,8 +61,6 @@ def test_loudness_iso532_1_stationary_get_output(dpf_sound_test_server):
         output = loudness_computer.get_output()
     assert output == None
 
-    # Set signal
-    loudness_computer.signal = fc
     # Compute
     loudness_computer.process()
 
@@ -77,6 +78,9 @@ def test_loudness_iso532_1_stationary_get_loudness_sone(dpf_sound_test_server):
     wav_loader.process()
     fc = wav_loader.get_output()
 
+    # Set signal as a field
+    loudness_computer.signal = fc[0]
+
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyDpfSoundWarning,
@@ -85,8 +89,6 @@ def test_loudness_iso532_1_stationary_get_loudness_sone(dpf_sound_test_server):
         output = loudness_computer.get_loudness_sone()
     assert output == None
 
-    # Set signal as a field
-    loudness_computer.signal = fc[0]
     # Compute
     loudness_computer.process()
 
@@ -130,6 +132,9 @@ def test_loudness_iso532_1_stationary_get_loudness_level_phon(dpf_sound_test_ser
     wav_loader.process()
     fc = wav_loader.get_output()
 
+    # Set signal
+    loudness_computer.signal = fc
+
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyDpfSoundWarning,
@@ -138,8 +143,6 @@ def test_loudness_iso532_1_stationary_get_loudness_level_phon(dpf_sound_test_ser
         output = loudness_computer.get_loudness_level_phon()
     assert output == None
 
-    # Set signal
-    loudness_computer.signal = fc
     # Compute
     loudness_computer.process()
 
@@ -155,6 +158,9 @@ def test_loudness_iso532_1_stationary_get_specific_loudness(dpf_sound_test_serve
     wav_loader.process()
     fc = wav_loader.get_output()
 
+    # Set signal
+    loudness_computer.signal = fc
+
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyDpfSoundWarning,
@@ -163,8 +169,6 @@ def test_loudness_iso532_1_stationary_get_specific_loudness(dpf_sound_test_serve
         output = loudness_computer.get_specific_loudness()
     assert output == None
 
-    # Set signal
-    loudness_computer.signal = fc
     # Compute
     loudness_computer.process()
 
@@ -198,6 +202,9 @@ def test_loudness_iso532_1_stationary_get_bark_band_indexes(dpf_sound_test_serve
     wav_loader.process()
     fc = wav_loader.get_output()
 
+    # Set signal as a fields container
+    loudness_computer.signal = fc
+
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyDpfSoundWarning,
@@ -206,8 +213,6 @@ def test_loudness_iso532_1_stationary_get_bark_band_indexes(dpf_sound_test_serve
         output = loudness_computer.get_bark_band_indexes()
     assert output == None
 
-    # Set signal as a fields container
-    loudness_computer.signal = fc
     # Compute
     loudness_computer.process()
 
@@ -259,6 +264,9 @@ def test_loudness_iso532_1_stationary_get_output_as_nparray_from_fields_containe
     wav_loader.process()
     fc = wav_loader.get_output()
 
+    # Set signal
+    loudness_computer.signal = fc
+
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyDpfSoundWarning,
@@ -267,8 +275,6 @@ def test_loudness_iso532_1_stationary_get_output_as_nparray_from_fields_containe
         output = loudness_computer.get_output_as_nparray()
     assert output == None
 
-    # Set signal
-    loudness_computer.signal = fc
     # Compute
     loudness_computer.process()
 
