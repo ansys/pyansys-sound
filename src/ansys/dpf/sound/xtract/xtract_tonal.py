@@ -5,6 +5,7 @@ import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operator
 import matplotlib.pyplot as plt
+import numpy as np
 from numpy import typing as npt
 
 from . import XtractParent
@@ -106,11 +107,6 @@ class XtractTonal(XtractParent):
         """
         return self.__output_tonal_signals  # pragma: no cover
 
-    @output_tonal_signals.setter
-    def output_tonal_signals(self, value: FieldsContainer | Field):
-        """Set output tonal signals."""
-        self.__output_tonal_signals = value
-
     @property
     def output_non_tonal_signals(self) -> FieldsContainer | Field:
         """Get output non tonal signals.
@@ -121,11 +117,6 @@ class XtractTonal(XtractParent):
             Non tonal signal(s), as a field or fields_container (depending on the input).
         """
         return self.__output_non_tonal_signals  # pragma: no cover
-
-    @output_non_tonal_signals.setter
-    def output_non_tonal_signals(self, value: FieldsContainer | Field):
-        """Set output non tonal signals."""
-        self.__output_non_tonal_signals = value
 
     def process(self):
         """Process the tonal analysis."""
@@ -171,11 +162,14 @@ class XtractTonal(XtractParent):
         l_output_non_tonal_signals = self.get_output()[1]
 
         if type(l_output_tonal_signals) == Field:
-            return l_output_tonal_signals.data, l_output_non_tonal_signals.data
-
-        return self.convert_fields_container_to_np_array(
-            l_output_tonal_signals
-        ), self.convert_fields_container_to_np_array(l_output_non_tonal_signals)
+            return np.array(l_output_tonal_signals.data), np.array(l_output_non_tonal_signals.data)
+        else:
+            if self.__output_tonal_signals == None or self.__output_non_tonal_signals == None:
+                return np.array([]), np.array([])
+            else:
+                return np.array(
+                    self.convert_fields_container_to_np_array(l_output_tonal_signals)
+                ), np.array(self.convert_fields_container_to_np_array(l_output_non_tonal_signals))
 
     def plot(self):
         """Plot the output of the tonal analysis.
@@ -189,7 +183,7 @@ class XtractTonal(XtractParent):
         l_output_tonal_signals = self.get_output()[0]
 
         if type(l_output_tonal_signals) == Field:
-            l_i_nb_channels = 0
+            l_i_nb_channels = 1
             field = l_output_tonal_signals
         else:
             l_i_nb_channels = len(l_output_tonal_signals)
@@ -199,12 +193,19 @@ class XtractTonal(XtractParent):
         l_time_unit = field.time_freq_support.time_frequencies.unit
         l_unit = field.unit
 
-        for l_i in range(l_i_nb_channels):
-            plt.plot(l_time_data, l_output_tonal_signals.data[l_i], label=f"Channel {l_i}")
+        if type(l_output_tonal_signals) == Field:
+            plt.plot(l_time_data, l_output_tonal_signals.data, label="Channel 0")
             plt.xlabel(f"Time ({l_time_unit})")
             plt.ylabel(f"Amplitude ({l_unit})")
             plt.title("Tonal signal")
             plt.show()
+        else:
+            for l_i in range(l_i_nb_channels):
+                plt.plot(l_time_data, l_output_tonal_signals[l_i].data, label=f"Channel {l_i}")
+                plt.xlabel(f"Time ({l_time_unit})")
+                plt.ylabel(f"Amplitude ({l_unit})")
+                plt.title("Tonal signal")
+                plt.show()
 
         ################
         # Delete intermediate variables
@@ -218,7 +219,7 @@ class XtractTonal(XtractParent):
         l_output_non_tonal_signals = self.get_output()[1]
 
         if type(l_output_non_tonal_signals) == Field:
-            l_i_nb_channels = 0
+            l_i_nb_channels = 1
             field = l_output_non_tonal_signals
         else:
             l_i_nb_channels = len(l_output_non_tonal_signals)
@@ -228,12 +229,19 @@ class XtractTonal(XtractParent):
         l_time_unit = field.time_freq_support.time_frequencies.unit
         l_unit = field.unit
 
-        for l_i in range(l_i_nb_channels):
-            plt.plot(l_time_data, l_output_non_tonal_signals.data[l_i], label=f"Channel {l_i}")
+        if type(l_output_non_tonal_signals) == Field:
+            plt.plot(l_time_data, l_output_non_tonal_signals.data, label="Channel 0")
             plt.xlabel(f"Time ({l_time_unit})")
             plt.ylabel(f"Amplitude ({l_unit})")
             plt.title("Non tonal signal")
             plt.show()
+        else:
+            for l_i in range(l_i_nb_channels):
+                plt.plot(l_time_data, l_output_non_tonal_signals[l_i].data, label=f"Channel {l_i}")
+                plt.xlabel(f"Time ({l_time_unit})")
+                plt.ylabel(f"Amplitude ({l_unit})")
+                plt.title("Non tonal signal")
+                plt.show()
 
         ################
         # Delete intermediate variables
