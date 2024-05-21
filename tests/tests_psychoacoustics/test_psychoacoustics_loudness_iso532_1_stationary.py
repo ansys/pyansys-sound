@@ -107,14 +107,13 @@ def test_loudness_iso532_1_stationary_get_loudness_sone(dpf_sound_test_server):
     loudness_sone = loudness_computer.get_loudness_sone(0)
     assert loudness_sone == 39.58000183105469
 
+    # Add a second signal in the fields container
+    # Note: No need to re-assign the signal property, as fc is simply an alias for it
     wav_loader = LoadWav(pytest.data_path_flute2_in_container)
     wav_loader.process()
+    fc.add_field({"channel_number": 1}, wav_loader.get_output()[0])
 
-    # Store the second signal with the first one.
-    fc_two_signals = fc
-    fc_two_signals.add_field({"channel_number": 1}, wav_loader.get_output()[0])
-
-    # Compute
+    # Compute again
     loudness_computer.process()
 
     loudness_sone = loudness_computer.get_loudness_sone(0)
@@ -175,11 +174,10 @@ def test_loudness_iso532_1_stationary_get_specific_loudness(dpf_sound_test_serve
     assert specific_loudness[9] == 0.15664348006248474
     assert specific_loudness[40] == 1.3235466480255127
 
+    # Add a second signal in the fields container
+    # Note: No need to re-assign the signal property, as fc is simply an alias for it
     wav_loader = LoadWav(pytest.data_path_flute2_in_container)
     wav_loader.process()
-
-    # Store the second signal with the first one.
-    # Note: No need to re-assign the signal property, as fc is simply an alias for it
     fc.add_field({"channel_number": 1}, wav_loader.get_output()[0])
 
     # Compute again
@@ -343,11 +341,12 @@ def test_loudness_iso532_1_stationary_plot_from_fields_container(mock_show, dpf_
     loudness_computer.plot()
 
     # Add a second signal in the fields container
+    # Note: No need to re-assign the signal property, as fc is simply an alias for it
     wav_loader = LoadWav(pytest.data_path_flute2_in_container)
     wav_loader.process()
     fc.add_field({"channel_number": 1}, wav_loader.get_output()[0])
 
-    # Compute
+    # Compute again
     loudness_computer.process()
 
     # Plot
