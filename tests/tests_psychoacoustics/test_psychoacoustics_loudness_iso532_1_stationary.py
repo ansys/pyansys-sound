@@ -179,10 +179,10 @@ def test_loudness_iso532_1_stationary_get_specific_loudness(dpf_sound_test_serve
     wav_loader.process()
 
     # Store the second signal with the first one.
-    fc_two_signals = fc
-    fc_two_signals.add_field({"channel_number": 1}, wav_loader.get_output()[0])
+    # Note: No need to re-assign the signal property, as fc is simply an alias for it
+    fc.add_field({"channel_number": 1}, wav_loader.get_output()[0])
 
-    # Compute
+    # Compute again
     loudness_computer.process()
 
     specific_loudness = loudness_computer.get_specific_loudness(1)
