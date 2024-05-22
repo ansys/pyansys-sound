@@ -9,7 +9,7 @@ from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
 class SumSignals(SignalUtilitiesParent):
-    """Sum Signals.
+    """Sum signals.
 
     This class sum signals.
     """

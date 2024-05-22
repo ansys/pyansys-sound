@@ -9,7 +9,7 @@ from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
 class ZeroPad(SignalUtilitiesParent):
-    """Zero Pad.
+    """Zero pad.
 
     This class zero pads (adds zeros at the end of) signals.
     """
