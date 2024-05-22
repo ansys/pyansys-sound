@@ -133,12 +133,14 @@ jobs:
 
 
       - name: Stop the DPF-Sound service
+        if: always()
         run: |
           docker stop $env:DPF_SOUND_CONT_NAME
           docker logs $env:DPF_SOUND_CONT_NAME
           docker rm $env:DPF_SOUND_CONT_NAME
 
       - name: Stop any remaining containers
+        if: always()
         run: |
           $dockerContainers = docker ps -a -q
           if (-not [string]::IsNullOrEmpty($dockerContainers)) {
