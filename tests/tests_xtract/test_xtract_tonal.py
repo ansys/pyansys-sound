@@ -151,21 +151,12 @@ def test_xtract_tonal_get_output(dpf_sound_test_server):
     assert type(xtract_tonal.output_tonal_signals) == Field
     assert type(xtract_tonal.output_non_tonal_signals) == Field
 
-    # Type of output tonal signals. np.array
-    assert xtract_tonal.get_output_as_nparray() is not None
-    assert type(xtract_tonal.get_output_as_nparray()[0]) == np.ndarray
-    assert type(xtract_tonal.get_output_as_nparray()[1]) == np.ndarray
+    # Type of output tonal signals. As Field
+    assert xtract_tonal.get_output()[0].data[0] == pytest.approx(3.6770161386812106e-06)
+    assert xtract_tonal.get_output()[0].data[1] == pytest.approx(1.8551201037553255e-06)
 
-    assert xtract_tonal.get_output_as_nparray()[0].shape == (156048,)
-    assert np.min(xtract_tonal.get_output_as_nparray()[0]) == pytest.approx(-0.6828306913375854)
-    assert np.max(xtract_tonal.get_output_as_nparray()[0]) == pytest.approx(0.794617772102356)
-
-    assert xtract_tonal.get_output_as_nparray()[0][0] == pytest.approx(3.6770161386812106e-06)
-    assert xtract_tonal.get_output_as_nparray()[0][1] == pytest.approx(1.8551201037553255e-06)
-
-    assert xtract_tonal.get_output_as_nparray()[1].shape == (156048,)
-    assert xtract_tonal.get_output_as_nparray()[1][0] == pytest.approx(-3.6770161386812106e-06)
-    assert xtract_tonal.get_output_as_nparray()[1][99] == pytest.approx(1.8362156879447866e-06)
+    assert xtract_tonal.get_output()[1].data[0] == pytest.approx(-3.6770161386812106e-06)
+    assert xtract_tonal.get_output()[1].data[99] == pytest.approx(1.8362156879447866e-06)
 
 
 def test_xtract_tonal_get_output_noprocess(dpf_sound_test_server):

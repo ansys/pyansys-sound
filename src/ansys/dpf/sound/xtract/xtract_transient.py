@@ -5,6 +5,7 @@ import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operator
 import matplotlib.pyplot as plt
+import numpy as np
 from numpy import typing as npt
 
 from . import XtractParent
@@ -114,17 +115,6 @@ class XtractTransient(XtractParent):
         """
         return self.__output_transient_signals  # pragma: no cover
 
-    @output_transient_signals.setter
-    def output_transient_signals(self, value: FieldsContainer | Field):
-        """Set output transient signals.
-
-        Parameters
-        ----------
-        value: FieldsContainer | Field
-            Transient signal(s), as a field or fields_container (depending on the input).
-        """
-        self.__output_transient_signals = value
-
     @property
     def output_non_transient_signals(self) -> FieldsContainer | Field:
         """Get output non transient signals.
@@ -136,18 +126,6 @@ class XtractTransient(XtractParent):
             as a field or fields_container (depending on the input).
         """
         return self.__output_non_transient_signals  # pragma: no cover
-
-    @output_non_transient_signals.setter
-    def output_non_transient_signals(self, value: FieldsContainer | Field):
-        """Set output non transient signals.
-
-        Parameters
-        ----------
-        value: FieldsContainer | Field
-            Non-transient signal(s): original signal minus transient signal,
-            as a field or fields_container (depending on the input).
-        """
-        self.__output_non_transient_signals = value
 
     def process(self):
         """Process the transient extraction.
@@ -200,15 +178,32 @@ class XtractTransient(XtractParent):
         Tuple[np.ArrayLike, np.ArrayLike]
             Transient signal(s) and non-transient signal(s) as numpy arrays.
         """
+        if self.__output_transient_signals is None or self.__output_non_transient_signals is None:
+            warnings.warn(
+                PyDpfSoundWarning(
+                    "Output transient signals or output non transient signals are not set."
+                )
+            )
+
         l_output_transient_signals = self.get_output()[0]
         l_output_non_transient_signals = self.get_output()[1]
 
         if type(l_output_transient_signals) == Field:
-            return l_output_transient_signals.data, l_output_non_transient_signals.data
-
-        return self.convert_fields_container_to_np_array(
-            l_output_transient_signals
-        ), self.convert_fields_container_to_np_array(l_output_non_transient_signals)
+            return np.array(l_output_transient_signals.data), np.array(
+                l_output_non_transient_signals.data
+            )
+        else:
+            if (
+                self.__output_transient_signals is None
+                or self.__output_non_transient_signals is None
+            ):
+                return np.array([]), np.array([])
+            else:
+                return np.array(
+                    self.convert_fields_container_to_np_array(l_output_transient_signals)
+                ), np.array(
+                    self.convert_fields_container_to_np_array(l_output_non_transient_signals)
+                )
 
     def plot(self):
         """Plot signals.
@@ -222,7 +217,7 @@ class XtractTransient(XtractParent):
         l_output_transient_signals = self.get_output()[0]
 
         if type(l_output_transient_signals) == Field:
-            l_i_nb_channels = 0
+            l_i_nb_channels = 1
             field = l_output_transient_signals
         else:
             l_i_nb_channels = len(l_output_transient_signals)
@@ -232,14 +227,23 @@ class XtractTransient(XtractParent):
         l_time_unit = field.time_freq_support.time_frequencies.unit
         l_unit = field.unit
 
-        for l_i in range(l_i_nb_channels):
-            plt.plot(
-                l_time_data, l_output_transient_signals.data[l_i], label=f"Transient signal {l_i}"
-            )
+        if type(l_output_transient_signals) == Field:
+            plt.plot(l_time_data, l_output_transient_signals.data, label="Transient signal")
             plt.xlabel(f"Time ({l_time_unit})")
             plt.ylabel(f"Amplitude ({l_unit})")
             plt.title("Transient signal")
             plt.show()
+        else:
+            for l_i in range(l_i_nb_channels):
+                plt.plot(
+                    l_time_data,
+                    l_output_transient_signals[l_i].data,
+                    label=f"Transient signal {l_i}",
+                )
+                plt.xlabel(f"Time ({l_time_unit})")
+                plt.ylabel(f"Amplitude ({l_unit})")
+                plt.title("Transient signal")
+                plt.show()
 
         ################
         # Delete intermediate variables
@@ -253,7 +257,7 @@ class XtractTransient(XtractParent):
         l_output_non_transient_signals = self.get_output()[1]
 
         if type(l_output_non_transient_signals) == Field:
-            l_i_nb_channels = 0
+            l_i_nb_channels = 1
             field = l_output_non_transient_signals
         else:
             l_i_nb_channels = len(l_output_non_transient_signals)
@@ -263,16 +267,23 @@ class XtractTransient(XtractParent):
         l_time_unit = field.time_freq_support.time_frequencies.unit
         l_unit = field.unit
 
-        for l_i in range(l_i_nb_channels):
-            plt.plot(
-                l_time_data,
-                l_output_non_transient_signals.data[l_i],
-                label=f"Non transient signal {l_i}",
-            )
+        if type(l_output_non_transient_signals) == Field:
+            plt.plot(l_time_data, l_output_non_transient_signals.data, label="Non transient signal")
             plt.xlabel(f"Time ({l_time_unit})")
             plt.ylabel(f"Amplitude ({l_unit})")
             plt.title("Non transient signal")
             plt.show()
+        else:
+            for l_i in range(l_i_nb_channels):
+                plt.plot(
+                    l_time_data,
+                    l_output_non_transient_signals[l_i].data,
+                    label=f"Non transient signal {l_i}",
+                )
+                plt.xlabel(f"Time ({l_time_unit})")
+                plt.ylabel(f"Amplitude ({l_unit})")
+                plt.title("Non transient signal")
+                plt.show()
 
         ################
         # Delete intermediate variables
