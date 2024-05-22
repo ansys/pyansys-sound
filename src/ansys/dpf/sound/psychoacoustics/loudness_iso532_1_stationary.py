@@ -3,8 +3,7 @@ import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
-import numpy
-from numpy import copy
+import numpy as np
 from numpy import typing as npt
 
 from . import PsychoacousticsParent
@@ -203,9 +202,9 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
         specific_loudness = output[2]
 
         if type(specific_loudness) == Field:
-            return copy(specific_loudness.time_freq_support.time_frequencies.data)
+            return np.copy(specific_loudness.time_freq_support.time_frequencies.data)
         else:
-            return copy(specific_loudness[0].time_freq_support.time_frequencies.data)
+            return np.copy(specific_loudness[0].time_freq_support.time_frequencies.data)
 
     def get_bark_band_frequencies(self) -> npt.ArrayLike:
         """Return Bark band frequencies.
@@ -294,7 +293,7 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
             return None
 
         # Check if input signal was mono or multichannel.
-        if type(loudness_data[0][0]) == numpy.float64:
+        if type(loudness_data[0][0]) == np.float64:
             channel_max = 0
         else:
             channel_max = len(loudness_data[0][0]) - 1
