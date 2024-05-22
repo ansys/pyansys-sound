@@ -25,7 +25,7 @@ from ansys.dpf.sound.examples_helpers import (
     get_absolute_path_for_flute_wav,
 )
 from ansys.dpf.sound.psychoacoustics.loudness_iso532_1_stationary import (
-    Loudness_ISO532_1_stationary,
+    Loudness_ISO532_1_Stationary,
 )
 from ansys.dpf.sound.server_helpers import connect_to_or_start_server
 from ansys.dpf.sound.signal_utilities import LoadWav
@@ -49,7 +49,7 @@ fc_signal = wav_loader.get_output()
 # Calculate ISO 532-1 loudness for a stationary sound
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create a Loudness object, set its signal, and compute loudness.
-loudness = Loudness_ISO532_1_stationary(signal=fc_signal)
+loudness = Loudness_ISO532_1_Stationary(signal=fc_signal)
 loudness.process()
 
 # %%
@@ -82,7 +82,7 @@ fc_two_signals.add_field({"channel_number": 1}, wav_loader.get_output()[0])
 
 # %%
 # Calculate loudness for both signals at once.
-loudness = Loudness_ISO532_1_stationary(signal=fc_two_signals)
+loudness = Loudness_ISO532_1_Stationary(signal=fc_two_signals)
 loudness.process()
 
 # %%

@@ -14,7 +14,7 @@ LOUDNESS_LEVEL_PHON_ID = "phon"
 SPECIFIC_LOUDNESS_ID = "specific"
 
 
-class Loudness_ISO532_1_stationary(PsychoacousticsParent):
+class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
     """ISO 532-1 loudness for stationary sounds.
 
     This class computes the loudness of a signal following standard ISO 532-1 for stationary
@@ -22,7 +22,7 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Instantiate a Loudness_ISO532_1_stationary object.
+        """Instantiate a Loudness_ISO532_1_Stationary object.
 
         Parameters
         ----------
@@ -68,7 +68,7 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
         """
         if self.__signal == None:
             raise PyDpfSoundException(
-                "No signal for loudness computation. Use Loudness_ISO532_1_stationary.signal."
+                "No signal for loudness computation. Use Loudness_ISO532_1_Stationary.signal."
             )
 
         self.__operator.connect(0, self.signal)
@@ -103,7 +103,7 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
         if self._output == None:
             warnings.warn(
                 PyDpfSoundWarning(
-                    "Output has not been processed yet, use Loudness_ISO532_1_stationary.process()."
+                    "Output has not been processed yet, use Loudness_ISO532_1_Stationary.process()."
                 )
             )
 
@@ -237,7 +237,7 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
         """
         if self._output == None:
             raise PyDpfSoundException(
-                "Output has not been processed yet, use Loudness_ISO532_1_stationary.process()."
+                "Output has not been processed yet, use Loudness_ISO532_1_Stationary.process()."
             )
 
         bark_band_indexes = self.get_bark_band_indexes()
