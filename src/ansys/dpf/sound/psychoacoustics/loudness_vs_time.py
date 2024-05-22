@@ -3,6 +3,7 @@ import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
+import numpy as np
 from numpy import typing as npt
 
 from . import PsychoacousticsParent
@@ -89,12 +90,12 @@ class LoudnessVsTime(PsychoacousticsParent):
         Returns
         -------
             tuple(FieldsContainer) | tuple(Field)
-                1st element is the loudness vs time in Sone.
-                2nd element is the N5 indicator, in Sone.
-                3rd element is the N10 indicator, in Sone.
-                4th element is the loudness vs time in Phon.
-                5th element is the L5 indicator, in Phon.
-                6th element is the L10 indicator, in Phon.
+                1st element is the loudness vs time in sone.
+                2nd element is the N5 indicator, in sone.
+                3rd element is the N10 indicator, in sone.
+                4th element is the loudness vs time in phon.
+                5th element is the L5 indicator, in phon.
+                6th element is the L10 indicator, in phon.
         """
         if self._output == None:
             # Computing output if needed
@@ -112,12 +113,12 @@ class LoudnessVsTime(PsychoacousticsParent):
         Returns
         -------
             tuple[np.array]
-                1st element is the loudness vs time in Sone.
-                2nd element is the N5 indicator, in Sone.
-                3rd element is the N10 indicator, in Sone.
-                4th element is the loudness vs time in Phon.
-                5th element is the L5 indicator, in Phon.
-                6th element is the L10 indicator, in Phon.
+                1st element is the loudness vs time in sone.
+                2nd element is the N5 indicator, in sone.
+                3rd element is the N10 indicator, in sone.
+                4th element is the loudness vs time in phon.
+                5th element is the L5 indicator, in phon.
+                6th element is the L10 indicator, in phon.
         """
         output = self.get_output()
 
@@ -131,12 +132,12 @@ class LoudnessVsTime(PsychoacousticsParent):
 
         if type(output[0]) == Field:
             return (
-                output[0].data,
-                output[1].data,
-                output[2].data,
-                output[3].data,
-                output[4].data,
-                output[5].data,
+                np.array(output[0].data),
+                np.array(output[1].data),
+                np.array(output[2].data),
+                np.array(output[3].data),
+                np.array(output[4].data),
+                np.array(output[5].data),
             )
 
         return (
@@ -148,12 +149,13 @@ class LoudnessVsTime(PsychoacousticsParent):
             self.convert_fields_container_to_np_array(output[5]),
         )
 
-    def get_loudness_vs_time_sone(self) -> Field | FieldsContainer:
-        """Return the loudness vs time in Sone.
+    def get_loudness_vs_time_sone(self, channel_number: int = 0) -> npt.ArrayLike:
+        """Return the loudness vs time in sone for channel i.
 
         Returns
         -------
-            tuple(FieldsContainer) | tuple(Field)
+        npt.ArrayLike
+            Loudness vs time in sone.
         """
         if self._output == None:
             # Computing output if needed
@@ -164,14 +166,18 @@ class LoudnessVsTime(PsychoacousticsParent):
             )
             return None
 
-        return self._output[0]
+        if type(self._output[0]) == Field:
+            return self.get_output_as_nparray()[0]
+        else:
+            return self.get_output_as_nparray()[0][channel_number]
 
-    def get_N5_sone(self) -> Field | FieldsContainer:
-        """Return the N5 indicator in Sone.
+    def get_N5_sone(self, channel_number: int = 0) -> float:
+        """Return the N5 indicator in sone for channel i.
 
         Returns
         -------
-            tuple(FieldsContainer) | tuple(Field)
+        float
+            N5 value in sone.
         """
         if self._output == None:
             # Computing output if needed
@@ -182,14 +188,18 @@ class LoudnessVsTime(PsychoacousticsParent):
             )
             return None
 
-        return self._output[1]
+        if type(self._output[0]) == Field:
+            return self.get_output_as_nparray()[1]
+        else:
+            return self.get_output_as_nparray()[1][channel_number]
 
-    def get_N10_sone(self) -> Field | FieldsContainer:
-        """Return the N10 indicator in Sone.
+    def get_N10_sone(self, channel_number: int = 0) -> float:
+        """Return the N10 indicator in sone for channel i.
 
         Returns
         -------
-            tuple(FieldsContainer) | tuple(Field)
+        float
+            N10 value in sone.
         """
         if self._output == None:
             # Computing output if needed
@@ -200,14 +210,18 @@ class LoudnessVsTime(PsychoacousticsParent):
             )
             return None
 
-        return self._output[2]
+        if type(self._output[0]) == Field:
+            return self.get_output_as_nparray()[2]
+        else:
+            return self.get_output_as_nparray()[2][channel_number]
 
-    def get_loudness_vs_time_phon(self) -> Field | FieldsContainer:
-        """Return the loudness vs time in Phon.
+    def get_loudness_vs_time_phon(self, channel_number: int = 0) -> npt.ArrayLike:
+        """Return the loudness vs time in phon for channel i.
 
         Returns
         -------
-            tuple(FieldsContainer) | tuple(Field)
+        npt.ArrayLike
+            Loudness vs time in phon.
         """
         if self._output == None:
             # Computing output if needed
@@ -218,14 +232,18 @@ class LoudnessVsTime(PsychoacousticsParent):
             )
             return None
 
-        return self._output[3]
+        if type(self._output[0]) == Field:
+            return self.get_output_as_nparray()[3]
+        else:
+            return self.get_output_as_nparray()[3][channel_number]
 
-    def get_L5_sone(self) -> Field | FieldsContainer:
-        """Return the L5 indicator in Phon.
+    def get_L5_sone(self, channel_number: int = 0) -> float:
+        """Return the L5 indicator in phon for channel i.
 
         Returns
         -------
-            tuple(FieldsContainer) | tuple(Field)
+        float
+            L5 value in phon.
         """
         if self._output == None:
             # Computing output if needed
@@ -236,14 +254,18 @@ class LoudnessVsTime(PsychoacousticsParent):
             )
             return None
 
-        return self._output[4]
+        if type(self._output[0]) == Field:
+            return self.get_output_as_nparray()[4]
+        else:
+            return self.get_output_as_nparray()[4][channel_number]
 
-    def get_L10_sone(self) -> Field | FieldsContainer:
-        """Return the L10 indicator in Phon.
+    def get_L10_sone(self, channel_number: int = 0) -> float:
+        """Return the L10 indicator in phon for channel i.
 
         Returns
         -------
-            tuple(FieldsContainer) | tuple(Field)
+        float
+            L10 value in phon.
         """
         if self._output == None:
             # Computing output if needed
@@ -254,55 +276,41 @@ class LoudnessVsTime(PsychoacousticsParent):
             )
             return None
 
-        return self._output[5]
+        if type(self._output[0]) == Field:
+            return self.get_output_as_nparray()[5]
+        else:
+            return self.get_output_as_nparray()[5][channel_number]
 
     def plot(self):
-        """Plot the Loudness vs time in Sone and in Phon.
-
-        Plots the Loudness vs time in Sone and in Phon.
-        """
-        # Plot loudness in Sone
-        loudness_time_sone = self.get_loudness_vs_time_sone()
-
-        if type(loudness_time_sone) == Field:
-            num_channels = 0
-            field = loudness_time_sone
+        """Plot the Loudness vs time in sone and in phon."""
+        # Plot loudness in sone
+        if type(self._output[0]) == Field:
+            num_channels = 1
+            field = self._output[0]
         else:
-            num_channels = len(loudness_time_sone)
-            field = loudness_time_sone[0]
+            num_channels = len(self._output[0])
+            field = self._output[0][0]
 
         time = field.time_freq_support.time_frequencies.data
 
-        plt.figure(0)
+        f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
         for i in range(num_channels):
-            plt.plot(time, loudness_time_sone[i].data, label="Channel {}".format(i))
+            ax1.plot(time, self.get_loudness_vs_time_sone(i), label="Channel {}".format(i))
 
-        plt.title("Loudness vs time (Sone)")
-        plt.legend()
-        plt.xlabel("Time")
-        plt.ylabel("Sone")
-        plt.grid(True)
+        ax1.set_title("Loudness vs time (Sone)")
+        ax1.legend()
+        ax1.set_ylabel("Sone")
+        ax1.grid(True)
 
         # Plot loudness in phon
-        loudness_time_phon = self.get_loudness_vs_time_phon()
-
-        if type(loudness_time_phon) == Field:
-            num_channels = 0
-            field = loudness_time_phon
-        else:
-            num_channels = len(loudness_time_phon)
-            field = loudness_time_phon[0]
-
-        time = field.time_freq_support.time_frequencies.data
-
-        plt.figure(1)
 
         for i in range(num_channels):
-            plt.plot(time, loudness_time_phon[i].data, label="Channel {}".format(i))
+            ax2.plot(time, self.get_loudness_vs_time_phon(i), label="Channel {}".format(i))
 
-        plt.title("Loudness vs time (Phon)")
-        plt.legend()
-        plt.xlabel("Time")
-        plt.ylabel("Phon")
-        plt.grid(True)
+        ax2.set_title("Loudness vs time (Phon)")
+        ax2.legend()
+        ax2.set_xlabel("Time")
+        ax2.set_ylabel("Phon")
+        ax2.grid(True)
+
         plt.show()
