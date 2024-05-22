@@ -54,7 +54,7 @@ stft.process()
 stft.plot()
 
 # %%
-# Modifying STFT parameters using the setters of the Stft class.
+# Modify STFT parameters using the setters of the Stft class.
 
 stft.fft_size = 4096
 stft.window_overlap = 0.1
@@ -67,8 +67,8 @@ stft.process()
 stft.plot()
 
 # %%
-# Re-obtaining time-domain signal by using the Istft class.
-# The input of the Istft class is the output stft previously computed.
+# Re-obtain time-domain signal by using the Istft class.
+# The input of the Istft class is the output STFT previously computed.
 
 fc_stft = stft.get_output()
 
@@ -79,6 +79,6 @@ istft = Istft(fc_stft)
 istft.process()
 
 # %%
-# Finally plotting the output which is the original signal
+# Finally plot the output which is the original signal.
 
 istft.plot()

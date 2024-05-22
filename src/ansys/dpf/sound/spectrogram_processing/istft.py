@@ -31,12 +31,12 @@ class Istft(SpectrogramProcessingParent):
 
     @property
     def stft(self):
-        """Stft property."""
+        """STFT property."""
         return self.__stft  # pragma: no cover
 
     @stft.setter
     def stft(self, stft: FieldsContainer):
-        """Set the stft."""
+        """Set the STFT."""
         if type(stft) != FieldsContainer and stft != None:
             raise PyDpfSoundException("Input must be a Fields container.")
 
@@ -53,22 +53,22 @@ class Istft(SpectrogramProcessingParent):
 
     @stft.getter
     def stft(self) -> FieldsContainer:
-        """Get the stft.
+        """Get the STFT.
 
         Returns
         -------
         FieldsContainer
-                The stft as a FieldsContainer.
+                The STFT as a FieldsContainer.
         """
         return self.__stft
 
     def process(self):
         """Compute the ISTFT.
 
-        Calls the appropriate DPF Sound operator to compute the Inverse STFT of the stft.
+        Calls the appropriate DPF Sound operator to compute the Inverse STFT of the STFT.
         """
         if self.stft == None:
-            raise PyDpfSoundException("No stft for ISTFT. Use Istft.stft.")
+            raise PyDpfSoundException("No STFT input for ISTFT computation. Use Istft.stft.")
 
         self.__operator.connect(0, self.stft)
 
@@ -79,7 +79,7 @@ class Istft(SpectrogramProcessingParent):
         self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> Field:
-        """Return the STFT as a field.
+        """Return the ISTFT resulting signal as a field.
 
         Returns
         -------
@@ -95,12 +95,12 @@ class Istft(SpectrogramProcessingParent):
         return self._output
 
     def get_output_as_nparray(self) -> npt.ArrayLike:
-        """Return the STFT of the signal as a numpy array.
+        """Return the ISTFT resulting signal as a numpy array.
 
         Returns
         -------
         np.array
-                The STFT of the signal in a numpy array.
+                The ISTFT resulting signal in a numpy array.
         """
         output = self.get_output()
         out_as_np_array = output.data

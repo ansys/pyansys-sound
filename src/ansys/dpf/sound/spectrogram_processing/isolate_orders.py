@@ -13,7 +13,7 @@ from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 class IsolateOrders(SpectrogramProcessingParent):
     """Isolate orders of a signal.
 
-    This class isolates the order of a given signal that has an RPM profile associated with.
+    This class isolates the order of a given signal that has an associated RPM profile.
     """
 
     def __init__(
@@ -134,24 +134,24 @@ class IsolateOrders(SpectrogramProcessingParent):
 
     @property
     def fft_size(self):
-        """Fft size property."""
+        """FFT size property."""
         return self.__fft_size  # pragma: no cover
 
     @fft_size.setter
     def fft_size(self, fft_size):
-        """Set the fft size."""
+        """Set the FFT size."""
         if fft_size < 0:
-            raise PyDpfSoundException("Fft size must be greater than 0.0.")
+            raise PyDpfSoundException("FFT size must be greater than 0.0.")
         self.__fft_size = fft_size
 
     @fft_size.getter
     def fft_size(self) -> float:
-        """Get the fft size.
+        """Get the FFT size.
 
         Returns
         -------
         float
-                The fft size.
+                The FFT size.
         """
         return self.__fft_size
 
@@ -205,7 +205,7 @@ class IsolateOrders(SpectrogramProcessingParent):
 
     @window_overlap.getter
     def window_overlap(self) -> float:
-        """Get the fft size.
+        """Get the window overlap.
 
         Returns
         -------
