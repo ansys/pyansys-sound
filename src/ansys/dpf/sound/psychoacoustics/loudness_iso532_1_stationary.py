@@ -310,7 +310,11 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
             else:
                 return loudness_data[2]
         else:
-            unit_index = output_id == LOUDNESS_LEVEL_PHON_ID
+            if output_id == LOUDNESS_SONE_ID:
+                unit_index = 0
+            else:
+                unit_index = 1
+
             if channel_max > 0:
                 return loudness_data[unit_index][0][channel_index]
             else:
