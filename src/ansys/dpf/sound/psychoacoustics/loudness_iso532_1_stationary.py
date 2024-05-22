@@ -10,6 +10,10 @@ from numpy import typing as npt
 from . import PsychoacousticsParent
 from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
+LOUDNESS_SONE_ID = "sone"
+LOUDNESS_LEVEL_PHON_ID = "phon"
+SPECIFIC_LOUDNESS_ID = "specific"
+
 
 class Loudness_ISO532_1_stationary(PsychoacousticsParent):
     """ISO 532-1 loudness for stationary sounds.
@@ -145,7 +149,7 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
         float
             Loudness value in sone.
         """
-        return self._get_output_parameter(channel_index, "sone")
+        return self._get_output_parameter(channel_index, LOUDNESS_SONE_ID)
 
     def get_loudness_level_phon(self, channel_index: int = 0) -> float:
         """Return loudness level in phon.
@@ -162,7 +166,7 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
         float
             Loudness level value in phon.
         """
-        return self._get_output_parameter(channel_index, "phon")
+        return self._get_output_parameter(channel_index, LOUDNESS_LEVEL_PHON_ID)
 
     def get_specific_loudness(self, channel_index: int = 0) -> npt.ArrayLike:
         """Return specific loudness.
@@ -179,7 +183,7 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
         npt.ArrayLike
             Specific loudness array in sone/Bark.
         """
-        return self._get_output_parameter(channel_index, "specific")
+        return self._get_output_parameter(channel_index, SPECIFIC_LOUDNESS_ID)
 
     def get_bark_band_indexes(self) -> npt.ArrayLike:
         """Return Bark band indexes.
@@ -301,13 +305,13 @@ class Loudness_ISO532_1_stationary(PsychoacousticsParent):
 
         # Return output parameter (loudness, loudness level, or specific loudness) for the specified
         # channel.
-        if output_id == "specific":
+        if output_id == SPECIFIC_LOUDNESS_ID:
             if channel_max > 0:
                 return loudness_data[2][:, channel_index]
             else:
                 return loudness_data[2]
         else:
-            unit_index = output_id == "phon"
+            unit_index = output_id == LOUDNESS_LEVEL_PHON_ID
             if channel_max > 0:
                 return loudness_data[unit_index][0][channel_index]
             else:
