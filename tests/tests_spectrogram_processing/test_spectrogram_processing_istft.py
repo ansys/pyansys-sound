@@ -95,7 +95,7 @@ def test_istft_set_get_signal(dpf_sound_test_server):
         istft.stft = fc
     assert (
         str(excinfo.value)
-        == "STFT is in the wrong format, make sure it has been computed with the stft class."
+        == "STFT is in the wrong format, make sure it has been computed with the Stft class."
     )
 
     # Test 2 - No Error
