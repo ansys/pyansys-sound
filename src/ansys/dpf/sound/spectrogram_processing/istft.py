@@ -46,7 +46,7 @@ class Istft(SpectrogramProcessingParent):
             or not stft.has_label("channel_number")
         ):
             raise PyDpfSoundException(
-                "STFT is in the wrong format, make sure it has been computed with the stft class."
+                "STFT is in the wrong format, make sure it has been computed with the Stft class."
             )
 
         self.__stft = stft
@@ -65,10 +65,10 @@ class Istft(SpectrogramProcessingParent):
     def process(self):
         """Compute the ISTFT.
 
-        Calls the appropriate DPF Sound operator to compute the Inverse STFT of the stft.
+        Calls the appropriate DPF Sound operator to compute the Inverse STFT of the STFT.
         """
         if self.stft == None:
-            raise PyDpfSoundException("No stft for ISTFT. Use Istft.stft.")
+            raise PyDpfSoundException("No STFT input for ISTFT computation. Use Istft.stft.")
 
         self.__operator.connect(0, self.stft)
 
@@ -79,7 +79,7 @@ class Istft(SpectrogramProcessingParent):
         self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> Field:
-        """Return the STFT as a field.
+        """Return the ISTFT resulting signal as a field.
 
         Returns
         -------
@@ -95,12 +95,12 @@ class Istft(SpectrogramProcessingParent):
         return self._output
 
     def get_output_as_nparray(self) -> npt.ArrayLike:
-        """Return the STFT of the signal as a numpy array.
+        """Return the ISTFT resulting signal as a numpy array.
 
         Returns
         -------
         np.array
-                The STFT of the signal in a numpy array.
+                The ISTFT resulting signal in a numpy array.
         """
         output = self.get_output()
         out_as_np_array = output.data
