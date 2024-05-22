@@ -15,6 +15,7 @@ STR_DPF_SOUND_DLL = "dpf_sound.dll"
 
 def pytest_configure():
     pytest.data_path_flute_in_container = "C:\\data\\flute.wav"
+    pytest.data_path_flute2_in_container = "C:\\data\\flute2.wav"
     pytest.data_path_white_noise_in_container = "C:\\data\\white_noise.wav"
     pytest.data_path_accel_with_rpm_in_container = "C:\\data\\accel_with_rpm.wav"
 

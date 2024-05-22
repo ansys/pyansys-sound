@@ -7,7 +7,7 @@ Load / Write Wav Files
 ----------------------
 
 This example shows how to load and write wav files.
-It also show how to access the corresponding data and display it using numpy.
+It also shows how to access the corresponding data and display it using numpy.
 
 """
 # %%
@@ -34,19 +34,21 @@ connect_to_or_start_server()
 # Returning the input data of the example file
 path_flute_wav = get_absolute_path_for_flute_wav()
 
-# Loading the wav file
+# Load the wav file.
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
 fc_signal = wav_loader.get_output()
 
 # %%
-# Plotting the loaded signal
+# Plot the loaded signal.
 wav_loader.plot()
 
 # %%
-# Create a modified version of the signal
-# Write the modified signal in memory using WriteWav class
-# Write the output signal in the same folder as the input, with a "_modified" suffix
+# Create a modified version of the signal.
+#
+# Write the modified signal in memory using WriteWav class.
+#
+# Write the output signal in the same folder as the input, with a "_modified" suffix.
 fc_signal_modified = dpf.FieldsContainer.deep_copy(fc_signal)
 fc_signal_modified[0].data = fc_signal[0].data * 0.2
 output_path = path_flute_wav[:-4] + "_modified.wav"

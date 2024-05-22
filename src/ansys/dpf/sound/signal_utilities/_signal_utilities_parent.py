@@ -22,7 +22,7 @@ class SignalUtilitiesParent(PyDpfSound):
     def plot(self):
         """Plot signals.
 
-        Plots the resampled signals in one plot.
+        Plots the resulting signals in a single figure.
         """
         output = self.get_output()
 
