@@ -10,19 +10,20 @@ from . import PsychoacousticsParent
 from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
-class LoudnessVsTime(PsychoacousticsParent):
+class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
     """Loudness vs Time.
 
     This class computes the loudness vs time of a signal.
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Create a LoudnessVsTime class.
+        """Create a LoudnessISO532_1_TimeVarying class.
 
         Parameters
         ----------
         signal:
-            Mono signal on which to compute Loudness vs Time, as a DPF Field or Fields Container.
+            Signal on which to compute Time Varying ISO532:1 Loudness,
+            as a DPF Field or Fields Container.
         """
         super().__init__()
         self.signal = signal
@@ -50,13 +51,14 @@ class LoudnessVsTime(PsychoacousticsParent):
         return self.__signal
 
     def process(self):
-        """Compute the Loudness vs Time.
+        """Compute the Time Varying ISO532:1 Loudness.
 
         Calls the appropriate DPF Sound operator to compute the loudness of the signal.
         """
         if self.__signal == None:
             raise PyDpfSoundException(
-                "No signal for loudness vs time computation. Use LoudnessVsTime.signal"
+                "No signal for loudness vs time computation. \
+                Use LoudnessISO532_1_TimeVarying.signal"
             )
 
         self.__operator.connect(0, self.signal)
@@ -85,7 +87,7 @@ class LoudnessVsTime(PsychoacousticsParent):
             )
 
     def get_output(self) -> tuple[FieldsContainer] | tuple[Field]:
-        """Return the loudness in a tuple of fields container.
+        """Return the Time Varying Loudness related indicators in a tuple of fields container.
 
         Returns
         -------
@@ -101,7 +103,7 @@ class LoudnessVsTime(PsychoacousticsParent):
             # Computing output if needed
             warnings.warn(
                 PyDpfSoundWarning(
-                    "Output has not been yet processed, use LoudnessVsTime.process()."
+                    "Output has not been yet processed, use LoudnessISO532_1_TimeVarying.process()."
                 )
             )
 
@@ -125,7 +127,7 @@ class LoudnessVsTime(PsychoacousticsParent):
         if output == None:
             warnings.warn(
                 PyDpfSoundWarning(
-                    "Output has not been yet processed, use LoudnessVsTime.process()."
+                    "Output has not been yet processed, use LoudnessISO532_1_TimeVarying.process()."
                 )
             )
             return None
@@ -149,19 +151,19 @@ class LoudnessVsTime(PsychoacousticsParent):
             self.convert_fields_container_to_np_array(output[5]),
         )
 
-    def get_loudness_vs_time_sone(self, channel_number: int = 0) -> npt.ArrayLike:
-        """Return the loudness vs time in sone for channel i.
+    def get_loudness_sone_vs_time(self, channel_number: int = 0) -> npt.ArrayLike:
+        """Return the Time Varying Loudness in sone for channel i.
 
         Returns
         -------
         npt.ArrayLike
-            Loudness vs time in sone.
+            Time Varying Loudness in sone.
         """
         if self._output == None:
             # Computing output if needed
             warnings.warn(
                 PyDpfSoundWarning(
-                    "Output has not been yet processed, use LoudnessVsTime.process()."
+                    "Output has not been yet processed, use LoudnessISO532_1_TimeVarying.process()."
                 )
             )
             return None
@@ -169,7 +171,12 @@ class LoudnessVsTime(PsychoacousticsParent):
         if type(self._output[0]) == Field:
             return self.get_output_as_nparray()[0]
         else:
-            return self.get_output_as_nparray()[0][channel_number]
+            ret = self.get_output_as_nparray()[0]
+            # Only one field
+            if ret.ndim == 1:
+                return ret
+            else:
+                return ret[channel_number]
 
     def get_N5_sone(self, channel_number: int = 0) -> float:
         """Return the N5 indicator in sone for channel i.
@@ -183,7 +190,7 @@ class LoudnessVsTime(PsychoacousticsParent):
             # Computing output if needed
             warnings.warn(
                 PyDpfSoundWarning(
-                    "Output has not been yet processed, use LoudnessVsTime.process()."
+                    "Output has not been yet processed, use LoudnessISO532_1_TimeVarying.process()."
                 )
             )
             return None
@@ -205,7 +212,7 @@ class LoudnessVsTime(PsychoacousticsParent):
             # Computing output if needed
             warnings.warn(
                 PyDpfSoundWarning(
-                    "Output has not been yet processed, use LoudnessVsTime.process()."
+                    "Output has not been yet processed, use LoudnessISO532_1_TimeVarying.process()."
                 )
             )
             return None
@@ -215,19 +222,19 @@ class LoudnessVsTime(PsychoacousticsParent):
         else:
             return self.get_output_as_nparray()[2][channel_number]
 
-    def get_loudness_vs_time_phon(self, channel_number: int = 0) -> npt.ArrayLike:
-        """Return the loudness vs time in phon for channel i.
+    def get_loudness_level_phon_vs_time(self, channel_number: int = 0) -> npt.ArrayLike:
+        """Return the Time Varying Loudness level in phon for channel i.
 
         Returns
         -------
         npt.ArrayLike
-            Loudness vs time in phon.
+            Time Varying Loudness in phon.
         """
         if self._output == None:
             # Computing output if needed
             warnings.warn(
                 PyDpfSoundWarning(
-                    "Output has not been yet processed, use LoudnessVsTime.process()."
+                    "Output has not been yet processed, use LoudnessISO532_1_TimeVarying.process()."
                 )
             )
             return None
@@ -235,7 +242,12 @@ class LoudnessVsTime(PsychoacousticsParent):
         if type(self._output[0]) == Field:
             return self.get_output_as_nparray()[3]
         else:
-            return self.get_output_as_nparray()[3][channel_number]
+            ret = self.get_output_as_nparray()[3]
+            # Only one field
+            if ret.ndim == 1:
+                return ret
+            else:
+                return ret[channel_number]
 
     def get_L5_sone(self, channel_number: int = 0) -> float:
         """Return the L5 indicator in phon for channel i.
@@ -249,7 +261,7 @@ class LoudnessVsTime(PsychoacousticsParent):
             # Computing output if needed
             warnings.warn(
                 PyDpfSoundWarning(
-                    "Output has not been yet processed, use LoudnessVsTime.process()."
+                    "Output has not been yet processed, use LoudnessISO532_1_TimeVarying.process()."
                 )
             )
             return None
@@ -271,7 +283,7 @@ class LoudnessVsTime(PsychoacousticsParent):
             # Computing output if needed
             warnings.warn(
                 PyDpfSoundWarning(
-                    "Output has not been yet processed, use LoudnessVsTime.process()."
+                    "Output has not been yet processed, use LoudnessISO532_1_TimeVarying.process()."
                 )
             )
             return None
@@ -282,7 +294,7 @@ class LoudnessVsTime(PsychoacousticsParent):
             return self.get_output_as_nparray()[5][channel_number]
 
     def plot(self):
-        """Plot the Loudness vs time in sone and in phon."""
+        """Plot the Time Varying Loudness in sone and in phon."""
         # Plot loudness in sone
         if type(self._output[0]) == Field:
             num_channels = 1
@@ -295,9 +307,9 @@ class LoudnessVsTime(PsychoacousticsParent):
 
         f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
         for i in range(num_channels):
-            ax1.plot(time, self.get_loudness_vs_time_sone(i), label="Channel {}".format(i))
+            ax1.plot(time, self.get_loudness_sone_vs_time(i), label="Channel {}".format(i))
 
-        ax1.set_title("Loudness vs time (Sone)")
+        ax1.set_title("Time Varying Loudness (Sone)")
         ax1.legend()
         ax1.set_ylabel("Sone")
         ax1.grid(True)
@@ -305,9 +317,9 @@ class LoudnessVsTime(PsychoacousticsParent):
         # Plot loudness in phon
 
         for i in range(num_channels):
-            ax2.plot(time, self.get_loudness_vs_time_phon(i), label="Channel {}".format(i))
+            ax2.plot(time, self.get_loudness_level_phon_vs_time(i), label="Channel {}".format(i))
 
-        ax2.set_title("Loudness vs time (Phon)")
+        ax2.set_title("Time Varying Loudness (phon)")
         ax2.legend()
         ax2.set_xlabel("Time")
         ax2.set_ylabel("Phon")

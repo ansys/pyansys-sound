@@ -5,10 +5,10 @@ Helper functions related to psychoacoustics indicators computation.
 
 from ._psychoacoustics_parent import PsychoacousticsParent
 from .loudness import Loudness
-from .loudness_vs_time import LoudnessVsTime
+from .loudness_iso_532_1_time_varying import LoudnessISO532_1_TimeVarying
 
 __all__ = (
     "PsychoacousticsParent",
     "Loudness",
-    "LoudnessVsTime",
+    "LoudnessISO532_1_TimeVarying",
 )
