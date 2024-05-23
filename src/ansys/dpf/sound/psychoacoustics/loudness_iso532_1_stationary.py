@@ -220,14 +220,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         npt.ArrayLike
             Array of Bark band frequencies.
         """
-        bark_band_indexes = self.get_bark_band_indexes()
-
-        for ibark in range(len(bark_band_indexes)):
-            if bark_band_indexes[ibark] < 2:
-                bark_band_indexes[ibark] = (bark_band_indexes[ibark] - 0.3) / 0.85
-            elif bark_band_indexes[ibark] > 20.1:
-                bark_band_indexes[ibark] = (bark_band_indexes[ibark] + 4.422) / 1.22
-        return 1920 * (bark_band_indexes + 0.53) / (26.28 - bark_band_indexes)
+        return self._convert_bark_to_hertz(self.get_bark_band_indexes())
 
     def plot(self):
         """Plot specific loudness.
