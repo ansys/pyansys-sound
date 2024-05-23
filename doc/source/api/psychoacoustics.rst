@@ -6,7 +6,7 @@ Psychoacoustics
 .. autosummary::
     :toctree: _autosummary
 
-    Loudness_ISO532_1_Stationary
+    LoudnessISO532_1_Stationary
     Sharpness
     Roughness
     FluctuationStrength
