@@ -7,7 +7,8 @@ Isolate Orders
 --------------
 
 This example shows how to isolate orders in a signal containing a RPM profile.
-It also uses additional classes from pydpf-sound to compute spectrogram and the loudness.
+It also uses additional classes from pydpf-sound to compute spectrograms
+and the loudness of the isolated signals.
 
 """
 # %%
@@ -27,7 +28,7 @@ from ansys.dpf.sound.signal_utilities import LoadWav
 from ansys.dpf.sound.spectrogram_processing import IsolateOrders, Stft
 
 # Connect to remote or start a local server
-connect_to_or_start_server(ansys_path=r"C:\TempDocker\ansys\dpf\server_2024_2_pre0")
+connect_to_or_start_server()
 # %%
 # Load a wav signal with a RPM profile
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -60,7 +61,7 @@ ax[0].set_ylabel("Pa")
 ax[0].grid(True)
 ax[1].plot(rpm_signal, color="red")
 ax[1].set_title("RPM profile")
-ax[1].set_ylabel("RPM")
+ax[1].set_ylabel("rpm")
 ax[1].grid(True)
 plt.xlabel("Sample Index")
 plt.show()
@@ -132,4 +133,13 @@ input_loudness.unit = "Pa"
 loudness = Loudness_ISO532_1_Stationary(signal=input_loudness)
 loudness.process()
 
-print(f"Loudness of the isolated signal is {loudness.get_loudness_level_phon()} phon.")
+loudness_isolated_signal = loudness.get_loudness_level_phon()
+
+# Computing the loudness for the original signal
+loudness.signal = field_wav
+loudness.process()
+
+loudness_original_signal = loudness.get_loudness_level_phon()
+
+print(f"Loudness of the original signal: {loudness_original_signal: .1f} phon.")
+print(f"Loudness of the isolated signal: {loudness_isolated_signal: .1f} phon.")
