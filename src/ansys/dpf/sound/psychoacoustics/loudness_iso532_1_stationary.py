@@ -36,7 +36,7 @@ class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
     @property
     def signal(self):
         """Signal property."""
-        return self.__signal  # pragma: no cover*
+        return self.__signal  # pragma: no cover
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):

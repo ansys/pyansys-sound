@@ -15,14 +15,25 @@ def get_absolute_path_for_flute_wav() -> str:
 
 
 def get_absolute_path_for_flute2_wav() -> str:
-    r"""Get the absolute path for the file flute.wav.
+    r"""Get the absolute path for the file flute2.wav.
+
+    Returns
+    -------
+    str
+        Absolute path to flute2.wav .
+    """
+    return _get_absolute_path("flute2.wav")
+
+
+def get_absolute_path_for_accel_with_rpm_wav() -> str:
+    r"""Get the absolute path for the file accel_with_rpm.wav.
 
     Returns
     -------
     str
         Absolute path to flute.wav .
     """
-    return _get_absolute_path("flute2.wav")
+    return _get_absolute_path("accel_with_rpm.wav")
 
 
 def _get_absolute_path(filename: str) -> str:
@@ -45,6 +56,6 @@ def _get_absolute_path(filename: str) -> str:
 
     # Obtaining flute.wav path based on the current path
     for parent in pathlib.Path(__file__).parents:  # pragma: no cover
-        if (parent / "tests/data/" + filename).exists():
-            p = parent / "tests/data/" + filename
+        if (parent / "tests/data/" / filename).exists():
+            p = parent / "tests/data/" / filename
             return p.as_posix()

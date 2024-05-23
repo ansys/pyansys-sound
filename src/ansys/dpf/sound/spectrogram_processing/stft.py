@@ -254,7 +254,7 @@ class Stft(SpectrogramProcessingParent):
         # Extracting first half of the STFT (second half is symmetrical)
         half_nfft = int(np.shape(out)[0] / 2) + 1
         magnitude = self.get_stft_magnitude_as_nparray()
-        magnitude = 20 * np.log10(magnitude[0:half_nfft, :])
+        magnitude = 20 * np.log10(magnitude[0:half_nfft, :] + 1.0e-12)
         phase = self.get_stft_phase_as_nparray()
         phase = phase[0:half_nfft, :]
         fs = 1.0 / (
