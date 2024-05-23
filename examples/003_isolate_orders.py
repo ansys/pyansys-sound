@@ -1,13 +1,13 @@
 # Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
 
 """
-.. _load_write_wav_files_example:
+.. _isolate_orders_example:
 
-Load / Write Wav Files
-----------------------
+Isolate Orders
+--------------
 
-This example shows how to load and write wav files.
-It also shows how to access the corresponding data and display it using numpy.
+This example shows how to isolate orders in a signal containing a RPM profile.
+It also uses additional classes from pydpf-sound to compute spectrogram and the loudness.
 
 """
 # %%
