@@ -2,7 +2,6 @@
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
-import numpy as np
 from numpy import typing as npt
 
 from . import PsychoacousticsParent
@@ -127,11 +126,8 @@ class Sharpness(PsychoacousticsParent):
 
         sharpness_data = self.get_output_as_nparray()
 
-        # Check if input signal was mono or multichannel.
-        if type(sharpness_data) == np.float64:
-            channel_max = 0
-        else:
-            channel_max = len(sharpness_data) - 1
+        # Get last channel index.
+        channel_max = len(sharpness_data) - 1
 
         # Check that specified channel index exists.
         if channel_index > channel_max:

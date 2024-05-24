@@ -285,11 +285,8 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         if loudness_data == None:
             return None
 
-        # Check if input signal was mono or multichannel.
-        if type(loudness_data[0]) == np.float64:
-            channel_max = 0
-        else:
-            channel_max = len(loudness_data[0]) - 1
+        # Get last channel index.
+        channel_max = len(loudness_data[0]) - 1
 
         # Check that specified channel index exists.
         if channel_index > channel_max:
@@ -305,8 +302,10 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         else:
             if output_id == LOUDNESS_SONE_ID:
                 unit_index = 0
-            else:
+            elif output_id == LOUDNESS_LEVEL_PHON_ID:
                 unit_index = 1
+            else:
+                raise PyDpfSoundException("Invalid identifier of output parameter.")
 
             if channel_max > 0:
                 return loudness_data[unit_index][channel_index][0]

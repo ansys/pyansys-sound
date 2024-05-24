@@ -255,11 +255,8 @@ class Roughness(PsychoacousticsParent):
         if roughness_data == None:
             return None
 
-        # Check if input signal was mono or multichannel.
-        if type(roughness_data[0]) == np.float64:
-            channel_max = 0
-        else:
-            channel_max = len(roughness_data[0]) - 1
+        # Get last channel index.
+        channel_max = len(roughness_data[0]) - 1
 
         # Check that specified channel index exists.
         if channel_index > channel_max:
@@ -271,8 +268,10 @@ class Roughness(PsychoacousticsParent):
                 return roughness_data[1][channel_index]
             else:
                 return roughness_data[1]
-        else:
+        elif output_id == TOTAL_ROUGHNESS_ID:
             if channel_max > 0:
                 return roughness_data[0][channel_index][0]
             else:
                 return roughness_data[0][0]
+        else:
+            raise PyDpfSoundException("Invalid identifier of output parameter.")
