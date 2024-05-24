@@ -6,5 +6,5 @@ Psychoacoustics
 .. autosummary::
     :toctree: _autosummary
 
-    Loudness
-    LoudnessVsTime
+    Loudness_ISO532_1_Stationary
+    LoudnessISO532_1_TimeVarying
