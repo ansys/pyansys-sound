@@ -1,4 +1,4 @@
-"""Compute Loudness."""
+"""Compute Time Varying ISO532:1 Loudness."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -32,7 +32,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
     @property
     def signal(self):
         """Signal property."""
-        return self.__signal  # pragma: no cover*
+        return self.__signal  # pragma: no cover
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):
@@ -58,7 +58,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         if self.__signal == None:
             raise PyDpfSoundException(
                 "No signal for loudness vs time computation. \
-                Use LoudnessISO532_1_TimeVarying.signal"
+Use LoudnessISO532_1_TimeVarying.signal"
             )
 
         self.__operator.connect(0, self.signal)
@@ -125,11 +125,6 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         output = self.get_output()
 
         if output == None:
-            warnings.warn(
-                PyDpfSoundWarning(
-                    "Output has not been yet processed, use LoudnessISO532_1_TimeVarying.process()."
-                )
-            )
             return None
 
         if type(output[0]) == Field:
@@ -159,13 +154,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         npt.ArrayLike
             Time Varying Loudness in sone.
         """
-        if self._output == None:
-            # Computing output if needed
-            warnings.warn(
-                PyDpfSoundWarning(
-                    "Output has not been yet processed, use LoudnessISO532_1_TimeVarying.process()."
-                )
-            )
+        if self.get_output() == None:
             return None
 
         if type(self._output[0]) == Field:
@@ -186,13 +175,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         float
             N5 value in sone.
         """
-        if self._output == None:
-            # Computing output if needed
-            warnings.warn(
-                PyDpfSoundWarning(
-                    "Output has not been yet processed, use LoudnessISO532_1_TimeVarying.process()."
-                )
-            )
+        if self.get_output() == None:
             return None
 
         if type(self._output[0]) == Field:
@@ -208,13 +191,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         float
             N10 value in sone.
         """
-        if self._output == None:
-            # Computing output if needed
-            warnings.warn(
-                PyDpfSoundWarning(
-                    "Output has not been yet processed, use LoudnessISO532_1_TimeVarying.process()."
-                )
-            )
+        if self.get_output() == None:
             return None
 
         if type(self._output[0]) == Field:
@@ -230,13 +207,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         npt.ArrayLike
             Time Varying Loudness in phon.
         """
-        if self._output == None:
-            # Computing output if needed
-            warnings.warn(
-                PyDpfSoundWarning(
-                    "Output has not been yet processed, use LoudnessISO532_1_TimeVarying.process()."
-                )
-            )
+        if self.get_output() == None:
             return None
 
         if type(self._output[0]) == Field:
@@ -257,13 +228,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         float
             L5 value in phon.
         """
-        if self._output == None:
-            # Computing output if needed
-            warnings.warn(
-                PyDpfSoundWarning(
-                    "Output has not been yet processed, use LoudnessISO532_1_TimeVarying.process()."
-                )
-            )
+        if self.get_output() == None:
             return None
 
         if type(self._output[0]) == Field:
@@ -279,13 +244,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         float
             L10 value in phon.
         """
-        if self._output == None:
-            # Computing output if needed
-            warnings.warn(
-                PyDpfSoundWarning(
-                    "Output has not been yet processed, use LoudnessISO532_1_TimeVarying.process()."
-                )
-            )
+        if self.get_output() == None:
             return None
 
         if type(self._output[0]) == Field:
