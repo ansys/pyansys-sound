@@ -25,7 +25,7 @@ from ansys.dpf.sound.server_helpers import connect_to_or_start_server
 from ansys.dpf.sound.signal_utilities import LoadWav, WriteWav
 
 # Connect to remote or start a local server
-connect_to_or_start_server()
+connect_to_or_start_server(ansys_path=r'C:\Program Files\ANSYS Inc\v242\ansys_dpf_server_win_v2024.2.pre1\ansys\dpf\server_2024_2_pre1')
 
 # %%
 # Load a wav signal using LoadWav class, it will be returned as a
@@ -38,6 +38,8 @@ path_flute_wav = get_absolute_path_for_flute_wav()
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
 fc_signal = wav_loader.get_output()
+
+print("TEST")
 
 # %%
 # Plot the loaded signal.
