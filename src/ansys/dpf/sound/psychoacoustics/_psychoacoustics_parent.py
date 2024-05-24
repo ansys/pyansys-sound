@@ -25,7 +25,7 @@ class PsychoacousticsParent(PyDpfSound):
         according to: Traunmüller, Hartmut. "Analytical Expressions for the Tonotopic Sensory
         Scale." Journal of the Acoustical Society of America. Vol. 88, Issue 1, 1990, pp. 97–100.
 
-         Parameters
+        Parameters
         ----------
         bark_band_indexes: numpy array
             Array of Bark band indexes to convert, in Bark.
@@ -36,7 +36,7 @@ class PsychoacousticsParent(PyDpfSound):
             Array of corresponding frequencies, in Hz.
         """
         for ibark in range(len(bark_band_indexes)):
-            if not (0.0 <= bark_band_indexes[ibark] <= 24.0):
+            if not (-0.1 <= bark_band_indexes[ibark] <= 24.1):
                 raise PyDpfSoundException(
                     "Specified Bark band indexes must be between 0.0 and 24.0 Bark."
                 )

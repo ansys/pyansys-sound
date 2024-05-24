@@ -111,6 +111,6 @@ def _get_absolute_path(filename: str) -> str:
 
     # Obtaining flute.wav path based on the current path
     for parent in pathlib.Path(__file__).parents:  # pragma: no cover
-        if (parent / "tests/data/" + filename).exists():
-            p = parent / "tests/data/" + filename
+        if (parent / "tests/data/" / filename).exists():
+            p = parent / "tests/data/" / filename
             return p.as_posix()
