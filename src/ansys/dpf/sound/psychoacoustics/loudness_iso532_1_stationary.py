@@ -22,7 +22,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Instantiate a LoudnessISO532_1_Stationary object.
+        """Create a LoudnessISO532_1_Stationary object.
 
         Parameters
         ----------
@@ -36,7 +36,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
     @property
     def signal(self):
         """Signal property."""
-        return self.__signal  # pragma: no cover*
+        return self.__signal  # pragma: no cover
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):

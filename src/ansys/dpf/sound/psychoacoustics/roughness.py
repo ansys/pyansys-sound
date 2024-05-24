@@ -22,7 +22,7 @@ class Roughness(PsychoacousticsParent):
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Instantiate a Roughness object.
+        """Create a Roughness object.
 
         Parameters
         ----------
@@ -36,7 +36,7 @@ class Roughness(PsychoacousticsParent):
     @property
     def signal(self):
         """Signal property."""
-        return self.__signal  # pragma: no cover*
+        return self.__signal  # pragma: no cover
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):

@@ -22,7 +22,7 @@ class FluctuationStrength(PsychoacousticsParent):
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Instantiate a FluctuationStrength object.
+        """Create a FluctuationStrength object.
 
         Parameters
         ----------
@@ -37,7 +37,7 @@ class FluctuationStrength(PsychoacousticsParent):
     @property
     def signal(self):
         """Signal property."""
-        return self.__signal  # pragma: no cover*
+        return self.__signal  # pragma: no cover
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):
