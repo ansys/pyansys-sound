@@ -78,13 +78,13 @@ class PyDpfSound:
                 The fields container as a numpy array.
         """
         num_channels = len(fc)
-        np_array = fc[0].data
+        np_array = np.array(fc[0].data)
 
         if num_channels > 1:
             for i in range(1, num_channels):
                 np_array = np.vstack((np_array, fc[i].data))
 
-        return np.transpose(np_array)
+        return np_array
 
 
 class PyDpfSoundException(Exception):
