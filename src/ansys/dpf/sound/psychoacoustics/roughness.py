@@ -117,14 +117,14 @@ class Roughness(PsychoacousticsParent):
             return None
 
         if type(output[0]) == Field:
-            return (output[0].data, output[1].data)
+            return (np.array(output[0].data), np.array(output[1].data))
 
         return (
             self.convert_fields_container_to_np_array(output[0]),
             self.convert_fields_container_to_np_array(output[1]),
         )
 
-    def get_roughness(self, channel_index: int = 0) -> float:
+    def get_roughness(self, channel_index: int = 0) -> np.float64:
         """Return roughness in asper.
 
            Returns the roughness in asper as a float, for the specified channel index.
@@ -136,7 +136,7 @@ class Roughness(PsychoacousticsParent):
 
         Returns
         -------
-        float
+        numpy.float64
             Roughness value in asper.
         """
         return self._get_output_parameter(channel_index, TOTAL_ROUGHNESS_ID)
@@ -231,7 +231,9 @@ class Roughness(PsychoacousticsParent):
             plt.legend()
         plt.show()
 
-    def _get_output_parameter(self, channel_index: int, output_id: str) -> float | npt.ArrayLike:
+    def _get_output_parameter(
+        self, channel_index: int, output_id: str
+    ) -> np.float64 | npt.ArrayLike:
         """Return individual roughness result.
 
         Returns the roughness as a float, or the specific roughness as a numpy array, according to
@@ -248,7 +250,7 @@ class Roughness(PsychoacousticsParent):
 
         Returns
         -------
-        float | numpy.ndarray
+        numpy.float64 | numpy.ndarray
             Roughness (float) in asper or specific roughness (numpy array) in asper/Bark.
         """
         roughness_data = self.get_output_as_nparray()

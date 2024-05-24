@@ -2,6 +2,7 @@
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
+import numpy as np
 from numpy import typing as npt
 
 from . import PsychoacousticsParent
@@ -102,11 +103,11 @@ class Sharpness(PsychoacousticsParent):
             return None
 
         if type(output) == Field:
-            return output.data
+            return np.array(output.data)
 
         return self.convert_fields_container_to_np_array(output)
 
-    def get_sharpness(self, channel_index: int = 0) -> float:
+    def get_sharpness(self, channel_index: int = 0) -> np.float64:
         """Return sharpness as a float.
 
         Returns sharpness in acum for the specified channel.
@@ -118,7 +119,7 @@ class Sharpness(PsychoacousticsParent):
 
         Returns
         -------
-        float
+        numpy.float64
             Sharpness value in acum.
         """
         if self.get_output() == None:

@@ -65,8 +65,11 @@ def test_loudness_iso532_1_stationary_get_output(dpf_sound_test_server):
     loudness_computer.process()
 
     (loudness_sone, loudness_level_phon, specific_loudness) = loudness_computer.get_output()
+    assert type(loudness_sone) == FieldsContainer
     assert loudness_sone != None
+    assert type(loudness_level_phon) == FieldsContainer
     assert loudness_level_phon != None
+    assert type(specific_loudness) == FieldsContainer
     assert specific_loudness != None
 
 
@@ -99,6 +102,7 @@ def test_loudness_iso532_1_stationary_get_loudness_sone(dpf_sound_test_server):
         loudness_sone = loudness_computer.get_loudness_sone(1)
 
     loudness_sone = loudness_computer.get_loudness_sone(0)
+    assert type(loudness_sone) == np.float64
     assert loudness_sone == pytest.approx(39.58000183105469)
 
     # Set signal as a fields container
@@ -107,6 +111,7 @@ def test_loudness_iso532_1_stationary_get_loudness_sone(dpf_sound_test_server):
     loudness_computer.process()
 
     loudness_sone = loudness_computer.get_loudness_sone(0)
+    assert type(loudness_sone) == np.float64
     assert loudness_sone == pytest.approx(39.58000183105469)
 
     # Add a second signal in the fields container
@@ -119,8 +124,10 @@ def test_loudness_iso532_1_stationary_get_loudness_sone(dpf_sound_test_server):
     loudness_computer.process()
 
     loudness_sone = loudness_computer.get_loudness_sone(0)
+    assert type(loudness_sone) == np.float64
     assert loudness_sone == pytest.approx(39.58000183105469)
     loudness_sone = loudness_computer.get_loudness_sone(1)
+    assert type(loudness_sone) == np.float64
     assert loudness_sone == pytest.approx(16.18000030517578)
 
 
@@ -147,6 +154,7 @@ def test_loudness_iso532_1_stationary_get_loudness_level_phon(dpf_sound_test_ser
     loudness_computer.process()
 
     loudness_level_phon = loudness_computer.get_loudness_level_phon()
+    assert type(loudness_level_phon) == np.float64
     assert loudness_level_phon == pytest.approx(93.0669937133789)
 
 
@@ -173,6 +181,7 @@ def test_loudness_iso532_1_stationary_get_specific_loudness(dpf_sound_test_serve
     loudness_computer.process()
 
     specific_loudness = loudness_computer.get_specific_loudness()
+    assert type(specific_loudness) == np.ndarray
     assert len(specific_loudness) == 240
     assert specific_loudness[0] == pytest.approx(0.0)
     assert specific_loudness[9] == pytest.approx(0.15664348006248474)
@@ -188,6 +197,7 @@ def test_loudness_iso532_1_stationary_get_specific_loudness(dpf_sound_test_serve
     loudness_computer.process()
 
     specific_loudness = loudness_computer.get_specific_loudness(1)
+    assert type(specific_loudness) == np.ndarray
     assert len(specific_loudness) == 240
     assert specific_loudness[0] == pytest.approx(0.0)
     assert specific_loudness[9] == pytest.approx(0.008895192295312881)
@@ -217,6 +227,7 @@ def test_loudness_iso532_1_stationary_get_bark_band_indexes(dpf_sound_test_serve
     loudness_computer.process()
 
     bark_band_indexes = loudness_computer.get_bark_band_indexes()
+    assert type(bark_band_indexes) == np.ndarray
     assert len(bark_band_indexes) == 240
     assert bark_band_indexes[0] == pytest.approx(0.10000000149011612)
     assert bark_band_indexes[9] == pytest.approx(1.0000000149011612)
@@ -228,6 +239,7 @@ def test_loudness_iso532_1_stationary_get_bark_band_indexes(dpf_sound_test_serve
     loudness_computer.process()
 
     bark_band_indexes = loudness_computer.get_bark_band_indexes()
+    assert type(bark_band_indexes) == np.ndarray
     assert len(bark_band_indexes) == 240
     assert bark_band_indexes[0] == pytest.approx(0.10000000149011612)
     assert bark_band_indexes[9] == pytest.approx(1.0000000149011612)
@@ -248,6 +260,7 @@ def test_loudness_iso532_1_stationary_get_bark_band_frequencies(dpf_sound_test_s
     loudness_computer.process()
 
     bark_band_frequencies = loudness_computer.get_bark_band_frequencies()
+    assert type(bark_band_frequencies) == np.ndarray
     assert len(bark_band_frequencies) == 240
     assert bark_band_frequencies[0] == pytest.approx(21.33995930840456)
     assert bark_band_frequencies[9] == pytest.approx(102.08707043772274)
@@ -283,10 +296,13 @@ def test_loudness_iso532_1_stationary_get_output_as_nparray_from_fields_containe
         loudness_level_phon,
         specific_loudness,
     ) = loudness_computer.get_output_as_nparray()
+    assert type(loudness_sone) == np.ndarray
     assert len(loudness_sone) == 1
     assert loudness_sone[0] == pytest.approx(39.58000183105469)
+    assert type(loudness_level_phon) == np.ndarray
     assert len(loudness_level_phon) == 1
     assert loudness_level_phon[0] == pytest.approx(93.0669937133789)
+    assert type(specific_loudness) == np.ndarray
     assert len(specific_loudness) == 240
     assert specific_loudness[0] == pytest.approx(0.0)
     assert specific_loudness[9] == pytest.approx(0.15664348006248474)
@@ -311,10 +327,13 @@ def test_loudness_iso532_1_stationary_get_output_as_nparray_from_field(dpf_sound
         loudness_level_phon,
         specific_loudness,
     ) = loudness_computer.get_output_as_nparray()
+    assert type(loudness_sone) == np.ndarray
     assert len(loudness_sone) == 1
     assert loudness_sone[0] == pytest.approx(39.58000183105469)
+    assert type(loudness_level_phon) == np.ndarray
     assert len(loudness_level_phon) == 1
     assert loudness_level_phon[0] == pytest.approx(93.0669937133789)
+    assert type(specific_loudness) == np.ndarray
     assert len(specific_loudness) == 240
     assert specific_loudness[0] == pytest.approx(0.0)
     assert specific_loudness[9] == pytest.approx(0.15664348006248474)

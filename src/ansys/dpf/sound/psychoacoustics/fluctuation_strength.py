@@ -123,14 +123,14 @@ class FluctuationStrength(PsychoacousticsParent):
             return None
 
         if type(output[0]) == Field:
-            return (output[0].data, output[1].data)
+            return (np.array(output[0].data), np.array(output[1].data))
 
         return (
             self.convert_fields_container_to_np_array(output[0]),
             self.convert_fields_container_to_np_array(output[1]),
         )
 
-    def get_fluctuation_strength(self, channel_index: int = 0) -> float:
+    def get_fluctuation_strength(self, channel_index: int = 0) -> np.float64:
         """Return fluctuation strength in vacil.
 
            Returns the fluctuation strength in vacil as a float, for the specified channel index.
@@ -142,7 +142,7 @@ class FluctuationStrength(PsychoacousticsParent):
 
         Returns
         -------
-        float
+        numpy.numpy.float6464
             Fluctuation strength value in vacil.
         """
         return self._get_output_parameter(channel_index, TOTAL_FS_ID)
@@ -239,7 +239,9 @@ class FluctuationStrength(PsychoacousticsParent):
             plt.legend()
         plt.show()
 
-    def _get_output_parameter(self, channel_index: int, output_id: str) -> float | npt.ArrayLike:
+    def _get_output_parameter(
+        self, channel_index: int, output_id: str
+    ) -> np.float64 | npt.ArrayLike:
         """Return individual fluctuation strength result.
 
         Returns the fluctuation strength as a float, or the specific fluctuation strength as a
@@ -256,7 +258,7 @@ class FluctuationStrength(PsychoacousticsParent):
 
         Returns
         -------
-        float | numpy.ndarray
+        numpy.float64 | numpy.ndarray
             Fluctuation strength (float) in vacil or specific fluctuation strength (numpy array)
             in vacil/Bark.
         """

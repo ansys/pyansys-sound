@@ -80,7 +80,9 @@ def test_fs_get_output(dpf_sound_test_server):
     fs_computer.process()
 
     (fs, specific_fs) = fs_computer.get_output()
+    assert type(fs) == FieldsContainer
     assert fs != None
+    assert type(specific_fs) == FieldsContainer
     assert specific_fs != None
 
 
@@ -113,6 +115,7 @@ def test_fs_get_fluctuation_strength(dpf_sound_test_server):
         fs = fs_computer.get_fluctuation_strength(1)
 
     fs = fs_computer.get_fluctuation_strength(0)
+    assert type(fs) == np.float64
     assert fs == pytest.approx(EXP_FS_1)
 
     # Set signal as a fields container
@@ -128,6 +131,7 @@ def test_fs_get_fluctuation_strength(dpf_sound_test_server):
         fs = fs_computer.get_fluctuation_strength(1)
 
     fs = fs_computer.get_fluctuation_strength(0)
+    assert type(fs) == np.float64
     assert fs == pytest.approx(EXP_FS_1)
 
     # Add a second signal in the fields container
@@ -140,6 +144,7 @@ def test_fs_get_fluctuation_strength(dpf_sound_test_server):
     fs_computer.process()
 
     fs = fs_computer.get_fluctuation_strength(1)
+    assert type(fs) == np.float64
     assert fs == pytest.approx(EXP_FS_2)
 
 
@@ -167,6 +172,7 @@ def test_fs_get_specific_fluctuation_strength(dpf_sound_test_server):
 
     specific_fs = fs_computer.get_specific_fluctuation_strength()
 
+    assert type(specific_fs) == np.ndarray
     assert len(specific_fs) == 47
     assert specific_fs[0] == pytest.approx(EXP_SPECIFIC_FS_1_0)
     assert specific_fs[9] == pytest.approx(EXP_SPECIFIC_FS_1_9)
@@ -183,6 +189,7 @@ def test_fs_get_specific_fluctuation_strength(dpf_sound_test_server):
 
     specific_fs = fs_computer.get_specific_fluctuation_strength(1)
 
+    assert type(specific_fs) == np.ndarray
     assert len(specific_fs) == 47
     assert specific_fs[15] == pytest.approx(EXP_SPECIFIC_FS_2_15)
     assert specific_fs[17] == pytest.approx(EXP_SPECIFIC_FS_2_17)
@@ -212,6 +219,7 @@ def test_fs_get_bark_band_indexes(dpf_sound_test_server):
     fs_computer.process()
 
     bark_band_indexes = fs_computer.get_bark_band_indexes()
+    assert type(bark_band_indexes) == np.ndarray
     assert len(bark_band_indexes) == 47
     assert bark_band_indexes[0] == pytest.approx(EXP_BARK_0)
     assert bark_band_indexes[9] == pytest.approx(EXP_BARK_9)
@@ -224,6 +232,7 @@ def test_fs_get_bark_band_indexes(dpf_sound_test_server):
     fs_computer.process()
 
     bark_band_indexes = fs_computer.get_bark_band_indexes()
+    assert type(bark_band_indexes) == np.ndarray
     assert len(bark_band_indexes) == 47
     assert bark_band_indexes[0] == pytest.approx(EXP_BARK_0)
     assert bark_band_indexes[9] == pytest.approx(EXP_BARK_9)
@@ -246,6 +255,7 @@ def test_fs_get_bark_band_frequencies(dpf_sound_test_server):
     fs_computer.process()
 
     bark_band_frequencies = fs_computer.get_bark_band_frequencies()
+    assert type(bark_band_frequencies) == np.ndarray
     assert len(bark_band_frequencies) == 47
     assert bark_band_frequencies[0] == pytest.approx(EXP_FREQ_0)
     assert bark_band_frequencies[9] == pytest.approx(EXP_FREQ_9)
@@ -276,8 +286,10 @@ def test_fs_get_output_as_nparray_from_fields_container(dpf_sound_test_server):
 
     (fs, specific_fs) = fs_computer.get_output_as_nparray()
 
+    assert type(fs) == np.ndarray
     assert len(fs) == 1
     assert fs[0] == pytest.approx(EXP_FS_1)
+    assert type(specific_fs) == np.ndarray
     assert len(specific_fs) == 47
     assert specific_fs[0] == pytest.approx(EXP_SPECIFIC_FS_1_0)
     assert specific_fs[9] == pytest.approx(EXP_SPECIFIC_FS_1_9)
@@ -300,8 +312,10 @@ def test_fs_get_output_as_nparray_from_field(dpf_sound_test_server):
 
     (fs, specific_fs) = fs_computer.get_output_as_nparray()
 
+    assert type(fs) == np.ndarray
     assert len(fs) == 1
     assert fs[0] == pytest.approx(EXP_FS_1)
+    assert type(specific_fs) == np.ndarray
     assert len(specific_fs) == 47
     assert specific_fs[0] == pytest.approx(EXP_SPECIFIC_FS_1_0)
     assert specific_fs[9] == pytest.approx(EXP_SPECIFIC_FS_1_9)

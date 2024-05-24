@@ -60,6 +60,7 @@ def test_sharpness_get_output(dpf_sound_test_server):
     sharpness_computer.process()
 
     sharpness = sharpness_computer.get_output()
+    assert type(sharpness) == FieldsContainer
     assert sharpness != None
 
 
@@ -92,6 +93,7 @@ def test_sharpness_get_sharpness(dpf_sound_test_server):
         sharpness = sharpness_computer.get_sharpness(1)
 
     sharpness = sharpness_computer.get_sharpness(0)
+    assert type(sharpness) == np.float64
     assert sharpness == pytest.approx(EXP_SHARPNESS_1)
 
     # Set signal as a fields container
@@ -101,6 +103,7 @@ def test_sharpness_get_sharpness(dpf_sound_test_server):
     sharpness_computer.process()
 
     sharpness = sharpness_computer.get_sharpness(0)
+    assert type(sharpness) == np.float64
     assert sharpness == pytest.approx(EXP_SHARPNESS_1)
 
     # Add a second signal in the fields container
@@ -112,6 +115,7 @@ def test_sharpness_get_sharpness(dpf_sound_test_server):
     # Compute again
     sharpness_computer.process()
     sharpness = sharpness_computer.get_sharpness(1)
+    assert type(sharpness) == np.float64
     assert sharpness == pytest.approx(EXP_SHARPNESS_2)
 
 
@@ -140,6 +144,7 @@ def test_sharpness_get_output_as_nparray_from_fields_container(
     sharpness_computer.process()
 
     sharpness = sharpness_computer.get_output_as_nparray()
+    assert type(sharpness) == np.ndarray
     assert len(sharpness) == 1
     assert sharpness[0] == pytest.approx(EXP_SHARPNESS_1)
 
@@ -159,6 +164,7 @@ def test_sharpness_get_output_as_nparray_from_field(dpf_sound_test_server):
     sharpness_computer.process()
 
     sharpness = sharpness_computer.get_output_as_nparray()
+    assert type(sharpness) == np.ndarray
     assert len(sharpness) == 1
     assert sharpness[0] == pytest.approx(EXP_SHARPNESS_1)
 

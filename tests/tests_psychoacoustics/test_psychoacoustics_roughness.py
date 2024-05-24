@@ -80,7 +80,9 @@ def test_roughness_get_output(dpf_sound_test_server):
     roughness_computer.process()
 
     (roughness, specific_roughness) = roughness_computer.get_output()
+    assert type(roughness) == FieldsContainer
     assert roughness != None
+    assert type(specific_roughness) == FieldsContainer
     assert specific_roughness != None
 
 
@@ -113,6 +115,7 @@ def test_roughness_get_roughness(dpf_sound_test_server):
         roughness = roughness_computer.get_roughness(1)
 
     roughness = roughness_computer.get_roughness(0)
+    assert type(roughness) == np.float64
     assert roughness == pytest.approx(EXP_ROUGHNESS_1)
 
     # Set signal as a fields container
@@ -128,6 +131,7 @@ def test_roughness_get_roughness(dpf_sound_test_server):
         roughness = roughness_computer.get_roughness(1)
 
     roughness = roughness_computer.get_roughness(0)
+    assert type(roughness) == np.float64
     assert roughness == pytest.approx(EXP_ROUGHNESS_1)
 
     # Add a second signal in the fields container
@@ -140,6 +144,7 @@ def test_roughness_get_roughness(dpf_sound_test_server):
     roughness_computer.process()
 
     roughness = roughness_computer.get_roughness(1)
+    assert type(roughness) == np.float64
     assert roughness == pytest.approx(EXP_ROUGHNESS_2)
 
 
@@ -166,6 +171,7 @@ def test_roughness_get_specific_roughness(dpf_sound_test_server):
     roughness_computer.process()
 
     specific_roughness = roughness_computer.get_specific_roughness()
+    assert type(specific_roughness) == np.ndarray
     assert len(specific_roughness) == 47
     assert specific_roughness[0] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_1_0)
     assert specific_roughness[9] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_1_9)
@@ -181,6 +187,7 @@ def test_roughness_get_specific_roughness(dpf_sound_test_server):
     roughness_computer.process()
 
     specific_roughness = roughness_computer.get_specific_roughness(1)
+    assert type(specific_roughness) == np.ndarray
     assert len(specific_roughness) == 47
     assert specific_roughness[15] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_2_15)
     assert specific_roughness[17] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_2_17)
@@ -210,6 +217,7 @@ def test_roughness_get_bark_band_indexes(dpf_sound_test_server):
     roughness_computer.process()
 
     bark_band_indexes = roughness_computer.get_bark_band_indexes()
+    assert type(bark_band_indexes) == np.ndarray
     assert len(bark_band_indexes) == 47
     assert bark_band_indexes[0] == pytest.approx(EXP_BARK_0)
     assert bark_band_indexes[9] == pytest.approx(EXP_BARK_9)
@@ -222,6 +230,7 @@ def test_roughness_get_bark_band_indexes(dpf_sound_test_server):
     roughness_computer.process()
 
     bark_band_indexes = roughness_computer.get_bark_band_indexes()
+    assert type(bark_band_indexes) == np.ndarray
     assert len(bark_band_indexes) == 47
     assert bark_band_indexes[0] == pytest.approx(EXP_BARK_0)
     assert bark_band_indexes[9] == pytest.approx(EXP_BARK_9)
@@ -243,6 +252,7 @@ def test_roughness_get_bark_band_frequencies(dpf_sound_test_server):
     roughness_computer.process()
 
     bark_band_frequencies = roughness_computer.get_bark_band_frequencies()
+    assert type(bark_band_frequencies) == np.ndarray
     assert len(bark_band_frequencies) == 47
     assert bark_band_frequencies[0] == pytest.approx(EXP_FREQ_0)
     assert bark_band_frequencies[9] == pytest.approx(EXP_FREQ_9)
@@ -272,8 +282,10 @@ def test_roughness_get_output_as_nparray_from_fields_container(dpf_sound_test_se
     roughness_computer.process()
 
     (roughness, specific_roughness) = roughness_computer.get_output_as_nparray()
+    assert type(roughness) == np.ndarray
     assert len(roughness) == 1
     assert roughness[0] == pytest.approx(EXP_ROUGHNESS_1)
+    assert type(specific_roughness) == np.ndarray
     assert len(specific_roughness) == 47
     assert specific_roughness[0] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_1_0)
     assert specific_roughness[9] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_1_9)
@@ -295,8 +307,10 @@ def test_roughness_get_output_as_nparray_from_field(dpf_sound_test_server):
     roughness_computer.process()
 
     (roughness, specific_roughness) = roughness_computer.get_output_as_nparray()
+    assert type(roughness) == np.ndarray
     assert len(roughness) == 1
     assert roughness[0] == pytest.approx(EXP_ROUGHNESS_1)
+    assert type(specific_roughness) == np.ndarray
     assert len(specific_roughness) == 47
     assert specific_roughness[0] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_1_0)
     assert specific_roughness[9] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_1_9)

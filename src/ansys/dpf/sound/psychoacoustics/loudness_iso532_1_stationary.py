@@ -125,7 +125,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
             return None
 
         if type(output[0]) == Field:
-            return (output[0].data, output[1].data, output[2].data)
+            return (np.array(output[0].data), np.array(output[1].data), np.array(output[2].data))
 
         return (
             self.convert_fields_container_to_np_array(output[0]),
@@ -133,7 +133,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
             self.convert_fields_container_to_np_array(output[2]),
         )
 
-    def get_loudness_sone(self, channel_index: int = 0) -> float:
+    def get_loudness_sone(self, channel_index: int = 0) -> np.float64:
         """Return loudness in sone.
 
            Returns the loudness in sone as a float, for the specified channel index.
@@ -145,12 +145,12 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Returns
         -------
-        float
+        numpy.float64
             Loudness value in sone.
         """
         return self._get_output_parameter(channel_index, LOUDNESS_SONE_ID)
 
-    def get_loudness_level_phon(self, channel_index: int = 0) -> float:
+    def get_loudness_level_phon(self, channel_index: int = 0) -> np.float64:
         """Return loudness level in phon.
 
         Returns the loudness level in phon as a float, for the specified channel index.
@@ -162,7 +162,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Returns
         -------
-        float
+        numpy.float64
             Loudness level value in phon.
         """
         return self._get_output_parameter(channel_index, LOUDNESS_LEVEL_PHON_ID)
@@ -259,7 +259,9 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
             plt.legend()
         plt.show()
 
-    def _get_output_parameter(self, channel_index: int, output_id: str) -> float | npt.ArrayLike:
+    def _get_output_parameter(
+        self, channel_index: int, output_id: str
+    ) -> np.float64 | npt.ArrayLike:
         """Return individual loudness result.
 
         Returns the loudness or loudness level in phon as a float, or the specific loudness as a
@@ -277,7 +279,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Returns
         -------
-        float | numpy array
+        numpy.float64 | numpy array
             Loudness or loudness level value (float, in sone or phon, respectively), or specific
             loudness (numpy array, in sone/Bark).
         """
