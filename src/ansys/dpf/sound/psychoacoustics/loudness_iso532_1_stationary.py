@@ -114,7 +114,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Returns
         -------
-        tuple[npt.ArrayLike]
+        tuple[numpy.ndarray]
             First element is the loudness in sone.
             Second element is the loudness level in phon.
             Third element is the specific loudness in sone/Bark.
@@ -179,7 +179,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Returns
         -------
-        npt.ArrayLike
+        numpy.ndarray
             Specific loudness array in sone/Bark.
         """
         return self._get_output_parameter(channel_index, SPECIFIC_LOUDNESS_ID)
@@ -191,7 +191,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Returns
         -------
-        npt.ArrayLike
+        numpy.ndarray
             Array of Bark band idexes.
         """
         output = self.get_output()
@@ -217,7 +217,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Returns
         -------
-        npt.ArrayLike
+        numpy.ndarray
             Array of Bark band frequencies.
         """
         return self._convert_bark_to_hertz(self.get_bark_band_indexes())

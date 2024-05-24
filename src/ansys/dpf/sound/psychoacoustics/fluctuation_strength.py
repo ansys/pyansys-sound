@@ -113,7 +113,7 @@ class FluctuationStrength(PsychoacousticsParent):
 
         Returns
         -------
-        tuple[npt.ArrayLike]
+        tuple[numpy.ndarray]
             First element is the fluctuation strength in vacil.
             Second element is the specific fluctuation strength in vacil/Bark.
         """
@@ -159,7 +159,7 @@ class FluctuationStrength(PsychoacousticsParent):
 
         Returns
         -------
-        npt.ArrayLike
+        numpy.ndarray
             Specific fluctuation strength array in vacil/Bark.
         """
         return self._get_output_parameter(channel_index, SPECIFIC_FS_ID)
@@ -171,7 +171,7 @@ class FluctuationStrength(PsychoacousticsParent):
 
         Returns
         -------
-        npt.ArrayLike
+        numpy.ndarray
             Array of Bark band idexes.
         """
         output = self.get_output()
@@ -197,7 +197,7 @@ class FluctuationStrength(PsychoacousticsParent):
 
         Returns
         -------
-        npt.ArrayLike
+        numpy.ndarray
             Array of Bark band frequencies.
         """
         return self._convert_bark_to_hertz(self.get_bark_band_indexes())
@@ -256,7 +256,7 @@ class FluctuationStrength(PsychoacousticsParent):
 
         Returns
         -------
-        float | npt.ArrayLike
+        float | numpy.ndarray
             Fluctuation strength (float) in vacil or specific fluctuation strength (numpy array)
             in vacil/Bark.
         """

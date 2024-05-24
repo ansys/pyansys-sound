@@ -34,7 +34,6 @@ from ansys.dpf.sound.signal_utilities import LoadWav
 # Connect to remote or start a local server.
 server = connect_to_or_start_server()
 
-
 # %%
 # Calculate ISO 532-1 loudness for a stationary sound
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

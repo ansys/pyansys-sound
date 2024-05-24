@@ -94,7 +94,7 @@ class Sharpness(PsychoacousticsParent):
 
         Returns
         -------
-        npt.ArrayLike:
+        numpy.ndarray:
             Array of sharpness values, in acum.
         """
         output = self.get_output()
