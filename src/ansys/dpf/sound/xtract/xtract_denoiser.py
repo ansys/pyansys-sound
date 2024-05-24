@@ -48,6 +48,8 @@ class XtractDenoiser(XtractParent):
         self.__output_denoised_signals = None
         self.__output_noise_signals = None
 
+        self._output = (self.__output_denoised_signals, self.__output_noise_signals)
+
         self.__operator = Operator("xtract_denoiser")
 
     @property
@@ -75,7 +77,6 @@ class XtractDenoiser(XtractParent):
         -------
         GenericDataContainer
             Structure that contains the parameters of the algorithm:
-            - TODO
         """
         return self.__input_parameters  # pragma: no cover
 
@@ -129,27 +130,38 @@ class XtractDenoiser(XtractParent):
             self.__output_denoised_signals = self.__operator.get_output(0, "fields_container")
             self.__output_noise_signals = self.__operator.get_output(1, "fields_container")
 
+        self._output = (self.__output_denoised_signals, self.__output_noise_signals)
+
     def get_output(self) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
         """Get the output of the denoising."""
         if self.__output_denoised_signals == None or self.__output_noise_signals == None:
             warnings.warn(PyDpfSoundWarning("Output denoised or noise signals are not set."))
 
-        return self.__output_denoised_signals, self.__output_noise_signals
+        return self._output  # i.e. self.__output_denoised_signals, self.__output_noise_signals
 
     def get_output_as_nparray(self) -> Tuple[npt.ArrayLike, npt.ArrayLike]:
         """Get the output of the denoising as numpy arrays.
 
-        TODO: do something
+        Returns
+        -------
+        Tuple[npt.ArrayLike, npt.ArrayLike]
+            Denoised signal and noise signal as numpy arrays.
         """
+        if self.__output_noise_signals is None or self.__output_denoised_signals is None:
+            warnings.warn(PyDpfSoundWarning("Output denoised or noise signals are not set."))
+
         l_output_denoised_signals = self.get_output()[0]
         l_output_noise_signals = self.get_output()[1]
 
         if type(l_output_denoised_signals) == Field:
             return np.array(l_output_denoised_signals.data), np.array(l_output_noise_signals.data)
-
-        return self.convert_fields_container_to_np_array(
-            l_output_denoised_signals
-        ), self.convert_fields_container_to_np_array(l_output_noise_signals)
+        else:
+            if self.output_denoised_signals is None or self.output_noise_signals is None:
+                return np.array([]), np.array([])
+            else:
+                return self.convert_fields_container_to_np_array(
+                    l_output_denoised_signals
+                ), self.convert_fields_container_to_np_array(l_output_noise_signals)
 
     def plot(self):
         """Plot signals.

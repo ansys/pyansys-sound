@@ -120,6 +120,62 @@ def test_xtract_process(dpf_sound_test_server):
     assert xtract_denoiser.get_output_as_nparray()[1][99] == pytest.approx(-3.329021806551297e-15)
 
 
+def test_xtract_denoiser_get_output_warns(dpf_sound_test_server):
+    wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
+    wav_bird_plus_idle.process()
+
+    bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
+
+    ## Creating noise profile with Xtract helper (white noise power)
+    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
+
+    op_create_noise_from_white_noise.connect(0, -6.0)
+    op_create_noise_from_white_noise.connect(1, 44100.0)
+    op_create_noise_from_white_noise.connect(2, 50)
+
+    op_create_noise_from_white_noise.run()
+    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
+
+    # Setting Denoiser parameters
+    params_denoiser = GenericDataContainer()
+    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
+    params_denoiser.set_property("noise_levels", l_noise_profile)
+
+    xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
+
+    with pytest.warns(PyDpfSoundWarning) as record:
+        xtract_denoiser.get_output()
+    assert record[0].message.args[0] == "Output denoised or noise signals are not set."
+
+
+def test_xtract_denoiser_get_output_np_array_warns(dpf_sound_test_server):
+    wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
+    wav_bird_plus_idle.process()
+
+    bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
+
+    ## Creating noise profile with Xtract helper (white noise power)
+    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
+
+    op_create_noise_from_white_noise.connect(0, -6.0)
+    op_create_noise_from_white_noise.connect(1, 44100.0)
+    op_create_noise_from_white_noise.connect(2, 50)
+
+    op_create_noise_from_white_noise.run()
+    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
+
+    # Setting Denoiser parameters
+    params_denoiser = GenericDataContainer()
+    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
+    params_denoiser.set_property("noise_levels", l_noise_profile)
+
+    xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
+
+    with pytest.warns(PyDpfSoundWarning) as record:
+        xtract_denoiser.get_output_as_nparray()
+    assert record[0].message.args[0] == "Output denoised or noise signals are not set."
+
+
 def test_xtract_denoiser_get_output(dpf_sound_test_server):
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()

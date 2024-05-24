@@ -64,6 +64,13 @@ class Xtract(XtractParent):
         self.__output_transient_signal = None
         self.__output_remainder_signal = None
 
+        self._output = (
+            self.__output_noise_signal,
+            self.__output_tonal_signal,
+            self.__output_transient_signal,
+            self.__output_remainder_signal,
+        )
+
         self.__operator = Operator("xtract")
 
     @property
@@ -221,6 +228,13 @@ class Xtract(XtractParent):
             self.__output_tonal_signal = self.__operator.get_output(1, "fields_container")
             self.__output_transient_signal = self.__operator.get_output(2, "fields_container")
             self.__output_remainder_signal = self.__operator.get_output(3, "fields_container")
+
+        self._output = (
+            self.__output_noise_signal,
+            self.__output_tonal_signal,
+            self.__output_transient_signal,
+            self.__output_remainder_signal,
+        )
 
     def get_output(
         self,

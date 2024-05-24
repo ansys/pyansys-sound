@@ -53,6 +53,8 @@ class XtractTonal(XtractParent):
         self.__output_tonal_signals = None
         self.__output_non_tonal_signals = None
 
+        self._output = (self.__output_tonal_signals, self.__output_non_tonal_signals)
+
         self.__operator = Operator("xtract_tonal")
 
     @property
@@ -139,6 +141,8 @@ class XtractTonal(XtractParent):
         else:
             self.__output_tonal_signals = self.__operator.get_output(0, "fields_container")
             self.__output_non_tonal_signals = self.__operator.get_output(1, "fields_container")
+
+        self._output = (self.__output_tonal_signals, self.__output_non_tonal_signals)
 
     def get_output(self) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
         """Get the output of the tonal."""
