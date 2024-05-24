@@ -128,10 +128,10 @@ class Sharpness(PsychoacousticsParent):
         sharpness_data = self.get_output_as_nparray()
 
         # Check if input signal was mono or multichannel.
-        if type(sharpness_data[0]) == np.float64:
+        if type(sharpness_data) == np.float64:
             channel_max = 0
         else:
-            channel_max = len(sharpness_data[0]) - 1
+            channel_max = len(sharpness_data) - 1
 
         # Check that specified channel index exists.
         if channel_index > channel_max:
@@ -139,6 +139,6 @@ class Sharpness(PsychoacousticsParent):
 
         # Return sharpness for the specified channel.
         if channel_max > 0:
-            return sharpness_data[0][channel_index]
+            return sharpness_data[channel_index][0]
         else:
             return sharpness_data[0]

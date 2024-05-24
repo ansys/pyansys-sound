@@ -110,19 +110,22 @@ loudness.plot()
 # Calculate sharpness.
 sharpness = Sharpness(signal=fc_two_signals)
 sharpness.process()
-sharpness_values = sharpness.get_output_as_nparray()[0]
+sharpness_values = (sharpness.get_sharpness(0), sharpness.get_sharpness(1))
 
 # %%
 # Calculate roughness.
 roughness = Roughness(signal=fc_two_signals)
 roughness.process()
-roughness_values = roughness.get_output_as_nparray()[0][0]
+roughness_values = (roughness.get_roughness(0), roughness.get_roughness(1))
 
 # %%
 # Calculate fluctuation strength.
 fluctuation_strength = FluctuationStrength(signal=fc_two_signals)
 fluctuation_strength.process()
-fluctuation_strength_values = fluctuation_strength.get_output_as_nparray()[0][0]
+fluctuation_strength_values = (
+    fluctuation_strength.get_fluctuation_strength(0),
+    fluctuation_strength.get_fluctuation_strength(1),
+)
 
 # Print out the results.
 print(

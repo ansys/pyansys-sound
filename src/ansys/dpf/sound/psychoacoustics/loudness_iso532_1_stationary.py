@@ -247,7 +247,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
                 for ichannel in range(num_channels):
                     plt.plot(
                         bark_band_indexes,
-                        specific_loudness_as_nparray[:, ichannel],
+                        specific_loudness_as_nparray[ichannel],
                         label="Channel {}".format(ichannel),
                     )
 
@@ -286,10 +286,10 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
             return None
 
         # Check if input signal was mono or multichannel.
-        if type(loudness_data[0][0]) == np.float64:
+        if type(loudness_data[0]) == np.float64:
             channel_max = 0
         else:
-            channel_max = len(loudness_data[0][0]) - 1
+            channel_max = len(loudness_data[0]) - 1
 
         # Check that specified channel index exists.
         if channel_index > channel_max:
@@ -299,7 +299,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         # channel.
         if output_id == SPECIFIC_LOUDNESS_ID:
             if channel_max > 0:
-                return loudness_data[2][:, channel_index]
+                return loudness_data[2][channel_index]
             else:
                 return loudness_data[2]
         else:
@@ -309,6 +309,6 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
                 unit_index = 1
 
             if channel_max > 0:
-                return loudness_data[unit_index][0][channel_index]
+                return loudness_data[unit_index][channel_index][0]
             else:
                 return loudness_data[unit_index][0]
