@@ -142,7 +142,7 @@ class FluctuationStrength(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.numpy.float6464
+        numpy.float64
             Fluctuation strength value in vacil.
         """
         return self._get_output_parameter(channel_index, TOTAL_FS_ID)

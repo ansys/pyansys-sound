@@ -279,7 +279,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.float64 | numpy array
+        numpy.float64 | numpy.ndarray
             Loudness or loudness level value (float, in sone or phon, respectively), or specific
             loudness (numpy array, in sone/Bark).
         """
