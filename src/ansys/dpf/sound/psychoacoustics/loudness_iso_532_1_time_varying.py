@@ -111,7 +111,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         return self._output
 
     def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
-        """Return the loudness vs time as numpy arrays.
+        """Return the Time Varying Loudness related indicators as numpy arrays.
 
         Returns
         -------
