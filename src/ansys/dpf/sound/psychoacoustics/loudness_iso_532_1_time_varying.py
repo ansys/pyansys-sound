@@ -1,4 +1,4 @@
-"""Compute Time Varying ISO532:1 Loudness."""
+"""Compute ISO 532-1 loudness for time varying sounds."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -11,9 +11,10 @@ from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
 class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
-    """Loudness vs Time.
+    """ISO 532-1 loudness for time varying sounds.
 
-    This class computes the loudness vs time of a signal.
+    This class computes the loudness of a signal following standard ISO 532-1 for time
+    varying sounds.
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
@@ -22,7 +23,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         Parameters
         ----------
         signal:
-            Signal on which to compute Time Varying ISO532:1 Loudness,
+            Signal on which to compute Time Varying ISO532-1 Loudness,
             as a DPF Field or Fields Container.
         """
         super().__init__()
@@ -46,19 +47,19 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         Returns
         -------
         FieldsContainer | Field
-                The signal as a Field or a FieldsContainer
+            The signal as a Field or a FieldsContainer
         """
         return self.__signal
 
     def process(self):
-        """Compute the Time Varying ISO532:1 Loudness.
+        """Compute the Time Varying ISO532-1 Loudness.
 
         Calls the appropriate DPF Sound operator to compute the loudness of the signal.
         """
         if self.__signal == None:
             raise PyDpfSoundException(
-                "No signal for loudness vs time computation. \
-Use LoudnessISO532_1_TimeVarying.signal"
+                "No signal for loudness vs time computation."
+                + " Use LoudnessISO532_1_TimeVarying.signal"
             )
 
         self.__operator.connect(0, self.signal)
@@ -91,13 +92,13 @@ Use LoudnessISO532_1_TimeVarying.signal"
 
         Returns
         -------
-            tuple(FieldsContainer) | tuple(Field)
-                1st element is the loudness vs time in sone.
-                2nd element is the N5 indicator, in sone.
-                3rd element is the N10 indicator, in sone.
-                4th element is the loudness vs time in phon.
-                5th element is the L5 indicator, in phon.
-                6th element is the L10 indicator, in phon.
+        tuple(FieldsContainer) | tuple(Field)
+            1st element is the loudness vs time in sone.
+            2nd element is the N5 indicator, in sone.
+            3rd element is the N10 indicator, in sone.
+            4th element is the loudness vs time in phon.
+            5th element is the L5 indicator, in phon.
+            6th element is the L10 indicator, in phon.
         """
         if self._output == None:
             # Computing output if needed
@@ -114,13 +115,13 @@ Use LoudnessISO532_1_TimeVarying.signal"
 
         Returns
         -------
-            tuple[np.array]
-                1st element is the loudness vs time in sone.
-                2nd element is the N5 indicator, in sone.
-                3rd element is the N10 indicator, in sone.
-                4th element is the loudness vs time in phon.
-                5th element is the L5 indicator, in phon.
-                6th element is the L10 indicator, in phon.
+        tuple[np.array]
+            1st element is the loudness vs time in sone.
+            2nd element is the N5 indicator, in sone.
+            3rd element is the N10 indicator, in sone.
+            4th element is the loudness vs time in phon.
+            5th element is the L5 indicator, in phon.
+            6th element is the L10 indicator, in phon.
         """
         output = self.get_output()
 
