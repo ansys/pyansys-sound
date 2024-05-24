@@ -180,74 +180,57 @@ class XtractTonal(XtractParent):
 
         Plot the tonal and non tonal signals.
         """
-        ################
-        #
-        # Plot tonal signal
-        #
         l_output_tonal_signals = self.get_output()[0]
+        field = (
+            l_output_tonal_signals
+            if type(l_output_tonal_signals) == Field
+            else l_output_tonal_signals[0]
+        )
 
-        if type(l_output_tonal_signals) == Field:
-            l_i_nb_channels = 1
-            field = l_output_tonal_signals
-        else:
-            l_i_nb_channels = len(l_output_tonal_signals)
-            field = l_output_tonal_signals[0]
-
-        l_time_data = field.time_freq_support.time_frequencies.data
-        l_time_unit = field.time_freq_support.time_frequencies.unit
-        l_unit = field.unit
-
-        if type(l_output_tonal_signals) == Field:
-            plt.plot(l_time_data, l_output_tonal_signals.data, label="Channel 0")
-            plt.xlabel(f"Time ({l_time_unit})")
-            plt.ylabel(f"Amplitude ({l_unit})")
-            plt.title("Tonal signal")
-            plt.show()
-        else:
-            for l_i in range(l_i_nb_channels):
-                plt.plot(l_time_data, l_output_tonal_signals[l_i].data, label=f"Channel {l_i}")
-                plt.xlabel(f"Time ({l_time_unit})")
-                plt.ylabel(f"Amplitude ({l_unit})")
-                plt.title("Tonal signal")
-                plt.show()
-
-        ################
-        # Delete intermediate variables
-        del l_i_nb_channels, field, l_output_tonal_signals
-        del l_time_data, l_time_unit, l_unit
-
-        ################
-        #
-        # Plot non tonal signal
-        #
-        l_output_non_tonal_signals = self.get_output()[1]
-
-        if type(l_output_non_tonal_signals) == Field:
-            l_i_nb_channels = 1
-            field = l_output_non_tonal_signals
-        else:
-            l_i_nb_channels = len(l_output_non_tonal_signals)
-            field = l_output_non_tonal_signals[0]
+        l_np_output_tonal_signals, l_np_output_non_tonal_signals = self.get_output_as_nparray()
 
         l_time_data = field.time_freq_support.time_frequencies.data
         l_time_unit = field.time_freq_support.time_frequencies.unit
         l_unit = field.unit
 
-        if type(l_output_non_tonal_signals) == Field:
-            plt.plot(l_time_data, l_output_non_tonal_signals.data, label="Channel 0")
+        ################
+        # Note: by design, we have l_np_output_tonal_signals.ndim
+        # == l_np_output_non_tonal_signals.ndim
+        if l_np_output_tonal_signals.ndim == 1:
+            ################
+            # Field type
+            plt.figure()
+            plt.plot(l_time_data, l_np_output_tonal_signals, label=f"Channel 0")
             plt.xlabel(f"Time ({l_time_unit})")
             plt.ylabel(f"Amplitude ({l_unit})")
-            plt.title("Non tonal signal")
-            plt.show()
+            plt.title("Tonal signal - channel 0")
+
+            plt.figure()
+            plt.plot(l_time_data, l_np_output_non_tonal_signals, label=f"Channel 0")
+            plt.xlabel(f"Time ({l_time_unit})")
+            plt.ylabel(f"Amplitude ({l_unit})")
+            plt.title("Non tonal signal - channel 0")
         else:
-            for l_i in range(l_i_nb_channels):
-                plt.plot(l_time_data, l_output_non_tonal_signals[l_i].data, label=f"Channel {l_i}")
+            ################
+            # FieldsContainer type
+            for l_i in range(len(l_np_output_tonal_signals)):
+                plt.figure()
+                plt.plot(l_time_data, l_np_output_tonal_signals[l_i], label=f"Channel {l_i}")
                 plt.xlabel(f"Time ({l_time_unit})")
                 plt.ylabel(f"Amplitude ({l_unit})")
-                plt.title("Non tonal signal")
-                plt.show()
+                plt.title(f"Tonal signal - channel {l_i}")
+
+            for l_i in range(len(l_np_output_non_tonal_signals)):
+                plt.figure()
+                plt.plot(l_time_data, l_np_output_non_tonal_signals[l_i], label=f"Channel {l_i}")
+                plt.xlabel(f"Time ({l_time_unit})")
+                plt.ylabel(f"Amplitude ({l_unit})")
+                plt.title(f"Non tonal signal - channel {l_i}")
 
         ################
         # Delete intermediate variables
-        del l_i_nb_channels, field, l_output_non_tonal_signals
+        del field, l_np_output_tonal_signals, l_np_output_non_tonal_signals
         del l_time_data, l_time_unit, l_unit
+
+        # Show all figures created
+        plt.show()

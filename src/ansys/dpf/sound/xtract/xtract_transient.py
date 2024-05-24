@@ -214,82 +214,56 @@ class XtractTransient(XtractParent):
 
         Plot the transient signal and the non-transient signal.
         """
-        ################
-        #
-        # Plot transient signal
-        #
         l_output_transient_signals = self.get_output()[0]
 
-        if type(l_output_transient_signals) == Field:
-            l_i_nb_channels = 1
-            field = l_output_transient_signals
-        else:
-            l_i_nb_channels = len(l_output_transient_signals)
-            field = l_output_transient_signals[0]
+        field = (
+            l_output_transient_signals
+            if type(l_output_transient_signals) == Field
+            else l_output_transient_signals[0]
+        )
+
+        l_np_output_transient, l_np_output_non_transient = self.get_output_as_nparray()
 
         l_time_data = field.time_freq_support.time_frequencies.data
         l_time_unit = field.time_freq_support.time_frequencies.unit
         l_unit = field.unit
 
-        if type(l_output_transient_signals) == Field:
-            plt.plot(l_time_data, l_output_transient_signals.data, label="Transient signal")
+        ################
+        # Note: by design, we have l_output_transient.ndim == l_output_non_transient.ndim
+        if l_np_output_transient.ndim == 1:
+            ###########
+            # Field type
+            plt.figure()
+            plt.plot(l_time_data, l_np_output_transient, label=f"Channel 0")
             plt.xlabel(f"Time ({l_time_unit})")
             plt.ylabel(f"Amplitude ({l_unit})")
-            plt.title("Transient signal")
-            plt.show()
+            plt.title(f"Transient signal - channel 0")
+
+            plt.figure()
+            plt.plot(l_time_data, l_np_output_non_transient, label=f"Channel 0")
+            plt.xlabel(f"Time ({l_time_unit})")
+            plt.ylabel(f"Amplitude ({l_unit})")
+            plt.title(f"Non transient signal - channel 0")
         else:
-            for l_i in range(l_i_nb_channels):
-                plt.plot(
-                    l_time_data,
-                    l_output_transient_signals[l_i].data,
-                    label=f"Transient signal {l_i}",
-                )
+            for l_i in range(len(l_np_output_transient)):
+                ###########
+                # FieldsContainer type
+                plt.figure()
+                plt.plot(l_time_data, l_np_output_transient[l_i], label=f"Channel {l_i}")
                 plt.xlabel(f"Time ({l_time_unit})")
                 plt.ylabel(f"Amplitude ({l_unit})")
-                plt.title("Transient signal")
-                plt.show()
+                plt.title(f"Transient signal - channel {l_i}")
+
+                plt.figure()
+                plt.plot(l_time_data, l_np_output_non_transient[l_i], label=f"Channel {l_i}")
+                plt.xlabel(f"Time ({l_time_unit})")
+                plt.ylabel(f"Amplitude ({l_unit})")
+                plt.title(f"Non transient signal - channel {l_i}")
 
         ################
         # Delete intermediate variables
-        del l_i_nb_channels, field, l_output_transient_signals
+        del field, l_np_output_transient, l_np_output_non_transient
         del l_time_data, l_time_unit, l_unit
 
-        ################
-        #
-        # Plot non transient signal
-        #
-        l_output_non_transient_signals = self.get_output()[1]
-
-        if type(l_output_non_transient_signals) == Field:
-            l_i_nb_channels = 1
-            field = l_output_non_transient_signals
-        else:
-            l_i_nb_channels = len(l_output_non_transient_signals)
-            field = l_output_non_transient_signals[0]
-
-        l_time_data = field.time_freq_support.time_frequencies.data
-        l_time_unit = field.time_freq_support.time_frequencies.unit
-        l_unit = field.unit
-
-        if type(l_output_non_transient_signals) == Field:
-            plt.plot(l_time_data, l_output_non_transient_signals.data, label="Non transient signal")
-            plt.xlabel(f"Time ({l_time_unit})")
-            plt.ylabel(f"Amplitude ({l_unit})")
-            plt.title("Non transient signal")
-            plt.show()
-        else:
-            for l_i in range(l_i_nb_channels):
-                plt.plot(
-                    l_time_data,
-                    l_output_non_transient_signals[l_i].data,
-                    label=f"Non transient signal {l_i}",
-                )
-                plt.xlabel(f"Time ({l_time_unit})")
-                plt.ylabel(f"Amplitude ({l_unit})")
-                plt.title("Non transient signal")
-                plt.show()
-
-        ################
-        # Delete intermediate variables
-        del l_i_nb_channels, field, l_output_non_transient_signals
-        del l_time_data, l_time_unit, l_unit
+        # Show all figures created
+        plt.show()

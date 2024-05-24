@@ -173,71 +173,55 @@ class XtractDenoiser(XtractParent):
         # Plot denoised signal
         #
         l_output_denoised_signals = self.get_output()[0]
+        field = (
+            l_output_denoised_signals
+            if type(l_output_denoised_signals) == Field
+            else l_output_denoised_signals[0]
+        )
 
-        if type(l_output_denoised_signals) == Field:
-            l_i_nb_channels = 1
-            field = l_output_denoised_signals
-        else:
-            l_i_nb_channels = len(l_output_denoised_signals)
-            field = l_output_denoised_signals[0]
-
-        l_time_data = field.time_freq_support.time_frequencies.data
-        l_time_unit = field.time_freq_support.time_frequencies.unit
-        l_unit = field.unit
-
-        if type(l_output_denoised_signals) == Field:
-            for l_i in range(l_i_nb_channels):
-                plt.plot(l_time_data, l_output_denoised_signals.data, label=f"Channel {l_i}")
-                plt.xlabel("Time (" + l_time_unit + ")")
-                plt.ylabel("Amplitude (" + l_unit + ")")
-                plt.title("Denoised signal")
-                plt.show()
-        else:
-            for l_i in range(l_i_nb_channels):
-                plt.plot(l_time_data, l_output_denoised_signals[l_i].data, label=f"Channel {l_i}")
-                plt.xlabel("Time (" + l_time_unit + ")")
-                plt.ylabel("Amplitude (" + l_unit + ")")
-                plt.title("Denoised signal")
-                plt.show()
-
-        ################
-        # Delete intermediate variables
-        del l_i_nb_channels, field, l_output_denoised_signals
-        del l_time_data, l_time_unit, l_unit
-
-        ################
-        #
-        # Plot noise signal
-        #
-        l_output_noise_signals = self.get_output()[1]
-
-        if type(l_output_noise_signals) == Field:
-            l_i_nb_channels = 1
-            field = l_output_noise_signals
-        else:
-            l_i_nb_channels = len(l_output_noise_signals)
-            field = l_output_noise_signals[0]
+        l_np_output_denoised, l_np_output_noise = self.get_output_as_nparray()
 
         l_time_data = field.time_freq_support.time_frequencies.data
         l_time_unit = field.time_freq_support.time_frequencies.unit
         l_unit = field.unit
 
-        if type(l_output_noise_signals) == Field:
-            for l_i in range(l_i_nb_channels):
-                plt.plot(l_time_data, l_output_noise_signals.data, label=f"Channel {l_i}")
-                plt.xlabel("Time (" + l_time_unit + ")")
-                plt.ylabel("Amplitude (" + l_unit + ")")
-                plt.title("Noise signal")
-                plt.show()
+        ################
+        # Note: by design, we have l_np_output_denoised.ndim == l_np_output_noise.ndim
+        if l_np_output_denoised.ndim == 1:
+            ###########
+            # Field type
+            plt.figure()
+            plt.plot(l_time_data, l_np_output_denoised, label=f"Channel 0")
+            plt.xlabel("Time (" + l_time_unit + ")")
+            plt.ylabel("Amplitude (" + l_unit + ")")
+            plt.title(f"Denoised signal  - channel 0")
+
+            plt.figure()
+            plt.plot(l_time_data, l_np_output_noise, label=f"Channel 0")
+            plt.xlabel("Time (" + l_time_unit + ")")
+            plt.ylabel("Amplitude (" + l_unit + ")")
+            plt.title(f"Noise signal - channel 0")
         else:
-            for l_i in range(l_i_nb_channels):
-                plt.plot(l_time_data, l_output_noise_signals[l_i].data, label=f"Channel {l_i}")
+            ###########
+            # FieldsContainer type
+            for l_i in range(len(l_np_output_denoised)):
+                plt.figure()
+                plt.plot(l_time_data, l_np_output_denoised[l_i], label=f"Channel {l_i}")
                 plt.xlabel("Time (" + l_time_unit + ")")
                 plt.ylabel("Amplitude (" + l_unit + ")")
-                plt.title("Noise signal")
-                plt.show()
+                plt.title(f"Denoised signal  - channel {l_i}")
+
+            for l_i in range(len(l_np_output_noise)):
+                plt.figure()
+                plt.plot(l_time_data, l_np_output_noise[l_i], label=f"Channel {l_i}")
+                plt.xlabel("Time (" + l_time_unit + ")")
+                plt.ylabel("Amplitude (" + l_unit + ")")
+                plt.title(f"Noise signal - channel {l_i}")
 
         ################
         # Delete intermediate variables
-        del l_i_nb_channels, field, l_output_noise_signals
+        del field, l_np_output_denoised, l_np_output_noise
         del l_time_data, l_time_unit, l_unit
+
+        # Show all figures created
+        plt.show()
