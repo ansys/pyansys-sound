@@ -113,7 +113,7 @@ def test_stft_set_get_fft_size(dpf_sound_test_server):
     # Error
     with pytest.raises(PyDpfSoundException) as excinfo:
         stft.fft_size = -12.0
-    assert str(excinfo.value) == "Fft size must be greater than 0.0."
+    assert str(excinfo.value) == "FFT size must be greater than 0.0."
 
     stft.fft_size = 1234.0
     assert stft.fft_size == 1234.0

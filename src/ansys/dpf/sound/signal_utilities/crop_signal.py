@@ -1,4 +1,4 @@
-"""Create Sound Field."""
+"""Crop signal."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -9,7 +9,7 @@ from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
 class CropSignal(SignalUtilitiesParent):
-    """Crop Signal.
+    """Crop signal.
 
     This class crops signals.
     """

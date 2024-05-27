@@ -21,17 +21,17 @@ class PyDpfSound:
         self._output = None
 
     def plot(self):
-        """Plot stuff.
+        """Plot the output.
 
-        This method plots stuff.
+        Nothing to plot for this class.
         """
         warnings.warn(PyDpfSoundWarning("Nothing to plot."))
         return None
 
     def process(self):
-        """Process stuff.
+        """Process inputs.
 
-        This method processes stuff.
+        Nothing to process for this class.
 
         Returns
         -------
@@ -42,9 +42,9 @@ class PyDpfSound:
         return None
 
     def get_output(self) -> None | FieldsContainer:
-        """Output stuff.
+        """Get output.
 
-        Method for returning output.
+        Nothing to output for this class.
 
         Returns
         -------
@@ -55,9 +55,9 @@ class PyDpfSound:
         return self._output
 
     def get_output_as_nparray(self) -> ArrayLike:
-        """Output stuff as nparray.
+        """Get output as nparray.
 
-        Method for returning output as np array.
+        Nothing to output for this class.
 
         Returns
         -------
