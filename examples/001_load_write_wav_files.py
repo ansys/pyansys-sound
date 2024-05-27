@@ -49,16 +49,19 @@ resampler.process()
 fc_signal_resampled = resampler.get_output()
 
 t1 = fc_signal_original[0].time_freq_support.time_frequencies.data 
-print (f"The sampling frequency of the original signal is {1.0/(t1[1] - t1[0]):.1f} Hz" )
+sf1=(1.0/(t1[1] - t1[0]))
+print (f"The sampling frequency of the original signal is {sf1:.1f} Hz" ) #":.1f" is to only get 1 decimal
 
 # %%
 # Change the gain of the resampled signal.
-gain_applier= ApplyGain(fc_signal_resampled, gain = 10, gain_in_db = True)
+g = 10
+gain_applier= ApplyGain(fc_signal_resampled, gain = g, gain_in_db = True)
 gain_applier.process()
 fc_signal_modified = gain_applier.get_output()
 
 t2 = fc_signal_modified[0].time_freq_support.time_frequencies.data 
-print (f"The new sampling frequency of the signal is {1.0/(t2[1] - t2[0]):.1f} Hz" )
+sf2=(1.0/(t2[1] - t2[0]))
+print (f"The new sampling frequency of the signal is {sf2:.1f} Hz" ) #":.1f" is to only get 1 decimal
 
 # %%
 # Plot the original and the modified signals.
@@ -68,20 +71,18 @@ data_modified = gain_applier.get_output_as_nparray()
 fig, axs = plt.subplots(2)
 fig.suptitle('Signals')
 
-axs[0].plot(t1 , data_original , color='g', label='original signal')
+axs[0].plot(t1 , data_original , color='g', label=f'original signal, sf={sf1:.1f} Hz')
 axs[0].set_ylabel('Pa')
 axs[0].legend(loc="upper right")
 axs[0].set_ylim([-3, 3])
 
-axs[1].plot(t2 , data_modified , color='r', label='modified signal')
+axs[1].plot(t2 , data_modified , color='r', label=f'modified signal, sf={sf2:.1f} Hz, gain={g} dBSPL')
 axs[1].set_xlabel('s')
 axs[1].set_ylabel('Pa')
 axs[1].legend(loc="upper right")
 axs[1].set_ylim([-3, 3])
 
 plt.show()
-
-
 
 # %% Write the modified signal in memory using WriteWav class
 output_path = path_flute_wav[:-4] + "_modified.wav" #[-4] is to remove the ".wav"
