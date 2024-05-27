@@ -430,7 +430,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         if num_channels > 1:
             ax2.legend()
         ax2.set_xlabel("Time (s)")
-        ax2.set_ylabel("$L_N$ (phon)")
+        ax2.set_ylabel(r"$\mathregular{L_N}$ (phon)")
         ax2.grid(True)
 
         plt.show()

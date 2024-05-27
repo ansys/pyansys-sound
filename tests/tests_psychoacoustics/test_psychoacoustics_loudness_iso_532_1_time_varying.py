@@ -171,9 +171,7 @@ def test_loudness_532_1_time_varying_get_output_as_nparray_from_field(dpf_sound_
     assert L10[0] == pytest.approx(94.63481140136719)
 
 
-pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
-
-
+@pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
 def test_loudness_532_1_time_varying_get_loudness_vs_time_sone(dpf_sound_test_server):
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
@@ -197,9 +195,7 @@ def test_loudness_532_1_time_varying_get_loudness_vs_time_sone(dpf_sound_test_se
     assert loudnessVsTimeSone[100] == pytest.approx(5.100262641906738)
 
 
-pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
-
-
+@pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
 def test_loudness_532_1_time_varying_get_loudness_vs_time_sone_from_multichannel_fc(
     dpf_sound_test_server,
 ):
@@ -222,9 +218,7 @@ def test_loudness_532_1_time_varying_get_loudness_vs_time_sone_from_multichannel
     assert loudnessVsTimeSone[100] == pytest.approx(38.29069900512695)
 
 
-pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
-
-
+@pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
 def test_loudness_532_1_time_varying_get_loudness_vs_time_phon(dpf_sound_test_server):
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
@@ -248,9 +242,7 @@ def test_loudness_532_1_time_varying_get_loudness_vs_time_phon(dpf_sound_test_se
     assert loudnessVsTimePhon[100] == pytest.approx(63.505714416503906)
 
 
-pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
-
-
+@pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
 def test_loudness_532_1_time_varying_get_loudness_vs_time_from_multichannel_fc(
     dpf_sound_test_server,
 ):
@@ -273,9 +265,7 @@ def test_loudness_532_1_time_varying_get_loudness_vs_time_from_multichannel_fc(
     assert loudnessVsTimePhon[100] == pytest.approx(92.58921813964844)
 
 
-pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
-
-
+@pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
 def test_loudness_532_1_time_varying_get_N5(dpf_sound_test_server):
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
@@ -295,9 +285,7 @@ def test_loudness_532_1_time_varying_get_N5(dpf_sound_test_server):
     assert N5 == pytest.approx(45.12802505493164)
 
 
-pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
-
-
+@pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
 def test_loudness_532_1_time_varying_get_N5_from_field(dpf_sound_test_server):
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
@@ -314,9 +302,7 @@ def test_loudness_532_1_time_varying_get_N5_from_field(dpf_sound_test_server):
     assert N5 == pytest.approx(45.12802505493164)
 
 
-pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
-
-
+@pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
 def test_loudness_532_1_time_varying_get_N10(dpf_sound_test_server):
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
@@ -336,9 +322,7 @@ def test_loudness_532_1_time_varying_get_N10(dpf_sound_test_server):
     assert N10 == pytest.approx(44.12368392944336)
 
 
-pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
-
-
+@pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
 def test_loudness_532_1_time_varying_get_N10_from_field(dpf_sound_test_server):
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
@@ -355,9 +339,7 @@ def test_loudness_532_1_time_varying_get_N10_from_field(dpf_sound_test_server):
     assert N10 == pytest.approx(44.12368392944336)
 
 
-pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
-
-
+@pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
 def test_loudness_532_1_time_varying_get_L5(dpf_sound_test_server):
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
@@ -377,9 +359,7 @@ def test_loudness_532_1_time_varying_get_L5(dpf_sound_test_server):
     assert L5 == pytest.approx(94.95951843261719)
 
 
-pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
-
-
+@pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
 def test_loudness_532_1_time_varying_get_L5_from_field(dpf_sound_test_server):
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
@@ -396,9 +376,7 @@ def test_loudness_532_1_time_varying_get_L5_from_field(dpf_sound_test_server):
     assert L5 == pytest.approx(94.95951843261719)
 
 
-pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
-
-
+@pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
 def test_loudness_532_1_time_varying_get_L10(dpf_sound_test_server):
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
@@ -418,9 +396,7 @@ def test_loudness_532_1_time_varying_get_L10(dpf_sound_test_server):
     assert L10 == pytest.approx(94.63481140136719)
 
 
-pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
-
-
+@pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
 def test_loudness_532_1_time_varying_get_L10_from_field(dpf_sound_test_server):
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
