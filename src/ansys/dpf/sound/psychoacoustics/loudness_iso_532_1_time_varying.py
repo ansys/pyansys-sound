@@ -344,9 +344,9 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             return None
 
         if type(self._output[0]) == Field:
-            return self._output[0].time_freq_support.time_frequencies.data
+            return np.copy(self._output[0].time_freq_support.time_frequencies.data)
         else:
-            return self._output[0][0].time_freq_support.time_frequencies.data
+            return np.copy(self._output[0][0].time_freq_support.time_frequencies.data)
 
     def plot(self):
         """Plot the time-varying loudness in sone and loudness level in phon.
@@ -355,7 +355,9 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         in phon are displayed.
         """
         if self.get_output() == None:
-            return  # pragma: no cover
+            raise PyDpfSoundException(
+                "Output has not been processed yet, use LoudnessISO532_1_TimeVarying.process()."
+            )
 
         if type(self._output[0]) == Field:
             num_channels = 1
@@ -371,7 +373,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         ax1.set_title("Time-varying loudness")
         if num_channels > 1:
-            ax1.legend()  # pragma: no cover
+            ax1.legend()
         ax1.set_ylabel("N (sone)")
         ax1.grid(True)
 
@@ -382,15 +384,26 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         ax2.set_title("Time-varying loudness level")
         if num_channels > 1:
-            ax2.legend()  # pragma: no cover
+            ax2.legend()
         ax2.set_xlabel("Time (s)")
         ax2.set_ylabel(r"$\mathregular{L_N}$ (phon)")
         ax2.grid(True)
 
         plt.show()
 
-    def __check_channel_index(self, channel_index) -> bool:
-        """Check if a channel number is valid."""
+    def __check_channel_index(self, channel_index: int) -> bool:
+        """Check whether a specified signal channel index is available or not.
+
+        Parameters
+        -------
+        channel_index: int
+            Index of the signal channel to check.
+
+        Returns
+        -------
+        bool
+            True if channel index is available, False if not.
+        """
         if self.get_output() == None:
             return False
 

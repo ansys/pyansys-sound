@@ -413,9 +413,7 @@ def test_loudness_532_1_time_varying_get_L10_from_field(dpf_sound_test_server):
     assert L10 == pytest.approx(94.63481140136719)
 
 
-@patch("matplotlib.pyplot.show")
-@pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
-def test_loudness_532_1_time_varying_plot_from_field_container(mock_show, dpf_sound_test_server):
+def test_loudness_532_1_time_varying_get_time_scale(dpf_sound_test_server):
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -423,11 +421,57 @@ def test_loudness_532_1_time_varying_plot_from_field_container(mock_show, dpf_so
     fc = wav_loader.get_output()
 
     # set signal
+    time_varying_loudness_computer.signal = fc[0]
+
+    assert time_varying_loudness_computer.get_time_scale() == None
+
+    time_varying_loudness_computer.process()
+    time_scale = time_varying_loudness_computer.get_time_scale()
+
+    assert len(time_scale) == 1770
+    assert time_scale[0] == 0
+    assert time_scale[10] == pytest.approx(0.019999999552965164)
+    assert time_scale[42] == pytest.approx(0.08399999886751175)
+    assert time_scale[100] == pytest.approx(0.20000000298023224)
+    assert time_scale[110] == pytest.approx(0.2199999988079071)
+
+
+@patch("matplotlib.pyplot.show")
+@pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
+def test_loudness_532_1_time_varying_plot_from_field_container(mock_show, dpf_sound_test_server):
+    time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
+
+    # Load a signal
+    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader.process()
+    fc = wav_loader.get_output()
+
+    # Set signal
     time_varying_loudness_computer.signal = fc
-    # compute
+
+    # Plot before process -> error
+    with pytest.raises(
+        PyDpfSoundException,
+        match="Output has not been processed yet, use LoudnessISO532_1_TimeVarying.process().",
+    ):
+        time_varying_loudness_computer.plot()
+
+    # Compute
     time_varying_loudness_computer.process()
 
-    # plot
+    # Plot
+    time_varying_loudness_computer.plot()
+
+    # Add a second signal in the fields container
+    # Note: No need to re-assign the signal property, as fc is simply an alias for it
+    wav_loader = LoadWav(pytest.data_path_flute2_in_container)
+    wav_loader.process()
+    fc.add_field({"channel_number": 1}, wav_loader.get_output()[0])
+
+    # Compute again
+    time_varying_loudness_computer.process()
+
+    # Plot
     time_varying_loudness_computer.plot()
 
 
@@ -501,26 +545,3 @@ def test_loudness_532_1_time_varying_check_channel_index(dpf_sound_test_server):
     with pytest.raises(PyDpfSoundException) as excinfo:
         time_varying_loudness_computer._LoudnessISO532_1_TimeVarying__check_channel_index(1)
     assert str(excinfo.value) == "Specified channel index (1) does not exist."
-
-
-def test_loudness_532_1_time_varying_get_time_scale(dpf_sound_test_server):
-    time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
-    # get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
-    wav_loader.process()
-    fc = wav_loader.get_output()
-
-    # set signal
-    time_varying_loudness_computer.signal = fc[0]
-
-    assert time_varying_loudness_computer.get_time_scale() == None
-
-    time_varying_loudness_computer.process()
-    time_scale = time_varying_loudness_computer.get_time_scale()
-
-    assert len(time_scale) == 1770
-    assert time_scale[0] == 0
-    assert time_scale[10] == pytest.approx(0.019999999552965164)
-    assert time_scale[42] == pytest.approx(0.08399999886751175)
-    assert time_scale[100] == pytest.approx(0.20000000298023224)
-    assert time_scale[110] == pytest.approx(0.2199999988079071)
