@@ -88,16 +88,3 @@ output_path = path_flute_wav[:-4] + "_modified.wav" #[-4] is to remove the ".wav
 wav_writer = WriteWav(path_to_write=output_path, signal=fc_signal_modified, bit_depth="int16")
 wav_writer.process()
 print("End of script reached")
-
-'''
-# %%
-# Create a modified version of the signal.
-#
-# Write the modified signal in memory using WriteWav class.
-#
-# Write the output signal in the same folder as the input, with a "_modified" suffix.
-fc_signal_modified = dpf.FieldsContainer.deep_copy(fc_signal)
-fc_signal_modified[0].data = fc_signal[0].data * 0.2
-output_path = path_flute_wav[:-4] + "_modified.wav"
-
-'''
