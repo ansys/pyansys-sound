@@ -32,7 +32,7 @@ class XtractDenoiser(XtractParent):
             each signal (each field of the fields_container) is processed individually.
         input_parameters:
             Structure that contains the parameters of the algorithm:
-                - Noise levels (Field): level vs frequency of the noise
+            - Noise levels (Field): level vs frequency of the noise
             This structure is of type Xtract_denoiser_parameters (see this class for more details).
         output_denoised_signals:
             Denoised signal(s), as a field or fields_container (depending on the input).

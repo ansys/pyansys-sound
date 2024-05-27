@@ -34,12 +34,12 @@ class XtractTonal(XtractParent):
             each signal (each field of the fields container) is processed individually.
         input_parameters:
             Structure that contains the parameters of the algorithm:
-                - NFFT (int) number of points used for the FFT computation
-                - Regularity setting (float) in percent
-                - Maximum slope (float) in dB/Hz
-                - Minimum duration (float) in seconds
-                - Intertonal gap (float) in Hz
-                - Local smergence (float) in dB
+            - NFFT (int) number of points used for the FFT computation
+            - Regularity setting (float) in percent
+            - Maximum slope (float) in dB/Hz
+            - Minimum duration (float) in seconds
+            - Intertonal gap (float) in Hz
+            - Local smergence (float) in dB
             This structure is of type Xtract_tonal_parameters
             (see this class for more details).
         output_tonal_signals:
