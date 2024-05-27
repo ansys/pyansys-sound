@@ -1,5 +1,5 @@
-Signal utilities
-----------------
+Xtract
+------
 
 .. module:: ansys.dpf.sound.xtract
 
