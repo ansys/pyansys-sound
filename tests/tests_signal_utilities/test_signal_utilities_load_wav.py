@@ -73,7 +73,7 @@ def test_load_wav_get_output_as_nparray(dpf_sound_test_server):
     # Loading a wav signal using LoadWav
     np_arr = wav_loader_stereo.get_output_as_nparray()
 
-    assert np.shape(np_arr) == (480000, 2)
+    assert np.shape(np_arr) == (2, 480000)
     assert np_arr[1000][1] == 0.0169677734375
     assert np_arr[10000][1] == -0.27001953125
     assert np_arr[100000][1] == -0.0509033203125
