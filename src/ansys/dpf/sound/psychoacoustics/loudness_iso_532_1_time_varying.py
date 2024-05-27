@@ -168,22 +168,14 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         if self.get_output() == None:
             return None
 
-        if type(self._output[0]) == Field:
-            if channel_index > 0:
-                raise PyDpfSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
+        # check validity of input -> will raise an exception if channel index is incorrect
+        self.__check_channel_index(channel_index)
 
+        if type(self._output[0]) == Field:
             return self.get_output_as_nparray()[0]
 
         else:
             loudness_vs_time = self.get_output_as_nparray()[0]
-
-            if channel_index > loudness_vs_time.ndim - 1:
-                raise PyDpfSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
-
             if loudness_vs_time.ndim == 1:
                 # Only one field
                 return loudness_vs_time
@@ -209,21 +201,14 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         if self.get_output() == None:
             return None
 
-        if type(self._output[0]) == Field:
-            if channel_index > 0:
-                raise PyDpfSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
+        # check validity of input -> will raise an exception if channel index is incorrect
+        self.__check_channel_index(channel_index)
 
+        if type(self._output[0]) == Field:
             return self.get_output_as_nparray()[1]
 
         else:
             N5 = self.get_output_as_nparray()[1]
-            if channel_index > N5.ndim - 1:
-                raise PyDpfSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
-
             return N5[channel_index]
 
     def get_N10_sone(self, channel_index: int = 0) -> float:
@@ -245,21 +230,14 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         if self.get_output() == None:
             return None
 
-        if type(self._output[0]) == Field:
-            if channel_index > 0:
-                raise PyDpfSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
+        # check validity of input -> will raise an exception if channel index is incorrect
+        self.__check_channel_index(channel_index)
 
+        if type(self._output[0]) == Field:
             return self.get_output_as_nparray()[2]
 
         else:
             N10 = self.get_output_as_nparray()[2]
-            if channel_index > N10.ndim - 1:
-                raise PyDpfSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
-
             return N10[channel_index]
 
     def get_loudness_level_phon_vs_time(self, channel_index: int = 0) -> npt.ArrayLike:
@@ -279,22 +257,14 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         if self.get_output() == None:
             return None
 
-        if type(self._output[0]) == Field:
-            if channel_index > 0:
-                raise PyDpfSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
+        # check validity of input -> will raise an exception if channel index is incorrect
+        self.__check_channel_index(channel_index)
 
+        if type(self._output[0]) == Field:
             return self.get_output_as_nparray()[3]
 
         else:
             loudness_level_vs_time = self.get_output_as_nparray()[3]
-
-            if channel_index > loudness_level_vs_time.ndim - 1:
-                raise PyDpfSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
-
             if loudness_level_vs_time.ndim == 1:
                 # Only one field
                 return loudness_level_vs_time
@@ -320,21 +290,14 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         if self.get_output() == None:
             return None
 
-        if type(self._output[0]) == Field:
-            if channel_index > 0:
-                raise PyDpfSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
+        # check validity of input -> will raise an exception if channel index is incorrect
+        self.__check_channel_index(channel_index)
 
+        if type(self._output[0]) == Field:
             return self.get_output_as_nparray()[4]
 
         else:
             L5 = self.get_output_as_nparray()[4]
-            if channel_index > L5.ndim - 1:
-                raise PyDpfSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
-
             return L5[channel_index]
 
     def get_L10_phon(self, channel_index: int = 0) -> float:
@@ -356,21 +319,14 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         if self.get_output() == None:
             return None
 
-        if type(self._output[0]) == Field:
-            if channel_index > 0:
-                raise PyDpfSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
+        # check validity of input -> will raise an exception if channel index is incorrect
+        self.__check_channel_index(channel_index)
 
+        if type(self._output[0]) == Field:
             return self.get_output_as_nparray()[5]
 
         else:
             L10 = self.get_output_as_nparray()[5]
-            if channel_index > L10.ndim - 1:
-                raise PyDpfSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
-
             return L10[channel_index]
 
     def get_time_scale(self) -> npt.ArrayLike:
@@ -398,10 +354,8 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         Creates a figure window where the time-varying loudness N in sone and loudness level L_N
         in phon are displayed.
         """
-        if self._output == None:
-            raise PyDpfSoundException(
-                "Output has not been processed yet, use LoudnessISO532_1_TimeVarying.process()."
-            )
+        if self.get_output() == None:
+            return  # pragma: no cover
 
         if type(self._output[0]) == Field:
             num_channels = 1
@@ -417,7 +371,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         ax1.set_title("Time-varying loudness")
         if num_channels > 1:
-            ax1.legend()
+            ax1.legend()  # pragma: no cover
         ax1.set_ylabel("N (sone)")
         ax1.grid(True)
 
@@ -428,9 +382,28 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         ax2.set_title("Time-varying loudness level")
         if num_channels > 1:
-            ax2.legend()
+            ax2.legend()  # pragma: no cover
         ax2.set_xlabel("Time (s)")
         ax2.set_ylabel(r"$\mathregular{L_N}$ (phon)")
         ax2.grid(True)
 
         plt.show()
+
+    def __check_channel_index(self, channel_index) -> bool:
+        """Check if a channel number is valid."""
+        if self.get_output() == None:
+            return False
+
+        if type(self._output[0]) == Field:
+            if channel_index > 0:
+                raise PyDpfSoundException(
+                    f"Specified channel index ({channel_index}) does not exist."
+                )
+
+        else:
+            if channel_index > self.get_output_as_nparray()[0].ndim - 1:
+                raise PyDpfSoundException(
+                    f"Specified channel index ({channel_index}) does not exist."
+                )
+
+        return True

@@ -464,3 +464,63 @@ def test_loudness_532_1_time_varying_set_get_signal(dpf_sound_test_server):
     assert fc_from_get.name == "testField"
     assert len(fc_from_get) == 1
     assert fc_from_get[0].data[0, 2] == 42
+
+
+def test_loudness_532_1_time_varying_check_channel_index(dpf_sound_test_server):
+    time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
+    # get a signal
+    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader.process()
+    fc = wav_loader.get_output()
+
+    # set signal
+    time_varying_loudness_computer.signal = fc[0]
+
+    # Nothing computed -> false
+    assert (
+        time_varying_loudness_computer._LoudnessISO532_1_TimeVarying__check_channel_index(0)
+        == False
+    )
+
+    time_varying_loudness_computer.process()
+
+    # check for channel 0
+    assert (
+        time_varying_loudness_computer._LoudnessISO532_1_TimeVarying__check_channel_index(0) == True
+    )
+
+    # check for unexisting channel as Field
+    with pytest.raises(PyDpfSoundException) as excinfo:
+        time_varying_loudness_computer._LoudnessISO532_1_TimeVarying__check_channel_index(1)
+    assert str(excinfo.value) == "Specified channel index (1) does not exist."
+
+    # work with FC
+    time_varying_loudness_computer.signal = fc
+    time_varying_loudness_computer.process()
+    # check for unexisting channel as FC
+    with pytest.raises(PyDpfSoundException) as excinfo:
+        time_varying_loudness_computer._LoudnessISO532_1_TimeVarying__check_channel_index(1)
+    assert str(excinfo.value) == "Specified channel index (1) does not exist."
+
+
+def test_loudness_532_1_time_varying_get_time_scale(dpf_sound_test_server):
+    time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
+    # get a signal
+    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader.process()
+    fc = wav_loader.get_output()
+
+    # set signal
+    time_varying_loudness_computer.signal = fc[0]
+
+    assert time_varying_loudness_computer.get_time_scale() == None
+
+    time_varying_loudness_computer.process()
+    time_scale = time_varying_loudness_computer.get_time_scale()
+
+    assert len(time_scale) == 1770
+    assert time_scale[0] == 0
+    assert time_scale[10] == pytest.approx(0.019999999552965164)
+    assert time_scale[42] == pytest.approx(0.08399999886751175)
+    assert time_scale[100] == pytest.approx(0.20000000298023224)
+    assert time_scale[110] == pytest.approx(0.2199999988079071)
