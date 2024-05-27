@@ -39,7 +39,7 @@ class Xtract(XtractParent):
             This structure is of type Xtract_denoiser_parameters (see this class for more details).
         parameters_tonal:
             Structure that contains the parameters of the tonal extraction step:
-            - Nfft (int) in number of samples
+            - NFFT (int) number of points used for the FFT computation
             - Regularity setting (float) in percent
             - Maximum slope (float) in dB/Hz
             - Minimum duration (float) in seconds
@@ -114,7 +114,7 @@ class Xtract(XtractParent):
         -------
         GenericDataContainer
             Structure that contains the parameters of the tonal extraction step:
-                - Nfft (int) in number of samples
+                - NFFT (int) number of points used for the FFT computation
                 - Regularity setting (float) in percent
                 - Maximum slope (float) in dB/Hz
                 - Minimum duration (float) in seconds
