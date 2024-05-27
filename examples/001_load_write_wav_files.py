@@ -24,7 +24,6 @@ from ansys.dpf.sound.examples_helpers import get_absolute_path_for_flute_wav
 from ansys.dpf.sound.server_helpers import connect_to_or_start_server
 from ansys.dpf.sound.signal_utilities import LoadWav, Resample, ApplyGain, WriteWav
 
-import numpy as np
 import matplotlib.pyplot as plt
 
 # Connect to remote or start a local server
@@ -85,7 +84,7 @@ axs[1].set_ylim([-3, 3])
 plt.show()
 
 # %% Write the modified signal in memory using WriteWav class
-output_path = path_flute_wav[:-4] + "_modified.wav" #[-4] is to remove the ".wav"
+output_path = path_flute_wav[:-4] + "_modified.wav" #"[-4]" is to remove the ".wav"
 wav_writer = WriteWav(path_to_write=output_path, signal=fc_signal_modified, bit_depth="int16")
 wav_writer.process()
 print("End of script reached")
