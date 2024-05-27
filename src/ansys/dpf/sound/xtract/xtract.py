@@ -35,21 +35,21 @@ class Xtract(XtractParent):
             Signal(s) on which to apply the XTRACT processing, as a field or fields_container.
         parameters_denoiser:
             Structure that contains the parameters of the denoising step:
-                - Noise levels (Field): level vs frequency of the noise
+                Noise levels (Field): level vs frequency of the noise
             This structure is of type Xtract_denoiser_parameters (see this class for more details).
         parameters_tonal:
             Structure that contains the parameters of the tonal extraction step:
-                - Nfft (int) in number of samples
-                - Regularity setting (float) in percent
-                - Maximum slope (float) in dB/Hz
-                - Minimum duration (float) in seconds
-                - Intertonal gap (float) in Hz
-                - Local emergence (float) in dB
+                Nfft (int) in number of samples
+                Regularity setting (float) in percent
+                Maximum slope (float) in dB/Hz
+                Minimum duration (float) in seconds
+                Intertonal gap (float) in Hz
+                Local emergence (float) in dB
             This structure is of type Xtract_tonal_parameters (see this class for more details).
         parameters_transient:
             Structure that contains the parameters of the transient extraction step:
-                - Lower threshold (float), between 0 and 100 percent
-                - Upper threshold (float), between 0 and 100 percent
+                Lower threshold (float), between 0 and 100 percent
+                Upper threshold (float), between 0 and 100 percent
             This structure is of type Xtract_transient_parameters (see this class for more details).
         """
         super().__init__()
