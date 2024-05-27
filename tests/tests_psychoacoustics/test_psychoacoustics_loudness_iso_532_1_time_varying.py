@@ -104,26 +104,26 @@ def test_loudness_532_1_time_varying_get_output_as_nparray_from_field_container(
 
     assert type(loudnessVsTimeSone) == np.ndarray
     assert len(loudnessVsTimeSone) == 1770
-    assert loudnessVsTimeSone[0] == 0.0
-    assert loudnessVsTimeSone[10] == 0.06577175855636597
-    assert loudnessVsTimeSone[100] == 5.100262641906738
+    assert loudnessVsTimeSone[0] == pytest.approx(0.0)
+    assert loudnessVsTimeSone[10] == pytest.approx(0.06577175855636597)
+    assert loudnessVsTimeSone[100] == pytest.approx(5.100262641906738)
     assert type(loudnessVsTimePhon) == np.ndarray
     assert len(loudnessVsTimePhon) == 1770
-    assert loudnessVsTimePhon[0] == 3.0
-    assert loudnessVsTimePhon[10] == 15.430279731750488
-    assert loudnessVsTimePhon[100] == 63.505714416503906
+    assert loudnessVsTimePhon[0] == pytest.approx(3.0)
+    assert loudnessVsTimePhon[10] == pytest.approx(15.430279731750488)
+    assert loudnessVsTimePhon[100] == pytest.approx(63.505714416503906)
     assert type(N5) == np.ndarray
     assert len(N5) == 1
-    assert N5[0] == 45.12802505493164
+    assert N5[0] == pytest.approx(45.12802505493164)
     assert type(N10) == np.ndarray
     assert len(N10) == 1
-    assert N10[0] == 44.12368392944336
+    assert N10[0] == pytest.approx(44.12368392944336)
     assert type(L5) == np.ndarray
     assert len(L5) == 1
-    assert L5[0] == 94.95951843261719
+    assert L5[0] == pytest.approx(94.95951843261719)
     assert type(L10) == np.ndarray
     assert len(L10) == 1
-    assert L10[0] == 94.63481140136719
+    assert L10[0] == pytest.approx(94.63481140136719)
 
 
 @pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
@@ -149,26 +149,26 @@ def test_loudness_532_1_time_varying_get_output_as_nparray_from_field(dpf_sound_
     ) = time_varying_loudness_computer.get_output_as_nparray()
     assert type(loudnessVsTimeSone) == np.ndarray
     assert len(loudnessVsTimeSone) == 1770
-    assert loudnessVsTimeSone[0] == 0.0
-    assert loudnessVsTimeSone[10] == 0.06577175855636597
-    assert loudnessVsTimeSone[100] == 5.100262641906738
+    assert loudnessVsTimeSone[0] == pytest.approx(0.0)
+    assert loudnessVsTimeSone[10] == pytest.approx(0.06577175855636597)
+    assert loudnessVsTimeSone[100] == pytest.approx(5.100262641906738)
     assert type(loudnessVsTimePhon) == np.ndarray
     assert len(loudnessVsTimePhon) == 1770
-    assert loudnessVsTimePhon[0] == 3.0
-    assert loudnessVsTimePhon[10] == 15.430279731750488
-    assert loudnessVsTimePhon[100] == 63.505714416503906
+    assert loudnessVsTimePhon[0] == pytest.approx(3.0)
+    assert loudnessVsTimePhon[10] == pytest.approx(15.430279731750488)
+    assert loudnessVsTimePhon[100] == pytest.approx(63.505714416503906)
     assert type(N5) == np.ndarray
     assert len(N5) == 1
-    assert N5[0] == 45.12802505493164
+    assert N5[0] == pytest.approx(45.12802505493164)
     assert type(N10) == np.ndarray
     assert len(N10) == 1
-    assert N10[0] == 44.12368392944336
+    assert N10[0] == pytest.approx(44.12368392944336)
     assert type(L5) == np.ndarray
     assert len(L5) == 1
-    assert L5[0] == 94.95951843261719
+    assert L5[0] == pytest.approx(94.95951843261719)
     assert type(L10) == np.ndarray
     assert len(L10) == 1
-    assert L10[0] == 94.63481140136719
+    assert L10[0] == pytest.approx(94.63481140136719)
 
 
 pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
@@ -192,9 +192,9 @@ def test_loudness_532_1_time_varying_get_loudness_vs_time_sone(dpf_sound_test_se
     loudnessVsTimeSone = time_varying_loudness_computer.get_loudness_sone_vs_time(0)
     assert type(loudnessVsTimeSone) == np.ndarray
     assert len(loudnessVsTimeSone) == 1770
-    assert loudnessVsTimeSone[0] == 0.0
-    assert loudnessVsTimeSone[10] == 0.06577175855636597
-    assert loudnessVsTimeSone[100] == 5.100262641906738
+    assert loudnessVsTimeSone[0] == pytest.approx(0.0)
+    assert loudnessVsTimeSone[10] == pytest.approx(0.06577175855636597)
+    assert loudnessVsTimeSone[100] == pytest.approx(5.100262641906738)
 
 
 pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
@@ -217,9 +217,9 @@ def test_loudness_532_1_time_varying_get_loudness_vs_time_sone_from_multichannel
     loudnessVsTimeSone = time_varying_loudness_computer.get_loudness_sone_vs_time(0)
     assert type(loudnessVsTimeSone) == np.ndarray
     assert len(loudnessVsTimeSone) == 5000
-    assert loudnessVsTimeSone[0] == 0.0
-    assert loudnessVsTimeSone[10] == 22.091352462768555
-    assert loudnessVsTimeSone[100] == 38.29069900512695
+    assert loudnessVsTimeSone[0] == pytest.approx(0.0)
+    assert loudnessVsTimeSone[10] == pytest.approx(22.091352462768555)
+    assert loudnessVsTimeSone[100] == pytest.approx(38.29069900512695)
 
 
 pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
@@ -243,15 +243,15 @@ def test_loudness_532_1_time_varying_get_loudness_vs_time_phon(dpf_sound_test_se
     loudnessVsTimePhon = time_varying_loudness_computer.get_loudness_level_phon_vs_time(0)
     assert type(loudnessVsTimePhon) == np.ndarray
     assert len(loudnessVsTimePhon) == 1770
-    assert loudnessVsTimePhon[0] == 3.0
-    assert loudnessVsTimePhon[10] == 15.430279731750488
-    assert loudnessVsTimePhon[100] == 63.505714416503906
+    assert loudnessVsTimePhon[0] == pytest.approx(3.0)
+    assert loudnessVsTimePhon[10] == pytest.approx(15.430279731750488)
+    assert loudnessVsTimePhon[100] == pytest.approx(63.505714416503906)
 
 
 pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
 
 
-def test_loudness_532_1_time_varying_get_loudness_vs_time_phon_from_multichannel_fc(
+def test_loudness_532_1_time_varying_get_loudness_vs_time_from_multichannel_fc(
     dpf_sound_test_server,
 ):
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
@@ -268,9 +268,9 @@ def test_loudness_532_1_time_varying_get_loudness_vs_time_phon_from_multichannel
     loudnessVsTimePhon = time_varying_loudness_computer.get_loudness_level_phon_vs_time(0)
     assert type(loudnessVsTimePhon) == np.ndarray
     assert len(loudnessVsTimePhon) == 5000
-    assert loudnessVsTimePhon[0] == 3.0
-    assert loudnessVsTimePhon[10] == 84.65409851074219
-    assert loudnessVsTimePhon[100] == 92.58921813964844
+    assert loudnessVsTimePhon[0] == pytest.approx(3.0)
+    assert loudnessVsTimePhon[10] == pytest.approx(84.65409851074219)
+    assert loudnessVsTimePhon[100] == pytest.approx(92.58921813964844)
 
 
 pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
@@ -292,7 +292,7 @@ def test_loudness_532_1_time_varying_get_N5(dpf_sound_test_server):
     time_varying_loudness_computer.process()
 
     N5 = time_varying_loudness_computer.get_N5_sone()
-    assert N5 == 45.12802505493164
+    assert N5 == pytest.approx(45.12802505493164)
 
 
 pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
@@ -311,7 +311,7 @@ def test_loudness_532_1_time_varying_get_N5_from_field(dpf_sound_test_server):
     time_varying_loudness_computer.process()
 
     N5 = time_varying_loudness_computer.get_N5_sone()
-    assert N5 == 45.12802505493164
+    assert N5 == pytest.approx(45.12802505493164)
 
 
 pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
@@ -333,7 +333,7 @@ def test_loudness_532_1_time_varying_get_N10(dpf_sound_test_server):
     time_varying_loudness_computer.process()
 
     N10 = time_varying_loudness_computer.get_N10_sone()
-    assert N10 == 44.12368392944336
+    assert N10 == pytest.approx(44.12368392944336)
 
 
 pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
@@ -352,7 +352,7 @@ def test_loudness_532_1_time_varying_get_N10_from_field(dpf_sound_test_server):
     time_varying_loudness_computer.process()
 
     N10 = time_varying_loudness_computer.get_N10_sone()
-    assert N10 == 44.12368392944336
+    assert N10 == pytest.approx(44.12368392944336)
 
 
 pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
@@ -365,7 +365,7 @@ def test_loudness_532_1_time_varying_get_L5(dpf_sound_test_server):
     wav_loader.process()
     fc = wav_loader.get_output()
 
-    output = time_varying_loudness_computer.get_L5_sone()
+    output = time_varying_loudness_computer.get_L5_phon()
     assert output == None
 
     # set signal
@@ -373,8 +373,8 @@ def test_loudness_532_1_time_varying_get_L5(dpf_sound_test_server):
     # compute
     time_varying_loudness_computer.process()
 
-    L5 = time_varying_loudness_computer.get_L5_sone()
-    assert L5 == 94.95951843261719
+    L5 = time_varying_loudness_computer.get_L5_phon()
+    assert L5 == pytest.approx(94.95951843261719)
 
 
 pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
@@ -392,8 +392,8 @@ def test_loudness_532_1_time_varying_get_L5_from_field(dpf_sound_test_server):
     # compute
     time_varying_loudness_computer.process()
 
-    L5 = time_varying_loudness_computer.get_L5_sone()
-    assert L5 == 94.95951843261719
+    L5 = time_varying_loudness_computer.get_L5_phon()
+    assert L5 == pytest.approx(94.95951843261719)
 
 
 pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
@@ -406,7 +406,7 @@ def test_loudness_532_1_time_varying_get_L10(dpf_sound_test_server):
     wav_loader.process()
     fc = wav_loader.get_output()
 
-    output = time_varying_loudness_computer.get_L10_sone()
+    output = time_varying_loudness_computer.get_L10_phon()
     assert output == None
 
     # set signal
@@ -414,8 +414,8 @@ def test_loudness_532_1_time_varying_get_L10(dpf_sound_test_server):
     # compute
     time_varying_loudness_computer.process()
 
-    L10 = time_varying_loudness_computer.get_L10_sone()
-    assert L10 == 94.63481140136719
+    L10 = time_varying_loudness_computer.get_L10_phon()
+    assert L10 == pytest.approx(94.63481140136719)
 
 
 pytest.mark.dependency(depends=["test_loudness_532_1_time_varying_process"])
@@ -433,8 +433,8 @@ def test_loudness_532_1_time_varying_get_L10_from_field(dpf_sound_test_server):
     # compute
     time_varying_loudness_computer.process()
 
-    L10 = time_varying_loudness_computer.get_L10_sone()
-    assert L10 == 94.63481140136719
+    L10 = time_varying_loudness_computer.get_L10_phon()
+    assert L10 == pytest.approx(94.63481140136719)
 
 
 @patch("matplotlib.pyplot.show")
