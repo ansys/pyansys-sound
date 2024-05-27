@@ -46,7 +46,7 @@ class XtractTransient(XtractParent):
         self.__input_signal = input_signal
         self.__input_parameters = input_parameters
 
-        # Def output fields
+        # Define output fields
         self.__output_transient_signals = None
         self.__output_non_transient_signals = None
 
@@ -203,10 +203,9 @@ class XtractTransient(XtractParent):
             ):
                 return np.array([]), np.array([])
             else:
-                return np.array(
-                    self.convert_fields_container_to_np_array(l_output_transient_signals)
-                ), np.array(
-                    self.convert_fields_container_to_np_array(l_output_non_transient_signals)
+                return (
+                    self.convert_fields_container_to_np_array(l_output_transient_signals),
+                    self.convert_fields_container_to_np_array(l_output_non_transient_signals),
                 )
 
     def plot(self):
@@ -234,16 +233,16 @@ class XtractTransient(XtractParent):
             ###########
             # Field type
             plt.figure()
-            plt.plot(l_time_data, l_np_output_transient, label=f"Channel 0")
+            plt.plot(l_time_data, l_np_output_transient)
             plt.xlabel(f"Time ({l_time_unit})")
             plt.ylabel(f"Amplitude ({l_unit})")
-            plt.title(f"Transient signal - channel 0")
+            plt.title(f"Transient signal")
 
             plt.figure()
-            plt.plot(l_time_data, l_np_output_non_transient, label=f"Channel 0")
+            plt.plot(l_time_data, l_np_output_non_transient)
             plt.xlabel(f"Time ({l_time_unit})")
             plt.ylabel(f"Amplitude ({l_unit})")
-            plt.title(f"Non transient signal - channel 0")
+            plt.title(f"Non transient signal")
         else:
             for l_i in range(len(l_np_output_transient)):
                 ###########
@@ -259,11 +258,6 @@ class XtractTransient(XtractParent):
                 plt.xlabel(f"Time ({l_time_unit})")
                 plt.ylabel(f"Amplitude ({l_unit})")
                 plt.title(f"Non transient signal - channel {l_i}")
-
-        ################
-        # Delete intermediate variables
-        del field, l_np_output_transient, l_np_output_non_transient
-        del l_time_data, l_time_unit, l_unit
 
         # Show all figures created
         plt.show()

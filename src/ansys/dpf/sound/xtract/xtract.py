@@ -58,7 +58,7 @@ class Xtract(XtractParent):
         self.__parameters_tonal = parameters_tonal
         self.__parameters_transient = parameters_transient
 
-        # Def output fields
+        # Define output fields
         self.__output_noise_signal = None
         self.__output_tonal_signal = None
         self.__output_transient_signal = None
@@ -306,10 +306,10 @@ class Xtract(XtractParent):
                 return np.array([]), np.array([]), np.array([]), np.array([])
             else:
                 return (
-                    np.array(self.convert_fields_container_to_np_array(l_output_noise_signal)),
-                    np.array(self.convert_fields_container_to_np_array(l_output_tonal_signal)),
-                    np.array(self.convert_fields_container_to_np_array(l_output_transient_signal)),
-                    np.array(self.convert_fields_container_to_np_array(l_output_remainder_signal)),
+                    self.convert_fields_container_to_np_array(l_output_noise_signal),
+                    self.convert_fields_container_to_np_array(l_output_tonal_signal),
+                    self.convert_fields_container_to_np_array(l_output_transient_signal),
+                    self.convert_fields_container_to_np_array(l_output_remainder_signal),
                 )
 
     def plot(self):
@@ -376,44 +376,6 @@ class Xtract(XtractParent):
                 axs[3].set_xlabel(f"Time ({l_time_unit})")
                 axs[3].set_ylabel(f"Amplitude ({l_unit})")
                 axs[3].set_title(f"Remainder signal - channel {l_i}")
-
-            # for l_i in range(len(l_np_output_noise_signal)):
-            #     plt.figure()
-            #     plt.plot(l_time_data, l_np_output_noise_signal[l_i])
-            #     plt.xlabel(f"Time ({l_time_unit})")
-            #     plt.ylabel(f"Amplitude ({l_unit})")
-            #     plt.title(f"Noise signal - channel {l_i}")
-
-            # for l_i in range(len(l_np_output_tonal_signal)):
-            #     plt.figure()
-            #     plt.plot(l_time_data, l_np_output_tonal_signal[l_i])
-            #     plt.xlabel(f"Time ({l_time_unit})")
-            #     plt.ylabel(f"Amplitude ({l_unit})")
-            #     plt.title(f"Tonal signal - channel {l_i}")
-
-            # for l_i in range(len(l_np_output_transient_signal)):
-            #     plt.figure()
-            #     plt.plot(l_time_data, l_np_output_transient_signal[l_i])
-            #     plt.xlabel(f"Time ({l_time_unit})")
-            #     plt.ylabel(f"Amplitude ({l_unit})")
-            #     plt.title(f"Transient signal - channel {l_i}")
-
-            # for l_i in range(len(l_np_output_remainder_signal)):
-            #     plt.figure()
-            #     plt.plot(l_time_data, l_np_output_remainder_signal[l_i])
-            #     plt.xlabel(f"Time ({l_time_unit})")
-            #     plt.ylabel(f"Amplitude ({l_unit})")
-            #     plt.title(f"Remainder signal - channel {l_i}")
-
-        ################
-        # Delete intermediate variables
-        del field, l_time_data, l_time_unit, l_unit
-        del (
-            l_np_output_noise_signal,
-            l_np_output_tonal_signal,
-            l_np_output_transient_signal,
-            l_np_output_remainder_signal,
-        )
 
         # Show all figures created
         plt.show()

@@ -145,7 +145,7 @@ def test_xtract_denoiser_get_output_warns(dpf_sound_test_server):
 
     with pytest.warns(PyDpfSoundWarning) as record:
         xtract_denoiser.get_output()
-    assert record[0].message.args[0] == "Output denoised or noise signals are not set."
+    assert record[0].message.args[0] == "Output has not been processed yet."
 
 
 def test_xtract_denoiser_get_output_np_array_warns(dpf_sound_test_server):
@@ -173,7 +173,7 @@ def test_xtract_denoiser_get_output_np_array_warns(dpf_sound_test_server):
 
     with pytest.warns(PyDpfSoundWarning) as record:
         xtract_denoiser.get_output_as_nparray()
-    assert record[0].message.args[0] == "Output denoised or noise signals are not set."
+    assert record[0].message.args[0] == "Output has not been processed yet."
 
 
 def test_xtract_denoiser_get_output(dpf_sound_test_server):

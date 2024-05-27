@@ -44,7 +44,7 @@ class XtractDenoiser(XtractParent):
         self.__input_signal = input_signal
         self.__input_parameters = input_parameters
 
-        # Def output fields
+        # Define output fields
         self.__output_denoised_signals = None
         self.__output_noise_signals = None
 
@@ -109,7 +109,7 @@ class XtractDenoiser(XtractParent):
         return self.__output_noise_signals  # pragma: no cover
 
     def process(self):
-        """Process the denoising."""
+        """Apply denoising."""
         if self.__input_signal is None:
             raise PyDpfSoundException("Input signal is not set.")
 
@@ -133,9 +133,16 @@ class XtractDenoiser(XtractParent):
         self._output = (self.__output_denoised_signals, self.__output_noise_signals)
 
     def get_output(self) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
-        """Get the output of the denoising."""
+        """Get the output of the denoising.
+
+        Returns
+        -------
+        Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
+            Denoised signal and noise signal,
+            as a field or fields_container (depending on the input).
+        """
         if self.__output_denoised_signals == None or self.__output_noise_signals == None:
-            warnings.warn(PyDpfSoundWarning("Output denoised or noise signals are not set."))
+            warnings.warn(PyDpfSoundWarning("Output has not been processed yet."))
 
         return self._output  # i.e. self.__output_denoised_signals, self.__output_noise_signals
 
@@ -148,7 +155,7 @@ class XtractDenoiser(XtractParent):
             Denoised signal and noise signal as numpy arrays.
         """
         if self.__output_noise_signals is None or self.__output_denoised_signals is None:
-            warnings.warn(PyDpfSoundWarning("Output denoised or noise signals are not set."))
+            warnings.warn(PyDpfSoundWarning("Output has not been processed yet."))
 
         l_output_denoised_signals = self.get_output()[0]
         l_output_noise_signals = self.get_output()[1]
@@ -191,16 +198,16 @@ class XtractDenoiser(XtractParent):
             ###########
             # Field type
             plt.figure()
-            plt.plot(l_time_data, l_np_output_denoised, label=f"Channel 0")
+            plt.plot(l_time_data, l_np_output_denoised)
             plt.xlabel("Time (" + l_time_unit + ")")
             plt.ylabel("Amplitude (" + l_unit + ")")
-            plt.title(f"Denoised signal  - channel 0")
+            plt.title(f"Denoised signal")
 
             plt.figure()
-            plt.plot(l_time_data, l_np_output_noise, label=f"Channel 0")
+            plt.plot(l_time_data, l_np_output_noise)
             plt.xlabel("Time (" + l_time_unit + ")")
             plt.ylabel("Amplitude (" + l_unit + ")")
-            plt.title(f"Noise signal - channel 0")
+            plt.title(f"Noise signal")
         else:
             ###########
             # FieldsContainer type
@@ -217,11 +224,6 @@ class XtractDenoiser(XtractParent):
                 plt.xlabel("Time (" + l_time_unit + ")")
                 plt.ylabel("Amplitude (" + l_unit + ")")
                 plt.title(f"Noise signal - channel {l_i}")
-
-        ################
-        # Delete intermediate variables
-        del field, l_np_output_denoised, l_np_output_noise
-        del l_time_data, l_time_unit, l_unit
 
         # Show all figures created
         plt.show()

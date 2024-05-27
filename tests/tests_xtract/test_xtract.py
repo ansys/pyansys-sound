@@ -14,7 +14,7 @@ def test_xtract_instantiation(dpf_sound_test_server):
     assert xtract != None
 
 
-def test_xtract_initialization():
+def test_xtract_initialization(dpf_sound_test_server):
     # Test initialization with default values
     xtract = Xtract()
     assert xtract.input_signal is None
@@ -73,14 +73,6 @@ def test_xtract_initialization_FieldsContainer(dpf_sound_test_server):
 def test_xtract_initialization_Field(dpf_sound_test_server):
     # Test initialization with default values
     xtract = Xtract()
-    assert xtract.input_signal is None
-    assert xtract.parameters_denoiser is None
-    assert xtract.parameters_tonal is None
-    assert xtract.parameters_transient is None
-    assert xtract.output_noise_signal is None
-    assert xtract.output_tonal_signal is None
-    assert xtract.output_transient_signal is None
-    assert xtract.output_remainder_signal is None
 
     # Test initialization with custom values
     input_signal = Field()
