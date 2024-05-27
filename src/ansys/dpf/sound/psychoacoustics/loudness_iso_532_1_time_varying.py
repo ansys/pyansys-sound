@@ -107,7 +107,6 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             6th element is the L10 indicator, in phon.
         """
         if self._output == None:
-            # Computing output if needed
             warnings.warn(
                 PyDpfSoundWarning(
                     "Output has not been processed yet, use LoudnessISO532_1_TimeVarying.process()."
