@@ -7,6 +7,6 @@ Xtract
     :toctree: _autosummary
 
     Xtract
-    XtractDenoiser    
+    XtractDenoiser
     XtractTonal
     XtractTransient
