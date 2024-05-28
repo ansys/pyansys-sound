@@ -45,7 +45,7 @@ connect_to_or_start_server(ansys_path=r"C:\TempDocker\ansys\dpf\server_2024_2_pr
 # more control over what we're displaying.
 # Note that we could use Stft.plot() but in this example,
 # we want to restrict the frenquency range of the plot, hence the custom function.
-def plot_stft(stft_class):
+def plot_stft(stft_class, vmax):
     out = stft_class.get_output_as_nparray()
 
     # Extracting first half of the STFT (second half is symmetrical)
@@ -70,7 +70,13 @@ def plot_stft(stft_class):
 
     # Plotting
     plt.imshow(
-        magnitude, origin="lower", aspect="auto", cmap="jet", extent=extent, vmin=-100.0, vmax=50.0
+        magnitude,
+        origin="lower",
+        aspect="auto",
+        cmap="jet",
+        extent=extent,
+        vmin=vmax - 70.0,
+        vmax=vmax,
     )
     plt.colorbar(label="dB")
     plt.ylabel("Frequency (Hz)")
@@ -126,9 +132,10 @@ plt.show()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Plotting the Spectrogram of the original signal
 
-stft = Stft(signal=fc_signal[0])
+stft = Stft(signal=fc_signal[0], window_overlap=0.9, fft_size=8192)
 stft.process()
-plot_stft(stft)
+max_stft = 20 * np.log10(np.max(stft.get_stft_magnitude_as_nparray()))
+plot_stft(stft, max_stft)
 
 # %%
 # Isolating Orders
@@ -139,10 +146,11 @@ signal_as_fields_container = wav_loader.get_output()
 
 # Defining parameters for order isolation
 field_wav = signal_as_fields_container[0]  # Signal to process as a dpf Field
+field_wav.unit = "Pa"
 field_rpm = signal_as_fields_container[1]  # Associated RPM signal as a dpf Field
 order_to_isolate = [2, 4, 6]  # Orders indexes to isolate as a list
-fft_size = 128  # FFT Size (in samples)
-window_type = "HANNING"  # Window type
+fft_size = 8192  # FFT Size (in samples)
+window_type = "HANN"  # Window type
 window_overlap = 0.9  # Window overlap
 width_selection = 3  # Width of the order selection in Hz
 
@@ -163,7 +171,7 @@ isolate_orders.process()
 # Plotting the Spectrogram of the isolated orders
 stft.signal = isolate_orders.get_output()
 stft.process()
-plot_stft(stft)
+plot_stft(stft, max_stft)
 
 # %%
 # Isolating different orders
@@ -171,7 +179,6 @@ plot_stft(stft)
 # Changing fft size, orders indexes and window type and then, re-isolating the orders
 
 # Changing some parameters directly using the setters of the class
-isolate_orders.fft_size = 1024
 isolate_orders.orders = [2, 6]
 isolate_orders.window_type = "BLACKMAN"
 
@@ -182,7 +189,7 @@ isolate_orders.process()
 # Plotting the Spectrogram of the isolated orders
 stft.signal = isolate_orders.get_output()
 stft.process()
-plot_stft(stft)
+plot_stft(stft, max_stft)
 # %%
 # Working with the isolated signal
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -216,12 +223,12 @@ print(f"Loudness of the isolated signal: {loudness_isolated_signal: .1f} phon.")
 # Obtaining parent folder of accel_with_rpm.wav
 parent_folder = pathlib.Path(path_accel_wav).parent.absolute()
 
-fft_sizes = [128, 256, 2048]
+fft_sizes = [256, 2048, 4096]
 
 wav_writer = WriteWav()
 
 # Isolating orders for all the files containing RPM profiles in this folder
-for file, fft_sz in zip(parent_folder.glob("*rpm*.wav"), fft_sizes):
+for file, fft_sz in zip(parent_folder.glob("accel_with_rpm_*.wav"), fft_sizes):
     # Loading the file
     wav_loader.path_to_wav = file
     wav_loader.process()
@@ -233,7 +240,7 @@ for file, fft_sz in zip(parent_folder.glob("*rpm*.wav"), fft_sizes):
     isolate_orders.process()
 
     # Writing the file in memory
-    out_name = str(file.stem) + "_isolated.wav"
+    out_name = str(file.stem) + "_isolated_fft_size_" + str(fft_sz) + ".wav"
     path_to_write = parent_folder / "output/" / out_name
     wav_writer.path_to_write = str(path_to_write)
     wav_writer.signal = isolate_orders.get_output()
