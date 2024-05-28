@@ -60,8 +60,8 @@ def test_sharpness_get_output(dpf_sound_test_server):
     sharpness_computer.process()
 
     sharpness = sharpness_computer.get_output()
-    assert type(sharpness) == FieldsContainer
     assert sharpness != None
+    assert type(sharpness) == FieldsContainer
 
 
 @pytest.mark.dependency(depends=["test_sharpness_process"])

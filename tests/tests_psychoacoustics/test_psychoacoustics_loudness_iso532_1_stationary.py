@@ -65,12 +65,12 @@ def test_loudness_iso_532_1_stationary_get_output(dpf_sound_test_server):
     loudness_computer.process()
 
     (loudness_sone, loudness_level_phon, specific_loudness) = loudness_computer.get_output()
-    assert type(loudness_sone) == FieldsContainer
     assert loudness_sone != None
-    assert type(loudness_level_phon) == FieldsContainer
+    assert type(loudness_sone) == FieldsContainer
     assert loudness_level_phon != None
-    assert type(specific_loudness) == FieldsContainer
+    assert type(loudness_level_phon) == FieldsContainer
     assert specific_loudness != None
+    assert type(specific_loudness) == FieldsContainer
 
 
 @pytest.mark.dependency(depends=["test_loudness_iso_532_1_stationary_process"])

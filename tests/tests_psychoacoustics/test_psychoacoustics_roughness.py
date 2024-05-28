@@ -80,10 +80,10 @@ def test_roughness_get_output(dpf_sound_test_server):
     roughness_computer.process()
 
     (roughness, specific_roughness) = roughness_computer.get_output()
-    assert type(roughness) == FieldsContainer
     assert roughness != None
-    assert type(specific_roughness) == FieldsContainer
+    assert type(roughness) == FieldsContainer
     assert specific_roughness != None
+    assert type(specific_roughness) == FieldsContainer
 
 
 @pytest.mark.dependency(depends=["test_roughness_process"])

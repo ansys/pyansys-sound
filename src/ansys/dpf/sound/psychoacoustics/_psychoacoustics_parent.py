@@ -36,7 +36,9 @@ class PsychoacousticsParent(PyDpfSound):
             Array of corresponding frequencies, in Hz.
         """
         for ibark in range(len(bark_band_indexes)):
-            if not (-0.1 <= bark_band_indexes[ibark] <= 24.1):
+            if not (0 <= bark_band_indexes[ibark] <= 24 + 1e-6):
+                # A slight margin (1e-6) is used for the upper limit, because the last index from
+                # the DPF operator is precisely 24.00000036.
                 raise PyDpfSoundException(
                     "Specified Bark band indexes must be between 0.0 and 24.0 Bark."
                 )

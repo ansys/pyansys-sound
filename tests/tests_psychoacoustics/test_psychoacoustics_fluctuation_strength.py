@@ -80,10 +80,10 @@ def test_fs_get_output(dpf_sound_test_server):
     fs_computer.process()
 
     (fs, specific_fs) = fs_computer.get_output()
-    assert type(fs) == FieldsContainer
     assert fs != None
-    assert type(specific_fs) == FieldsContainer
+    assert type(fs) == FieldsContainer
     assert specific_fs != None
+    assert type(specific_fs) == FieldsContainer
 
 
 @pytest.mark.dependency(depends=["test_fs_process"])
