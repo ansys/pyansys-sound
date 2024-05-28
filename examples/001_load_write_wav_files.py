@@ -60,8 +60,8 @@ print(
 # Apply a gain to the signal
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Change the gain of the resampled signal.
-g = 10.0
-gain_applier = ApplyGain(fc_signal_resampled, gain=g, gain_in_db=True)
+gain = 10.0
+gain_applier = ApplyGain(fc_signal_resampled, gain=gain, gain_in_db=True)
 gain_applier.process()
 fc_signal_modified = gain_applier.get_output()
 
@@ -86,7 +86,9 @@ axs[0].set_ylabel("Pa")
 axs[0].legend(loc="upper right")
 axs[0].set_ylim([-3, 3])
 
-axs[1].plot(t2, data_modified, color="r", label=f"modified signal, sf={sf2:.1f} Hz, gain={g} dBSPL")
+axs[1].plot(
+    t2, data_modified, color="r", label=f"modified signal, sf={sf2:.1f} Hz, gain={gain} dBSPL"
+)
 axs[1].set_xlabel("s")
 axs[1].set_ylabel("Pa")
 axs[1].legend(loc="upper right")
