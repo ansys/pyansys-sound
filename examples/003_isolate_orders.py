@@ -35,7 +35,7 @@ from ansys.dpf.sound.signal_utilities import LoadWav, WriteWav
 from ansys.dpf.sound.spectrogram_processing import IsolateOrders, Stft
 
 # Connect to remote or start a local server
-connect_to_or_start_server(ansys_path=r"C:\TempDocker\ansys\dpf\server_2024_2_pre0")
+connect_to_or_start_server()
 
 
 # %%
@@ -44,7 +44,7 @@ connect_to_or_start_server(ansys_path=r"C:\TempDocker\ansys\dpf\server_2024_2_pr
 # Defining a custom function for STFT plots that will allow us to have
 # more control over what we're displaying.
 # Note that we could use Stft.plot() but in this example,
-# we want to restrict the frenquency range of the plot, hence the custom function.
+# we want to restrict the frequency range of the plot, hence the custom function.
 def plot_stft(stft_class, vmax):
     out = stft_class.get_output_as_nparray()
 
@@ -103,11 +103,8 @@ wav_loader = LoadWav(path_accel_wav)
 wav_loader.process()
 fc_signal = wav_loader.get_output()
 
-# This file contains two channels, one is the RPM profile
-
+# Extract the audio signal and the RPM profile
 signal_as_nparray = wav_loader.get_output_as_nparray()
-
-# Extracting the WAV and the RPM signal
 wav_signal = signal_as_nparray[0]
 rpm_signal = signal_as_nparray[1]
 
@@ -117,14 +114,14 @@ time_support = fc_signal[0].time_freq_support.time_frequencies.data
 # Plotting the signal and its associated RPM profile
 fig, ax = plt.subplots(nrows=2, sharex=True)
 ax[0].plot(time_support, wav_signal)
-ax[0].set_title("Wav Signal")
-ax[0].set_ylabel("Pascals (Pa)")
+ax[0].set_title("Audio Signal")
+ax[0].set_ylabel("Amplitude (Pa)")
 ax[0].grid(True)
 ax[1].plot(time_support, rpm_signal, color="red")
 ax[1].set_title("RPM profile")
 ax[1].set_ylabel("rpm")
 ax[1].grid(True)
-plt.xlabel("Seconds (s)")
+plt.xlabel("Time (s)")
 plt.show()
 
 # %%
@@ -145,16 +142,16 @@ plot_stft(stft, max_stft)
 signal_as_fields_container = wav_loader.get_output()
 
 # Defining parameters for order isolation
-field_wav = signal_as_fields_container[0]  # Signal to process as a dpf Field
+field_wav = signal_as_fields_container[0]  # Signal to process as a DPF Field
 field_wav.unit = "Pa"
-field_rpm = signal_as_fields_container[1]  # Associated RPM signal as a dpf Field
+field_rpm = signal_as_fields_container[1]  # Associated RPM signal as a DPF Field
 order_to_isolate = [2, 4, 6]  # Orders indexes to isolate as a list
 fft_size = 8192  # FFT Size (in samples)
 window_type = "HANN"  # Window type
 window_overlap = 0.9  # Window overlap
 width_selection = 3  # Width of the order selection in Hz
 
-# Instantiating the isolate orders class with the parameters
+# Instantiating the IsolateOrders class with the parameters
 isolate_orders = IsolateOrders(
     signal=field_wav,
     rpm_profile=field_rpm,
@@ -182,7 +179,7 @@ plot_stft(stft, max_stft)
 isolate_orders.orders = [2, 6]
 isolate_orders.window_type = "BLACKMAN"
 
-# Re-processing (needs to be call explicitly, otherwise the output won't be updated)
+# Re-processing (needs to be called explicitly, otherwise the output won't be updated)
 isolate_orders.process()
 
 
@@ -212,13 +209,13 @@ loudness.process()
 
 loudness_original_signal = loudness.get_loudness_level_phon()
 
-print(f"Loudness of the original signal: {loudness_original_signal: .1f} phon.")
-print(f"Loudness of the isolated signal: {loudness_isolated_signal: .1f} phon.")
+print(f"Loudness of the original signal:{loudness_original_signal: .1f} phon.")
+print(f"Loudness of the isolated signal:{loudness_isolated_signal: .1f} phon.")
 
 # %%
 # Isolating orders of several signals in a loop
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Looping over a list of given signals and writing them in memory.
+# Looping over a list of given signals and writing them as a wav file.
 
 # Obtaining parent folder of accel_with_rpm.wav
 parent_folder = pathlib.Path(path_accel_wav).parent.absolute()
@@ -244,3 +241,4 @@ for file, fft_sz in zip(parent_folder.glob("accel_with_rpm_*.wav"), fft_sizes):
     path_to_write = parent_folder / "output/" / out_name
     wav_writer.path_to_write = str(path_to_write)
     wav_writer.signal = isolate_orders.get_output()
+    wav_writer.process()
