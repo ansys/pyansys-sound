@@ -134,22 +134,20 @@ class XtractTransient(XtractParent):
 
         Extract the transient components of the signal(s) using the XTRACT algorithm.
         """
-        if self.__input_signal is None:
+        if self.input_signal is None:
             raise PyDpfSoundException("Input signal is not set.")
 
-        if self.__input_parameters is None:
+        if self.input_parameters is None:
             raise PyDpfSoundException("Input parameters are not set.")
 
-        self.__operator.connect(0, self.__input_signal)
-        self.__operator.connect(
-            1, self.__input_parameters.get_parameters_as_generic_data_container()
-        )
+        self.__operator.connect(0, self.input_signal)
+        self.__operator.connect(1, self.input_parameters.get_parameters_as_generic_data_container())
 
         # Run the operator
         self.__operator.run()
 
         # Stores the output in the variable
-        if type(self.__input_signal) == Field:
+        if type(self.input_signal) == Field:
             self.__output_transient_signals = self.__operator.get_output(0, "field")
             self.__output_non_transient_signals = self.__operator.get_output(1, "field")
         else:

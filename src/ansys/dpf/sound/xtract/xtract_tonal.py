@@ -3,12 +3,12 @@
 from typing import Tuple
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operator
+from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy import typing as npt
 
-from . import XtractParent
+from . import XtractParent, XtractTonalParameters
 from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
@@ -21,7 +21,7 @@ class XtractTonal(XtractParent):
     def __init__(
         self,
         input_signal: FieldsContainer | Field = None,
-        input_parameters: GenericDataContainer = None,
+        input_parameters: XtractTonalParameters = None,
     ):
         """Create a XtractTonal class.
 
@@ -40,14 +40,14 @@ class XtractTonal(XtractParent):
             - Minimum duration (float) in seconds
             - Intertonal gap (float) in Hz
             - Local smergence (float) in dB
-            This structure is of type Xtract_tonal_parameters
+            This structure is of type XtractTonalParameters
             (see this class for more details).
         output_tonal_signals:
             Tonal signal(s), as a field or fields container (depending on the input).
         """
         super().__init__()
-        self.__input_signal = input_signal
-        self.__input_parameters = input_parameters
+        self.input_signal = input_signal
+        self.input_parameters = input_parameters
 
         # Define output fields
         self.__output_tonal_signals = None
@@ -77,7 +77,7 @@ class XtractTonal(XtractParent):
         self.__input_signal = value
 
     @property
-    def input_parameters(self) -> GenericDataContainer:
+    def input_parameters(self) -> XtractTonalParameters:
         """Get input parameters.
 
         Returns
@@ -94,7 +94,7 @@ class XtractTonal(XtractParent):
         return self.__input_parameters
 
     @input_parameters.setter
-    def input_parameters(self, value: GenericDataContainer):
+    def input_parameters(self, value: XtractTonalParameters):
         """Set input parameters."""
         self.__input_parameters = value
 
@@ -125,11 +125,11 @@ class XtractTonal(XtractParent):
         if self.__input_signal is None:
             raise PyDpfSoundException("No input signal for tonal analysis.")
 
-        if self.__input_parameters is None:
+        if self.input_parameters is None:
             raise PyDpfSoundException("Input parameters are not set.")
 
-        self.__operator.connect(0, self.__input_signal)
-        self.__operator.connect(1, self.__input_parameters)
+        self.__operator.connect(0, self.input_signal)
+        self.__operator.connect(1, self.input_parameters.get_parameters_as_generic_data_container())
 
         # Run the operator
         self.__operator.run()

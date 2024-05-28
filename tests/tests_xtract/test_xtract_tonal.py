@@ -1,12 +1,13 @@
 from unittest.mock import patch
 
-from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer
+from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
 from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 from ansys.dpf.sound.signal_utilities import LoadWav
 from ansys.dpf.sound.xtract.xtract_tonal import XtractTonal
+from ansys.dpf.sound.xtract.xtract_tonal_parameters import XtractTonalParameters
 
 
 def test_xtract_tonal_instantiation(dpf_sound_test_server):
@@ -24,7 +25,7 @@ def test_xtract_tonal_initialization_FieldsContainer(dpf_sound_test_server):
 
     # Test initialization with custom values
     input_signal = FieldsContainer()
-    input_parameters = GenericDataContainer()
+    input_parameters = XtractTonalParameters()
     xtract_tonal = XtractTonal(
         input_signal=input_signal,
         input_parameters=input_parameters,
@@ -45,7 +46,7 @@ def test_xtract_tonal_initialization_Field(dpf_sound_test_server):
 
     # Test initialization with custom values
     input_signal = Field()
-    input_parameters = GenericDataContainer()
+    input_parameters = XtractTonalParameters()
     xtract_tonal = XtractTonal(
         input_signal=input_signal,
         input_parameters=input_parameters,
@@ -57,7 +58,7 @@ def test_xtract_tonal_initialization_Field(dpf_sound_test_server):
 
 
 def test_xtract_tonal_process_except1(dpf_sound_test_server):
-    xtract_tonal = XtractTonal(None, GenericDataContainer())
+    xtract_tonal = XtractTonal(None, XtractTonalParameters())
     with pytest.raises(PyDpfSoundException) as excinfo:
         xtract_tonal.process()
     assert str(excinfo.value) == "No input signal for tonal analysis."
@@ -77,14 +78,13 @@ def test_xtract_tonal_process(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     xtract_tonal = XtractTonal(bird_plus_idle_sig, params_tonal)
     xtract_tonal.process()
@@ -133,14 +133,13 @@ def test_xtract_tonal_get_output(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     xtract_tonal = XtractTonal(bird_plus_idle_sig, params_tonal)
     xtract_tonal.process()
@@ -166,14 +165,13 @@ def test_xtract_tonal_get_output_noprocess(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     xtract_tonal = XtractTonal(bird_plus_idle_sig, params_tonal)
     output1, output2 = xtract_tonal.get_output()
@@ -189,14 +187,13 @@ def test_xtract_tonal_get_output_fc(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     fc_bird_plus_idle = FieldsContainer()
     fc_bird_plus_idle.labels = ["channel"]
@@ -234,14 +231,13 @@ def test_xtract_tonal_get_output_as_nparray(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     xtract_tonal = XtractTonal(bird_plus_idle_sig, params_tonal)
     xtract_tonal.process()
@@ -269,14 +265,13 @@ def test_xtract_tonal_get_output_fc_as_nparray(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     fc_bird_plus_idle = FieldsContainer()
     fc_bird_plus_idle.labels = ["channel"]
@@ -298,14 +293,13 @@ def test_extract_tonal_setters(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     xtract_tonal = XtractTonal(bird_plus_idle_sig, params_tonal)
 
@@ -326,14 +320,13 @@ def test_xtract_tonal_plot_output(mock_show, dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     xtract_tonal = XtractTonal(bird_plus_idle_sig, params_tonal)
     xtract_tonal.process()
@@ -349,14 +342,13 @@ def test_xtract_tonal_plot_output_fc(mock_show, dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     fc_bird_plus_idle = FieldsContainer()
     fc_bird_plus_idle.labels = ["channel"]
