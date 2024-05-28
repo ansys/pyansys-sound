@@ -408,13 +408,13 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             return False
 
         if type(self._output[0]) == Field:
-            if channel_index > 0:
+            if channel_index != 0:
                 raise PyDpfSoundException(
                     f"Specified channel index ({channel_index}) does not exist."
                 )
 
         else:
-            if channel_index > self.get_output_as_nparray()[0].ndim - 1:
+            if channel_index < 0 or channel_index > self.get_output_as_nparray()[0].ndim - 1:
                 raise PyDpfSoundException(
                     f"Specified channel index ({channel_index}) does not exist."
                 )
