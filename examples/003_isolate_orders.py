@@ -35,7 +35,7 @@ from ansys.dpf.sound.signal_utilities import LoadWav, WriteWav
 from ansys.dpf.sound.spectrogram_processing import IsolateOrders, Stft
 
 # Connect to remote or start a local server
-connect_to_or_start_server()
+connect_to_or_start_server(ansys_path=r"C:\TempDocker\ansys\dpf\server_2024_2_pre0")
 
 
 # %%
@@ -69,7 +69,9 @@ def plot_stft(stft_class):
     extent = [0, time_step * num_time_index, 0.0, fs / 2.0]
 
     # Plotting
-    plt.imshow(magnitude, origin="lower", aspect="auto", cmap="jet", extent=extent)
+    plt.imshow(
+        magnitude, origin="lower", aspect="auto", cmap="jet", extent=extent, vmin=-100.0, vmax=50.0
+    )
     plt.colorbar(label="dB")
     plt.ylabel("Frequency (Hz)")
     plt.ylim(
@@ -100,8 +102,8 @@ fc_signal = wav_loader.get_output()
 signal_as_nparray = wav_loader.get_output_as_nparray()
 
 # Extracting the WAV and the RPM signal
-wav_signal = signal_as_nparray[:, 0]
-rpm_signal = signal_as_nparray[:, 1]
+wav_signal = signal_as_nparray[0]
+rpm_signal = signal_as_nparray[1]
 
 # Extracting time support associated to the signal
 time_support = fc_signal[0].time_freq_support.time_frequencies.data
