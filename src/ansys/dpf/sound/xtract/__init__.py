@@ -7,6 +7,16 @@ from ._xtract_parent import XtractParent
 from .xtract import Xtract
 from .xtract_denoiser import XtractDenoiser
 from .xtract_tonal import XtractTonal
-from .xtract_transient import XtractTransient
+from .xtract_transient_parameters import XtractTransientParameters
 
-__all__ = "Xtract", "XtractTonal", "XtractDenoiser", "XtractTransient"
+from .xtract_transient import XtractTransient  # isort:skip
+
+
+__all__ = (
+    "XtractParent",
+    "Xtract",
+    "XtractTonal",
+    "XtractDenoiser",
+    "XtractTransient",
+    "XtractTransientParameters",
+)

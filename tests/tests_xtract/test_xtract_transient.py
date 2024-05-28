@@ -7,6 +7,7 @@ import pytest
 from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 from ansys.dpf.sound.signal_utilities import LoadWav
 from ansys.dpf.sound.xtract.xtract_transient import XtractTransient
+from ansys.dpf.sound.xtract.xtract_transient_parameters import XtractTransientParameters
 
 
 def test_xtract_transient_instantiation(dpf_sound_test_server):
@@ -24,7 +25,7 @@ def test_xtract_transient_initialization_FieldsContainer(dpf_sound_test_server):
 
     # Test initialization with custom values
     input_signal = FieldsContainer()
-    input_parameters = GenericDataContainer()
+    input_parameters = XtractTransientParameters()
     xtract_transient = XtractTransient(
         input_signal=input_signal,
         input_parameters=input_parameters,
@@ -45,7 +46,7 @@ def test_xtract_transient_initialization_Field():
 
     # Test initialization with custom values
     input_signal = Field()
-    input_parameters = GenericDataContainer()
+    input_parameters = XtractTransientParameters()
     xtract_transient = XtractTransient(
         input_signal=input_signal,
         input_parameters=input_parameters,
@@ -57,7 +58,7 @@ def test_xtract_transient_initialization_Field():
 
 
 def test_xtract_transient_except1(dpf_sound_test_server):
-    xtract_transient = XtractTransient(None, GenericDataContainer())
+    xtract_transient = XtractTransient(None, XtractTransientParameters())
     with pytest.raises(PyDpfSoundException) as excinfo:
         xtract_transient.process()
     assert str(excinfo.value) == "Input signal is not set."
@@ -77,10 +78,9 @@ def test_xtract_transient_process(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
+    params_transient = XtractTransientParameters()
+    params_transient.lower_threshold = 1.0
+    params_transient.upper_threshold = 100.0
 
     xtract_transient = XtractTransient(bird_plus_idle_sig, params_transient)
     xtract_transient.process()
@@ -134,10 +134,9 @@ def test_xtract_transient_get_output(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
+    params_transient = XtractTransientParameters()
+    params_transient.lower_threshold = 1.0
+    params_transient.upper_threshold = 100.0
 
     xtract_transient = XtractTransient(bird_plus_idle_sig, params_transient)
     xtract_transient.process()
@@ -184,10 +183,9 @@ def test_xtract_transient_get_output_fc(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
+    params_transient = XtractTransientParameters()
+    params_transient.lower_threshold = 1.0
+    params_transient.upper_threshold = 100.0
 
     fc_bird_plus_idle = FieldsContainer()
     fc_bird_plus_idle.labels = ["channel"]
@@ -239,10 +237,9 @@ def test_xtract_transient_get_output_as_nparray(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
+    params_transient = XtractTransientParameters()
+    params_transient.lower_threshold = 1.0
+    params_transient.upper_threshold = 100.0
 
     xtract_transient = XtractTransient(bird_plus_idle_sig, params_transient)
     xtract_transient.process()
@@ -266,10 +263,9 @@ def test_xtract_transient_get_output_fc_as_nparray(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
+    params_transient = XtractTransientParameters()
+    params_transient.lower_threshold = 1.0
+    params_transient.upper_threshold = 100.0
 
     fc_bird_plus_idle = FieldsContainer()
     fc_bird_plus_idle.labels = ["channel"]
@@ -290,10 +286,9 @@ def test_xtract_transient_setters(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
+    params_transient = XtractTransientParameters()
+    params_transient.lower_threshold = 1.0
+    params_transient.upper_threshold = 100.0
 
     xtract_transient = XtractTransient(bird_plus_idle_sig, params_transient)
     xtract_transient.process()
@@ -315,10 +310,9 @@ def test_xtract_transient_plot_output(mock_show, dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
+    params_transient = XtractTransientParameters()
+    params_transient.lower_threshold = 1.0
+    params_transient.upper_threshold = 100.0
 
     xtract_transient = XtractTransient(bird_plus_idle_sig, params_transient)
     xtract_transient.process()
@@ -334,10 +328,9 @@ def test_xtract_transient_plot_output_fc(mock_show, dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
+    params_transient = XtractTransientParameters()
+    params_transient.lower_threshold = 1.0
+    params_transient.upper_threshold = 100.0
 
     fc_bird_plus_idle = FieldsContainer()
     fc_bird_plus_idle.labels = ["channel"]
