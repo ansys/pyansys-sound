@@ -25,7 +25,9 @@ from ansys.dpf.sound.examples_helpers import (
     get_absolute_path_for_flute_wav,
 )
 from ansys.dpf.sound.psychoacoustics.fluctuation_strength import FluctuationStrength
-from ansys.dpf.sound.psychoacoustics.loudness_iso532_1_stationary import LoudnessISO532_1_Stationary
+from ansys.dpf.sound.psychoacoustics.loudness_iso_532_1_stationary import (
+    LoudnessISO532_1_Stationary,
+)
 from ansys.dpf.sound.psychoacoustics.roughness import Roughness
 from ansys.dpf.sound.psychoacoustics.sharpness import Sharpness
 from ansys.dpf.sound.server_helpers import connect_to_or_start_server
