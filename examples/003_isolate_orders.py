@@ -39,7 +39,7 @@ connect_to_or_start_server(ansys_path=r"C:\TempDocker\ansys\dpf\server_2024_2_pr
 
 
 # %%
-# Defining a custom function for STFT pltos
+# Defining a custom function for STFT plots
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Defining a custom function for STFT plots that will allow us to have
 # more control over what we're displaying.
