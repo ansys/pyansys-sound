@@ -74,9 +74,9 @@ def test_load_wav_get_output_as_nparray(dpf_sound_test_server):
     np_arr = wav_loader_stereo.get_output_as_nparray()
 
     assert np.shape(np_arr) == (2, 480000)
-    assert np_arr[1000][1] == 0.0169677734375
-    assert np_arr[10000][1] == -0.27001953125
-    assert np_arr[100000][1] == -0.0509033203125
+    assert np_arr[1][1000] == 0.0169677734375
+    assert np_arr[1][10000] == -0.27001953125
+    assert np_arr[1][100000] == -0.0509033203125
 
 
 @pytest.mark.dependency(depends=["test_load_wav_instantiation"])
