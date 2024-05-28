@@ -4,7 +4,7 @@
 .. _load_resample_amplify_write_wav_files_example:
 
 Load / Write Wav Files, resample and apply gains
-----------------------
+------------------------------------------------
 
 This example shows how to load a Wav file, modify its samply frequency,
 amplify it and write the resulting Wav file in memory.
@@ -29,6 +29,8 @@ from ansys.dpf.sound.signal_utilities import ApplyGain, LoadWav, Resample, Write
 connect_to_or_start_server()
 
 # %%
+# Load a Wav Signal
+# ~~~~~~~~~~~~~~~~~
 # Load a wav signal using LoadWav class, it will be returned as a
 # `DPF Field Container <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_ # noqa: E501
 
@@ -41,6 +43,8 @@ wav_loader.process()
 fc_signal_original = wav_loader.get_output()
 
 # %%
+# Resample the signal
+# ~~~~~~~~~~~~~~~~~~~
 # Change the sampling frequency of the loaded signal.
 resampler = Resample(fc_signal_original, new_sampling_frequency=20000.0)
 resampler.process()
@@ -53,6 +57,8 @@ print(
 )  # ":.1f" is to only get 1 decimal
 
 # %%
+# Apply a gain to the signal
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Change the gain of the resampled signal.
 g = 10.0
 gain_applier = ApplyGain(fc_signal_resampled, gain=g, gain_in_db=True)
@@ -66,6 +72,8 @@ print(
 )  # ":.1f" is to only get 1 decimal
 
 # %%
+# Plotting signals
+# ~~~~~~~~~~~~~~~~
 # Plot the original and the modified signals.
 data_original = wav_loader.get_output_as_nparray()
 data_modified = gain_applier.get_output_as_nparray()
@@ -86,7 +94,10 @@ axs[1].set_ylim([-3, 3])
 
 plt.show()
 
-# %% Write the modified signal in memory using WriteWav class
+# %%
+# Write the signals in memory
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Write the modified signal in memory using WriteWav class
 output_path = path_flute_wav[:-4] + "_modified.wav"  # "[-4]" is to remove the ".wav"
 wav_writer = WriteWav(path_to_write=output_path, signal=fc_signal_modified, bit_depth="int16")
 wav_writer.process()
