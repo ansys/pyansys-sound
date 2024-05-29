@@ -169,7 +169,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             return None
 
         # check validity of input -> will raise an exception if channel index is incorrect
-        self.__check_channel_index(channel_index)
+        self._check_channel_index(channel_index)
 
         if type(self._output[0]) == Field:
             return self.get_output_as_nparray()[0]
@@ -202,7 +202,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             return None
 
         # check validity of input -> will raise an exception if channel index is incorrect
-        self.__check_channel_index(channel_index)
+        self._check_channel_index(channel_index)
 
         if type(self._output[0]) == Field:
             return self.get_output_as_nparray()[1]
@@ -231,7 +231,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             return None
 
         # check validity of input -> will raise an exception if channel index is incorrect
-        self.__check_channel_index(channel_index)
+        self._check_channel_index(channel_index)
 
         if type(self._output[0]) == Field:
             return self.get_output_as_nparray()[2]
@@ -258,7 +258,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             return None
 
         # check validity of input -> will raise an exception if channel index is incorrect
-        self.__check_channel_index(channel_index)
+        self._check_channel_index(channel_index)
 
         if type(self._output[0]) == Field:
             return self.get_output_as_nparray()[3]
@@ -291,7 +291,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             return None
 
         # check validity of input -> will raise an exception if channel index is incorrect
-        self.__check_channel_index(channel_index)
+        self._check_channel_index(channel_index)
 
         if type(self._output[0]) == Field:
             return self.get_output_as_nparray()[4]
@@ -320,7 +320,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             return None
 
         # check validity of input -> will raise an exception if channel index is incorrect
-        self.__check_channel_index(channel_index)
+        self._check_channel_index(channel_index)
 
         if type(self._output[0]) == Field:
             return self.get_output_as_nparray()[5]
@@ -390,33 +390,3 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         ax2.grid(True)
 
         plt.show()
-
-    def __check_channel_index(self, channel_index: int) -> bool:
-        """Check whether a specified signal channel index is available or not.
-
-        Parameters
-        -------
-        channel_index: int
-            Index of the signal channel to check.
-
-        Returns
-        -------
-        bool
-            True if channel index is available, False if not.
-        """
-        if self.get_output() == None:
-            return False
-
-        if type(self._output[0]) == Field:
-            if channel_index != 0:
-                raise PyDpfSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
-
-        else:
-            if channel_index < 0 or channel_index > self.get_output_as_nparray()[0].ndim - 1:
-                raise PyDpfSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
-
-        return True
