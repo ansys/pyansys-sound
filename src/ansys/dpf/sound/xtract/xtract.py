@@ -37,7 +37,7 @@ class Xtract(XtractParent):
         Parameters
         ----------
         input_signal:
-            Signal(s) on which to apply the XTRACT processing, as a field or fields_container.
+            Signal(s) on which to apply the XTRACT processing, as a field or fields container.
         parameters_denoiser:
             Structure that contains the parameters of the denoising step:
             - Noise levels (Field): level vs frequency of the noise
@@ -85,7 +85,7 @@ class Xtract(XtractParent):
         Returns
         -------
         FieldsContainer | Field
-            Signal(s) on which to apply the XTRACT processing, as a field or fields_container.
+            Signal(s) on which to apply the XTRACT processing, as a field or fields container.
         """
         return self.__input_signal  # pragma: no cover
 
@@ -158,7 +158,7 @@ class Xtract(XtractParent):
         Returns
         -------
         Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
-            Noise signal, as a field or fields_container.
+            Noise signal, as a field or fields container.
         """
         return self.__output_noise_signal  # pragma: no cover
 
@@ -169,7 +169,7 @@ class Xtract(XtractParent):
         Returns
         -------
         Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
-            Tonal signal, as a field or fields_container.
+            Tonal signal, as a field or fields container.
         """
         return self.__output_tonal_signal  # pragma: no cover
 
@@ -182,7 +182,7 @@ class Xtract(XtractParent):
         Returns
         -------
         Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
-            Transient signal, as a field or fields_container.
+            Transient signal, as a field or fields container.
         """
         return self.__output_transient_signal  # pragma: no cover
 
@@ -195,7 +195,7 @@ class Xtract(XtractParent):
         Returns
         -------
         Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
-            Remainder signal, as a field or fields_container.
+            Remainder signal, as a field or fields container.
         """
         return self.__output_remainder_signal  # pragma: no cover
 
@@ -258,7 +258,7 @@ class Xtract(XtractParent):
         Tuple[FieldsContainer, FieldsContainer, FieldsContainer, FieldsContainer] |
         Tuple[Field, Field, Field, Field]
             Noise signal, tonal signal, transient signal, and remainder signal,
-            as fields or fields_containers.
+            as fields or fields containers.
         """
         if (
             (self.__output_noise_signal is None)
@@ -282,7 +282,7 @@ class Xtract(XtractParent):
 
         Returns
         -------
-        Tuple[np.array, np.array, np.array, np.array]
+        Tuple[numpy.array, numpy.array, numpy.array, numpy.array]
             Noise signal, tonal signal, transient signal, and remainder signal, as numpy arrays.
         """
         if (
