@@ -15,16 +15,16 @@ ID_FFT_SIZE = "fft_size"
 
 
 class XtractTonalParameters(XtractParent):
-    """Data class for tonal parameters that can be used in Xtract and XtractTransient."""
+    """Data class for tonal parameters that can be used in Xtract and XtractTonal."""
 
     def __init__(
         self,
-        regularity=1.0,
-        maximum_slope=750.0,
-        minimum_duration=1.0,
-        intertonal_gap=20.0,
-        local_emergence=15.0,
-        fft_size=8192,
+        regularity: float = 1.0,
+        maximum_slope: float = 750.0,
+        minimum_duration: float = 1.0,
+        intertonal_gap: float = 20.0,
+        local_emergence: float = 15.0,
+        fft_size: int = 8192,
     ):
         """Init.
 

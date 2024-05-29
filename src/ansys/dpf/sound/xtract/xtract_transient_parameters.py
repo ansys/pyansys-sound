@@ -1,4 +1,5 @@
 """Xtract transient parameters."""
+
 from ansys.dpf.core import GenericDataContainer
 
 from . import XtractParent
@@ -12,7 +13,7 @@ ID_UPPER_THRESHOLD = "upper_threshold"
 class XtractTransientParameters(XtractParent):
     """Data class for transient parameters that can be used in Xtract and XtractTransient."""
 
-    def __init__(self, lower_threshold=0.0, upper_threshold=100.0):
+    def __init__(self, lower_threshold: float = 0.0, upper_threshold: float = 100.0):
         """Init.
 
         Parameters

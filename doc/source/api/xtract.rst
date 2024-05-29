@@ -8,5 +8,8 @@ Xtract
 
     Xtract
     XtractDenoiser
+    XtractDenoiserParameters
     XtractTonal
+    XtractTonalParameters
     XtractTransient
+    XtractTransientParameters
