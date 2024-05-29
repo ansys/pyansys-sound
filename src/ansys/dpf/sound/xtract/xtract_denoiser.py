@@ -180,7 +180,7 @@ class XtractDenoiser(XtractParent):
         # Plot denoised signal
         #
         l_output_denoised_signals = self.get_output()[0]
-        field = (
+        l_output_denoised_signals_as_field = (
             l_output_denoised_signals
             if type(l_output_denoised_signals) == Field
             else l_output_denoised_signals[0]
@@ -188,9 +188,9 @@ class XtractDenoiser(XtractParent):
 
         l_np_output_denoised, l_np_output_noise = self.get_output_as_nparray()
 
-        l_time_data = field.time_freq_support.time_frequencies.data
-        l_time_unit = field.time_freq_support.time_frequencies.unit
-        l_unit = field.unit
+        l_time_data = l_output_denoised_signals_as_field.time_freq_support.time_frequencies.data
+        l_time_unit = l_output_denoised_signals_as_field.time_freq_support.time_frequencies.unit
+        l_unit = l_output_denoised_signals_as_field.unit
 
         ################
         # Note: by design, we have l_np_output_denoised.ndim == l_np_output_noise.ndim

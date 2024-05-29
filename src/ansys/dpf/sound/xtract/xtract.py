@@ -325,15 +325,15 @@ class Xtract(XtractParent):
         """Plot the XTRACT algorithm results."""
         l_output_noise_signal = self.get_output()[0]
 
-        field = (
+        l_output_noise_signal_as_field = (
             l_output_noise_signal
             if type(l_output_noise_signal) == Field
             else l_output_noise_signal[0]
         )
 
-        l_time_data = field.time_freq_support.time_frequencies.data
-        l_time_unit = field.time_freq_support.time_frequencies.unit
-        l_unit = field.unit
+        l_time_data = l_output_noise_signal_as_field.time_freq_support.time_frequencies.data
+        l_time_unit = l_output_noise_signal_as_field.time_freq_support.time_frequencies.unit
+        l_unit = l_output_noise_signal_as_field.unit
 
         (
             l_np_output_noise_signal,

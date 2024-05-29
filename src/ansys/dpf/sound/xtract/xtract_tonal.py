@@ -188,7 +188,7 @@ class XtractTonal(XtractParent):
         Plot the tonal and non tonal signals.
         """
         l_output_tonal_signals = self.get_output()[0]
-        field = (
+        l_output_tonal_signals_as_field = (
             l_output_tonal_signals
             if type(l_output_tonal_signals) == Field
             else l_output_tonal_signals[0]
@@ -196,9 +196,9 @@ class XtractTonal(XtractParent):
 
         l_np_output_tonal_signals, l_np_output_non_tonal_signals = self.get_output_as_nparray()
 
-        l_time_data = field.time_freq_support.time_frequencies.data
-        l_time_unit = field.time_freq_support.time_frequencies.unit
-        l_unit = field.unit
+        l_time_data = l_output_tonal_signals_as_field.time_freq_support.time_frequencies.data
+        l_time_unit = l_output_tonal_signals_as_field.time_freq_support.time_frequencies.unit
+        l_unit = l_output_tonal_signals_as_field.unit
 
         ################
         # Note: by design, we have l_np_output_tonal_signals.ndim
