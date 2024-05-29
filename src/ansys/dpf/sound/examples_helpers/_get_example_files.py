@@ -15,14 +15,25 @@ def get_absolute_path_for_flute_wav() -> str:
 
 
 def get_absolute_path_for_flute2_wav() -> str:
-    r"""Get the absolute path for the file flute.wav.
+    r"""Get the absolute path for the file flute2.wav.
 
     Returns
     -------
     str
-        Absolute path to flute.wav .
+        Absolute path to flute2.wav .
     """
     return _get_absolute_path("flute2.wav")
+
+
+def get_absolute_path_for_flute_psd_txt() -> str:
+    r"""Get the absolute path for the file flute_psd.txt.
+
+    Returns
+    -------
+    str
+        Absolute path to flute_psd.txt .
+    """
+    return _get_absolute_path("flute_psd.txt")
 
 
 def _get_absolute_path(filename: str) -> str:
