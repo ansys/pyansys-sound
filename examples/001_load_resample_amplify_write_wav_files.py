@@ -45,8 +45,8 @@ fc_signal_original = wav_loader.get_output()
 t1 = fc_signal_original[0].time_freq_support.time_frequencies.data
 sf1 = 1.0 / (t1[1] - t1[0])
 print(
-    f"The sampling frequency of the original signal is {sf1:.1f} Hz"
-)  # ":.1f" is to only get 1 decimal
+    f"The sampling frequency of the original signal is {sf1:.0f} Hz"
+)  # ":.0f" is to avoid decimals and only get an integer
 
 # %%
 # Resample the signal
