@@ -23,6 +23,9 @@ EXP_FREQ_0 = 56.417020507724274
 EXP_FREQ_9 = 498.9473684210526
 EXP_FREQ_40 = 6875.975124656844
 
+TOTAL_ROUGHNESS_ID = "total"
+SPECIFIC_ROUGHNESS_ID = "specific"
+
 
 @pytest.mark.dependency()
 def test_roughness_instantiation(dpf_sound_test_server):
@@ -192,6 +195,69 @@ def test_roughness_get_specific_roughness(dpf_sound_test_server):
     assert specific_roughness[15] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_2_15)
     assert specific_roughness[17] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_2_17)
     assert specific_roughness[40] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_2_40)
+
+
+def test_roughness__get_ouptut_parameter(dpf_sound_test_server):
+    roughness_computer = Roughness()
+    # Get a signal
+    wav_loader = LoadWav(pytest.data_path_rough_noise_in_container)
+    wav_loader.process()
+    fc = wav_loader.get_output()
+
+    # Set signal
+    roughness_computer.signal = fc
+
+    # Roughness not calculated yet -> warning
+    with pytest.warns(
+        PyDpfSoundWarning,
+        match="Output has not been processed yet, use Roughness.process().",
+    ):
+        output = roughness_computer._get_output_parameter(0, TOTAL_ROUGHNESS_ID)
+    assert output == None
+
+    # Compute
+    roughness_computer.process()
+
+    # Invalid parameter identifier -> error
+    with pytest.raises(PyDpfSoundException, match="Invalid identifier of output parameter."):
+        param = roughness_computer._get_output_parameter(0, "thisIsNotValid")
+
+    # Invalid channel index -> error
+    with pytest.raises(
+        PyDpfSoundException, match="Specified channel index \\(1\\) does not exist."
+    ):
+        param = roughness_computer._get_output_parameter(1, TOTAL_ROUGHNESS_ID)
+
+    param = roughness_computer._get_output_parameter(0, TOTAL_ROUGHNESS_ID)
+    assert type(param) == np.float64
+    assert param == pytest.approx(EXP_ROUGHNESS_1)
+
+    param = roughness_computer._get_output_parameter(0, SPECIFIC_ROUGHNESS_ID)
+    assert type(param) == np.ndarray
+    assert len(param) == 47
+    assert param[0] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_1_0)
+    assert param[9] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_1_9)
+    assert param[40] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_1_40)
+
+    # Add a second signal in the fields container
+    # Note: No need to re-assign the signal property, as fc is simply an alias for it
+    wav_loader = LoadWav(pytest.data_path_rough_tone_in_container)
+    wav_loader.process()
+    fc.add_field({"channel_number": 1}, wav_loader.get_output()[0])
+
+    # Compute again
+    roughness_computer.process()
+
+    param = roughness_computer._get_output_parameter(1, TOTAL_ROUGHNESS_ID)
+    assert type(param) == np.float64
+    assert param == pytest.approx(EXP_ROUGHNESS_2)
+
+    param = roughness_computer._get_output_parameter(1, SPECIFIC_ROUGHNESS_ID)
+    assert type(param) == np.ndarray
+    assert len(param) == 47
+    assert param[15] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_2_15)
+    assert param[17] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_2_17)
+    assert param[40] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_2_40)
 
 
 @pytest.mark.dependency(depends=["test_roughness_process"])
