@@ -98,7 +98,7 @@ plt.show()
 
 # %%
 # Write the signals as wav files
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Write the modified signal in memory using WriteWav class
 output_path = path_flute_wav[:-4] + "_modified.wav"  # "[-4]" is to remove the ".wav"
 wav_writer = WriteWav(path_to_write=output_path, signal=fc_signal_modified, bit_depth="int16")
