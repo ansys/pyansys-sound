@@ -285,18 +285,12 @@ class Xtract(XtractParent):
         Tuple[numpy.array, numpy.array, numpy.array, numpy.array]
             Noise signal, tonal signal, transient signal, and remainder signal, as numpy arrays.
         """
-        if (
-            (self.__output_noise_signal is None)
-            or (self.__output_tonal_signal is None)
-            or (self.__output_transient_signal is None)
-            or (self.__output_remainder_signal is None)
-        ):
-            warnings.warn(PyDpfSoundWarning("No output available."))
-
-        l_output_noise_signal = self.get_output()[0]
-        l_output_tonal_signal = self.get_output()[1]
-        l_output_transient_signal = self.get_output()[2]
-        l_output_remainder_signal = self.get_output()[3]
+        (
+            l_output_noise_signal,
+            l_output_tonal_signal,
+            l_output_transient_signal,
+            l_output_remainder_signal,
+        ) = self.get_output()
 
         if type(l_output_noise_signal) == Field:
             return (

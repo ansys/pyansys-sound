@@ -154,11 +154,7 @@ class XtractDenoiser(XtractParent):
         Tuple[npt.ArrayLike, npt.ArrayLike]
             Denoised signal and noise signal as numpy arrays.
         """
-        if self.__output_noise_signals is None or self.__output_denoised_signals is None:
-            warnings.warn(PyDpfSoundWarning("Output has not been processed yet."))
-
-        l_output_denoised_signals = self.get_output()[0]
-        l_output_noise_signals = self.get_output()[1]
+        l_output_denoised_signals, l_output_noise_signals = self.get_output()
 
         if type(l_output_denoised_signals) == Field:
             return np.array(l_output_denoised_signals.data), np.array(l_output_noise_signals.data)

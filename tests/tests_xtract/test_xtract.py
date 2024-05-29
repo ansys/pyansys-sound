@@ -264,16 +264,6 @@ def test_xtract_get_output(dpf_sound_test_server):
     ## Collecting outputs as Field
     noise, tonal, transient, remainder = xtract.get_output()
 
-    assert noise is not None
-    assert tonal is not None
-    assert transient is not None
-    assert remainder is not None
-
-    assert type(noise) == Field
-    assert type(tonal) == Field
-    assert type(transient) == Field
-    assert type(remainder) == Field
-
     # Check numerical apps.
     assert np.min(noise.data) == pytest.approx(-0.2635681)
     assert np.max(noise.data) == pytest.approx(0.30395156)

@@ -15,7 +15,7 @@ from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 class XtractTransient(XtractParent):
     """Xtract transient class.
 
-    Extract the ransient components of a signal using the XTRACT algorithm.
+    Extract the transient components of a signal using the XTRACT algorithm.
     """
 
     def __init__(
@@ -178,11 +178,7 @@ class XtractTransient(XtractParent):
         Tuple[np.ArrayLike, np.ArrayLike]
             Transient signal(s) and non-transient signal(s) as numpy arrays.
         """
-        if self.__output_transient_signals is None or self.__output_non_transient_signals is None:
-            warnings.warn(PyDpfSoundWarning("Output has not been processed yet."))
-
-        l_output_transient_signals = self.get_output()[0]
-        l_output_non_transient_signals = self.get_output()[1]
+        l_output_transient_signals, l_output_non_transient_signals = self.get_output()
 
         if type(l_output_transient_signals) == Field:
             return np.array(l_output_transient_signals.data), np.array(
