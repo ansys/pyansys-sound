@@ -153,6 +153,16 @@ jobs:
     runs-on: [self-hosted, Windows, pydpfsound]
     needs: doc-style
     steps:
+
+      - uses: actions/checkout@v4
+
+      - name: "Login to GitHub Container Registry"
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: "Download DPF-Sound service container"
         run: docker pull $env:ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG
 
