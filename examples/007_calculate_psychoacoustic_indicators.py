@@ -24,9 +24,12 @@ from ansys.dpf.sound.examples_helpers import (
     get_absolute_path_for_flute2_wav,
     get_absolute_path_for_flute_wav,
 )
-from ansys.dpf.sound.psychoacoustics.loudness_iso532_1_stationary import (
-    Loudness_ISO532_1_Stationary,
+from ansys.dpf.sound.psychoacoustics.fluctuation_strength import FluctuationStrength
+from ansys.dpf.sound.psychoacoustics.loudness_iso_532_1_stationary import (
+    LoudnessISO532_1_Stationary,
 )
+from ansys.dpf.sound.psychoacoustics.roughness import Roughness
+from ansys.dpf.sound.psychoacoustics.sharpness import Sharpness
 from ansys.dpf.sound.server_helpers import connect_to_or_start_server
 from ansys.dpf.sound.signal_utilities import LoadWav
 
@@ -34,22 +37,17 @@ from ansys.dpf.sound.signal_utilities import LoadWav
 server = connect_to_or_start_server()
 
 # %%
+# Calculate ISO 532-1 loudness for a stationary sound
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load a wav signal using LoadWav class, it will be returned as a
 # `DPF Field Container <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_ # noqa: E501
-
-# Return the input data of the example file.
 path_flute_wav = get_absolute_path_for_flute_wav()
-
-# Load the wav file.
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
 fc_signal = wav_loader.get_output()
 
-# %%
-# Calculate ISO 532-1 loudness for a stationary sound
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create a Loudness object, set its signal, and compute loudness.
-loudness = Loudness_ISO532_1_Stationary(signal=fc_signal)
+loudness = LoudnessISO532_1_Stationary(signal=fc_signal)
 loudness.process()
 
 # %%
@@ -82,7 +80,7 @@ fc_two_signals.add_field({"channel_number": 1}, wav_loader.get_output()[0])
 
 # %%
 # Calculate loudness for both signals at once.
-loudness = Loudness_ISO532_1_Stationary(signal=fc_two_signals)
+loudness = LoudnessISO532_1_Stationary(signal=fc_two_signals)
 loudness.process()
 
 # %%
@@ -91,7 +89,7 @@ loudness_sone2 = loudness.get_loudness_sone(1)
 loudness_level_phon2 = loudness.get_loudness_level_phon(1)
 file_name2 = os.path.basename(path_flute2_wav)
 print(
-    f"\nThe loudness of sound file {file_name} "
+    f"The loudness of sound file {file_name} "
     f"is{loudness_sone: .1f} sones "
     f"or{loudness_level_phon: .1f} phons,\n"  # noqa: E231
     f"whereas the loudness of sound file {file_name2} "
@@ -100,8 +98,47 @@ print(
 )
 
 # %%
-# Plot specific loudness for both signals into a single figure.
+# Plot specific loudness for both signals into a single figure. Note how the first sound has a
+# higher specific loudness than the second.
 loudness.plot()
+
+# %%
+# Calculate sharpness, roughness, and fluctuation strength
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Now let's calculate sharpness, roughness, and fluctuation strength for these two sounds.
+
+# %%
+# Calculate sharpness.
+sharpness = Sharpness(signal=fc_two_signals)
+sharpness.process()
+sharpness_values = (sharpness.get_sharpness(0), sharpness.get_sharpness(1))
+
+# %%
+# Calculate roughness.
+roughness = Roughness(signal=fc_two_signals)
+roughness.process()
+roughness_values = (roughness.get_roughness(0), roughness.get_roughness(1))
+
+# %%
+# Calculate fluctuation strength.
+fluctuation_strength = FluctuationStrength(signal=fc_two_signals)
+fluctuation_strength.process()
+fluctuation_strength_values = (
+    fluctuation_strength.get_fluctuation_strength(0),
+    fluctuation_strength.get_fluctuation_strength(1),
+)
+
+# Print out the results.
+print(
+    f"The sharpness of sound file {file_name} "
+    f"is{sharpness_values[0]: .2f} acum, "
+    f"its roughness is{roughness_values[0]: .2f} asper, "
+    f"and its fluctuation strength is{fluctuation_strength_values[0]: .2f} vacil.\n"
+    f"For sound file {file_name2}, these indicators' values are, respectively, "
+    f"{sharpness_values[1]: .2f} acum, "
+    f"{roughness_values[1]: .2f} asper, "
+    f"and{fluctuation_strength_values[1]: .2f} vacil.\n"
+)
 
 # %%
 # End of script.
