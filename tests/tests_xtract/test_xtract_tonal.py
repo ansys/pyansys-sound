@@ -116,14 +116,14 @@ def test_xtract_tonal_get_output_warns(dpf_sound_test_server):
     xtract_tonal = XtractTonal()
     with pytest.warns(PyDpfSoundWarning) as record:
         xtract_tonal.get_output()
-    assert "Output tonal or non tonal signals are not set" in record[0].message.args[0]
+    assert "Output has not been processed yet." in record[0].message.args[0]
 
 
 def test_xtract_tonal_get_output_as_nparray_warns(dpf_sound_test_server):
     xtract_tonal = XtractTonal()
     with pytest.warns(PyDpfSoundWarning) as record:
         xtract_tonal.get_output_as_nparray()
-    assert "Output tonal or non tonal signals are not set" in record[0].message.args[0]
+    assert "Output has not been processed yet." in record[0].message.args[0]
 
 
 def test_xtract_tonal_get_output(dpf_sound_test_server):

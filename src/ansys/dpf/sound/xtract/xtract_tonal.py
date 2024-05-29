@@ -153,7 +153,7 @@ class XtractTonal(XtractParent):
             Tonal and non tonal signals, as fields or fields containers.
         """
         if self.__output_tonal_signals == None or self.__output_non_tonal_signals == None:
-            warnings.warn(PyDpfSoundWarning("Output tonal or non tonal signals are not set"))
+            warnings.warn(PyDpfSoundWarning("Output has not been processed yet."))
 
         return self.__output_tonal_signals, self.__output_non_tonal_signals
 
@@ -166,7 +166,7 @@ class XtractTonal(XtractParent):
             Tonal and non tonal signals as numpy arrays.
         """
         if self.__output_tonal_signals == None or self.__output_non_tonal_signals == None:
-            warnings.warn(PyDpfSoundWarning("Output tonal or non tonal signals are not set"))
+            warnings.warn(PyDpfSoundWarning("Output has not been processed yet."))
 
         l_output_tonal_signals = self.get_output()[0]
         l_output_non_tonal_signals = self.get_output()[1]

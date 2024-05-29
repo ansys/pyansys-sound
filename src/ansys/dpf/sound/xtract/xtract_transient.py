@@ -166,11 +166,7 @@ class XtractTransient(XtractParent):
             as a field or fields_container (depending on the input).
         """
         if self.__output_transient_signals is None or self.__output_non_transient_signals is None:
-            warnings.warn(
-                PyDpfSoundWarning(
-                    "Output transient signals or output non transient signals are not set."
-                )
-            )
+            warnings.warn(PyDpfSoundWarning("Output has not been processed yet."))
 
         return self.__output_transient_signals, self.__output_non_transient_signals
 
@@ -183,11 +179,7 @@ class XtractTransient(XtractParent):
             Transient signal(s) and non-transient signal(s) as numpy arrays.
         """
         if self.__output_transient_signals is None or self.__output_non_transient_signals is None:
-            warnings.warn(
-                PyDpfSoundWarning(
-                    "Output transient signals or output non transient signals are not set."
-                )
-            )
+            warnings.warn(PyDpfSoundWarning("Output has not been processed yet."))
 
         l_output_transient_signals = self.get_output()[0]
         l_output_non_transient_signals = self.get_output()[1]
