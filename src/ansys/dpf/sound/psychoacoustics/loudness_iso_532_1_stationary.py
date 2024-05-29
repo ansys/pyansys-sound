@@ -14,7 +14,7 @@ LOUDNESS_LEVEL_PHON_ID = "phon"
 SPECIFIC_LOUDNESS_ID = "specific"
 
 
-class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
+class LoudnessISO532_1_Stationary(PsychoacousticsParent):
     """ISO 532-1 loudness for stationary sounds.
 
     This class computes the loudness of a signal following standard ISO 532-1 for stationary
@@ -22,7 +22,7 @@ class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Instantiate a Loudness_ISO532_1_Stationary object.
+        """Create a LoudnessISO532_1_Stationary object.
 
         Parameters
         ----------
@@ -36,7 +36,7 @@ class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
     @property
     def signal(self):
         """Signal property."""
-        return self.__signal  # pragma: no cover*
+        return self.__signal  # pragma: no cover
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):
@@ -68,7 +68,7 @@ class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
         """
         if self.__signal == None:
             raise PyDpfSoundException(
-                "No signal for loudness computation. Use Loudness_ISO532_1_Stationary.signal."
+                "No signal for loudness computation. Use LoudnessISO532_1_Stationary.signal."
             )
 
         self.__operator.connect(0, self.signal)
@@ -103,7 +103,7 @@ class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
         if self._output == None:
             warnings.warn(
                 PyDpfSoundWarning(
-                    "Output has not been processed yet, use Loudness_ISO532_1_Stationary.process()."
+                    "Output has not been processed yet, use LoudnessISO532_1_Stationary.process()."
                 )
             )
 
@@ -114,7 +114,7 @@ class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
 
         Returns
         -------
-        tuple[npt.ArrayLike]
+        tuple[numpy.ndarray]
             First element is the loudness in sone.
             Second element is the loudness level in phon.
             Third element is the specific loudness in sone/Bark.
@@ -125,7 +125,7 @@ class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
             return None
 
         if type(output[0]) == Field:
-            return (output[0].data, output[1].data, output[2].data)
+            return (np.array(output[0].data), np.array(output[1].data), np.array(output[2].data))
 
         return (
             self.convert_fields_container_to_np_array(output[0]),
@@ -133,7 +133,7 @@ class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
             self.convert_fields_container_to_np_array(output[2]),
         )
 
-    def get_loudness_sone(self, channel_index: int = 0) -> float:
+    def get_loudness_sone(self, channel_index: int = 0) -> np.float64:
         """Return loudness in sone.
 
            Returns the loudness in sone as a float, for the specified channel index.
@@ -145,12 +145,12 @@ class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
 
         Returns
         -------
-        float
+        numpy.float64
             Loudness value in sone.
         """
         return self._get_output_parameter(channel_index, LOUDNESS_SONE_ID)
 
-    def get_loudness_level_phon(self, channel_index: int = 0) -> float:
+    def get_loudness_level_phon(self, channel_index: int = 0) -> np.float64:
         """Return loudness level in phon.
 
         Returns the loudness level in phon as a float, for the specified channel index.
@@ -162,7 +162,7 @@ class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
 
         Returns
         -------
-        float
+        numpy.float64
             Loudness level value in phon.
         """
         return self._get_output_parameter(channel_index, LOUDNESS_LEVEL_PHON_ID)
@@ -179,7 +179,7 @@ class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
 
         Returns
         -------
-        npt.ArrayLike
+        numpy.ndarray
             Specific loudness array in sone/Bark.
         """
         return self._get_output_parameter(channel_index, SPECIFIC_LOUDNESS_ID)
@@ -191,7 +191,7 @@ class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
 
         Returns
         -------
-        npt.ArrayLike
+        numpy.ndarray
             Array of Bark band idexes.
         """
         output = self.get_output()
@@ -217,17 +217,10 @@ class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
 
         Returns
         -------
-        npt.ArrayLike
+        numpy.ndarray
             Array of Bark band frequencies.
         """
-        bark_band_indexes = self.get_bark_band_indexes()
-
-        for ibark in range(len(bark_band_indexes)):
-            if bark_band_indexes[ibark] < 2:
-                bark_band_indexes[ibark] = (bark_band_indexes[ibark] - 0.3) / 0.85
-            elif bark_band_indexes[ibark] > 20.1:
-                bark_band_indexes[ibark] = (bark_band_indexes[ibark] + 4.422) / 1.22
-        return 1920 * (bark_band_indexes + 0.53) / (26.28 - bark_band_indexes)
+        return self._convert_bark_to_hertz(self.get_bark_band_indexes())
 
     def plot(self):
         """Plot specific loudness.
@@ -237,7 +230,7 @@ class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
         """
         if self._output == None:
             raise PyDpfSoundException(
-                "Output has not been processed yet, use Loudness_ISO532_1_Stationary.process()."
+                "Output has not been processed yet, use LoudnessISO532_1_Stationary.process()."
             )
 
         bark_band_indexes = self.get_bark_band_indexes()
@@ -254,7 +247,7 @@ class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
                 for ichannel in range(num_channels):
                     plt.plot(
                         bark_band_indexes,
-                        specific_loudness_as_nparray[ichannel, :],
+                        specific_loudness_as_nparray[ichannel],
                         label="Channel {}".format(ichannel),
                     )
 
@@ -266,7 +259,9 @@ class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
             plt.legend()
         plt.show()
 
-    def _get_output_parameter(self, channel_index: int, output_id: str) -> float | npt.ArrayLike:
+    def _get_output_parameter(
+        self, channel_index: int, output_id: str
+    ) -> np.float64 | npt.ArrayLike:
         """Return individual loudness result.
 
         Returns the loudness or loudness level in phon as a float, or the specific loudness as a
@@ -284,7 +279,7 @@ class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
 
         Returns
         -------
-        float | numpy array
+        numpy.float64 | numpy.ndarray
             Loudness or loudness level value (float, in sone or phon, respectively), or specific
             loudness (numpy array, in sone/Bark).
         """
@@ -292,11 +287,8 @@ class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
         if loudness_data == None:
             return None
 
-        # Check if input signal was mono or multichannel.
-        if type(loudness_data[0][0]) == np.float64:
-            channel_max = 0
-        else:
-            channel_max = len(loudness_data[0]) - 1
+        # Get last channel index.
+        channel_max = len(loudness_data[0]) - 1
 
         # Check that specified channel index exists.
         if channel_index > channel_max:
@@ -306,14 +298,16 @@ class Loudness_ISO532_1_Stationary(PsychoacousticsParent):
         # channel.
         if output_id == SPECIFIC_LOUDNESS_ID:
             if channel_max > 0:
-                return loudness_data[2][channel_index, :]
+                return loudness_data[2][channel_index]
             else:
                 return loudness_data[2]
         else:
             if output_id == LOUDNESS_SONE_ID:
                 unit_index = 0
-            else:
+            elif output_id == LOUDNESS_LEVEL_PHON_ID:
                 unit_index = 1
+            else:
+                raise PyDpfSoundException("Invalid identifier of output parameter.")
 
             if channel_max > 0:
                 return loudness_data[unit_index][channel_index][0]
