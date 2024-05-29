@@ -4,25 +4,25 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.psychoacoustics import Loudness_ISO532_1_Stationary
+from ansys.dpf.sound.psychoacoustics import LoudnessISO532_1_Stationary
 from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 from ansys.dpf.sound.signal_utilities import LoadWav
 
 
 @pytest.mark.dependency()
-def test_loudness_iso532_1_stationary_instantiation(dpf_sound_test_server):
-    loudness_computer = Loudness_ISO532_1_Stationary()
+def test_loudness_iso_532_1_stationary_instantiation(dpf_sound_test_server):
+    loudness_computer = LoudnessISO532_1_Stationary()
     assert loudness_computer != None
 
 
-@pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_instantiation"])
-def test_loudness_iso532_1_stationary_process(dpf_sound_test_server):
-    loudness_computer = Loudness_ISO532_1_Stationary()
+@pytest.mark.dependency(depends=["test_loudness_iso_532_1_stationary_instantiation"])
+def test_loudness_iso_532_1_stationary_process(dpf_sound_test_server):
+    loudness_computer = LoudnessISO532_1_Stationary()
 
     # No signal -> error
     with pytest.raises(
         PyDpfSoundException,
-        match="No signal for loudness computation. Use Loudness_ISO532_1_Stationary.signal.",
+        match="No signal for loudness computation. Use LoudnessISO532_1_Stationary.signal.",
     ):
         loudness_computer.process()
 
@@ -42,9 +42,9 @@ def test_loudness_iso532_1_stationary_process(dpf_sound_test_server):
     loudness_computer.process()
 
 
-@pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_process"])
-def test_loudness_iso532_1_stationary_get_output(dpf_sound_test_server):
-    loudness_computer = Loudness_ISO532_1_Stationary()
+@pytest.mark.dependency(depends=["test_loudness_iso_532_1_stationary_process"])
+def test_loudness_iso_532_1_stationary_get_output(dpf_sound_test_server):
+    loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -56,7 +56,7 @@ def test_loudness_iso532_1_stationary_get_output(dpf_sound_test_server):
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyDpfSoundWarning,
-        match="Output has not been processed yet, use Loudness_ISO532_1_Stationary.process().",
+        match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
     ):
         output = loudness_computer.get_output()
     assert output == None
@@ -66,13 +66,16 @@ def test_loudness_iso532_1_stationary_get_output(dpf_sound_test_server):
 
     (loudness_sone, loudness_level_phon, specific_loudness) = loudness_computer.get_output()
     assert loudness_sone != None
+    assert type(loudness_sone) == FieldsContainer
     assert loudness_level_phon != None
+    assert type(loudness_level_phon) == FieldsContainer
     assert specific_loudness != None
+    assert type(specific_loudness) == FieldsContainer
 
 
-@pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_process"])
-def test_loudness_iso532_1_stationary_get_loudness_sone(dpf_sound_test_server):
-    loudness_computer = Loudness_ISO532_1_Stationary()
+@pytest.mark.dependency(depends=["test_loudness_iso_532_1_stationary_process"])
+def test_loudness_iso_532_1_stationary_get_loudness_sone(dpf_sound_test_server):
+    loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -84,7 +87,7 @@ def test_loudness_iso532_1_stationary_get_loudness_sone(dpf_sound_test_server):
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyDpfSoundWarning,
-        match="Output has not been processed yet, use Loudness_ISO532_1_Stationary.process().",
+        match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
     ):
         output = loudness_computer.get_loudness_sone()
     assert output == None
@@ -99,7 +102,8 @@ def test_loudness_iso532_1_stationary_get_loudness_sone(dpf_sound_test_server):
         loudness_sone = loudness_computer.get_loudness_sone(1)
 
     loudness_sone = loudness_computer.get_loudness_sone(0)
-    assert loudness_sone == 39.58000183105469
+    assert type(loudness_sone) == np.float64
+    assert loudness_sone == pytest.approx(39.58000183105469)
 
     # Set signal as a fields container
     loudness_computer.signal = fc
@@ -107,7 +111,8 @@ def test_loudness_iso532_1_stationary_get_loudness_sone(dpf_sound_test_server):
     loudness_computer.process()
 
     loudness_sone = loudness_computer.get_loudness_sone(0)
-    assert loudness_sone == 39.58000183105469
+    assert type(loudness_sone) == np.float64
+    assert loudness_sone == pytest.approx(39.58000183105469)
 
     # Add a second signal in the fields container
     # Note: No need to re-assign the signal property, as fc is simply an alias for it
@@ -119,14 +124,16 @@ def test_loudness_iso532_1_stationary_get_loudness_sone(dpf_sound_test_server):
     loudness_computer.process()
 
     loudness_sone = loudness_computer.get_loudness_sone(0)
-    assert loudness_sone == 39.58000183105469
+    assert type(loudness_sone) == np.float64
+    assert loudness_sone == pytest.approx(39.58000183105469)
     loudness_sone = loudness_computer.get_loudness_sone(1)
-    assert loudness_sone == 16.18000030517578
+    assert type(loudness_sone) == np.float64
+    assert loudness_sone == pytest.approx(16.18000030517578)
 
 
-@pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_process"])
-def test_loudness_iso532_1_stationary_get_loudness_level_phon(dpf_sound_test_server):
-    loudness_computer = Loudness_ISO532_1_Stationary()
+@pytest.mark.dependency(depends=["test_loudness_iso_532_1_stationary_process"])
+def test_loudness_iso_532_1_stationary_get_loudness_level_phon(dpf_sound_test_server):
+    loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -138,7 +145,7 @@ def test_loudness_iso532_1_stationary_get_loudness_level_phon(dpf_sound_test_ser
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyDpfSoundWarning,
-        match="Output has not been processed yet, use Loudness_ISO532_1_Stationary.process().",
+        match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
     ):
         output = loudness_computer.get_loudness_level_phon()
     assert output == None
@@ -147,12 +154,13 @@ def test_loudness_iso532_1_stationary_get_loudness_level_phon(dpf_sound_test_ser
     loudness_computer.process()
 
     loudness_level_phon = loudness_computer.get_loudness_level_phon()
-    assert loudness_level_phon == 93.0669937133789
+    assert type(loudness_level_phon) == np.float64
+    assert loudness_level_phon == pytest.approx(93.0669937133789)
 
 
-@pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_process"])
-def test_loudness_iso532_1_stationary_get_specific_loudness(dpf_sound_test_server):
-    loudness_computer = Loudness_ISO532_1_Stationary()
+@pytest.mark.dependency(depends=["test_loudness_iso_532_1_stationary_process"])
+def test_loudness_iso_532_1_stationary_get_specific_loudness(dpf_sound_test_server):
+    loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -164,7 +172,7 @@ def test_loudness_iso532_1_stationary_get_specific_loudness(dpf_sound_test_serve
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyDpfSoundWarning,
-        match="Output has not been processed yet, use Loudness_ISO532_1_Stationary.process().",
+        match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
     ):
         output = loudness_computer.get_specific_loudness()
     assert output == None
@@ -173,10 +181,11 @@ def test_loudness_iso532_1_stationary_get_specific_loudness(dpf_sound_test_serve
     loudness_computer.process()
 
     specific_loudness = loudness_computer.get_specific_loudness()
+    assert type(specific_loudness) == np.ndarray
     assert len(specific_loudness) == 240
-    assert specific_loudness[0] == 0
-    assert specific_loudness[9] == 0.15664348006248474
-    assert specific_loudness[40] == 1.3235466480255127
+    assert specific_loudness[0] == pytest.approx(0.0)
+    assert specific_loudness[9] == pytest.approx(0.15664348006248474)
+    assert specific_loudness[40] == pytest.approx(1.3235466480255127)
 
     # Add a second signal in the fields container
     # Note: No need to re-assign the signal property, as fc is simply an alias for it
@@ -188,15 +197,16 @@ def test_loudness_iso532_1_stationary_get_specific_loudness(dpf_sound_test_serve
     loudness_computer.process()
 
     specific_loudness = loudness_computer.get_specific_loudness(1)
+    assert type(specific_loudness) == np.ndarray
     assert len(specific_loudness) == 240
-    assert specific_loudness[0] == 0
-    assert specific_loudness[9] == 0.008895192295312881
-    assert specific_loudness[40] == 0.4043666124343872
+    assert specific_loudness[0] == pytest.approx(0.0)
+    assert specific_loudness[9] == pytest.approx(0.008895192295312881)
+    assert specific_loudness[40] == pytest.approx(0.4043666124343872)
 
 
-@pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_process"])
-def test_loudness_iso532_1_stationary_get_bark_band_indexes(dpf_sound_test_server):
-    loudness_computer = Loudness_ISO532_1_Stationary()
+@pytest.mark.dependency(depends=["test_loudness_iso_532_1_stationary_process"])
+def test_loudness_iso_532_1_stationary_get_bark_band_indexes(dpf_sound_test_server):
+    loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -208,7 +218,7 @@ def test_loudness_iso532_1_stationary_get_bark_band_indexes(dpf_sound_test_serve
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyDpfSoundWarning,
-        match="Output has not been processed yet, use Loudness_ISO532_1_Stationary.process().",
+        match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
     ):
         output = loudness_computer.get_bark_band_indexes()
     assert output == None
@@ -217,10 +227,11 @@ def test_loudness_iso532_1_stationary_get_bark_band_indexes(dpf_sound_test_serve
     loudness_computer.process()
 
     bark_band_indexes = loudness_computer.get_bark_band_indexes()
+    assert type(bark_band_indexes) == np.ndarray
     assert len(bark_band_indexes) == 240
-    assert bark_band_indexes[0] == 0.10000000149011612
-    assert bark_band_indexes[9] == 1.0000000149011612
-    assert bark_band_indexes[40] == 4.100000061094761
+    assert bark_band_indexes[0] == pytest.approx(0.10000000149011612)
+    assert bark_band_indexes[9] == pytest.approx(1.0000000149011612)
+    assert bark_band_indexes[40] == pytest.approx(4.100000061094761)
 
     # Set signal as a field
     loudness_computer.signal = fc[0]
@@ -228,15 +239,16 @@ def test_loudness_iso532_1_stationary_get_bark_band_indexes(dpf_sound_test_serve
     loudness_computer.process()
 
     bark_band_indexes = loudness_computer.get_bark_band_indexes()
+    assert type(bark_band_indexes) == np.ndarray
     assert len(bark_band_indexes) == 240
-    assert bark_band_indexes[0] == 0.10000000149011612
-    assert bark_band_indexes[9] == 1.0000000149011612
-    assert bark_band_indexes[40] == 4.100000061094761
+    assert bark_band_indexes[0] == pytest.approx(0.10000000149011612)
+    assert bark_band_indexes[9] == pytest.approx(1.0000000149011612)
+    assert bark_band_indexes[40] == pytest.approx(4.100000061094761)
 
 
-@pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_get_bark_band_indexes"])
-def test_loudness_iso532_1_stationary_get_bark_band_frequencies(dpf_sound_test_server):
-    loudness_computer = Loudness_ISO532_1_Stationary()
+@pytest.mark.dependency(depends=["test_loudness_iso_532_1_stationary_get_bark_band_indexes"])
+def test_loudness_iso_532_1_stationary_get_bark_band_frequencies(dpf_sound_test_server):
+    loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -248,17 +260,18 @@ def test_loudness_iso532_1_stationary_get_bark_band_frequencies(dpf_sound_test_s
     loudness_computer.process()
 
     bark_band_frequencies = loudness_computer.get_bark_band_frequencies()
+    assert type(bark_band_frequencies) == np.ndarray
     assert len(bark_band_frequencies) == 240
-    assert bark_band_frequencies[0] == 21.33995930840456
-    assert bark_band_frequencies[9] == 102.08707043772274
-    assert bark_band_frequencies[40] == 400.79351405718324
+    assert bark_band_frequencies[0] == pytest.approx(21.33995930840456)
+    assert bark_band_frequencies[9] == pytest.approx(102.08707043772274)
+    assert bark_band_frequencies[40] == pytest.approx(400.79351405718324)
 
 
-@pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_process"])
-def test_loudness_iso532_1_stationary_get_output_as_nparray_from_fields_container(
+@pytest.mark.dependency(depends=["test_loudness_iso_532_1_stationary_process"])
+def test_loudness_iso_532_1_stationary_get_output_as_nparray_from_fields_container(
     dpf_sound_test_server,
 ):
-    loudness_computer = Loudness_ISO532_1_Stationary()
+    loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -270,7 +283,7 @@ def test_loudness_iso532_1_stationary_get_output_as_nparray_from_fields_containe
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyDpfSoundWarning,
-        match="Output has not been processed yet, use Loudness_ISO532_1_Stationary.process().",
+        match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
     ):
         output = loudness_computer.get_output_as_nparray()
     assert output == None
@@ -283,19 +296,22 @@ def test_loudness_iso532_1_stationary_get_output_as_nparray_from_fields_containe
         loudness_level_phon,
         specific_loudness,
     ) = loudness_computer.get_output_as_nparray()
+    assert type(loudness_sone) == np.ndarray
     assert len(loudness_sone) == 1
-    assert loudness_sone[0] == 39.58000183105469
+    assert loudness_sone[0] == pytest.approx(39.58000183105469)
+    assert type(loudness_level_phon) == np.ndarray
     assert len(loudness_level_phon) == 1
-    assert loudness_level_phon[0] == 93.0669937133789
+    assert loudness_level_phon[0] == pytest.approx(93.0669937133789)
+    assert type(specific_loudness) == np.ndarray
     assert len(specific_loudness) == 240
-    assert specific_loudness[0] == 0
-    assert specific_loudness[9] == 0.15664348006248474
-    assert specific_loudness[40] == 1.3235466480255127
+    assert specific_loudness[0] == pytest.approx(0.0)
+    assert specific_loudness[9] == pytest.approx(0.15664348006248474)
+    assert specific_loudness[40] == pytest.approx(1.3235466480255127)
 
 
-@pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_process"])
-def test_loudness_iso532_1_stationary_get_output_as_nparray_from_field(dpf_sound_test_server):
-    loudness_computer = Loudness_ISO532_1_Stationary()
+@pytest.mark.dependency(depends=["test_loudness_iso_532_1_stationary_process"])
+def test_loudness_iso_532_1_stationary_get_output_as_nparray_from_field(dpf_sound_test_server):
+    loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -311,20 +327,23 @@ def test_loudness_iso532_1_stationary_get_output_as_nparray_from_field(dpf_sound
         loudness_level_phon,
         specific_loudness,
     ) = loudness_computer.get_output_as_nparray()
+    assert type(loudness_sone) == np.ndarray
     assert len(loudness_sone) == 1
-    assert loudness_sone[0] == 39.58000183105469
+    assert loudness_sone[0] == pytest.approx(39.58000183105469)
+    assert type(loudness_level_phon) == np.ndarray
     assert len(loudness_level_phon) == 1
-    assert loudness_level_phon[0] == 93.0669937133789
+    assert loudness_level_phon[0] == pytest.approx(93.0669937133789)
+    assert type(specific_loudness) == np.ndarray
     assert len(specific_loudness) == 240
-    assert specific_loudness[0] == 0
-    assert specific_loudness[9] == 0.15664348006248474
-    assert specific_loudness[40] == 1.3235466480255127
+    assert specific_loudness[0] == pytest.approx(0.0)
+    assert specific_loudness[9] == pytest.approx(0.15664348006248474)
+    assert specific_loudness[40] == pytest.approx(1.3235466480255127)
 
 
 @patch("matplotlib.pyplot.show")
-@pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_process"])
-def test_loudness_iso532_1_stationary_plot_from_fields_container(mock_show, dpf_sound_test_server):
-    loudness_computer = Loudness_ISO532_1_Stationary()
+@pytest.mark.dependency(depends=["test_loudness_iso_532_1_stationary_process"])
+def test_loudness_iso_532_1_stationary_plot_from_fields_container(mock_show, dpf_sound_test_server):
+    loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -336,7 +355,7 @@ def test_loudness_iso532_1_stationary_plot_from_fields_container(mock_show, dpf_
     # Loudness not computed yet -> error
     with pytest.raises(
         PyDpfSoundException,
-        match="Output has not been processed yet, use Loudness_ISO532_1_Stationary.process().",
+        match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
     ):
         loudness_computer.plot()
 
@@ -360,9 +379,9 @@ def test_loudness_iso532_1_stationary_plot_from_fields_container(mock_show, dpf_
 
 
 @patch("matplotlib.pyplot.show")
-@pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_process"])
-def test_loudness_iso532_1_stationary_plot_from_field(mock_show, dpf_sound_test_server):
-    loudness_computer = Loudness_ISO532_1_Stationary()
+@pytest.mark.dependency(depends=["test_loudness_iso_532_1_stationary_process"])
+def test_loudness_iso_532_1_stationary_plot_from_field(mock_show, dpf_sound_test_server):
+    loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -377,9 +396,9 @@ def test_loudness_iso532_1_stationary_plot_from_field(mock_show, dpf_sound_test_
     loudness_computer.plot()
 
 
-@pytest.mark.dependency(depends=["test_loudness_iso532_1_stationary_instantiation"])
-def test_loudness_iso532_1_stationary_set_get_signal(dpf_sound_test_server):
-    loudness_computer = Loudness_ISO532_1_Stationary()
+@pytest.mark.dependency(depends=["test_loudness_iso_532_1_stationary_instantiation"])
+def test_loudness_iso_532_1_stationary_set_get_signal(dpf_sound_test_server):
+    loudness_computer = LoudnessISO532_1_Stationary()
     fc = FieldsContainer()
     fc.labels = ["channel"]
     f = Field()
