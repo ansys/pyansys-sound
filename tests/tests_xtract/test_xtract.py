@@ -436,16 +436,6 @@ def test_xtract_get_output_fc(dpf_sound_test_server):
     assert len(fc_transient) == 2
     assert len(fc_remainder) == 2
 
-    assert fc_noise[0].data is not None
-    assert fc_tonal[0].data is not None
-    assert fc_transient[0].data is not None
-    assert fc_remainder[0].data is not None
-
-    assert fc_noise[1].data is not None
-    assert fc_tonal[1].data is not None
-    assert fc_transient[1].data is not None
-    assert fc_remainder[1].data is not None
-
     # Check numerical apps.
     assert np.min(fc_noise[0].data) == pytest.approx(-0.2635681)
     assert np.min(fc_tonal[0].data) == pytest.approx(-0.67513376)
