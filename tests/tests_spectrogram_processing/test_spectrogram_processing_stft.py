@@ -9,13 +9,11 @@ from ansys.dpf.sound.signal_utilities import LoadWav
 from ansys.dpf.sound.spectrogram_processing import Stft
 
 
-@pytest.mark.dependency()
 def test_stft_instantiation(dpf_sound_test_server):
     stft = Stft()
     assert stft != None
 
 
-@pytest.mark.dependency(depends=["test_stft_instantiation"])
 def test_stft_process(dpf_sound_test_server):
     stft = Stft()
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -37,7 +35,6 @@ def test_stft_process(dpf_sound_test_server):
         assert False
 
 
-@pytest.mark.dependency(depends=["test_stft_process"])
 def test_stft_get_output(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -59,7 +56,6 @@ def test_stft_get_output(dpf_sound_test_server):
     assert fc_out[300].data[0] == -0.019828863441944122
 
 
-@pytest.mark.dependency(depends=["test_stft_process"])
 def test_stft_get_output_as_np_array(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -77,7 +73,6 @@ def test_stft_get_output_as_np_array(dpf_sound_test_server):
     assert arr[300, 50] == (-0.03049434721469879 - 0.49174121022224426j)
 
 
-@pytest.mark.dependency(depends=["test_stft_instantiation"])
 def test_stft_set_get_signal(dpf_sound_test_server):
     stft = Stft()
     fc = FieldsContainer()
@@ -106,7 +101,6 @@ def test_stft_set_get_signal(dpf_sound_test_server):
     assert str(excinfo.value) == "Input as FieldsContainer can only have one Field (mono signal)."
 
 
-@pytest.mark.dependency(depends=["test_stft_instantiation"])
 def test_stft_set_get_fft_size(dpf_sound_test_server):
     stft = Stft()
 
@@ -119,7 +113,6 @@ def test_stft_set_get_fft_size(dpf_sound_test_server):
     assert stft.fft_size == 1234.0
 
 
-@pytest.mark.dependency(depends=["test_stft_instantiation"])
 def test_stft_set_get_window_overlap(dpf_sound_test_server):
     stft = Stft()
 
@@ -132,7 +125,6 @@ def test_stft_set_get_window_overlap(dpf_sound_test_server):
     assert stft.window_overlap == 0.5
 
 
-@pytest.mark.dependency(depends=["test_stft_instantiation"])
 def test_stft_set_get_window_type(dpf_sound_test_server):
     stft = Stft()
 
@@ -150,7 +142,6 @@ def test_stft_set_get_window_type(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-@pytest.mark.dependency(depends=["test_stft_process"])
 def test_stft_plot(mock_show, dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()

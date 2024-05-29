@@ -6,13 +6,11 @@ from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 from ansys.dpf.sound.signal_utilities import LoadWav, SumSignals
 
 
-@pytest.mark.dependency()
 def test_sum_signals_instantiation(dpf_sound_test_server):
     sum_gain = SumSignals()
     assert sum_gain != None
 
 
-@pytest.mark.dependency(depends=["test_sum_signals_instantiation"])
 def test_sum_signals_process(dpf_sound_test_server):
     sum_gain = SumSignals()
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
@@ -30,7 +28,6 @@ def test_sum_signals_process(dpf_sound_test_server):
     sum_gain.process()
 
 
-@pytest.mark.dependency(depends=["test_sum_signals_process"])
 def test_sum_signals_get_output(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
     wav_loader.process()
@@ -52,7 +49,6 @@ def test_sum_signals_get_output(dpf_sound_test_server):
     assert f_out.data[60000] == -0.13690185546875
 
 
-@pytest.mark.dependency(depends=["test_sum_signals_process"])
 def test_sum_signals_get_output_as_np_array(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
     wav_loader.process()
@@ -74,7 +70,6 @@ def test_sum_signals_get_output_as_np_array(dpf_sound_test_server):
     assert out[60000] == -0.13690185546875
 
 
-@pytest.mark.dependency(depends=["test_sum_signals_instantiation"])
 def test_sum_signals_set_get_signals(dpf_sound_test_server):
     sum_gain = SumSignals()
 

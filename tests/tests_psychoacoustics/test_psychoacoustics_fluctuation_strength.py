@@ -27,13 +27,11 @@ TOTAL_FS_ID = "total"
 SPECIFIC_FS_ID = "specific"
 
 
-@pytest.mark.dependency()
 def test_fs_instantiation(dpf_sound_test_server):
     fs_computer = FluctuationStrength()
     assert fs_computer != None
 
 
-@pytest.mark.dependency(depends=["test_fs_instantiation"])
 def test_fs_process(dpf_sound_test_server):
     fs_computer = FluctuationStrength()
 
@@ -60,7 +58,6 @@ def test_fs_process(dpf_sound_test_server):
     fs_computer.process()
 
 
-@pytest.mark.dependency(depends=["test_fs_process"])
 def test_fs_get_output(dpf_sound_test_server):
     fs_computer = FluctuationStrength()
     # Get a signal
@@ -89,7 +86,6 @@ def test_fs_get_output(dpf_sound_test_server):
     assert type(specific_fs) == FieldsContainer
 
 
-@pytest.mark.dependency(depends=["test_fs_process"])
 def test_fs_get_fluctuation_strength(dpf_sound_test_server):
     fs_computer = FluctuationStrength()
     # Get a signal
@@ -151,7 +147,6 @@ def test_fs_get_fluctuation_strength(dpf_sound_test_server):
     assert fs == pytest.approx(EXP_FS_2)
 
 
-@pytest.mark.dependency(depends=["test_fs_process"])
 def test_fs_get_specific_fluctuation_strength(dpf_sound_test_server):
     fs_computer = FluctuationStrength()
     # Get a signal
@@ -262,7 +257,6 @@ def test_fs__get_ouptut_parameter(dpf_sound_test_server):
     assert param[40] == pytest.approx(EXP_SPECIFIC_FS_2_40)
 
 
-@pytest.mark.dependency(depends=["test_fs_process"])
 def test_fs_get_bark_band_indexes(dpf_sound_test_server):
     fs_computer = FluctuationStrength()
     # Get a signal
@@ -305,7 +299,6 @@ def test_fs_get_bark_band_indexes(dpf_sound_test_server):
     assert bark_band_indexes[40] == pytest.approx(EXP_BARK_40)
 
 
-@pytest.mark.dependency(depends=["test_fs_get_bark_band_indexes"])
 def test_fs_get_bark_band_frequencies(dpf_sound_test_server):
     fs_computer = FluctuationStrength()
     # Get a signal
@@ -328,7 +321,6 @@ def test_fs_get_bark_band_frequencies(dpf_sound_test_server):
     assert bark_band_frequencies[40] == pytest.approx(EXP_FREQ_40)
 
 
-@pytest.mark.dependency(depends=["test_fs_process"])
 def test_fs_get_output_as_nparray_from_fields_container(dpf_sound_test_server):
     fs_computer = FluctuationStrength()
     # Get a signal
@@ -362,7 +354,6 @@ def test_fs_get_output_as_nparray_from_fields_container(dpf_sound_test_server):
     assert specific_fs[40] == pytest.approx(EXP_SPECIFIC_FS_1_40)
 
 
-@pytest.mark.dependency(depends=["test_fs_process"])
 def test_fs_get_output_as_nparray_from_field(dpf_sound_test_server):
     fs_computer = FluctuationStrength()
     # Get a signal
@@ -389,7 +380,6 @@ def test_fs_get_output_as_nparray_from_field(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-@pytest.mark.dependency(depends=["test_fs_process"])
 def test_fs_plot_from_fields_container(mock_show, dpf_sound_test_server):
     fs_computer = FluctuationStrength()
     # Get a signal
@@ -426,7 +416,6 @@ def test_fs_plot_from_fields_container(mock_show, dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-@pytest.mark.dependency(depends=["test_fs_process"])
 def test_fs_plot_from_field(mock_show, dpf_sound_test_server):
     fs_computer = FluctuationStrength()
     # Get a signal
@@ -444,7 +433,6 @@ def test_fs_plot_from_field(mock_show, dpf_sound_test_server):
     fs_computer.plot()
 
 
-@pytest.mark.dependency(depends=["test_fs_instantiation"])
 def test_fs_set_get_signal(dpf_sound_test_server):
     fs_computer = FluctuationStrength()
     fc = FieldsContainer()

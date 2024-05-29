@@ -4,13 +4,11 @@ import pytest
 from ansys.dpf.sound.pydpf_sound import PyDpfSound, PyDpfSoundWarning
 
 
-@pytest.mark.dependency()
 def test_pydpf_sound_instanciate():
     pydpf_sound = PyDpfSound()
     assert pydpf_sound != None
 
 
-@pytest.mark.dependency(depends=["test_pydpf_sound_instanciate"])
 def test_pydpf_sound_process():
     pydpf_sound = PyDpfSound()
     with pytest.warns(PyDpfSoundWarning, match="Nothing to process."):
@@ -18,7 +16,6 @@ def test_pydpf_sound_process():
     assert pydpf_sound.process() == None
 
 
-@pytest.mark.dependency(depends=["test_pydpf_sound_instanciate"])
 def test_pydpf_sound_plot():
     pydpf_sound = PyDpfSound()
     with pytest.warns(PyDpfSoundWarning, match="Nothing to plot."):
@@ -27,7 +24,6 @@ def test_pydpf_sound_plot():
     assert pydpf_sound.plot() == None
 
 
-@pytest.mark.dependency(depends=["test_pydpf_sound_instanciate"])
 def test_pydpf_sound_get_output():
     pydpf_sound = PyDpfSound()
     with pytest.warns(PyDpfSoundWarning, match="Nothing to output."):
@@ -36,7 +32,6 @@ def test_pydpf_sound_get_output():
     assert out == None
 
 
-@pytest.mark.dependency(depends=["test_pydpf_sound_instanciate"])
 def test_pydpf_sound_get_output_as_nparray():
     pydpf_sound = PyDpfSound()
     with pytest.warns(PyDpfSoundWarning, match="Nothing to output."):

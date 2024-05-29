@@ -27,13 +27,11 @@ TOTAL_ROUGHNESS_ID = "total"
 SPECIFIC_ROUGHNESS_ID = "specific"
 
 
-@pytest.mark.dependency()
 def test_roughness_instantiation(dpf_sound_test_server):
     roughness_computer = Roughness()
     assert roughness_computer != None
 
 
-@pytest.mark.dependency(depends=["test_roughness_instantiation"])
 def test_roughness_process(dpf_sound_test_server):
     roughness_computer = Roughness()
 
@@ -60,7 +58,6 @@ def test_roughness_process(dpf_sound_test_server):
     roughness_computer.process()
 
 
-@pytest.mark.dependency(depends=["test_roughness_process"])
 def test_roughness_get_output(dpf_sound_test_server):
     roughness_computer = Roughness()
     # Get a signal
@@ -89,7 +86,6 @@ def test_roughness_get_output(dpf_sound_test_server):
     assert type(specific_roughness) == FieldsContainer
 
 
-@pytest.mark.dependency(depends=["test_roughness_process"])
 def test_roughness_get_roughness(dpf_sound_test_server):
     roughness_computer = Roughness()
     # Get a signal
@@ -151,7 +147,6 @@ def test_roughness_get_roughness(dpf_sound_test_server):
     assert roughness == pytest.approx(EXP_ROUGHNESS_2)
 
 
-@pytest.mark.dependency(depends=["test_roughness_process"])
 def test_roughness_get_specific_roughness(dpf_sound_test_server):
     roughness_computer = Roughness()
     # Get a signal
@@ -260,7 +255,6 @@ def test_roughness__get_ouptut_parameter(dpf_sound_test_server):
     assert param[40] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_2_40)
 
 
-@pytest.mark.dependency(depends=["test_roughness_process"])
 def test_roughness_get_bark_band_indexes(dpf_sound_test_server):
     roughness_computer = Roughness()
     # Get a signal
@@ -303,7 +297,6 @@ def test_roughness_get_bark_band_indexes(dpf_sound_test_server):
     assert bark_band_indexes[40] == pytest.approx(EXP_BARK_40)
 
 
-@pytest.mark.dependency(depends=["test_roughness_get_bark_band_indexes"])
 def test_roughness_get_bark_band_frequencies(dpf_sound_test_server):
     roughness_computer = Roughness()
     # Get a signal
@@ -325,7 +318,6 @@ def test_roughness_get_bark_band_frequencies(dpf_sound_test_server):
     assert bark_band_frequencies[40] == pytest.approx(EXP_FREQ_40)
 
 
-@pytest.mark.dependency(depends=["test_roughness_process"])
 def test_roughness_get_output_as_nparray_from_fields_container(dpf_sound_test_server):
     roughness_computer = Roughness()
     # Get a signal
@@ -358,7 +350,6 @@ def test_roughness_get_output_as_nparray_from_fields_container(dpf_sound_test_se
     assert specific_roughness[40] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_1_40)
 
 
-@pytest.mark.dependency(depends=["test_roughness_process"])
 def test_roughness_get_output_as_nparray_from_field(dpf_sound_test_server):
     roughness_computer = Roughness()
     # Get a signal
@@ -384,7 +375,6 @@ def test_roughness_get_output_as_nparray_from_field(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-@pytest.mark.dependency(depends=["test_roughness_process"])
 def test_roughness_plot_from_fields_container(mock_show, dpf_sound_test_server):
     roughness_computer = Roughness()
     # Get a signal
@@ -422,7 +412,6 @@ def test_roughness_plot_from_fields_container(mock_show, dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-@pytest.mark.dependency(depends=["test_roughness_process"])
 def test_roughness_plot_from_field(mock_show, dpf_sound_test_server):
     roughness_computer = Roughness()
     # Get a signal
@@ -440,7 +429,6 @@ def test_roughness_plot_from_field(mock_show, dpf_sound_test_server):
     roughness_computer.plot()
 
 
-@pytest.mark.dependency(depends=["test_roughness_instantiation"])
 def test_roughness_set_get_signal(dpf_sound_test_server):
     roughness_computer = Roughness()
     fc = FieldsContainer()

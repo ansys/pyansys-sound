@@ -6,13 +6,11 @@ from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 from ansys.dpf.sound.signal_utilities import LoadWav, WriteWav
 
 
-@pytest.mark.dependency()
 def test_write_wav_instantiation(dpf_sound_test_server):
     wav_writer = WriteWav()
     assert wav_writer != None
 
 
-@pytest.mark.dependency(depends=["test_write_wav_instantiation"])
 def test_write_wav_process(dpf_sound_test_server):
     wav_writer = WriteWav()
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -36,7 +34,6 @@ def test_write_wav_process(dpf_sound_test_server):
     wav_writer.process()
 
 
-@pytest.mark.dependency(depends=["test_write_wav_instantiation"])
 def test_write_wav_set_get_path(dpf_sound_test_server):
     wav_writer = WriteWav()
 
@@ -46,7 +43,6 @@ def test_write_wav_set_get_path(dpf_sound_test_server):
     assert p == r"C:\test\path"
 
 
-@pytest.mark.dependency(depends=["test_write_wav_instantiation"])
 def test_write_wav_set_get_bit_depth(dpf_sound_test_server):
     wav_writer = WriteWav()
 
@@ -64,7 +60,6 @@ def test_write_wav_set_get_bit_depth(dpf_sound_test_server):
     assert b == "int8"
 
 
-@pytest.mark.dependency(depends=["test_write_wav_instantiation"])
 def test_write_wav_set_get_signal(dpf_sound_test_server):
     wav_writer = WriteWav()
     fc = FieldsContainer()
@@ -81,7 +76,6 @@ def test_write_wav_set_get_signal(dpf_sound_test_server):
     assert fc_from_get[0].data[0, 2] == 42
 
 
-@pytest.mark.dependency(depends=["test_write_wav_instantiation"])
 def test_write_wav_plot(dpf_sound_test_server):
     wav_writer = WriteWav()
 
