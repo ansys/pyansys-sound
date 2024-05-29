@@ -44,7 +44,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   smoke-tests:
-    name: Build and Smoke tests
+    name: "Build and Smoke tests"
     runs-on: ${{ matrix.os }}
     needs: [code-style]
     strategy:
@@ -58,7 +58,7 @@ jobs:
           - should-release: false
             os: macos-latest
     steps:
-      - name: Build wheelhouse and perform smoke test
+      - name: "Build wheelhouse and perform smoke test"
         uses: ansys/actions/build-wheelhouse@v5
         with:
           library-name: ${{ env.PACKAGE_NAME }}
@@ -70,14 +70,14 @@ jobs:
 # =================================================================================================
 
   testing-windows:
-    name: Testing and coverage (Windows)
+    name: "Testing and coverage (Windows)"
     needs: [smoke-tests]
     runs-on: [self-hosted, Windows, pydpfsound]
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: "Set up Python"
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }} # self-hosted has an issue with 3.11
@@ -85,19 +85,19 @@ jobs:
       - name: Set up headless display
         uses: pyvista/setup-headless-display-action@v2
 
-      - name: Create Python venv
+      - name: "Create Python venv"
         run: |
           python -m venv .venv
           .\.venv\Scripts\Activate.ps1
 
-      - name: Install packages for testing
+      - name: "Install packages for testing"
         run: |
           .\.venv\Scripts\Activate.ps1
           python -m pip install --upgrade pip
           pip install --upgrade build wheel
           pip install .[tests]
 
-      - name: Login to GitHub Container Registry
+      - name: "Login to GitHub Container Registry"
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -107,39 +107,39 @@ jobs:
       - name: Download DPF-Sound service container
         run: docker pull $env:ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG
 
-      - name: Start DPF-Sound service and verify start
+      - name: "Start DPF-Sound service and verify start"
         run: |
           .\.venv\Scripts\Activate.ps1
           docker run -d --name ${{ env.DPF_SOUND_CONT_NAME }} -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ env.ANSRV_DPF_SOUND_LICENSE_SERVER }}" -v C:\Users\ansys\actions-runner\_work\pydpf-sound\pydpf-sound\tests\data:C:\data -p ${{ env.ANSRV_DPF_SOUND_PORT }}:50052 --dns '8.8.8.8' ${{ env.ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG }}
           python -c "from ansys.dpf.sound.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
-      - name: Testing
+      - name: "Testing"
         run: |
           .\.venv\Scripts\Activate.ps1
           pytest -v
 
-      - name: Upload Coverage Results
+      - name: "Upload Coverage Results"
         uses: actions/upload-artifact@v4
         with:
           name: coverage-html
           path: .cov/html
           retention-days: 7
 
-      - name: Upload coverage reports to Codecov
+      - name: "Upload coverage reports to Codecov"
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: .cov/xml
 
 
-      - name: Stop the DPF-Sound service
+      - name: "Stop the DPF-Sound service"
         if: always()
         run: |
           docker stop $env:DPF_SOUND_CONT_NAME
           docker logs $env:DPF_SOUND_CONT_NAME
           docker rm $env:DPF_SOUND_CONT_NAME
 
-      - name: Stop any remaining containers
+      - name: "Stop any remaining containers"
         if: always()
         run: |
           $dockerContainers = docker ps -a -q
@@ -153,77 +153,39 @@ jobs:
     runs-on: [self-hosted, Windows, pydpfsound]
     needs: doc-style
     steps:
-      - name: "Install Git and checkout project"
-        uses: actions/checkout@v4
-
-      - name: "Setup Python"
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-
-      - name: "Create Python venv and activate it"
-        run: |
-          python -m venv .venv
-          .\.venv\Scripts\Activate.ps1
-
-      - name: "Install packages for documentation build"
-        run: |
-          .\.venv\Scripts\Activate.ps1
-          pip install --upgrade pip
-          pip install .[doc]
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Download DPF-Sound service container
+      - name: "Download DPF-Sound service container"
         run: docker pull $env:ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG
 
-      - name: Start DPF-Sound service and verify start
+      - name: "Start DPF-Sound service and verify start"
         run: |
           .\.venv\Scripts\Activate.ps1
           docker run -d --name ${{ env.DPF_SOUND_CONT_NAME }} -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ env.ANSRV_DPF_SOUND_LICENSE_SERVER }}" -v C:\Users\ansys\actions-runner\_work\pydpf-sound\pydpf-sound\tests\data:C:\data -p ${{ env.ANSRV_DPF_SOUND_PORT }}:50052 --dns '8.8.8.8' ${{ env.ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG }}
           python -c "from ansys.dpf.sound.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
-      - name: Build the documentation (HTML)
-        run: |
-          .\.venv\Scripts\Activate.ps1
-          cd doc
-          .\make.bat clean
-          .\make.bat html
-
-      - name: Upload HTML documentation
-        uses: actions/upload-artifact@v4
+      - name: "Run Ansys documentation building action"
+        uses: ansys/actions/doc-build@v6
         with:
-          name: documentation-html
-          path: doc/_build/html
-          retention-days: 7
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          sphinxopts: -j auto --keep-going
 
-      - name: Build the documentation (PDF)
-        run: |
-          .\.venv\Scripts\Activate.ps1
-          cd doc
-          .\make.bat clean
-          .\make.bat pdf
-
-      - name: Upload PDF documentation
-        uses: actions/upload-artifact@v4
+      - name: "Deploy"
+        if: contains(github.ref, 'refs/heads/main')
+        uses: JamesIves/github-pages-deploy-action@v4.6.1
         with:
-          name: documentation-pdf
-          path: doc/_build/latex/ansys-dpf-sound*.pdf
-          retention-days: 7
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: doc/_build/html
+          clean: true
+          single-commit: true
 
-      - name: Stop the DPF-Sound service
+      - name: "Stop the DPF-Sound service"
         if: always()
         run: |
           docker stop $env:DPF_SOUND_CONT_NAME
           docker logs $env:DPF_SOUND_CONT_NAME
           docker rm $env:DPF_SOUND_CONT_NAME
 
-      - name: Stop any remaining containers
+      - name: "Stop any remaining containers"
         if: always()
         run: |
           $dockerContainers = docker ps -a -q
@@ -231,4 +193,3 @@ jobs:
               docker stop $dockerContainers
               docker rm $dockerContainers
           }
-
