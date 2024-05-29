@@ -3,12 +3,12 @@
 from typing import Tuple
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operator
+from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy import typing as npt
 
-from . import XtractParent
+from . import XtractDenoiserParameters, XtractParent
 from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
@@ -21,7 +21,7 @@ class XtractDenoiser(XtractParent):
     def __init__(
         self,
         input_signal: FieldsContainer | Field = None,
-        input_parameters: GenericDataContainer = None,
+        input_parameters: XtractDenoiserParameters = None,
     ):
         """Create a XtractDenoiser class.
 
@@ -33,7 +33,7 @@ class XtractDenoiser(XtractParent):
         input_parameters:
             Structure that contains the parameters of the algorithm:
             - Noise levels (Field): level vs frequency of the noise
-            This structure is of type Xtract_denoiser_parameters (see this class for more details).
+            This structure is of type XtractDenoiserParameters (see this class for more details).
         output_denoised_signals:
             Denoised signal(s), as a field or fields_container (depending on the input).
         output_noise_signals:
@@ -41,8 +41,8 @@ class XtractDenoiser(XtractParent):
             The noise signal is the original signal minus the denoised signal.
         """
         super().__init__()
-        self.__input_signal = input_signal
-        self.__input_parameters = input_parameters
+        self.input_signal = input_signal
+        self.input_parameters = input_parameters
 
         # Define output fields
         self.__output_denoised_signals = None
@@ -70,18 +70,18 @@ class XtractDenoiser(XtractParent):
         self.__input_signal = value
 
     @property
-    def input_parameters(self) -> GenericDataContainer:
+    def input_parameters(self) -> XtractDenoiserParameters:
         """Get input parameters.
 
         Returns
         -------
-        GenericDataContainer
+        XtractDenoiserParameters
             Structure that contains the parameters of the algorithm:
         """
         return self.__input_parameters  # pragma: no cover
 
     @input_parameters.setter
-    def input_parameters(self, value: GenericDataContainer):
+    def input_parameters(self, value: XtractDenoiserParameters):
         """Set input parameters."""
         self.__input_parameters = value
 
@@ -110,20 +110,20 @@ class XtractDenoiser(XtractParent):
 
     def process(self):
         """Apply denoising."""
-        if self.__input_signal is None:
+        if self.input_signal is None:
             raise PyDpfSoundException("Input signal is not set.")
 
-        if self.__input_parameters is None:
+        if self.input_parameters is None:
             raise PyDpfSoundException("Input parameters are not set.")
 
-        self.__operator.connect(0, self.__input_signal)
-        self.__operator.connect(1, self.__input_parameters)
+        self.__operator.connect(0, self.input_signal)
+        self.__operator.connect(1, self.input_parameters.get_parameters_as_generic_data_container())
 
         # Runs the operator
         self.__operator.run()
 
         # Stores the output in the variable
-        if type(self.__input_signal) == Field:
+        if type(self.input_signal) == Field:
             self.__output_denoised_signals = self.__operator.get_output(0, "field")
             self.__output_noise_signals = self.__operator.get_output(1, "field")
         else:

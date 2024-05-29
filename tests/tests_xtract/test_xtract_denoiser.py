@@ -1,12 +1,13 @@
 from unittest.mock import patch
 
-from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operator
+from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
 from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 from ansys.dpf.sound.signal_utilities import LoadWav
 from ansys.dpf.sound.xtract.xtract_denoiser import XtractDenoiser
+from ansys.dpf.sound.xtract.xtract_denoiser_parameters import XtractDenoiserParameters
 
 
 def test_xtract_denoiser_instantiation(dpf_sound_test_server):
@@ -22,7 +23,7 @@ def test_xtract_denoiser_initialization_FieldsContainers():
 
     # Test initialization with custom values
     input_signal = FieldsContainer()
-    input_parameters = GenericDataContainer()
+    input_parameters = XtractDenoiserParameters()
     xtract = XtractDenoiser(
         input_signal=input_signal,
         input_parameters=input_parameters,
@@ -41,7 +42,7 @@ def test_xtract_denoiser_initialization_Field():
 
     # Test initialization with custom values
     input_signal = Field()
-    input_parameters = GenericDataContainer()
+    input_parameters = XtractDenoiserParameters()
     xtract = XtractDenoiser(
         input_signal=input_signal,
         input_parameters=input_parameters,
@@ -56,7 +57,7 @@ def test_xtract_denoiser_process_except1(dpf_sound_test_server):
     """
     Test no signal.
     """
-    xtract_denoiser = XtractDenoiser(None, GenericDataContainer())
+    xtract_denoiser = XtractDenoiser(None, XtractDenoiserParameters())
     with pytest.raises(PyDpfSoundException) as excinfo:
         xtract_denoiser.process()
     assert excinfo.value.args[0] == "Input signal is not set."
@@ -78,21 +79,11 @@ def test_xtract_process(dpf_sound_test_server):
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
-    ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
     # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
-
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
     xtract_denoiser.process()
 
@@ -126,20 +117,13 @@ def test_xtract_denoiser_get_output_warns(dpf_sound_test_server):
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
-    ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
     # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
+    xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
+    xtract_denoiser.process()
 
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
 
@@ -154,20 +138,13 @@ def test_xtract_denoiser_get_output_np_array_warns(dpf_sound_test_server):
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
-    ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
     # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
+    xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
+    xtract_denoiser.process()
 
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
 
@@ -182,20 +159,13 @@ def test_xtract_denoiser_get_output(dpf_sound_test_server):
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
-    ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
     # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
+    xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
+    xtract_denoiser.process()
 
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
     xtract_denoiser.process()
@@ -221,20 +191,13 @@ def test_xtract_denoiser_get_output_noprocess(dpf_sound_test_server):
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
-    ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
     # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
+    xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
+    xtract_denoiser.process()
 
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
     output1, output2 = xtract_denoiser.get_output()
@@ -249,20 +212,13 @@ def test_xtract_denoiser_get_output_fc(dpf_sound_test_server):
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
-    ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
     # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
+    xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
+    xtract_denoiser.process()
 
     fc_bird_plus_idle = FieldsContainer()
     fc_bird_plus_idle.labels = ["channel"]
@@ -301,20 +257,13 @@ def test_xtract_denoiser_get_output_as_nparray(dpf_sound_test_server):
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
-    ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
     # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
+    xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
+    xtract_denoiser.process()
 
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
     xtract_denoiser.process()
@@ -343,20 +292,13 @@ def test_xtract_denoiser_get_output_fc_as_nparray(dpf_sound_test_server):
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
-    ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
     # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
+    xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
+    xtract_denoiser.process()
 
     fc_bird_plus_idle = FieldsContainer()
     fc_bird_plus_idle.labels = ["channel"]
@@ -378,20 +320,13 @@ def test_xtract_denoiser_setters(dpf_sound_test_server):
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
-    ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
     # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
+    xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
+    xtract_denoiser.process()
 
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
 
@@ -411,20 +346,13 @@ def test_xtract_denoiser_plot_output(mock_show, dpf_sound_test_server):
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
-    ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
     # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
+    xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
+    xtract_denoiser.process()
 
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
     xtract_denoiser.process()
@@ -439,20 +367,13 @@ def test_xtract_denoiser_plot_output_fc(mock_show, dpf_sound_test_server):
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
-    ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
     # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
+    xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
+    xtract_denoiser.process()
 
     fc_bird_plus_idle = FieldsContainer()
     fc_bird_plus_idle.labels = ["channel"]
