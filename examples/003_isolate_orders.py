@@ -29,7 +29,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from ansys.dpf.sound.examples_helpers import get_absolute_path_for_accel_with_rpm_wav
-from ansys.dpf.sound.psychoacoustics import Loudness_ISO532_1_Stationary
+from ansys.dpf.sound.psychoacoustics import LoudnessISO532_1_Stationary
 from ansys.dpf.sound.server_helpers import connect_to_or_start_server
 from ansys.dpf.sound.signal_utilities import LoadWav, WriteWav
 from ansys.dpf.sound.spectrogram_processing import IsolateOrders, Stft
@@ -198,7 +198,7 @@ isolate_orders.plot()
 # Using the Loudness class to compute the loudness of the isolate signal
 input_loudness = isolate_orders.get_output()
 input_loudness.unit = "Pa"
-loudness = Loudness_ISO532_1_Stationary(signal=input_loudness)
+loudness = LoudnessISO532_1_Stationary(signal=input_loudness)
 loudness.process()
 
 loudness_isolated_signal = loudness.get_loudness_level_phon()
