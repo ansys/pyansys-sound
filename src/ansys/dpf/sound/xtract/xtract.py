@@ -3,12 +3,17 @@
 from typing import Tuple
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operator
+from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy import typing as npt
 
-from . import XtractParent
+from . import (
+    XtractDenoiserParameters,
+    XtractParent,
+    XtractTonalParameters,
+    XtractTransientParameters,
+)
 from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
@@ -23,9 +28,9 @@ class Xtract(XtractParent):
     def __init__(
         self,
         input_signal: FieldsContainer | Field = None,
-        parameters_denoiser: GenericDataContainer = None,
-        parameters_tonal: GenericDataContainer = None,
-        parameters_transient: GenericDataContainer = None,
+        parameters_denoiser: XtractDenoiserParameters = None,
+        parameters_tonal: XtractTonalParameters = None,
+        parameters_transient: XtractTransientParameters = None,
     ):
         """Create a Xtract class.
 
@@ -36,7 +41,7 @@ class Xtract(XtractParent):
         parameters_denoiser:
             Structure that contains the parameters of the denoising step:
             - Noise levels (Field): level vs frequency of the noise
-            This structure is of type Xtract_denoiser_parameters (see this class for more details).
+            This structure is of type XtractDenoiserParameters (see this class for more details).
         parameters_tonal:
             Structure that contains the parameters of the tonal extraction step:
             - NFFT (int) number of points used for the FFT computation
@@ -45,18 +50,18 @@ class Xtract(XtractParent):
             - Minimum duration (float) in seconds
             - Intertonal gap (float) in Hz
             - Local emergence (float) in dB
-            This structure is of type Xtract_tonal_parameters (see this class for more details).
+            This structure is of type XtractTonalParameters (see this class for more details).
         parameters_transient:
             Structure that contains the parameters of the transient extraction step:
             - Lower threshold (float), between 0 and 100 percent
             - Upper threshold (float), between 0 and 100 percent
-        This structure is of type Xtract_transient_parameters (see this class for more details).
+        This structure is of type XtractTransientParameters (see this class for more details).
         """
         super().__init__()
-        self.__input_signal = input_signal
-        self.__parameters_denoiser = parameters_denoiser
-        self.__parameters_tonal = parameters_tonal
-        self.__parameters_transient = parameters_transient
+        self.input_signal = input_signal
+        self.parameters_denoiser = parameters_denoiser
+        self.parameters_tonal = parameters_tonal
+        self.parameters_transient = parameters_transient
 
         # Define output fields
         self.__output_noise_signal = None
@@ -90,24 +95,24 @@ class Xtract(XtractParent):
         self.__input_signal = value
 
     @property
-    def parameters_denoiser(self) -> GenericDataContainer:
+    def parameters_denoiser(self) -> XtractDenoiserParameters:
         """Get parameters of the denoiser step.
 
         Returns
         -------
-        GenericDataContainer
+        XtractDenoiserParameters
             Structure that contains the parameters of the denoising step:
                 - Noise levels (Field): level vs frequency of the noise
         """
         return self.__parameters_denoiser
 
     @parameters_denoiser.setter
-    def parameters_denoiser(self, value: GenericDataContainer):
+    def parameters_denoiser(self, value: XtractDenoiserParameters):
         """Set parameters of the denoiser step."""
         self.__parameters_denoiser = value
 
     @property
-    def parameters_tonal(self) -> GenericDataContainer:
+    def parameters_tonal(self) -> XtractTonalParameters:
         """Get parameters of the tonal extraction step.
 
         Returns
@@ -124,17 +129,17 @@ class Xtract(XtractParent):
         return self.__parameters_tonal  # pragma: no cover
 
     @parameters_tonal.setter
-    def parameters_tonal(self, value: GenericDataContainer):
+    def parameters_tonal(self, value: XtractTonalParameters):
         """Set parameters of the tonal extraction step."""
         self.__parameters_tonal = value
 
     @property
-    def parameters_transient(self) -> GenericDataContainer:
+    def parameters_transient(self) -> XtractTransientParameters:
         """Get parameters of the transient extraction step.
 
         Returns
         -------
-        GenericDataContainer
+        XtractTransientParameters
             Structure that contains the parameters of the transient extraction step:
                 - Lower threshold (float), between 0 and 100 percent
                 - Upper threshold (float), between 0 and 100 percent
@@ -142,7 +147,7 @@ class Xtract(XtractParent):
         return self.__parameters_transient  # pragma: no cover
 
     @parameters_transient.setter
-    def parameters_transient(self, value: GenericDataContainer):
+    def parameters_transient(self, value: XtractTransientParameters):
         """Set parameters of the transient extraction step."""
         self.__parameters_transient = value
 
@@ -196,29 +201,33 @@ class Xtract(XtractParent):
 
     def process(self):
         """Process the XTRACT algorithm."""
-        if self.__input_signal is None:
+        if self.input_signal is None:
             raise PyDpfSoundException("Input signal is not set.")
 
-        if self.__parameters_denoiser is None:
+        if self.parameters_denoiser is None:
             raise PyDpfSoundException("Input parameters denoiser are not set.")
 
-        if self.__parameters_tonal is None:
+        if self.parameters_tonal is None:
             raise PyDpfSoundException("Input parameters tonal are not set.")
 
-        if self.__parameters_transient is None:
+        if self.parameters_transient is None:
             raise PyDpfSoundException("Input parameters transient are not set.")
 
         # Wrapping
-        self.__operator.connect(0, self.__input_signal)
-        self.__operator.connect(1, self.__parameters_denoiser)
-        self.__operator.connect(2, self.__parameters_tonal)
-        self.__operator.connect(3, self.__parameters_transient)
+        self.__operator.connect(0, self.input_signal)
+        self.__operator.connect(
+            1, self.parameters_denoiser.get_parameters_as_generic_data_container()
+        )
+        self.__operator.connect(2, self.parameters_tonal.get_parameters_as_generic_data_container())
+        self.__operator.connect(
+            3, self.parameters_transient.get_parameters_as_generic_data_container()
+        )
 
         # Runs the operator
         self.__operator.run()
 
         # Stores the output in the variables
-        if type(self.__input_signal) == Field:
+        if type(self.input_signal) == Field:
             self.__output_noise_signal = self.__operator.get_output(0, "fields_container")[0]
             self.__output_tonal_signal = self.__operator.get_output(1, "fields_container")[0]
             self.__output_transient_signal = self.__operator.get_output(2, "fields_container")[0]
