@@ -163,6 +163,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: "Create Python venv"
+        run: |
+          python -m venv .venv
+          .\.venv\Scripts\Activate.ps1
+  
+      - name: "Install packages for documentation building"
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          python -m pip install --upgrade pip
+          pip install --upgrade build wheel
+          pip install .[doc]
+
       - name: "Download DPF-Sound service container"
         run: docker pull $env:ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG
 
@@ -176,6 +188,7 @@ jobs:
         uses: ansys/actions/doc-build@v6
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          skip-install: true
           sphinxopts: -j auto --keep-going
 
       - name: "Deploy"
