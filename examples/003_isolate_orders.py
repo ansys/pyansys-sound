@@ -49,7 +49,7 @@ def plot_stft(stft_class, vmax):
     out = stft_class.get_output_as_nparray()
 
     # Extracting first half of the STFT (second half is symmetrical)
-    half_nfft = int(np.shape(out)[0] / 2) + 1
+    half_nfft = int(out.shape[0] / 2) + 1
     magnitude = stft_class.get_stft_magnitude_as_nparray()
 
     # Voluntarily ignoring a numpy warning
@@ -104,9 +104,7 @@ wav_loader.process()
 fc_signal = wav_loader.get_output()
 
 # Extract the audio signal and the RPM profile
-signal_as_nparray = wav_loader.get_output_as_nparray()
-wav_signal = signal_as_nparray[0]
-rpm_signal = signal_as_nparray[1]
+wav_signal, rpm_signal = wav_loader.get_output_as_nparray()
 
 # Extracting time support associated to the signal
 time_support = fc_signal[0].time_freq_support.time_frequencies.data
@@ -139,12 +137,10 @@ plot_stft(stft, max_stft)
 # ~~~~~~~~~~~~~~~~
 # Isolating orders 2, 4 and 6 with the IsolateOrders class
 
-signal_as_fields_container = wav_loader.get_output()
+field_wav, field_rpm = wav_loader.get_output()
 
 # Defining parameters for order isolation
-field_wav = signal_as_fields_container[0]  # Signal to process as a DPF Field
 field_wav.unit = "Pa"
-field_rpm = signal_as_fields_container[1]  # Associated RPM signal as a DPF Field
 order_to_isolate = [2, 4, 6]  # Orders indexes to isolate as a list
 fft_size = 8192  # FFT Size (in samples)
 window_type = "HANN"  # Window type
