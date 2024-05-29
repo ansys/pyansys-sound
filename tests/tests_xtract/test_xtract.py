@@ -1,12 +1,15 @@
 from unittest.mock import patch
 
-from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operator
+from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer
 import numpy as np
 import pytest
 
 from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 from ansys.dpf.sound.signal_utilities import LoadWav
 from ansys.dpf.sound.xtract.xtract import Xtract
+from ansys.dpf.sound.xtract.xtract_denoiser_parameters import XtractDenoiserParameters
+from ansys.dpf.sound.xtract.xtract_tonal_parameters import XtractTonalParameters
+from ansys.dpf.sound.xtract.xtract_transient_parameters import XtractTransientParameters
 
 
 def test_xtract_instantiation(dpf_sound_test_server):
@@ -21,9 +24,9 @@ def test_xtract_initialization(dpf_sound_test_server):
 
     # Test initialization with custom values
     input_signal = FieldsContainer()
-    parameters_denoiser = GenericDataContainer()
-    parameters_tonal = GenericDataContainer()
-    parameters_transient = GenericDataContainer()
+    parameters_denoiser = XtractDenoiserParameters()
+    parameters_tonal = XtractTonalParameters()
+    parameters_transient = XtractTransientParameters()
     xtract = Xtract(
         input_signal=input_signal,
         parameters_denoiser=parameters_denoiser,
@@ -50,9 +53,9 @@ def test_xtract_initialization_FieldsContainer(dpf_sound_test_server):
 
     # Test initialization with custom values
     input_signal = FieldsContainer()
-    parameters_denoiser = GenericDataContainer()
-    parameters_tonal = GenericDataContainer()
-    parameters_transient = GenericDataContainer()
+    parameters_denoiser = XtractDenoiserParameters()
+    parameters_tonal = XtractTonalParameters()
+    parameters_transient = XtractTransientParameters()
     xtract = Xtract(
         input_signal=input_signal,
         parameters_denoiser=parameters_denoiser,
@@ -76,9 +79,9 @@ def test_xtract_initialization_Field(dpf_sound_test_server):
 
     # Test initialization with custom values
     input_signal = Field()
-    parameters_denoiser = GenericDataContainer()
-    parameters_tonal = GenericDataContainer()
-    parameters_transient = GenericDataContainer()
+    parameters_denoiser = XtractDenoiserParameters()
+    parameters_tonal = XtractTonalParameters()
+    parameters_transient = XtractTransientParameters()
     xtract = Xtract(
         input_signal=input_signal,
         parameters_denoiser=parameters_denoiser,
@@ -127,35 +130,24 @@ def test_xtract_process(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
-    # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
+    params_transient = XtractTransientParameters()
+    params_transient.lower_threshold = 1.0
+    params_transient.upper_threshold = 100.0
 
     xtract = Xtract(bird_plus_idle_sig, params_denoiser, params_tonal, params_transient)
     xtract.process()
@@ -181,35 +173,24 @@ def test_xtract_get_output_warns(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
-    # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
+    params_transient = XtractTransientParameters()
+    params_transient.lower_threshold = 1.0
+    params_transient.upper_threshold = 100.0
 
     xtract = Xtract(bird_plus_idle_sig, params_denoiser, params_tonal, params_transient)
 
@@ -225,35 +206,24 @@ def test_xtract_get_output_as_np_array_warns(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
-    # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
+    params_transient = XtractTransientParameters()
+    params_transient.lower_threshold = 1.0
+    params_transient.upper_threshold = 100.0
 
     xtract = Xtract(bird_plus_idle_sig, params_denoiser, params_tonal, params_transient)
 
@@ -269,35 +239,24 @@ def test_xtract_get_output(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
-    # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
+    params_transient = XtractTransientParameters()
+    params_transient.lower_threshold = 1.0
+    params_transient.upper_threshold = 100.0
 
     xtract = Xtract(bird_plus_idle_sig, params_denoiser, params_tonal, params_transient)
     xtract.process()
@@ -336,35 +295,24 @@ def test_xtract_get_output_noprocess(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
-    # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
+    params_transient = XtractTransientParameters()
+    params_transient.lower_threshold = 1.0
+    params_transient.upper_threshold = 100.0
 
     xtract = Xtract(bird_plus_idle_sig, params_denoiser, params_tonal, params_transient)
 
@@ -386,35 +334,24 @@ def test_xtract_get_output_fc(dpf_sound_test_server):
     fc_bird_plus_idle.add_field({"channel": 1}, bird_plus_idle_sig)
 
     ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
-    # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
+    params_transient = XtractTransientParameters()
+    params_transient.lower_threshold = 1.0
+    params_transient.upper_threshold = 100.0
 
     xtract = Xtract(fc_bird_plus_idle, params_denoiser, params_tonal, params_transient)
     xtract.process()
@@ -465,35 +402,24 @@ def test_xtract_get_output_as_nparray(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
-    # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
+    params_transient = XtractTransientParameters()
+    params_transient.lower_threshold = 1.0
+    params_transient.upper_threshold = 100.0
 
     xtract = Xtract(bird_plus_idle_sig, params_denoiser, params_tonal, params_transient)
     xtract.process()
@@ -537,35 +463,24 @@ def test_xtract_get_output_fc_as_nparray(dpf_sound_test_server):
     fc_bird_plus_idle.add_field({"channel": 1}, bird_plus_idle_sig)
 
     ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
-    # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
+    params_transient = XtractTransientParameters()
+    params_transient.lower_threshold = 1.0
+    params_transient.upper_threshold = 100.0
 
     xtract = Xtract(fc_bird_plus_idle, params_denoiser, params_tonal, params_transient)
     xtract.process()
@@ -626,35 +541,24 @@ def test_xtract_setters(dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
-    # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
+    params_transient = XtractTransientParameters()
+    params_transient.lower_threshold = 1.0
+    params_transient.upper_threshold = 100.0
 
     xtract = Xtract(bird_plus_idle_sig, params_denoiser, params_tonal, params_transient)
     xtract.process()
@@ -684,35 +588,24 @@ def test_xtract_plot_output(mock_show, dpf_sound_test_server):
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
 
     ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
-    # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
+    params_transient = XtractTransientParameters()
+    params_transient.lower_threshold = 1.0
+    params_transient.upper_threshold = 100.0
 
     xtract = Xtract(bird_plus_idle_sig, params_denoiser, params_tonal, params_transient)
     xtract.process()
@@ -733,35 +626,24 @@ def test_xtract_plot_output_fc(mock_show, dpf_sound_test_server):
     fc_bird_plus_idle.add_field({"channel": 1}, bird_plus_idle_sig)
 
     ## Creating noise profile with Xtract helper (white noise power)
-    op_create_noise_from_white_noise = Operator("create_noise_profile_from_white_noise_power")
-
-    op_create_noise_from_white_noise.connect(0, -6.0)
-    op_create_noise_from_white_noise.connect(1, 44100.0)
-    op_create_noise_from_white_noise.connect(2, 50)
-
-    op_create_noise_from_white_noise.run()
-    l_noise_profile = op_create_noise_from_white_noise.get_output(0, "field")
-
-    # Setting Denoiser parameters
-    params_denoiser = GenericDataContainer()
-    params_denoiser.set_property("class_name", "Xtract_denoiser_parameters")
-    params_denoiser.set_property("noise_levels", l_noise_profile)
+    params_denoiser = XtractDenoiserParameters()
+    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+        -6.0, 44100.0, 50
+    )
 
     # Setting tonal parameters
-    params_tonal = GenericDataContainer()
-    params_tonal.set_property("class_name", "Xtract_tonal_parameters")
-    params_tonal.set_property("regularity", 1.0)
-    params_tonal.set_property("maximum_slope", 750.0)
-    params_tonal.set_property("minimum_duration", 1.0)
-    params_tonal.set_property("intertonal_gap", 20.0)
-    params_tonal.set_property("local_emergence", 15.0)
-    params_tonal.set_property("fft_size", 8192)
+    params_tonal = XtractTonalParameters()
+    params_tonal.regularity = 1.0
+    params_tonal.maximum_slope = 750.0
+    params_tonal.minimum_duration = 1.0
+    params_tonal.intertonal_gap = 20.0
+    params_tonal.local_emergence = 15.0
+    params_tonal.fft_size = 8192
 
     # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
+    params_transient = XtractTransientParameters()
+    params_transient.lower_threshold = 1.0
+    params_transient.upper_threshold = 100.0
 
     xtract = Xtract(fc_bird_plus_idle, params_denoiser, params_tonal, params_transient)
     xtract.process()
