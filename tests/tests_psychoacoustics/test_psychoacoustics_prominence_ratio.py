@@ -365,10 +365,22 @@ def test_prominence_ratio_with_frequency_list(dpf_sound_test_server, create_psd_
         5765.51513671875,
         6029.296875,
     ]
-    pr = ProminenceRatio(psd, frequency_list=frequency_list)
+    frequency_list_rounded = [
+        261.0,
+        524.0,
+        785.0,
+        1047.0,
+        1835.0,
+        3404.0,
+        3671.0,
+        3929.0,
+        5765.0,
+        6029.0,
+    ]
+    pr = ProminenceRatio(psd, frequency_list=frequency_list_rounded)
 
     pr.process()
 
     assert len(frequency_list) == len(pr.get_peaks_frequencies())
     for l_i in range(len(frequency_list)):
-        assert frequency_list[l_i] == pr.get_peaks_frequencies()[l_i]
+        assert frequency_list[l_i] == pytest.approx(pr.get_peaks_frequencies()[l_i])
