@@ -174,7 +174,7 @@ def get_absolute_path_for_flute_psd_txt() -> str:
     Returns
     -------
     str
-        Absolute path to fluctuating_tone.wav .
+        Absolute path to flute_psd.txt .
     """
     return _get_absolute_path("flute_psd.txt")
 

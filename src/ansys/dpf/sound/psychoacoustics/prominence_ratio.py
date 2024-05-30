@@ -1,4 +1,4 @@
-"""Compute ECMA 418-1 prominence ratio (PR)."""
+"""Compute ECMA 418-1 / ISO 7779 prominence ratio (PR)."""
 from math import log10
 import warnings
 
@@ -12,14 +12,14 @@ from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
 class ProminenceRatio(PsychoacousticsParent):
-    """ECMA 418-1 prominence ratio (PR).
+    """ECMA 418-1 / ISO 7779 prominence ratio (PR).
 
     This class computes the prominence ratio (PR) on a PSD (Power Spectral Density)
-    following standard ECMA 418-1.
+    following standard ECMA 418-1 and ISO 7779.
     """
 
     def __init__(self, psd: Field = None, frequency_list: list = None):
-        """Instantiate a ProminenceRatio object.
+        """Create a ProminenceRatio object.
 
         Parameters
         ----------
@@ -27,7 +27,7 @@ class ProminenceRatio(PsychoacousticsParent):
             Power Spectral Density (PSD) of the signal on which to compute PR, as a DPF Field.
 
         frequency_list: (optional) tuple
-            List of the frequencies of the tones (peaks in the spectrum) for which you want
+            List of the frequencies in Hz of the tones (peaks in the spectrum) for which
             to calculate the PR.
             If this input is empty (not specified), a peak detection method is applied to
             automatically find the tones in the input spectrum. Then the PR is calculated
@@ -78,7 +78,7 @@ class ProminenceRatio(PsychoacousticsParent):
         Parameters
         -------
         frequency_list: tuple
-            List of the frequencies of the tones (peaks in the spectrum) for which you want
+            List of the frequencies in Hz of the tones (peaks in the spectrum) for which
             to calculate the PR.
             If this input is empty (not specified), a peak detection method is applied to
             automatically find the tones in the input spectrum. Then the PR is calculated
@@ -93,7 +93,7 @@ class ProminenceRatio(PsychoacousticsParent):
         Returns
         -------
         tuple
-            List of the frequencies of the tones (peaks in the spectrum) for which you want
+            List of the frequencies in Hz of the tones (peaks in the spectrum) for which
             to calculate the PR.
             If this input is empty (not specified), a peak detection method is applied to
             automatically find the tones in the input spectrum. Then the PR is calculated
@@ -102,9 +102,9 @@ class ProminenceRatio(PsychoacousticsParent):
         return self.__frequency_list
 
     def process(self):
-        """Compute loudness.
+        """Compute PR.
 
-        Calls the appropriate DPF Sound operator to compute the loudness on the PSD.
+        Calls the appropriate DPF Sound operator to compute the PR on the PSD.
         """
         if self.__psd == None:
             raise PyDpfSoundException("No PSD for PR computation. Use ProminenceRatio.psd.")
@@ -122,7 +122,7 @@ class ProminenceRatio(PsychoacousticsParent):
         self._output = self.__operator.get_output(0, "generic_data_container")
 
     def get_output(self) -> GenericDataContainer:
-        """Return prominence ration data in a tuple of GenericDataContainer.
+        """Return prominence ratio data in a tuple of GenericDataContainer.
 
         Returns
         -------
@@ -133,7 +133,7 @@ class ProminenceRatio(PsychoacousticsParent):
         if self._output == None:
             warnings.warn(
                 PyDpfSoundWarning(
-                    "Output has not been processed yet, use Loudness_ISO532_1_Stationary.process()."
+                    "Output has not been processed yet, use ProminentRatio.process()."
                 )
             )
 
@@ -144,14 +144,14 @@ class ProminenceRatio(PsychoacousticsParent):
 
         Returns
         -------
-            First element is the vector of peaks' frequencies.
-            Second element is the vector of peaks' PR values.
-            Third element is the vector of peaks' level values.
-            Fourth element is the vector of peaks' low frequencies.
-            Fifth element is the vector of peaks' high frequencies.
-            Sixth element is the maximum PR value.
+            First element is the vector of peaks' frequencies in Hz.
+            Second element is the vector of peaks' PR values in dB.
+            Third element is the vector of peaks' level values in dBSPL.
+            Fourth element is the vector of peaks' lower frequency limits, in Hz.
+            Fifth element is the vector of peaks' higher frequency limits, in Hz.
+            Sixth element is the maximum PR value, in dB.
 
-        Note: elements 1 to 5 are vector which have the same length. 6th element is a float.
+        Note: elements 1 to 5 are vectors of the same length. The 6th element is a float.
         """
         pr_container = self.get_output()
         if pr_container == None:
@@ -167,70 +167,107 @@ class ProminenceRatio(PsychoacousticsParent):
         )
 
     def get_nb_tones(self) -> int:
-        """Return the number of tones."""
-        if self.get_output_as_nparray() == None:
-            return 0
+        """Return the number of tones.
+
+        Returns
+        -------
+        int: Number of tones.
+        """
+        if self.get_output() == None:
+            raise PyDpfSoundException(
+                "Output has not been processed yet, use ProminenceRatio.process()."
+            )
 
         return len(self.get_output_as_nparray()[0])
 
     def get_peaks_frequencies(self) -> npt.ArrayLike:
-        """Return the vector of peaks' frequencies."""
+        """Return the vector of peaks' frequencies.
+
+        Returns
+        -------
+        numpy.ndarray: Vector of peaks' frequencies.
+        """
         if self.get_output_as_nparray() == None:
             return None
 
         return self.get_output_as_nparray()[0]
 
     def get_PR_values(self) -> npt.ArrayLike:
-        """Return the vector of peaks' PR values."""
+        """Return the vector of peaks' PR values.
+
+        Returns
+        -------
+        numpy.ndarray: Vector of peaks' PR values.
+        """
         if self.get_output_as_nparray() == None:
             return None
 
         return self.get_output_as_nparray()[1]
 
     def get_peaks_levels(self) -> npt.ArrayLike:
-        """Return the vector of peaks' level values."""
+        """Return the vector of peaks' level values.
+
+        Returns
+        -------
+        numpy.ndarray: Vector of peaks' level values.
+        """
         if self.get_output_as_nparray() == None:
             return None
 
         return self.get_output_as_nparray()[2]
 
     def get_peaks_low_frequencies(self) -> npt.ArrayLike:
-        """Return the vector of peaks' low frequencies."""
+        """Return the vector of peaks' lower frequency limits.
+
+        Returns
+        -------
+        numpy.ndarray: Vector of eaks' lower frequency limits.
+        """
         if self.get_output_as_nparray() == None:
             return None
 
         return self.get_output_as_nparray()[3]
 
     def get_peaks_high_frequencies(self) -> npt.ArrayLike:
-        """Return the vector of peaks' high frequencies."""
+        """Return the vector of peaks' higher frequency limits.
+
+        Returns
+        -------
+        numpy.ndarray: Vector of peaks' higher frequency limits.
+        """
         if self.get_output_as_nparray() == None:
             return None
 
         return self.get_output_as_nparray()[4]
 
     def get_max_PR_value(self) -> float:
-        """Return the maximum PR value."""
+        """Return the maximum PR value.
+
+        Returns
+        -------
+        float: Maximum PR value.
+        """
         if self.get_output_as_nparray() == None:
             return None
 
         return self.get_output_as_nparray()[5]
 
-    def get_all_tone_infos(self, tone_index: int) -> tuple[float]:
-        """Return all values for a given tone.
+    def get_single_tone_info(self, tone_index: int) -> tuple[float]:
+        """Return PR details for a given tone.
 
         Parameters
         ----------
         tone_index: int
-            index of the tone
+            Index of the tone.
 
-        Return
-        ------
+        Returns
+        -------
         tuple[float]
             First element is the peak's frequency.
             Second element is the PR value.
             Third element is the peak's level value.
-            Fourth element is the peak's low frequency.
-            Fifth element is the peak's high frequency.
+            Fourth element is the peak's lower frequency limit.
+            Fifth element is the peak's higher frequency limit.
         """
         nb_tones = self.get_nb_tones()
         if nb_tones == 0:
@@ -250,14 +287,18 @@ class ProminenceRatio(PsychoacousticsParent):
         )
 
     def get_reference_curve(self) -> npt.ArrayLike:
-        """Return eference curve on which to compare PR.
+        """Return reference curve on which to compare PR.
 
-        If PR is higher, then the tone is prominent.
+        Returns
+        -------
+        numpy.ndarray:
+            Reference curve on which to compare PR.
+            If PR is higher, then the tone is prominent.
         """
         if self.__psd == None:
             raise PyDpfSoundException("No PSD set. Use ProminenceRatio.psd.")
 
-        all_frequencies = np.copy(self.__psd.time_freq_support.time_frequencies.data)
+        all_frequencies = self.__psd.time_freq_support.time_frequencies.data
         curve_length = len(all_frequencies)
         ref_curve = np.ndarray(curve_length)
 
@@ -302,10 +343,10 @@ class ProminenceRatio(PsychoacousticsParent):
         # - find its corresponding index in all_frequencies
         # - replace this index in PR_final_curve by corresponding PR value
         for tone_index in range(self.get_nb_tones()):
-            tone = tones_frequencies[tone_index]
+            frequency = tones_frequencies[tone_index]
             PR_value = PR_values[tone_index]
             for index in range(final_curve_length):
-                if abs(all_frequencies[index] - tone) / tone < 1.0e-3:
+                if abs(all_frequencies[index] - frequency) / frequency < 1.0e-3:
                     PR_final_curve[index] = PR_value
                     break
 

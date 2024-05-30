@@ -169,11 +169,17 @@ def test_prominence_ratio_get_nb_tones(dpf_sound_test_server, create_psd_from_tx
     psd = create_psd_from_txt_data
     pr.psd = psd
 
-    # no compute: return 0
-    assert pr.get_nb_tones() == 0
+    with pytest.raises(PyDpfSoundException) as excinfo:
+        pr.get_nb_tones()
+    assert str(excinfo.value) == "Output has not been processed yet, use ProminenceRatio.process()."
 
     pr.process()
     assert pr.get_nb_tones() == 14
+
+    # flat spectrum -> no peaks to detect
+    psd.data = np.ones(len(psd.data))
+    pr.process()
+    assert pr.get_nb_tones() == 0
 
 
 def test_prominence_ratio_get_peaks_frequencies(dpf_sound_test_server, create_psd_from_txt_data):
@@ -288,12 +294,12 @@ def test_prominence_ratio_get_all_tone_infos(dpf_sound_test_server, create_psd_f
     pr.psd = psd
 
     with pytest.raises(PyDpfSoundException) as excinfo:
-        pr.get_all_tone_infos(1)
-    assert str(excinfo.value) == "No peak detected."
+        pr.get_single_tone_info(1)
+    assert str(excinfo.value) == "Output has not been processed yet, use ProminenceRatio.process()."
 
     pr.process()
     with pytest.raises(PyDpfSoundException) as excinfo:
-        pr.get_all_tone_infos(14)
+        pr.get_single_tone_info(14)
     assert str(excinfo.value) == "Out of bound index. tone_index must be between 0 and 13."
 
     (
@@ -302,13 +308,20 @@ def test_prominence_ratio_get_all_tone_infos(dpf_sound_test_server, create_psd_f
         level_db,
         bandwidth_low,
         bandwidth_high,
-    ) = pr.get_all_tone_infos(6)
+    ) = pr.get_single_tone_info(6)
 
     assert peaks_frequency == pytest.approx(3671.41113281)
     assert pr_db == pytest.approx(2.68530488)
     assert level_db == pytest.approx(45.19826385)
     assert bandwidth_low == pytest.approx(3652.56958008)
     assert bandwidth_high == pytest.approx(3698.32763672)
+
+    # flat PSD -> nothing to detect
+    psd.data = np.ones(len(psd.data))
+    pr.process()
+    with pytest.raises(PyDpfSoundException) as excinfo:
+        pr.get_single_tone_info(1)
+    assert str(excinfo.value) == "No peak detected."
 
 
 def test_prominence_ratio_get_reference_curve(dpf_sound_test_server, create_psd_from_txt_data):
