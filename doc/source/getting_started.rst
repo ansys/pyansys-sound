@@ -58,6 +58,7 @@ By default, the DPF server is started from the latest Ansys installer.
 
 Getting the DPF server docker image
 """""""""""""""""""""""""""""""""""
-Follow the steps described in the DPF documentation in the `Run DPF Server in A Docker Container <https://dpf.docs.pyansys.com/version/stable/user_guide/getting_started_with_dpf_server.html#run-dpf-server-in-a-docker-container>`_ section.
+Follow the steps described in the DPF documentation in the `Run DPF Server in A Docker Container 
+<https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#run-dpf-server-in-a-docker-container>`_ section.
 Make sure you also download the composites plugin (e.g ``ansys_dpf_sound_win_v2024.1.pre0.zip``).
 After following the preceding steps, you should have a running DPF docker container that listens on port 50052.
