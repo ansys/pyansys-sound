@@ -11,3 +11,4 @@ This section describes the public classes, methods, and attributes of the PyDPF 
     signal_utilities
     spectrogram_processing
     psychoacoustics
+    xtract
