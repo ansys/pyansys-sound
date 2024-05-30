@@ -21,17 +21,17 @@ class PyDpfSound:
         self._output = None
 
     def plot(self):
-        """Plot stuff.
+        """Plot the output.
 
-        This method plots stuff.
+        Nothing to plot for this class.
         """
         warnings.warn(PyDpfSoundWarning("Nothing to plot."))
         return None
 
     def process(self):
-        """Process stuff.
+        """Process inputs.
 
-        This method processes stuff.
+        Nothing to process for this class.
 
         Returns
         -------
@@ -42,9 +42,9 @@ class PyDpfSound:
         return None
 
     def get_output(self) -> None | FieldsContainer:
-        """Output stuff.
+        """Get output.
 
-        Method for returning output.
+        Nothing to output for this class.
 
         Returns
         -------
@@ -55,9 +55,9 @@ class PyDpfSound:
         return self._output
 
     def get_output_as_nparray(self) -> ArrayLike:
-        """Output stuff as nparray.
+        """Get output as nparray.
 
-        Method for returning output as np array.
+        Nothing to output for this class.
 
         Returns
         -------
@@ -66,6 +66,25 @@ class PyDpfSound:
         """
         warnings.warn(PyDpfSoundWarning("Nothing to output."))
         return np.empty(0)
+
+    def convert_fields_container_to_np_array(self, fc):
+        """Convert fields container to numpy array.
+
+        Converts a multichannel signal contained in a DPF Fields Container into a numpy array.
+
+        Returns
+        -------
+        np.array
+                The fields container as a numpy array.
+        """
+        num_channels = len(fc)
+        np_array = np.array(fc[0].data)
+
+        if num_channels > 1:
+            for i in range(1, num_channels):
+                np_array = np.vstack((np_array, fc[i].data))
+
+        return np_array
 
 
 class PyDpfSoundException(Exception):

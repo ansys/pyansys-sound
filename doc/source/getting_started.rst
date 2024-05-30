@@ -13,7 +13,7 @@ Install the ``ansys-dpf-sound`` package with ``pip``:
 
     pip install ansys-dpf-sound
 
-Specific versions can be installed by specifying the version in the pip command. For example: ansys 2024 R1 requires ansys-dpf-sound version 0.1.0:
+Specific versions can be installed by specifying the version in the pip command. For example, Ansys 2024 R1 requires ansys-dpf-sound version 0.1.0:
 
 .. code::
 
@@ -29,10 +29,10 @@ Examples
 
 The :doc:`examples/index` section provides these basic examples for getting started:
 
-* :ref:`sphx_glr_examples_gallery_examples_001_load_write_wav_files.py`
+* :ref:`sphx_glr_examples_gallery_examples_001_load_resample_amplify_write_wav_files.py`
 
 At the end of each example, there is a button for downloading the example's Python source code.
-Input files, such as the input wav files and composite definition, are downloaded from a Git
+Input files, such as the input wav files, are downloaded from a Git
 repository when running the example.
 
 
@@ -42,7 +42,7 @@ Compatibility
 """""""""""""
 
 The following table shows which ``ansys-dpf-sound`` version is compatible with which server version (Ansys version). See :ref:`Get DPF Sound Prerelease` to get the pre-releases.
-By default the DPF server is started from the latest Ansys installer.
+By default, the DPF server is started from the latest Ansys installer.
 
 .. list-table::
    :widths: 20 20
@@ -58,6 +58,6 @@ By default the DPF server is started from the latest Ansys installer.
 
 Getting the DPF server docker image
 """""""""""""""""""""""""""""""""""
-Follow the steps described in the DPF documentation in the section `Run DPF Server in A Docker Container <https://dpf.docs.pyansys.com/version/stable/user_guide/getting_started_with_dpf_server.html#run-dpf-server-in-a-docker-container>`_.
+Follow the steps described in the DPF documentation in the `Run DPF Server in A Docker Container <https://dpf.docs.pyansys.com/version/stable/user_guide/getting_started_with_dpf_server.html#run-dpf-server-in-a-docker-container>`_ section.
 Make sure you also download the composites plugin (e.g ``ansys_dpf_sound_win_v2024.1.pre0.zip``).
-After following the preceding steps, you should have a running DPF docker container that listens to port 50052.
+After following the preceding steps, you should have a running DPF docker container that listens on port 50052.

@@ -26,7 +26,7 @@ class LoadWav(SignalUtilitiesParent):
         """
         super().__init__()
         self.path_to_wav = path_to_wav
-        self.operator = Operator("load_wav_sas")
+        self.__operator = Operator("load_wav_sas")
 
     @property
     def path_to_wav(self):
@@ -72,13 +72,13 @@ class LoadWav(SignalUtilitiesParent):
         data_source_in.add_file_path(self.path_to_wav, ".wav")
 
         # Loading wav file and storing it into a container
-        self.operator.connect(0, data_source_in)
+        self.__operator.connect(0, data_source_in)
 
         # Runs the operator
-        self.operator.run()
+        self.__operator.run()
 
         # Stores output in the variable
-        self._output = self.operator.get_output(0, "fields_container")
+        self._output = self.__operator.get_output(0, "fields_container")
 
     def get_output(self) -> FieldsContainer:
         """Return the loaded wav signal as a fields container.

@@ -9,7 +9,7 @@ from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
 class SumSignals(SignalUtilitiesParent):
-    """Sum Signals.
+    """Sum signals.
 
     This class sum signals.
     """
@@ -24,7 +24,7 @@ class SumSignals(SignalUtilitiesParent):
         """
         super().__init__()
         self.signals = signals
-        self.operator = Operator("sum_signals")
+        self.__operator = Operator("sum_signals")
 
     @property
     def signals(self):
@@ -57,13 +57,13 @@ class SumSignals(SignalUtilitiesParent):
                 "No signal on which to apply gain. Use SumSignals.set_signal()."
             )
 
-        self.operator.connect(0, self.signals)
+        self.__operator.connect(0, self.signals)
 
         # Runs the operator
-        self.operator.run()
+        self.__operator.run()
 
         # Stores output in the variable
-        self._output = self.operator.get_output(0, "field")
+        self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> Field:
         """Return the summed signals as a field.

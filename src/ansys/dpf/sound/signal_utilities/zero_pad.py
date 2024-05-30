@@ -1,4 +1,4 @@
-"""Zero pad."""
+"""Zero Pad."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -9,7 +9,7 @@ from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
 class ZeroPad(SignalUtilitiesParent):
-    """ZeroPad.
+    """Zero pad.
 
     This class zero pads (adds zeros at the end of) signals.
     """
@@ -27,7 +27,7 @@ class ZeroPad(SignalUtilitiesParent):
         super().__init__()
         self.signal = signal
         self.duration_zeros = duration_zeros
-        self.operator = Operator("append_zeros_to_signal")
+        self.__operator = Operator("append_zeros_to_signal")
 
     @property
     def signal(self):
@@ -88,17 +88,17 @@ class ZeroPad(SignalUtilitiesParent):
         if self.signal == None:
             raise PyDpfSoundException("No signal to zero-pad. Use ZeroPad.set_signal().")
 
-        self.operator.connect(0, self.signal)
-        self.operator.connect(1, float(self.duration_zeros))
+        self.__operator.connect(0, self.signal)
+        self.__operator.connect(1, float(self.duration_zeros))
 
         # Runs the operator
-        self.operator.run()
+        self.__operator.run()
 
         # Stores output in the variable
         if type(self.signal) == FieldsContainer:
-            self._output = self.operator.get_output(0, "fields_container")
+            self._output = self.__operator.get_output(0, "fields_container")
         elif type(self.signal) == Field:
-            self._output = self.operator.get_output(0, "field")
+            self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> FieldsContainer | Field:
         """Return the zero-padded signal as a fields container.
