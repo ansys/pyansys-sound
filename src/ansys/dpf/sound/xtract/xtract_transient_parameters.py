@@ -19,12 +19,15 @@ class XtractTransientParameters(XtractParent):
         Parameters
         ----------
         lower_threshold:
-            Minimum threshold (in dB) is related to the minimum energy of transient component that
-            will be detected. Must be set in accordance with the maximum threshold.
-            Default value is 0 dB SPL.
+            Minimum threshold is related to the minimum energy of transient components.
+            We recommend setting this parameter as high as possible provided that no transient
+            element remains in the remainder (non-transient signal).
+            Values between 0 and 100. Default is 0.
         upper_threshold:
-            Maximum threshold (in dB) is related to the maximum energy of the transient components.
-            Must be set as small as possible, default value is 100 dB SPL.
+            Maximum threshold (in dB) is related to the maximum energy of transient components.
+            We recommend setting this parameter as low as possible provided that no transient
+            element remains in the remainder (non-transient signal).
+            Values between 0 and 100. Default is 100.
         """
         self.__generic_data_container = GenericDataContainer()
         self.__generic_data_container.set_property("class_name", ID_TRANSIENT_PARAMETERS_CLASS)

@@ -81,7 +81,7 @@ def test_xtract_process(dpf_sound_test_server):
 
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
-    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+    params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
         -6.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
@@ -119,7 +119,7 @@ def test_xtract_denoiser_get_output_warns(dpf_sound_test_server):
 
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
-    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+    params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
         -6.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
@@ -137,7 +137,7 @@ def test_xtract_denoiser_get_output_np_array_warns(dpf_sound_test_server):
 
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
-    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+    params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
         -6.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
@@ -155,7 +155,7 @@ def test_xtract_denoiser_get_output(dpf_sound_test_server):
 
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
-    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+    params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
         -6.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
@@ -187,7 +187,7 @@ def test_xtract_denoiser_get_output_noprocess(dpf_sound_test_server):
 
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
-    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+    params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
         -6.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
@@ -208,7 +208,7 @@ def test_xtract_denoiser_get_output_fc(dpf_sound_test_server):
 
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
-    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+    params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
         -6.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
@@ -253,7 +253,7 @@ def test_xtract_denoiser_get_output_as_nparray(dpf_sound_test_server):
 
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
-    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+    params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
         -6.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
@@ -288,7 +288,7 @@ def test_xtract_denoiser_get_output_fc_as_nparray(dpf_sound_test_server):
 
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
-    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+    params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
         -6.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
@@ -316,7 +316,7 @@ def test_xtract_denoiser_setters(dpf_sound_test_server):
 
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
-    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+    params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
         -6.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
@@ -342,7 +342,7 @@ def test_xtract_denoiser_plot_output(mock_show, dpf_sound_test_server):
 
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
-    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+    params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
         -6.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
@@ -363,7 +363,7 @@ def test_xtract_denoiser_plot_output_fc(mock_show, dpf_sound_test_server):
 
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
-    params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
+    params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
         -6.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)

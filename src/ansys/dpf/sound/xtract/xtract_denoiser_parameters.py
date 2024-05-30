@@ -6,52 +6,55 @@ from . import XtractParent
 from ..pydpf_sound import PyDpfSoundException
 
 ID_DENOISER_PARAMETERS_CLASS = "Xtract_denoiser_parameters"
-ID_NOISE_LEVELS = "noise_levels"
+ID_NOISE_PSD = "noise_levels"
 
 
 class XtractDenoiserParameters(XtractParent):
     """Data class for denoiser parameters that can be used in Xtract and XtractDenoiser."""
 
-    def __init__(self, noise_levels: Field = None):
+    def __init__(self, noise_psd: Field = None):
         """Init.
 
         Parameters
         ----------
-        noise_levels:
-            Noise levels are expected as a Field, the data corresponds
-            to the amplitudes of the spectrum noise.
+        noise_psd:
+            Power spectral density of the noise in unit^2/Hz (Pa^2/Hz for example).
+            Can be produced using either:
+            - XtractDenoiserParameters.create_noise_psd_from_white_noise_level()
+            - XtractDenoiserParameters.create_noise_psd_from_noise_samples()
+            - XtractDenoiserParameters.create_noise_psd_from_automatic_estimation()
         """
         self.__generic_data_container = GenericDataContainer()
         self.__generic_data_container.set_property("class_name", ID_DENOISER_PARAMETERS_CLASS)
 
-        if noise_levels is None:
-            noise_levels = Field()
+        if noise_psd is None:
+            noise_psd = Field()
 
-        self.noise_levels = noise_levels
+        self.noise_psd = noise_psd
 
     @property
-    def noise_levels(self):
-        """Noise levels property."""
-        return self.__generic_data_container.get_property(ID_NOISE_LEVELS)  # pragma: no cover
+    def noise_psd(self):
+        """Noise PSD property."""
+        return self.__generic_data_container.get_property(ID_NOISE_PSD)  # pragma: no cover
 
-    @noise_levels.setter
-    def noise_levels(self, noise_levels: Field):
-        """Set the noise levels."""
-        if noise_levels is None:
-            raise PyDpfSoundException("Noise levels must be a non-empty Field.")
+    @noise_psd.setter
+    def noise_psd(self, noise_psd: Field):
+        """Set the noise PSD."""
+        if noise_psd is None:
+            raise PyDpfSoundException("Noise PSD must be a non-empty Field.")
 
-        self.__generic_data_container.set_property(ID_NOISE_LEVELS, noise_levels)
+        self.__generic_data_container.set_property(ID_NOISE_PSD, noise_psd)
 
-    @noise_levels.getter
-    def noise_levels(self) -> Field:
-        """Get the noise levels.
+    @noise_psd.getter
+    def noise_psd(self) -> Field:
+        """Get the noise PSD.
 
         Returns
         -------
         Field
-            The noise levels as a Field.
+            The noise PSD as a Field.
         """
-        return self.__generic_data_container.get_property(ID_NOISE_LEVELS)
+        return self.__generic_data_container.get_property(ID_NOISE_PSD)
 
     def get_parameters_as_generic_data_container(self) -> GenericDataContainer:
         """Get the parameters as generic data container.
@@ -63,14 +66,14 @@ class XtractDenoiserParameters(XtractParent):
         """
         return self.__generic_data_container
 
-    def create_noise_levels_from_white_noise_power(
-        self, white_noise_power: float, sampling_frequency: float, window_length: int = 50
+    def create_noise_psd_from_white_noise_level(
+        self, white_noise_level: float, sampling_frequency: float, window_length: int = 50
     ) -> Field:
-        """Create noise levels from white noise power.
+        """Create a power spectral density of noise from white noise level.
 
         Parameters
         ----------
-        white_noise_power:
+        white_noise_level:
             Power of the white noise (dB SPL).
         sampling_frequency:
             Sampling frequency in Hz of the signal to denoise
@@ -78,9 +81,14 @@ class XtractDenoiserParameters(XtractParent):
         window_length:
             (Optional) Window length for the noise level estimation in ms.
             Default is 50 ms.
+
+        Returns
+        -------
+        Field
+            Power spectral density of noise in unit^2/Hz (Pa^2/Hz for example).
         """
         op = Operator("create_noise_profile_from_white_noise_power")
-        op.connect(0, white_noise_power)
+        op.connect(0, white_noise_level)
         op.connect(1, sampling_frequency)
         op.connect(2, int(window_length))
         op.run()
@@ -88,10 +96,10 @@ class XtractDenoiserParameters(XtractParent):
         f = op.get_output(0, "field")
         return f
 
-    def create_noise_levels_from_noise_samples(
+    def create_noise_psd_from_noise_samples(
         self, signal: Field, sampling_frequency: float, window_length: int = 50
     ) -> Field:
-        """Create noise levels from specific noise samples.
+        """Create a power spectral density of noise from specific noise samples.
 
         Parameters
         ----------
@@ -104,6 +112,11 @@ class XtractDenoiserParameters(XtractParent):
         window_length:
             (Optional) Window length for the noise level estimation in ms.
             Default is 50 ms.
+
+        Returns
+        -------
+        Field
+            Power spectral density of noise in unit^2/Hz (Pa^2/Hz for example).
         """
         op = Operator("create_noise_profile_from_noise_samples")
         op.connect(0, signal)
@@ -114,10 +127,10 @@ class XtractDenoiserParameters(XtractParent):
         f = op.get_output(0, "field")
         return f
 
-    def create_noise_levels_from_automatic_estimation(
+    def create_noise_psd_from_automatic_estimation(
         self, signal: Field, window_length: int = 50
     ) -> Field:
-        """Create noise levels using an automatic estimation.
+        """Create a power spectral density of noise using an automatic estimation.
 
         Parameters
         ----------
@@ -126,6 +139,11 @@ class XtractDenoiserParameters(XtractParent):
         window_length:
             (Optional) Window length for the noise level estimation in ms.
             Default is 50 ms.
+
+        Returns
+        -------
+        Field
+            Power spectral density of noise in unit^2/Hz (Pa^2/Hz for example).
         """
         op = Operator("create_noise_profile_from_automatic_estimation")
         op.connect(0, signal)

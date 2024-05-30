@@ -40,7 +40,7 @@ class Xtract(XtractParent):
             Signal(s) on which to apply the XTRACT processing, as a field or fields container.
         parameters_denoiser:
             Structure that contains the parameters of the denoising step:
-            - Noise levels (Field): level vs frequency of the noise
+            - Noise PSD (Field): Power spectral density of the noise
             This structure is of type XtractDenoiserParameters (see this class for more details).
         parameters_tonal:
             Structure that contains the parameters of the tonal extraction step:
@@ -102,7 +102,7 @@ class Xtract(XtractParent):
         -------
         XtractDenoiserParameters
             Structure that contains the parameters of the denoising step:
-                - Noise levels (Field): level vs frequency of the noise
+                - Noise PSD (Field): Power spectral density of the noise
         """
         return self.__parameters_denoiser
 

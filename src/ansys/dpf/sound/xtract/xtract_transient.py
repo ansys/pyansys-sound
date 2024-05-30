@@ -33,8 +33,8 @@ class XtractTransient(XtractParent):
             each signal (each field of the fields container) is processed individually.
         input_parameters:
             Structure that contains the parameters of the algorithm:
-            - Lower threshold (float), between 0 and 100 percent
-            - Upper threshold (float), between 0 and 100 percent
+            - Lower threshold (float), between 0 and 100.
+            - Upper threshold (float), between 0 and 100.
             This structure is of type XtractTransientParameters (see this class for more details).
         output_transient_signals:
             Transient signal(s), as a field or fields container (depending on the input).

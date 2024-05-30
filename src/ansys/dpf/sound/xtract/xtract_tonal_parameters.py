@@ -32,10 +32,9 @@ class XtractTonalParameters(XtractParent):
         ----------
         regularity:
             Regularity parameter, this parameter is designed to reject tonal components with too
-            much frequency variation.
-            Lowering this parameter will discard tonal components whose frequency
-            evolutions are too erratic.
-            Values between 0 and 1. Default is 1 (100%).
+            much frequency variation. We recommend starting with the default value (1), then
+            lowering it to remove detected tonals whose frequency evolutions are too erratic.
+            Values between 0 and 1. Default is 1.
         maximum_slope:
             Maximum slope in Hz/s for each tonal component.
             A higher value enables finding tonal components with a greater
