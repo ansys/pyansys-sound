@@ -11,3 +11,4 @@ This section describes the public classes, methods, and attributes of the PyAnsy
     signal_utilities
     spectrogram_processing
     psychoacoustics
+    xtract

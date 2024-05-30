@@ -170,6 +170,7 @@ class IsolateOrders(SpectrogramProcessingParent):
             and window_type != "HANNING"
             and window_type != "KAISER"
             and window_type != "BARTLETT"
+            and window_type != "BLACKMAN"
             and window_type != "RECTANGULAR"
         ):
             raise PyAnsysSoundException(
@@ -323,6 +324,8 @@ class IsolateOrders(SpectrogramProcessingParent):
 
         for i in range(num_channels):
             plt.plot(time_data, output[i].data, label="Channel {}".format(i))
+        else:
+            plt.plot(time_data, field.data, label="Channel 0")
 
         plt.title(field.name)
         plt.legend()

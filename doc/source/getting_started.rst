@@ -13,7 +13,7 @@ Install the ``ansys-sound-core`` package with ``pip``:
 
     pip install ansys-sound-core
 
-Specific versions can be installed by specifying the version in the pip command. For example: Ansys 2024 R1 requires ansys-sound-core version 0.1.0:
+Specific versions can be installed by specifying the version in the pip command. For example, Ansys 2024 R1 requires ansys-sound-core version 0.1.0:
 
 .. code::
 
@@ -29,7 +29,7 @@ Examples
 
 The :doc:`examples/index` section provides these basic examples for getting started:
 
-* :ref:`sphx_glr_examples_gallery_examples_001_load_write_wav_files.py`
+* :ref:`sphx_glr_examples_gallery_examples_001_load_resample_amplify_write_wav_files.py`
 
 At the end of each example, there is a button for downloading the example's Python source code.
 Input files, such as the input wav files, are downloaded from a Git
