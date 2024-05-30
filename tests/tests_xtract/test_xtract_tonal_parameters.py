@@ -1,7 +1,7 @@
 from ansys.dpf.core import GenericDataContainer
+from ansys.dpf.sound.pydpf_sound import PyDpfSoundException
 import pytest
 
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException
 from ansys.dpf.sound.xtract.xtract_tonal_parameters import XtractTonalParameters
 
 
