@@ -73,7 +73,7 @@ class XtractDenoiserParameters(XtractParent):
         white_noise_power:
             Power of the white noise (dB SPL).
         sampling_frequency:
-            Sampling frequency of the signal to denoise
+            Sampling frequency in Hz of the signal to denoise
             (which can be different from the signal used for creating the noise profile).
         window_length:
             (Optional) Window length for the noise level estimation in ms.
@@ -91,16 +91,16 @@ class XtractDenoiserParameters(XtractParent):
     def create_noise_levels_from_noise_samples(
         self, signal: Field, sampling_frequency: float, window_length: int = 50
     ) -> Field:
-        """Create noise levels from white noise power.
+        """Create noise levels from specific noise samples.
 
         Parameters
         ----------
-        white_noise_power:
-            Signal (field) of noise.
+        signal:
+            Noise signal (field).
         sampling_frequency:
-            (Optional) Sampling frequency of the signal to denoise
+            (Optional) Sampling frequency in Hz of the signal to denoise
             (which can be different from the signal used for creating the noise profile).
-            Default is the sampling frequency of the noise signal").
+            Default is the sampling frequency of the noise signal.
         window_length:
             (Optional) Window length for the noise level estimation in ms.
             Default is 50 ms.
@@ -117,12 +117,12 @@ class XtractDenoiserParameters(XtractParent):
     def create_noise_levels_from_automatic_estimation(
         self, signal: Field, window_length: int = 50
     ) -> Field:
-        """Create noise levels from white noise power.
+        """Create noise levels using an automatic estimation.
 
         Parameters
         ----------
-        white_noise_power:
-            Signal (filed) from which to estimate the noise profile.
+        signal:
+            Signal (field) from which to estimate the noise profile.
         window_length:
             (Optional) Window length for the noise level estimation in ms.
             Default is 50 ms.
