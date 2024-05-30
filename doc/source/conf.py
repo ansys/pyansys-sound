@@ -124,7 +124,7 @@ sphinx_gallery_conf = {
 }
 
 suppress_warnings = ["config.cache"]
- 
+
 exclude_patterns = [
     "_build",
     "Thumbs.db",
