@@ -194,7 +194,7 @@ jobs:
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           skip-install: true
-          sphinxopts: -j auto -M --keep-going
+          sphinxopts: -j auto -W --keep-going
 
       - name: "Deploy"
         if: contains(github.ref, 'refs/heads/main')
