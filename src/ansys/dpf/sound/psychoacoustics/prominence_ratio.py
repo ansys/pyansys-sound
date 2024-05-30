@@ -119,7 +119,7 @@ class ProminenceRatio(PsychoacousticsParent):
         self.__operator.run()
 
         # Stores outputs in the tuple variable
-        self._output = (self.__operator.get_output(0, "generic_data_container"),)
+        self._output = self.__operator.get_output(0, "generic_data_container")
 
     def get_output(self) -> GenericDataContainer:
         """Return prominence ration data in a tuple of GenericDataContainer.
@@ -158,12 +158,12 @@ class ProminenceRatio(PsychoacousticsParent):
             return None
 
         return (
-            np.copy(pr_container[0].get_property("frequency_Hz").data),
-            np.copy(pr_container[0].get_property("PR_dB").data),
-            np.copy(pr_container[0].get_property("level_dB").data),
-            np.copy(pr_container[0].get_property("bandwidth_lower_Hz").data),
-            np.copy(pr_container[0].get_property("bandwidth_higher_Hz").data),
-            np.copy(pr_container[0].get_property("PR_max")),
+            np.copy(pr_container.get_property("frequency_Hz").data),
+            np.copy(pr_container.get_property("PR_dB").data),
+            np.copy(pr_container.get_property("level_dB").data),
+            np.copy(pr_container.get_property("bandwidth_lower_Hz").data),
+            np.copy(pr_container.get_property("bandwidth_higher_Hz").data),
+            np.copy(pr_container.get_property("PR_max")),
         )
 
     def get_nb_tones(self) -> int:
@@ -238,7 +238,7 @@ class ProminenceRatio(PsychoacousticsParent):
 
         if not 0 <= tone_index < nb_tones:
             raise PyDpfSoundException(
-                f"Out of bound index. tone_index must be between 0 and {nb_tones}."
+                f"Out of bound index. tone_index must be between 0 and {nb_tones - 1}."
             )
 
         return (
@@ -254,6 +254,9 @@ class ProminenceRatio(PsychoacousticsParent):
 
         If PR is higher, then the tone is prominent.
         """
+        if self.__psd == None:
+            raise PyDpfSoundException("No PSD set. Use ProminenceRatio.psd.")
+
         all_frequencies = np.copy(self.__psd.time_freq_support.time_frequencies.data)
         curve_length = len(all_frequencies)
         ref_curve = np.ndarray(curve_length)
@@ -285,6 +288,12 @@ class ProminenceRatio(PsychoacousticsParent):
         PR_values = self.get_PR_values()
 
         all_frequencies = np.copy(self.__psd.time_freq_support.time_frequencies.data)
+
+        # Cut both curves at 11220 Hz,
+        # which is the maximum frequency for which the reference curve is defined
+        max_index = np.min(np.where(all_frequencies > 11220)) + 1
+        all_frequencies = all_frequencies[:max_index]
+
         final_curve_length = len(all_frequencies)
         PR_final_curve = np.ndarray(final_curve_length)
         PR_final_curve.fill(0)
@@ -292,7 +301,6 @@ class ProminenceRatio(PsychoacousticsParent):
         # for each tone:
         # - find its corresponding index in all_frequencies
         # - replace this index in PR_final_curve by corresponding PR value
-
         for tone_index in range(self.get_nb_tones()):
             tone = tones_frequencies[tone_index]
             PR_value = PR_values[tone_index]
@@ -301,10 +309,16 @@ class ProminenceRatio(PsychoacousticsParent):
                     PR_final_curve[index] = PR_value
                     break
 
+        # Plot
         plt.plot(all_frequencies, PR_final_curve, color="blue", label="PR")
         plt.plot(
-            all_frequencies, self.get_reference_curve(), color="black", label="Reference curve"
+            all_frequencies,
+            self.get_reference_curve()[:max_index],
+            color="black",
+            label="Reference curve",
         )
+
+        plt.legend()
         plt.title("Prominence Ratio")
         plt.xlabel("Frequency (Hz)")
         plt.ylabel("PR (dB)")

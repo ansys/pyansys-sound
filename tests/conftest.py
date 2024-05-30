@@ -13,6 +13,7 @@ def pytest_configure():
     pytest.data_path_flute2_in_container = "C:\\data\\flute2.wav"
     pytest.data_path_white_noise_in_container = "C:\\data\\white_noise.wav"
     pytest.data_path_accel_with_rpm_in_container = "C:\\data\\accel_with_rpm.wav"
+    pytest.data_path_flute_psd_in_container = "C:\\data\\flute_psd.txt"
 
 
 @pytest.fixture(scope="session")
