@@ -54,7 +54,7 @@ def create_psd_from_txt_data():
     return psd
 
 
-def test_prominence_ratio_instanciation(dpf_sound_test_server):
+def test_prominence_ratio_instantiation(dpf_sound_test_server):
     pr = ProminenceRatio()
     assert pr != None
 
