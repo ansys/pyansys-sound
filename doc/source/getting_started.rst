@@ -13,7 +13,7 @@ Install the ``ansys-dpf-sound`` package with ``pip``:
 
     pip install ansys-dpf-sound
 
-Specific versions can be installed by specifying the version in the pip command. For example: Ansys 2024 R1 requires ansys-dpf-sound version 0.1.0:
+Specific versions can be installed by specifying the version in the pip command. For example, Ansys 2024 R1 requires ansys-dpf-sound version 0.1.0:
 
 .. code::
 
