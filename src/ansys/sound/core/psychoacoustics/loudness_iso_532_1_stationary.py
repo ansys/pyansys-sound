@@ -7,7 +7,7 @@ import numpy as np
 from numpy import typing as npt
 
 from . import PsychoacousticsParent
-from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 LOUDNESS_SONE_ID = "sone"
 LOUDNESS_LEVEL_PHON_ID = "phon"
@@ -67,7 +67,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         Calls the appropriate DPF Sound operator to compute the loudness of the signal.
         """
         if self.__signal == None:
-            raise PyDpfSoundException(
+            raise PyAnsysSoundException(
                 "No signal for loudness computation. Use LoudnessISO532_1_Stationary.signal."
             )
 
@@ -102,7 +102,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         """
         if self._output == None:
             warnings.warn(
-                PyDpfSoundWarning(
+                PyAnsysSoundWarning(
                     "Output has not been processed yet, use LoudnessISO532_1_Stationary.process()."
                 )
             )
@@ -229,7 +229,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         index is displayed.
         """
         if self._output == None:
-            raise PyDpfSoundException(
+            raise PyAnsysSoundException(
                 "Output has not been processed yet, use LoudnessISO532_1_Stationary.process()."
             )
 
@@ -292,7 +292,9 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         # Check that specified channel index exists.
         if channel_index > channel_max:
-            raise PyDpfSoundException(f"Specified channel index ({channel_index}) does not exist.")
+            raise PyAnsysSoundException(
+                f"Specified channel index ({channel_index}) does not exist."
+            )
 
         # Return output parameter (loudness, loudness level, or specific loudness) for the specified
         # channel.
@@ -307,7 +309,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
             elif output_id == LOUDNESS_LEVEL_PHON_ID:
                 unit_index = 1
             else:
-                raise PyDpfSoundException("Invalid identifier of output parameter.")
+                raise PyAnsysSoundException("Invalid identifier of output parameter.")
 
             if channel_max > 0:
                 return loudness_data[unit_index][channel_index][0]

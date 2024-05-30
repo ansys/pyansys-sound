@@ -8,7 +8,7 @@ import numpy as np
 from numpy import typing as npt
 
 from . import SpectrogramProcessingParent
-from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Stft(SpectrogramProcessingParent):
@@ -61,7 +61,7 @@ class Stft(SpectrogramProcessingParent):
         """Set the signal."""
         if type(signal) == FieldsContainer:
             if len(signal) > 1:
-                raise PyDpfSoundException(
+                raise PyAnsysSoundException(
                     "Input as FieldsContainer can only have one Field (mono signal)."
                 )
             else:
@@ -89,7 +89,7 @@ class Stft(SpectrogramProcessingParent):
     def fft_size(self, fft_size):
         """Set the FFT size."""
         if fft_size < 0:
-            raise PyDpfSoundException("FFT size must be greater than 0.0.")
+            raise PyAnsysSoundException("FFT size must be greater than 0.0.")
         self.__fft_size = fft_size
 
     @fft_size.getter
@@ -120,7 +120,7 @@ class Stft(SpectrogramProcessingParent):
             and window_type != "BARTLETT"
             and window_type != "RECTANGULAR"
         ):
-            raise PyDpfSoundException(
+            raise PyAnsysSoundException(
                 "Invalid window type, accepted values are 'HANNING', 'BLACKMANHARRIS', 'HANN', \
                     'BLACKMAN','HAMMING', 'KAISER', 'BARTLETT', 'RECTANGULAR'."
             )
@@ -147,7 +147,7 @@ class Stft(SpectrogramProcessingParent):
     def window_overlap(self, window_overlap):
         """Set the window overlap."""
         if window_overlap < 0.0 or window_overlap > 1.0:
-            raise PyDpfSoundException("Window overlap must be between 0.0 and 1.0.")
+            raise PyAnsysSoundException("Window overlap must be between 0.0 and 1.0.")
 
         self.__window_overlap = window_overlap
 
@@ -168,7 +168,7 @@ class Stft(SpectrogramProcessingParent):
         Calls the appropriate DPF Sound operator to compute the STFT of the signal.
         """
         if self.signal == None:
-            raise PyDpfSoundException("No signal for STFT. Use Stft.signal.")
+            raise PyAnsysSoundException("No signal for STFT. Use Stft.signal.")
 
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, int(self.fft_size))
@@ -192,7 +192,7 @@ class Stft(SpectrogramProcessingParent):
         if self._output == None:
             # Computing output if needed
             warnings.warn(
-                PyDpfSoundWarning("Output has not been yet processed, use Stft.process().")
+                PyAnsysSoundWarning("Output has not been yet processed, use Stft.process().")
             )
 
         return self._output

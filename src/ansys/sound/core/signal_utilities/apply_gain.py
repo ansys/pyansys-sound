@@ -6,7 +6,7 @@ from ansys.dpf.core import Field, FieldsContainer, Operator
 from numpy import typing as npt
 
 from . import SignalUtilitiesParent
-from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class ApplyGain(SignalUtilitiesParent):
@@ -99,7 +99,7 @@ class ApplyGain(SignalUtilitiesParent):
             True to set the gain in dB, false otherwise.
         """
         if type(new_gain_in_db) is not bool:
-            raise PyDpfSoundException(
+            raise PyAnsysSoundException(
                 "new_gain_in_db must be a boolean value, either True or False."
             )
 
@@ -122,7 +122,7 @@ class ApplyGain(SignalUtilitiesParent):
         Calls the appropriate DPF Sound operator to apply gain to the signal.
         """
         if self.signal == None:
-            raise PyDpfSoundException(
+            raise PyAnsysSoundException(
                 "No signal on which to apply gain. Use ApplyGain.set_signal()."
             )
 
@@ -150,7 +150,7 @@ class ApplyGain(SignalUtilitiesParent):
         if self._output == None:
             # Computing output if needed
             warnings.warn(
-                PyDpfSoundWarning("Output has not been yet processed, use ApplyGain.process().")
+                PyAnsysSoundWarning("Output has not been yet processed, use ApplyGain.process().")
             )
 
         return self._output

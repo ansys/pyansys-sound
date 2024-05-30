@@ -8,7 +8,7 @@ import numpy as np
 from numpy import typing as npt
 
 from . import SpectrogramProcessingParent
-from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Istft(SpectrogramProcessingParent):
@@ -38,14 +38,14 @@ class Istft(SpectrogramProcessingParent):
     def stft(self, stft: FieldsContainer):
         """Set the STFT."""
         if type(stft) != FieldsContainer and stft != None:
-            raise PyDpfSoundException("Input must be a Fields container.")
+            raise PyAnsysSoundException("Input must be a Fields container.")
 
         if stft != None and (
             not stft.has_label("time")
             or not stft.has_label("complex")
             or not stft.has_label("channel_number")
         ):
-            raise PyDpfSoundException(
+            raise PyAnsysSoundException(
                 "STFT is in the wrong format, make sure it has been computed with the Stft class."
             )
 
@@ -68,7 +68,7 @@ class Istft(SpectrogramProcessingParent):
         Calls the appropriate DPF Sound operator to compute the Inverse STFT of the STFT.
         """
         if self.stft == None:
-            raise PyDpfSoundException("No STFT input for ISTFT computation. Use Istft.stft.")
+            raise PyAnsysSoundException("No STFT input for ISTFT computation. Use Istft.stft.")
 
         self.__operator.connect(0, self.stft)
 
@@ -89,7 +89,7 @@ class Istft(SpectrogramProcessingParent):
         if self._output == None:
             # Computing output if needed
             warnings.warn(
-                PyDpfSoundWarning("Output has not been yet processed, use Istft.process().")
+                PyAnsysSoundWarning("Output has not been yet processed, use Istft.process().")
             )
 
         return self._output

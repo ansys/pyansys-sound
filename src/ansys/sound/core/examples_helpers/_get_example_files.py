@@ -1,4 +1,4 @@
-"""Helpers to get examples files for PyDPF Sound."""
+"""Helpers to get examples files for PyAnsys Sound."""
 import os
 import pathlib
 

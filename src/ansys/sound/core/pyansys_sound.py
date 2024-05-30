@@ -1,4 +1,4 @@
-"""PyDpf sound interface."""
+"""PyAnsys Sound interface."""
 import warnings
 
 from ansys.dpf.core import FieldsContainer
@@ -6,15 +6,15 @@ import numpy as np
 from numpy.typing import ArrayLike
 
 
-class PyDpfSound:
+class PyAnsysSound:
     """
-    Abstract mother class for PyDpf Sound.
+    Abstract mother class for PyAnsys Sound.
 
-    This is the mother of all PyDpfSound classes, should not be used as is.
+    This is the mother of all PyAnsysSound classes, should not be used as is.
     """
 
     def __init__(self):
-        """Init class PyDpfSound.
+        """Init class PyAnsysSound.
 
         This function inits the class by filling its attributes.
         """
@@ -25,7 +25,7 @@ class PyDpfSound:
 
         Nothing to plot for this class.
         """
-        warnings.warn(PyDpfSoundWarning("Nothing to plot."))
+        warnings.warn(PyAnsysSoundWarning("Nothing to plot."))
         return None
 
     def process(self):
@@ -38,7 +38,7 @@ class PyDpfSound:
         None
                 None.
         """
-        warnings.warn(PyDpfSoundWarning("Nothing to process."))
+        warnings.warn(PyAnsysSoundWarning("Nothing to process."))
         return None
 
     def get_output(self) -> None | FieldsContainer:
@@ -51,7 +51,7 @@ class PyDpfSound:
         FieldsContainer
                 Empty fields container.
         """
-        warnings.warn(PyDpfSoundWarning("Nothing to output."))
+        warnings.warn(PyAnsysSoundWarning("Nothing to output."))
         return self._output
 
     def get_output_as_nparray(self) -> ArrayLike:
@@ -64,7 +64,7 @@ class PyDpfSound:
         np.array
                 Empty numpy array.
         """
-        warnings.warn(PyDpfSoundWarning("Nothing to output."))
+        warnings.warn(PyAnsysSoundWarning("Nothing to output."))
         return np.empty(0)
 
     def convert_fields_container_to_np_array(self, fc):
@@ -87,16 +87,16 @@ class PyDpfSound:
         return np_array
 
 
-class PyDpfSoundException(Exception):
-    """PyDPF Sound Exception."""
+class PyAnsysSoundException(Exception):
+    """PyAnsys Sound Exception."""
 
     def __init__(self, *args: object) -> None:
         """Init method."""
         super().__init__(*args)
 
 
-class PyDpfSoundWarning(Warning):
-    """PyDPF Sound Warning."""
+class PyAnsysSoundWarning(Warning):
+    """PyAnsys Sound Warning."""
 
     def __init__(self, *args: object) -> None:
         """Init method."""

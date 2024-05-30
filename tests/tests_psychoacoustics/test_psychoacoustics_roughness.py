@@ -4,9 +4,9 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.psychoacoustics import Roughness
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
-from ansys.dpf.sound.signal_utilities import LoadWav
+from ansys.sound.core.psychoacoustics import Roughness
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.signal_utilities import LoadWav
 
 EXP_ROUGHNESS_1 = 0.5495809316635132
 EXP_ROUGHNESS_2 = 0.20937225222587585
@@ -36,7 +36,7 @@ def test_roughness_process(dpf_sound_test_server):
 
     # No signal -> error
     with pytest.raises(
-        PyDpfSoundException,
+        PyAnsysSoundException,
         match="No signal for roughness computation. Use Roughness.signal.",
     ):
         roughness_computer.process()
@@ -67,7 +67,7 @@ def test_roughness_get_output(dpf_sound_test_server):
 
     # Roughness not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use Roughness.process().",
     ):
         output = roughness_computer.get_output()
@@ -96,7 +96,7 @@ def test_roughness_get_roughness(dpf_sound_test_server):
 
     # Roughness not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use Roughness.process().",
     ):
         output = roughness_computer.get_roughness()
@@ -110,7 +110,7 @@ def test_roughness_get_roughness(dpf_sound_test_server):
 
     # Request second channel's roughness while signal is a field (mono) -> error
     with pytest.raises(
-        PyDpfSoundException, match="Specified channel index \\(1\\) does not exist."
+        PyAnsysSoundException, match="Specified channel index \\(1\\) does not exist."
     ):
         roughness = roughness_computer.get_roughness(1)
 
@@ -126,7 +126,7 @@ def test_roughness_get_roughness(dpf_sound_test_server):
 
     # Request second channel's roughness while signal is mono -> error
     with pytest.raises(
-        PyDpfSoundException, match="Specified channel index \\(1\\) does not exist."
+        PyAnsysSoundException, match="Specified channel index \\(1\\) does not exist."
     ):
         roughness = roughness_computer.get_roughness(1)
 
@@ -158,7 +158,7 @@ def test_roughness_get_specific_roughness(dpf_sound_test_server):
 
     # Roughness not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use Roughness.process().",
     ):
         output = roughness_computer.get_specific_roughness()
@@ -204,7 +204,7 @@ def test_roughness_get_bark_band_indexes(dpf_sound_test_server):
 
     # Roughness not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use Roughness.process().",
     ):
         output = roughness_computer.get_bark_band_indexes()
@@ -269,7 +269,7 @@ def test_roughness_get_output_as_nparray_from_fields_container(dpf_sound_test_se
 
     # Roughness not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use Roughness.process().",
     ):
         output = roughness_computer.get_output_as_nparray()
@@ -331,7 +331,7 @@ def test_roughness_plot_from_fields_container(mock_show, dpf_sound_test_server):
 
     # Roughness not computed yet -> error
     with pytest.raises(
-        PyDpfSoundException,
+        PyAnsysSoundException,
         match="Output has not been processed yet, use Roughness.process().",
     ):
         roughness_computer.plot()

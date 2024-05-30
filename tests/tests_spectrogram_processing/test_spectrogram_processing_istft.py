@@ -4,9 +4,9 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
-from ansys.dpf.sound.signal_utilities import LoadWav
-from ansys.dpf.sound.spectrogram_processing import Istft, Stft
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.signal_utilities import LoadWav
+from ansys.sound.core.spectrogram_processing import Istft, Stft
 
 
 @pytest.mark.dependency()
@@ -24,7 +24,7 @@ def test_istft_process(dpf_sound_test_server):
     istft = Istft()
 
     # Error 1
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         istft.process()
     assert str(excinfo.value) == "No STFT input for ISTFT computation. Use Istft.stft."
 
@@ -46,7 +46,7 @@ def test_istft_get_output(dpf_sound_test_server):
     istft = Istft(stft=stft.get_output())
 
     with pytest.warns(
-        PyDpfSoundWarning, match="Output has not been yet processed, use Istft.process()."
+        PyAnsysSoundWarning, match="Output has not been yet processed, use Istft.process()."
     ):
         fc_out = istft.get_output()
 
@@ -87,11 +87,11 @@ def test_istft_set_get_signal(dpf_sound_test_server):
     fc.add_field({"channel": 0}, f)
 
     # Error
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         istft.stft = 456
     assert str(excinfo.value) == "Input must be a Fields container."
 
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         istft.stft = fc
     assert (
         str(excinfo.value)

@@ -5,7 +5,7 @@ import warnings
 from ansys.dpf.core import DataSources, FieldsContainer, Operator
 
 from . import SignalUtilitiesParent
-from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class WriteWav(SignalUtilitiesParent):
@@ -78,7 +78,7 @@ class WriteWav(SignalUtilitiesParent):
             and bit_depth != "int32"
             and bit_depth != "float32"
         ):
-            raise PyDpfSoundException(
+            raise PyAnsysSoundException(
                 "Invalid bit depth, accepted values are 'float32', 'int32', 'int16', 'int8'."
             )
 
@@ -125,12 +125,12 @@ class WriteWav(SignalUtilitiesParent):
         Calls the appropriate DPF Sound operator to writes the wav file.
         """
         if self.path_to_write == "":
-            raise PyDpfSoundException(
+            raise PyAnsysSoundException(
                 "Path for write wav file is not specified. Use WriteWav.set_path."
             )
 
         if self.signal == None:
-            raise PyDpfSoundException(
+            raise PyAnsysSoundException(
                 "No signal is specified for writing, use WriteWav.set_signal."
             )
 
@@ -148,4 +148,4 @@ class WriteWav(SignalUtilitiesParent):
 
         Nothing to plot for this class.
         """
-        warnings.warn(PyDpfSoundWarning("Nothing to plot."))
+        warnings.warn(PyAnsysSoundWarning("Nothing to plot."))

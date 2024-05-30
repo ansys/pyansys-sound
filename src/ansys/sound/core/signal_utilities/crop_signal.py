@@ -5,7 +5,7 @@ from ansys.dpf.core import Field, FieldsContainer, Operator
 from numpy import typing as npt
 
 from . import SignalUtilitiesParent
-from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class CropSignal(SignalUtilitiesParent):
@@ -49,7 +49,7 @@ class CropSignal(SignalUtilitiesParent):
             New start time (in seconds).
         """
         if new_start < 0.0:
-            raise PyDpfSoundException("Start time must be greater than or equal to 0.0.")
+            raise PyAnsysSoundException("Start time must be greater than or equal to 0.0.")
         self.__start_time = new_start
 
     @start_time.getter
@@ -78,10 +78,10 @@ class CropSignal(SignalUtilitiesParent):
             New end time (in seconds).
         """
         if new_end < 0.0:
-            raise PyDpfSoundException("End time must be greater than or equal to 0.0.")
+            raise PyAnsysSoundException("End time must be greater than or equal to 0.0.")
 
         if new_end < self.start_time:
-            raise PyDpfSoundException("End time must be greater than or equal to the start time.")
+            raise PyAnsysSoundException("End time must be greater than or equal to the start time.")
 
         self.__end_time = new_end
 
@@ -123,7 +123,7 @@ class CropSignal(SignalUtilitiesParent):
         Calls the appropriate DPF Sound operator to crop the signal.
         """
         if self.signal == None:
-            raise PyDpfSoundException("No signal to crop. Use CropSignal.set_signal().")
+            raise PyAnsysSoundException("No signal to crop. Use CropSignal.set_signal().")
 
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, float(self.start_time))
@@ -149,7 +149,7 @@ class CropSignal(SignalUtilitiesParent):
         if self._output == None:
             # Computing output if needed
             warnings.warn(
-                PyDpfSoundWarning("Output has not been yet processed, use CropSignal.process().")
+                PyAnsysSoundWarning("Output has not been yet processed, use CropSignal.process().")
             )
 
         return self._output

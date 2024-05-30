@@ -1,10 +1,10 @@
 """Psychoacoustics functions."""
 from numpy import typing as npt
 
-from ..pydpf_sound import PyDpfSound, PyDpfSoundException
+from ..pyansys_sound import PyAnsysSound, PyAnsysSoundException
 
 
-class PsychoacousticsParent(PyDpfSound):
+class PsychoacousticsParent(PyAnsysSound):
     """
     Abstract mother class for psychoacoustics calculations.
 
@@ -39,7 +39,7 @@ class PsychoacousticsParent(PyDpfSound):
             if not (0 <= bark_band_indexes[ibark] <= 24 + 1e-6):
                 # A slight margin (1e-6) is used for the upper limit, because the last index from
                 # the DPF operator is precisely 24.00000036.
-                raise PyDpfSoundException(
+                raise PyAnsysSoundException(
                     "Specified Bark band indexes must be between 0.0 and 24.0 Bark."
                 )
 

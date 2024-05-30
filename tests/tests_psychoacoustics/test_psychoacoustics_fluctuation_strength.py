@@ -4,9 +4,9 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.psychoacoustics import FluctuationStrength
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
-from ansys.dpf.sound.signal_utilities import LoadWav
+from ansys.sound.core.psychoacoustics import FluctuationStrength
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.signal_utilities import LoadWav
 
 EXP_FS_1 = 1.0416046380996704
 EXP_FS_2 = 0.9974160194396973
@@ -36,7 +36,7 @@ def test_fs_process(dpf_sound_test_server):
 
     # No signal -> error
     with pytest.raises(
-        PyDpfSoundException,
+        PyAnsysSoundException,
         match="No signal for fluctuation strength computation. Use FluctuationStrength.signal.",
     ):
         fs_computer.process()
@@ -67,7 +67,7 @@ def test_fs_get_output(dpf_sound_test_server):
 
     # Fluctuation strength not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use FluctuationStrength.process().",
     ):
         output = fs_computer.get_output()
@@ -96,7 +96,7 @@ def test_fs_get_fluctuation_strength(dpf_sound_test_server):
 
     # Fluctuation strength not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use FluctuationStrength.process().",
     ):
         output = fs_computer.get_fluctuation_strength()
@@ -110,7 +110,7 @@ def test_fs_get_fluctuation_strength(dpf_sound_test_server):
 
     # Request second channel's fluctuation strength while signal is a field (mono) -> error
     with pytest.raises(
-        PyDpfSoundException, match="Specified channel index \\(1\\) does not exist."
+        PyAnsysSoundException, match="Specified channel index \\(1\\) does not exist."
     ):
         fs = fs_computer.get_fluctuation_strength(1)
 
@@ -126,7 +126,7 @@ def test_fs_get_fluctuation_strength(dpf_sound_test_server):
 
     # Request second channel's fluctuation strength while signal is mono -> error
     with pytest.raises(
-        PyDpfSoundException, match="Specified channel index \\(1\\) does not exist."
+        PyAnsysSoundException, match="Specified channel index \\(1\\) does not exist."
     ):
         fs = fs_computer.get_fluctuation_strength(1)
 
@@ -158,7 +158,7 @@ def test_fs_get_specific_fluctuation_strength(dpf_sound_test_server):
 
     # Fluctuation strength not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use FluctuationStrength.process().",
     ):
         output = fs_computer.get_specific_fluctuation_strength()
@@ -206,7 +206,7 @@ def test_fs_get_bark_band_indexes(dpf_sound_test_server):
 
     # Fluctuation strength not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use FluctuationStrength.process().",
     ):
         output = fs_computer.get_bark_band_indexes()
@@ -272,7 +272,7 @@ def test_fs_get_output_as_nparray_from_fields_container(dpf_sound_test_server):
 
     # Fluctuation strength not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use FluctuationStrength.process().",
     ):
         output = fs_computer.get_output_as_nparray()
@@ -336,7 +336,7 @@ def test_fs_plot_from_fields_container(mock_show, dpf_sound_test_server):
 
     # Fluctuation strength not computed yet -> error
     with pytest.raises(
-        PyDpfSoundException,
+        PyAnsysSoundException,
         match="Output has not been processed yet, use FluctuationStrength.process().",
     ):
         fs_computer.plot()

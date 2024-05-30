@@ -20,18 +20,18 @@ It also shows how to plot specific loudness.
 
 import os
 
-from ansys.dpf.sound.examples_helpers import (
+from ansys.sound.core.examples_helpers import (
     get_absolute_path_for_flute2_wav,
     get_absolute_path_for_flute_wav,
 )
-from ansys.dpf.sound.psychoacoustics.fluctuation_strength import FluctuationStrength
-from ansys.dpf.sound.psychoacoustics.loudness_iso_532_1_stationary import (
+from ansys.sound.core.psychoacoustics.fluctuation_strength import FluctuationStrength
+from ansys.sound.core.psychoacoustics.loudness_iso_532_1_stationary import (
     LoudnessISO532_1_Stationary,
 )
-from ansys.dpf.sound.psychoacoustics.roughness import Roughness
-from ansys.dpf.sound.psychoacoustics.sharpness import Sharpness
-from ansys.dpf.sound.server_helpers import connect_to_or_start_server
-from ansys.dpf.sound.signal_utilities import LoadWav
+from ansys.sound.core.psychoacoustics.roughness import Roughness
+from ansys.sound.core.psychoacoustics.sharpness import Sharpness
+from ansys.sound.core.server_helpers import connect_to_or_start_server
+from ansys.sound.core.signal_utilities import LoadWav
 
 # Connect to remote or start a local server.
 server = connect_to_or_start_server()

@@ -1,5 +1,5 @@
 ****************
-PyDPF Sound
+PyAnsys Sound
 ****************
 
 |pyansys| |python| |GH-CI| |codecov| |MIT| |black|
@@ -31,10 +31,10 @@ PyDPF Sound
 
 .. index_start
 
-PyDPF Sound enables the post-processing and analysis of sounds based on
+PyAnsys Sound enables the post-processing and analysis of sounds based on
 `Ansys DPF`_ and the DPF Sound plugin. It is a Python wrapper which
 implements classes on top of DPF Sound operators. For
-information demonstrating the behavior and usage of PyDPF Sound,
+information demonstrating the behavior and usage of PyAnsys Sound,
 see Examples in the DPF Sound documentation.
 
 .. START_MARKER_FOR_SPHINX_DOCS
@@ -59,7 +59,7 @@ User installation can be performed by running:
 
 .. code:: bash
 
-    python -m pip install ansys-pydpf-sound
+    python -m pip install ansys-sound-core
 
 For developers
 ^^^^^^^^^^^^^^
@@ -103,7 +103,7 @@ need to follow these steps:
 
    .. code:: bash
 
-      python -m pip install --editable ansys-pydpf-sound
+      python -m pip install --editable ansys-sound-core
 
 #. Install additional requirements (if needed):
 

@@ -7,7 +7,7 @@ import numpy as np
 from numpy import typing as npt
 
 from . import PsychoacousticsParent
-from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 TOTAL_ROUGHNESS_ID = "total"
 SPECIFIC_ROUGHNESS_ID = "specific"
@@ -67,7 +67,9 @@ class Roughness(PsychoacousticsParent):
         Calls the appropriate DPF Sound operator to compute the roughness of the signal.
         """
         if self.__signal == None:
-            raise PyDpfSoundException("No signal for roughness computation. Use Roughness.signal.")
+            raise PyAnsysSoundException(
+                "No signal for roughness computation. Use Roughness.signal."
+            )
 
         self.__operator.connect(0, self.signal)
 
@@ -97,7 +99,7 @@ class Roughness(PsychoacousticsParent):
         """
         if self._output == None:
             warnings.warn(
-                PyDpfSoundWarning("Output has not been processed yet, use Roughness.process().")
+                PyAnsysSoundWarning("Output has not been processed yet, use Roughness.process().")
             )
 
         return self._output
@@ -203,7 +205,9 @@ class Roughness(PsychoacousticsParent):
         band index is displayed.
         """
         if self._output == None:
-            raise PyDpfSoundException("Output has not been processed yet, use Roughness.process().")
+            raise PyAnsysSoundException(
+                "Output has not been processed yet, use Roughness.process()."
+            )
 
         bark_band_indexes = self.get_bark_band_indexes()
         specific_roughness_as_nparray = self.get_output_as_nparray()[1]
@@ -262,7 +266,9 @@ class Roughness(PsychoacousticsParent):
 
         # Check that specified channel index exists.
         if channel_index > channel_max:
-            raise PyDpfSoundException(f"Specified channel index ({channel_index}) does not exist.")
+            raise PyAnsysSoundException(
+                f"Specified channel index ({channel_index}) does not exist."
+            )
 
         # Return output parameter (roughness or specific roughness) for the specified channel.
         if output_id == SPECIFIC_ROUGHNESS_ID:
@@ -276,4 +282,4 @@ class Roughness(PsychoacousticsParent):
             else:
                 return roughness_data[0][0]
         else:
-            raise PyDpfSoundException("Invalid identifier of output parameter.")
+            raise PyAnsysSoundException("Invalid identifier of output parameter.")

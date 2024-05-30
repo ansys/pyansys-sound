@@ -2,10 +2,10 @@
 from ansys.dpf.core import Field
 import matplotlib.pyplot as plt
 
-from ..pydpf_sound import PyDpfSound
+from ..pyansys_sound import PyAnsysSound
 
 
-class SignalUtilitiesParent(PyDpfSound):
+class SignalUtilitiesParent(PyAnsysSound):
     """
     Abstract mother class for signal utilities.
 

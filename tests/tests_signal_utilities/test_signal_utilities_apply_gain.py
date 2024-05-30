@@ -2,8 +2,8 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
-from ansys.dpf.sound.signal_utilities import ApplyGain, LoadWav
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.signal_utilities import ApplyGain, LoadWav
 
 
 @pytest.mark.dependency()
@@ -18,7 +18,7 @@ def test_apply_gain_process(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
 
     # Error 1
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         gain_applier.process()
     assert str(excinfo.value) == "No signal on which to apply gain. Use ApplyGain.set_signal()."
 
@@ -42,7 +42,7 @@ def test_apply_gain_get_output(dpf_sound_test_server):
     gain_applier = ApplyGain(signal=fc_signal, gain=12.0, gain_in_db=True)
 
     with pytest.warns(
-        PyDpfSoundWarning, match="Output has not been yet processed, use ApplyGain.process()."
+        PyAnsysSoundWarning, match="Output has not been yet processed, use ApplyGain.process()."
     ):
         fc_out = gain_applier.get_output()
 
@@ -118,7 +118,7 @@ def test_apply_gain_set_get_gain_in_db(dpf_sound_test_server):
     gain_applier = ApplyGain()
 
     # Error 1
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         gain_applier.gain_in_db = 1234.0
     assert str(excinfo.value) == "new_gain_in_db must be a boolean value, either True or False."
 

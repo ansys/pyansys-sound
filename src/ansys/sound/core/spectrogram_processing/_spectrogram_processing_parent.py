@@ -1,8 +1,8 @@
 """Spectrogram Processing."""
-from ..pydpf_sound import PyDpfSound
+from ..pyansys_sound import PyAnsysSound
 
 
-class SpectrogramProcessingParent(PyDpfSound):
+class SpectrogramProcessingParent(PyAnsysSound):
     """
     Abstract mother class for spectrogram processing.
 

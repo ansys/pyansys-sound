@@ -7,7 +7,7 @@ import numpy as np
 from numpy import typing as npt
 
 from . import PsychoacousticsParent
-from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 TOTAL_FS_ID = "total"
 SPECIFIC_FS_ID = "specific"
@@ -69,7 +69,7 @@ class FluctuationStrength(PsychoacousticsParent):
         Calls the appropriate DPF Sound operator to compute the fluctuation strength of the signal.
         """
         if self.__signal == None:
-            raise PyDpfSoundException(
+            raise PyAnsysSoundException(
                 "No signal for fluctuation strength computation. Use FluctuationStrength.signal."
             )
 
@@ -101,7 +101,7 @@ class FluctuationStrength(PsychoacousticsParent):
         """
         if self._output == None:
             warnings.warn(
-                PyDpfSoundWarning(
+                PyAnsysSoundWarning(
                     "Output has not been processed yet, use FluctuationStrength.process()."
                 )
             )
@@ -209,7 +209,7 @@ class FluctuationStrength(PsychoacousticsParent):
         of Bark band index is displayed.
         """
         if self._output == None:
-            raise PyDpfSoundException(
+            raise PyAnsysSoundException(
                 "Output has not been processed yet, use FluctuationStrength.process()."
             )
 
@@ -271,7 +271,9 @@ class FluctuationStrength(PsychoacousticsParent):
 
         # Check that specified channel index exists.
         if channel_index > channel_max:
-            raise PyDpfSoundException(f"Specified channel index ({channel_index}) does not exist.")
+            raise PyAnsysSoundException(
+                f"Specified channel index ({channel_index}) does not exist."
+            )
 
         # Return output parameter (fluctuation strength or specific fluctuation strength) for the
         # specified channel.
@@ -286,4 +288,4 @@ class FluctuationStrength(PsychoacousticsParent):
             else:
                 return fluctuation_strength_data[0][0]
         else:
-            raise PyDpfSoundException("Invalid identifier of output parameter.")
+            raise PyAnsysSoundException("Invalid identifier of output parameter.")

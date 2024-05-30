@@ -2,8 +2,8 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
-from ansys.dpf.sound.signal_utilities import CropSignal, LoadWav
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.signal_utilities import CropSignal, LoadWav
 
 
 @pytest.mark.dependency()
@@ -18,7 +18,7 @@ def test_crop_signal_process(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
 
     # Error 1
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         signal_cropper.process()
     assert str(excinfo.value) == "No signal to crop. Use CropSignal.set_signal()."
 
@@ -42,7 +42,7 @@ def test_crop_signal_get_output(dpf_sound_test_server):
     signal_cropper = CropSignal(signal=fc_signal, start_time=0.0, end_time=1.0)
 
     with pytest.warns(
-        PyDpfSoundWarning, match="Output has not been yet processed, use CropSignal.process()."
+        PyAnsysSoundWarning, match="Output has not been yet processed, use CropSignal.process()."
     ):
         fc_out = signal_cropper.get_output()
 
@@ -71,7 +71,7 @@ def test_crop_signal_get_output_as_np_array(dpf_sound_test_server):
     signal_cropper = CropSignal(signal=fc_signal, start_time=0.0, end_time=1.0)
 
     with pytest.warns(
-        PyDpfSoundWarning, match="Output has not been yet processed, use CropSignal.process()."
+        PyAnsysSoundWarning, match="Output has not been yet processed, use CropSignal.process()."
     ):
         fc_out = signal_cropper.get_output()
 
@@ -117,19 +117,19 @@ def test_crop_signal_set_get_start_end_times(dpf_sound_test_server):
     signal_cropper = CropSignal()
 
     # Error
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         signal_cropper.start_time = -12.0
     assert str(excinfo.value) == "Start time must be greater than or equal to 0.0."
 
     # Error
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         signal_cropper.end_time = -12.0
     assert str(excinfo.value) == "End time must be greater than or equal to 0.0."
 
     signal_cropper.start_time = 1.0
 
     # Error
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         signal_cropper.end_time = 0.5
     assert str(excinfo.value) == "End time must be greater than or equal to the start time."
 

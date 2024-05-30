@@ -2,9 +2,9 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.psychoacoustics import Sharpness
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
-from ansys.dpf.sound.signal_utilities import LoadWav
+from ansys.sound.core.psychoacoustics import Sharpness
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.signal_utilities import LoadWav
 
 EXP_SHARPNESS_1 = 1.6609569787979126
 EXP_SHARPNESS_2 = 2.4972000122070312
@@ -22,7 +22,7 @@ def test_sharpness_process(dpf_sound_test_server):
 
     # No signal -> error
     with pytest.raises(
-        PyDpfSoundException,
+        PyAnsysSoundException,
         match="No signal for sharpness computation. Use Sharpness.signal.",
     ):
         sharpness_computer.process()
@@ -77,7 +77,7 @@ def test_sharpness_get_sharpness(dpf_sound_test_server):
 
     # Sharpness not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use Sharpness.process().",
     ):
         sharpness = sharpness_computer.get_sharpness()
@@ -88,7 +88,7 @@ def test_sharpness_get_sharpness(dpf_sound_test_server):
 
     # Request second channel's sharpness while signal is a field (mono) -> error
     with pytest.raises(
-        PyDpfSoundException, match="Specified channel index \\(1\\) does not exist."
+        PyAnsysSoundException, match="Specified channel index \\(1\\) does not exist."
     ):
         sharpness = sharpness_computer.get_sharpness(1)
 
@@ -134,7 +134,7 @@ def test_sharpness_get_output_as_nparray_from_fields_container(
 
     # Sharpness not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use Sharpness.process().",
     ):
         sharpness = sharpness_computer.get_output_as_nparray()

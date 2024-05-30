@@ -10,7 +10,7 @@ Library
 import importlib.metadata as importlib_metadata
 
 __version__ = importlib_metadata.version(__name__.replace(".", "-"))
-"""PyDPF Sound version."""
+"""PyAnsys Sound version."""
 
 from . import examples_helpers, server_helpers, signal_utilities
 

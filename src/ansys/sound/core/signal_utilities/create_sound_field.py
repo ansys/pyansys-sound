@@ -6,7 +6,7 @@ import numpy as np
 from numpy import typing as npt
 
 from . import SignalUtilitiesParent
-from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class CreateSoundField(SignalUtilitiesParent):
@@ -101,7 +101,7 @@ class CreateSoundField(SignalUtilitiesParent):
             New sampling frequency (in Hz).
         """
         if new_sampling_frequency < 0.0:
-            raise PyDpfSoundException("Sampling frequency must be greater than or equal to 0.0.")
+            raise PyAnsysSoundException("Sampling frequency must be greater than or equal to 0.0.")
         self.__sampling_frequency = new_sampling_frequency
 
     @sampling_frequency.getter
@@ -121,7 +121,7 @@ class CreateSoundField(SignalUtilitiesParent):
         Calls the appropriate DPF Sound operator to create the sound field.
         """
         if np.size(self.data) == 0:
-            raise PyDpfSoundException("No data to use. Use CreateSoundField.set_data().")
+            raise PyAnsysSoundException("No data to use. Use CreateSoundField.set_data().")
 
         self.__operator.connect(0, self.data.tolist())
         self.__operator.connect(1, float(self.sampling_frequency))
@@ -144,7 +144,7 @@ class CreateSoundField(SignalUtilitiesParent):
         if self._output == None:
             # Computing output if needed
             warnings.warn(
-                PyDpfSoundWarning(
+                PyAnsysSoundWarning(
                     "Output has not been yet processed, use CreateSoundField.process()."
                 )
             )

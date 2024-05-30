@@ -4,9 +4,9 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.psychoacoustics import LoudnessISO532_1_TimeVarying
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException
-from ansys.dpf.sound.signal_utilities import LoadWav
+from ansys.sound.core.psychoacoustics import LoudnessISO532_1_TimeVarying
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException
+from ansys.sound.core.signal_utilities import LoadWav
 
 
 @pytest.mark.dependency()
@@ -20,7 +20,7 @@ def test_loudness_532_1_time_varying_process(dpf_sound_test_server):
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
 
     # no signal -> error 1
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         time_varying_loudness_computer.process()
     assert (
         str(excinfo.value)
@@ -451,7 +451,7 @@ def test_loudness_532_1_time_varying_plot_from_field_container(mock_show, dpf_so
 
     # Plot before process -> error
     with pytest.raises(
-        PyDpfSoundException,
+        PyAnsysSoundException,
         match="Output has not been processed yet, use LoudnessISO532_1_TimeVarying.process().",
     ):
         time_varying_loudness_computer.plot()
@@ -534,7 +534,7 @@ def test_loudness_532_1_time_varying_check_channel_index(dpf_sound_test_server):
     )
 
     # check for unexisting channel as Field
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         time_varying_loudness_computer._LoudnessISO532_1_TimeVarying__check_channel_index(1)
     assert str(excinfo.value) == "Specified channel index (1) does not exist."
 
@@ -542,6 +542,6 @@ def test_loudness_532_1_time_varying_check_channel_index(dpf_sound_test_server):
     time_varying_loudness_computer.signal = fc
     time_varying_loudness_computer.process()
     # check for unexisting channel as FC
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         time_varying_loudness_computer._LoudnessISO532_1_TimeVarying__check_channel_index(1)
     assert str(excinfo.value) == "Specified channel index (1) does not exist."

@@ -6,7 +6,7 @@ from ansys.dpf.core import DataSources, FieldsContainer, Operator
 from numpy import typing as npt
 
 from . import SignalUtilitiesParent
-from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class LoadWav(SignalUtilitiesParent):
@@ -61,7 +61,7 @@ class LoadWav(SignalUtilitiesParent):
         Calls the appropriate DPF Sound operator to load the wav file.
         """
         if self.path_to_wav == "":
-            raise PyDpfSoundException(
+            raise PyAnsysSoundException(
                 "Path for loading wav file is not specified. Use LoadWav.set_path."
             )
 
@@ -91,7 +91,7 @@ class LoadWav(SignalUtilitiesParent):
         if self._output == None:
             # Computing output if needed
             warnings.warn(
-                PyDpfSoundWarning("Output has not been yet processed, use LoadWav.process().")
+                PyAnsysSoundWarning("Output has not been yet processed, use LoadWav.process().")
             )
 
         return self._output

@@ -7,7 +7,7 @@ import numpy as np
 from numpy import typing as npt
 
 from . import PsychoacousticsParent
-from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
@@ -63,7 +63,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         Calls the appropriate DPF Sound operator to compute the loudness of the signal.
         """
         if self.__signal == None:
-            raise PyDpfSoundException(
+            raise PyAnsysSoundException(
                 "No signal for loudness vs time computation."
                 + " Use LoudnessISO532_1_TimeVarying.signal"
             )
@@ -108,7 +108,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         """
         if self._output == None:
             warnings.warn(
-                PyDpfSoundWarning(
+                PyAnsysSoundWarning(
                     "Output has not been processed yet, use LoudnessISO532_1_TimeVarying.process()."
                 )
             )
@@ -355,7 +355,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         in phon are displayed.
         """
         if self.get_output() == None:
-            raise PyDpfSoundException(
+            raise PyAnsysSoundException(
                 "Output has not been processed yet, use LoudnessISO532_1_TimeVarying.process()."
             )
 
@@ -409,13 +409,13 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         if type(self._output[0]) == Field:
             if channel_index != 0:
-                raise PyDpfSoundException(
+                raise PyAnsysSoundException(
                     f"Specified channel index ({channel_index}) does not exist."
                 )
 
         else:
             if channel_index < 0 or channel_index > self.get_output_as_nparray()[0].ndim - 1:
-                raise PyDpfSoundException(
+                raise PyAnsysSoundException(
                     f"Specified channel index ({channel_index}) does not exist."
                 )
 

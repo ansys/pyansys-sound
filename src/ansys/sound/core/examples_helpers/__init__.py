@@ -1,6 +1,6 @@
-"""Utilities for managing the DPF Sound example files.
+"""Utilities for managing the PyAnsys Sound example files.
 
-Helper functions for managing the DPF Sound example files.
+Helper functions for managing the PyAnsys Sound example files.
 """
 
 from ._get_example_files import (

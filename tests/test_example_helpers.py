@@ -1,4 +1,4 @@
-from ansys.dpf.sound.examples_helpers import (
+from ansys.sound.core.examples_helpers import (
     get_absolute_path_for_fluctuating_noise_wav,
     get_absolute_path_for_fluctuating_tone_wav,
     get_absolute_path_for_flute2_wav,

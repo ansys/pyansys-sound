@@ -6,7 +6,7 @@ import numpy as np
 from numpy import typing as npt
 
 from . import PsychoacousticsParent
-from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Sharpness(PsychoacousticsParent):
@@ -61,7 +61,9 @@ class Sharpness(PsychoacousticsParent):
         Calls the appropriate DPF Sound operator to compute the sharpness of the signal.
         """
         if self.__signal == None:
-            raise PyDpfSoundException("No signal for sharpness computation. Use Sharpness.signal.")
+            raise PyAnsysSoundException(
+                "No signal for sharpness computation. Use Sharpness.signal."
+            )
 
         self.__operator.connect(0, self.signal)
 
@@ -84,7 +86,7 @@ class Sharpness(PsychoacousticsParent):
         """
         if self._output == None:
             warnings.warn(
-                PyDpfSoundWarning("Output has not been processed yet, use Sharpness.process().")
+                PyAnsysSoundWarning("Output has not been processed yet, use Sharpness.process().")
             )
 
         return self._output
@@ -132,7 +134,9 @@ class Sharpness(PsychoacousticsParent):
 
         # Check that specified channel index exists.
         if channel_index > channel_max:
-            raise PyDpfSoundException(f"Specified channel index ({channel_index}) does not exist.")
+            raise PyAnsysSoundException(
+                f"Specified channel index ({channel_index}) does not exist."
+            )
 
         # Return sharpness for the specified channel.
         if channel_max > 0:

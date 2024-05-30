@@ -5,7 +5,7 @@ from ansys.dpf.core import Field, FieldsContainer, Operator
 from numpy import typing as npt
 
 from . import SignalUtilitiesParent
-from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class ZeroPad(SignalUtilitiesParent):
@@ -65,7 +65,7 @@ class ZeroPad(SignalUtilitiesParent):
             New duration for the zero padding (in seconds).
         """
         if new_duration_zeros < 0.0:
-            raise PyDpfSoundException("Zero duration must be strictly greater than 0.0.")
+            raise PyAnsysSoundException("Zero duration must be strictly greater than 0.0.")
 
         self.__duration_zeros = new_duration_zeros
 
@@ -86,7 +86,7 @@ class ZeroPad(SignalUtilitiesParent):
         Calls the appropriate DPF Sound operator to append zeros to the signal.
         """
         if self.signal == None:
-            raise PyDpfSoundException("No signal to zero-pad. Use ZeroPad.set_signal().")
+            raise PyAnsysSoundException("No signal to zero-pad. Use ZeroPad.set_signal().")
 
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, float(self.duration_zeros))
@@ -111,7 +111,7 @@ class ZeroPad(SignalUtilitiesParent):
         if self._output == None:
             # Computing output if needed
             warnings.warn(
-                PyDpfSoundWarning("Output has not been yet processed, use ZeroPad.process().")
+                PyAnsysSoundWarning("Output has not been yet processed, use ZeroPad.process().")
             )
 
         return self._output
