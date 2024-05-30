@@ -1,3 +1,4 @@
+from ansys.dpf.core import GenericDataContainer
 import pytest
 
 from ansys.dpf.sound.pydpf_sound import PyDpfSoundException
@@ -105,3 +106,4 @@ def test_xtract_tonal_parameters_getter_generic_data_container(dpf_sound_test_se
 
     gdc = xtract_tonal_parameters.get_parameters_as_generic_data_container()
     assert gdc is not None
+    assert type(gdc) == GenericDataContainer
