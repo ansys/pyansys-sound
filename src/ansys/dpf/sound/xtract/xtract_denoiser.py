@@ -28,16 +28,16 @@ class XtractDenoiser(XtractParent):
         Parameters
         ----------
         input_signal:
-            Signal(s) to denoise, as a field or fields_container. When inputting a fields_container,
-            each signal (each field of the fields_container) is processed individually.
+            Signal(s) to denoise, as a field or fields container. When inputting a fields container,
+            each signal (each field of the fields container) is processed individually.
         input_parameters:
             Structure that contains the parameters of the algorithm:
             - Noise levels (Field): level vs frequency of the noise
             This structure is of type XtractDenoiserParameters (see this class for more details).
         output_denoised_signals:
-            Denoised signal(s), as a field or fields_container (depending on the input).
+            Denoised signal(s), as a field or fields container (depending on the input).
         output_noise_signals:
-            Noise signal, as a field or fields_container (depending on the input).
+            Noise signal, as a field or fields container (depending on the input).
             The noise signal is the original signal minus the denoised signal.
         """
         super().__init__()
@@ -59,8 +59,8 @@ class XtractDenoiser(XtractParent):
         Returns
         -------
         FieldsContainer | Field
-            Signal(s) to denoise, as a field or fields_container. When inputting a fields_container,
-            each signal (each field of the fields_container) is processed individually.
+            Signal(s) to denoise, as a field or fields container. When inputting a fields container,
+            each signal (each field of the fields container) is processed individually.
         """
         return self.__input_signal  # pragma: no cover
 
@@ -92,7 +92,7 @@ class XtractDenoiser(XtractParent):
         Returns
         -------
         FieldsContainer | Field
-            Denoised signal(s), as a field or fields_container (depending on the input).
+            Denoised signal(s), as a field or fields container (depending on the input).
         """
         return self.__output_denoised_signals  # pragma: no cover
 
@@ -103,7 +103,7 @@ class XtractDenoiser(XtractParent):
         Returns
         -------
         FieldsContainer | Field
-            Noise signal, as a field or fields_container (depending on the input).
+            Noise signal, as a field or fields container (depending on the input).
             The noise signal is the original signal minus the denoised signal.
         """
         return self.__output_noise_signals  # pragma: no cover
@@ -139,7 +139,7 @@ class XtractDenoiser(XtractParent):
         -------
         Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
             Denoised signal and noise signal,
-            as a field or fields_container (depending on the input).
+            as a field or fields container (depending on the input).
         """
         if self.__output_denoised_signals == None or self.__output_noise_signals == None:
             warnings.warn(PyDpfSoundWarning("Output has not been processed yet."))
