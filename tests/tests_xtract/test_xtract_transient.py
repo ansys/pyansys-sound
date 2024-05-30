@@ -285,7 +285,6 @@ def test_xtract_transient_setters(dpf_sound_test_server):
     params_transient.upper_threshold = 100.0
 
     xtract_transient = XtractTransient(bird_plus_idle_sig, params_transient)
-    xtract_transient.process()
 
     assert xtract_transient.input_signal is not None
     xtract_transient.input_signal = None

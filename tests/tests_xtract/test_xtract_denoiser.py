@@ -123,9 +123,6 @@ def test_xtract_denoiser_get_output_warns(dpf_sound_test_server):
         -6.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
-    xtract_denoiser.process()
-
-    xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
 
     with pytest.warns(PyDpfSoundWarning) as record:
         xtract_denoiser.get_output()
@@ -143,9 +140,6 @@ def test_xtract_denoiser_get_output_np_array_warns(dpf_sound_test_server):
     params_denoiser.noise_levels = params_denoiser.create_noise_levels_from_white_noise_power(
         -6.0, 44100.0, 50
     )
-    xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
-    xtract_denoiser.process()
-
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
 
     with pytest.warns(PyDpfSoundWarning) as record:
