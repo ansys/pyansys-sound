@@ -199,7 +199,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             return None
 
         if type(self._output[0]) == Field:
-            return self.get_output_as_nparray()[1]
+            return self.get_output_as_nparray()[1][0]
 
         else:
             N5 = self.get_output_as_nparray()[1]
@@ -225,7 +225,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             return None
 
         if type(self._output[0]) == Field:
-            return self.get_output_as_nparray()[2]
+            return self.get_output_as_nparray()[2][0]
 
         else:
             N10 = self.get_output_as_nparray()[2]
@@ -279,7 +279,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             return None
 
         if type(self._output[0]) == Field:
-            return self.get_output_as_nparray()[4]
+            return self.get_output_as_nparray()[4][0]
 
         else:
             L5 = self.get_output_as_nparray()[4]
@@ -305,7 +305,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             return None
 
         if type(self._output[0]) == Field:
-            return self.get_output_as_nparray()[5]
+            return self.get_output_as_nparray()[5][0]
 
         else:
             L10 = self.get_output_as_nparray()[5]
