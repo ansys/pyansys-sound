@@ -34,8 +34,8 @@ class ProminenceRatio(PsychoacousticsParent):
             for each detected tone.
         """
         super().__init__()
-        self.psd = psd
-        self.frequency_list = frequency_list
+        self.psd = psd  # uses the setter
+        self.frequency_list = frequency_list  # uses the setter
         self.__operator = Operator("compute_PR")
 
     @property
@@ -113,7 +113,7 @@ class ProminenceRatio(PsychoacousticsParent):
 
         # optional parameter: frequency list
         if self.frequency_list != None:
-            self.__operator.connect(1, self.frequency_list)  # TODO: check
+            self.__operator.connect(1, self.frequency_list)
 
         # Runs the operator
         self.__operator.run()
@@ -139,7 +139,7 @@ class ProminenceRatio(PsychoacousticsParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
+    def get_output_as_nparray(self) -> tuple[npt.ArrayLike] | None:
         """Return PR data as a tuple of numpy array.
 
         Returns
@@ -236,7 +236,7 @@ class ProminenceRatio(PsychoacousticsParent):
         if nb_tones == 0:
             raise PyDpfSoundException("No peak detected.")
 
-        if not 0 <= tone_index < nb_tones:
+        if not (0 <= tone_index < nb_tones):
             raise PyDpfSoundException(
                 f"Out of bound index. tone_index must be between 0 and {nb_tones - 1}."
             )
