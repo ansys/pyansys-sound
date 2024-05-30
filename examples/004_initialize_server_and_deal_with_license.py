@@ -77,7 +77,7 @@ for i in range(5):
     execution_time = later - now
     print(
         f"Elapsed time (loop {i+1}): "
-        f"{execution_time.seconds}.{execution_time.microseconds:06}"  # noqa:E231
+        f"{execution_time.seconds}.{execution_time.microseconds: 06}"
         f" seconds"
     )
 
@@ -110,7 +110,7 @@ for i in range(5):
     execution_time = later - now
     print(
         f"Elapsed time (loop {i+1}): "
-        f"{execution_time.seconds}.{execution_time.microseconds:06}"  # noqa:E231
+        f"{execution_time.seconds}.{execution_time.microseconds: 06}"
         f" seconds"
     )
 
