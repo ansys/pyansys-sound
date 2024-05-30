@@ -40,7 +40,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         """Set the signal.
 
         Parameters
-        -------
+        ----------
         signal: FieldsContainer | Field
             Signal in Pa on which to compute loudness, as a DPF field or fields container.
         """
@@ -156,7 +156,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         """Return the time-varying loudness in sone for the specified channel_index.
 
         Parameters
-        -------
+        ----------
         channel_index: int
             Index of the signal channel (0 by default) for which to return time-varying loudness.
 
@@ -180,13 +180,13 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
                 return loudness_vs_time[channel_index]
 
     def get_N5_sone(self, channel_index: int = 0) -> float:
-        """Return the N5 indicator.
+        """Return the N5 indicator for the specified channel index.
 
         Returns N5, that is, the loudness value in sone that is exceeded 5% of the time, for the
         specified channel.
 
         Parameters
-        -------
+        ----------
         channel_index: int
             Index of the signal channel (0 by default) for which to return N5.
 
@@ -206,13 +206,13 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             return N5[channel_index]
 
     def get_N10_sone(self, channel_index: int = 0) -> float:
-        """Return the N10 indicator.
+        """Return the N10 indicator for the specified channel index.
 
         Returns N10, that is, the loudness value in sone that is exceeded 10% of the time, for the
         specified channel.
 
         Parameters
-        -------
+        ----------
         channel_index: int
             Index of the signal channel (0 by default) for which to return N10.
 
@@ -232,10 +232,10 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             return N10[channel_index]
 
     def get_loudness_level_phon_vs_time(self, channel_index: int = 0) -> npt.ArrayLike:
-        """Return the time-varying loudness level in phon for the specified channel_index.
+        """Return the time-varying loudness level in phon for the specified channel index.
 
         Parameters
-        -------
+        ----------
         channel_index: int
             Index of the signal channel (0 by default) for which to return time-varying loudness
             level.
@@ -260,13 +260,13 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
                 return loudness_level_vs_time[channel_index]
 
     def get_L5_phon(self, channel_index: int = 0) -> float:
-        """Return the L5 indicator.
+        """Return the L5 indicator for the specified channel index.
 
         Returns L5, that is, the loudness level in phon that is exceeded 5% of the time, for the
         specified channel.
 
         Parameters
-        -------
+        ----------
         channel_index: int
             Index of the signal channel (0 by default) for which to return L5.
 
@@ -286,13 +286,13 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             return L5[channel_index]
 
     def get_L10_phon(self, channel_index: int = 0) -> float:
-        """Return the L10 indicator.
+        """Return the L10 indicator for the specified channel index.
 
         Returns L10, that is, the loudness level in phon that is exceeded 10% of the time, for the
         specified channel.
 
         Parameters
-        -------
+        ----------
         channel_index: int
             Index of the signal channel (0 by default) for which to return L10.
 

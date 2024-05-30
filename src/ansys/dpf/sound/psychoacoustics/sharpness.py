@@ -122,13 +122,17 @@ class Sharpness(PsychoacousticsParent):
         numpy.float64
             Sharpness value in acum.
         """
-        if self.get_output() == None or not (self._check_channel_index(channel_index)):
+        if self.get_output() == None:
             return None
 
         sharpness_data = self.get_output_as_nparray()
 
         # Get last channel index.
         channel_max = len(sharpness_data) - 1
+
+        # Check that specified channel index exists.
+        if channel_index < 0 or channel_index > channel_max:
+            raise PyDpfSoundException(f"Specified channel index ({channel_index}) does not exist.")
 
         # Return sharpness for the specified channel.
         if channel_max > 0:

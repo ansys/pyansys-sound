@@ -64,10 +64,11 @@ class PsychoacousticsParent(PyDpfSound):
         bool
             True if channel index is available, False if not.
         """
-        if self.get_output() == None:
+        output = self.get_output()
+        if output == None:
             return False
 
-        if type(self._output[0]) == Field:
+        if type(output[0]) == Field:
             if channel_index != 0:
                 raise PyDpfSoundException(
                     f"Specified channel index ({channel_index}) does not exist."
