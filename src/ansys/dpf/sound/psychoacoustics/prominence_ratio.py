@@ -15,7 +15,7 @@ class ProminenceRatio(PsychoacousticsParent):
     """ECMA 418-1 / ISO 7779 prominence ratio (PR).
 
     This class computes the prominence ratio (PR) on a PSD (Power Spectral Density)
-    following standard ECMA 418-1 and ISO 7779.
+    following standards ECMA 418-1 and ISO 7779.
     """
 
     def __init__(self, psd: Field = None, frequency_list: list = None):
@@ -25,6 +25,15 @@ class ProminenceRatio(PsychoacousticsParent):
         ----------
         psd: Field
             Power Spectral Density (PSD) of the signal on which to compute PR, as a DPF Field.
+            The PSD Field has the following characteristics:
+            - num_entities = 1
+            - location = "TimeFreq_sets"
+            - data: vector of amplitude values in unit^2/Hz;
+            - time_freq_support: vector of regularly spaced frequencies in Hz associated to
+                amplitude values (from 0 Hz to the maximum frequency)
+            - unit = "^2/Hz" (where is Pa for example).
+            You can use the function ansys.dpf.core.fields_factory.create_scalar_field()
+            to create the field.
 
         frequency_list: (optional) tuple
             List of the frequencies in Hz of the tones (peaks in the spectrum) for which
@@ -51,7 +60,15 @@ class ProminenceRatio(PsychoacousticsParent):
         -------
         psd: Field
             Power Spectral Density (PSD) of the signal on which to compute PR, as a DPF Field.
-
+            The PSD Field has the following characteristics:
+            - num_entities = 1
+            - location = "TimeFreq_sets"
+            - data: vector of amplitude values in unit^2/Hz;
+            - time_freq_support: vector of regularly spaced frequencies in Hz associated to
+                amplitude values (from 0 Hz to the maximum frequency)
+            - unit = "^2/Hz" (where is Pa for example).
+            You can use the function ansys.dpf.core.fields_factory.create_scalar_field()
+            to create the field.
         """
         self.__psd = psd
 
@@ -95,9 +112,6 @@ class ProminenceRatio(PsychoacousticsParent):
         tuple
             List of the frequencies in Hz of the tones (peaks in the spectrum) for which
             to calculate the PR.
-            If this input is empty (not specified), a peak detection method is applied to
-            automatically find the tones in the input spectrum. Then the PR is calculated
-            for each detected tone.
         """
         return self.__frequency_list
 
@@ -171,7 +185,8 @@ class ProminenceRatio(PsychoacousticsParent):
 
         Returns
         -------
-        int: Number of tones.
+        int:
+            Number of tones.
         """
         if self.get_output() == None:
             raise PyDpfSoundException(
@@ -185,7 +200,8 @@ class ProminenceRatio(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.ndarray: Vector of peaks' frequencies.
+        numpy.ndarray:
+            Vector of peaks' frequencies.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -197,7 +213,8 @@ class ProminenceRatio(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.ndarray: Vector of peaks' PR values.
+        numpy.ndarray:
+            Vector of peaks' PR values.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -209,7 +226,8 @@ class ProminenceRatio(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.ndarray: Vector of peaks' level values.
+        numpy.ndarray:
+            Vector of peaks' level values.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -221,7 +239,8 @@ class ProminenceRatio(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.ndarray: Vector of eaks' lower frequency limits.
+        numpy.ndarray:
+            Vector of eaks' lower frequency limits.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -233,7 +252,8 @@ class ProminenceRatio(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.ndarray: Vector of peaks' higher frequency limits.
+        numpy.ndarray:
+            Vector of peaks' higher frequency limits.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -245,7 +265,8 @@ class ProminenceRatio(PsychoacousticsParent):
 
         Returns
         -------
-        float: Maximum PR value.
+        float:
+            Maximum PR value.
         """
         if self.get_output_as_nparray() == None:
             return None
