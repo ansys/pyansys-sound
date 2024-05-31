@@ -18,8 +18,10 @@ and when not using it.
 Prerequisite: ensure that you have installed DPF core and DPF Sound, following the instructions
 here:
 
-* if you have installed latest Ansys release: https://dpf.docs.pyansys.com/version/stable/getting_started/install.html#installation
-* if you use DPF standalone: https://dpf.docs.pyansys.com/version/stable/getting_started/install.html
+- if you have installed latest Ansys release: see `how to install PyDPF core \
+<https://dpf.docs.pyansys.com/version/stable/getting_started/install.html#installation>`_
+- if you want to use DPF standalone: see `how to install DPF server \
+<https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#dpf-server>`_
 
 """
 
@@ -36,7 +38,7 @@ from ansys.dpf.sound.examples_helpers import get_absolute_path_for_flute_wav
 from ansys.dpf.sound.server_helpers import connect_to_or_start_server
 from ansys.dpf.sound.signal_utilities import LoadWav
 
-# sphinx_gallery_thumbnail_path = '_image/example004_thumbnail.png'
+# sphinx_gallery_thumbnail_path = '_static/_image/example004_thumbnail.png'
 
 # %%
 # Use a DPF server without a LicenseContextManager
