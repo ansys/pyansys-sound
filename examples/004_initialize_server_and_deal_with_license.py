@@ -9,18 +9,17 @@ required Ansys license increment avrxp_snd_level1 only once.
 It also shows how to connect to the DPF server, verify where it is located and get other useful
 information.
 
-This example demonstrates the use of the LicenseContextManager, a mechanism that allows to check
-out the license only once for the duration of the session
-and greatly improves performance. It shows and compares the execution time of a simple DPF Sound
-operator when using a LicenseContextManager
-and when not using it.
+This example demonstrates the use of the LicenseContextManager, a mechanism that allows you to
+check out the license only once for the duration of the session and greatly improves performance.
+It shows and compares the execution time of a simple DPF Sound operator when using a
+LicenseContextManager or not.
 
 Prerequisite: ensure that you have installed DPF core and DPF Sound, following the instructions
 here:
 
-- if you have installed latest Ansys release: see `how to install PyDPF core \
+- if you have installed the latest Ansys release: see `how to install PyDPF core \
 <https://dpf.docs.pyansys.com/version/stable/getting_started/install.html#installation>`_
-- if you want to use DPF standalone: see `how to install DPF server \
+- if you want to use the DPF standalone version: see `how to install DPF server \
 <https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#dpf-server>`_
 
 """
