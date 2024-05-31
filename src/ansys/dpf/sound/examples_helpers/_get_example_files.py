@@ -176,7 +176,10 @@ def get_absolute_path_for_flute_psd_txt() -> str:
     str
         Absolute path to flute_psd.txt .
     """
-    return _get_absolute_path("flute_psd.txt")
+    for parent in pathlib.Path(__file__).parents:  # pragma: no cover
+        if (parent / "tests/data/" / "flute_psd.txt").exists():
+            p = parent / "tests/data/" / "flute_psd.txt"
+            return p.as_posix()
 
 
 def _get_absolute_path(filename: str) -> str:

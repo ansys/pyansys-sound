@@ -4,13 +4,14 @@ from ansys.dpf.core import GenericDataContainer, TimeFreqSupport, fields_factory
 import numpy as np
 import pytest
 
+from ansys.dpf.sound.examples_helpers._get_example_files import get_absolute_path_for_flute_psd_txt
 from ansys.dpf.sound.psychoacoustics import ProminenceRatio
 from ansys.dpf.sound.pydpf_sound import PyDpfSoundException
 
 
 @pytest.fixture
 def create_psd_from_txt_data():
-    path_flute_psd = pytest.data_path_flute_psd_in_container
+    path_flute_psd = get_absolute_path_for_flute_psd_txt()
 
     # Open a txt file for reading
     fid = open(path_flute_psd)
