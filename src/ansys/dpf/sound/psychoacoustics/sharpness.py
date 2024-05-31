@@ -131,7 +131,7 @@ class Sharpness(PsychoacousticsParent):
         channel_max = len(sharpness_data) - 1
 
         # Check that specified channel index exists.
-        if channel_index > channel_max:
+        if channel_index < 0 or channel_index > channel_max:
             raise PyDpfSoundException(f"Specified channel index ({channel_index}) does not exist.")
 
         # Return sharpness for the specified channel.

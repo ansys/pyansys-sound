@@ -1,5 +1,3 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
-
 """
 .. _isolate_orders_example:
 
@@ -78,12 +76,13 @@ def plot_stft(stft_class, vmax):
         vmin=vmax - 70.0,
         vmax=vmax,
     )
-    plt.colorbar(label="dB")
+    plt.colorbar(label="Amplitude (dB SPL)")
     plt.ylabel("Frequency (Hz)")
+    plt.xlabel("Time (s)")
     plt.ylim(
         [0.0, MAX_FREQUENCY_PLOT_STFT]
     )  # Change the value of MAX_FREQUENCY_PLOT_STFT if needed
-    plt.title("STFT Amplitudes")
+    plt.title("STFT")
     plt.show()
 
 
@@ -205,8 +204,8 @@ loudness.process()
 
 loudness_original_signal = loudness.get_loudness_level_phon()
 
-print(f"Loudness of the original signal: {loudness_original_signal: .1f} phon.")
-print(f"Loudness of the isolated signal: {loudness_isolated_signal: .1f} phon.")
+print(f"Loudness of the original signal: {loudness_original_signal: .1f} phons.")
+print(f"Loudness of the isolated signal: {loudness_isolated_signal: .1f} phons.")
 
 # %%
 # Isolating orders of several signals in a loop

@@ -6,13 +6,11 @@ from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 from ansys.dpf.sound.signal_utilities import LoadWav, ZeroPad
 
 
-@pytest.mark.dependency()
 def test_zero_pad_instantiation(dpf_sound_test_server):
     zero_pad = ZeroPad()
     assert zero_pad != None
 
 
-@pytest.mark.dependency(depends=["test_zero_pad_instantiation"])
 def test_zero_pad_process(dpf_sound_test_server):
     zero_pad = ZeroPad()
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -34,7 +32,6 @@ def test_zero_pad_process(dpf_sound_test_server):
     zero_pad.process()
 
 
-@pytest.mark.dependency(depends=["test_zero_pad_process"])
 def test_zero_pad_get_output(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -64,7 +61,6 @@ def test_zero_pad_get_output(dpf_sound_test_server):
     assert f_out.data[600000] == 0.0
 
 
-@pytest.mark.dependency(depends=["test_zero_pad_process"])
 def test_zero_pad_get_output_as_np_array(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -94,7 +90,6 @@ def test_zero_pad_get_output_as_np_array(dpf_sound_test_server):
     assert out_arr[600000] == 0.0
 
 
-@pytest.mark.dependency(depends=["test_zero_pad_instantiation"])
 def test_zero_pad_set_get_signal(dpf_sound_test_server):
     zero_pad = ZeroPad()
     fc = FieldsContainer()
@@ -111,7 +106,6 @@ def test_zero_pad_set_get_signal(dpf_sound_test_server):
     assert fc_from_get[0].data[0, 2] == 42
 
 
-@pytest.mark.dependency(depends=["test_zero_pad_process"])
 def test_zero_pad_set_get_duration_zeros(dpf_sound_test_server):
     zero_pad = ZeroPad()
 

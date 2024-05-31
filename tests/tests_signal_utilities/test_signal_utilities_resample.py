@@ -8,13 +8,11 @@ from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 from ansys.dpf.sound.signal_utilities import LoadWav, Resample
 
 
-@pytest.mark.dependency()
 def test_resample_instantiation(dpf_sound_test_server):
     resampler = Resample()
     assert resampler != None
 
 
-@pytest.mark.dependency(depends=["test_resample_instantiation"])
 def test_resample_process(dpf_sound_test_server):
     resampler = Resample()
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -36,7 +34,6 @@ def test_resample_process(dpf_sound_test_server):
     resampler.process()
 
 
-@pytest.mark.dependency(depends=["test_resample_process"])
 def test_resample_get_output(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -64,7 +61,6 @@ def test_resample_get_output(dpf_sound_test_server):
     assert f_out.data[60000] == -0.4175410866737366
 
 
-@pytest.mark.dependency(depends=["test_resample_process"])
 def test_resample_get_output_as_np_array(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -90,7 +86,6 @@ def test_resample_get_output_as_np_array(dpf_sound_test_server):
     assert out_arr[60000] == -0.4175410866737366
 
 
-@pytest.mark.dependency(depends=["test_resample_instantiation"])
 def test_resample_set_get_signal(dpf_sound_test_server):
     resampler = Resample()
     fc = FieldsContainer()
@@ -107,7 +102,6 @@ def test_resample_set_get_signal(dpf_sound_test_server):
     assert fc_from_get[0].data[0, 2] == 42
 
 
-@pytest.mark.dependency(depends=["test_resample_instantiation"])
 def test_resample_set_get_sampling_frequency(dpf_sound_test_server):
     resampler = Resample()
 
@@ -121,7 +115,6 @@ def test_resample_set_get_sampling_frequency(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-@pytest.mark.dependency(depends=["test_resample_process"])
 def test_resample_plot(mock_show, dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()

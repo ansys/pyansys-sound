@@ -10,13 +10,11 @@ EXP_SHARPNESS_1 = 1.6609569787979126
 EXP_SHARPNESS_2 = 2.4972000122070312
 
 
-@pytest.mark.dependency()
 def test_sharpness_instantiation(dpf_sound_test_server):
     sharpness_computer = Sharpness()
     assert sharpness_computer != None
 
 
-@pytest.mark.dependency(depends=["test_sharpness_instantiation"])
 def test_sharpness_process(dpf_sound_test_server):
     sharpness_computer = Sharpness()
 
@@ -45,7 +43,6 @@ def test_sharpness_process(dpf_sound_test_server):
     sharpness_computer.process()
 
 
-@pytest.mark.dependency(depends=["test_sharpness_process"])
 def test_sharpness_get_output(dpf_sound_test_server):
     sharpness_computer = Sharpness()
     # Get a signal
@@ -64,7 +61,6 @@ def test_sharpness_get_output(dpf_sound_test_server):
     assert type(sharpness) == FieldsContainer
 
 
-@pytest.mark.dependency(depends=["test_sharpness_process"])
 def test_sharpness_get_sharpness(dpf_sound_test_server):
     sharpness_computer = Sharpness()
     # Get a signal
@@ -119,7 +115,6 @@ def test_sharpness_get_sharpness(dpf_sound_test_server):
     assert sharpness == pytest.approx(EXP_SHARPNESS_2)
 
 
-@pytest.mark.dependency(depends=["test_sharpness_process"])
 def test_sharpness_get_output_as_nparray_from_fields_container(
     dpf_sound_test_server,
 ):
@@ -149,7 +144,6 @@ def test_sharpness_get_output_as_nparray_from_fields_container(
     assert sharpness[0] == pytest.approx(EXP_SHARPNESS_1)
 
 
-@pytest.mark.dependency(depends=["test_sharpness_process"])
 def test_sharpness_get_output_as_nparray_from_field(dpf_sound_test_server):
     sharpness_computer = Sharpness()
     # Get a signal
@@ -169,7 +163,6 @@ def test_sharpness_get_output_as_nparray_from_field(dpf_sound_test_server):
     assert sharpness[0] == pytest.approx(EXP_SHARPNESS_1)
 
 
-@pytest.mark.dependency(depends=["test_sharpness_instantiation"])
 def test_sharpness_set_get_signal(dpf_sound_test_server):
     sharpness_computer = Sharpness()
     fc = FieldsContainer()

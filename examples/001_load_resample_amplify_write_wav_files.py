@@ -1,5 +1,3 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
-
 """
 .. _load_resample_amplify_write_wav_files_example:
 
@@ -44,9 +42,7 @@ fc_signal_original = wav_loader.get_output()
 
 t1 = fc_signal_original[0].time_freq_support.time_frequencies.data
 sf1 = 1.0 / (t1[1] - t1[0])
-print(
-    f"The sampling frequency of the original signal is {int(sf1)} Hz"
-)  # ":.0f" is to avoid decimals and only get an integer
+print(f"The sampling frequency of the original signal is {int(sf1)} Hz")
 
 # %%
 # Resample the signal
@@ -67,9 +63,7 @@ fc_signal_modified = gain_applier.get_output()
 
 t2 = fc_signal_modified[0].time_freq_support.time_frequencies.data
 sf2 = 1.0 / (t2[1] - t2[0])
-print(
-    f"The new sampling frequency of the signal is {int(sf2)} Hz"
-)  # ":.0f" is to avoid decimals and only get an integer
+print(f"The new sampling frequency of the signal is {int(sf2)} Hz")
 
 # %%
 # Plotting signals
@@ -87,7 +81,7 @@ axs[0].legend(loc="upper right")
 axs[0].set_ylim([-3, 3])
 
 axs[1].plot(
-    t2, data_modified, color="r", label=f"modified signal, sf={int(sf2)} Hz, gain= {gain} dBSPL"
+    t2, data_modified, color="r", label=f"modified signal, sf={int(sf2)} Hz, gain={gain} dBSPL"
 )
 axs[1].set_xlabel("Time(s)")
 axs[1].set_ylabel("Amplitude(Pa)")
@@ -103,4 +97,3 @@ plt.show()
 output_path = path_flute_wav[:-4] + "_modified.wav"  # "[-4]" is to remove the ".wav"
 wav_writer = WriteWav(path_to_write=output_path, signal=fc_signal_modified, bit_depth="int16")
 wav_writer.process()
-print("End of script reached")
