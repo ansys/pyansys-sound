@@ -9,13 +9,11 @@ from ansys.dpf.sound.signal_utilities import LoadWav
 from ansys.dpf.sound.spectrogram_processing import IsolateOrders
 
 
-@pytest.mark.dependency()
 def test_isolate_orders_instantiation(dpf_sound_test_server):
     isolate_orders = IsolateOrders()
     assert isolate_orders != None
 
 
-@pytest.mark.dependency(depends=["test_isolate_orders_instantiation"])
 def test_isolate_orders_process(dpf_sound_test_server):
     isolate_orders = IsolateOrders()
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
@@ -55,7 +53,6 @@ def test_isolate_orders_process(dpf_sound_test_server):
         assert False
 
 
-@pytest.mark.dependency(depends=["test_isolate_orders_process"])
 def test_isolate_orders_get_output(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
@@ -87,7 +84,6 @@ def test_isolate_orders_get_output(dpf_sound_test_server):
     assert len(fc_out[0].data) == 909956
 
 
-@pytest.mark.dependency(depends=["test_isolate_orders_process"])
 def test_isolate_orders_get_output_as_np_array(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
@@ -117,7 +113,6 @@ def test_isolate_orders_get_output_as_np_array(dpf_sound_test_server):
     assert arr[10000] == -0.04283715412020683
 
 
-@pytest.mark.dependency(depends=["test_isolate_orders_instantiation"])
 def test_isolate_orders_set_get_signal(dpf_sound_test_server):
     isolate_orders = IsolateOrders()
     fc = FieldsContainer()
@@ -133,7 +128,6 @@ def test_isolate_orders_set_get_signal(dpf_sound_test_server):
     assert f[0].data[0, 2] == 42
 
 
-@pytest.mark.dependency(depends=["test_isolate_orders_instantiation"])
 def test_isolate_orders_set_get_fft_size(dpf_sound_test_server):
     isolate_orders = IsolateOrders()
 
@@ -146,7 +140,6 @@ def test_isolate_orders_set_get_fft_size(dpf_sound_test_server):
     assert isolate_orders.fft_size == 1234.0
 
 
-@pytest.mark.dependency(depends=["test_isolate_orders_instantiation"])
 def test_isolate_orders_set_get_window_overlap(dpf_sound_test_server):
     isolate_orders = IsolateOrders()
 
@@ -159,7 +152,6 @@ def test_isolate_orders_set_get_window_overlap(dpf_sound_test_server):
     assert isolate_orders.window_overlap == 0.5
 
 
-@pytest.mark.dependency(depends=["test_isolate_orders_instantiation"])
 def test_isolate_orders_set_get_window_type(dpf_sound_test_server):
     isolate_orders = IsolateOrders()
 
@@ -176,7 +168,6 @@ def test_isolate_orders_set_get_window_type(dpf_sound_test_server):
     assert isolate_orders.window_type == "KAISER"
 
 
-@pytest.mark.dependency(depends=["test_isolate_orders_instantiation"])
 def test_isolate_orders_set_get_rpm_profile(dpf_sound_test_server):
     isolate_orders = IsolateOrders()
 
@@ -187,7 +178,6 @@ def test_isolate_orders_set_get_rpm_profile(dpf_sound_test_server):
     assert isolate_orders.rpm_profile.data[0, 2] == 45
 
 
-@pytest.mark.dependency(depends=["test_isolate_orders_instantiation"])
 def test_isolate_orders_set_get_orders(dpf_sound_test_server):
     isolate_orders = IsolateOrders()
     orders = Field()
@@ -200,7 +190,6 @@ def test_isolate_orders_set_get_orders(dpf_sound_test_server):
     assert isolate_orders.orders.data[0, 2] == 45
 
 
-@pytest.mark.dependency(depends=["test_isolate_orders_instantiation"])
 def test_isolate_orders_set_get_width_selection(dpf_sound_test_server):
     isolate_orders = IsolateOrders()
 
@@ -214,7 +203,6 @@ def test_isolate_orders_set_get_width_selection(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-@pytest.mark.dependency(depends=["test_isolate_orders_process"])
 def test_isolate_orders_plot(mock_show, dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()

@@ -184,14 +184,14 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         """
         return self._get_output_parameter(channel_index, SPECIFIC_LOUDNESS_ID)
 
-    def get_bark_band_indexes(self) -> npt.ArrayLike:
+    def get_bark_band_indexes(self) -> npt.ArrayLike | None:
         """Return Bark band indexes.
 
         Returns the Bark band indexes used for loudness calculation as a numpy array.
 
         Returns
         -------
-        numpy.ndarray
+        numpy.ndarray | None
             Array of Bark band idexes.
         """
         output = self.get_output()
@@ -261,7 +261,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
     def _get_output_parameter(
         self, channel_index: int, output_id: str
-    ) -> np.float64 | npt.ArrayLike:
+    ) -> np.float64 | npt.ArrayLike | None:
         """Return individual loudness result.
 
         Returns the loudness or loudness level in phon as a float, or the specific loudness as a
@@ -279,20 +279,17 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.float64 | numpy.ndarray
+        numpy.float64 | numpy.ndarray | None
             Loudness or loudness level value (float, in sone or phon, respectively), or specific
             loudness (numpy array, in sone/Bark).
         """
-        loudness_data = self.get_output_as_nparray()
-        if loudness_data == None:
+        if self.get_output() == None or not (self._check_channel_index(channel_index)):
             return None
+
+        loudness_data = self.get_output_as_nparray()
 
         # Get last channel index.
         channel_max = len(loudness_data[0]) - 1
-
-        # Check that specified channel index exists.
-        if channel_index > channel_max:
-            raise PyDpfSoundException(f"Specified channel index ({channel_index}) does not exist.")
 
         # Return output parameter (loudness, loudness level, or specific loudness) for the specified
         # channel.

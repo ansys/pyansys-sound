@@ -7,13 +7,11 @@ from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 from ansys.dpf.sound.signal_utilities import LoadWav
 
 
-@pytest.mark.dependency()
 def test_load_wav_instantiation(dpf_sound_test_server):
     wav_loader = LoadWav()
     assert wav_loader != None
 
 
-@pytest.mark.dependency(depends=["test_load_wav_instantiation"])
 def test_load_wav_process(dpf_sound_test_server):
     # Should not return an error
     wav_loader_good = LoadWav(pytest.data_path_flute_in_container)
@@ -27,7 +25,6 @@ def test_load_wav_process(dpf_sound_test_server):
     assert str(excinfo.value) == "Path for loading wav file is not specified. Use LoadWav.set_path."
 
 
-@pytest.mark.dependency(depends=["test_load_wav_process"])
 def test_load_wav_get_output(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
 
@@ -51,7 +48,6 @@ def test_load_wav_get_output(dpf_sound_test_server):
     assert data[136047] == -0.084686279296875
 
 
-@pytest.mark.dependency(depends=["test_load_wav_process"])
 def test_load_wav_get_output_as_nparray(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -79,7 +75,6 @@ def test_load_wav_get_output_as_nparray(dpf_sound_test_server):
     assert np_arr[1][100000] == -0.0509033203125
 
 
-@pytest.mark.dependency(depends=["test_load_wav_instantiation"])
 def test_load_wav_get_set_path(dpf_sound_test_server):
     wav_loader = LoadWav()
     wav_loader.path_to_wav = pytest.data_path_flute_in_container
@@ -87,7 +82,6 @@ def test_load_wav_get_set_path(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-@pytest.mark.dependency(depends=["test_load_wav_process"])
 def test_load_wav_plot(mock_show, dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
     wav_loader.process()
