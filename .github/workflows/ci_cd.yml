@@ -244,11 +244,11 @@ jobs:
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           use-trusted-publisher: true
-  
+
       - name: Release to GitHub
         uses: ansys/actions/release-github@v6
         with:
-          library-name: ${{ env.PACKAGE_NAME }}        
+          library-name: ${{ env.PACKAGE_NAME }}
 
   doc-deploy-dev:
     name: "Upload developers documentation"
