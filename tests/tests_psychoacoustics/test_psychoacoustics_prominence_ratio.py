@@ -82,7 +82,7 @@ def test_prominence_ratio_set_get_frequency_list(dpf_sound_test_server):
     assert frequency_list_from_get[2] == 9
 
 
-def test_promience_ratio_process(dpf_sound_test_server, create_psd_from_txt_data):
+def test_prominence_ratio_process(dpf_sound_test_server, create_psd_from_txt_data):
     pr = ProminenceRatio()
 
     # no signal -> error 1
