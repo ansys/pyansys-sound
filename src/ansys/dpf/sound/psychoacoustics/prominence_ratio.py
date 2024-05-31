@@ -30,7 +30,7 @@ class ProminenceRatio(PsychoacousticsParent):
             - location = "TimeFreq_sets"
             - data: vector of amplitude values in unit^2/Hz;
             - time_freq_support: vector of regularly spaced frequencies in Hz associated to
-                amplitude values (from 0 Hz to the maximum frequency)
+            amplitude values (from 0 Hz to the maximum frequency)
             - unit = "^2/Hz" (where is Pa for example).
             You can use the function ansys.dpf.core.fields_factory.create_scalar_field()
             to create the field.
@@ -65,7 +65,7 @@ class ProminenceRatio(PsychoacousticsParent):
             - location = "TimeFreq_sets"
             - data: vector of amplitude values in unit^2/Hz;
             - time_freq_support: vector of regularly spaced frequencies in Hz associated to
-                amplitude values (from 0 Hz to the maximum frequency)
+            amplitude values (from 0 Hz to the maximum frequency)
             - unit = "^2/Hz" (where is Pa for example).
             You can use the function ansys.dpf.core.fields_factory.create_scalar_field()
             to create the field.
