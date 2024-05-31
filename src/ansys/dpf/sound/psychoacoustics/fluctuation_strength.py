@@ -44,7 +44,7 @@ class FluctuationStrength(PsychoacousticsParent):
         """Set the signal.
 
         Parameters
-        -------
+        ----------
         signal: FieldsContainer | Field
             Signal in Pa on which to compute fluctuation strength, as a DPF Field or Fields
             Container.
