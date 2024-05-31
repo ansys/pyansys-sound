@@ -6,7 +6,7 @@ import pytest
 
 from ansys.dpf.sound.examples_helpers._get_example_files import get_absolute_path_for_flute_psd_txt
 from ansys.dpf.sound.psychoacoustics import ProminenceRatio
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException
+from ansys.dpf.sound.pydpf_sound import PyAnsysSoundException
 
 
 @pytest.fixture
@@ -86,7 +86,7 @@ def test_promience_ratio_process(dpf_sound_test_server, create_psd_from_txt_data
     pr = ProminenceRatio()
 
     # no signal -> error 1
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         pr.process()
     assert str(excinfo.value) == "No PSD for PR computation. Use ProminenceRatio.psd."
 
@@ -170,7 +170,7 @@ def test_prominence_ratio_get_nb_tones(dpf_sound_test_server, create_psd_from_tx
     psd = create_psd_from_txt_data
     pr.psd = psd
 
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         pr.get_nb_tones()
     assert str(excinfo.value) == "Output has not been processed yet, use ProminenceRatio.process()."
 
@@ -294,12 +294,12 @@ def test_prominence_ratio_get_all_tone_infos(dpf_sound_test_server, create_psd_f
     psd = create_psd_from_txt_data
     pr.psd = psd
 
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         pr.get_single_tone_info(1)
     assert str(excinfo.value) == "Output has not been processed yet, use ProminenceRatio.process()."
 
     pr.process()
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         pr.get_single_tone_info(14)
     assert str(excinfo.value) == "Out of bound index. tone_index must be between 0 and 13."
 
@@ -320,7 +320,7 @@ def test_prominence_ratio_get_all_tone_infos(dpf_sound_test_server, create_psd_f
     # flat PSD -> nothing to detect
     psd.data = np.ones(len(psd.data))
     pr.process()
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         pr.get_single_tone_info(1)
     assert str(excinfo.value) == "No peak detected."
 
@@ -330,7 +330,7 @@ def test_prominence_ratio_get_reference_curve(dpf_sound_test_server, create_psd_
 
     psd = create_psd_from_txt_data
 
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         pr.get_reference_curve()
     assert str(excinfo.value) == "No PSD set. Use ProminenceRatio.psd."
 
@@ -357,7 +357,7 @@ def test_prominence_ratio_plot(dpf_sound_test_server, create_psd_from_txt_data):
     psd = create_psd_from_txt_data
     pr.psd = psd
 
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         pr.plot()
     assert str(excinfo.value) == "Output has not been processed yet, use ProminenceRatio.process()."
 
