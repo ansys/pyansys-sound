@@ -185,7 +185,7 @@ class ProminenceRatio(PsychoacousticsParent):
 
         Returns
         -------
-        int:
+        int
             Number of tones.
         """
         if self.get_output() == None:
@@ -200,7 +200,7 @@ class ProminenceRatio(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.ndarray:
+        numpy.ndarray
             Vector of peaks' frequencies.
         """
         if self.get_output_as_nparray() == None:
@@ -213,7 +213,7 @@ class ProminenceRatio(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.ndarray:
+        numpy.ndarray
             Vector of peaks' PR values.
         """
         if self.get_output_as_nparray() == None:
@@ -226,7 +226,7 @@ class ProminenceRatio(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.ndarray:
+        numpy.ndarray
             Vector of peaks' level values.
         """
         if self.get_output_as_nparray() == None:
@@ -239,7 +239,7 @@ class ProminenceRatio(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.ndarray:
+        numpy.ndarray
             Vector of eaks' lower frequency limits.
         """
         if self.get_output_as_nparray() == None:
@@ -252,7 +252,7 @@ class ProminenceRatio(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.ndarray:
+        numpy.ndarray
             Vector of peaks' higher frequency limits.
         """
         if self.get_output_as_nparray() == None:
@@ -265,7 +265,7 @@ class ProminenceRatio(PsychoacousticsParent):
 
         Returns
         -------
-        float:
+        float
             Maximum PR value.
         """
         if self.get_output_as_nparray() == None:
@@ -312,7 +312,7 @@ class ProminenceRatio(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.ndarray:
+        numpy.ndarray
             Reference curve on which to compare PR.
             If PR is higher, then the tone is prominent.
         """
