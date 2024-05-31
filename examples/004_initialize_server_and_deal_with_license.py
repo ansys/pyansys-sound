@@ -23,6 +23,9 @@ here:
  https://dpf.docs.pyansys.com/version/stable/getting_started/install.html
 
 """
+
+# sphinx_gallery_thumbnail_path = '_image/example004_thumbnail.png'
+
 # %%
 # Initial set up
 # ~~~~~~~~~~~~~~~
