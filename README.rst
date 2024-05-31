@@ -1,6 +1,5 @@
-****************
 PyAnsys Sound
-****************
+=============
 
 |pyansys| |python| |GH-CI| |codecov| |MIT| |black|
 
@@ -39,7 +38,6 @@ see Examples in the DPF Sound documentation.
 
 .. START_MARKER_FOR_SPHINX_DOCS
 
-----------
 Contribute
 ----------
 

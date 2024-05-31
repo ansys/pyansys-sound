@@ -1,6 +1,0 @@
-[run]
-source =
-    ansys.pyansys_sound
-
-[report]
-show_missing = true
