@@ -56,74 +56,74 @@ def create_psd_from_txt_data():
 
 
 def test_tone_to_noise_ratio_instantiation(dpf_sound_test_server):
-    trn = ToneToNoiseRatio()
-    assert trn != None
+    tnr = ToneToNoiseRatio()
+    assert tnr != None
 
 
 def test_tone_to_noise_ratio_set_get_psd(dpf_sound_test_server, create_psd_from_txt_data):
-    trn = ToneToNoiseRatio()
+    tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
-    trn.psd = psd
-    psd_from_get = trn.psd
+    tnr.psd = psd
+    psd_from_get = tnr.psd
 
     assert len(psd_from_get.data) == 8193
     assert psd_from_get.data[42] == pytest.approx(6.8086340335798055e-09)
 
 
 def test_tone_to_noise_ratio_set_get_frequency_list(dpf_sound_test_server):
-    trn = ToneToNoiseRatio()
+    tnr = ToneToNoiseRatio()
 
     frequency_list = [2, 5, 9]
-    trn.frequency_list = frequency_list
-    frequency_list_from_get = trn.frequency_list
+    tnr.frequency_list = frequency_list
+    frequency_list_from_get = tnr.frequency_list
 
     assert len(frequency_list_from_get) == 3
     assert frequency_list_from_get[2] == 9
 
 
 def test_tone_to_noise_ratio_process(dpf_sound_test_server, create_psd_from_txt_data):
-    trn = ToneToNoiseRatio()
+    tnr = ToneToNoiseRatio()
 
     # no signal -> error 1
     with pytest.raises(PyDpfSoundException) as excinfo:
-        trn.process()
+        tnr.process()
     assert str(excinfo.value) == "No PSD for TNR computation. Use ToneToNoiseRatio.psd."
 
     psd = create_psd_from_txt_data
-    trn.psd = psd
+    tnr.psd = psd
 
     # compute: no error
-    trn.process()
+    tnr.process()
 
 
 def test_tone_to_noise_ratio_get_output(dpf_sound_test_server, create_psd_from_txt_data):
-    trn = ToneToNoiseRatio()
+    tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
-    trn.psd = psd
+    tnr.psd = psd
 
     # no compute: return None
-    assert trn.get_output() == None
+    assert tnr.get_output() == None
 
     # compute: no error
-    trn.process()
+    tnr.process()
 
-    tnr_container = trn.get_output()
+    tnr_container = tnr.get_output()
     assert tnr_container != None
     assert type(tnr_container) == GenericDataContainer
 
 
 def test_tone_to_noise_ratio_get_output_as_nparray(dpf_sound_test_server, create_psd_from_txt_data):
-    trn = ToneToNoiseRatio()
+    tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
-    trn.psd = psd
+    tnr.psd = psd
 
     # no compute: return None
-    assert trn.get_output_as_nparray() == None
+    assert tnr.get_output_as_nparray() == None
 
-    trn.process()
+    tnr.process()
 
     (
         frequency_Hz,
@@ -132,7 +132,7 @@ def test_tone_to_noise_ratio_get_output_as_nparray(dpf_sound_test_server, create
         bandwidth_low,
         bandwidth_high,
         tnr_max,
-    ) = trn.get_output_as_nparray()
+    ) = tnr.get_output_as_nparray()
 
     assert type(frequency_Hz) == np.ndarray
     assert frequency_Hz.size == 11
@@ -165,37 +165,37 @@ def test_tone_to_noise_ratio_get_output_as_nparray(dpf_sound_test_server, create
 
 
 def test_tone_to_noise_ratio_get_nb_tones(dpf_sound_test_server, create_psd_from_txt_data):
-    trn = ToneToNoiseRatio()
+    tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
-    trn.psd = psd
+    tnr.psd = psd
 
     with pytest.raises(PyDpfSoundException) as excinfo:
-        trn.get_nb_tones()
+        tnr.get_nb_tones()
     assert (
         str(excinfo.value) == "Output has not been processed yet, use ToneToNoiseRatio.process()."
     )
 
-    trn.process()
-    assert trn.get_nb_tones() == 11
+    tnr.process()
+    assert tnr.get_nb_tones() == 11
 
     # flat spectrum -> no peaks to detect
     psd.data = np.ones(len(psd.data))
-    trn.process()
-    assert trn.get_nb_tones() == 0
+    tnr.process()
+    assert tnr.get_nb_tones() == 0
 
 
 def test_tone_to_noise_ratio_get_peaks_frequencies(dpf_sound_test_server, create_psd_from_txt_data):
-    trn = ToneToNoiseRatio()
+    tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
-    trn.psd = psd
+    tnr.psd = psd
 
     # no compute: return None
-    assert trn.get_peaks_frequencies() == None
+    assert tnr.get_peaks_frequencies() == None
 
-    trn.process()
-    peaks_frequencies = trn.get_peaks_frequencies()
+    tnr.process()
+    peaks_frequencies = tnr.get_peaks_frequencies()
     assert type(peaks_frequencies) == np.ndarray
     assert peaks_frequencies.size == 11
     assert peaks_frequencies[0] == pytest.approx(261.090087890625)
@@ -203,16 +203,16 @@ def test_tone_to_noise_ratio_get_peaks_frequencies(dpf_sound_test_server, create
 
 
 def test_tone_to_noise_ratio_get_TNR_values(dpf_sound_test_server, create_psd_from_txt_data):
-    trn = ToneToNoiseRatio()
+    tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
-    trn.psd = psd
+    tnr.psd = psd
 
     # no compute: return None
-    assert trn.get_TNR_values() == None
+    assert tnr.get_TNR_values() == None
 
-    trn.process()
-    tnr_db = trn.get_TNR_values()
+    tnr.process()
+    tnr_db = tnr.get_TNR_values()
     assert type(tnr_db) == np.ndarray
     assert tnr_db.size == 11
     assert tnr_db[0] == pytest.approx(38.04449462890625)
@@ -220,16 +220,16 @@ def test_tone_to_noise_ratio_get_TNR_values(dpf_sound_test_server, create_psd_fr
 
 
 def test_tone_to_noise_ratio_get_peaks_levels(dpf_sound_test_server, create_psd_from_txt_data):
-    trn = ToneToNoiseRatio()
+    tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
-    trn.psd = psd
+    tnr.psd = psd
 
     # no compute: return None
-    assert trn.get_peaks_levels() == None
+    assert tnr.get_peaks_levels() == None
 
-    trn.process()
-    level_db = trn.get_peaks_levels()
+    tnr.process()
+    level_db = tnr.get_peaks_levels()
     assert type(level_db) == np.ndarray
     assert level_db.size == 11
     assert level_db[0] == pytest.approx(71.11832305908203)
@@ -239,16 +239,16 @@ def test_tone_to_noise_ratio_get_peaks_levels(dpf_sound_test_server, create_psd_
 def test_tone_to_noise_ratio_get_peaks_low_frequencies(
     dpf_sound_test_server, create_psd_from_txt_data
 ):
-    trn = ToneToNoiseRatio()
+    tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
-    trn.psd = psd
+    tnr.psd = psd
 
     # no compute: return None
-    assert trn.get_peaks_low_frequencies() == None
+    assert tnr.get_peaks_low_frequencies() == None
 
-    trn.process()
-    bandwidth_low = trn.get_peaks_low_frequencies()
+    tnr.process()
+    bandwidth_low = tnr.get_peaks_low_frequencies()
     assert type(bandwidth_low) == np.ndarray
     assert bandwidth_low.size == 11
     assert bandwidth_low[0] == pytest.approx(231.48193359375)
@@ -258,16 +258,16 @@ def test_tone_to_noise_ratio_get_peaks_low_frequencies(
 def test_tone_to_noise_ratio_get_peaks_high_frequencies(
     dpf_sound_test_server, create_psd_from_txt_data
 ):
-    trn = ToneToNoiseRatio()
+    tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
-    trn.psd = psd
+    tnr.psd = psd
 
     # no compute: return None
-    assert trn.get_peaks_high_frequencies() == None
+    assert tnr.get_peaks_high_frequencies() == None
 
-    trn.process()
-    bandwidth_high = trn.get_peaks_high_frequencies()
+    tnr.process()
+    bandwidth_high = tnr.get_peaks_high_frequencies()
     assert type(bandwidth_high) == np.ndarray
     assert bandwidth_high.size == 11
     assert bandwidth_high[0] == pytest.approx(282.623291015625)
@@ -275,36 +275,36 @@ def test_tone_to_noise_ratio_get_peaks_high_frequencies(
 
 
 def test_tone_to_noise_ratio_get_max_TNR_value(dpf_sound_test_server, create_psd_from_txt_data):
-    trn = ToneToNoiseRatio()
+    tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
-    trn.psd = psd
+    tnr.psd = psd
 
     # no compute: return None
-    assert trn.get_max_TNR_value() == None
+    assert tnr.get_max_TNR_value() == None
 
-    trn.process()
-    tnr_max = trn.get_max_TNR_value()
+    tnr.process()
+    tnr_max = tnr.get_max_TNR_value()
     assert type(tnr_max) == np.ndarray
     assert tnr_max.size == 1
     assert tnr_max == pytest.approx(38.04449462890625)
 
 
 def test_tone_to_noise_ratio_get_all_tone_infos(dpf_sound_test_server, create_psd_from_txt_data):
-    trn = ToneToNoiseRatio()
+    tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
-    trn.psd = psd
+    tnr.psd = psd
 
     with pytest.raises(PyDpfSoundException) as excinfo:
-        trn.get_single_tone_info(1)
+        tnr.get_single_tone_info(1)
     assert (
         str(excinfo.value) == "Output has not been processed yet, use ToneToNoiseRatio.process()."
     )
 
-    trn.process()
+    tnr.process()
     with pytest.raises(PyDpfSoundException) as excinfo:
-        trn.get_single_tone_info(14)
+        tnr.get_single_tone_info(14)
     assert str(excinfo.value) == "Out of bound index. tone_index must be between 0 and 10."
 
     (
@@ -313,7 +313,7 @@ def test_tone_to_noise_ratio_get_all_tone_infos(dpf_sound_test_server, create_ps
         level_db,
         bandwidth_low,
         bandwidth_high,
-    ) = trn.get_single_tone_info(6)
+    ) = tnr.get_single_tone_info(6)
 
     assert peaks_frequency == pytest.approx(1835.70556640625)
     assert tnr_db == pytest.approx(32.670352935791016)
@@ -323,23 +323,23 @@ def test_tone_to_noise_ratio_get_all_tone_infos(dpf_sound_test_server, create_ps
 
     # flat PSD -> nothing to detect
     psd.data = np.ones(len(psd.data))
-    trn.process()
+    tnr.process()
     with pytest.raises(PyDpfSoundException) as excinfo:
-        trn.get_single_tone_info(1)
+        tnr.get_single_tone_info(1)
     assert str(excinfo.value) == "No peak detected."
 
 
 def test_tone_to_noise_ratio_get_reference_curve(dpf_sound_test_server, create_psd_from_txt_data):
-    trn = ToneToNoiseRatio()
+    tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
 
     with pytest.raises(PyDpfSoundException) as excinfo:
-        trn.get_reference_curve()
+        tnr.get_reference_curve()
     assert str(excinfo.value) == "No PSD set. Use ToneToNoiseRatio.psd."
 
-    trn.psd = psd
-    ref_curve = trn.get_reference_curve()
+    tnr.psd = psd
+    ref_curve = tnr.get_reference_curve()
 
     assert type(ref_curve) == np.ndarray
     assert ref_curve.size == 8193
@@ -356,19 +356,19 @@ def test_tone_to_noise_ratio_get_reference_curve(dpf_sound_test_server, create_p
 
 @patch("matplotlib.pyplot.show")
 def test_tone_to_noise_ratio_plot(dpf_sound_test_server, create_psd_from_txt_data):
-    trn = ToneToNoiseRatio()
+    tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
-    trn.psd = psd
+    tnr.psd = psd
 
     with pytest.raises(PyDpfSoundException) as excinfo:
-        trn.plot()
+        tnr.plot()
     assert (
         str(excinfo.value) == "Output has not been processed yet, use ToneToNoiseRatio.process()."
     )
 
-    trn.process()
-    trn.plot()
+    tnr.process()
+    tnr.plot()
 
 
 def test_tone_to_noise_ratio_with_frequency_list(dpf_sound_test_server, create_psd_from_txt_data):
@@ -395,10 +395,10 @@ def test_tone_to_noise_ratio_with_frequency_list(dpf_sound_test_server, create_p
         2096.0,
         2360.0,
     ]
-    trn = ToneToNoiseRatio(psd, frequency_list=frequency_list_rounded)
+    tnr = ToneToNoiseRatio(psd, frequency_list=frequency_list_rounded)
 
-    trn.process()
+    tnr.process()
 
-    assert len(frequency_list) == len(trn.get_peaks_frequencies())
+    assert len(frequency_list) == len(tnr.get_peaks_frequencies())
     for l_i in range(len(frequency_list)):
-        assert frequency_list[l_i] == pytest.approx(trn.get_peaks_frequencies()[l_i])
+        assert frequency_list[l_i] == pytest.approx(tnr.get_peaks_frequencies()[l_i])
