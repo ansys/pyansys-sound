@@ -11,7 +11,7 @@ The following indicators are included:
 - Loudness of stationary sounds according to ISO 532-1;
 - Loudness of time-varying sounds according to ISO 532-1;
 - Sharpness according to Zwicker and Fastl, "Psychoacoustics: Facts and models", 1990;
-- Roughness according to Daniel and Weber, "Psychoacoustical Roughness:Implementation of an
+- Roughness according to Daniel and Weber, "Psychoacoustical Roughness: Implementation of an
   Optimized Model, 1997;
 - Fluctuation strength according to Sontacchi, "Entwicklung eines Modulkonzeptes für die
   psychoakustische Geräuschanalyse under MatLab Diplomarbeit", 1998.
