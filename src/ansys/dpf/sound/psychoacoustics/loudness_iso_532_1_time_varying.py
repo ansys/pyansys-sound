@@ -115,12 +115,12 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
+    def get_output_as_nparray(self) -> tuple[npt.ArrayLike] | None:
         """Return the time-varying loudness related indicators as numpy arrays.
 
         Returns
         -------
-        tuple[np.array]
+        tuple[numpy.ndarray] | None
             1st element is the loudness vs time in sone.
             2nd element is the N5 indicator, in sone.
             3rd element is the N10 indicator, in sone.
@@ -152,7 +152,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             self.convert_fields_container_to_np_array(output[5]),
         )
 
-    def get_loudness_sone_vs_time(self, channel_index: int = 0) -> npt.ArrayLike:
+    def get_loudness_sone_vs_time(self, channel_index: int = 0) -> npt.ArrayLike | None:
         """Return the time-varying loudness in sone for the specified channel_index.
 
         Parameters
@@ -162,7 +162,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.ndarray
+        numpy.ndarray | None
             Time-varying loudness in sone.
         """
         if self.get_output() == None or not (self._check_channel_index(channel_index)):
@@ -179,7 +179,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             else:
                 return loudness_vs_time[channel_index]
 
-    def get_N5_sone(self, channel_index: int = 0) -> float:
+    def get_N5_sone(self, channel_index: int = 0) -> float | None:
         """Return the N5 indicator for the specified channel index.
 
         Returns N5, that is, the loudness value in sone that is exceeded 5% of the time, for the
@@ -192,7 +192,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.float64
+        numpy.float64 | None
             N5 value in sone.
         """
         if self.get_output() == None or not (self._check_channel_index(channel_index)):
@@ -205,7 +205,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             N5 = self.get_output_as_nparray()[1]
             return N5[channel_index]
 
-    def get_N10_sone(self, channel_index: int = 0) -> float:
+    def get_N10_sone(self, channel_index: int = 0) -> float | None:
         """Return the N10 indicator for the specified channel index.
 
         Returns N10, that is, the loudness value in sone that is exceeded 10% of the time, for the
@@ -218,7 +218,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.float64
+        numpy.float64 | None
             N10 value in sone.
         """
         if self.get_output() == None or not (self._check_channel_index(channel_index)):
@@ -231,7 +231,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             N10 = self.get_output_as_nparray()[2]
             return N10[channel_index]
 
-    def get_loudness_level_phon_vs_time(self, channel_index: int = 0) -> npt.ArrayLike:
+    def get_loudness_level_phon_vs_time(self, channel_index: int = 0) -> npt.ArrayLike | None:
         """Return the time-varying loudness level in phon for the specified channel index.
 
         Parameters
@@ -242,7 +242,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.ndarray
+        numpy.ndarray | None
             Time-varying loudness level in phon.
         """
         if self.get_output() == None or not (self._check_channel_index(channel_index)):
@@ -259,7 +259,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             else:
                 return loudness_level_vs_time[channel_index]
 
-    def get_L5_phon(self, channel_index: int = 0) -> float:
+    def get_L5_phon(self, channel_index: int = 0) -> float | None:
         """Return the L5 indicator for the specified channel index.
 
         Returns L5, that is, the loudness level in phon that is exceeded 5% of the time, for the
@@ -272,7 +272,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.float64
+        numpy.float64 | None
             L5 value in phon.
         """
         if self.get_output() == None or not (self._check_channel_index(channel_index)):
@@ -285,7 +285,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             L5 = self.get_output_as_nparray()[4]
             return L5[channel_index]
 
-    def get_L10_phon(self, channel_index: int = 0) -> float:
+    def get_L10_phon(self, channel_index: int = 0) -> float | None:
         """Return the L10 indicator for the specified channel index.
 
         Returns L10, that is, the loudness level in phon that is exceeded 10% of the time, for the
@@ -298,7 +298,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.float64
+        numpy.float64 | None
             L10 value in phon.
         """
         if self.get_output() == None or not (self._check_channel_index(channel_index)):
@@ -311,7 +311,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             L10 = self.get_output_as_nparray()[5]
             return L10[channel_index]
 
-    def get_time_scale(self) -> npt.ArrayLike:
+    def get_time_scale(self) -> npt.ArrayLike | None:
         """Return time scale.
 
         Returns an array of the timestamps, in second, where time-varying loudness and loudness
@@ -319,7 +319,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.ndarray
+        numpy.ndarray | None
             Timestamps in second.
         """
         if self.get_output() == None:
