@@ -35,11 +35,10 @@ def connect_to_or_start_server(
         Root path for the Ansys installation. For example, ``C:\\Program Files\\ANSYS Inc\\v232``.
         This parameter is ignored if either the port or IP address is set.
     use_license_context :
-        Option to check out DPF Sound license increment (avrxp_snd_level1)
-        before using PyAnsys Sound.
-        It improves performance if you are doing multiple calls to DPF Sound operators, as that
-        require licensing. This option can also be used to force checkout before running a script
-        when few DPF Sound license increments are available.
+        Option to check out DPF Sound license increment (avrxp_snd_level1) before using
+        PyAnsys Sound. It improves performance if you are doing multiple calls to DPF Sound
+        operators, as these require licensing. This option can also be used to force check out
+        before running a script when few DPF Sound license increments are available.
         The license will be checked in when the server object is deleted.
 
     Returns
@@ -78,7 +77,7 @@ def connect_to_or_start_server(
 
     load_library(full_path_dll + "dpf_sound.dll", "dpf_sound", server=server)
 
-    # if required, check out the DPF Sound license once for all for this session
+    # if required, check out the DPF Sound license once and for all for this session
     lic_context = None
     if use_license_context == True:
         lic_context = LicenseContextManager(increment_name="avrxp_snd_level1", server=server)

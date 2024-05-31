@@ -103,7 +103,7 @@ my_server = None
 print("Connecting to the server using a LicenseContextManager")
 my_server = connect_to_or_start_server(use_license_context=True)
 
-# Execute the same piece of code as prviously, and measure the new execution time
+# Execute the same piece of code as previously, and measure the new execution time
 for i in range(5):
     now = datetime.datetime.now()
     wav_loader = LoadWav(path_flute_wav)
@@ -122,5 +122,5 @@ for i in range(5):
 # ~~~~~~~~~~~
 # You can notice that the execution time is much faster when you use a LicenseContextManager
 # (second case), compared to not using it (first case).
-# This is because - when not using a LicenseContactManage - the license is checked out
+# This is because - when not using a LicenseContactManager - the license is checked out
 # each time you use a DPF Sound operator
