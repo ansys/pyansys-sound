@@ -1,5 +1,3 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
-
 """
 .. _load_resample_amplify_write_wav_files_example:
 
@@ -99,4 +97,3 @@ plt.show()
 output_path = path_flute_wav[:-4] + "_modified.wav"  # "[-4]" is to remove the ".wav"
 wav_writer = WriteWav(path_to_write=output_path, signal=fc_signal_modified, bit_depth="int16")
 wav_writer.process()
-print("End of script reached")

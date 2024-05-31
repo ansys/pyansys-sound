@@ -1,5 +1,3 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
-
 """
 .. _calculate_psychoacoustic_indicators:
 
@@ -185,7 +183,3 @@ print(
     f"{roughness_values[1]: .2f} asper, "
     f"and{fluctuation_strength_values[1]: .2f} vacil.\n"
 )
-
-# %%
-# End of script.
-print("End of script reached")
