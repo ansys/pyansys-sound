@@ -3,7 +3,7 @@
 from ansys.dpf.core import GenericDataContainer
 
 from . import XtractParent
-from ..pyansys_sound import PyDpfSoundException
+from ..pyansys_sound import PyAnsysSoundException
 
 ID_TRANSIENT_PARAMETERS_CLASS = "Xtract_transient_parameters"
 ID_LOWER_THRESHOLD = "lower_threshold"
@@ -43,7 +43,7 @@ class XtractTransientParameters(XtractParent):
     def lower_threshold(self, lower_threshold: float):
         """Set the lower threshold."""
         if lower_threshold < 0.0 or lower_threshold > 100.0:
-            raise PyDpfSoundException("Lower threshold must be between 0.0 and 100.0 dB.")
+            raise PyAnsysSoundException("Lower threshold must be between 0.0 and 100.0 dB.")
 
         self.__generic_data_container.set_property(ID_LOWER_THRESHOLD, lower_threshold)
 
@@ -67,7 +67,7 @@ class XtractTransientParameters(XtractParent):
     def upper_threshold(self, upper_threshold: float):
         """Set the upper threshold."""
         if upper_threshold < 0.0 or upper_threshold > 100.0:
-            raise PyDpfSoundException("Upper threshold must be between 0.0 and 100.0 dB.")
+            raise PyAnsysSoundException("Upper threshold must be between 0.0 and 100.0 dB.")
 
         self.__generic_data_container.set_property(ID_UPPER_THRESHOLD, upper_threshold)
 

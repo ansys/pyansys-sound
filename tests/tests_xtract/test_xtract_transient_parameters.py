@@ -1,6 +1,6 @@
 import pytest
 
-from ansys.sound.core.pyansys_sound import PyDpfSoundException
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.xtract.xtract_transient_parameters import XtractTransientParameters
 
 
@@ -13,7 +13,7 @@ def test_xtract_transient_parameters_getter_setter_upper_threshold(dpf_sound_tes
     xtract_transient_parameters = XtractTransientParameters()
 
     # Invalid value
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_transient_parameters.upper_threshold = 150.0
     assert str(excinfo.value) == "Upper threshold must be between 0.0 and 100.0 dB."
 
@@ -26,7 +26,7 @@ def test_xtract_transient_parameters_getter_setter_lower_threshold(dpf_sound_tes
     xtract_transient_parameters = XtractTransientParameters()
 
     # Invalid value
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_transient_parameters.lower_threshold = 150.0
     assert str(excinfo.value) == "Lower threshold must be between 0.0 and 100.0 dB."
 

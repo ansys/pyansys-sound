@@ -2,7 +2,7 @@ from ansys.dpf.core import Field
 import numpy as np
 import pytest
 
-from ansys.sound.core.pyansys_sound import PyDpfSoundException
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.xtract.xtract_denoiser_parameters import XtractDenoiserParameters
 
@@ -16,7 +16,7 @@ def test_xtract_denoiser_parameters_getter_setter_upper_threshold(dpf_sound_test
     xtract_denoiser_parameters = XtractDenoiserParameters()
 
     # Invalid value
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_denoiser_parameters.noise_psd = None
     assert str(excinfo.value) == "Noise PSD must be a non-empty Field."
 

@@ -9,7 +9,7 @@ import numpy as np
 from numpy import typing as npt
 
 from . import XtractDenoiserParameters, XtractParent
-from ..pyansys_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class XtractDenoiser(XtractParent):
@@ -111,10 +111,10 @@ class XtractDenoiser(XtractParent):
     def process(self):
         """Apply denoising."""
         if self.input_signal is None:
-            raise PyDpfSoundException("Input signal is not set.")
+            raise PyAnsysSoundException("Input signal is not set.")
 
         if self.input_parameters is None:
-            raise PyDpfSoundException("Input parameters are not set.")
+            raise PyAnsysSoundException("Input parameters are not set.")
 
         self.__operator.connect(0, self.input_signal)
         self.__operator.connect(1, self.input_parameters.get_parameters_as_generic_data_container())
@@ -142,7 +142,7 @@ class XtractDenoiser(XtractParent):
             as a field or fields container (depending on the input).
         """
         if self.__output_denoised_signals == None or self.__output_noise_signals == None:
-            warnings.warn(PyDpfSoundWarning("Output has not been processed yet."))
+            warnings.warn(PyAnsysSoundWarning("Output has not been processed yet."))
 
         return self._output  # i.e. self.__output_denoised_signals, self.__output_noise_signals
 

@@ -9,7 +9,7 @@ import numpy as np
 from numpy import typing as npt
 
 from . import XtractParent, XtractTonalParameters
-from ..pyansys_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class XtractTonal(XtractParent):
@@ -123,10 +123,10 @@ class XtractTonal(XtractParent):
     def process(self):
         """Process the tonal analysis."""
         if self.__input_signal is None:
-            raise PyDpfSoundException("No input signal for tonal analysis.")
+            raise PyAnsysSoundException("No input signal for tonal analysis.")
 
         if self.input_parameters is None:
-            raise PyDpfSoundException("Input parameters are not set.")
+            raise PyAnsysSoundException("Input parameters are not set.")
 
         self.__operator.connect(0, self.input_signal)
         self.__operator.connect(1, self.input_parameters.get_parameters_as_generic_data_container())
@@ -153,7 +153,7 @@ class XtractTonal(XtractParent):
             Tonal and non tonal signals, as fields or fields containers.
         """
         if self.__output_tonal_signals == None or self.__output_non_tonal_signals == None:
-            warnings.warn(PyDpfSoundWarning("Output has not been processed yet."))
+            warnings.warn(PyAnsysSoundWarning("Output has not been processed yet."))
 
         return self.__output_tonal_signals, self.__output_non_tonal_signals
 

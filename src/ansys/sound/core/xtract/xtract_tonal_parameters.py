@@ -3,7 +3,7 @@
 from ansys.dpf.core import GenericDataContainer
 
 from . import XtractParent
-from ..pyansys_sound import PyDpfSoundException
+from ..pyansys_sound import PyAnsysSoundException
 
 ID_TONAL_PARAMETERS_CLASS = "Xtract_tonal_parameters"
 ID_REGULARITY = "regularity"
@@ -72,7 +72,7 @@ class XtractTonalParameters(XtractParent):
     def regularity(self, regularity: float):
         """Set the regularity."""
         if regularity < 0.0 or regularity > 1.0:
-            raise PyDpfSoundException("Regularity must be between 0.0 and 1.0.")
+            raise PyAnsysSoundException("Regularity must be between 0.0 and 1.0.")
 
         self.__generic_data_container.set_property(ID_REGULARITY, regularity)
 
@@ -96,7 +96,7 @@ class XtractTonalParameters(XtractParent):
     def maximum_slope(self, maximum_slope: float):
         """Set the maximum slope."""
         if maximum_slope < 0.0 or maximum_slope > 15000.0:
-            raise PyDpfSoundException("Maximum slope must be between 0.0 and 15000.0 Hz/s.")
+            raise PyAnsysSoundException("Maximum slope must be between 0.0 and 15000.0 Hz/s.")
 
         self.__generic_data_container.set_property(ID_MAXIMUM_SLOPE, maximum_slope)
 
@@ -120,7 +120,7 @@ class XtractTonalParameters(XtractParent):
     def minimum_duration(self, minimum_duration: float):
         """Set the minimum duration."""
         if minimum_duration < 0.0 or minimum_duration > 5.0:
-            raise PyDpfSoundException("Minimum duration must be between 0.0 and 5.0 s.")
+            raise PyAnsysSoundException("Minimum duration must be between 0.0 and 5.0 s.")
 
         self.__generic_data_container.set_property(ID_MINIMUM_DURATION, minimum_duration)
 
@@ -144,7 +144,7 @@ class XtractTonalParameters(XtractParent):
     def intertonal_gap(self, intertonal_gap: float):
         """Set the intertonal gap."""
         if intertonal_gap < 10.0 or intertonal_gap > 200.0:
-            raise PyDpfSoundException("Intertonal gap must be between 10.0 and 200.0 Hz.")
+            raise PyAnsysSoundException("Intertonal gap must be between 10.0 and 200.0 Hz.")
 
         self.__generic_data_container.set_property(ID_INTERTONAL_GAP, intertonal_gap)
 
@@ -168,7 +168,7 @@ class XtractTonalParameters(XtractParent):
     def local_emergence(self, local_emergence: float):
         """Set the local emergence."""
         if local_emergence < 0.0 or local_emergence > 100.0:
-            raise PyDpfSoundException("Local emergence must be between 0.0 and 100.0 dB.")
+            raise PyAnsysSoundException("Local emergence must be between 0.0 and 100.0 dB.")
 
         self.__generic_data_container.set_property(ID_LOCAL_EMERGENCE, local_emergence)
 
@@ -192,7 +192,7 @@ class XtractTonalParameters(XtractParent):
     def fft_size(self, fft_size: int):
         """Set the fft size."""
         if fft_size < 0:
-            raise PyDpfSoundException("Fft size must be between greater than 0.")
+            raise PyAnsysSoundException("Fft size must be between greater than 0.")
 
         self.__generic_data_container.set_property(ID_FFT_SIZE, fft_size)
 

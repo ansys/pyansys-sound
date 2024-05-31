@@ -1,7 +1,7 @@
 from ansys.dpf.core import GenericDataContainer
 import pytest
 
-from ansys.sound.core.pyansys_sound import PyDpfSoundException
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.xtract.xtract_tonal_parameters import XtractTonalParameters
 
 
@@ -14,7 +14,7 @@ def test_xtract_tonal_parameters_getter_setter_regularity(dpf_sound_test_server)
     xtract_tonal_parameters = XtractTonalParameters()
 
     # Invalid value
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_tonal_parameters.regularity = 150.0
     assert str(excinfo.value) == "Regularity must be between 0.0 and 1.0."
 
@@ -27,7 +27,7 @@ def test_xtract_tonal_parameters_getter_setter_maximum_slope(dpf_sound_test_serv
     xtract_tonal_parameters = XtractTonalParameters()
 
     # Invalid value
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_tonal_parameters.maximum_slope = 1500000.0
     assert str(excinfo.value) == "Maximum slope must be between 0.0 and 15000.0 Hz/s."
 
@@ -40,7 +40,7 @@ def test_xtract_tonal_parameters_getter_setter_minimum_duration(dpf_sound_test_s
     xtract_tonal_parameters = XtractTonalParameters()
 
     # Invalid value
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_tonal_parameters.minimum_duration = 1500000.0
     assert str(excinfo.value) == "Minimum duration must be between 0.0 and 5.0 s."
 
@@ -53,7 +53,7 @@ def test_xtract_tonal_parameters_getter_setter_local_emergence(dpf_sound_test_se
     xtract_tonal_parameters = XtractTonalParameters()
 
     # Invalid value
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_tonal_parameters.local_emergence = 1500000.0
     assert str(excinfo.value) == "Local emergence must be between 0.0 and 100.0 dB."
 
@@ -66,7 +66,7 @@ def test_xtract_tonal_parameters_getter_setter_fft_size(dpf_sound_test_server):
     xtract_tonal_parameters = XtractTonalParameters()
 
     # Invalid value
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_tonal_parameters.fft_size = -1500000.0
     assert str(excinfo.value) == "Fft size must be between greater than 0."
 
@@ -79,7 +79,7 @@ def test_xtract_tonal_parameters_getter_setter_regularity(dpf_sound_test_server)
     xtract_tonal_parameters = XtractTonalParameters()
 
     # Invalid value
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_tonal_parameters.regularity = -1500000.0
     assert str(excinfo.value) == "Regularity must be between 0.0 and 1.0."
 
@@ -92,7 +92,7 @@ def test_xtract_tonal_parameters_getter_intertonal_gap(dpf_sound_test_server):
     xtract_tonal_parameters = XtractTonalParameters()
 
     # Invalid value
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_tonal_parameters.intertonal_gap = -1500000.0
     assert str(excinfo.value) == "Intertonal gap must be between 10.0 and 200.0 Hz."
 
