@@ -17,9 +17,9 @@ and when not using it.
 
 Prerequisite: ensure that you have installed DPF core and DPF Sound, following the instructions
 here:
-- if you have installed latest Ansys release:
+* if you have installed latest Ansys release:
 https://dpf.docs.pyansys.com/version/stable/getting_started/install.html#installation
-- if you use DPF standalone:
+* if you use DPF standalone:
 https://dpf.docs.pyansys.com/version/stable/getting_started/install.html
 
 """
