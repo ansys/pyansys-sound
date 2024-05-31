@@ -17,6 +17,7 @@ concurrency:
 env:
   MAIN_PYTHON_VERSION: '3.10'
   PACKAGE_NAME: 'ansys-sound-core'
+  DOCUMENTATION_CNAME: 'sound.docs.pyansys.com'
   ANSRV_DPF_SOUND_IMAGE: 'ghcr.io/ansys-internal/pydpf-sound'
   ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG: ghcr.io/ansys-internal/pydpf-sound/ansys-dpf-sound:latest # TO BE MODIFIED
   ANSRV_DPF_SOUND_LICENSE_SERVER: ${{ secrets.LICENSE_SERVER }}
@@ -44,7 +45,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   smoke-tests:
-    name: Build and Smoke tests
+    name: "Build and Smoke tests"
     runs-on: ${{ matrix.os }}
     needs: [code-style]
     strategy:
@@ -58,7 +59,7 @@ jobs:
           - should-release: false
             os: macos-latest
     steps:
-      - name: Build wheelhouse and perform smoke test
+      - name: "Build wheelhouse and perform smoke test"
         uses: ansys/actions/build-wheelhouse@v5
         with:
           library-name: ${{ env.PACKAGE_NAME }}
@@ -70,14 +71,14 @@ jobs:
 # =================================================================================================
 
   testing-windows:
-    name: Testing and coverage (Windows)
+    name: "Testing and coverage (Windows)"
     needs: [smoke-tests]
     runs-on: [self-hosted, Windows, pydpfsound]
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: "Set up Python"
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }} # self-hosted has an issue with 3.11
@@ -85,19 +86,19 @@ jobs:
       - name: Set up headless display
         uses: pyvista/setup-headless-display-action@v2
 
-      - name: Create Python venv
+      - name: "Create Python venv"
         run: |
           python -m venv .venv
           .\.venv\Scripts\Activate.ps1
 
-      - name: Install packages for testing
+      - name: "Install packages for testing"
         run: |
           .\.venv\Scripts\Activate.ps1
           python -m pip install --upgrade pip
           pip install --upgrade build wheel
           pip install .[tests]
 
-      - name: Login to GitHub Container Registry
+      - name: "Login to GitHub Container Registry"
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -107,39 +108,39 @@ jobs:
       - name: Download DPF-Sound service container
         run: docker pull $env:ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG
 
-      - name: Start DPF-Sound service and verify start
+      - name: "Start DPF-Sound service and verify start"
         run: |
           .\.venv\Scripts\Activate.ps1
           docker run -d --name ${{ env.DPF_SOUND_CONT_NAME }} -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ env.ANSRV_DPF_SOUND_LICENSE_SERVER }}" -v C:\Users\ansys\actions-runner\_work\pydpf-sound\pydpf-sound\tests\data:C:\data -p ${{ env.ANSRV_DPF_SOUND_PORT }}:50052 --dns '8.8.8.8' ${{ env.ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG }}
           python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
-      - name: Testing
+      - name: "Testing"
         run: |
           .\.venv\Scripts\Activate.ps1
           pytest -v
 
-      - name: Upload Coverage Results
+      - name: "Upload Coverage Results"
         uses: actions/upload-artifact@v4
         with:
           name: coverage-html
           path: .cov/html
           retention-days: 7
 
-      - name: Upload coverage reports to Codecov
+      - name: "Upload coverage reports to Codecov"
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: .cov/xml
 
 
-      - name: Stop the DPF-Sound service
+      - name: "Stop the DPF-Sound service"
         if: always()
         run: |
           docker stop $env:DPF_SOUND_CONT_NAME
           docker logs $env:DPF_SOUND_CONT_NAME
           docker rm $env:DPF_SOUND_CONT_NAME
 
-      - name: Stop any remaining containers
+      - name: "Stop any remaining containers"
         if: always()
         run: |
           $dockerContainers = docker ps -a -q
@@ -153,77 +154,57 @@ jobs:
     runs-on: [self-hosted, Windows, pydpfsound]
     needs: doc-style
     steps:
-      - name: "Install Git and checkout project"
-        uses: actions/checkout@v4
 
-      - name: "Setup Python"
+      - uses: actions/checkout@v4
+
+      - name: "Set up Python"
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          python-version: ${{ env.MAIN_PYTHON_VERSION }} # self-hosted has an issue with 3.11
 
-      - name: "Create Python venv and activate it"
+      - name: "Create Python venv"
         run: |
           python -m venv .venv
           .\.venv\Scripts\Activate.ps1
 
-      - name: "Install packages for documentation build"
+      - name: "Install packages for documentation building"
         run: |
           .\.venv\Scripts\Activate.ps1
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
+          pip install --upgrade build wheel
           pip install .[doc]
 
-      - name: Login to GitHub Container Registry
+      - name: "Login to GitHub Container Registry"
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Download DPF-Sound service container
+      - name: "Download DPF-Sound service container"
         run: docker pull $env:ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG
 
-      - name: Start DPF-Sound service and verify start
+      - name: "Start DPF-Sound service and verify start"
         run: |
           .\.venv\Scripts\Activate.ps1
           docker run -d --name ${{ env.DPF_SOUND_CONT_NAME }} -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ env.ANSRV_DPF_SOUND_LICENSE_SERVER }}" -v C:\Users\ansys\actions-runner\_work\pydpf-sound\pydpf-sound\tests\data:C:\data -p ${{ env.ANSRV_DPF_SOUND_PORT }}:50052 --dns '8.8.8.8' ${{ env.ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG }}
           python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
-      - name: Build the documentation (HTML)
-        run: |
-          .\.venv\Scripts\Activate.ps1
-          cd doc
-          .\make.bat clean
-          .\make.bat html
-
-      - name: Upload HTML documentation
-        uses: actions/upload-artifact@v4
+      - name: "Run Ansys documentation building action"
+        uses: ansys/actions/doc-build@v6
         with:
-          name: documentation-html
-          path: doc/_build/html
-          retention-days: 7
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          skip-install: true
+          sphinxopts: -j auto -W --keep-going
 
-      - name: Build the documentation (PDF)
-        run: |
-          .\.venv\Scripts\Activate.ps1
-          cd doc
-          .\make.bat clean
-          .\make.bat pdf
-
-      - name: Upload PDF documentation
-        uses: actions/upload-artifact@v4
-        with:
-          name: documentation-pdf
-          path: doc/_build/latex/ansys-sound-core*.pdf
-          retention-days: 7
-
-      - name: Stop the DPF-Sound service
+      - name: "Stop the DPF-Sound service"
         if: always()
         run: |
           docker stop $env:DPF_SOUND_CONT_NAME
           docker logs $env:DPF_SOUND_CONT_NAME
           docker rm $env:DPF_SOUND_CONT_NAME
 
-      - name: Stop any remaining containers
+      - name: "Stop any remaining containers"
         if: always()
         run: |
           $dockerContainers = docker ps -a -q
@@ -232,3 +213,63 @@ jobs:
               docker rm $dockerContainers
           }
 
+# =================================================================================================
+# =================================================================================================
+
+
+  package:
+    name: Package library
+    needs: [testing-windows,doc-build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build library source and wheel artifacts
+        uses: ansys/actions/build-library@v6
+        with:
+          library-name: ${{ env.PACKAGE_NAME }}
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+
+  release:
+    name: Release project
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+    needs: [package]
+    runs-on: ubuntu-latest
+    # Specifying a GitHub environment is optional, but strongly encouraged
+    environment: release
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: Release to the public PyPI repository
+        uses: ansys/actions/release-pypi-public@v6
+        with:
+          library-name: ${{ env.PACKAGE_NAME }}
+          use-trusted-publisher: true
+
+      - name: Release to GitHub
+        uses: ansys/actions/release-github@v6
+        with:
+          library-name: ${{ env.PACKAGE_NAME }}
+
+  doc-deploy-dev:
+    name: "Upload developers documentation"
+    runs-on: ubuntu-latest
+    needs: package
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: "Deploy the latest documentation"
+        uses: ansys/actions/doc-deploy-dev@v6
+        with:
+            cname: ${{ env.DOCUMENTATION_CNAME }}
+            token: ${{ secrets.GITHUB_TOKEN }}
+
+  doc-deploy-release:
+    name: "Upload release documentation"
+    runs-on: ubuntu-latest
+    needs: release
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+    steps:
+      - name: "Deploy the latest documentation"
+        uses: ansys/actions/doc-deploy-dev@v6
+        with:
+            cname: ${{ env.DOCUMENTATION_CNAME }}
+            token: ${{ secrets.GITHUB_TOKEN }}

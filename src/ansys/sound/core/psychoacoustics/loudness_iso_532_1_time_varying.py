@@ -40,7 +40,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         """Set the signal.
 
         Parameters
-        -------
+        ----------
         signal: FieldsContainer | Field
             Signal in Pa on which to compute loudness, as a DPF field or fields container.
         """
@@ -156,7 +156,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         """Return the time-varying loudness in sone for the specified channel_index.
 
         Parameters
-        -------
+        ----------
         channel_index: int
             Index of the signal channel (0 by default) for which to return time-varying loudness.
 
@@ -189,7 +189,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         specified channel.
 
         Parameters
-        -------
+        ----------
         channel_index: int
             Index of the signal channel (0 by default) for which to return N5.
 
@@ -218,7 +218,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         specified channel.
 
         Parameters
-        -------
+        ----------
         channel_index: int
             Index of the signal channel (0 by default) for which to return N10.
 
@@ -244,7 +244,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         """Return the time-varying loudness level in phon for the specified channel_index.
 
         Parameters
-        -------
+        ----------
         channel_index: int
             Index of the signal channel (0 by default) for which to return time-varying loudness
             level.
@@ -278,7 +278,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         specified channel.
 
         Parameters
-        -------
+        ----------
         channel_index: int
             Index of the signal channel (0 by default) for which to return L5.
 
@@ -307,7 +307,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         specified channel.
 
         Parameters
-        -------
+        ----------
         channel_index: int
             Index of the signal channel (0 by default) for which to return L10.
 
@@ -395,7 +395,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         """Check whether a specified signal channel index is available or not.
 
         Parameters
-        -------
+        ----------
         channel_index: int
             Index of the signal channel to check.
 

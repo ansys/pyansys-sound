@@ -123,6 +123,8 @@ sphinx_gallery_conf = {
     "thumbnail_size": (350, 350),
 }
 
+suppress_warnings = ["config.cache"]
+
 exclude_patterns = [
     "_build",
     "Thumbs.db",
