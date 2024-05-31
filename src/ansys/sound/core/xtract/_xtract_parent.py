@@ -1,5 +1,5 @@
 """Xtract."""
-from ..pydpf_sound import PyDpfSound
+from ..pyansys_sound import PyDpfSound
 
 
 class XtractParent(PyDpfSound):

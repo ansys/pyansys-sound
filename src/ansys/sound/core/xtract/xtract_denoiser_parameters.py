@@ -3,7 +3,7 @@
 from ansys.dpf.core import Field, GenericDataContainer, Operator
 
 from . import XtractParent
-from ..pydpf_sound import PyDpfSoundException
+from ..pyansys_sound import PyDpfSoundException
 
 ID_DENOISER_PARAMETERS_CLASS = "Xtract_denoiser_parameters"
 ID_NOISE_PSD = "noise_levels"

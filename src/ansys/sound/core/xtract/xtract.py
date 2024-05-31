@@ -14,7 +14,7 @@ from . import (
     XtractTonalParameters,
     XtractTransientParameters,
 )
-from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
 class Xtract(XtractParent):

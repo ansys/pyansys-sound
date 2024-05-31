@@ -1,7 +1,7 @@
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException
 import pytest
 
-from ansys.dpf.sound.xtract.xtract_transient_parameters import XtractTransientParameters
+from ansys.sound.core.pyansys_sound import PyDpfSoundException
+from ansys.sound.core.xtract.xtract_transient_parameters import XtractTransientParameters
 
 
 def test_xtract_transient_parameters_instantiation(dpf_sound_test_server):

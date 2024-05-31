@@ -3,7 +3,7 @@
 from ansys.dpf.core import GenericDataContainer
 
 from . import XtractParent
-from ..pydpf_sound import PyDpfSoundException
+from ..pyansys_sound import PyDpfSoundException
 
 ID_TONAL_PARAMETERS_CLASS = "Xtract_tonal_parameters"
 ID_REGULARITY = "regularity"

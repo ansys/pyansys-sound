@@ -1,5 +1,5 @@
 """
-pydpf-sound.
+pyansys-sound.
 
 Library
 """

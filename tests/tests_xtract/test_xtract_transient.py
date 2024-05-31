@@ -1,13 +1,13 @@
 from unittest.mock import patch
 
 from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
-from ansys.dpf.sound.signal_utilities import LoadWav
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.xtract.xtract_transient import XtractTransient
-from ansys.dpf.sound.xtract.xtract_transient_parameters import XtractTransientParameters
+from ansys.sound.core.pyansys_sound import PyDpfSoundException, PyDpfSoundWarning
+from ansys.sound.core.signal_utilities import LoadWav
+from ansys.sound.core.xtract.xtract_transient import XtractTransient
+from ansys.sound.core.xtract.xtract_transient_parameters import XtractTransientParameters
 
 
 def test_xtract_transient_instantiation(dpf_sound_test_server):

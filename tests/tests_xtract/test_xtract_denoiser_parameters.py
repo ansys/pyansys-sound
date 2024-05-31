@@ -1,10 +1,10 @@
 from ansys.dpf.core import Field
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException
-from ansys.dpf.sound.signal_utilities import LoadWav
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.xtract.xtract_denoiser_parameters import XtractDenoiserParameters
+from ansys.sound.core.pyansys_sound import PyDpfSoundException
+from ansys.sound.core.signal_utilities import LoadWav
+from ansys.sound.core.xtract.xtract_denoiser_parameters import XtractDenoiserParameters
 
 
 def test_xtract_denoiser_parameters_instantiation(dpf_sound_test_server):

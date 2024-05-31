@@ -9,7 +9,7 @@ import numpy as np
 from numpy import typing as npt
 
 from . import XtractParent, XtractTonalParameters
-from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
 class XtractTonal(XtractParent):
