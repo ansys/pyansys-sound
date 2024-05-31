@@ -1,15 +1,15 @@
-..
-   Just reuse the root readme to avoid duplicating the documentation.
-   Provide any documentation specific to your online documentation
-   here.
+PyDPF Sound
+===========
+
+
+.. include:: ../../README.rst
+   :start-after: .. index_start
+
+
 .. toctree::
    :hidden:
    :maxdepth: 3
 
-   self
    getting_started
    api/index
    examples/index
-
-.. include:: ../../README.rst
-   :start-after: .. index_start

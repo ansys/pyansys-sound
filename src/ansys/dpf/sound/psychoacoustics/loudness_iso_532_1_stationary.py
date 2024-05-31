@@ -43,7 +43,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         """Set the signal.
 
         Parameters
-        -------
+        ----------
         signal: FieldsContainer | Field
             Signal in Pa on which to compute loudness, as a DPF Field or Fields Container.
 
