@@ -3,7 +3,7 @@
 from ansys.dpf.core import Field, GenericDataContainer, Operator
 
 from . import XtractParent
-from ..pydpf_sound import PyDpfSoundException
+from ..pyansys_sound import PyAnsysSoundException
 
 ID_DENOISER_PARAMETERS_CLASS = "Xtract_denoiser_parameters"
 ID_NOISE_PSD = "noise_levels"
@@ -41,7 +41,7 @@ class XtractDenoiserParameters(XtractParent):
     def noise_psd(self, noise_psd: Field):
         """Set the noise PSD."""
         if noise_psd is None:
-            raise PyDpfSoundException("Noise PSD must be a non-empty Field.")
+            raise PyAnsysSoundException("Noise PSD must be a non-empty Field.")
 
         self.__generic_data_container.set_property(ID_NOISE_PSD, noise_psd)
 

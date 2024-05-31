@@ -4,12 +4,12 @@ from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
-from ansys.dpf.sound.signal_utilities import LoadWav
-from ansys.dpf.sound.xtract.xtract import Xtract
-from ansys.dpf.sound.xtract.xtract_denoiser_parameters import XtractDenoiserParameters
-from ansys.dpf.sound.xtract.xtract_tonal_parameters import XtractTonalParameters
-from ansys.dpf.sound.xtract.xtract_transient_parameters import XtractTransientParameters
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.signal_utilities import LoadWav
+from ansys.sound.core.xtract.xtract import Xtract
+from ansys.sound.core.xtract.xtract_denoiser_parameters import XtractDenoiserParameters
+from ansys.sound.core.xtract.xtract_tonal_parameters import XtractTonalParameters
+from ansys.sound.core.xtract.xtract_transient_parameters import XtractTransientParameters
 
 
 def test_xtract_instantiation(dpf_sound_test_server):
@@ -101,24 +101,24 @@ def test_xtract_initialization_Field(dpf_sound_test_server):
 
 def test_xtract_except1(dpf_sound_test_server):
     xtract = Xtract(Field(), None, GenericDataContainer(), GenericDataContainer())
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract.process()
     assert str(excinfo.value) == "Input parameters denoiser are not set."
 
     xtract = Xtract(Field(), GenericDataContainer(), None, GenericDataContainer())
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract.process()
     assert str(excinfo.value) == "Input parameters tonal are not set."
 
     xtract = Xtract(Field(), GenericDataContainer(), GenericDataContainer(), None)
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract.process()
     assert str(excinfo.value) == "Input parameters transient are not set."
 
 
 def test_xtract_except2(dpf_sound_test_server):
     xtract = Xtract(None, GenericDataContainer(), GenericDataContainer(), GenericDataContainer())
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract.process()
     assert str(excinfo.value) == "Input signal is not set."
 
@@ -194,7 +194,7 @@ def test_xtract_get_output_warns(dpf_sound_test_server):
 
     xtract = Xtract(bird_plus_idle_sig, params_denoiser, params_tonal, params_transient)
 
-    with pytest.warns(PyDpfSoundWarning) as record:
+    with pytest.warns(PyAnsysSoundWarning) as record:
         xtract.get_output()
     assert record[0].message.args[0] == "No output available."
 
@@ -227,7 +227,7 @@ def test_xtract_get_output_as_np_array_warns(dpf_sound_test_server):
 
     xtract = Xtract(bird_plus_idle_sig, params_denoiser, params_tonal, params_transient)
 
-    with pytest.warns(PyDpfSoundWarning) as record:
+    with pytest.warns(PyAnsysSoundWarning) as record:
         xtract.get_output_as_nparray()
     assert record[0].message.args[0] == "No output available."
 

@@ -1,7 +1,7 @@
 Xtract
 ------
 
-.. module:: ansys.dpf.sound.xtract
+.. module:: ansys.sound.core.xtract
 
 .. autosummary::
     :toctree: _autosummary

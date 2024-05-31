@@ -7,7 +7,7 @@ Isolate Orders
 --------------
 
 This example shows how to isolate orders in a signal containing a RPM profile.
-It also uses additional classes from pydpf-sound to compute spectrograms
+It also uses additional classes from ``pyansys-sound`` to compute spectrograms
 and the loudness of the isolated signals.
 
 """
@@ -28,11 +28,11 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ansys.dpf.sound.examples_helpers import get_absolute_path_for_accel_with_rpm_wav
-from ansys.dpf.sound.psychoacoustics import LoudnessISO532_1_Stationary
-from ansys.dpf.sound.server_helpers import connect_to_or_start_server
-from ansys.dpf.sound.signal_utilities import LoadWav, WriteWav
-from ansys.dpf.sound.spectrogram_processing import IsolateOrders, Stft
+from ansys.sound.core.examples_helpers import get_absolute_path_for_accel_with_rpm_wav
+from ansys.sound.core.psychoacoustics import LoudnessISO532_1_Stationary
+from ansys.sound.core.server_helpers import connect_to_or_start_server
+from ansys.sound.core.signal_utilities import LoadWav, WriteWav
+from ansys.sound.core.spectrogram_processing import IsolateOrders, Stft
 
 # Connect to remote or start a local server
 connect_to_or_start_server()

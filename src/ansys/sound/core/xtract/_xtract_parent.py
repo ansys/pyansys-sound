@@ -1,8 +1,8 @@
 """Xtract."""
-from ..pydpf_sound import PyDpfSound
+from ..pyansys_sound import PyAnsysSound
 
 
-class XtractParent(PyDpfSound):
+class XtractParent(PyAnsysSound):
     """
     Abstract mother class for Xtract.
 

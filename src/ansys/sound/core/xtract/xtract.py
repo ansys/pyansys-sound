@@ -14,7 +14,7 @@ from . import (
     XtractTonalParameters,
     XtractTransientParameters,
 )
-from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Xtract(XtractParent):
@@ -202,16 +202,16 @@ class Xtract(XtractParent):
     def process(self):
         """Process the XTRACT algorithm."""
         if self.input_signal is None:
-            raise PyDpfSoundException("Input signal is not set.")
+            raise PyAnsysSoundException("Input signal is not set.")
 
         if self.parameters_denoiser is None:
-            raise PyDpfSoundException("Input parameters denoiser are not set.")
+            raise PyAnsysSoundException("Input parameters denoiser are not set.")
 
         if self.parameters_tonal is None:
-            raise PyDpfSoundException("Input parameters tonal are not set.")
+            raise PyAnsysSoundException("Input parameters tonal are not set.")
 
         if self.parameters_transient is None:
-            raise PyDpfSoundException("Input parameters transient are not set.")
+            raise PyAnsysSoundException("Input parameters transient are not set.")
 
         # Wrapping
         self.__operator.connect(0, self.input_signal)
@@ -266,7 +266,7 @@ class Xtract(XtractParent):
             or (self.__output_transient_signal is None)
             or (self.__output_remainder_signal is None)
         ):
-            warnings.warn(PyDpfSoundWarning("No output available."))
+            warnings.warn(PyAnsysSoundWarning("No output available."))
 
         return (
             self.__output_noise_signal,

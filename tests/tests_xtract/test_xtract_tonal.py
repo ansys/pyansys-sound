@@ -4,10 +4,10 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
-from ansys.dpf.sound.signal_utilities import LoadWav
-from ansys.dpf.sound.xtract.xtract_tonal import XtractTonal
-from ansys.dpf.sound.xtract.xtract_tonal_parameters import XtractTonalParameters
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.signal_utilities import LoadWav
+from ansys.sound.core.xtract.xtract_tonal import XtractTonal
+from ansys.sound.core.xtract.xtract_tonal_parameters import XtractTonalParameters
 
 
 def test_xtract_tonal_instantiation(dpf_sound_test_server):
@@ -59,14 +59,14 @@ def test_xtract_tonal_initialization_Field(dpf_sound_test_server):
 
 def test_xtract_tonal_process_except1(dpf_sound_test_server):
     xtract_tonal = XtractTonal(None, XtractTonalParameters())
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_tonal.process()
     assert str(excinfo.value) == "No input signal for tonal analysis."
 
 
 def test_xtract_tonal_process_except2(dpf_sound_test_server):
     xtract_tonal = XtractTonal(Field(), None)
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_tonal.process()
     assert str(excinfo.value) == "Input parameters are not set."
 
@@ -114,14 +114,14 @@ def test_xtract_tonal_process(dpf_sound_test_server):
 
 def test_xtract_tonal_get_output_warns(dpf_sound_test_server):
     xtract_tonal = XtractTonal()
-    with pytest.warns(PyDpfSoundWarning) as record:
+    with pytest.warns(PyAnsysSoundWarning) as record:
         xtract_tonal.get_output()
     assert "Output has not been processed yet." in record[0].message.args[0]
 
 
 def test_xtract_tonal_get_output_as_nparray_warns(dpf_sound_test_server):
     xtract_tonal = XtractTonal()
-    with pytest.warns(PyDpfSoundWarning) as record:
+    with pytest.warns(PyAnsysSoundWarning) as record:
         xtract_tonal.get_output_as_nparray()
     assert "Output has not been processed yet." in record[0].message.args[0]
 
