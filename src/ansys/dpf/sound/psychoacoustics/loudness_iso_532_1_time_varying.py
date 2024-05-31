@@ -372,4 +372,3 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         ax2.grid(True)
 
         plt.show()
-
