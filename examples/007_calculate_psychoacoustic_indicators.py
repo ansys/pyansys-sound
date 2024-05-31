@@ -121,7 +121,7 @@ loudness_stationary.plot()
 path_accel_wav = get_absolute_path_for_accel_with_rpm_wav()
 wav_loader = LoadWav(path_accel_wav)
 wav_loader.process()
-f_signal = wav_loader.get_output()[0]  # Field 0 only, because we the RPM profile is useless here.
+f_signal = wav_loader.get_output()[0]  # Field 0 only, because the RPM profile is useless here.
 
 # Create a LoudnessISO532_1_TimeVarying object, set its signal, and compute loudness.
 loudness_time_varying = LoudnessISO532_1_TimeVarying(signal=f_signal)
