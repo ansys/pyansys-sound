@@ -1,12 +1,12 @@
 from unittest.mock import patch
 
 from ansys.dpf.core import GenericDataContainer, TimeFreqSupport, fields_factory, locations
+from ansys.dpf.sound.examples_helpers._get_example_files import get_absolute_path_for_flute_psd_txt
+from ansys.dpf.sound.pydpf_sound import PyAnsysSoundException
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.examples_helpers._get_example_files import get_absolute_path_for_flute_psd_txt
 from ansys.dpf.sound.psychoacoustics import ProminenceRatio
-from ansys.dpf.sound.pydpf_sound import PyAnsysSoundException
 
 
 @pytest.fixture
