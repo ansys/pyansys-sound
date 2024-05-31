@@ -201,7 +201,7 @@ class ProminenceRatio(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Vector of peaks' frequencies.
+            Vector of peaks' frequencies in Hz.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -214,7 +214,7 @@ class ProminenceRatio(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Vector of peaks' PR values.
+            Vector of peaks' PR values in dB.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -227,7 +227,7 @@ class ProminenceRatio(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Vector of peaks' level values.
+            Vector of peaks' level values in dBSPL.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -240,7 +240,7 @@ class ProminenceRatio(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Vector of eaks' lower frequency limits.
+            Vector of eaks' lower frequency limits in Hz.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -253,7 +253,7 @@ class ProminenceRatio(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Vector of peaks' higher frequency limits.
+            Vector of peaks' higher frequency limits in Hz.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -266,7 +266,7 @@ class ProminenceRatio(PsychoacousticsParent):
         Returns
         -------
         float
-            Maximum PR value.
+            Maximum PR value in dB.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -284,11 +284,11 @@ class ProminenceRatio(PsychoacousticsParent):
         Returns
         -------
         tuple[float]
-            First element is the peak's frequency.
-            Second element is the PR value.
-            Third element is the peak's level value.
-            Fourth element is the peak's lower frequency limit.
-            Fifth element is the peak's higher frequency limit.
+            First element is the peak's frequency in Hz.
+            Second element is the PR value in dB.
+            Third element is the peak's level value in dBSPL.
+            Fourth element is the peak's lower frequency limit in Hz.
+            Fifth element is the peak's higher frequency limit in Hz.
         """
         nb_tones = self.get_nb_tones()
         if nb_tones == 0:
@@ -313,7 +313,8 @@ class ProminenceRatio(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Reference curve on which to compare PR.
+            Reference curve with which to compare PR, as defined in standards
+            ECMA 418-1 and ISO 7779.
             If PR is higher, then the tone is prominent.
         """
         if self.__psd == None:

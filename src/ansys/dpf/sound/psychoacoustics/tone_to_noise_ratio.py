@@ -200,7 +200,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Vector of peaks' frequencies.
+            Vector of peaks' frequencies in Hz.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -213,7 +213,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Vector of peaks' TNR values.
+            Vector of peaks' TNR values in dB.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -226,7 +226,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Vector of peaks' level values.
+            Vector of peaks' level values in dBSPL.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -239,7 +239,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Vector of eaks' lower frequency limits.
+            Vector of eaks' lower frequency limits in Hz.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -252,7 +252,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Vector of peaks' higher frequency limits.
+            Vector of peaks' higher frequency limits in Hz.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -265,7 +265,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         Returns
         -------
         float
-            Maximum TNR value.
+            Maximum TNR value in dB.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -283,11 +283,11 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         Returns
         -------
         tuple[float]
-            First element is the peak's frequency.
-            Second element is the TNR value.
-            Third element is the peak's level value.
-            Fourth element is the peak's lower frequency limit.
-            Fifth element is the peak's higher frequency limit.
+            First element is the peak's frequency in Hz.
+            Second element is the TNR value in dB.
+            Third element is the peak's level value in dBSPL.
+            Fourth element is the peak's lower frequency limit in Hz.
+            Fifth element is the peak's higher frequency limit in Hz.
         """
         nb_tones = self.get_nb_tones()
         if nb_tones == 0:
@@ -312,8 +312,9 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Reference curve on which to compare TNR.
-            If TNR is higher, then the tone is emerging.
+            Reference curve with which to compare TNR, as defined in standards
+            ECMA 418-1 and ISO 7779.
+            If TNR is higher, then the tone is prominent.
         """
         if self.__psd == None:
             raise PyDpfSoundException("No PSD set. Use ToneToNoiseRatio.psd.")
