@@ -6,13 +6,11 @@ from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 from ansys.dpf.sound.signal_utilities import ApplyGain, LoadWav
 
 
-@pytest.mark.dependency()
 def test_apply_gain_instantiation(dpf_sound_test_server):
     gain_applier = ApplyGain()
     assert gain_applier != None
 
 
-@pytest.mark.dependency(depends=["test_apply_gain_instantiation"])
 def test_apply_gain_process(dpf_sound_test_server):
     gain_applier = ApplyGain()
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -34,7 +32,6 @@ def test_apply_gain_process(dpf_sound_test_server):
     gain_applier.process()
 
 
-@pytest.mark.dependency(depends=["test_apply_gain_process"])
 def test_apply_gain_get_output(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -62,7 +59,6 @@ def test_apply_gain_get_output(dpf_sound_test_server):
     assert f_out.data[60000] == -0.09051203727722168
 
 
-@pytest.mark.dependency(depends=["test_apply_gain_process"])
 def test_apply_gain_get_output_as_np_array(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -88,7 +84,6 @@ def test_apply_gain_get_output_as_np_array(dpf_sound_test_server):
     assert out_arr[60000] == -0.09051203727722168
 
 
-@pytest.mark.dependency(depends=["test_apply_gain_instantiation"])
 def test_apply_gain_set_get_signal(dpf_sound_test_server):
     gain_applier = ApplyGain()
     fc = FieldsContainer()
@@ -105,7 +100,6 @@ def test_apply_gain_set_get_signal(dpf_sound_test_server):
     assert fc_from_get[0].data[0, 2] == 42
 
 
-@pytest.mark.dependency(depends=["test_apply_gain_instantiation"])
 def test_apply_gain_set_get_gain(dpf_sound_test_server):
     gain_applier = ApplyGain()
 
@@ -113,7 +107,6 @@ def test_apply_gain_set_get_gain(dpf_sound_test_server):
     assert gain_applier.gain == 1234.0
 
 
-@pytest.mark.dependency(depends=["test_apply_gain_instantiation"])
 def test_apply_gain_set_get_gain_in_db(dpf_sound_test_server):
     gain_applier = ApplyGain()
 

@@ -6,13 +6,11 @@ from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
 from ansys.dpf.sound.signal_utilities import CropSignal, LoadWav
 
 
-@pytest.mark.dependency()
 def test_crop_signal_instantiation(dpf_sound_test_server):
     signal_cropper = CropSignal()
     assert signal_cropper != None
 
 
-@pytest.mark.dependency(depends=["test_crop_signal_instantiation"])
 def test_crop_signal_process(dpf_sound_test_server):
     signal_cropper = CropSignal(start_time=0.0, end_time=1.0)
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -34,7 +32,6 @@ def test_crop_signal_process(dpf_sound_test_server):
     signal_cropper.process()
 
 
-@pytest.mark.dependency(depends=["test_crop_signal_process"])
 def test_crop_signal_get_output(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -63,7 +60,6 @@ def test_crop_signal_get_output(dpf_sound_test_server):
     assert data[44000] == 0.47772216796875
 
 
-@pytest.mark.dependency(depends=["test_crop_signal_process"])
 def test_crop_signal_get_output_as_np_array(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
@@ -95,7 +91,6 @@ def test_crop_signal_get_output_as_np_array(dpf_sound_test_server):
     assert data[44000] == 0.47772216796875
 
 
-@pytest.mark.dependency(depends=["test_crop_signal_instantiation"])
 def test_crop_signal_set_get_signal(dpf_sound_test_server):
     signal_cropper = CropSignal()
     fc = FieldsContainer()
@@ -112,7 +107,6 @@ def test_crop_signal_set_get_signal(dpf_sound_test_server):
     assert fc_from_get[0].data[0, 2] == 42
 
 
-@pytest.mark.dependency(depends=["test_crop_signal_instantiation"])
 def test_crop_signal_set_get_start_end_times(dpf_sound_test_server):
     signal_cropper = CropSignal()
 
