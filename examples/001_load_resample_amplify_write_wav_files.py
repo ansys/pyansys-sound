@@ -44,9 +44,7 @@ fc_signal_original = wav_loader.get_output()
 
 t1 = fc_signal_original[0].time_freq_support.time_frequencies.data
 sf1 = 1.0 / (t1[1] - t1[0])
-print(
-    f"The sampling frequency of the original signal is {sf1:.0f} Hz"
-)  # ":.0f" is to avoid decimals and only get an integer
+print(f"The sampling frequency of the original signal is {int(sf1)} Hz")
 
 # %%
 # Resample the signal
@@ -67,9 +65,7 @@ fc_signal_modified = gain_applier.get_output()
 
 t2 = fc_signal_modified[0].time_freq_support.time_frequencies.data
 sf2 = 1.0 / (t2[1] - t2[0])
-print(
-    f"The new sampling frequency of the signal is {sf2:.0f} Hz"
-)  # ":.0f" is to avoid decimals and only get an integer
+print(f"The new sampling frequency of the signal is {int(sf2)} Hz")
 
 # %%
 # Plotting signals
@@ -81,13 +77,13 @@ data_modified = gain_applier.get_output_as_nparray()
 fig, axs = plt.subplots(2)
 fig.suptitle("Signals")
 
-axs[0].plot(t1, data_original, color="g", label=f"original signal, sf={sf1:.0f} Hz")
+axs[0].plot(t1, data_original, color="g", label=f"original signal, sf={int(sf1)} Hz")
 axs[0].set_ylabel("Pa")
 axs[0].legend(loc="upper right")
 axs[0].set_ylim([-3, 3])
 
 axs[1].plot(
-    t2, data_modified, color="r", label=f"modified signal, sf={sf2:.1f} Hz, gain={gain} dBSPL"
+    t2, data_modified, color="r", label=f"modified signal, sf={int(sf2)} Hz, gain={gain} dBSPL"
 )
 axs[1].set_xlabel("Time(s)")
 axs[1].set_ylabel("Amplitude(Pa)")
