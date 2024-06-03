@@ -1,11 +1,11 @@
 """
-.. _calculate_psychoacoustic_indicators:
+.. _calculate_PR_and_TNR:
 
-Calculate psychoacoustic indicators
------------------------------------
+Calculate tone-to-noise ratio and prominence ratio
+--------------------------------------------------
 
 This example shows how to calculate tone-to-noise ratio (TNR) and prominence ratio (PR), following
-standards ECMA 418-1 and ISO 7779.
+standards ECMA 418-1 and ISO 7779, and extract the desired TNR/PR info.
 """
 # %%
 # Set up analysis
@@ -31,13 +31,14 @@ server = connect_to_or_start_server()
 # Load a PSD stored in a text file, and use it to create a field that will serve as an input for
 # the TNR calculation.
 
+# Load the PSD contained in an ASCII file (2 columns: Frequency (Hz); PSD amplitude (dB SPL/Hz)).
 path_flute_psd = get_absolute_path_for_flute_psd_txt()
 fid = open(path_flute_psd)
 fid.readline()  # Skip the first line (header)
 all_lines = fid.readlines()
 fid.close()
 
-# Create the array of PSD amplitude values
+# Create the array of PSD amplitude values.
 psd_dBSPL_per_Hz = []
 frequencies_original = []
 for line in all_lines:
@@ -45,11 +46,11 @@ for line in all_lines:
     psd_dBSPL_per_Hz.append(float(splitted_line[1]))
     frequencies_original.append(float(splitted_line[0]))
 
-# Convert amplitudes in dBSPL/Hz into power in Pa^2/Hz
+# Convert amplitudes in dBSPL/Hz into power in Pa^2/Hz.
 psd_dBSPL_per_Hz = np.array(psd_dBSPL_per_Hz)
 psd_Pa2_per_Hz = np.power(10, psd_dBSPL_per_Hz / 10) * 4e-10
 
-# The operator requires the frequency array to be strictly regularly spaced.
+# The TNR/PR operators require the frequency array to be strictly regularly spaced.
 # So the original frequencies are interpolated to regularly spaced points.
 frequencies_interp = np.linspace(0, 22050, len(frequencies_original))
 psd_Pa2_per_Hz_interp = np.interp(frequencies_interp, frequencies_original, psd_Pa2_per_Hz)
@@ -65,65 +66,90 @@ f_frequencies.append(frequencies_interp, 1)
 support.time_frequencies = f_frequencies
 f_psd.time_freq_support = support
 
-
+# %%
 # Create a ToneToNoiseRatio object, set the created PSD field as input, and compute TNR.
 tone_to_noise_ratio = ToneToNoiseRatio(psd=f_psd)
 tone_to_noise_ratio.process()
 
+# %%
 # Print results.
+number_tones = tone_to_noise_ratio.get_nb_tones()
+TNR = tone_to_noise_ratio.get_max_TNR_value()
+TNR_frequencies = tone_to_noise_ratio.get_peaks_frequencies()
+TNR_values = tone_to_noise_ratio.get_TNR_values()
+TNR_levels = tone_to_noise_ratio.get_peaks_levels()
+
 print(
     f"\n"
-    f"Number of tones found: {tone_to_noise_ratio.get_nb_tones()}\n"
-    f"Maximum TNR value: {np.round(tone_to_noise_ratio.get_max_TNR_value(), 1)} dB\n"
+    f"Number of tones found: {number_tones}\n"
+    f"Maximum TNR value: {np.round(TNR, 1)} dB\n"
     f"All detected peaks' frequencies (Hz): "
-    f"{np.round(tone_to_noise_ratio.get_peaks_frequencies())}\n"
-    f"All peaks' TNR values (dB): {np.round(tone_to_noise_ratio.get_TNR_values(), 1)}\n"
-    f"All peaks' absolute levels (dB SPL): {np.round(tone_to_noise_ratio.get_peaks_levels(), 1)}\n"
+    f"{np.round(TNR_frequencies)}\n"
+    f"All peaks' TNR values (dB): {np.round(TNR_values, 1)}\n"
+    f"All peaks' absolute levels (dB SPL): {np.round(TNR_levels, 1)}\n"
 )
 
 
+# %%
 # Recalculate tone-to-noise ratio for specific frequencies.
 frequencies_i = [261, 525, 786, 1836]
 tone_to_noise_ratio = ToneToNoiseRatio(psd=f_psd, frequency_list=frequencies_i)
 tone_to_noise_ratio.process()
 
-# Print info for a specific detected peak
+# %%
+# Print info for a specific detected peak.
 tone_to_noise_ratio_525 = tone_to_noise_ratio.get_single_tone_info(tone_index=1)
+TNR_frequency = tone_to_noise_ratio_525[0]
+TNR_width = tone_to_noise_ratio_525[4] - tone_to_noise_ratio_525[3]
+TNR = tone_to_noise_ratio_525[1]
 print(
     f"\n"
     f"TNR info for peak at ~525 Hz: \n"
-    f"Exact frequency: {round(tone_to_noise_ratio_525[0], 2)} Hz\n"
-    f"Tone width: {round(tone_to_noise_ratio_525[4]-tone_to_noise_ratio_525[3], 2)} Hz\n"
-    f"TNR value: {round(tone_to_noise_ratio_525[1], 2)} dB\n\n"
+    f"Exact tone frequency: {round(TNR_frequency, 2)} Hz\n"
+    f"Tone width: {round(TNR_width, 2)} Hz\n"
+    f"TNR value: {round(TNR, 2)} dB\n\n"
 )
 
 
-# Create a ProminenceRatio object, set the created PSD field as input, and compute PR.
+# %%
+# Calculate PR from a power spectral density (PSD)
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Create a ProminenceRatio object, set the same created PSD field as input, and compute PR.
 prominence_ratio = ProminenceRatio(psd=f_psd)
 prominence_ratio.process()
 
+# %%
 # Print results.
+number_tones = prominence_ratio.get_nb_tones()
+PR = prominence_ratio.get_max_PR_value()
+PR_frequencies = prominence_ratio.get_peaks_frequencies()
+PR_values = prominence_ratio.get_PR_values()
+PR_levels = prominence_ratio.get_peaks_levels()
 print(
     f"\n"
-    f"Number of tones found: {prominence_ratio.get_nb_tones()}\n"
-    f"Maximum PR value: {np.round(prominence_ratio.get_max_PR_value(), 1)} dB\n"
-    f"All detected peaks' frequencies (Hz): {np.round(prominence_ratio.get_peaks_frequencies())}\n"
-    f"All peaks' PR values (dB): {np.round(prominence_ratio.get_PR_values(), 1)}\n"
-    f"All peaks' absolute levels (dB SPL): {np.round(prominence_ratio.get_peaks_levels(), 1)}\n"
+    f"Number of tones found: {number_tones}\n"
+    f"Maximum PR value: {np.round(PR, 1)} dB\n"
+    f"All detected peaks' frequencies (Hz): {np.round(PR_frequencies)}\n"
+    f"All peaks' PR values (dB): {np.round(PR_values, 1)}\n"
+    f"All peaks' absolute levels (dB SPL): {np.round(PR_levels, 1)}\n"
 )
 
-
+# %%
 # Recalculate tone-to-noise ratio for specific frequencies.
 frequencies_i = [261, 525, 786, 1836]
 prominence_ratio = ProminenceRatio(psd=f_psd, frequency_list=frequencies_i)
 prominence_ratio.process()
 
-# Print info for a specific detected peak
+# %%
+# Print info for a specific detected peak.
 prominence_ratio_786 = prominence_ratio.get_single_tone_info(tone_index=2)
+PR_frequency = prominence_ratio_786[0]
+PR_width = prominence_ratio_786[4] - prominence_ratio_786[3]
+PR = prominence_ratio_786[1]
 print(
     f"\n"
     f"PR info for peak at ~786 Hz: \n"
-    f"Exact frequency: {round(prominence_ratio_786[0], 2)} Hz\n"
-    f"Tone width: {round(prominence_ratio_786[4]-prominence_ratio_786[3], 2)} Hz\n"
-    f"PR value: {round(prominence_ratio_786[1], 2)} dB\n"
+    f"Exact tone frequency: {round(PR_frequency, 2)} Hz\n"
+    f"Tone width: {round(PR_width, 2)} Hz\n"
+    f"PR value: {round(PR, 2)} dB\n"
 )
