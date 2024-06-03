@@ -14,9 +14,8 @@ It also shows how to access the corresponding data and display it using matplotl
 # ~~~~~~~~~~~~~~~
 # Setting up the analysis consists of loading Ansys libraries, connecting to the
 # DPF server, and retrieving the example files.
-#
-# Load Ansys & other libraries.
 
+# Load Ansys & other libraries.
 import matplotlib.pyplot as plt
 
 from ansys.dpf.sound.examples_helpers import get_absolute_path_for_flute_wav

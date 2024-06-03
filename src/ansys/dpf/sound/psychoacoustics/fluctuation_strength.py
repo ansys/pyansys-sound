@@ -46,15 +46,15 @@ class FluctuationStrength(PsychoacousticsParent):
         Parameters
         ----------
         signal: FieldsContainer | Field
-            Signal in Pa on which to compute fluctuation strength, as a DPF Field or Fields
-            Container.
+            Signal in Pa on which to compute fluctuation strength, as a DPF Field or
+            FieldsContainer.
 
         """
         self.__signal = signal
 
     @signal.getter
     def signal(self) -> Field | FieldsContainer:
-        """Get the signal.
+        """Get the input signal.
 
         Returns
         -------
@@ -66,7 +66,8 @@ class FluctuationStrength(PsychoacousticsParent):
     def process(self):
         """Compute fluctuation strength.
 
-        Calls the appropriate DPF Sound operator to compute the fluctuation strength of the signal.
+        Calls the corresponding DPF Sound operator to compute the fluctuation strength
+        of the signal.
         """
         if self.__signal == None:
             raise PyDpfSoundException(
@@ -150,7 +151,7 @@ class FluctuationStrength(PsychoacousticsParent):
     def get_specific_fluctuation_strength(self, channel_index: int = 0) -> npt.ArrayLike:
         """Return specific fluctuation strength.
 
-        Returns the specific fluctuation strength in vacil/Bark, for the specified channel index.
+        Return the specific fluctuation strength in vacil/Bark, for the specified channel index.
 
         Parameters
         ----------
@@ -167,7 +168,7 @@ class FluctuationStrength(PsychoacousticsParent):
     def get_bark_band_indexes(self) -> npt.ArrayLike:
         """Return Bark band indexes.
 
-        Returns the Bark band indexes used for fluctuation strength calculation as a numpy array.
+        Return the Bark band indexes used for fluctuation strength calculation as a numpy array.
 
         Returns
         -------
@@ -193,7 +194,7 @@ class FluctuationStrength(PsychoacousticsParent):
 
         Reference:
         Traunmüller, Hartmut. "Analytical Expressions for the Tonotopic Sensory Scale." Journal of
-        the Acoustical Society of America. Vol. 88, Issue 1, 1990, pp. 97–100.
+        the Acoustical Society of America. Vol. 88, Issue 1, 1990, pp. 97-100.
 
         Returns
         -------
