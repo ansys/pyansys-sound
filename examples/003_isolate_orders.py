@@ -92,7 +92,9 @@ def plot_stft(stft_class, vmax):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load a wav signal using LoadWav class, the WAV file has been generated with Ansys Sound SAS.
 # It contains two channels :
+#
 # - The actual signal (an acceleration recording)
+#
 # - The associated RPM profile
 
 # Returning the input data of the example file
