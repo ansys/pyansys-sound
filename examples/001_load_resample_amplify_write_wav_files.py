@@ -1,8 +1,8 @@
 """
 .. _load_resample_amplify_write_wav_files_example:
 
-Load / write wav files, resample and apply gains
-------------------------------------------------
+Load / write wav files, resample and apply gain
+-----------------------------------------------
 
 This example shows how to load a wav file, modify its sampling frequency,
 amplify it and write the resulting wav file on the disk.
@@ -51,6 +51,10 @@ resampler = Resample(fc_signal_original, new_sampling_frequency=20000.0)
 resampler.process()
 fc_signal_resampled = resampler.get_output()
 
+t2 = fc_signal_resampled[0].time_freq_support.time_frequencies.data
+sf2 = 1.0 / (t2[1] - t2[0])
+print(f"The new sampling frequency of the signal is {int(sf2)} Hz")
+
 # %%
 # Apply a gain to the signal
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -59,10 +63,6 @@ gain = 10.0
 gain_applier = ApplyGain(fc_signal_resampled, gain=gain, gain_in_db=True)
 gain_applier.process()
 fc_signal_modified = gain_applier.get_output()
-
-t2 = fc_signal_modified[0].time_freq_support.time_frequencies.data
-sf2 = 1.0 / (t2[1] - t2[0])
-print(f"The new sampling frequency of the signal is {int(sf2)} Hz")
 
 # %%
 # Plotting signals
