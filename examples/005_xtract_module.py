@@ -44,7 +44,7 @@ from ansys.dpf.sound.xtract import (
 )
 
 # Connect to remote or start a local server
-connect_to_or_start_server()
+connect_to_or_start_server(use_license_context=True)
 
 
 # %%
