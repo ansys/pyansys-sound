@@ -4,7 +4,7 @@ Getting started
 Installation
 ^^^^^^^^^^^^
 
-PyDPF Sound supports Ansys version 2024 R1 and later. Make sure you have a licensed copy of Ansys installed. See
+PyDPF Sound supports Ansys version 2024 R2 and later. Make sure you have a licensed copy of Ansys installed. See
 :ref:`Compatibility` to understand which ``ansys-dpf-sound`` version corresponds to which Ansys version.
 
 Install the ``ansys-dpf-sound`` package with ``pip``:
@@ -13,7 +13,7 @@ Install the ``ansys-dpf-sound`` package with ``pip``:
 
     pip install ansys-dpf-sound
 
-Specific versions can be installed by specifying the version in the pip command. For example, Ansys 2024 R1 requires ansys-dpf-sound version 0.1.0:
+Specific versions can be installed by specifying the version in the pip command. For example, Ansys 2024 R2 requires ansys-dpf-sound version 0.1.0:
 
 .. code::
 
@@ -30,6 +30,10 @@ Examples
 The :doc:`examples/index` section provides these basic examples for getting started:
 
 * :ref:`load_resample_amplify_write_wav_files_example`
+* :ref:`compute_stft_example`
+* :ref:`isolate_orders_example`
+* :ref:`initialize_server_and_deal_with_license`
+* :ref:`calculate_psychoacoustic_indicators`
 
 At the end of each example, there is a button for downloading the example's Python source code.
 Input files, such as the input wav files, are downloaded from a Git
@@ -60,5 +64,5 @@ Getting the DPF server docker image
 """""""""""""""""""""""""""""""""""
 Follow the steps described in the DPF documentation in the `Run DPF Server in A Docker Container
 <https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#run-dpf-server-in-a-docker-container>`_ section.
-Make sure you also download the composites plugin (e.g ``ansys_dpf_sound_win_v2024.1.pre0.zip``).
+Make sure you also download the sound plugin (e.g ``ansys_dpf_sound_win_v2024.2.pre0.zip``).
 After following the preceding steps, you should have a running DPF docker container that listens on port 50052.
