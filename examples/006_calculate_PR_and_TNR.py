@@ -89,6 +89,9 @@ print(
     f"All peaks' absolute levels (dB SPL): {np.round(TNR_levels, 1)}\n"
 )
 
+# %%
+# Plot TNR over frequency.
+tone_to_noise_ratio.plot()
 
 # %%
 # Recalculate tone-to-noise ratio for specific frequencies.
@@ -133,6 +136,10 @@ print(
     f"All peaks' PR values (dB): {np.round(PR_values, 1)}\n"
     f"All peaks' absolute levels (dB SPL): {np.round(PR_levels, 1)}\n"
 )
+
+# %%
+# Plot PR over frequency.
+prominence_ratio.plot()
 
 # %%
 # Recalculate tone-to-noise ratio for specific frequencies.
