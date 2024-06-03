@@ -55,7 +55,7 @@ fc_signal_resampled = resampler.get_output()
 # %%
 # Apply a gain to the signal
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Change the gain of the resampled signal.
+# Amplify the the resampled signal by 10 dB.
 gain = 10.0
 gain_applier = ApplyGain(fc_signal_resampled, gain=gain, gain_in_db=True)
 gain_applier.process()
@@ -69,9 +69,12 @@ print(f"The new sampling frequency of the signal is {int(sf2)} Hz")
 # Plotting signals
 # ~~~~~~~~~~~~~~~~
 # Plot the original and the modified signals.
+
+# get the signals as nparray
 data_original = wav_loader.get_output_as_nparray()
 data_modified = gain_applier.get_output_as_nparray()
 
+# prepare the figure
 fig, axs = plt.subplots(2)
 fig.suptitle("Signals")
 
@@ -88,12 +91,13 @@ axs[1].set_ylabel("Amplitude(Pa)")
 axs[1].legend(loc="upper right")
 axs[1].set_ylim([-3, 3])
 
+# display the figure
 plt.show()
 
 # %%
 # Write the signals as wav files
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Write the modified signal in memory using WriteWav class
-output_path = path_flute_wav[:-4] + "_modified.wav"  # "[-4]" is to remove the ".wav"
+# Write the modified signal on the disk as a wav file
+output_path = path_flute_wav[:-4] + "_modified.wav"  # "[-4]" is to remove the ".wav" extension
 wav_writer = WriteWav(path_to_write=output_path, signal=fc_signal_modified, bit_depth="int16")
 wav_writer.process()
