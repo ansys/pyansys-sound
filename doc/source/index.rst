@@ -1,5 +1,5 @@
 PyAnsys Sound
-===========
+=============
 
 .. toctree::
    :hidden:
@@ -12,12 +12,14 @@ PyAnsys Sound
    contribute
 
 
+PyAnsys Sound
+-------------
 
 PyAnsys Sound enables the post-processing and analysis of sounds based on
 `Ansys DPF`_ and the DPF Sound plugin. It is a Python wrapper which
 implements classes on top of DPF Sound operators. For
 information demonstrating the behavior and usage of PyDPF Sound,
-see the :ref:`ref_examples` section.
+see the :ref:`examples/index` section.
 
 .. grid:: 1 1 2 2
     :gutter: 2
@@ -54,19 +56,19 @@ Lay-up files from ACP are optional and only required for some advanced operation
 Key features
 ''''''''''''
 
-Here are some key features of PyDPF Composites:
+Here are some key features of PyAnsys Sounds:
 
-* Postprocessing of layered shell and solid elements. MAPDL models as well as models preprocessed with ACP are supported.
-* Failure criteria evaluation as shown in :ref:`Composite failure analysis <sphx_glr_examples_gallery_examples_001_failure_operator_example.py>`.
-* A :class:`.SamplingPoint` class for extracting and visualizing a result over the entire thickness of a laminate as shown in
-  :ref:`Sampling point <sphx_glr_examples_gallery_examples_002_sampling_point_example.py>`.
-* A :class:`.ResultDefinition` class for configuring combined failure criteria and scopes.
-* Accessors for getting layered properties such as plies and materials as shown in
-  :ref:`Layered properties <sphx_glr_examples_gallery_examples_005_get_layup_properties_example.py>`
-  and :ref:`Material properties and custom failure criterion <sphx_glr_examples_gallery_examples_004_get_material_properties_example.py>`.
-* Interface to implement custom failure criteria and analysis as shown in
-  :ref:`Material properties and custom failure criterion <sphx_glr_examples_gallery_examples_004_get_material_properties_example.py>`.
-* Postprocessing of homogeneous elements.
+.. * Postprocessing of layered shell and solid elements. MAPDL models as well as models preprocessed with ACP are supported.
+.. * Failure criteria evaluation as shown in :ref:`Composite failure analysis <sphx_glr_examples_gallery_examples_001_failure_operator_example.py>`.
+.. * A :class:`.SamplingPoint` class for extracting and visualizing a result over the entire thickness of a laminate as shown in
+..   :ref:`Sampling point <sphx_glr_examples_gallery_examples_002_sampling_point_example.py>`.
+.. * A :class:`.ResultDefinition` class for configuring combined failure criteria and scopes.
+.. * Accessors for getting layered properties such as plies and materials as shown in
+..   :ref:`Layered properties <sphx_glr_examples_gallery_examples_005_get_layup_properties_example.py>`
+..   and :ref:`Material properties and custom failure criterion <sphx_glr_examples_gallery_examples_004_get_material_properties_example.py>`.
+.. * Interface to implement custom failure criteria and analysis as shown in
+..   :ref:`Material properties and custom failure criterion <sphx_glr_examples_gallery_examples_004_get_material_properties_example.py>`.
+.. * Postprocessing of homogeneous elements.
 
 
 .. _limitations:
