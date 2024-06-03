@@ -11,3 +11,5 @@ Psychoacoustics
     Sharpness
     Roughness
     FluctuationStrength
+    ProminenceRatio
+    ToneToNoiseRatio

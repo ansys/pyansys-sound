@@ -44,7 +44,7 @@ class FluctuationStrength(PsychoacousticsParent):
         """Set the signal.
 
         Parameters
-        -------
+        ----------
         signal: FieldsContainer | Field
             Signal in Pa on which to compute fluctuation strength, as a DPF Field or Fields
             Container.
@@ -262,16 +262,13 @@ class FluctuationStrength(PsychoacousticsParent):
             Fluctuation strength (float) in vacil or specific fluctuation strength (numpy array)
             in vacil/Bark.
         """
-        fluctuation_strength_data = self.get_output_as_nparray()
-        if fluctuation_strength_data == None:
+        if self.get_output() == None or not (self._check_channel_index(channel_index)):
             return None
+
+        fluctuation_strength_data = self.get_output_as_nparray()
 
         # Get last channel index.
         channel_max = len(fluctuation_strength_data[0]) - 1
-
-        # Check that specified channel index exists.
-        if channel_index > channel_max:
-            raise PyDpfSoundException(f"Specified channel index ({channel_index}) does not exist.")
 
         # Return output parameter (fluctuation strength or specific fluctuation strength) for the
         # specified channel.

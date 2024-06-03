@@ -4,7 +4,7 @@ import pathlib
 
 
 def get_absolute_path_for_flute_wav() -> str:
-    r"""Get the absolute path for the file flute.wav.
+    """Get the absolute path for the file flute.wav.
 
     Returns
     -------
@@ -37,7 +37,7 @@ def get_absolute_path_for_xtract_demo_signal_2_wav() -> str:
 
 
 def get_absolute_path_for_flute2_wav() -> str:
-    r"""Get the absolute path for the file flute2.wav.
+    """Get the absolute path for the file flute2.wav.
 
     Returns
     -------
@@ -48,7 +48,7 @@ def get_absolute_path_for_flute2_wav() -> str:
 
 
 def get_absolute_path_for_accel_with_rpm_wav() -> str:
-    r"""Get the absolute path for the file accel_with_rpm.wav.
+    """Get the absolute path for the file accel_with_rpm.wav.
 
     Returns
     -------
@@ -59,7 +59,7 @@ def get_absolute_path_for_accel_with_rpm_wav() -> str:
 
 
 def get_absolute_path_for_sharp_noise_wav() -> str:
-    r"""Get the absolute path for the file sharp_noise.wav.
+    """Get the absolute path for the file sharp_noise.wav.
 
     Returns
     -------
@@ -70,7 +70,7 @@ def get_absolute_path_for_sharp_noise_wav() -> str:
 
 
 def get_absolute_path_for_sharper_noise_wav() -> str:
-    r"""Get the absolute path for the file sharper_noise.wav.
+    """Get the absolute path for the file sharper_noise.wav.
 
     Returns
     -------
@@ -81,7 +81,7 @@ def get_absolute_path_for_sharper_noise_wav() -> str:
 
 
 def get_absolute_path_for_rough_noise_wav() -> str:
-    r"""Get the absolute path for the file rough_noise.wav.
+    """Get the absolute path for the file rough_noise.wav.
 
     Returns
     -------
@@ -92,7 +92,7 @@ def get_absolute_path_for_rough_noise_wav() -> str:
 
 
 def get_absolute_path_for_rough_tone_wav() -> str:
-    r"""Get the absolute path for the file rough_tone.wav.
+    """Get the absolute path for the file rough_tone.wav.
 
     Returns
     -------
@@ -103,7 +103,7 @@ def get_absolute_path_for_rough_tone_wav() -> str:
 
 
 def get_absolute_path_for_fluctuating_noise_wav() -> str:
-    r"""Get the absolute path for the file fluctuating_noise.wav.
+    """Get the absolute path for the file fluctuating_noise.wav.
 
     Returns
     -------
@@ -114,7 +114,7 @@ def get_absolute_path_for_fluctuating_noise_wav() -> str:
 
 
 def get_absolute_path_for_fluctuating_tone_wav() -> str:
-    r"""Get the absolute path for the file fluctuating_tone.wav.
+    """Get the absolute path for the file fluctuating_tone.wav.
 
     Returns
     -------
@@ -124,74 +124,22 @@ def get_absolute_path_for_fluctuating_tone_wav() -> str:
     return _get_absolute_path("fluctuating_tone.wav")
 
 
-def get_absolute_path_for_sharp_noise_wav() -> str:
-    r"""Get the absolute path for the file sharp_noise.wav.
+def get_absolute_path_for_flute_psd_txt() -> str:
+    """Get the absolute path for the file flute_psd.txt.
 
     Returns
     -------
     str
-        Absolute path to sharp_noise.wav .
+        Absolute path to flute_psd.txt .
     """
-    return _get_absolute_path("sharp_noise.wav")
-
-
-def get_absolute_path_for_sharper_noise_wav() -> str:
-    r"""Get the absolute path for the file sharper_noise.wav.
-
-    Returns
-    -------
-    str
-        Absolute path to sharper_noise.wav .
-    """
-    return _get_absolute_path("sharper_noise.wav")
-
-
-def get_absolute_path_for_rough_noise_wav() -> str:
-    r"""Get the absolute path for the file rough_noise.wav.
-
-    Returns
-    -------
-    str
-        Absolute path to rough_noise.wav .
-    """
-    return _get_absolute_path("rough_noise.wav")
-
-
-def get_absolute_path_for_rough_tone_wav() -> str:
-    r"""Get the absolute path for the file rough_tone.wav.
-
-    Returns
-    -------
-    str
-        Absolute path to rough_tone.wav .
-    """
-    return _get_absolute_path("rough_tone.wav")
-
-
-def get_absolute_path_for_fluctuating_noise_wav() -> str:
-    r"""Get the absolute path for the file fluctuating_noise.wav.
-
-    Returns
-    -------
-    str
-        Absolute path to fluctuating_noise.wav .
-    """
-    return _get_absolute_path("fluctuating_noise.wav")
-
-
-def get_absolute_path_for_fluctuating_tone_wav() -> str:
-    r"""Get the absolute path for the file fluctuating_tone.wav.
-
-    Returns
-    -------
-    str
-        Absolute path to fluctuating_tone.wav .
-    """
-    return _get_absolute_path("fluctuating_tone.wav")
+    for parent in pathlib.Path(__file__).parents:  # pragma: no cover
+        if (parent / "tests/data/" / "flute_psd.txt").exists():
+            p = parent / "tests/data/" / "flute_psd.txt"
+            return p.as_posix()
 
 
 def _get_absolute_path(filename: str) -> str:
-    r"""Get the absolute path for the file specified in filename.
+    """Get the absolute path for the file specified in filename.
 
     Parameters
     ----------
