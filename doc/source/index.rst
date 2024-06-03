@@ -19,7 +19,7 @@ PyAnsys Sound enables the post-processing and analysis of sounds based on
 `Ansys DPF`_ and the DPF Sound plugin. It is a Python wrapper which
 implements classes on top of DPF Sound operators. For
 information demonstrating the behavior and usage of PyDPF Sound,
-see the :ref:`examples/index` section.
+see the :doc:`examples/index` section.
 
 .. grid:: 1 1 2 2
     :gutter: 2

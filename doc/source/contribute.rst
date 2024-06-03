@@ -44,7 +44,7 @@ need to follow these steps:
 
    .. code:: bash
 
-      python -m pip install --editable ansys-pydpf-sound
+      python -m pip install --editable ansys-sound-core
 
 #. Install additional requirements (if needed):
 
