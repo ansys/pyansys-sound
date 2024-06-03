@@ -18,7 +18,7 @@ MAX_FREQUENCY_PLOT_STFT = 5000.0
 # ~~~~~~~~~~~~~~~
 # Setting up the analysis consists of loading Ansys libraries, connecting to the
 # DPF server, and retrieving the example files.
-#
+
 # Load Ansys libraries.
 
 import os
