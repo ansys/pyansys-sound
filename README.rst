@@ -35,7 +35,7 @@ PyDPF Sound enables the post-processing and analysis of sounds based on
 `Ansys DPF`_ and the DPF Sound plugin. It is a Python wrapper which
 implements classes on top of DPF Sound operators. For
 information demonstrating the behavior and usage of PyDPF Sound,
-see Examples in the DPF Sound documentation.
+see Examples in the documentation.
 
 .. START_MARKER_FOR_SPHINX_DOCS
 
@@ -88,10 +88,10 @@ need to follow these steps:
       source .venv/bin/activate
 
       # Activate it in Windows CMD environment
-      .venv\Scripts\activate.bat
+      .venv/Scripts/activate.bat
 
       # Activate it in Windows Powershell
-      .venv\Scripts\Activate.ps1
+      .venv/Scripts/Activate.ps1
 
 #. Make sure you have the latest version of `pip`_:
 
