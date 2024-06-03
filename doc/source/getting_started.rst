@@ -5,19 +5,19 @@ Installation
 ^^^^^^^^^^^^
 
 PyDPF Sound supports Ansys version 2024 R2 and later. Make sure you have a licensed copy of Ansys installed. See
-:ref:`Compatibility` to understand which ``ansys-dpf-sound`` version corresponds to which Ansys version.
+:ref:`Compatibility` to understand which ``ansys-sound-core`` version corresponds to which Ansys version.
 
-Install the ``ansys-dpf-sound`` package with ``pip``:
-
-.. code::
-
-    pip install ansys-dpf-sound
-
-Specific versions can be installed by specifying the version in the pip command. For example, Ansys 2024 R2 requires ansys-dpf-sound version 0.1.0:
+Install the ``ansys-sound-core`` package with ``pip``:
 
 .. code::
 
-    pip install ansys-dpf-sound==0.1.0
+    pip install ansys-sound-core
+
+Specific versions can be installed by specifying the version in the pip command. For example, Ansys 2024 R2 requires ansys-sound-core version 0.1.0:
+
+.. code::
+
+    pip install ansys-sound-core==0.1.0
 
 
 You should use a `virtual environment <https://docs.python.org/3/library/venv.html>`_,
@@ -27,16 +27,10 @@ because it keeps Python packages isolated from your system Python.
 Examples
 ^^^^^^^^
 
-The :doc:`examples/index` section provides these basic examples for getting started:
-
-* :ref:`load_resample_amplify_write_wav_files_example`
-* :ref:`compute_stft_example`
-* :ref:`isolate_orders_example`
-* :ref:`initialize_server_and_deal_with_license`
-* :ref:`calculate_psychoacoustic_indicators`
+The :doc:`examples/index` section provides several basic examples of use of PyAnsys Sound.
 
 At the end of each example, there is a button for downloading the example's Python source code.
-Input files, such as the input wav files, are downloaded from a Git
+The required input files, such as wav files, txt files, etc., are downloaded from a Git
 repository when running the example.
 
 
@@ -45,15 +39,16 @@ repository when running the example.
 Compatibility
 """""""""""""
 
-The following table shows which ``ansys-dpf-sound`` version is compatible with which server version (Ansys version). See :ref:`Get DPF Sound Prerelease` to get the pre-releases.
-By default, the DPF server is started from the latest Ansys installer.
+The following table shows which ``ansys-sound-core`` version is compatible with which server
+version (Ansys version). See :ref:`Get DPF Sound Prerelease` to get the pre-releases.
+By default, the DPF server is started from the latest installed Ansys.
 
 .. list-table::
    :widths: 20 20
    :header-rows: 1
 
    * - Server version
-     - ansys.dpf.sound Python module version
+     - ansys.sound.core Python module version
    * - 8.0 (Ansys 2024 R2 pre0)
      - 0.1.0 and later
 

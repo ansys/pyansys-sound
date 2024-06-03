@@ -1,22 +1,9 @@
 Contribute
----------------
+------------
 
-How to install
---------------
+How to install in development mode
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Two installation modes are provided: user and developer.
-
-For users
-^^^^^^^^^
-
-User installation can be performed by running:
-
-.. code:: bash
-
-    python -m pip install ansys-pydpf-sound
-
-For developers
-^^^^^^^^^^^^^^
 
 Installing the Pydpf-sound Library in developer mode allows
 you to modify the source and enhance it.
