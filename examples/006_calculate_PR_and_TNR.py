@@ -7,6 +7,7 @@ Calculate tone-to-noise ratio and prominence ratio
 This example shows how to calculate tone-to-noise ratio (TNR) and prominence ratio (PR), following
 standards ECMA 418-1 and ISO 7779, and extract the desired TNR/PR info.
 """
+
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
@@ -18,7 +19,7 @@ standards ECMA 418-1 and ISO 7779, and extract the desired TNR/PR info.
 from ansys.dpf.core import TimeFreqSupport, fields_factory, locations
 import numpy as np
 
-from ansys.dpf.sound.examples_helpers import get_absolute_path_for_flute_psd_txt
+from ansys.dpf.sound.examples_helpers import download_flute_psd
 from ansys.dpf.sound.psychoacoustics import ProminenceRatio, ToneToNoiseRatio
 from ansys.dpf.sound.server_helpers import connect_to_or_start_server
 
@@ -32,7 +33,8 @@ server = connect_to_or_start_server()
 # the TNR calculation.
 
 # Load the PSD contained in an ASCII file (2 columns: Frequency (Hz); PSD amplitude (dB SPL/Hz)).
-path_flute_psd = get_absolute_path_for_flute_psd_txt()
+# The data will be located in "C:\Users\username\AppData\Local\Ansys\ansys_sound_core\examples\""
+path_flute_psd = download_flute_psd()
 fid = open(path_flute_psd)
 fid.readline()  # Skip the first line (header)
 all_lines = fid.readlines()
