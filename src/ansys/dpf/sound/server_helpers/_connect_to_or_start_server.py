@@ -63,7 +63,6 @@ def connect_to_or_start_server(
         server = connect_to_server(
             **connect_kwargs,
         )
-        full_path_dll = "Acoustics\\SAS\\ads\\"
     else:  # pragma: no cover
         server = start_local_server(ansys_path=ansys_path)
         full_path_dll = os.path.join(server.ansys_path, "Acoustics\\SAS\\ads\\")

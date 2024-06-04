@@ -14,6 +14,28 @@ def get_absolute_path_for_flute_wav() -> str:
     return _get_absolute_path("flute.wav")
 
 
+def get_absolute_path_for_xtract_demo_signal_1_wav() -> str:
+    r"""Get the absolute path for the file xtract_demo_signal_1.wav.
+
+    Returns
+    -------
+    str
+        Absolute path to xtract_demo_signal_1.wav .
+    """
+    return _get_absolute_path("xtract_demo_signal_1.wav")
+
+
+def get_absolute_path_for_xtract_demo_signal_2_wav() -> str:
+    r"""Get the absolute path for the file xtract_demo_signal_2.wav.
+
+    Returns
+    -------
+    str
+        Absolute path to xtract_demo_signal_2.wav .
+    """
+    return _get_absolute_path("xtract_demo_signal_2.wav")
+
+
 def get_absolute_path_for_flute2_wav() -> str:
     """Get the absolute path for the file flute2.wav.
 

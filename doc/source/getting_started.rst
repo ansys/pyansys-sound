@@ -34,7 +34,6 @@ Specific versions can be installed by specifying the version in the pip command.
 
     pip install ansys-sound-core==0.1.0
 
-
 You should use a `virtual environment <https://docs.python.org/3/library/venv.html>`_,
 because it keeps Python packages isolated from your Python system.
 
