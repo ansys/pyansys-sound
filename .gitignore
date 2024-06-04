@@ -166,3 +166,6 @@ doc/source/api/_autosummary/
 
 # VSCode
 .vscode/
+
+# Data output
+tests/data/output/*.wav
