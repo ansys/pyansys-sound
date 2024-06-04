@@ -4,8 +4,9 @@
 Isolate Orders
 --------------
 
-This example shows how to isolate orders in a signal containing a RPM profile.
-It also uses additional classes from pydpf-sound to compute spectrograms
+This example shows how to isolate orders (harmonic and partial components in the sound related to
+the speed of a rotating machine) in a signal containing a RPM profile.
+It also uses additional classes from pyansys-sound to compute spectrograms
 and the loudness of the isolated signals.
 
 """
@@ -19,8 +20,8 @@ MAX_FREQUENCY_PLOT_STFT = 2000.0
 # Setting up the analysis consists of loading Ansys libraries, connecting to the
 # DPF server, and retrieving the example files.
 #
-# Load Ansys libraries.
 
+# Load Ansys libraries.
 import pathlib
 
 import matplotlib.pyplot as plt
@@ -91,7 +92,9 @@ def plot_stft(stft_class, vmax):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load a wav signal using LoadWav class, the WAV file has been generated with Ansys Sound SAS.
 # It contains two channels :
+#
 # - The actual signal (an acceleration recording)
+#
 # - The associated RPM profile
 
 # Returning the input data of the example file

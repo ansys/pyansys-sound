@@ -29,6 +29,7 @@ here:
 # ~~~~~~~~~~~~~~~
 # Here are the required python imports for this example
 
+# Load Ansys & other libraries.
 import datetime
 
 import ansys.dpf.core as dpf
