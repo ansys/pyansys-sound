@@ -47,8 +47,10 @@ def _decompress(filename):
 
 def _get_file_url(filename, directory=None):
     if directory:
-        return f"https://github.com/ansys/example-data/raw/master/{directory}/{filename}"
-    return f"https://github.com/ansys/example-data/raw/master/{filename}"
+        return (
+            f"https://github.com/ansys/example-data/raw/master/{directory}/{filename}"  # noqa: E231
+        )
+    return f"https://github.com/ansys/example-data/raw/master/{filename}"  # noqa: E231
 
 
 @check_directory_exist(EXAMPLES_PATH)

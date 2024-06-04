@@ -1,12 +1,12 @@
+import numpy as np
+import pytest
+
+from ansys.dpf.sound.psychoacoustics import PsychoacousticsParent
 from ansys.sound.core.psychoacoustics.loudness_iso_532_1_stationary import (
     LoudnessISO532_1_Stationary,
 )
 from ansys.sound.core.pyansys_sound import PyDpfSoundException, PyDpfSoundWarning
 from ansys.sound.core.signal_utilities.load_wav import LoadWav
-import numpy as np
-import pytest
-
-from ansys.dpf.sound.psychoacoustics import PsychoacousticsParent
 
 
 def test_psychoacoustics_parent_instantiation(dpf_sound_test_server):
