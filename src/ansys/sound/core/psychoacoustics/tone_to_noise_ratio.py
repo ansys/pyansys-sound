@@ -8,7 +8,7 @@ import numpy as np
 from numpy import typing as npt
 
 from . import PsychoacousticsParent
-from ..pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyDpfSoundException, PyDpfSoundWarning
 
 
 class ToneToNoiseRatio(PsychoacousticsParent):
