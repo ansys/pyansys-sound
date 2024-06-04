@@ -66,6 +66,7 @@ wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
 fc_signal = wav_loader.get_output()
 
+# %%
 # Create a LoudnessISO532_1_Stationary object, set its signal, and compute loudness.
 loudness_stationary = LoudnessISO532_1_Stationary(signal=fc_signal)
 loudness_stationary.process()
@@ -88,14 +89,13 @@ loudness_stationary.plot()
 # %%
 # Calculate ISO 532-1 loudness for several signals at once
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load another wav file.
+# Load another wav file, and store it along with the first one.
 
-# Load a second example data from wav files
 path_flute2_wav = get_absolute_path_for_flute2_wav()
 wav_loader = LoadWav(path_flute2_wav)
 wav_loader.process()
 
-# Store the second signal with the first one in a FieldsContainer.
+# Store the second signal as a second field in the fields container.
 fc_two_signals = fc_signal
 fc_two_signals.add_field({"channel_number": 1}, wav_loader.get_output()[0])
 
@@ -130,10 +130,12 @@ wav_loader = LoadWav(path_accel_wav)
 wav_loader.process()
 f_signal = wav_loader.get_output()[0]  # Field 0 only, because the RPM profile is useless here.
 
+# %%
 # Create a LoudnessISO532_1_TimeVarying object, set its signal, and compute loudness.
 loudness_time_varying = LoudnessISO532_1_TimeVarying(signal=f_signal)
 loudness_time_varying.process()
 
+# %%
 # Get percentile loudness values.
 N5 = loudness_time_varying.get_N5_sone()
 N10 = loudness_time_varying.get_N10_sone()
@@ -179,6 +181,7 @@ fluctuation_strength_values = (
     fluctuation_strength.get_fluctuation_strength(1),
 )
 
+# %%
 # Print out the results.
 print(
     f"\nThe sharpness of sound file {file_name} "

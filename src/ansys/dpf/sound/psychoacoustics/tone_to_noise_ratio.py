@@ -35,7 +35,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
             You can use the function ansys.dpf.core.fields_factory.create_scalar_field()
             to create the field.
 
-        frequency_list: (optional) tuple
+        frequency_list: (optional) list
             List of the frequencies in Hz of the tones (peaks in the spectrum) for which
             to calculate the TNR.
             If this input is empty (not specified), a peak detection method is applied to
@@ -94,7 +94,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
         Parameters
         -------
-        frequency_list: tuple
+        frequency_list: list
             List of the frequencies in Hz of the tones (peaks in the spectrum) for which
             to calculate the TNR.
             If this input is empty (not specified), a peak detection method is applied to
@@ -109,7 +109,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
         Returns
         -------
-        tuple
+        list
             List of the frequencies in Hz of the tones (peaks in the spectrum) for which
             to calculate the TNR.
         """
@@ -127,7 +127,9 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
         # optional parameter: frequency list
         if self.frequency_list != None:
-            self.__operator.connect(1, self.frequency_list)
+            # Convert to floats (in case integers were provided)
+            frequency_list = list(np.float64(self.frequency_list))
+            self.__operator.connect(1, frequency_list)
 
         # Runs the operator
         self.__operator.run()
