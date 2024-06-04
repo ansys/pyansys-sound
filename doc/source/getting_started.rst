@@ -7,6 +7,8 @@ Installation
 PyDPF Sound supports Ansys version 2024 R2 and later. Make sure you have a licensed copy of Ansys installed. See
 :ref:`Compatibility` to understand which ``ansys-sound-core`` version corresponds to which Ansys version.
 
+Install PyAnsys-Sound
+"""""""""""""""""""""
 Install the ``ansys-sound-core`` package with ``pip``:
 
 .. code::
@@ -21,17 +23,17 @@ Specific versions can be installed by specifying the version in the pip command.
 
 
 You should use a `virtual environment <https://docs.python.org/3/library/venv.html>`_,
-because it keeps Python packages isolated from your system Python.
+because it keeps Python packages isolated from your Python system.
 
 
-Examples
-^^^^^^^^
+Install sound plugin
+""""""""""""""""""""
+Make sure you also download the sound plugin (e.g ``ansys_dpf_sound_win_v2024.2.pre0.zip``).
+The sound plugin is available through:
 
-The :doc:`examples/index` section provides several basic examples of use of PyAnsys Sound.
+* downloading here: **TODO: ADD LINK to ansys_dpf_sound_win_v2024.2.pre0.zip**
 
-At the end of each example, there is a button for downloading the example's Python source code.
-The required input files, such as wav files, txt files, etc., are downloaded from a Git
-repository when running the example.
+* installing SAS: **TODO: ADD LINK**
 
 
 .. _Compatibility:
@@ -59,5 +61,15 @@ Getting the DPF server docker image
 """""""""""""""""""""""""""""""""""
 Follow the steps described in the DPF documentation in the `Run DPF Server in A Docker Container
 <https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#run-dpf-server-in-a-docker-container>`_ section.
-Make sure you also download the sound plugin (e.g ``ansys_dpf_sound_win_v2024.2.pre0.zip``).
 After following the preceding steps, you should have a running DPF docker container that listens on port 50052.
+
+
+Examples
+^^^^^^^^
+
+The :doc:`examples/index` section provides several basic examples of use of PyAnsys Sound.
+
+At the end of each example, there is a button for downloading the example's Python source code.
+
+**TODO: EXPLAIN WHERE/HOW TO GET INPUT FILES NEEDED TO RUN EXAMPLES. To be completed when clarified.**
+
