@@ -35,7 +35,7 @@ PyAnsys Sound enables the post-processing and analysis of sounds based on
 `Ansys DPF`_ and the DPF Sound plugin. It is a Python wrapper which
 implements classes on top of DPF Sound operators. For
 information demonstrating the behavior and usage of PyDPF Sound,
-see the :ref:`ref_examples` section.
+see the `Examples`_ section.
 
 .. START_MARKER_FOR_SPHINX_DOCS
 
@@ -164,4 +164,5 @@ released versions.
 .. _tox: https://tox.wiki/en/stable/
 .. _venv: https://docs.python.org/3/library/venv.html
 .. _Getting the DPF server Docker image: https://sound.docs.pyansys.com/version/stable/getting_started.html#getting-the-dpf-server-docker-image
+.. _Examples: https://sound.docs.pyansys.com/version/stable/examples/index.html
 .. _Ansys DPF: https://dpf.docs.pyansys.com/version/stable/
