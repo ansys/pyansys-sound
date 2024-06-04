@@ -1,7 +1,7 @@
+from ansys.dpf.sound.psychoacoustics import PsychoacousticsParent
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.psychoacoustics import PsychoacousticsParent
 from ansys.sound.core.psychoacoustics.loudness_iso_532_1_stationary import (
     LoudnessISO532_1_Stationary,
 )

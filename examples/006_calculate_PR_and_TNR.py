@@ -17,11 +17,10 @@ standards ECMA 418-1 and ISO 7779, and extract the desired TNR/PR info.
 # Load Ansys libraries.
 
 from ansys.dpf.core import TimeFreqSupport, fields_factory, locations
-import numpy as np
-
 from ansys.dpf.sound.examples_helpers import download_flute_psd
 from ansys.dpf.sound.psychoacoustics import ProminenceRatio, ToneToNoiseRatio
 from ansys.dpf.sound.server_helpers import connect_to_or_start_server
+import numpy as np
 
 # Connect to remote or start a local server.
 server = connect_to_or_start_server()

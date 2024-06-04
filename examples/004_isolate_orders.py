@@ -24,14 +24,13 @@ MAX_FREQUENCY_PLOT_STFT = 2000.0
 # Load Ansys libraries.
 import pathlib
 
-import matplotlib.pyplot as plt
-import numpy as np
-
 from ansys.dpf.sound.examples_helpers import get_absolute_path_for_accel_with_rpm_wav
 from ansys.dpf.sound.psychoacoustics import LoudnessISO532_1_Stationary
 from ansys.dpf.sound.server_helpers import connect_to_or_start_server
 from ansys.dpf.sound.signal_utilities import LoadWav, WriteWav
 from ansys.dpf.sound.spectrogram_processing import IsolateOrders, Stft
+import matplotlib.pyplot as plt
+import numpy as np
 
 # Connect to remote or start a local server
 connect_to_or_start_server()

@@ -23,9 +23,6 @@ MAX_FREQUENCY_PLOT_STFT = 5000.0
 
 import os
 
-import matplotlib.pyplot as plt
-import numpy as np
-
 from ansys.dpf.sound.examples_helpers import (
     get_absolute_path_for_xtract_demo_signal_1_wav,
     get_absolute_path_for_xtract_demo_signal_2_wav,
@@ -42,6 +39,8 @@ from ansys.dpf.sound.xtract import (
     XtractTransient,
     XtractTransientParameters,
 )
+import matplotlib.pyplot as plt
+import numpy as np
 
 # Connect to remote or start a local server
 connect_to_or_start_server(use_license_context=True)
