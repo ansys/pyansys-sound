@@ -7,12 +7,15 @@ PyAnsys Sound supports Ansys version 2024 R2 and later. Make sure you have a lic
 Installation
 ^^^^^^^^^^^^
 
-In this section you will learn how to install properly PyAnsys Sound and its prerequisites.
+This sections explains how to install properly PyAnsys Sound and its prerequisites.
 
 Install Ansys DPF server and DPF Sound
 """"""""""""""""""""""""""""""""""""""
 
-PyAnsys Sound relies on Ansys products to be used: Ansys DPF  and DPF Sound, which is a plugin for DPF.
+PyAnsys Sound relies on Ansys products:
+- Ansys DPF.
+- DPF Sound, which is a plugin for DPF.
+
 You can use two methods to install these prerequisites:
 
 - from the Ansys installer: install Ansys and Ansys Sound SAS from the Download Center on `Ansys Customer Portal`_, then `Install PyDPF Core`_
