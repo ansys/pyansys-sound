@@ -5,7 +5,7 @@ How to install in development mode
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-Installing the Pydpf-sound Library in developer mode allows
+Installing the PyAnsys Sound Library in developer mode allows
 you to modify the source and enhance it.
 
 Before contributing to the project, please refer to the `PyAnsys Developer's guide`_. You will

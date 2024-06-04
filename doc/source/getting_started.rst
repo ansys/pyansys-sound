@@ -1,13 +1,26 @@
 Getting started
 ---------------
 
+PyAnsys Sound supports Ansys version 2024 R2 and later. Make sure you have a licensed copy of Ansys installed. See
+:ref:`Compatibility` to understand which ``ansys-sound-core`` version corresponds to which Ansys version.
+
 Installation
 ^^^^^^^^^^^^
 
-PyDPF Sound supports Ansys version 2024 R2 and later. Make sure you have a licensed copy of Ansys installed. See
-:ref:`Compatibility` to understand which ``ansys-sound-core`` version corresponds to which Ansys version.
+In this section you will learn how to install properly PyAnsys Sound and its prerequisites.
 
-Install PyAnsys-Sound
+Install Ansys DPF server and DPF Sound
+""""""""""""""""""""""""""""""""""""""
+
+PyAnsys Sound relies on Ansys products to be used: Ansys DPF  and DPF Sound, which is a plugin for DPF.
+You can use two methods to install these prerequisites:
+
+- from the Ansys installer: install Ansys and Ansys Sound SAS from the Download Center on `Ansys Customer Portal`_, then `Install PyDPF Core`_
+- from DPF pre-release: download and install DPF Server and DPF Sound from the `DPF pre-release installation guidelines`_
+
+Note: you can also use `DPF Server as a docker image`_.
+
+Install PyAnsys Sound
 """""""""""""""""""""
 Install the ``ansys-sound-core`` package with ``pip``:
 
@@ -26,23 +39,14 @@ You should use a `virtual environment <https://docs.python.org/3/library/venv.ht
 because it keeps Python packages isolated from your Python system.
 
 
-Install sound plugin
-""""""""""""""""""""
-Make sure you also download the sound plugin (e.g ``ansys_dpf_sound_win_v2024.2.pre0.zip``).
-The sound plugin is available through:
-
-* downloading here: **TODO: ADD LINK to ansys_dpf_sound_win_v2024.2.pre0.zip**
-
-* installing SAS: **TODO: ADD LINK**
-
-
 .. _Compatibility:
 
 Compatibility
-"""""""""""""
+^^^^^^^^^^^^^
 
-The following table shows which ``ansys-sound-core`` version is compatible with which server
-version (Ansys version). See :ref:`Get DPF Sound Prerelease` to get the pre-releases.
+The following table shows which ``ansys-sound-core`` version is compatible with which DPF server
+version (Ansys version).
+
 By default, the DPF server is started from the latest installed Ansys.
 
 .. list-table::
@@ -55,15 +59,6 @@ By default, the DPF server is started from the latest installed Ansys.
      - 0.1.0 and later
 
 
-.. _Get DPF Sound Prerelease :
-
-Getting the DPF server docker image
-"""""""""""""""""""""""""""""""""""
-Follow the steps described in the DPF documentation in the `Run DPF Server in A Docker Container
-<https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#run-dpf-server-in-a-docker-container>`_ section.
-After following the preceding steps, you should have a running DPF docker container that listens on port 50052.
-
-
 Examples
 ^^^^^^^^
 
@@ -71,5 +66,20 @@ The :doc:`examples/index` section provides several basic examples of use of PyAn
 
 At the end of each example, there is a button for downloading the example's Python source code.
 
-**TODO: EXPLAIN WHERE/HOW TO GET INPUT FILES NEEDED TO RUN EXAMPLES. To be completed when clarified.**
 
+.. _DPF Server as a docker image:
+
+Using the DPF server in a docker image
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Follow the steps described in the DPF documentation in the `Run DPF Server in a docker container
+<https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#run-dpf-server-in-a-docker-container>`_ section.
+After following the preceding steps, you should have a running DPF docker container that listens on port 50052.
+
+
+
+.. _Ansys DPF: https://dpf.docs.pyansys.com/version/stable/
+.. _Ansys Sound: https://www.ansys.com/sound
+.. _Ansys Customer Portal: https://innovationspace.ansys.com/customer-center/
+.. _Install PyDPF Core: https://dpf.docs.pyansys.com/version/stable/getting_started/index.html#install-pydpf-core
+.. _DPF pre-release installation guidelines: https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#install-dpf-server

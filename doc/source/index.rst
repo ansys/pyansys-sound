@@ -15,7 +15,7 @@ PyAnsys Sound
 PyAnsys Sound
 -------------
 
-PyAnsys Sound enables the main features of `Ansys Sound`_ to perform
+PyAnsys Sound enables the use of the main features of `Ansys Sound`_ to perform
 post-processing and analysis of sounds and vibrations in Python. This library is based on
 `Ansys DPF`_ and the DPF Sound plugin. It is a Python wrapper which implements classes on top
 of DPF Sound operators.
