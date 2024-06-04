@@ -1,4 +1,4 @@
-"""Test if DPF Sound is available."""
+"""Test if DPF Sound is available within the docker container used for tests on GitHub."""
 
 import os
 

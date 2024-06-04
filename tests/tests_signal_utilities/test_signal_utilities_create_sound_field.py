@@ -5,13 +5,11 @@ from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWa
 from ansys.sound.core.signal_utilities import CreateSoundField
 
 
-@pytest.mark.dependency()
 def test_create_sound_field_instantiation(dpf_sound_test_server):
     sound_field_creator = CreateSoundField()
     assert sound_field_creator != None
 
 
-@pytest.mark.dependency(depends=["test_create_sound_field_instantiation"])
 def test_create_sound_field_process(dpf_sound_test_server):
     sound_field_creator = CreateSoundField()
 
@@ -26,7 +24,6 @@ def test_create_sound_field_process(dpf_sound_test_server):
     sound_field_creator.process()
 
 
-@pytest.mark.dependency(depends=["test_create_sound_field_process"])
 def test_create_sound_field_get_output(dpf_sound_test_server):
     sound_field_creator = CreateSoundField(data=np.ones(100))
 
@@ -45,7 +42,6 @@ def test_create_sound_field_get_output(dpf_sound_test_server):
     assert f_out.data[99] == 1.0
 
 
-@pytest.mark.dependency(depends=["test_create_sound_field_process"])
 def test_create_sound_field_get_output_as_np_array(dpf_sound_test_server):
     sound_field_creator = CreateSoundField(data=np.ones(100))
     sound_field_creator.process()
@@ -57,7 +53,6 @@ def test_create_sound_field_get_output_as_np_array(dpf_sound_test_server):
     assert out_arr[99] == 1.0
 
 
-@pytest.mark.dependency(depends=["test_create_sound_field_instantiation"])
 def test_create_sound_field_set_get_data(dpf_sound_test_server):
     sound_field_creator = CreateSoundField()
     sound_field_creator.data = np.ones(100)
@@ -68,7 +63,6 @@ def test_create_sound_field_set_get_data(dpf_sound_test_server):
     assert data[99] == 1.0
 
 
-@pytest.mark.dependency(depends=["test_create_sound_field_instantiation"])
 def test_create_sound_field_set_get_sampling_frequency(dpf_sound_test_server):
     sound_field_creator = CreateSoundField()
 
@@ -81,7 +75,6 @@ def test_create_sound_field_set_get_sampling_frequency(dpf_sound_test_server):
     assert sound_field_creator.sampling_frequency == 1234.0
 
 
-@pytest.mark.dependency(depends=["test_create_sound_field_instantiation"])
 def test_create_sound_field_set_get_unit(dpf_sound_test_server):
     sound_field_creator = CreateSoundField()
 

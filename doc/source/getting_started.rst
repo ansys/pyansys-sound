@@ -30,6 +30,7 @@ Examples
 The :doc:`examples/index` section provides these basic examples for getting started:
 
 * :ref:`load_resample_amplify_write_wav_files_example`
+* :ref:`xtract_feature_example`
 
 At the end of each example, there is a button for downloading the example's Python source code.
 Input files, such as the input wav files, are downloaded from a Git

@@ -1,4 +1,5 @@
 """Psychoacoustics functions."""
+from ansys.dpf.core import Field
 from numpy import typing as npt
 
 from ..pyansys_sound import PyAnsysSound, PyAnsysSoundException
@@ -49,3 +50,34 @@ class PsychoacousticsParent(PyAnsysSound):
                 bark_band_indexes[ibark] = (bark_band_indexes[ibark] + 4.422) / 1.22
 
         return 1920 * (bark_band_indexes + 0.53) / (26.28 - bark_band_indexes)
+
+    def _check_channel_index(self, channel_index: int) -> bool:
+        """Check whether a specified signal channel index is available or not.
+
+        Parameters
+        -------
+        channel_index: int
+            Index of the signal channel to check.
+
+        Returns
+        -------
+        bool
+            True if channel index is available, False if not.
+        """
+        output = self.get_output()
+        if output == None:
+            return False
+
+        if type(output[0]) == Field:
+            if channel_index != 0:
+                raise PyDpfSoundException(
+                    f"Specified channel index ({channel_index}) does not exist."
+                )
+
+        else:
+            if channel_index < 0 or channel_index > self.get_output_as_nparray()[0].ndim - 1:
+                raise PyDpfSoundException(
+                    f"Specified channel index ({channel_index}) does not exist."
+                )
+
+        return True

@@ -1,9 +1,6 @@
-import pytest
-
 from ansys.sound.core.signal_utilities import SignalUtilitiesParent
 
 
-@pytest.mark.dependency()
-def test_signal_utilities_parent_instanciate():
-    pyansys_sound = SignalUtilitiesParent()
-    assert pyansys_sound != None
+def test_signal_utilities_parent_instantiate():
+    signal_utilities = SignalUtilitiesParent()
+    assert signal_utilities != None
