@@ -6,7 +6,7 @@ Compute the STFT and ISTFT
 
 This example shows how to compute a STFT (Short-Time Fourier Transform) of a signal.
 
-It also shows how to compute the inverse-STFT of a signal.
+It also shows how to compute the inverse-STFT from a STFT matrix and get a signal.
 
 """
 # %%
@@ -23,7 +23,7 @@ from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectrogram_processing import Istft, Stft
 
 # Connect to remote or start a local server
-connect_to_or_start_server()
+connect_to_or_start_server(use_license_context=True)
 
 # %%
 # Load a wav signal using LoadWav class
@@ -40,8 +40,8 @@ fc_signal = wav_loader.get_output()
 wav_loader.plot()
 
 # %%
-# Instantiate an STFT class using the previously loaded signal as an input
-# Using an FFT Size of 1024
+# Instantiate an Stft class using the previously loaded signal as an input,
+# using an FFT size of 1024 points, then display the STFT colormap
 
 stft = Stft(fc_signal, fft_size=1024)
 
@@ -52,10 +52,10 @@ stft.process()
 stft.plot()
 
 # %%
-# Modify STFT parameters using the setters of the Stft class.
+# Modify the STFT parameters using the setters of the Stft class,then display the new STFT colormap
 
 stft.fft_size = 4096
-stft.window_overlap = 0.1
+stft.window_overlap = 0.95
 stft.window_type = "BARTLETT"
 
 # Re-processing the STFT with newly set parameters
@@ -65,8 +65,8 @@ stft.process()
 stft.plot()
 
 # %%
-# Re-obtain time-domain signal by using the Istft class.
-# The input of the Istft class is the output STFT previously computed.
+# Re-obtain a time-domain signal by using the Istft class.
+# The input of the Istft class is the output STFT object previously computed.
 
 fc_stft = stft.get_output()
 

@@ -20,7 +20,7 @@ The example shows how to:
 - import necessary packages,
 - calculate indicators on loaded wav files,
 - get calculation outputs,
-- and plot some corresponding curves.
+- plot some corresponding curves.
 
 """
 # %%
@@ -53,11 +53,16 @@ from ansys.sound.core.signal_utilities import LoadWav
 # Connect to remote or start a local server.
 server = connect_to_or_start_server()
 
+
 # %%
 # Calculate ISO 532-1 loudness for a stationary sound
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load a wav signal using LoadWav class, it will be returned as a
-# `DPF Field Container <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_ # noqa: E501
+# `DPF Field Container <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_. # noqa: E501
+#
+# Then calculate the loudness of this signal.
+
+# Load example data from wav files
 path_flute_wav = get_absolute_path_for_flute_wav()
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
@@ -88,7 +93,6 @@ loudness_stationary.plot()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load another wav file, and store it along with the first one.
 
-# Load the wav file
 path_flute2_wav = get_absolute_path_for_flute2_wav()
 wav_loader = LoadWav(path_flute2_wav)
 wav_loader.process()
@@ -99,12 +103,12 @@ fc_two_signals.add_field({"channel_number": 1}, wav_loader.get_output()[0])
 
 
 # %%
-# Calculate loudness for both signals at once.
+# Calculate the loudness for both signals at once.
 loudness_stationary = LoudnessISO532_1_Stationary(signal=fc_two_signals)
 loudness_stationary.process()
 
 # %%
-# Get values in sone or in phon.
+# Get the values in sone or in phon.
 loudness_sone2 = loudness_stationary.get_loudness_sone(1)
 loudness_level_phon2 = loudness_stationary.get_loudness_level_phon(1)
 file_name2 = os.path.basename(path_flute2_wav)
