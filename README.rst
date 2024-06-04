@@ -11,12 +11,12 @@ PyAnsys Sound
    :target: https://pypi.org/project/ansys-dpf-sound/
    :alt: Python
 
-.. |codecov| image:: https://codecov.io/gh/ansys-internal/pydpf-sound/branch/main/graph/badge.svg
-   :target: https://codecov.io/gh/ansys-internal/pydpf-sound/
+.. |codecov| image:: https://codecov.io/gh/ansys-internal/pyansys-sound/branch/main/graph/badge.svg
+   :target: https://codecov.io/gh/ansys-internal/pyansys-sound/
    :alt: Codecov
 
-.. |GH-CI| image:: https://github.com/ansys-internal/pydpf-sound/actions/workflows/ci_cd.yml/badge.svg
-   :target: https://github.com/ansys-internal/pydpf-sound/actions/workflows/ci_cd.yml
+.. |GH-CI| image:: https://github.com/ansys-internal/pyansys-sound/actions/workflows/ci_cd.yml/badge.svg
+   :target: https://github.com/ansys-internal/pyansys-sound/actions/workflows/ci_cd.yml
    :alt: GH-CI
 
 .. |MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
