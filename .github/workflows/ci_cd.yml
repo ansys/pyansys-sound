@@ -73,7 +73,7 @@ jobs:
   testing-windows:
     name: "Testing and coverage (Windows)"
     needs: [smoke-tests]
-    runs-on: [self-hosted, Windows, pydpf-sound]
+    runs-on: [self-hosted, Windows, pydpfsound]
 
     steps:
       - uses: actions/checkout@v4
@@ -151,7 +151,7 @@ jobs:
 
   doc-build:
     name: "Building library documentation"
-    runs-on: [self-hosted, Windows, pydpf-sound]
+    runs-on: [self-hosted, Windows, pydpfsound]
     needs: doc-style
     steps:
 
