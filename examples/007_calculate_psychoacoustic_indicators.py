@@ -29,9 +29,8 @@ The example shows how to:
 # ~~~~~~~~~~~~~~~
 # Setting up the analysis consists of loading Ansys libraries, connecting to the
 # DPF server, and retrieving the example files.
-#
-# Load Ansys libraries.
 
+# Load Ansys libraries.
 import os
 
 import numpy as np

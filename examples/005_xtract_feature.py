@@ -20,7 +20,6 @@ MAX_FREQUENCY_PLOT_STFT = 5000.0
 # DPF server, and retrieving the example files.
 
 # Load Ansys libraries.
-
 import os
 
 import matplotlib.pyplot as plt
@@ -44,7 +43,7 @@ from ansys.sound.core.xtract import (
 )
 
 # Connect to remote or start a local server
-connect_to_or_start_server(use_license_context=True)
+my_server = connect_to_or_start_server(use_license_context=True)
 
 
 # %%

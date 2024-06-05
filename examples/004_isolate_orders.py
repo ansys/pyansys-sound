@@ -34,7 +34,7 @@ from ansys.sound.core.signal_utilities import LoadWav, WriteWav
 from ansys.sound.core.spectrogram_processing import IsolateOrders, Stft
 
 # Connect to remote or start a local server
-connect_to_or_start_server()
+my_server = connect_to_or_start_server()
 
 
 # %%

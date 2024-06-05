@@ -15,7 +15,6 @@ standards ECMA 418-1 and ISO 7779, and extract the desired TNR/PR info.
 # DPF server, and retrieving the example files.
 
 # Load Ansys libraries.
-
 from ansys.dpf.core import TimeFreqSupport, fields_factory, locations
 import numpy as np
 

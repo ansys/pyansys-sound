@@ -1,4 +1,7 @@
+import pathlib
+
 from ansys.sound.core.examples_helpers import (
+    download_flute_psd,
     get_absolute_path_for_accel_with_rpm_wav,
     get_absolute_path_for_fluctuating_noise_wav,
     get_absolute_path_for_fluctuating_tone_wav,
@@ -66,3 +69,8 @@ def test_data_path_fluctuating_noise_wav():
 def test_data_path_fluctuating_tone_wav():
     p = get_absolute_path_for_fluctuating_tone_wav()
     assert p == "C:\\data\\fluctuating_tone.wav"
+
+
+def test_download_flute_psd():
+    p = download_flute_psd()
+    assert pathlib.Path(p).exists() == True

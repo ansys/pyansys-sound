@@ -404,7 +404,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         bool
             True if channel index is available, False if not.
         """
-        if self.get_output() == None:
+        if self.get_output() == None:  # pragma: no cover
             return False
 
         if type(self._output[0]) == Field:
