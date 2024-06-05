@@ -38,7 +38,9 @@ from ansys.sound.core.examples_helpers import get_absolute_path_for_flute_wav
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 
+# sphinx_gallery_start_ignore
 # sphinx_gallery_thumbnail_path = '_static/_image/example004_thumbnail.png'
+# sphinx_gallery_end_ignore
 
 # %%
 # Use a DPF server without a LicenseContextManager
