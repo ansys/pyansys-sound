@@ -120,7 +120,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Returns
         -------
-        tuple[np.array]
+        tuple[numpy.ndarray] | None
             1st element is the loudness vs time in sone.
             2nd element is the N5 indicator, in sone.
             3rd element is the N10 indicator, in sone.

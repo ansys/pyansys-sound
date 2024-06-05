@@ -24,6 +24,7 @@ The example shows how to:
 
 """
 
+
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
@@ -149,10 +150,10 @@ L10 = loudness_time_varying.get_L10_phon()
 file_name3 = os.path.basename(path_accel_wav)
 print(
     f"\nThe sound file {file_name3} has the following percentile loudness values: \n"
-    f"- N5  ={np.round(N5,1)} sones.\n"
-    f"- N10 ={np.round(N10,1)} sones.\n"
-    f"- L5  ={np.round(L5,1)} phons.\n"
-    f"- L10 ={np.round(L10,1)} phons."
+    f"- N5  = {np.round(N5, 1)} sones.\n"
+    f"- N10 = {np.round(N10, 1)} sones.\n"
+    f"- L5  = {np.round(L5, 1)} phons.\n"
+    f"- L10 = {np.round(L10, 1)} phons."
 )
 
 # %%
