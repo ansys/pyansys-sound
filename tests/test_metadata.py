@@ -1,4 +1,4 @@
-from ansys.dpf.sound import __version__
+from ansys.sound.core import __version__
 
 
 def test_pkg_version():

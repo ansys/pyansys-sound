@@ -1,9 +1,9 @@
 API reference
 =============
 
-This section describes the public classes, methods, and attributes of the PyDPF Sound API.
+This section describes the public classes, methods, and attributes of the PyAnsys Sound API.
 
-.. module:: ansys.dpf.sound
+.. module:: ansys.sound.core
 
 .. toctree::
     :maxdepth: 2

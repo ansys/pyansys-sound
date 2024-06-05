@@ -1,7 +1,7 @@
 Signal utilities
 ----------------
 
-.. module:: ansys.dpf.sound.signal_utilities
+.. module:: ansys.sound.core.signal_utilities
 
 .. autosummary::
     :toctree: _autosummary

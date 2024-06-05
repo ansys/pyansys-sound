@@ -46,7 +46,7 @@ goto end
 cd "%BUILDDIR%\latex"
 for %%f in (*.tex) do (
 pdflatex "%%f" --interaction=nonstopmode)
-if NOT EXIST ansys-dpf-sound-*.pdf (
+if NOT EXIST ansys-sound-core-*.pdf (
 	Echo "no pdf generated!"
 	exit /b 1)
 Echo "pdf generated!"

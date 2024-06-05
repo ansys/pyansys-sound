@@ -4,10 +4,10 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
-from ansys.dpf.sound.signal_utilities import LoadWav
-from ansys.dpf.sound.xtract.xtract_denoiser import XtractDenoiser
-from ansys.dpf.sound.xtract.xtract_denoiser_parameters import XtractDenoiserParameters
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.signal_utilities import LoadWav
+from ansys.sound.core.xtract.xtract_denoiser import XtractDenoiser
+from ansys.sound.core.xtract.xtract_denoiser_parameters import XtractDenoiserParameters
 
 
 def test_xtract_denoiser_instantiation(dpf_sound_test_server):
@@ -58,7 +58,7 @@ def test_xtract_denoiser_process_except1(dpf_sound_test_server):
     Test no signal.
     """
     xtract_denoiser = XtractDenoiser(None, XtractDenoiserParameters())
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_denoiser.process()
     assert excinfo.value.args[0] == "Input signal is not set."
 
@@ -68,7 +68,7 @@ def test_xtract_denoiser_process_except2(dpf_sound_test_server):
     Test no parameters.
     """
     xtract_denoiser = XtractDenoiser(Field(), None)
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_denoiser.process()
     assert excinfo.value.args[0] == "Input parameters are not set."
 
@@ -124,7 +124,7 @@ def test_xtract_denoiser_get_output_warns(dpf_sound_test_server):
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
 
-    with pytest.warns(PyDpfSoundWarning) as record:
+    with pytest.warns(PyAnsysSoundWarning) as record:
         xtract_denoiser.get_output()
     assert record[0].message.args[0] == "Output has not been processed yet."
 
@@ -142,7 +142,7 @@ def test_xtract_denoiser_get_output_np_array_warns(dpf_sound_test_server):
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
 
-    with pytest.warns(PyDpfSoundWarning) as record:
+    with pytest.warns(PyAnsysSoundWarning) as record:
         xtract_denoiser.get_output_as_nparray()
     assert record[0].message.args[0] == "Output has not been processed yet."
 

@@ -4,9 +4,9 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.psychoacoustics import LoudnessISO532_1_Stationary
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
-from ansys.dpf.sound.signal_utilities import LoadWav
+from ansys.sound.core.psychoacoustics import LoudnessISO532_1_Stationary
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.signal_utilities import LoadWav
 
 EXP_LOUDNESS_1 = 39.58000183105469
 EXP_LOUDNESS_2 = 16.18000030517578
@@ -40,7 +40,7 @@ def test_loudness_iso_532_1_stationary_process(dpf_sound_test_server):
 
     # No signal -> error
     with pytest.raises(
-        PyDpfSoundException,
+        PyAnsysSoundException,
         match="No signal for loudness computation. Use LoudnessISO532_1_Stationary.signal.",
     ):
         loudness_computer.process()
@@ -73,7 +73,7 @@ def test_loudness_iso_532_1_stationary_get_output(dpf_sound_test_server):
 
     # Loudness not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
     ):
         output = loudness_computer.get_output()
@@ -103,7 +103,7 @@ def test_loudness_iso_532_1_stationary_get_loudness_sone(dpf_sound_test_server):
 
     # Loudness not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
     ):
         output = loudness_computer.get_loudness_sone()
@@ -114,7 +114,7 @@ def test_loudness_iso_532_1_stationary_get_loudness_sone(dpf_sound_test_server):
 
     # Request second channel's loudness while signal is a field (mono) -> error
     with pytest.raises(
-        PyDpfSoundException, match="Specified channel index \\(1\\) does not exist."
+        PyAnsysSoundException, match="Specified channel index \\(1\\) does not exist."
     ):
         loudness_sone = loudness_computer.get_loudness_sone(1)
 
@@ -160,7 +160,7 @@ def test_loudness_iso_532_1_stationary_get_loudness_level_phon(dpf_sound_test_se
 
     # Loudness not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
     ):
         output = loudness_computer.get_loudness_level_phon()
@@ -186,7 +186,7 @@ def test_loudness_iso_532_1_stationary_get_specific_loudness(dpf_sound_test_serv
 
     # Loudness not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
     ):
         output = loudness_computer.get_specific_loudness()
@@ -231,7 +231,7 @@ def test_loudness_iso_532_1_stationary__get_ouptut_parameter(dpf_sound_test_serv
 
     # Loudness not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
     ):
         output = loudness_computer._get_output_parameter(0, LOUDNESS_SONE_ID)
@@ -241,12 +241,12 @@ def test_loudness_iso_532_1_stationary__get_ouptut_parameter(dpf_sound_test_serv
     loudness_computer.process()
 
     # Invalid parameter identifier -> error
-    with pytest.raises(PyDpfSoundException, match="Invalid identifier of output parameter."):
+    with pytest.raises(PyAnsysSoundException, match="Invalid identifier of output parameter."):
         param = loudness_computer._get_output_parameter(0, "thisIsNotValid")
 
     # Invalid channel index -> error
     with pytest.raises(
-        PyDpfSoundException, match="Specified channel index \\(1\\) does not exist."
+        PyAnsysSoundException, match="Specified channel index \\(1\\) does not exist."
     ):
         param = loudness_computer._get_output_parameter(1, LOUDNESS_SONE_ID)
 
@@ -302,7 +302,7 @@ def test_loudness_iso_532_1_stationary_get_bark_band_indexes(dpf_sound_test_serv
 
     # Loudness not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
     ):
         output = loudness_computer.get_bark_band_indexes()
@@ -365,7 +365,7 @@ def test_loudness_iso_532_1_stationary_get_output_as_nparray_from_fields_contain
 
     # Loudness not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
     ):
         output = loudness_computer.get_output_as_nparray()
@@ -435,7 +435,7 @@ def test_loudness_iso_532_1_stationary_plot_from_fields_container(mock_show, dpf
 
     # Loudness not computed yet -> error
     with pytest.raises(
-        PyDpfSoundException,
+        PyAnsysSoundException,
         match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
     ):
         loudness_computer.plot()

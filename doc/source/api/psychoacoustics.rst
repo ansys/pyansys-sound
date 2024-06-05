@@ -1,7 +1,7 @@
 Psychoacoustics
 ---------------
 
-.. module:: ansys.dpf.sound.psychoacoustics
+.. module:: ansys.sound.core.psychoacoustics
 
 .. autosummary::
     :toctree: _autosummary

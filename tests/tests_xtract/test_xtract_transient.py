@@ -4,10 +4,10 @@ from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
-from ansys.dpf.sound.signal_utilities import LoadWav
-from ansys.dpf.sound.xtract.xtract_transient import XtractTransient
-from ansys.dpf.sound.xtract.xtract_transient_parameters import XtractTransientParameters
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.signal_utilities import LoadWav
+from ansys.sound.core.xtract.xtract_transient import XtractTransient
+from ansys.sound.core.xtract.xtract_transient_parameters import XtractTransientParameters
 
 
 def test_xtract_transient_instantiation(dpf_sound_test_server):
@@ -59,14 +59,14 @@ def test_xtract_transient_initialization_Field():
 
 def test_xtract_transient_except1(dpf_sound_test_server):
     xtract_transient = XtractTransient(None, XtractTransientParameters())
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_transient.process()
     assert str(excinfo.value) == "Input signal is not set."
 
 
 def test_xtract_transient_except2(dpf_sound_test_server):
     xtract_transient = XtractTransient(Field(), None)
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_transient.process()
     assert str(excinfo.value) == "Input parameters are not set."
 
@@ -109,14 +109,14 @@ def test_xtract_transient_process(dpf_sound_test_server):
 
 def test_xtract_transient_get_output_warns(dpf_sound_test_server):
     xtract_transient = XtractTransient()
-    with pytest.warns(PyDpfSoundWarning) as record:
+    with pytest.warns(PyAnsysSoundWarning) as record:
         xtract_transient.get_output()
     assert "Output has not been processed yet." in record[0].message.args[0]
 
 
 def test_xtract_transient_get_output_as_np_array_warns(dpf_sound_test_server):
     xtract_transient = XtractTransient()
-    with pytest.warns(PyDpfSoundWarning) as record:
+    with pytest.warns(PyAnsysSoundWarning) as record:
         xtract_transient.get_output_as_nparray()
     assert "Output has not been processed yet." in record[0].message.args[0]
 

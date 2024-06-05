@@ -4,9 +4,9 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
-from ansys.dpf.sound.signal_utilities import LoadWav
-from ansys.dpf.sound.spectrogram_processing import Stft
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.signal_utilities import LoadWav
+from ansys.sound.core.spectrogram_processing import Stft
 
 
 def test_stft_instantiation(dpf_sound_test_server):
@@ -19,7 +19,7 @@ def test_stft_process(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
 
     # Error 1
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         stft.process()
     assert str(excinfo.value) == "No signal for STFT. Use Stft.signal."
 
@@ -42,7 +42,7 @@ def test_stft_get_output(dpf_sound_test_server):
     stft = Stft(signal=fc_signal)
 
     with pytest.warns(
-        PyDpfSoundWarning, match="Output has not been yet processed, use Stft.process()."
+        PyAnsysSoundWarning, match="Output has not been yet processed, use Stft.process()."
     ):
         fc_out = stft.get_output()
 
@@ -96,7 +96,7 @@ def test_stft_set_get_signal(dpf_sound_test_server):
     fc.add_field({"channel": 1}, fc[0])
 
     # Error
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         stft.signal = fc
     assert str(excinfo.value) == "Input as FieldsContainer can only have one Field (mono signal)."
 
@@ -105,7 +105,7 @@ def test_stft_set_get_fft_size(dpf_sound_test_server):
     stft = Stft()
 
     # Error
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         stft.fft_size = -12.0
     assert str(excinfo.value) == "FFT size must be greater than 0.0."
 
@@ -117,7 +117,7 @@ def test_stft_set_get_window_overlap(dpf_sound_test_server):
     stft = Stft()
 
     # Error
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         stft.window_overlap = -12.0
     assert str(excinfo.value) == "Window overlap must be between 0.0 and 1.0."
 
@@ -129,7 +129,7 @@ def test_stft_set_get_window_type(dpf_sound_test_server):
     stft = Stft()
 
     # Error
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         stft.window_type = "InvalidWindow"
     assert (
         str(excinfo.value)

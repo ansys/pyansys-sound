@@ -1,6 +1,0 @@
-[run]
-source =
-    ansys.pydpf_sound
-
-[report]
-show_missing = true

@@ -1,6 +1,6 @@
-from ansys.dpf.sound.spectrogram_processing import SpectrogramProcessingParent
+from ansys.sound.core.spectrogram_processing import SpectrogramProcessingParent
 
 
 def test_spectrogram_processing_parent_instanciate():
-    pydpf_sound = SpectrogramProcessingParent()
-    assert pydpf_sound != None
+    pyansys_sound = SpectrogramProcessingParent()
+    assert pyansys_sound != None

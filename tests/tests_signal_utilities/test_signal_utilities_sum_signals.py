@@ -2,8 +2,8 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
-from ansys.dpf.sound.signal_utilities import LoadWav, SumSignals
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.signal_utilities import LoadWav, SumSignals
 
 
 def test_sum_signals_instantiation(dpf_sound_test_server):
@@ -16,7 +16,7 @@ def test_sum_signals_process(dpf_sound_test_server):
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
 
     # Error 1
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         sum_gain.process()
     assert str(excinfo.value) == "No signal on which to apply gain. Use SumSignals.set_signal()."
 
@@ -35,7 +35,7 @@ def test_sum_signals_get_output(dpf_sound_test_server):
     sum_gain = SumSignals(signals=fc_signal)
 
     with pytest.warns(
-        PyDpfSoundWarning, match="Output has not been yet processed, use SumSignals.process()."
+        PyAnsysSoundWarning, match="Output has not been yet processed, use SumSignals.process()."
     ):
         fc_out = sum_gain.get_output()
 
@@ -56,7 +56,7 @@ def test_sum_signals_get_output_as_np_array(dpf_sound_test_server):
     sum_gain = SumSignals(signals=fc_signal)
 
     with pytest.warns(
-        PyDpfSoundWarning, match="Output has not been yet processed, use SumSignals.process()."
+        PyAnsysSoundWarning, match="Output has not been yet processed, use SumSignals.process()."
     ):
         fc_out = sum_gain.get_output()
 

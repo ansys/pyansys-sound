@@ -1,6 +1,5 @@
-***********
-PyDPF Sound
-***********
+PyAnsys Sound
+=============
 
 |pyansys| |python| |GH-CI| |codecov| |MIT| |black|
 
@@ -12,12 +11,12 @@ PyDPF Sound
    :target: https://pypi.org/project/ansys-dpf-sound/
    :alt: Python
 
-.. |codecov| image:: https://codecov.io/gh/ansys-internal/pydpf-sound/branch/main/graph/badge.svg
-   :target: https://codecov.io/gh/ansys-internal/pydpf-sound/
+.. |codecov| image:: https://codecov.io/gh/ansys-internal/pyansys-sound/branch/main/graph/badge.svg
+   :target: https://codecov.io/gh/ansys-internal/pyansys-sound/
    :alt: Codecov
 
-.. |GH-CI| image:: https://github.com/ansys-internal/pydpf-sound/actions/workflows/ci_cd.yml/badge.svg
-   :target: https://github.com/ansys-internal/pydpf-sound/actions/workflows/ci_cd.yml
+.. |GH-CI| image:: https://github.com/ansys-internal/pyansys-sound/actions/workflows/ci_cd.yml/badge.svg
+   :target: https://github.com/ansys-internal/pyansys-sound/actions/workflows/ci_cd.yml
    :alt: GH-CI
 
 .. |MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
@@ -34,18 +33,17 @@ PyDPF Sound
 PyAnsys Sound enables the post-processing and analysis of sounds based on
 `Ansys DPF`_ and the DPF Sound plugin. It is a Python wrapper which
 implements classes on top of DPF Sound operators. For
-information demonstrating the behavior and usage of PyDPF Sound,
+information demonstrating the behavior and usage of PyAnsys Sound,
 see the `Examples`_ section.
 
 .. START_MARKER_FOR_SPHINX_DOCS
 
-----------
 Contribute
 ----------
 
 
 Install in development mode
-===========================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Installing PyAnsys Sound in development mode allows
 you to modify the source and enhance it.
@@ -81,7 +79,7 @@ familiar with the `PyAnsys Developer's Guide`_.
 
 
 Test
-====
+^^^^
 
 There are different ways to run the PyAnsys Sound tests, depending on how the DPF
 server is started.

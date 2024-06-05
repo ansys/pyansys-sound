@@ -23,6 +23,7 @@ The example shows how to:
 - plot some corresponding curves.
 
 """
+
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
@@ -33,20 +34,24 @@ The example shows how to:
 
 import os
 
-from ansys.dpf.sound.examples_helpers import (
+import numpy as np
+
+from ansys.sound.core.examples_helpers import (
     get_absolute_path_for_accel_with_rpm_wav,
     get_absolute_path_for_flute2_wav,
     get_absolute_path_for_flute_wav,
 )
-from ansys.dpf.sound.psychoacoustics import (
+from ansys.sound.core.psychoacoustics import (
     FluctuationStrength,
     LoudnessISO532_1_Stationary,
     LoudnessISO532_1_TimeVarying,
     Roughness,
     Sharpness,
 )
-from ansys.dpf.sound.server_helpers import connect_to_or_start_server
-from ansys.dpf.sound.signal_utilities import LoadWav
+from ansys.sound.core.psychoacoustics.roughness import Roughness
+from ansys.sound.core.psychoacoustics.sharpness import Sharpness
+from ansys.sound.core.server_helpers import connect_to_or_start_server
+from ansys.sound.core.signal_utilities import LoadWav
 
 # Connect to remote or start a local server.
 server = connect_to_or_start_server()
@@ -145,10 +150,10 @@ L10 = loudness_time_varying.get_L10_phon()
 file_name3 = os.path.basename(path_accel_wav)
 print(
     f"\nThe sound file {file_name3} has the following percentile loudness values: \n"
-    f"- N5  ={N5: .1f} sones.\n"
-    f"- N10 ={N10: .1f} sones.\n"
-    f"- L5  ={L5: .1f} phons.\n"
-    f"- L10 ={L10: .1f} phons."
+    f"- N5  = {np.round(N5, 1)} sones.\n"
+    f"- N10 = {np.round(N10, 1)} sones.\n"
+    f"- L5  = {np.round(L5, 1)} phons.\n"
+    f"- L10 = {np.round(L10, 1)} phons."
 )
 
 # %%

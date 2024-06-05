@@ -9,7 +9,7 @@ import pyvista
 from pyvista.plotting.utilities.sphinx_gallery import DynamicScraper
 from sphinx_gallery.sorting import FileNameSortKey
 
-from ansys.dpf.sound import __version__
+from ansys.sound.core import __version__
 
 # Manage errors
 pyvista.set_error_output_file("errors.txt")
@@ -23,7 +23,7 @@ pyvista.BUILDING_GALLERY = True
 pyvista.global_theme.window_size = np.array([1024, 768]) * 2
 
 # Project information
-project = "ansys-dpf-sound"
+project = "ansys-sound-core"
 copyright = f"(c) {datetime.now().year} ANSYS, Inc. All rights reserved"
 author = "ANSYS, Inc."
 release = version = __version__
@@ -32,11 +32,11 @@ cname = os.getenv("DOCUMENTATION_CNAME", "docs.pyansys.com")
 # Select desired logo, theme, and declare the html title
 html_logo = logo
 html_theme = "ansys_sphinx_theme"
-html_short_title = html_title = "PyDPF Sound"
+html_short_title = html_title = "PyAnsys Sound"
 
 # specify the location of your github repo
 html_theme_options = {
-    "github_url": "https://github.com/ansys/pydpf-sound",
+    "github_url": "https://github.com/ansys/pyansys-sound",
     "show_prev_next": False,
     "show_breadcrumbs": True,
     "additional_breadcrumbs": [
@@ -117,7 +117,7 @@ sphinx_gallery_conf = {
     # directory where function granular galleries are stored
     "backreferences_dir": None,
     # Modules for which function level galleries are created.  In
-    "doc_module": "ansys-dpf-sound",
+    "doc_module": "ansys-sound-core",
     "image_scrapers": (DynamicScraper(), "matplotlib"),
     "ignore_pattern": r"__init__\.py",
     "thumbnail_size": (350, 350),

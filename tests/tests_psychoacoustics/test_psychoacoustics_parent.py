@@ -1,12 +1,12 @@
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.psychoacoustics import PsychoacousticsParent
-from ansys.dpf.sound.psychoacoustics.loudness_iso_532_1_stationary import (
+from ansys.sound.core.psychoacoustics import PsychoacousticsParent
+from ansys.sound.core.psychoacoustics.loudness_iso_532_1_stationary import (
     LoudnessISO532_1_Stationary,
 )
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
-from ansys.dpf.sound.signal_utilities.load_wav import LoadWav
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.signal_utilities.load_wav import LoadWav
 
 
 def test_psychoacoustics_parent_instantiation(dpf_sound_test_server):
@@ -19,7 +19,8 @@ def test_psychoacoustics_convert_bark_to_hertz(dpf_sound_test_server):
 
     # Invalid Bark band index -> error
     with pytest.raises(
-        PyDpfSoundException, match="Specified Bark band indexes must be between 0.0 and 24.0 Bark."
+        PyAnsysSoundException,
+        match="Specified Bark band indexes must be between 0.0 and 24.0 Bark.",
     ):
         bark_band_frequencies = psychoacoustics_parent._convert_bark_to_hertz(
             bark_band_indexes=np.array([-1])
@@ -52,7 +53,7 @@ def test_psychoacoustics_parent_check_channel_index(dpf_sound_test_server):
 
     # Nothing computed -> false
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
     ):
         valid_status = loudness._check_channel_index(0)
@@ -62,7 +63,7 @@ def test_psychoacoustics_parent_check_channel_index(dpf_sound_test_server):
 
     # Check unexisting channel (field case)
     with pytest.raises(
-        PyDpfSoundException, match="Specified channel index \\(1\\) does not exist."
+        PyAnsysSoundException, match="Specified channel index \\(1\\) does not exist."
     ):
         loudness._check_channel_index(1)
 
@@ -72,7 +73,7 @@ def test_psychoacoustics_parent_check_channel_index(dpf_sound_test_server):
 
     # Check unexisting channel (fields container case)
     with pytest.raises(
-        PyDpfSoundException, match="Specified channel index \\(1\\) does not exist."
+        PyAnsysSoundException, match="Specified channel index \\(1\\) does not exist."
     ):
         loudness._check_channel_index(1)
 

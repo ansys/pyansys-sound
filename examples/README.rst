@@ -3,4 +3,4 @@
 ========
 Examples
 ========
-These examples demonstrate the behavior and usage of PyDPF Sound.
+These examples demonstrate the behavior and usage of PyAnsys Sound.

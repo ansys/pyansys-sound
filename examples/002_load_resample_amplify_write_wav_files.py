@@ -18,9 +18,9 @@ It also shows how to access the corresponding data and display it using matplotl
 # Load Ansys & other libraries.
 import matplotlib.pyplot as plt
 
-from ansys.dpf.sound.examples_helpers import get_absolute_path_for_flute_wav
-from ansys.dpf.sound.server_helpers import connect_to_or_start_server
-from ansys.dpf.sound.signal_utilities import ApplyGain, LoadWav, Resample, WriteWav
+from ansys.sound.core.examples_helpers import get_absolute_path_for_flute_wav
+from ansys.sound.core.server_helpers import connect_to_or_start_server
+from ansys.sound.core.signal_utilities import ApplyGain, LoadWav, Resample, WriteWav
 
 # Connect to remote or start a local server
 server = connect_to_or_start_server()

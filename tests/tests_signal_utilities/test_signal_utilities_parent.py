@@ -1,4 +1,4 @@
-from ansys.dpf.sound.signal_utilities import SignalUtilitiesParent
+from ansys.sound.core.signal_utilities import SignalUtilitiesParent
 
 
 def test_signal_utilities_parent_instantiate():

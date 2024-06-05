@@ -4,9 +4,9 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
-from ansys.dpf.sound.pydpf_sound import PyDpfSoundException, PyDpfSoundWarning
-from ansys.dpf.sound.signal_utilities import LoadWav
-from ansys.dpf.sound.spectrogram_processing import IsolateOrders
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.signal_utilities import LoadWav
+from ansys.sound.core.spectrogram_processing import IsolateOrders
 
 
 def test_isolate_orders_instantiation(dpf_sound_test_server):
@@ -25,14 +25,14 @@ def test_isolate_orders_process(dpf_sound_test_server):
     rpm_profile.time_freq_support = signal.time_freq_support
 
     # Error 1
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         isolate_orders.process()
     assert str(excinfo.value) == "No signal for order isolation. Use IsolateOrder.signal."
 
     isolate_orders.signal = signal
 
     # Error 2
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         isolate_orders.process()
     assert str(excinfo.value) == "No RPM profile for order isolation. Use IsolateOrder.rpm_profile."
 
@@ -40,7 +40,7 @@ def test_isolate_orders_process(dpf_sound_test_server):
     isolate_orders.rpm_profile = rpm_profile
 
     # Error 3
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         isolate_orders.process()
     assert str(excinfo.value) == "No orders for order isolation. Use IsolateOrder.orders."
 
@@ -63,7 +63,7 @@ def test_isolate_orders_get_output(dpf_sound_test_server):
     isolate_orders = IsolateOrders(signal=signal, rpm_profile=rpm_profile, orders=[2, 4])
 
     with pytest.warns(
-        PyDpfSoundWarning, match="Output has not been yet processed, use IsolateOrders.process()."
+        PyAnsysSoundWarning, match="Output has not been yet processed, use IsolateOrders.process()."
     ):
         fc_out = isolate_orders.get_output()
 
@@ -132,7 +132,7 @@ def test_isolate_orders_set_get_fft_size(dpf_sound_test_server):
     isolate_orders = IsolateOrders()
 
     # Error
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         isolate_orders.fft_size = -12.0
     assert str(excinfo.value) == "FFT size must be greater than 0.0."
 
@@ -144,7 +144,7 @@ def test_isolate_orders_set_get_window_overlap(dpf_sound_test_server):
     isolate_orders = IsolateOrders()
 
     # Error
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         isolate_orders.window_overlap = -12.0
     assert str(excinfo.value) == "Window overlap must be between 0.0 and 1.0."
 
@@ -156,7 +156,7 @@ def test_isolate_orders_set_get_window_type(dpf_sound_test_server):
     isolate_orders = IsolateOrders()
 
     # Error
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         isolate_orders.window_type = "InvalidWindow"
     assert (
         str(excinfo.value)
@@ -194,7 +194,7 @@ def test_isolate_orders_set_get_width_selection(dpf_sound_test_server):
     isolate_orders = IsolateOrders()
 
     # Error
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         isolate_orders.width_selection = -12.0
     assert str(excinfo.value) == "Width selection must be greater than 0.0."
 

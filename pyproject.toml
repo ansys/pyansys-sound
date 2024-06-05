@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 # Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
-name = "ansys-dpf-sound"
+name = "ansys-sound-core"
 version = "0.1.dev0"
 description = "A Python wrapper for Ansys DPF Sound."
 readme = "README.rst"
@@ -68,12 +68,12 @@ default_section = "THIRDPARTY"
 src_paths = ["doc", "src", "tests"]
 
 [tool.coverage.run]
-source = ["ansys.dpf.sound"]
+source = ["ansys.sound.core"]
 
 [tool.coverage.report]
 show_missing = true
 
 [tool.pytest.ini_options]
 minversion = "7.1"
-addopts = "-ra --cov=ansys.dpf.sound --cov-report html:.cov/html --cov-report xml:.cov/xml --cov-report term -vv"
+addopts = "-ra --cov=ansys.sound.core --cov-report html:.cov/html --cov-report xml:.cov/xml --cov-report term -vv"
 testpaths = ["tests"]
