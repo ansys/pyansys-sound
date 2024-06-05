@@ -120,7 +120,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Returns
         -------
-        tuple[np.array]
+        tuple[numpy.ndarray]
             1st element is the loudness vs time in sone.
             2nd element is the N5 indicator, in sone.
             3rd element is the N10 indicator, in sone.
@@ -165,11 +165,8 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         numpy.ndarray
             Time-varying loudness in sone.
         """
-        if self.get_output() == None:
+        if self.get_output() == None or not (self._check_channel_index(channel_index)):
             return None
-
-        # check validity of input -> will raise an exception if channel index is incorrect
-        self.__check_channel_index(channel_index)
 
         if type(self._output[0]) == Field:
             return self.get_output_as_nparray()[0]
@@ -198,14 +195,11 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         numpy.float64
             N5 value in sone.
         """
-        if self.get_output() == None:
+        if self.get_output() == None or not (self._check_channel_index(channel_index)):
             return None
 
-        # check validity of input -> will raise an exception if channel index is incorrect
-        self.__check_channel_index(channel_index)
-
         if type(self._output[0]) == Field:
-            return self.get_output_as_nparray()[1]
+            return self.get_output_as_nparray()[1][0]
 
         else:
             N5 = self.get_output_as_nparray()[1]
@@ -227,14 +221,11 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         numpy.float64
             N10 value in sone.
         """
-        if self.get_output() == None:
+        if self.get_output() == None or not (self._check_channel_index(channel_index)):
             return None
 
-        # check validity of input -> will raise an exception if channel index is incorrect
-        self.__check_channel_index(channel_index)
-
         if type(self._output[0]) == Field:
-            return self.get_output_as_nparray()[2]
+            return self.get_output_as_nparray()[2][0]
 
         else:
             N10 = self.get_output_as_nparray()[2]
@@ -254,11 +245,8 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         numpy.ndarray
             Time-varying loudness level in phon.
         """
-        if self.get_output() == None:
+        if self.get_output() == None or not (self._check_channel_index(channel_index)):
             return None
-
-        # check validity of input -> will raise an exception if channel index is incorrect
-        self.__check_channel_index(channel_index)
 
         if type(self._output[0]) == Field:
             return self.get_output_as_nparray()[3]
@@ -287,14 +275,11 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         numpy.float64
             L5 value in phon.
         """
-        if self.get_output() == None:
+        if self.get_output() == None or not (self._check_channel_index(channel_index)):
             return None
 
-        # check validity of input -> will raise an exception if channel index is incorrect
-        self.__check_channel_index(channel_index)
-
         if type(self._output[0]) == Field:
-            return self.get_output_as_nparray()[4]
+            return self.get_output_as_nparray()[4][0]
 
         else:
             L5 = self.get_output_as_nparray()[4]
@@ -316,14 +301,11 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         numpy.float64
             L10 value in phon.
         """
-        if self.get_output() == None:
+        if self.get_output() == None or not (self._check_channel_index(channel_index)):
             return None
 
-        # check validity of input -> will raise an exception if channel index is incorrect
-        self.__check_channel_index(channel_index)
-
         if type(self._output[0]) == Field:
-            return self.get_output_as_nparray()[5]
+            return self.get_output_as_nparray()[5][0]
 
         else:
             L10 = self.get_output_as_nparray()[5]
@@ -390,33 +372,3 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         ax2.grid(True)
 
         plt.show()
-
-    def __check_channel_index(self, channel_index: int) -> bool:
-        """Check whether a specified signal channel index is available or not.
-
-        Parameters
-        ----------
-        channel_index: int
-            Index of the signal channel to check.
-
-        Returns
-        -------
-        bool
-            True if channel index is available, False if not.
-        """
-        if self.get_output() == None:
-            return False
-
-        if type(self._output[0]) == Field:
-            if channel_index != 0:
-                raise PyAnsysSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
-
-        else:
-            if channel_index < 0 or channel_index > self.get_output_as_nparray()[0].ndim - 1:
-                raise PyAnsysSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
-
-        return True

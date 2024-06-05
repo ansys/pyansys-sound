@@ -283,18 +283,13 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
             Loudness or loudness level value (float, in sone or phon, respectively), or specific
             loudness (numpy array, in sone/Bark).
         """
-        loudness_data = self.get_output_as_nparray()
-        if loudness_data == None:
+        if self.get_output() == None or not (self._check_channel_index(channel_index)):
             return None
+
+        loudness_data = self.get_output_as_nparray()
 
         # Get last channel index.
         channel_max = len(loudness_data[0]) - 1
-
-        # Check that specified channel index exists.
-        if channel_index > channel_max:
-            raise PyAnsysSoundException(
-                f"Specified channel index ({channel_index}) does not exist."
-            )
 
         # Return output parameter (loudness, loudness level, or specific loudness) for the specified
         # channel.

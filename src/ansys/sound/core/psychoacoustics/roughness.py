@@ -257,18 +257,13 @@ class Roughness(PsychoacousticsParent):
         numpy.float64 | numpy.ndarray
             Roughness (float) in asper or specific roughness (numpy array) in asper/Bark.
         """
-        roughness_data = self.get_output_as_nparray()
-        if roughness_data == None:
+        if self.get_output() == None or not (self._check_channel_index(channel_index)):
             return None
+
+        roughness_data = self.get_output_as_nparray()
 
         # Get last channel index.
         channel_max = len(roughness_data[0]) - 1
-
-        # Check that specified channel index exists.
-        if channel_index > channel_max:
-            raise PyAnsysSoundException(
-                f"Specified channel index ({channel_index}) does not exist."
-            )
 
         # Return output parameter (roughness or specific roughness) for the specified channel.
         if output_id == SPECIFIC_ROUGHNESS_ID:
