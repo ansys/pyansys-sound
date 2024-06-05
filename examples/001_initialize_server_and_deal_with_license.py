@@ -33,9 +33,10 @@ here:
 import datetime
 
 import ansys.dpf.core as dpf
-from ansys.dpf.sound.examples_helpers import get_absolute_path_for_flute_wav
-from ansys.dpf.sound.server_helpers import connect_to_or_start_server
-from ansys.dpf.sound.signal_utilities import LoadWav
+
+from ansys.sound.core.examples_helpers import get_absolute_path_for_flute_wav
+from ansys.sound.core.server_helpers import connect_to_or_start_server
+from ansys.sound.core.signal_utilities import LoadWav
 
 # sphinx_gallery_thumbnail_path = '_static/_image/example004_thumbnail.png'
 

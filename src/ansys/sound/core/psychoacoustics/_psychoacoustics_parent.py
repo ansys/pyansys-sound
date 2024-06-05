@@ -70,13 +70,13 @@ class PsychoacousticsParent(PyAnsysSound):
 
         if type(output[0]) == Field:
             if channel_index != 0:
-                raise PyDpfSoundException(
+                raise PyAnsysSoundException(
                     f"Specified channel index ({channel_index}) does not exist."
                 )
 
         else:
             if channel_index < 0 or channel_index > self.get_output_as_nparray()[0].ndim - 1:
-                raise PyDpfSoundException(
+                raise PyAnsysSoundException(
                     f"Specified channel index ({channel_index}) does not exist."
                 )
 

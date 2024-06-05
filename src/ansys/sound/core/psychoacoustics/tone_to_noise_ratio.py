@@ -8,7 +8,7 @@ import numpy as np
 from numpy import typing as npt
 
 from . import PsychoacousticsParent
-from ..pyansys_sound import PyDpfSoundException, PyDpfSoundWarning
+from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class ToneToNoiseRatio(PsychoacousticsParent):
@@ -121,7 +121,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         Calls the appropriate DPF Sound operator to compute the TNR on the PSD.
         """
         if self.__psd == None:
-            raise PyDpfSoundException("No PSD for TNR computation. Use ToneToNoiseRatio.psd.")
+            raise PyAnsysSoundException("No PSD for TNR computation. Use ToneToNoiseRatio.psd.")
 
         self.__operator.connect(0, self.psd)
 
@@ -147,7 +147,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         """
         if self._output == None:
             warnings.warn(
-                PyDpfSoundWarning(
+                PyAnsysSoundWarning(
                     "Output has not been processed yet, use ToneToNoiseRatio.process()."
                 )
             )
@@ -190,7 +190,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
             Number of tones.
         """
         if self.get_output() == None:
-            raise PyDpfSoundException(
+            raise PyAnsysSoundException(
                 "Output has not been processed yet, use ToneToNoiseRatio.process()."
             )
 
@@ -293,10 +293,10 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         """
         nb_tones = self.get_nb_tones()
         if nb_tones == 0:
-            raise PyDpfSoundException("No peak detected.")
+            raise PyAnsysSoundException("No peak detected.")
 
         if not (0 <= tone_index < nb_tones):
-            raise PyDpfSoundException(
+            raise PyAnsysSoundException(
                 f"Out of bound index. tone_index must be between 0 and {nb_tones - 1}."
             )
 
@@ -319,7 +319,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
             If TNR is higher, then the tone is prominent.
         """
         if self.__psd == None:
-            raise PyDpfSoundException("No PSD set. Use ToneToNoiseRatio.psd.")
+            raise PyAnsysSoundException("No PSD set. Use ToneToNoiseRatio.psd.")
 
         all_frequencies = self.__psd.time_freq_support.time_frequencies.data
         curve_length = len(all_frequencies)
@@ -344,7 +344,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
     def plot(self):
         """Plot tone-to-noise ratio for all identified peaks, along with the reference curve."""
         if self._output == None:
-            raise PyDpfSoundException(
+            raise PyAnsysSoundException(
                 "Output has not been processed yet, use ToneToNoiseRatio.process()."
             )
 

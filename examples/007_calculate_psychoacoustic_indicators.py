@@ -23,6 +23,7 @@ The example shows how to:
 - plot some corresponding curves.
 
 """
+
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
@@ -33,13 +34,15 @@ The example shows how to:
 
 import os
 
+import numpy as np
+
 from ansys.sound.core.examples_helpers import (
     get_absolute_path_for_accel_with_rpm_wav,
     get_absolute_path_for_flute2_wav,
     get_absolute_path_for_flute_wav,
 )
-from ansys.sound.core.psychoacoustics.fluctuation_strength import FluctuationStrength
-from ansys.sound.core.psychoacoustics.loudness_iso_532_1_stationary import (
+from ansys.sound.core.psychoacoustics import (
+    FluctuationStrength,
     LoudnessISO532_1_Stationary,
     LoudnessISO532_1_TimeVarying,
     Roughness,
@@ -147,10 +150,10 @@ L10 = loudness_time_varying.get_L10_phon()
 file_name3 = os.path.basename(path_accel_wav)
 print(
     f"\nThe sound file {file_name3} has the following percentile loudness values: \n"
-    f"- N5  ={N5: .1f} sones.\n"
-    f"- N10 ={N10: .1f} sones.\n"
-    f"- L5  ={L5: .1f} phons.\n"
-    f"- L10 ={L10: .1f} phons."
+    f"- N5  ={np.round(N5,1)} sones.\n"
+    f"- N10 ={np.round(N10,1)} sones.\n"
+    f"- L5  ={np.round(L5,1)} phons.\n"
+    f"- L10 ={np.round(L10,1)} phons."
 )
 
 # %%

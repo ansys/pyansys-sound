@@ -5,7 +5,7 @@ import shutil
 import urllib.request
 import zipfile
 
-from ansys.dpf.sound.examples_helpers import EXAMPLES_PATH
+from ansys.sound.core.examples_helpers import EXAMPLES_PATH
 
 
 def check_directory_exist(directory):
@@ -90,7 +90,7 @@ def download_flute_psd():
 
     Examples
     --------
-    >>> from ansys.dpf.sound.examples_helpers import download_flute_psd
+    >>> from ansys.sound.core.examples_helpers import download_flute_psd
     >>> filename = print(download_flute_psd())
 
     """

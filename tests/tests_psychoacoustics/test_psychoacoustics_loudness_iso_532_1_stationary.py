@@ -231,7 +231,7 @@ def test_loudness_iso_532_1_stationary__get_ouptut_parameter(dpf_sound_test_serv
 
     # Loudness not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
     ):
         output = loudness_computer._get_output_parameter(0, LOUDNESS_SONE_ID)
@@ -241,12 +241,12 @@ def test_loudness_iso_532_1_stationary__get_ouptut_parameter(dpf_sound_test_serv
     loudness_computer.process()
 
     # Invalid parameter identifier -> error
-    with pytest.raises(PyDpfSoundException, match="Invalid identifier of output parameter."):
+    with pytest.raises(PyAnsysSoundException, match="Invalid identifier of output parameter."):
         param = loudness_computer._get_output_parameter(0, "thisIsNotValid")
 
     # Invalid channel index -> error
     with pytest.raises(
-        PyDpfSoundException, match="Specified channel index \\(1\\) does not exist."
+        PyAnsysSoundException, match="Specified channel index \\(1\\) does not exist."
     ):
         param = loudness_computer._get_output_parameter(1, LOUDNESS_SONE_ID)
 

@@ -206,7 +206,7 @@ def test_fs__get_ouptut_parameter(dpf_sound_test_server):
 
     # Fluctuation strength not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use FluctuationStrength.process().",
     ):
         output = fs_computer._get_output_parameter(0, TOTAL_FS_ID)
@@ -216,12 +216,12 @@ def test_fs__get_ouptut_parameter(dpf_sound_test_server):
     fs_computer.process()
 
     # Invalid parameter identifier -> error
-    with pytest.raises(PyDpfSoundException, match="Invalid identifier of output parameter."):
+    with pytest.raises(PyAnsysSoundException, match="Invalid identifier of output parameter."):
         param = fs_computer._get_output_parameter(0, "thisIsNotValid")
 
     # Invalid channel index -> error
     with pytest.raises(
-        PyDpfSoundException, match="Specified channel index \\(1\\) does not exist."
+        PyAnsysSoundException, match="Specified channel index \\(1\\) does not exist."
     ):
         param = fs_computer._get_output_parameter(1, TOTAL_FS_ID)
 

@@ -1,12 +1,12 @@
 from unittest.mock import patch
 
 from ansys.dpf.core import GenericDataContainer, TimeFreqSupport, fields_factory, locations
-from ansys.dpf.sound.psychoacoustics import ToneToNoiseRatio
 import numpy as np
 import pytest
 
 from ansys.sound.core.examples_helpers._get_example_files import get_absolute_path_for_flute_psd_txt
-from ansys.sound.core.pyansys_sound import PyDpfSoundException
+from ansys.sound.core.psychoacoustics import ToneToNoiseRatio
+from ansys.sound.core.pyansys_sound import PyAnsysSoundException
 
 
 @pytest.fixture
@@ -86,7 +86,7 @@ def test_tone_to_noise_ratio_process(dpf_sound_test_server, create_psd_from_txt_
     tnr = ToneToNoiseRatio()
 
     # no signal -> error 1
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         tnr.process()
     assert str(excinfo.value) == "No PSD for TNR computation. Use ToneToNoiseRatio.psd."
 
@@ -170,7 +170,7 @@ def test_tone_to_noise_ratio_get_nb_tones(dpf_sound_test_server, create_psd_from
     psd = create_psd_from_txt_data
     tnr.psd = psd
 
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         tnr.get_nb_tones()
     assert (
         str(excinfo.value) == "Output has not been processed yet, use ToneToNoiseRatio.process()."
@@ -296,14 +296,14 @@ def test_tone_to_noise_ratio_get_all_tone_infos(dpf_sound_test_server, create_ps
     psd = create_psd_from_txt_data
     tnr.psd = psd
 
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         tnr.get_single_tone_info(1)
     assert (
         str(excinfo.value) == "Output has not been processed yet, use ToneToNoiseRatio.process()."
     )
 
     tnr.process()
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         tnr.get_single_tone_info(14)
     assert str(excinfo.value) == "Out of bound index. tone_index must be between 0 and 10."
 
@@ -324,7 +324,7 @@ def test_tone_to_noise_ratio_get_all_tone_infos(dpf_sound_test_server, create_ps
     # flat PSD -> nothing to detect
     psd.data = np.ones(len(psd.data))
     tnr.process()
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         tnr.get_single_tone_info(1)
     assert str(excinfo.value) == "No peak detected."
 
@@ -334,7 +334,7 @@ def test_tone_to_noise_ratio_get_reference_curve(dpf_sound_test_server, create_p
 
     psd = create_psd_from_txt_data
 
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         tnr.get_reference_curve()
     assert str(excinfo.value) == "No PSD set. Use ToneToNoiseRatio.psd."
 
@@ -361,7 +361,7 @@ def test_tone_to_noise_ratio_plot(dpf_sound_test_server, create_psd_from_txt_dat
     psd = create_psd_from_txt_data
     tnr.psd = psd
 
-    with pytest.raises(PyDpfSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException) as excinfo:
         tnr.plot()
     assert (
         str(excinfo.value) == "Output has not been processed yet, use ToneToNoiseRatio.process()."

@@ -204,7 +204,7 @@ def test_roughness__get_ouptut_parameter(dpf_sound_test_server):
 
     # Roughness not calculated yet -> warning
     with pytest.warns(
-        PyDpfSoundWarning,
+        PyAnsysSoundWarning,
         match="Output has not been processed yet, use Roughness.process().",
     ):
         output = roughness_computer._get_output_parameter(0, TOTAL_ROUGHNESS_ID)
@@ -214,12 +214,12 @@ def test_roughness__get_ouptut_parameter(dpf_sound_test_server):
     roughness_computer.process()
 
     # Invalid parameter identifier -> error
-    with pytest.raises(PyDpfSoundException, match="Invalid identifier of output parameter."):
+    with pytest.raises(PyAnsysSoundException, match="Invalid identifier of output parameter."):
         param = roughness_computer._get_output_parameter(0, "thisIsNotValid")
 
     # Invalid channel index -> error
     with pytest.raises(
-        PyDpfSoundException, match="Specified channel index \\(1\\) does not exist."
+        PyAnsysSoundException, match="Specified channel index \\(1\\) does not exist."
     ):
         param = roughness_computer._get_output_parameter(1, TOTAL_ROUGHNESS_ID)
 
