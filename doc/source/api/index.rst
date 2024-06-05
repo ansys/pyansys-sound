@@ -12,3 +12,4 @@ This section describes the public classes, methods, and attributes of the PyAnsy
     spectrogram_processing
     psychoacoustics
     xtract
+    helpers
