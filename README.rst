@@ -58,7 +58,7 @@ familiar with the `PyAnsys Developer's Guide`_.
         git clone https://github.com/ansys/pyansys-sound
         cd pyansys-sound
 
-#.  Create a fresh-clean Python environment and activate it. Refer to the  official `venv`_ documentation if you require further information:
+#.  Create a fresh-clean Python environment and activate it. Refer to the official `venv`_ documentation if you require further information:
 
     .. code:: bash
 
