@@ -29,7 +29,16 @@ if not os.path.exists(USER_DATA_PATH):  # pragma: no cover
 
 EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
 
-from .download import download_flute_psd
+from .download import (
+    download_accel_with_rpm_2_wav,
+    download_accel_with_rpm_3_wav,
+    download_accel_with_rpm_wav,
+    download_flute_2_wav,
+    download_flute_psd,
+    download_flute_wav,
+    download_xtract_demo_signal_1_wav,
+    download_xtract_demo_signal_2_wav,
+)
 
 __all__ = (
     "get_absolute_path_for_accel_with_rpm_wav",
@@ -45,4 +54,11 @@ __all__ = (
     "get_absolute_path_for_xtract_demo_signal_2_wav",
     "get_absolute_path_for_flute_psd_txt",
     "download_flute_psd",
+    "download_flute_wav",
+    "download_flute_2_wav",
+    "download_accel_with_rpm_wav",
+    "download_accel_with_rpm_2_wav",
+    "download_accel_with_rpm_3_wav",
+    "download_xtract_demo_signal_1_wav",
+    "download_xtract_demo_signal_2_wav",
 )

@@ -18,7 +18,7 @@ It also shows how to access the corresponding data and display it using matplotl
 # Load Ansys & other libraries.
 import matplotlib.pyplot as plt
 
-from ansys.sound.core.examples_helpers import get_absolute_path_for_flute_wav
+from ansys.sound.core.examples_helpers import download_flute_wav
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import ApplyGain, LoadWav, Resample, WriteWav
 
@@ -32,7 +32,7 @@ server = connect_to_or_start_server()
 # `DPF Field Container <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_ # noqa: E501
 
 # Returning the input data of the example file
-path_flute_wav = get_absolute_path_for_flute_wav()
+path_flute_wav = download_flute_wav()[1]
 
 # Load the wav file.
 wav_loader = LoadWav(path_flute_wav)

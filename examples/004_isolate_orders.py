@@ -22,12 +22,17 @@ MAX_FREQUENCY_PLOT_STFT = 2000.0
 #
 
 # Load Ansys libraries.
+import os
 import pathlib
 
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ansys.sound.core.examples_helpers import get_absolute_path_for_accel_with_rpm_wav
+from ansys.sound.core.examples_helpers import (
+    download_accel_with_rpm_2_wav,
+    download_accel_with_rpm_3_wav,
+    download_accel_with_rpm_wav,
+)
 from ansys.sound.core.psychoacoustics import LoudnessISO532_1_Stationary
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav, WriteWav
@@ -98,9 +103,9 @@ def plot_stft(stft_class, vmax):
 # - The associated RPM profile
 
 # Returning the input data of the example file
-path_accel_wav = get_absolute_path_for_accel_with_rpm_wav()
+path_accel_wav = download_accel_with_rpm_wav()[1]
 
-# Load the wav file.
+# # Load the wav file.
 wav_loader = LoadWav(path_accel_wav)
 wav_loader.process()
 fc_signal = wav_loader.get_output()
@@ -141,7 +146,7 @@ plot_stft(stft, max_stft)
 
 field_wav, field_rpm = wav_loader.get_output()
 
-# Defining parameters for order isolation
+# # Defining parameters for order isolation
 field_wav.unit = "Pa"
 order_to_isolate = [2, 4, 6]  # Orders indexes to isolate as a list
 fft_size = 8192  # FFT Size (in samples)
@@ -149,7 +154,7 @@ window_type = "HANN"  # Window type
 window_overlap = 0.9  # Window overlap
 width_selection = 3  # Width of the order selection in Hz
 
-# Instantiating the IsolateOrders class with the parameters
+# # Instantiating the IsolateOrders class with the parameters
 isolate_orders = IsolateOrders(
     signal=field_wav,
     rpm_profile=field_rpm,
@@ -218,12 +223,16 @@ print(f"Loudness of the isolated signal: {loudness_isolated_signal: .1f} phons."
 # Obtaining parent folder of accel_with_rpm.wav
 parent_folder = pathlib.Path(path_accel_wav).parent.absolute()
 
+path_accel_wav_2 = download_accel_with_rpm_2_wav()[1]
+path_accel_wav_3 = download_accel_with_rpm_3_wav()[1]
+paths = (path_accel_wav, path_accel_wav_2, path_accel_wav_3)
+
 fft_sizes = [256, 2048, 4096]
 
 wav_writer = WriteWav()
 
 # Isolating orders for all the files containing RPM profiles in this folder
-for file, fft_sz in zip(parent_folder.glob("accel_with_rpm_*.wav"), fft_sizes):
+for file, fft_sz in zip(paths, fft_sizes):
     # Loading the file
     wav_loader.path_to_wav = file
     wav_loader.process()
@@ -235,8 +244,8 @@ for file, fft_sz in zip(parent_folder.glob("accel_with_rpm_*.wav"), fft_sizes):
     isolate_orders.process()
 
     # Writing the file in memory
-    out_name = str(file.stem) + "_isolated_fft_size_" + str(fft_sz) + ".wav"
-    path_to_write = parent_folder / "output/" / out_name
+    out_name = os.path.basename(file)[:-4] + "_isolated_fft_size_" + str(fft_sz) + ".wav"
+    path_to_write = parent_folder / out_name
     wav_writer.path_to_write = str(path_to_write)
     wav_writer.signal = isolate_orders.get_output()
     wav_writer.process()

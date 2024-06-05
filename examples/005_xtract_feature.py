@@ -26,8 +26,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from ansys.sound.core.examples_helpers import (
-    get_absolute_path_for_xtract_demo_signal_1_wav,
-    get_absolute_path_for_xtract_demo_signal_2_wav,
+    download_xtract_demo_signal_1_wav,
+    download_xtract_demo_signal_2_wav,
 )
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import CropSignal, LoadWav
@@ -114,7 +114,7 @@ def plot_stft(stft_class, SPLmax, title="STFT", maximum_frequency=MAX_FREQUENCY_
 # Load a wav signal using LoadWav class, the WAV file contains harmonics and shocks.
 
 # Returning the input data of the example file
-path_xtract_demo_signal_1 = get_absolute_path_for_xtract_demo_signal_1_wav()
+path_xtract_demo_signal_1 = download_xtract_demo_signal_1_wav()[1]
 
 # Load the wav file.
 wav_loader = LoadWav(path_to_wav=path_xtract_demo_signal_1)
@@ -265,7 +265,7 @@ plt.show()
 # all previous classes.
 
 
-path_xtract_demo_signal_2 = get_absolute_path_for_xtract_demo_signal_2_wav()
+path_xtract_demo_signal_2 = download_xtract_demo_signal_2_wav()[1]
 
 paths = [path_xtract_demo_signal_1, path_xtract_demo_signal_2]
 
