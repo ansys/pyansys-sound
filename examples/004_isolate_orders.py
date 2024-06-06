@@ -105,7 +105,7 @@ def plot_stft(stft_class, vmax):
 # Returning the input data of the example file
 path_accel_wav = download_accel_with_rpm_wav()[1]
 
-# # Load the wav file.
+# Load the wav file.
 wav_loader = LoadWav(path_accel_wav)
 wav_loader.process()
 fc_signal = wav_loader.get_output()
@@ -146,7 +146,7 @@ plot_stft(stft, max_stft)
 
 field_wav, field_rpm = wav_loader.get_output()
 
-# # Defining parameters for order isolation
+# Defining parameters for order isolation
 field_wav.unit = "Pa"
 order_to_isolate = [2, 4, 6]  # Orders indexes to isolate as a list
 fft_size = 8192  # FFT Size (in samples)
@@ -154,7 +154,7 @@ window_type = "HANN"  # Window type
 window_overlap = 0.9  # Window overlap
 width_selection = 3  # Width of the order selection in Hz
 
-# # Instantiating the IsolateOrders class with the parameters
+# Instantiating the IsolateOrders class with the parameters
 isolate_orders = IsolateOrders(
     signal=field_wav,
     rpm_profile=field_rpm,

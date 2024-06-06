@@ -9,3 +9,4 @@ Psychoacoustics
 psychoacoustics
 Xtract
 xtract
+numpy
