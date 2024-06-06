@@ -25,9 +25,9 @@ You can start the server with the following code:
     my_server = connect_to_or_start_server()
 
 If the environment variable ``ANSRV_DPF_SOUND_PORT`` is set (default value should be ``6780``), PyAnsys Sound
-shall attempt to connect to a server located in a Docker container.
+attempts to connect to a server located in a Docker container.
 
-If the environment variable is **not** specified, PyAnsys Sound shall try to start a local server.
+If the environment variable is **not** specified, PyAnsys Sound tries to start a local server.
 
 More information about local and remote DPF Servers: `getting started with DPF servers`_.
 
@@ -38,7 +38,7 @@ Most of the processing done by PyAnsys Sound relies on temporal sound signals th
 
 .. vale off
 
-In order to load a ``.wav`` , one must use the :class:`LoadWav <ansys.sound.core.signal_utilities.LoadWav>` class.
+In order to load a ``.wav`` , you must use the :class:`LoadWav <ansys.sound.core.signal_utilities.LoadWav>` class.
 
 .. vale on
 .. code:: python
@@ -64,14 +64,14 @@ All the different classes and helpers are documented in the :doc:`api/index`.
 
 All classes have four methods in common:
 
-#. ``process()`` performs the operation for which the class is made for. Must be called explicitly every time an input parameter is changed.
-#. ``plot()`` plots the output of the class, depending on the nature of the output, the plot shall be different.
+#. ``process()`` performs the operation for which the class is made. Must be called explicitly every time an input parameter is changed.
+#. ``plot()`` plots the output of the class. Depending on the nature of the output, the plot may be different.
 #. ``get_output()`` returns the outputs as a DPF object (either a ``Field`` or a ``FieldsContainer``).
 #. ``get_output_as_nparray()`` returns the outputs as a numpy array.
 
 Some additional methods might be available for a given class.
 
-It is strongly encourage to check the :doc:`examples/index` to start using PyAnsys Sound.
+It is strongly encouraged to check the :doc:`examples/index` to start using PyAnsys Sound.
 
 .. _Ansys DPF: https://dpf.docs.pyansys.com/version/stable/
 .. _Ansys Sound: https://www.ansys.com/sound

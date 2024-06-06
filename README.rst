@@ -145,7 +145,7 @@ View documentation
 Documentation for the latest stable release of PyAnsys Sound is hosted at
 `PyAnsys Sound Documentation <https://sound.docs.pyansys.com/version/stable/>`_.
 
-In the upper right corner of the documentation's title bar, there is an option
+In the upper right corner of the documentation title bar, there is an option
 for switching from viewing the documentation for the latest stable release
 to viewing the documentation for the development version or previously
 released versions.

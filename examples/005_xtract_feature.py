@@ -5,8 +5,8 @@ Xtract Feature
 --------------
 
 This example shows how to use the "Xtract" feature in PyAnsys Sound.
-It displays the different capabilities of this feature such as :
-Noise extraction, tonal extraction and transient extraction.
+It displays the different capabilities of this feature, such as
+noise extraction, tonal extraction and transient extraction.
 
 """
 
@@ -51,7 +51,7 @@ my_server = connect_to_or_start_server(use_license_context=True)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Defining a custom function for STFT plots that will allow us to have
 # more control over what we're displaying.
-# Note that we could use Stft.plot() but in this example,
+# Note that we could use Stft.plot(), but in this example
 # we want to restrict the frequency range of the plot, hence the custom function.
 def plot_stft(stft_class, SPLmax, title="STFT", maximum_frequency=MAX_FREQUENCY_PLOT_STFT):
     """Plots an short-term Fourier transform (STFT) into a figure window.
@@ -212,7 +212,7 @@ plot_stft(stft_modified_signal, SPLmax=max_stft, title="Extracted Tones")
 # We can see from the obtained plot that the tones are not properly extracted.
 
 # %%
-# We try again with a different parameter for the maximum slope
+# We try again with a different parameter for the maximum slope.
 xtract_tonal_params.maximum_slope = 5000.0
 xtract_tonal.process()
 
@@ -228,9 +228,9 @@ plot_stft(stft_modified_signal, SPLmax=max_stft, title="Extracted Tones")
 # %%
 # Transient Extraction
 # ~~~~~~~~~~~~~~~~~~~~
-# The goal is to isolate the transients using the right setting.
-# These setting are less easy to handle and are well explained in the tutorial videos
-# installed with Ansys Sound SAS standalone application (with the user interface).
+# The goal is to isolate the transients using the right settings.
+# These settings are less easy to handle and are well explained in the tutorial videos
+# installed with the Ansys Sound SAS standalone application (with the user interface).
 # These videos can also be found on the Ansys Learning Hub (SAS - XTRACT transient:
 # https://learninghub.ansys.com/share/asset/view/108)
 

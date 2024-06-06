@@ -5,7 +5,7 @@ Isolate Orders
 --------------
 
 This example shows how to isolate orders (harmonic and partial components in the sound related to
-the speed of a rotating machine) in a signal containing a RPM profile.
+the speed of a rotating machine) in a signal containing an RPM profile.
 It also uses additional classes from pyansys-sound to compute spectrograms
 and the loudness of the isolated signals.
 
@@ -47,7 +47,7 @@ my_server = connect_to_or_start_server()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Defining a custom function for STFT plots that will allow us to have
 # more control over what we're displaying.
-# Note that we could use Stft.plot() but in this example,
+# Note that we could use Stft.plot(), but in this example
 # we want to restrict the frequency range of the plot, hence the custom function.
 def plot_stft(stft_class, vmax):
     out = stft_class.get_output_as_nparray()
@@ -95,8 +95,8 @@ def plot_stft(stft_class, vmax):
 # %%
 # Load a wav signal with a RPM profile
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load a wav signal using LoadWav class, the WAV file has been generated with Ansys Sound SAS.
-# It contains two channels :
+# Load a wav signal that has been generated with Ansys Sound SAS using LoadWav class.
+# It contains two channels:
 #
 # - The actual signal (an acceleration recording)
 #
@@ -132,7 +132,7 @@ plt.show()
 # %%
 # Plotting spectrogram of the original signal
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Plotting the Spectrogram of the original signal
+# Plotting the Spectrogram of the original signal.
 
 stft = Stft(signal=fc_signal[0], window_overlap=0.9, fft_size=8192)
 stft.process()
@@ -142,7 +142,7 @@ plot_stft(stft, max_stft)
 # %%
 # Isolating Orders
 # ~~~~~~~~~~~~~~~~
-# Isolating orders 2, 4 and 6 with the IsolateOrders class
+# Isolating orders 2, 4 and 6 with the IsolateOrders class.
 
 field_wav, field_rpm = wav_loader.get_output()
 
@@ -176,7 +176,7 @@ plot_stft(stft, max_stft)
 # %%
 # Isolating different orders
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Changing fft size, orders indexes and window type and then, re-isolating the orders
+# Changing fft size, orders indexes and window type, and then re-isolating the orders.
 
 # Changing some parameters directly using the setters of the class
 isolate_orders.orders = [2, 6]
@@ -193,7 +193,7 @@ plot_stft(stft, max_stft)
 # %%
 # Working with the isolated signal
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Plotting the signal containing the isolated orders and computing its Loudness
+# Plotting the signal containing the isolated orders and computing its Loudness.
 
 # Plotting the signal directly using the method from the IsolateOrders class
 isolate_orders.plot()

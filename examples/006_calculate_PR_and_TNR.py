@@ -28,7 +28,7 @@ server = connect_to_or_start_server()
 # %%
 # Calculate TNR from a power spectral density (PSD)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load a PSD stored in a text file, and use it to create a field that will serve as an input for
+# Load a PSD stored as a text file, and use it to create a field that will serve as an input for
 # the TNR calculation.
 
 # Load the PSD contained in an ASCII file (2 columns: Frequency (Hz); PSD amplitude (dB SPL/Hz)).

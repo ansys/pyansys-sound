@@ -4,7 +4,7 @@
 Compute the STFT and ISTFT
 --------------------------
 
-This example shows how to compute a STFT (Short-Time Fourier Transform) of a signal.
+This example shows how to compute an STFT (Short-Time Fourier Transform) of a signal.
 
 It also shows how to compute the inverse-STFT from a STFT matrix and get a signal.
 
@@ -25,7 +25,7 @@ from ansys.sound.core.spectrogram_processing import Istft, Stft
 my_server = connect_to_or_start_server(use_license_context=True)
 
 # %%
-# Load a wav signal using LoadWav class
+# Load a wav signal using LoadWav class.
 
 # Returning the input data of the example file
 path_flute_wav = download_flute_wav()
@@ -40,7 +40,7 @@ wav_loader.plot()
 
 # %%
 # Instantiate an Stft class using the previously loaded signal as an input,
-# using an FFT size of 1024 points, then display the STFT colormap
+# using an FFT size of 1024 points, then display the STFT colormap.
 
 stft = Stft(fc_signal, fft_size=1024)
 
@@ -51,7 +51,8 @@ stft.process()
 stft.plot()
 
 # %%
-# Modify the STFT parameters using the setters of the Stft class,then display the new STFT colormap
+# Modify the STFT parameters using the setters of the Stft class,
+# then display the new STFT colormap.
 
 stft.fft_size = 4096
 stft.window_overlap = 0.95
@@ -76,6 +77,6 @@ istft = Istft(fc_stft)
 istft.process()
 
 # %%
-# Finally plot the output which is the original signal.
+# Finally plot the output, which is the original signal.
 
 istft.plot()
