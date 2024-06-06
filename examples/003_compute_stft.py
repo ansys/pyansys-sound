@@ -28,7 +28,7 @@ my_server = connect_to_or_start_server(use_license_context=True)
 # Load a wav signal using LoadWav class
 
 # Returning the input data of the example file
-path_flute_wav = download_flute_wav()[1]
+path_flute_wav = download_flute_wav()
 
 # Loading the wav file
 wav_loader = LoadWav(path_flute_wav)

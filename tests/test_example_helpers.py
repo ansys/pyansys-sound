@@ -1,6 +1,7 @@
 import pathlib
 
 from ansys.sound.core.examples_helpers import (
+    EXAMPLES_PATH,
     download_accel_with_rpm_2_wav,
     download_accel_with_rpm_3_wav,
     download_accel_with_rpm_wav,
@@ -79,28 +80,36 @@ def test_data_path_fluctuating_tone_wav():
 
 
 def test_download_flute_psd():
-    p = download_flute_psd()[0]
+    download_flute_psd()[0]
+    p = str(EXAMPLES_PATH) + "/flute_psd.txt"
     assert pathlib.Path(p).exists() == True
 
 
 def test_download_flute_wav():
-    p = download_flute_wav()[0]
+    download_flute_wav()[0]
+    p = str(EXAMPLES_PATH) + "/flute.wav"
     assert pathlib.Path(p).exists() == True
-    p = download_flute_2_wav()[0]
+    p = str(EXAMPLES_PATH) + "/flute2.wav"
+    download_flute_2_wav()[0]
     assert pathlib.Path(p).exists() == True
 
 
 def test_download_accel_with_rpm_wav():
-    p = download_accel_with_rpm_wav()[0]
+    download_accel_with_rpm_wav()[0]
+    p = str(EXAMPLES_PATH) + "/accel_with_rpm.wav"
     assert pathlib.Path(p).exists() == True
-    p = download_accel_with_rpm_2_wav()[0]
+    p = str(EXAMPLES_PATH) + "/accel_with_rpm_2.wav"
+    download_accel_with_rpm_2_wav()[0]
     assert pathlib.Path(p).exists() == True
-    p = download_accel_with_rpm_3_wav()[0]
+    p = str(EXAMPLES_PATH) + "/accel_with_rpm_3.wav"
+    download_accel_with_rpm_3_wav()[0]
     assert pathlib.Path(p).exists() == True
 
 
 def test_download_xtract_demo_signal_wav():
-    p = download_xtract_demo_signal_1_wav()[0]
+    download_xtract_demo_signal_1_wav()[0]
+    p = str(EXAMPLES_PATH) + "/xtract_demo_signal_1.wav"
     assert pathlib.Path(p).exists() == True
-    p = download_xtract_demo_signal_2_wav()[0]
+    p = str(EXAMPLES_PATH) + "/xtract_demo_signal_2.wav"
+    download_xtract_demo_signal_2_wav()[0]
     assert pathlib.Path(p).exists() == True

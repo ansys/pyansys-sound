@@ -32,7 +32,7 @@ server = connect_to_or_start_server()
 # `DPF Field Container <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_ # noqa: E501
 
 # Returning the input data of the example file
-path_flute_wav = download_flute_wav()[1]
+path_flute_wav = download_flute_wav()
 
 # Load the wav file.
 wav_loader = LoadWav(path_flute_wav)

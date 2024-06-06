@@ -103,7 +103,7 @@ def plot_stft(stft_class, vmax):
 # - The associated RPM profile
 
 # Returning the input data of the example file
-path_accel_wav = download_accel_with_rpm_wav()[1]
+path_accel_wav = download_accel_with_rpm_wav()
 
 # Load the wav file.
 wav_loader = LoadWav(path_accel_wav)
@@ -223,8 +223,8 @@ print(f"Loudness of the isolated signal: {loudness_isolated_signal: .1f} phons."
 # Obtaining parent folder of accel_with_rpm.wav
 parent_folder = pathlib.Path(path_accel_wav).parent.absolute()
 
-path_accel_wav_2 = download_accel_with_rpm_2_wav()[1]
-path_accel_wav_3 = download_accel_with_rpm_3_wav()[1]
+path_accel_wav_2 = download_accel_with_rpm_2_wav()
+path_accel_wav_3 = download_accel_with_rpm_3_wav()
 paths = (path_accel_wav, path_accel_wav_2, path_accel_wav_3)
 
 fft_sizes = [256, 2048, 4096]

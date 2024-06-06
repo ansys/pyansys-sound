@@ -65,7 +65,7 @@ server = connect_to_or_start_server()
 # Then calculate the loudness of this signal.
 
 # Load example data from wav files
-path_flute_wav = download_flute_wav()[1]
+path_flute_wav = download_flute_wav()
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
 fc_signal = wav_loader.get_output()
@@ -95,7 +95,7 @@ loudness_stationary.plot()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load another wav file, and store it along with the first one.
 
-path_flute2_wav = download_flute_2_wav()[1]
+path_flute2_wav = download_flute_2_wav()
 wav_loader = LoadWav(path_flute2_wav)
 wav_loader.process()
 
@@ -129,7 +129,7 @@ loudness_stationary.plot()
 # Calculate ISO 532-1 loudness for a non-stationary sound
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load a new wav signal (non-stationary)
-path_accel_wav = download_accel_with_rpm_wav()[1]
+path_accel_wav = download_accel_with_rpm_wav()
 wav_loader = LoadWav(path_accel_wav)
 wav_loader.process()
 f_signal = wav_loader.get_output()[0]  # Field 0 only, because the RPM profile is useless here.

@@ -65,8 +65,11 @@ def _download_file(filename, directory=None, _test=False):  # pragma no cover
         local_path = _retrieve_file(url, filename, _test)
 
         # In case of CI/CD pipelines
-        docker_path = "C:\\data\\" + filename
-        return local_path, docker_path
+        port_in_env = os.environ.get("ANSRV_DPF_SOUND_PORT")
+        if port_in_env is not None:
+            return "C:\\data\\" + filename
+        else:
+            return local_path
 
     except Exception as e:  # Genering exception
         raise RuntimeError(

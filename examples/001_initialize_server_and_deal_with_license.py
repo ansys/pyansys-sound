@@ -72,7 +72,7 @@ print(f"Server information: {my_server.info}")
 # Execute a same simple PyDPF Sound operator (LoadWav) several times in a row,
 # and measure the execution time
 
-path_flute_wav = download_flute_wav()[1]
+path_flute_wav = download_flute_wav()
 
 for i in range(5):
     now = datetime.datetime.now()
