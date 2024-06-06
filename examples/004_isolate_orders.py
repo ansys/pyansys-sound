@@ -243,7 +243,7 @@ for file, fft_sz in zip(paths, fft_sizes):
     isolate_orders.fft_size = fft_sz
     isolate_orders.process()
 
-    # Writing the file in memory
+    # Write on the disk as a wav file
     out_name = os.path.basename(file)[:-4] + "_isolated_fft_size_" + str(fft_sz) + ".wav"
     path_to_write = parent_folder / out_name
     wav_writer.path_to_write = str(path_to_write)

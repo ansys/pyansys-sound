@@ -98,7 +98,11 @@ def download_flute_psd():
         Path on the docker container of flute_psd.txt
 
     """
-    return _download_file("flute_psd.txt", "pyansys-sound")
+    filename = "flute_psd.txt"
+    directory = "pyansys-sound"
+    url = _get_file_url(filename, directory)
+    local_path = _retrieve_file(url, filename, False)
+    return local_path
 
 
 def download_flute_wav():
@@ -107,9 +111,7 @@ def download_flute_wav():
     Returns
     -------
     str
-        Local path of flute.wav
-    str
-        Path on the docker container of flute.wav
+        Path of flute.wav
     """
     return _download_file("flute.wav", "pyansys-sound")
 
@@ -120,9 +122,7 @@ def download_flute_2_wav():
     Returns
     -------
     str
-        Local path of flute2.wav
-    str
-        Path on the docker container of flute2.wav
+        Path of flute2.wav
     """
     return _download_file("flute2.wav", "pyansys-sound")
 
@@ -133,9 +133,7 @@ def download_accel_with_rpm_wav():
     Returns
     -------
     str
-        Local path of accel_with_rpm.wav
-    str
-        Path on the docker container of accel_with_rpm.wav
+        Path of accel_with_rpm.wav
     """
     return _download_file("accel_with_rpm.wav", "pyansys-sound")
 
@@ -146,9 +144,7 @@ def download_accel_with_rpm_2_wav():
     Returns
     -------
     str
-        Local path of accel_with_rpm_2.wav
-    str
-        Path on the docker container of accel_with_rpm_2.wav
+        Path of accel_with_rpm_2.wav
     """
     return _download_file("accel_with_rpm_2.wav", "pyansys-sound")
 
@@ -159,22 +155,18 @@ def download_accel_with_rpm_3_wav():
     Returns
     -------
     str
-        Local path of accel_with_rpm_3.wav
-    str
-        Path on the docker container of accel_with_rpm_3.wav
+        Path of accel_with_rpm_3.wav
     """
     return _download_file("accel_with_rpm_3.wav", "pyansys-sound")
 
 
 def download_xtract_demo_signal_1_wav():
-    """Download accel_with_rpm_3.wav.
+    """Download xtract_demo_signal_1.wav.
 
     Returns
     -------
     str
-        Local path of xtract_demo_signal_1.wav
-    str
-        Path on the docker container of xtract_demo_signal_1.wav
+        Path of xtract_demo_signal_1.wav
     """
     return _download_file("xtract_demo_signal_1.wav", "pyansys-sound")
 
@@ -185,8 +177,6 @@ def download_xtract_demo_signal_2_wav():
     Returns
     -------
     str
-        Local path of xtract_demo_signal_2.wav
-    str
-        Path on the docker container of xtract_demo_signal_2.wav
+        Path of xtract_demo_signal_2.wav
     """
     return _download_file("xtract_demo_signal_2.wav", "pyansys-sound")
