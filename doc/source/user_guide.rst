@@ -24,10 +24,10 @@ You can start the server with the following code:
 
     my_server = connect_to_or_start_server()
 
-If the environment variable ``ANSRV_DPF_SOUND_PORT`` is set (default value should be ``6780``), PyAnsys Sound
-will attempt to connect to a server located in a Docker container.
+If the environment variable ``ANSRV_DPF_SOUND_PORT`` is set (default value should be ``6780``), PyAnsys Sound 
+attempts to connect to a server located in a Docker container.
 
-If the environment variable is **not** specified, PyAnsys Sound will try to start a local server.
+If the environment variable is **not** specified, PyAnsys Sound tries to start a local server.
 
 More information about local and remote DPF Servers: `getting started with DPF servers`_.
 
@@ -65,7 +65,7 @@ All the different classes and helpers are documented in the :doc:`api/index`.
 All classes have four methods in common:
 
 #. ``process()`` performs the operation for which the class is made. Must be called explicitly every time an input parameter is changed.
-#. ``plot()`` plots the output of the class. Depending on the nature of the output, the plot will be different.
+#. ``plot()`` plots the output of the class. Depending on the nature of the output, the plot may be different.
 #. ``get_output()`` returns the outputs as a DPF object (either a ``Field`` or a ``FieldsContainer``).
 #. ``get_output_as_nparray()`` returns the outputs as a numpy array.
 

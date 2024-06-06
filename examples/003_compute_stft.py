@@ -51,7 +51,8 @@ stft.process()
 stft.plot()
 
 # %%
-# Modify the STFT parameters using the setters of the Stft class, then display the new STFT colormap.
+# Modify the STFT parameters using the setters of the Stft class, 
+# then display the new STFT colormap.
 
 stft.fft_size = 4096
 stft.window_overlap = 0.95
