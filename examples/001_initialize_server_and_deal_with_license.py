@@ -27,7 +27,7 @@ here:
 # %%
 # Initial set up
 # ~~~~~~~~~~~~~~~
-# Here are the required python imports for this example
+# Here are the required python imports for this example:
 
 # Load Ansys & other libraries.
 import datetime
@@ -46,7 +46,7 @@ from ansys.sound.core.signal_utilities import LoadWav
 # Use a DPF server without a LicenseContextManager
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Initialize DPF server without using a LicenseContextManager
+# Initialize DPF server without using a LicenseContextManager.
 #
 # Note: when use_license_context=False, the license is checked out each time
 # you use a DPF Sound operator.
@@ -65,12 +65,12 @@ if has_local_server == True:
     print(f"Local server path (server variable): {my_server.ansys_path}")
 
 # %%
-# Display the information about the server you are currently using
+# Display the information about the server you are currently using.
 print(f"Server information: {my_server.info}")
 
 # %%
-# Execute a same simple PyDPF Sound operator (LoadWav) several times in a row,
-# and measure the execution time
+# Execute the same simple PyDPF Sound operator (LoadWav) several times in a row,
+# and measure the execution time.
 
 path_flute_wav = download_flute_wav()
 
@@ -88,7 +88,7 @@ for i in range(5):
     )
 
 # %%
-# Disconnect/shutdown the server and release the license increment
+# Disconnect/shutdown the server and release the license increment.
 print("Disconnecting from the server and releasing the license increment")
 my_server = None
 
@@ -96,7 +96,7 @@ my_server = None
 # Use a DPF server with a LicenseContextManager
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# New connection to a remote server or start of a local server,
+# New connection to a remote server or start a local server,
 # now using the LicenseContextManager.
 #
 # Note: the LicenseContextManager is a mechanism that checks out a license increment when entering
@@ -125,5 +125,5 @@ for i in range(5):
 # ~~~~~~~~~~~
 # You can notice that the execution time is much faster when you use a LicenseContextManager
 # (second case), compared to not using it (first case).
-# This is because - when not using a LicenseContactManager - the license is checked out
-# each time you use a DPF Sound operator
+# This is because, when not using a LicenseContactManager, the license is checked out
+# each time you use a DPF Sound operator.

@@ -5,7 +5,7 @@ Load / write wav files, resample and apply gain
 -----------------------------------------------
 
 This example shows how to load a wav file, modify its sampling frequency,
-amplify it and write the resulting wav file on the disk.
+amplify it and write the resulting wav file to the disk.
 It also shows how to access the corresponding data and display it using matplotlib.
 
 """
@@ -58,7 +58,7 @@ print(f"The new sampling frequency of the signal is {int(sf2)} Hz")
 # %%
 # Apply a gain to the signal
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Amplify the the resampled signal by 10 dB.
+# Amplify the resampled signal by 10 dB.
 gain = 10.0
 gain_applier = ApplyGain(fc_signal_resampled, gain=gain, gain_in_db=True)
 gain_applier.process()
@@ -96,7 +96,7 @@ plt.show()
 # %%
 # Write the signals as wav files
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Write the modified signal on the disk as a wav file
+# Write the modified signal to the disk as a wav file.
 output_path = path_flute_wav[:-4] + "_modified.wav"  # "[-4]" is to remove the ".wav" extension
 wav_writer = WriteWav(path_to_write=output_path, signal=fc_signal_modified, bit_depth="int16")
 wav_writer.process()

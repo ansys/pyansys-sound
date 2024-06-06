@@ -7,20 +7,20 @@ Calculate psychoacoustic indicators
 This example shows how to calculate psychoacoustic indicators.
 The following indicators are included:
 
-- **Loudness of stationary sounds** according to ISO 532-1;
-- **Loudness of time-varying sounds** according to ISO 532-1;
-- **Sharpness** according to Zwicker and Fastl, "Psychoacoustics: Facts and models", 1990;
+- **Loudness of stationary sounds** according to ISO 532-1
+- **Loudness of time-varying sounds** according to ISO 532-1
+- **Sharpness** according to Zwicker and Fastl, "Psychoacoustics: Facts and models", 1990
 - **Roughness** according to Daniel and Weber, "Psychoacoustical Roughness: Implementation of an
-  Optimized Model, 1997;
+  Optimized Model, 1997
 - **Fluctuation strength** according to Sontacchi, "Entwicklung eines Modulkonzeptes für die
-  psychoakustische Geräuschanalyse under MatLab Diplomarbeit", 1998.
+  psychoakustische Geräuschanalyse under MatLab Diplomarbeit", 1998
 
 The example shows how to:
 
-- import necessary packages,
-- calculate indicators on loaded wav files,
-- get calculation outputs,
-- plot some corresponding curves.
+- import necessary packages
+- calculate indicators on loaded wav files
+- get calculation outputs
+- plot some corresponding curves
 
 """
 
@@ -128,7 +128,7 @@ loudness_stationary.plot()
 # %%
 # Calculate ISO 532-1 loudness for a non-stationary sound
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load a new wav signal (non-stationary)
+# Load a new wav signal (non-stationary).
 path_accel_wav = download_accel_with_rpm_wav()
 wav_loader = LoadWav(path_accel_wav)
 wav_loader.process()
