@@ -271,6 +271,13 @@ def test_loudness_iso_532_1_time_varying_get_N5(dpf_sound_test_server):
     # compute
     time_varying_loudness_computer.process()
 
+    # Test errors
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=r"Specified channel index \(2\) does not exist.",
+    ):
+        N5 = time_varying_loudness_computer.get_N5_sone(channel_index=2)
+
     N5 = time_varying_loudness_computer.get_N5_sone()
     assert N5 == pytest.approx(45.12802505493164)
 
@@ -284,8 +291,16 @@ def test_loudness_iso_532_1_time_varying_get_N5_from_field(dpf_sound_test_server
 
     # set signal
     time_varying_loudness_computer.signal = fc[0]
+
     # compute
     time_varying_loudness_computer.process()
+
+    # Test errors
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=r"Specified channel index \(2\) does not exist.",
+    ):
+        N5 = time_varying_loudness_computer.get_N5_sone(channel_index=2)
 
     N5 = time_varying_loudness_computer.get_N5_sone()
     assert N5 == pytest.approx(45.12802505493164)

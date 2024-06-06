@@ -34,11 +34,13 @@ import datetime
 
 import ansys.dpf.core as dpf
 
-from ansys.sound.core.examples_helpers import get_absolute_path_for_flute_wav
+from ansys.sound.core.examples_helpers import download_flute_wav
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 
+# sphinx_gallery_start_ignore
 # sphinx_gallery_thumbnail_path = '_static/_image/example004_thumbnail.png'
+# sphinx_gallery_end_ignore
 
 # %%
 # Use a DPF server without a LicenseContextManager
@@ -70,7 +72,7 @@ print(f"Server information: {my_server.info}")
 # Execute a same simple PyDPF Sound operator (LoadWav) several times in a row,
 # and measure the execution time
 
-path_flute_wav = get_absolute_path_for_flute_wav()
+path_flute_wav = download_flute_wav()
 
 for i in range(5):
     now = datetime.datetime.now()

@@ -46,7 +46,7 @@ class WriteWav(SignalUtilitiesParent):
     def signal(self, signal: FieldsContainer):
         """Setter for the signal.
 
-        Sets the value of the signal to write in memory.
+        Sets the value of the signal to write on the disk.
         """
         self.__signal = signal
 
@@ -57,7 +57,7 @@ class WriteWav(SignalUtilitiesParent):
         Returns
         -------
         FieldsContainer
-                The signal that is to be written in memory as a FieldsContainer.
+                The signal that is to be written on the disk as a FieldsContainer.
         """
         return self.__signal
 
@@ -104,7 +104,7 @@ class WriteWav(SignalUtilitiesParent):
     def path_to_write(self, path_to_write: str):
         """Setter for the write path.
 
-        Sets the path for writing the signal in memory.
+        Sets the path for writing the signal on the disk.
         """
         self.__path_to_write = path_to_write
 
@@ -115,7 +115,7 @@ class WriteWav(SignalUtilitiesParent):
         Returns
         -------
         str
-                The path for writing the signal in memory.
+                The path for writing the signal on the disk.
         """
         return self.__path_to_write
 

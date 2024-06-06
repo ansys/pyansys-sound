@@ -14,22 +14,21 @@ It also shows how to compute the inverse-STFT from a STFT matrix and get a signa
 # ~~~~~~~~~~~~~~~
 # Setting up the analysis consists of loading Ansys libraries, connecting to the
 # DPF server, and retrieving the example files.
-#
-# Load Ansys libraries.
 
-from ansys.sound.core.examples_helpers import get_absolute_path_for_flute_wav
+# Load Ansys libraries.
+from ansys.sound.core.examples_helpers import download_flute_wav
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectrogram_processing import Istft, Stft
 
 # Connect to remote or start a local server
-connect_to_or_start_server(use_license_context=True)
+my_server = connect_to_or_start_server(use_license_context=True)
 
 # %%
 # Load a wav signal using LoadWav class
 
 # Returning the input data of the example file
-path_flute_wav = get_absolute_path_for_flute_wav()
+path_flute_wav = download_flute_wav()
 
 # Loading the wav file
 wav_loader = LoadWav(path_flute_wav)

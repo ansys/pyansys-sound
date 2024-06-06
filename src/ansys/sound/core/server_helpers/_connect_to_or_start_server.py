@@ -43,8 +43,8 @@ def connect_to_or_start_server(
 
     Returns
     -------
-    :
-        DPF server.
+    Any
+        server : server.ServerBase
     """
     # Collect the port to connect to the server
     port_in_env = os.environ.get("ANSRV_DPF_SOUND_PORT")

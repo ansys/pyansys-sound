@@ -9,5 +9,5 @@ def test_validate_dpf_sound_connection():
 
 
 def test_connect_to_or_start_server():
-    s = connect_to_or_start_server(port="6780", ip="127.0.0.1")
+    s = connect_to_or_start_server(port="6780", ip="127.0.0.1", use_license_context=True)
     print(s)

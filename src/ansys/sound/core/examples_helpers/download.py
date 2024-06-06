@@ -3,12 +3,11 @@ from functools import wraps
 import os
 import shutil
 import urllib.request
-import zipfile
 
 from ansys.sound.core.examples_helpers import EXAMPLES_PATH
 
 
-def check_directory_exist(directory):
+def check_directory_exist(directory):  # pragma no cover
     """Check the existence of a directory."""
 
     def wrap_function(func):
@@ -25,27 +24,20 @@ def check_directory_exist(directory):
     return wrap_function
 
 
-def get_ext(filename):
+def get_ext(filename):  # pragma no cover
     """Extract the extension of the filename."""
     ext = os.path.splitext(filename)[1].lower()
     return ext
 
 
-def delete_downloads():
+def delete_downloads():  # pragma no cover
     """Delete all downloaded examples to free space or update the files."""
     if os.path.exists(EXAMPLES_PATH):
         shutil.rmtree(EXAMPLES_PATH)
     return True
 
 
-@check_directory_exist(EXAMPLES_PATH)
-def _decompress(filename):
-    zip_ref = zipfile.ZipFile(filename, "r")
-    zip_ref.extractall(EXAMPLES_PATH)
-    return zip_ref.close()
-
-
-def _get_file_url(filename, directory=None):
+def _get_file_url(filename, directory=None):  # pragma no cover
     if directory:
         return (
             f"https://github.com/ansys/example-data/raw/master/{directory}/{filename}"  # noqa: E231
@@ -54,26 +46,31 @@ def _get_file_url(filename, directory=None):
 
 
 @check_directory_exist(EXAMPLES_PATH)
-def _retrieve_file(url, filename, _test=False):
+def _retrieve_file(url, filename, _test=False):  # pragma no cover
     # First check if file has already been downloaded
     local_path = os.path.join(EXAMPLES_PATH, os.path.basename(filename))
     local_path_no_zip = local_path.replace(".zip", "")
     if os.path.isfile(local_path_no_zip) or os.path.isdir(local_path_no_zip):
-        return local_path_no_zip, None
+        return local_path_no_zip
 
     # Perform download
     saved_file, resp = urllib.request.urlretrieve(url)
     shutil.move(saved_file, local_path)
-    if get_ext(local_path) in [".zip"]:
-        _decompress(local_path)
-        local_path = local_path[:-4]
-    return local_path, resp
+    return local_path
 
 
-def _download_file(filename, directory=None, _test=False):
+def _download_file(filename, directory=None, _test=False):  # pragma no cover
     url = _get_file_url(filename, directory)
     try:
-        return _retrieve_file(url, filename, _test)
+        local_path = _retrieve_file(url, filename, _test)
+
+        # In case of CI/CD pipelines
+        port_in_env = os.environ.get("ANSRV_DPF_SOUND_PORT")
+        if port_in_env is not None:
+            return "C:\\data\\" + filename
+        else:
+            return local_path
+
     except Exception as e:  # Genering exception
         raise RuntimeError(
             "For the reason mentioned below, retrieving the file from internet failed.\n"
@@ -91,7 +88,95 @@ def download_flute_psd():
     Examples
     --------
     >>> from ansys.sound.core.examples_helpers import download_flute_psd
-    >>> filename = print(download_flute_psd())
+    >>> filename = print(download_flute_psd()[0])
+
+    Returns
+    -------
+    str
+        Local path of flute_psd.txt
+    str
+        Path on the docker container of flute_psd.txt
 
     """
-    return _download_file("flute_psd.txt", "pyansys-sound")[0]
+    filename = "flute_psd.txt"
+    directory = "pyansys-sound"
+    url = _get_file_url(filename, directory)
+    local_path = _retrieve_file(url, filename, False)
+    return local_path
+
+
+def download_flute_wav():
+    """Download flute.wav.
+
+    Returns
+    -------
+    str
+        Path of flute.wav
+    """
+    return _download_file("flute.wav", "pyansys-sound")
+
+
+def download_flute_2_wav():
+    """Download flute2.wav.
+
+    Returns
+    -------
+    str
+        Path of flute2.wav
+    """
+    return _download_file("flute2.wav", "pyansys-sound")
+
+
+def download_accel_with_rpm_wav():
+    """Download accel_with_rpm.wav.
+
+    Returns
+    -------
+    str
+        Path of accel_with_rpm.wav
+    """
+    return _download_file("accel_with_rpm.wav", "pyansys-sound")
+
+
+def download_accel_with_rpm_2_wav():
+    """Download accel_with_rpm_2.wav.
+
+    Returns
+    -------
+    str
+        Path of accel_with_rpm_2.wav
+    """
+    return _download_file("accel_with_rpm_2.wav", "pyansys-sound")
+
+
+def download_accel_with_rpm_3_wav():
+    """Download accel_with_rpm_3.wav.
+
+    Returns
+    -------
+    str
+        Path of accel_with_rpm_3.wav
+    """
+    return _download_file("accel_with_rpm_3.wav", "pyansys-sound")
+
+
+def download_xtract_demo_signal_1_wav():
+    """Download xtract_demo_signal_1.wav.
+
+    Returns
+    -------
+    str
+        Path of xtract_demo_signal_1.wav
+    """
+    return _download_file("xtract_demo_signal_1.wav", "pyansys-sound")
+
+
+def download_xtract_demo_signal_2_wav():
+    """Download xtract_demo_signal_2.wav.
+
+    Returns
+    -------
+    str
+        Path of xtract_demo_signal_2.wav
+    """
+    return _download_file("xtract_demo_signal_2.wav", "pyansys-sound")

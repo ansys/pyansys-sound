@@ -29,17 +29,16 @@ The example shows how to:
 # ~~~~~~~~~~~~~~~
 # Setting up the analysis consists of loading Ansys libraries, connecting to the
 # DPF server, and retrieving the example files.
-#
-# Load Ansys libraries.
 
+# Load Ansys libraries.
 import os
 
 import numpy as np
 
 from ansys.sound.core.examples_helpers import (
-    get_absolute_path_for_accel_with_rpm_wav,
-    get_absolute_path_for_flute2_wav,
-    get_absolute_path_for_flute_wav,
+    download_accel_with_rpm_wav,
+    download_flute_2_wav,
+    download_flute_wav,
 )
 from ansys.sound.core.psychoacoustics import (
     FluctuationStrength,
@@ -66,7 +65,7 @@ server = connect_to_or_start_server()
 # Then calculate the loudness of this signal.
 
 # Load example data from wav files
-path_flute_wav = get_absolute_path_for_flute_wav()
+path_flute_wav = download_flute_wav()
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
 fc_signal = wav_loader.get_output()
@@ -96,7 +95,7 @@ loudness_stationary.plot()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load another wav file, and store it along with the first one.
 
-path_flute2_wav = get_absolute_path_for_flute2_wav()
+path_flute2_wav = download_flute_2_wav()
 wav_loader = LoadWav(path_flute2_wav)
 wav_loader.process()
 
@@ -130,7 +129,7 @@ loudness_stationary.plot()
 # Calculate ISO 532-1 loudness for a non-stationary sound
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load a new wav signal (non-stationary)
-path_accel_wav = get_absolute_path_for_accel_with_rpm_wav()
+path_accel_wav = download_accel_with_rpm_wav()
 wav_loader = LoadWav(path_accel_wav)
 wav_loader.process()
 f_signal = wav_loader.get_output()[0]  # Field 0 only, because the RPM profile is useless here.

@@ -7,6 +7,7 @@ PyAnsys Sound
 
    self
    getting_started
+   user_guide
    api/index
    examples/index
    contribute

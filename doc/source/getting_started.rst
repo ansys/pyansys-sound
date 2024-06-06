@@ -76,7 +76,7 @@ Getting the DPF server Docker image
 
 Follow the steps described in the DPF documentation in the `Run DPF Server in a docker container
 <https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#run-dpf-server-in-a-docker-container>`_ section.
-Make sure you also download the composites plugin (e.g ``ansys_dpf_sound_win_v2024.1.pre0.zip``).
+Make sure you also download the Sound plugin (e.g ``ansys_dpf_sound_win_v2024.1.pre0.zip``).
 After following the preceding steps, you should have a running DPF Docker container that listens to port 6780.
 
 
