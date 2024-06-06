@@ -51,7 +51,7 @@ stft.process()
 stft.plot()
 
 # %%
-# Modify the STFT parameters using the setters of the Stft class, 
+# Modify the STFT parameters using the setters of the Stft class,
 # then display the new STFT colormap.
 
 stft.fft_size = 4096

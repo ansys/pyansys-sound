@@ -24,7 +24,7 @@ You can start the server with the following code:
 
     my_server = connect_to_or_start_server()
 
-If the environment variable ``ANSRV_DPF_SOUND_PORT`` is set (default value should be ``6780``), PyAnsys Sound 
+If the environment variable ``ANSRV_DPF_SOUND_PORT`` is set (default value should be ``6780``), PyAnsys Sound
 attempts to connect to a server located in a Docker container.
 
 If the environment variable is **not** specified, PyAnsys Sound tries to start a local server.
