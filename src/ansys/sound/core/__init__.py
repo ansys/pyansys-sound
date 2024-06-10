@@ -20,9 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""
-PyAnsys Sound core package.
-"""
+"""PyAnsys Sound core package."""
 
 # Version
 # ------------------------------------------------------------------------------
