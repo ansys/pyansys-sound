@@ -1,4 +1,5 @@
 """Sphinx documentation configuration file."""
+
 from datetime import datetime
 import os
 
@@ -27,7 +28,7 @@ project = "ansys-sound-core"
 copyright = f"(c) {datetime.now().year} ANSYS, Inc. All rights reserved"
 author = "ANSYS, Inc."
 release = version = __version__
-cname = os.getenv("DOCUMENTATION_CNAME", "docs.pyansys.com")
+cname = os.getenv("DOCUMENTATION_CNAME", "sound.docs.pyansys.com")
 
 # Select desired logo, theme, and declare the html title
 html_logo = logo
