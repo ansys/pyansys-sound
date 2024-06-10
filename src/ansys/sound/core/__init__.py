@@ -1,7 +1,5 @@
 """
-pyansys-sound.
-
-Library
+PyAnsys Sound core package.
 """
 
 # Version
