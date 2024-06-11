@@ -57,10 +57,10 @@ Key features
 
 Here are some key features of PyAnsys Sounds:
 
-* :doc:`api/signal_utilities` : tools to read/write wav files in Ansys Sound SAS format, and do basic editing of audio signals.
-* :doc:`api/spectrogram_processing` : Time-Frequency/Time-Representation conversion tools, and Time-Frequency editing tools.
-* :doc:`api/psychoacoustics` : Psychoacoustic indicators computation, to measure perceived sound quality.
-* :doc:`api/xtract` : Separation of a signal in several components: tonal, transient and noise parts.
+* :doc:`api/ansys/sound/core/signal_utilities/index` : tools to read/write wav files in Ansys Sound SAS format, and do basic editing of audio signals.
+* :doc:`api/ansys/sound/core/spectrogram_processing/index` : Time-Frequency/Time-Representation conversion tools, and Time-Frequency editing tools.
+* :doc:`api/ansys/sound/core/psychoacoustics/index` : Psychoacoustic indicators computation, to measure perceived sound quality.
+* :doc:`api/ansys/sound/core/xtract/index` : Separation of a signal in several components: tonal, transient and noise parts.
 
 Not all the features of Ansys Sound SAS are available in PyAnsys Sound. Features are regularly added in new versions.
 

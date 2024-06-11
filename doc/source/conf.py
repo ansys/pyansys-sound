@@ -2,8 +2,9 @@
 
 from datetime import datetime
 import os
+from pathlib import Path
 
-from ansys_sphinx_theme import get_version_match
+from ansys_sphinx_theme import get_autoapi_templates_dir_relative_path, get_version_match
 from ansys_sphinx_theme import pyansys_logo_black as logo
 import numpy as np
 import pyvista
@@ -62,6 +63,7 @@ extensions = [
     "sphinx_gallery.gen_gallery",
     "sphinx_design",
     "pyvista.ext.viewer_directive",
+    "autoapi.extension",
 ]
 
 # Intersphinx mapping
@@ -82,6 +84,8 @@ intersphinx_mapping = {
 # numpydoc configuration
 numpydoc_show_class_members = False
 numpydoc_xref_param_type = True
+numpydoc_class_members_toctree = False
+autosectionlabel_prefix_document = True
 
 # Consider enabling numpydoc validation. See:
 # https://numpydoc.readthedocs.io/en/latest/validation.html#
@@ -147,6 +151,25 @@ source_suffix = ".rst"
 
 # The master toctree document.
 master_doc = "index"
+
+# Configuration for Sphinx autoapi
+autoapi_type = "python"
+autoapi_dirs = ["../../src/ansys/"]
+autoapi_root = "api"
+autoapi_options = [
+    "members",
+    "undoc-members",
+    "show-inheritance",
+    "show-module-summary",
+    "special-members",
+]
+autoapi_template_dir = get_autoapi_templates_dir_relative_path(Path(__file__))
+suppress_warnings = ["autoapi.python_import_resolution"]
+autoapi_python_use_implicit_namespaces = True
+autoapi_render_in_single_page = ["class", "enum", "exception"]
+autoapi_own_page_level = "class"
+autoapi_ignore = ["*_visitors*"]
+autoapi_keep_files = True
 
 # -- Options for LaTeX output ------------------------------------------------
 latex_elements = {}
