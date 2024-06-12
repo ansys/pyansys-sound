@@ -21,7 +21,7 @@ post-processing and analysis of sounds and vibrations in Python. This library is
 `Ansys DPF`_ and the DPF Sound plugin. It is a Python wrapper which implements classes on top
 of DPF Sound operators.
 
-For information demonstrating the behavior and usage of PyDPF Sound,
+For information demonstrating the behavior and usage of PyAnsys Sound,
 see the :doc:`examples/index` section, or navigate through the cards below.
 
 .. grid:: 1 1 2 2
