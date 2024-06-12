@@ -60,7 +60,7 @@ def test_xtract_denoiser_parameters_generate_noise_psd_from_white_noise_level(
     xtract_denoiser_parameters = XtractDenoiserParameters()
 
     noise_psd = xtract_denoiser_parameters.create_noise_psd_from_white_noise_level(
-        white_noise_level=(40.0), sampling_frequency=44100.0, window_length=50
+        white_noise_level=(40.0 + 94.0), sampling_frequency=44100.0, window_length=50
     )
 
     noise = noise_psd.data
