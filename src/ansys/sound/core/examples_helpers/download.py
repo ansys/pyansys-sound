@@ -24,6 +24,7 @@
 from functools import wraps
 import os
 import shutil
+
 import requests
 
 from ansys.sound.core.examples_helpers import EXAMPLES_PATH
@@ -77,7 +78,7 @@ def _retrieve_file(url, filename, _test=False):  # pragma no cover
 
     # Perform download
     try:
-        file_content = requests.get(url, timeout=10).text # 10 seconds
+        file_content = requests.get(url, timeout=10).text  # 10 seconds
     except requests.exceptions.Timeout:
         print("Timed out")
 
