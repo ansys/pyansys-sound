@@ -24,7 +24,7 @@ from ansys.dpf.core import Field
 import numpy as np
 import pytest
 
-from ansys.sound.core.pyansys_sound import PyAnsysSoundException
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.xtract.xtract_denoiser_parameters import XtractDenoiserParameters
 
