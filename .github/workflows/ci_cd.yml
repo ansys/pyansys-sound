@@ -19,9 +19,9 @@ env:
   PACKAGE_NAME: 'ansys-sound-core'
   DOCUMENTATION_CNAME: 'sound.docs.pyansys.com'
   ANSRV_DPF_SOUND_IMAGE: 'ghcr.io/ansys/ansys-sound'
-  ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG: ghcr.io/ansys/pydpf-sound/ansys-dpf-sound:latest # TO BE MODIFIED
+  ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG: ghcr.io/ansys/ansys-sound:latest # TO BE MODIFIED
   ANSRV_DPF_SOUND_PORT: 6780
-  DPF_SOUND_CONT_NAME: ansys-dpf-sound
+  DPF_SOUND_CONT_NAME: ansys-sound-core
 
 jobs:
 
