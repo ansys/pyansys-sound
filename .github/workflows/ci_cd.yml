@@ -18,8 +18,8 @@ env:
   MAIN_PYTHON_VERSION: '3.12'
   PACKAGE_NAME: 'ansys-sound-core'
   DOCUMENTATION_CNAME: 'sound.docs.pyansys.com'
-  ANSRV_DPF_SOUND_IMAGE: 'ghcr.io/ansys-internal/pyansys-sound'
-  ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG: ghcr.io/ansys-internal/pydpf-sound/ansys-dpf-sound:latest # TO BE MODIFIED
+  ANSRV_DPF_SOUND_IMAGE: 'ghcr.io/ansys/pyansys-sound'
+  ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG: ghcr.io/ansys/pydpf-sound/ansys-dpf-sound:latest # TO BE MODIFIED
   ANSRV_DPF_SOUND_PORT: 6780
   DPF_SOUND_CONT_NAME: ansys-dpf-sound
 

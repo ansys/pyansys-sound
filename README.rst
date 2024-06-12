@@ -15,12 +15,12 @@ PyAnsys Sound
    :target: https://pypi.org/project/ansys-sound-core
    :alt: PyPI
 
-.. |codecov| image:: https://codecov.io/gh/ansys-internal/pyansys-sound/branch/main/graph/badge.svg
-   :target: https://codecov.io/gh/ansys-internal/pyansys-sound/
+.. |codecov| image:: https://codecov.io/gh/ansys/pyansys-sound/branch/main/graph/badge.svg
+   :target: https://codecov.io/gh/ansys/pyansys-sound/
    :alt: Codecov
 
-.. |GH-CI| image:: https://github.com/ansys-internal/pyansys-sound/actions/workflows/ci_cd.yml/badge.svg
-   :target: https://github.com/ansys-internal/pyansys-sound/actions/workflows/ci_cd.yml
+.. |GH-CI| image:: https://github.com/ansys/pyansys-sound/actions/workflows/ci_cd.yml/badge.svg
+   :target: https://github.com/ansys/pyansys-sound/actions/workflows/ci_cd.yml
    :alt: GH-CI
 
 .. |MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
@@ -101,7 +101,7 @@ server is started.
 
     .. code:: bash
 
-        docker pull ghcr.io/ansys/pydpf-sound:latest
+        docker pull ghcr.io/ansys/ansys-sound:latest
         pytest .
 
 
@@ -122,7 +122,7 @@ Ansys internal only: Build the docs with the latest container from Github:
 .. code:: powershell
 
     docker pull ghcr.io/ansys/ansys-dpf-sound:latest
-    docker run -d -p 6780:50052 -e ANSYSLMD_LICENSE_FILE=1055@mylicserver -e ANSYS_DPF_ACCEPT_LA=Y ghcr.io/ansys/pydpf-sound:latest
+    docker run -d -p 6780:50052 -e ANSYSLMD_LICENSE_FILE=1055@mylicserver -e ANSYS_DPF_ACCEPT_LA=Y ghcr.io/ansys/ansys-sound:latest
     docker run -d -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@mylicserver" -v $env:LOCALAPPDATA\Ansys\ansys_sound_core\examples:C:\data  -p 6780:50052 ghcr.io/ansys/ansys-dpf-sound:latest
     .\doc\make.bat html
 
