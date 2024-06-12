@@ -97,7 +97,7 @@ server is started.
 
         pytest .
 
-#.  Run tests with a Docker container from Github (Ansys Internal only):
+#.  Run tests with a Docker container from Github:
 
     .. code:: bash
 
@@ -117,7 +117,7 @@ On Windows, build the documentation with:
 
     .\doc\make.bat html
 
-Ansys internal only: Build the docs with the latest container from Github:
+You can use the latest container from Github to build it with the following command:
 
 .. code:: powershell
 
