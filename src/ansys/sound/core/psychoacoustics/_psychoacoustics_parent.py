@@ -77,7 +77,7 @@ class PsychoacousticsParent(PyAnsysSound):
         """Check whether a specified signal channel index is available or not.
 
         Parameters
-        ----------
+        -------
         channel_index: int
             Index of the signal channel to check.
 
