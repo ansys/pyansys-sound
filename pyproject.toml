@@ -21,7 +21,10 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: Windows",
 ]
-dependencies = ["ansys-dpf-core>=0.9.0,<1", "matplotlib>=3.8.2,<4"]
+dependencies = [
+    "ansys-dpf-core>=0.9.0,<1",
+    "matplotlib>=3.8.2,<4",
+]
 
 [project.optional-dependencies]
 tests = [
@@ -77,8 +80,8 @@ filename = "CHANGELOG.md"
 start_string = "<!-- towncrier release notes start -->\n"
 underlines = ["", "", ""]
 template = "doc/changelog.d/changelog_template.jinja"
-title_format = "## [{version}](https://github.com/ansys/pyansys-geometry/releases/tag/v{version}) - {project_date}"
-issue_format = "[#{issue}](https://github.com/ansys/pyansys-geometry/pull/{issue})"
+title_format = "## [{version}](https://github.com/ansys/pyansys-sound/releases/tag/v{version}) - {project_date}"
+issue_format = "[#{issue}](https://github.com/ansys/pyansys-sound/pull/{issue})"
 
 [[tool.towncrier.type]]
 directory = "added"
