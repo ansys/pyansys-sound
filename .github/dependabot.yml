@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: "pip" # See documentation for possible values
+    directory: "/" # Location of package manifests
+    insecure-external-code-execution: allow
+    schedule:
+      interval: "weekly"
+    labels:
+      - "maintenance"
+      - "dependencies"
+    commit-message:
+      prefix: "maint"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "maintenance"
+    commit-message:
+      prefix: "maint"
+    groups:
+       actions:
+          patterns:
+            - "*"
