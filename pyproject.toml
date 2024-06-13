@@ -78,8 +78,8 @@ filename = "CHANGELOG.md"
 start_string = "<!-- towncrier release notes start -->\n"
 underlines = ["", "", ""]
 template = "doc/changelog.d/changelog_template.jinja"
-title_format = "## [{version}](https://github.com/ansys/pyansys-geometry/releases/tag/v{version}) - {project_date}"
-issue_format = "[#{issue}](https://github.com/ansys/pyansys-geometry/pull/{issue})"
+title_format = "## [{version}](https://github.com/ansys/pyansys-sound/releases/tag/v{version}) - {project_date}"
+issue_format = "[#{issue}](https://github.com/ansys/pyansys-sound/pull/{issue})"
 
 [[tool.towncrier.type]]
 directory = "added"
