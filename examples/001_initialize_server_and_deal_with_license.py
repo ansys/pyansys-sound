@@ -91,7 +91,7 @@ if has_local_server == True:
 print(f"Server information: {my_server.info}")
 
 # %%
-# Execute the same simple PyDPF Sound operator (LoadWav) several times in a row,
+# Execute the same simple PyAnsys Sound operator (LoadWav) several times in a row,
 # and measure the execution time.
 
 path_flute_wav = download_flute_wav()
