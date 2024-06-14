@@ -28,8 +28,8 @@ from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 from numpy import typing as npt
 
-from . import SpectrogramProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ._spectrogram_processing_parent import SpectrogramProcessingParent
 
 
 class IsolateOrders(SpectrogramProcessingParent):

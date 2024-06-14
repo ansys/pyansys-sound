@@ -43,14 +43,6 @@ from ._get_example_files import (
     get_absolute_path_for_xtract_demo_signal_1_wav,
     get_absolute_path_for_xtract_demo_signal_2_wav,
 )
-
-# Setup data directory
-USER_DATA_PATH = platformdirs.user_data_dir(appname="ansys_sound_core", appauthor="Ansys")
-if not os.path.exists(USER_DATA_PATH):  # pragma: no cover
-    os.makedirs(USER_DATA_PATH)
-
-EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
-
 from .download import (
     download_accel_with_rpm_2_wav,
     download_accel_with_rpm_3_wav,

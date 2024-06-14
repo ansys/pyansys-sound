@@ -28,7 +28,7 @@ import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.signal_utilities import LoadWav
-from ansys.sound.core.xtract.xtract import Xtract
+from ansys.sound.core.xtract.xtract_class import Xtract
 from ansys.sound.core.xtract.xtract_denoiser_parameters import XtractDenoiserParameters
 from ansys.sound.core.xtract.xtract_tonal_parameters import XtractTonalParameters
 from ansys.sound.core.xtract.xtract_transient_parameters import XtractTransientParameters

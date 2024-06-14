@@ -27,8 +27,8 @@ from ansys.dpf.core import Field, FieldsContainer, Operator
 import numpy as np
 from numpy import typing as npt
 
-from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ._psychoacoustics_parent import PsychoacousticsParent
 
 
 class Sharpness(PsychoacousticsParent):

@@ -1,15 +1,11 @@
 API reference
 =============
 
-This section describes the public classes, methods, and attributes of the PyAnsys Sound API.
-
-.. module:: ansys.sound.core
+This section describes ansys-sound-core endpoints, their capabilities, and how
+to interact with them programmatically.
 
 .. toctree::
-    :maxdepth: 2
+   :titlesonly:
+   :maxdepth: 3
 
-    signal_utilities
-    spectrogram_processing
-    psychoacoustics
-    xtract
-    helpers
+   <span class="nf nf-md-package"></span> ansys.sound.core</api/ansys/sound/core/index>

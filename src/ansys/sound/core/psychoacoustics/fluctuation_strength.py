@@ -28,8 +28,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from numpy import typing as npt
 
-from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ._psychoacoustics_parent import PsychoacousticsParent
 
 TOTAL_FS_ID = "total"
 SPECIFIC_FS_ID = "specific"

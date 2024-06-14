@@ -2,9 +2,13 @@
 
 from datetime import datetime
 import os
+from pathlib import Path
 
-from ansys_sphinx_theme import get_version_match
-from ansys_sphinx_theme import pyansys_logo_black as logo
+from ansys_sphinx_theme import (
+    get_autoapi_templates_dir_relative_path,
+    get_version_match,
+    pyansys_logo_black,
+)
 import numpy as np
 import pyvista
 from pyvista.plotting.utilities.sphinx_gallery import DynamicScraper
@@ -31,7 +35,7 @@ release = version = __version__
 cname = os.getenv("DOCUMENTATION_CNAME", "sound.docs.pyansys.com")
 
 # Select desired logo, theme, and declare the html title
-html_logo = logo
+html_logo = pyansys_logo_black
 html_theme = "ansys_sphinx_theme"
 html_short_title = html_title = "PyAnsys Sound"
 
@@ -48,12 +52,14 @@ html_theme_options = {
         "version_match": get_version_match(__version__),
     },
     "check_switcher": False,
+    "ansys_sphinx_theme_autoapi": {
+        "project": project,
+    },
 }
 
 # Sphinx extensions
 extensions = [
-    "sphinx.ext.autodoc",
-    "sphinx.ext.autosummary",
+    "ansys_sphinx_theme.extension.autoapi",
     "numpydoc",
     "sphinx.ext.intersphinx",
     "sphinx_copybutton",
@@ -62,6 +68,7 @@ extensions = [
     "sphinx_gallery.gen_gallery",
     "sphinx_design",
     "pyvista.ext.viewer_directive",
+    "sphinx_jinja",
 ]
 
 # Intersphinx mapping

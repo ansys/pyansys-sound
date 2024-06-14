@@ -29,8 +29,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from numpy import typing as npt
 
-from . import SpectrogramProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ._spectrogram_processing_parent import SpectrogramProcessingParent
 
 
 class Istft(SpectrogramProcessingParent):

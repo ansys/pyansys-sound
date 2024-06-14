@@ -30,8 +30,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from numpy import typing as npt
 
-from . import XtractDenoiserParameters, XtractParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ._xtract_parent import XtractDenoiserParameters, XtractParent
 
 
 class XtractDenoiser(XtractParent):

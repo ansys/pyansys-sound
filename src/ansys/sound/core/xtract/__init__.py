@@ -33,7 +33,7 @@ from .xtract_transient_parameters import XtractTransientParameters
 from .xtract_transient import XtractTransient  # isort:skip
 from .xtract_tonal import XtractTonal  # isort:skip
 from .xtract_denoiser import XtractDenoiser  # isort:skip
-from .xtract import Xtract  # isort:skip
+from .xtract_class import Xtract  # isort:skip
 
 
 __all__ = (
