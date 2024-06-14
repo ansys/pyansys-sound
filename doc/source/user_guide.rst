@@ -26,7 +26,7 @@ attempts to connect to a server located in a Docker container. The default port 
 
 If this environment variable is not specified, PyAnsys Sound tries to start a local server.
 
-For more information on local and remote DPF servers, see `Install DPF Server`_ in the DPF-Core documentation.
+For more information on local and remote DPF servers, see `Install DPF Server`_ in the PyDPF-Core documentation.
 
 Load a WAV signal
 -----------------

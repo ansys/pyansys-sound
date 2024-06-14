@@ -38,8 +38,8 @@ LicenseContextManager versus when you use it.
 
 **Prerequisites**
 
-Ensure that you have installed DPF-Core and DPF Sound according to procedures in
-the DPF-Core documentation:
+Ensure that you have installed PyDPF-Core and DPF Sound according to procedures in
+the PyDPF-Core documentation:
 
 - If you have installed the latest Ansys release, see `Install using pip
   <https://dpf.docs.pyansys.com/version/stable/getting_started/install.html#installation>`_.

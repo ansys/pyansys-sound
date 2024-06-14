@@ -7,7 +7,9 @@ To see which ``ansys-sound-core`` version corresponds to which Ansys version, se
 Installation
 ^^^^^^^^^^^^
 
-This sections explains how to install PyAnsys Sound and its prerequisites correctly.
+This sections explains how to install PyAnsys Sound and its prerequisites in developer mode. If you are
+interested in contributing to PyAnsys Sound, see :ref:`ref_contribute` for information on installing
+in developer mode.
 
 Install Ansys DPF Server and DPF Sound
 """"""""""""""""""""""""""""""""""""""
