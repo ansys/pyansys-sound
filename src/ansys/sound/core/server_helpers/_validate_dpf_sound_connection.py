@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Test if DPF Sound is available within the docker container used for tests on GitHub."""
+"""Test if DPF Sound is available within the Docker container used for tests on GitHub."""
 
 import os
 

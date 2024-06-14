@@ -40,17 +40,17 @@ class ApplyGain(SignalUtilitiesParent):
     def __init__(
         self, signal: Field | FieldsContainer = None, gain: float = 0.0, gain_in_db: bool = True
     ):
-        """Create an apply gain class.
+        """Create an ``ApplyGain`` instance.
 
         Parameters
         ----------
         signal:
-            Signals on which to apply gain as a DPF Field or FieldsContainer.
-        gain:
+            Signals to apply gain on as a DPF field or fields cContainer.
+        gain: float, default: 0.0
             Gain value in decibels (dB) or linear unit. By default, gain is specified in decibels.
-        gain:
-            If value is true, the gain is specified in dB.
-            If value is false, the gain is in a linear unit.
+            However, you can use the next parameter to change to a linear unit.
+        gain_in_db: bool, default: True
+            Whether gain is in dB. When ``False``, gain is in a linear unit.
         """
         super().__init__()
         self.signal = signal
@@ -60,7 +60,7 @@ class ApplyGain(SignalUtilitiesParent):
 
     @property
     def signal(self):
-        """Signal property."""
+        """Signal."""
         return self.__signal  # pragma: no cover
 
     @signal.setter
@@ -75,23 +75,23 @@ class ApplyGain(SignalUtilitiesParent):
         Returns
         -------
         FieldsContainer | Field
-                The signal as a Field or a FieldsContainer
+            Signal as a DPF field or fields container.
         """
         return self.__signal
 
     @property
     def gain(self):
-        """Gain property."""
+        """Gain."""
         return self.__gain  # pragma: no cover
 
     @gain.setter
     def gain(self, new_gain: float):
-        """Set the new gain.
+        """Set a new gain value.
 
         Parameters
         ----------
         new_gain:
-            New gain.
+            New gain value.
         """
         self.__gain = new_gain
 
@@ -102,50 +102,51 @@ class ApplyGain(SignalUtilitiesParent):
         Returns
         -------
         float
-                Gain value.
+            Gain value.
         """
         return self.__gain
 
     @property
     def gain_in_db(self):
-        """Gain in dB property."""
+        """Gain in decibels (dB)."""
         return self.__gain_in_db  # pragma: no cover
 
     @gain_in_db.setter
     def gain_in_db(self, new_gain_in_db: bool):
-        """Set the new gain_in_db value.
+        """Set a new value for gain in decibels (dB).
 
         Parameters
         ----------
         new_gain_in_db:
-            True to set the gain in dB, false otherwise.
+            Whether to set the new gain in decibels(dB). When ``False``, gain is
+            set in a linear unit.
         """
         if type(new_gain_in_db) is not bool:
             raise PyAnsysSoundException(
-                "new_gain_in_db must be a boolean value, either True or False."
+                "'new_gain_in_db' must be a Boolean value. Specify 'True' or 'False'."
             )
 
         self.__gain_in_db = new_gain_in_db
 
     @gain_in_db.getter
     def gain_in_db(self) -> bool:
-        """Get the gain in dB.
+        """Flag indicating if the gain is in decibels (dB).
 
         Returns
         -------
         bool
-                Boolean value that indicates if the gain is in dB.
+            ``True`` if gain is in decibels, ``False`` if it is in a linear unit.
         """
         return self.__gain_in_db
 
     def process(self):
         """Apply gain to the signal.
 
-        Calls the appropriate DPF Sound operator to apply gain to the signal.
+        This method calls the appropriate DPF Sound operator to apply gain to the signal.
         """
         if self.signal == None:
             raise PyAnsysSoundException(
-                "No signal on which to apply gain. Use ApplyGain.set_signal()."
+                "No signal to apply gain on. Use the 'ApplyGain.set_signal()' method."
             )
 
         self.__operator.connect(0, self.signal)
@@ -162,28 +163,30 @@ class ApplyGain(SignalUtilitiesParent):
             self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> FieldsContainer | Field:
-        """Return the signal with a gain as a fields container.
+        """Get the signal with a gain as a DPF fields container.
 
         Returns
         -------
         FieldsContainer
-                Signal with applied gain as a FieldContainer.
+            Signal with an applied gain as a DPF fields container.
         """
         if self._output == None:
             # Computing output if needed
             warnings.warn(
-                PyAnsysSoundWarning("Output has not been yet processed, use ApplyGain.process().")
+                PyAnsysSoundWarning(
+                    "Output is not processed yet. Use the 'ApplyGain.process()' method."
+                )
             )
 
         return self._output
 
     def get_output_as_nparray(self) -> npt.ArrayLike:
-        """Return the signal with a gain as a numpy array.
+        """Get the signal with a gain as a NumPy array.
 
         Returns
         -------
         np.array
-                Signal with applied gain as a numpy array.
+            Signal with an applied gain as a NumPy array.
         """
         output = self.get_output()
 

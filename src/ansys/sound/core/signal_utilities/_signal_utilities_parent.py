@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Signal Utilities."""
+"""Signal utilities."""
 from ansys.dpf.core import Field
 import matplotlib.pyplot as plt
 
@@ -29,9 +29,9 @@ from ..pyansys_sound import PyAnsysSound
 
 class SignalUtilitiesParent(PyAnsysSound):
     """
-    Abstract mother class for signal utilities.
+    Provides the abstract base class for signal utilities.
 
-    This is the mother class of all signal utilities classes, should not be used as is.
+    This is the base class of all signal utilities classes and should not be used as is.
     """
 
     def __init__(self):

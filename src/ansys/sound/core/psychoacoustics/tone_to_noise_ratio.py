@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Compute ECMA 418-1 / ISO 7779 tone-to-noise ratio (TNR)."""
+"""Computes ECMA 418-1/ISO 7779 tone-to-noise ratio (TNR)."""
 from math import log10
 import warnings
 
@@ -34,35 +34,36 @@ from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class ToneToNoiseRatio(PsychoacousticsParent):
-    """ECMA 418-1 / ISO 7779 tone-to-noise ratio (TNR).
+    """Computes ECMA 418-1/ISO 7779 tone-to-noise ratio (TNR).
 
-    This class computes the tone-to-noise ratio (TNR) on a PSD (Power Spectral Density)
-    following standards ECMA 418-1 and ISO 7779.
+    This class computes the TNR on a power spectral density (PSD)
+    following the ECMA 418-1 and ISO 7779 standards.
     """
 
     def __init__(self, psd: Field = None, frequency_list: list = None):
-        """Create a ToneToNoiseRatio object.
+        """Create a ``ToneToNoiseRatio`` object.
 
         Parameters
         ----------
         psd: Field
-            Power Spectral Density (PSD) of the signal on which to compute TNR, as a DPF Field.
-            The PSD Field has the following characteristics:
+            PSD of the signal to compute TNR on as a DPF field.
+            The PSD field has the following characteristics:
+
             - num_entities = 1
             - location = "TimeFreq_sets"
-            - data: vector of amplitude values in unit^2/Hz;
-            - time_freq_support: vector of regularly spaced frequencies in Hz associated to
-            amplitude values (from 0 Hz to the maximum frequency)
-            - unit = "<unit>^2/Hz" (where <unit> is Pa for example).
-            You can use the function ansys.dpf.core.fields_factory.create_scalar_field()
+            - data: Vector of amplitude values in unit^2/Hz
+            - time_freq_support: Vector of regularly spaced frequencies in Hz associated with
+              amplitude values (from 0 Hz to the maximum frequency)
+            - unit = "<unit>^2/Hz" (where <unit> is Pa for example)
+
+            You can use the ``ansys.dpf.core.fields_factory.create_scalar_field()`` function
             to create the field.
 
-        frequency_list: (optional) list
+        frequency_list: list, default: None
             List of the frequencies in Hz of the tones (peaks in the spectrum) for which
-            to calculate the TNR.
-            If this input is empty (not specified), a peak detection method is applied to
-            automatically find the tones in the input spectrum. Then the TNR is calculated
-            for each detected tone.
+            to calculate the TNR. The default is ``None``, in which case a peak detection
+            method is applied to automatically find the tones in the input spectrum. Then,
+            the TNR is calculated for each detected tone.
         """
         super().__init__()
         self.psd = psd  # uses the setter
@@ -71,7 +72,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
     @property
     def psd(self):
-        """PSD property."""
+        """Power spectral density."""
         return self.__psd  # pragma: no cover
 
     @psd.setter
@@ -81,15 +82,17 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         Parameters
         -------
         psd: Field
-            Power Spectral Density (PSD) of the signal on which to compute TNR, as a DPF Field.
-            The PSD Field has the following characteristics:
+            PSD of the signal to compute TNR on as a DPF field.
+            The PSD field has the following characteristics:
+
             - num_entities = 1
             - location = "TimeFreq_sets"
-            - data: vector of amplitude values in unit^2/Hz;
-            - time_freq_support: vector of regularly spaced frequencies in Hz associated to
-            amplitude values (from 0 Hz to the maximum frequency)
-            - unit = "<unit>^2/Hz" (where <unit> is Pa for example).
-            You can use the function ansys.dpf.core.fields_factory.create_scalar_field()
+            - data: vector of amplitude values in unit^2/Hz
+            - time_freq_support: Vector of regularly spaced frequencies in Hz associated with
+              amplitude values (from 0 Hz to the maximum frequency)
+            - unit = "<unit>^2/Hz" (where <unit> is Pa for example)
+
+            You can use the ``ansys.dpf.core.fields_factory.create_scalar_field()`` function
             to create the field.
         """
         self.__psd = psd
@@ -101,49 +104,50 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         Returns
         -------
         Field
-            Power Spectral Density (PSD) of the signal on which to compute TNR, as a DPF Field.
+            PSD of the signal to compute TNR onas a DPF field.
         """
         return self.__psd
 
     @property
     def frequency_list(self):
-        """frequency_list property."""
+        """Frequency list."""
         return self.__frequency_list  # pragma: no cover
 
     @frequency_list.setter
     def frequency_list(self, frequency_list: list):
-        """Set the frequency_list.
+        """Set the frequency list.
 
         Parameters
         -------
         frequency_list: list
-            List of the frequencies in Hz of the tones (peaks in the spectrum) for which
-            to calculate the TNR.
-            If this input is empty (not specified), a peak detection method is applied to
-            automatically find the tones in the input spectrum. Then the TNR is calculated
-            for each detected tone.
+            List of the frequencies in Hz of the tones (peaks in the spectrum)
+            to calculate the TNR on. If this input is empty (not specified), a peak
+            detection method is applied to automatically find the tones in the input
+            spectrum. Then, the TNR is calculated for each detected tone.
         """
         self.__frequency_list = frequency_list
 
     @frequency_list.getter
     def frequency_list(self) -> list:
-        """Get the frequency_list.
+        """Get the frequency list.
 
         Returns
         -------
         list
-            List of the frequencies in Hz of the tones (peaks in the spectrum) for which
-            to calculate the TNR.
+            List of the frequencies in Hz of the tones (peaks in the spectrum)
+            to calculate TNR for.
         """
         return self.__frequency_list
 
     def process(self):
         """Compute TNR.
 
-        Calls the appropriate DPF Sound operator to compute the TNR on the PSD.
+        This method calls the appropriate DPF Sound operator to compute the TNR on the PSD.
         """
         if self.__psd == None:
-            raise PyAnsysSoundException("No PSD for TNR computation. Use ToneToNoiseRatio.psd.")
+            raise PyAnsysSoundException(
+                "No PSD found for TNR computation. Use 'ToneToNoiseRatio.psd'."
+            )
 
         self.__operator.connect(0, self.psd)
 
@@ -160,35 +164,43 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         self._output = self.__operator.get_output(0, "generic_data_container")
 
     def get_output(self) -> GenericDataContainer:
-        """Return tone-to-noise ratio data in a tuple of GenericDataContainer.
+        """Get TBR data in a tuple of a ``GenericDataContainer`` object.
 
         Returns
         -------
         GenericDataContainer
-            TNR details.
+            TNR data.
         """
         if self._output == None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output has not been processed yet, use ToneToNoiseRatio.process()."
+                    "Output is not processed yet. Use the \
+                        'ToneToNoiseRatio.process()' method."
                 )
             )
 
         return self._output
 
     def get_output_as_nparray(self) -> tuple[npt.ArrayLike] | None:
-        """Return TNR data as a tuple of numpy array.
+        """Get TNR data as a tuple of a NumPy array.
 
         Returns
         -------
+        tuple
             First element is the vector of peaks' frequencies in Hz.
+
             Second element is the vector of peaks' TNR values in dB.
+
             Third element is the vector of peaks' level values in dBSPL.
-            Fourth element is the vector of peaks' lower frequency limits, in Hz.
-            Fifth element is the vector of peaks' higher frequency limits, in Hz.
+
+            Fourth element is the vector of peaks' lower frequency limits in Hz.
+
+            Fifth element is the vector of peaks' higher frequency limits in Hz.
+
             Sixth element is the maximum TNR value, in dB.
 
-        Note: elements 1 to 5 are vectors of the same length. The 6th element is a float.
+            Note: The first five elements are vectors of the same length. The sixth
+            element is a float.
         """
         tnr_container = self.get_output()
         if tnr_container == None:
@@ -204,7 +216,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         )
 
     def get_nb_tones(self) -> int:
-        """Return the number of tones.
+        """Get the number of tones.
 
         Returns
         -------
@@ -213,18 +225,18 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         """
         if self.get_output() == None:
             raise PyAnsysSoundException(
-                "Output has not been processed yet, use ToneToNoiseRatio.process()."
+                "Output is not processed yet. Use the 'ToneToNoiseRatio.process()' method."
             )
 
         return len(self.get_output_as_nparray()[0])
 
     def get_peaks_frequencies(self) -> npt.ArrayLike:
-        """Return the vector of peaks' frequencies.
+        """Get the vector of the peaks' frequencies.
 
         Returns
         -------
         numpy.ndarray
-            Vector of peaks' frequencies in Hz.
+            Vector of the peaks' frequencies in Hz.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -232,12 +244,12 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         return self.get_output_as_nparray()[0]
 
     def get_TNR_values(self) -> npt.ArrayLike:
-        """Return the vector of peaks' TNR values.
+        """Get the vector of the peaks' TNR values.
 
         Returns
         -------
         numpy.ndarray
-            Vector of peaks' TNR values in dB.
+            Vector of the peaks' TNR values in dB.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -245,12 +257,12 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         return self.get_output_as_nparray()[1]
 
     def get_peaks_levels(self) -> npt.ArrayLike:
-        """Return the vector of peaks' level values.
+        """Get the vector of the peaks' level values.
 
         Returns
         -------
         numpy.ndarray
-            Vector of peaks' level values in dBSPL.
+            Vector of the peaks' level values in dBSPL.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -258,12 +270,12 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         return self.get_output_as_nparray()[2]
 
     def get_peaks_low_frequencies(self) -> npt.ArrayLike:
-        """Return the vector of peaks' lower frequency limits.
+        """Get the vector of the peaks' lower-frequency limits.
 
         Returns
         -------
         numpy.ndarray
-            Vector of eaks' lower frequency limits in Hz.
+            Vector of the peaks' lower-frequency limits in Hz.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -271,12 +283,12 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         return self.get_output_as_nparray()[3]
 
     def get_peaks_high_frequencies(self) -> npt.ArrayLike:
-        """Return the vector of peaks' higher frequency limits.
+        """Get the vector of the peaks' higher-frequency limits.
 
         Returns
         -------
         numpy.ndarray
-            Vector of peaks' higher frequency limits in Hz.
+            Vector of the peaks' higher-frequency limits in Hz.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -284,7 +296,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         return self.get_output_as_nparray()[4]
 
     def get_max_TNR_value(self) -> float:
-        """Return the maximum TNR value.
+        """Get the maximum TNR value.
 
         Returns
         -------
@@ -297,7 +309,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         return self.get_output_as_nparray()[5]
 
     def get_single_tone_info(self, tone_index: int) -> tuple[float]:
-        """Return TNR details for a given tone.
+        """Get TNR information for a tone.
 
         Parameters
         ----------
@@ -308,18 +320,22 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         -------
         tuple[float]
             First element is the peak's frequency in Hz.
+
             Second element is the TNR value in dB.
+
             Third element is the peak's level value in dBSPL.
+
             Fourth element is the peak's lower frequency limit in Hz.
+
             Fifth element is the peak's higher frequency limit in Hz.
         """
         nb_tones = self.get_nb_tones()
         if nb_tones == 0:
-            raise PyAnsysSoundException("No peak detected.")
+            raise PyAnsysSoundException("No peak is detected.")
 
         if not (0 <= tone_index < nb_tones):
             raise PyAnsysSoundException(
-                f"Out of bound index. tone_index must be between 0 and {nb_tones - 1}."
+                f"Tone index is out of bound. It must be between 0 and {nb_tones - 1}."
             )
 
         return (
@@ -331,17 +347,17 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         )
 
     def get_reference_curve(self) -> npt.ArrayLike:
-        """Return reference curve on which to compare TNR.
+        """Get the reference to compare TNR with.
 
         Returns
         -------
         numpy.ndarray
-            Reference curve with which to compare TNR, as defined in standards
-            ECMA 418-1 and ISO 7779.
+            Reference curve to compare TNR with as defined in the
+            ECMA 418-1 and ISO 7779 stndards.
             If TNR is higher, then the tone is prominent.
         """
         if self.__psd == None:
-            raise PyAnsysSoundException("No PSD set. Use ToneToNoiseRatio.psd.")
+            raise PyAnsysSoundException("No PSD set. Use 'ToneToNoiseRatio.psd'.")
 
         all_frequencies = self.__psd.time_freq_support.time_frequencies.data
         curve_length = len(all_frequencies)
@@ -364,10 +380,10 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         return ref_curve
 
     def plot(self):
-        """Plot tone-to-noise ratio for all identified peaks, along with the reference curve."""
+        """Plot TNR for all identified peaks, along with the reference curve."""
         if self._output == None:
             raise PyAnsysSoundException(
-                "Output has not been processed yet, use ToneToNoiseRatio.process()."
+                "Output is not processed yet. Use the 'ToneToNoiseRatio.process()' method."
             )
 
         tones_frequencies = self.get_peaks_frequencies()

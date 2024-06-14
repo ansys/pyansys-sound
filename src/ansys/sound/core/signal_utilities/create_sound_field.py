@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Create a sound field."""
+"""Creates a sound field."""
 import warnings
 
 from ansys.dpf.core import Field, Operator
@@ -32,9 +32,9 @@ from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class CreateSoundField(SignalUtilitiesParent):
-    """Create a sound field.
+    """Creates a sound field.
 
-    This class creates a DPF Field with Sound metadata from a vector.
+    This class creates a DPF field with sound metadata from a vector.
     """
 
     def __init__(
@@ -43,15 +43,15 @@ class CreateSoundField(SignalUtilitiesParent):
         sampling_frequency: float = 44100.0,
         unit: str = "Pa",
     ):
-        """Create a sound field creator class.
+        """Create a ``CreateSoundField`` instance.
 
         Parameters
         ----------
         data:
             Data to use to create the sound field as a 1D numpy array.
-        sampling_frequency:
+        sampling_frequency: float, default: 44100.0
             Sampling frequency of the data.
-        unit:
+        unit: str, default: "Pa"
             Unit of the data.
         """
         super().__init__()
@@ -62,7 +62,7 @@ class CreateSoundField(SignalUtilitiesParent):
 
     @property
     def data(self):
-        """Data property."""
+        """Data."""
         return self.__data  # pragma: no cover
 
     @data.setter
@@ -77,22 +77,22 @@ class CreateSoundField(SignalUtilitiesParent):
         Returns
         -------
         np.array
-                The data as a numpy array.
+            Data as a NumPy array.
         """
         return self.__data
 
     @property
     def unit(self):
-        """Unit property."""
+        """Unit."""
         return self.__unit  # pragma: no cover
 
     @unit.setter
     def unit(self, new_unit: str):
-        """Set the new unit.
+        """Set a new unit.
 
         Parameters
         ----------
-        new_unit:
+        new_unit: str
             New unit as a string.
         """
         self.__unit = new_unit
@@ -104,23 +104,23 @@ class CreateSoundField(SignalUtilitiesParent):
         Returns
         -------
         str
-                The unit.
+            Unit.
         """
         return self.__unit
 
     @property
     def sampling_frequency(self):
-        """Sampling frequency property."""
+        """Sampling frequency."""
         return self.__sampling_frequency  # pragma: no cover
 
     @sampling_frequency.setter
     def sampling_frequency(self, new_sampling_frequency: float):
-        """Set the new sampling frequency.
+        """Set a new sampling frequency.
 
         Parameters
         ----------
-        new_sampling_frequency:
-            New sampling frequency (in Hz).
+        new_sampling_frequency: float
+            New sampling frequency in Hz.
         """
         if new_sampling_frequency < 0.0:
             raise PyAnsysSoundException("Sampling frequency must be greater than or equal to 0.0.")
@@ -133,17 +133,19 @@ class CreateSoundField(SignalUtilitiesParent):
         Returns
         -------
         float
-                The sampling frequency.
+            Sampling frequency.
         """
         return self.__sampling_frequency
 
     def process(self):
         """Create the sound field.
 
-        Calls the appropriate DPF Sound operator to create the sound field.
+        This method calls the appropriate DPF Sound operator to create the sound field.
         """
         if np.size(self.data) == 0:
-            raise PyAnsysSoundException("No data to use. Use CreateSoundField.set_data().")
+            raise PyAnsysSoundException(
+                "No data to use. Use the 'CreateSoundField.set_data()' method."
+            )
 
         self.__operator.connect(0, self.data.tolist())
         self.__operator.connect(1, float(self.sampling_frequency))
@@ -156,30 +158,31 @@ class CreateSoundField(SignalUtilitiesParent):
         self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> Field:
-        """Return the data as a field.
+        """Get the data as a field.
 
         Returns
         -------
         Field
-                The data in a DPF Field.
+            Data in a DPF field.
         """
         if self._output == None:
             # Computing output if needed
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output has not been yet processed, use CreateSoundField.process()."
+                    "Output ia not processed yet. Use the \
+                        'CreateSoundField.process()' method."
                 )
             )
 
         return self._output
 
     def get_output_as_nparray(self) -> npt.ArrayLike:
-        """Return the data as a numpy array.
+        """Get the data as a NumPy array.
 
         Returns
         -------
         np.array
-                The data in a numpy array.
+            Data in a NumPy array.
         """
         output = self.get_output()
         return output.data

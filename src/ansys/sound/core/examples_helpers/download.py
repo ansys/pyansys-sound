@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Functions to download sample datasets from the pyansys data repository."""
+"""Functions to download sample datasets from the PyAnsys Sound examples repository."""
 from functools import wraps
 import os
 import shutil
@@ -93,9 +93,9 @@ def _download_file(filename, directory=None, _test=False):  # pragma no cover
         else:
             return local_path
 
-    except Exception as e:  # Genering exception
+    except Exception as e:  # Generate exception
         raise RuntimeError(
-            "For the reason mentioned below, retrieving the file from internet failed.\n"
+            "For the reason that follows, retrieving the file failed.\n"
             "You can download this file from:\n"
             f"{url}\n"
             "\n"
@@ -105,7 +105,7 @@ def _download_file(filename, directory=None, _test=False):  # pragma no cover
 
 
 def download_flute_psd():
-    """Download PSD of flute.wav.
+    """Download the PSD of the ``flute.wav`` file.
 
     Examples
     --------
@@ -115,9 +115,9 @@ def download_flute_psd():
     Returns
     -------
     str
-        Local path of flute_psd.txt
+        Local path for the ``flute_psd.txt`` file.
     str
-        Path on the docker container of flute_psd.txt
+        Path on the Docker container for the ``flute_psd.txt`` file.
 
     """
     filename = "flute_psd.txt"
@@ -128,77 +128,77 @@ def download_flute_psd():
 
 
 def download_flute_wav():
-    """Download flute.wav.
+    """Download the ``flute.wav`` file.
 
     Returns
     -------
     str
-        Path of flute.wav
+        Path for the ``flute.wav`` file.
     """
     return _download_file("flute.wav", "pyansys-sound")
 
 
 def download_flute_2_wav():
-    """Download flute2.wav.
+    """Download the ``flute2.wav`` file.
 
     Returns
     -------
     str
-        Path of flute2.wav
+        Path for the ``flute2.wav`` file.
     """
     return _download_file("flute2.wav", "pyansys-sound")
 
 
 def download_accel_with_rpm_wav():
-    """Download accel_with_rpm.wav.
+    """Download the ``accel_with_rpm.wav`` file.
 
     Returns
     -------
     str
-        Path of accel_with_rpm.wav
+        Path for the ``accel_with_rpm.wav`` file.
     """
     return _download_file("accel_with_rpm.wav", "pyansys-sound")
 
 
 def download_accel_with_rpm_2_wav():
-    """Download accel_with_rpm_2.wav.
+    """Download the ``accel_with_rpm_2.wav`` file.
 
     Returns
     -------
     str
-        Path of accel_with_rpm_2.wav
+        Path for the ``accel_with_rpm_2.wav`` file.
     """
     return _download_file("accel_with_rpm_2.wav", "pyansys-sound")
 
 
 def download_accel_with_rpm_3_wav():
-    """Download accel_with_rpm_3.wav.
+    """Download the ``accel_with_rpm_3.wav`` file.
 
     Returns
     -------
     str
-        Path of accel_with_rpm_3.wav
+        Path for the ``accel_with_rpm_3.wav`` file.
     """
     return _download_file("accel_with_rpm_3.wav", "pyansys-sound")
 
 
 def download_xtract_demo_signal_1_wav():
-    """Download xtract_demo_signal_1.wav.
+    """Download the ``xtract_demo_signal_1.wav`` file.
 
     Returns
     -------
     str
-        Path of xtract_demo_signal_1.wav
+        Path for the ``xtract_demo_signal_1.wav`` file.
     """
     return _download_file("xtract_demo_signal_1.wav", "pyansys-sound")
 
 
 def download_xtract_demo_signal_2_wav():
-    """Download xtract_demo_signal_2.wav.
+    """Download the ``xtract_demo_signal_2.wav`` file.
 
     Returns
     -------
     str
-        Path of xtract_demo_signal_2.wav
+        Path for the ``xtract_demo_signal_2.wav`` file.
     """
     return _download_file("xtract_demo_signal_2.wav", "pyansys-sound")

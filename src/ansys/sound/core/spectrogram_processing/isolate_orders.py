@@ -48,33 +48,30 @@ class IsolateOrders(SpectrogramProcessingParent):
         window_overlap: float = 0.5,
         width_selection: int = 10,
     ):
-        """Create an Istft class.
+        """Create an ``Istft`` instance.
 
         Parameters
         ----------
-        signal:
-            The input signal(s) as a fields container or a field on which to isolate orders.
-        rpm_profile:
-            The RPM signal associated with the time signals, as a field.
-            It is assumed that the signal's unit is 'rpm': if this is not the case,
+        signal: FieldsContainer | Field, default: None
+            One or more input signals to isolate orders on as a DPF fields container or field.
+        rpm_profile: Field, default: None
+            RPM signal associated with the time signals as a DPF field.
+            It is assumed that the signal's unit is ``rpm``. If this is not the case,
             inaccurate behavior might occur during the conversion from RPM to frequency.
-        orders
-            List of the order numbers you want to isolate. Must contain at least one value.
-        fft_size
-            Size (as an integer) of the FFT used to compute the STFT. Default is 1024.
-        window_type
-            The window used for the FFT computation, as a string.
-            Allowed input strings are :
-            'HANNING', 'BLACKMANHARRIS', 'HANN','BLACKMAN', 'HAMMING', 'KAISER', 'BARTLETT' and
-            'RECTANGULAR'.
-            If no parameter is specified, the default value is 'HANNING'.
-        window_overlap:
-            The overlap value between two successive FFT computations (value between 0 and 1).
-            0 means no overlap, 0.5 means 50 % overlap.
-            If no parameter is specified, default value is 0.5.
-        width_selection
-            The width, in Hz, of the area used to select each individual order.
-            Note that its precision depends on the FFT size. Default value is 10 Hz.
+        orders: list, default: None
+            List of the order numbers to isolate. The list must contain at least one value.
+        fft_size: int, default: 1024
+            Size of the FFT used to compute the STFT.
+        window_type: str, default: 'HANN'
+            Window type used for the FFT computation. Options are ``'BARTLETT'``, ``'BLACKMAN'``,
+            ``'BLACKMANHARRIS'``,``'HAMMING'``, ``'HANN'``, ``'HANNING'``, ``'KAISER'``, and
+            ``'RECTANGULAR'``.
+        window_overlap: float, default: 0.5
+            Overlap value between two successive FFT computations. Values can range from 0 to 1.
+            For example, ``0`` means no overlap, and ``0.5`` means 50% overlap.
+        width_selection: int, default: 10
+            Width in Hz of the area used to select each individual order.
+            Note that its precision depends on the FFT size.
         """
         super().__init__()
         self.signal = signal
@@ -88,7 +85,7 @@ class IsolateOrders(SpectrogramProcessingParent):
 
     @property
     def signal(self):
-        """Signal property."""
+        """Signal."""
         return self.__signal  # pragma: no cover
 
     @signal.setter
@@ -98,49 +95,49 @@ class IsolateOrders(SpectrogramProcessingParent):
 
     @signal.getter
     def signal(self) -> Field | FieldsContainer:
-        """Get the signal.
+        """Signal.
 
         Returns
         -------
         Field
-                The signal as a Field or a FieldsContainer.
+             Signal as a DPF field or fields container.
         """
         return self.__signal
 
     @property
     def rpm_profile(self):
-        """RPM Profile property."""
+        """RPM profile."""
         return self.__rpm_profile  # pragma: no cover
 
     @rpm_profile.getter
     def rpm_profile(self) -> Field:
-        """Get the RPM profile.
+        """RPM profile.
 
         Returns
         -------
         Field
-                The RPM profile.
+            RPM profile.
         """
         return self.__rpm_profile
 
     @rpm_profile.setter
     def rpm_profile(self, rpm_profile: Field):
-        """Set the RPM Profile."""
+        """Set the RPM profile."""
         self.__rpm_profile = rpm_profile
 
     @property
     def orders(self):
-        """Orders property."""
+        """Orders."""
         return self.__orders  # pragma: no cover
 
     @orders.getter
     def orders(self) -> Field:
-        """Get the orders.
+        """Orders.
 
         Returns
         -------
         list
-                The orders.
+            Orders.
         """
         return self.__orders
 
@@ -156,7 +153,7 @@ class IsolateOrders(SpectrogramProcessingParent):
 
     @property
     def fft_size(self):
-        """FFT size property."""
+        """FFT size."""
         return self.__fft_size  # pragma: no cover
 
     @fft_size.setter
@@ -168,18 +165,18 @@ class IsolateOrders(SpectrogramProcessingParent):
 
     @fft_size.getter
     def fft_size(self) -> float:
-        """Get the FFT size.
+        """FFT size.
 
         Returns
         -------
         float
-                The FFT size.
+            FFT size.
         """
         return self.__fft_size
 
     @property
     def window_type(self):
-        """Window type property."""
+        """Window type."""
         return self.__window_type  # pragma: no cover
 
     @window_type.setter
@@ -204,18 +201,18 @@ class IsolateOrders(SpectrogramProcessingParent):
 
     @window_type.getter
     def window_type(self) -> str:
-        """Get the window type.
+        """Window type.
 
         Returns
         -------
         str
-                The window type.
+            Window type.
         """
         return self.__window_type
 
     @property
     def window_overlap(self):
-        """Window overlap property."""
+        """Window overlap."""
         return self.__window_overlap  # pragma: no cover
 
     @window_overlap.setter
@@ -228,18 +225,18 @@ class IsolateOrders(SpectrogramProcessingParent):
 
     @window_overlap.getter
     def window_overlap(self) -> float:
-        """Get the window overlap.
+        """Window overlap.
 
         Returns
         -------
         float
-                The window overlap.
+            Window overlap.
         """
         return self.__window_overlap
 
     @property
     def width_selection(self):
-        """Width selection property."""
+        """Width selection."""
         return self.__width_selection  # pragma: no cover
 
     @width_selection.setter
@@ -251,30 +248,34 @@ class IsolateOrders(SpectrogramProcessingParent):
 
     @width_selection.getter
     def width_selection(self) -> int:
-        """Get the width selection.
+        """Width selection.
 
         Returns
         -------
         int
-                The width selection.
+            Width selection.
         """
         return self.__width_selection
 
     def process(self):
         """Isolate the orders.
 
-        Calls the appropriate DPF Sound operator to isolate the orders of the signal.
+        This method calls the appropriate DPF Sound operator to isolate the orders of the signal.
         """
         if self.signal == None:
-            raise PyAnsysSoundException("No signal for order isolation. Use IsolateOrder.signal.")
+            raise PyAnsysSoundException(
+                "No signal found for order isolation. Use 'IsolateOrder.signal'."
+            )
 
         if self.rpm_profile == None:
             raise PyAnsysSoundException(
-                "No RPM profile for order isolation. Use IsolateOrder.rpm_profile."
+                "No RPM profile found for order isolation. Use 'IsolateOrder.rpm_profile'."
             )
 
         if self.orders == None:
-            raise PyAnsysSoundException("No orders for order isolation. Use IsolateOrder.orders.")
+            raise PyAnsysSoundException(
+                "No orders found for order isolation. Use 'IsolateOrder.orders'."
+            )
 
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, self.rpm_profile)
@@ -294,30 +295,30 @@ class IsolateOrders(SpectrogramProcessingParent):
             self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> Field | FieldsContainer:
-        """Return the temporal signal of the isolated orders as a Field or Fields Container.
+        """Get the temporal signal of the isolated orders as a DPF field or fields container.
 
         Returns
         -------
         Field | FieldsContainer
-                The signal resulting from the order isolation as a DPF Field or FieldsContainer.
+            Signal resulting from the order isolation as a DPF field or fields container.
         """
         if self._output == None:
             # Computing output if needed
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output has not been yet processed, use IsolateOrders.process()."
+                    "Output is not processed yet. Use the IsolateOrders.process() method."
                 )
             )
 
         return self._output
 
     def get_output_as_nparray(self) -> npt.ArrayLike:
-        """Return the temporal signal of the isolated orders as a numpy array.
+        """Get the temporal signal of the isolated orders as a NumPy array.
 
         Returns
         -------
         np.array
-                The resulting from the order isolation as a numpy array.
+            Temporal signal of the isolated orders in a NumPy array.
         """
         output = self.get_output()
 
@@ -327,10 +328,7 @@ class IsolateOrders(SpectrogramProcessingParent):
         return self.convert_fields_container_to_np_array(output)
 
     def plot(self):
-        """Plot signals.
-
-        Plots the signal after order isolation.
-        """
+        """Plot signal after order isolation."""
         output = self.get_output()
 
         if type(output) == Field:

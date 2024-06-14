@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Sum signals."""
+"""Sums signals."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -31,18 +31,15 @@ from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class SumSignals(SignalUtilitiesParent):
-    """Sum signals.
-
-    This class sum signals.
-    """
+    """Sums signals."""
 
     def __init__(self, signals: FieldsContainer = None):
-        """Create a sum signal class.
+        """Create a ``SumSignals`` instance.
 
         Parameters
         ----------
-        signals:
-            Input signals to sum, each field of the signal will be summed.
+        signals: FieldsContainer, default: None
+            Input signals to sum. Each field of the signal is summed.
         """
         super().__init__()
         self.signals = signals
@@ -50,7 +47,7 @@ class SumSignals(SignalUtilitiesParent):
 
     @property
     def signals(self):
-        """Signals property."""
+        """Signals."""
         return self.__signals  # pragma: no cover
 
     @signals.setter
@@ -60,56 +57,58 @@ class SumSignals(SignalUtilitiesParent):
 
     @signals.getter
     def signals(self) -> FieldsContainer:
-        """Get the signal.
+        """Signals.
 
         Returns
         -------
         FieldsContainer
-                The signal as a FieldsContainer
+            Signals as a FieldsContainer
         """
         return self.__signals
 
     def process(self):
         """Sum signals.
 
-        Calls the appropriate DPF Sound operator to sum signals.
+        This method calls the appropriate DPF Sound operator to sum signals.
         """
         if self.signals == None:
             raise PyAnsysSoundException(
-                "No signal on which to apply gain. Use SumSignals.set_signal()."
+                "No signal to apply gain on. Use the 'SumSignals.set_signal()' method."
             )
 
         self.__operator.connect(0, self.signals)
 
-        # Runs the operator
+        # Run the operator
         self.__operator.run()
 
-        # Stores output in the variable
+        # Store output in the variable
         self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> Field:
-        """Return the summed signals as a field.
+        """Get the summed signals as a DPF field.
 
         Returns
         -------
         Field
-                The summed signal in a Field.
+            Summed signal in a DPF field.
         """
         if self._output == None:
             # Computing output if needed
             warnings.warn(
-                PyAnsysSoundWarning("Output has not been yet processed, use SumSignals.process().")
+                PyAnsysSoundWarning(
+                    "Output is not processed yet. Use the 'SumSignals.process()' method."
+                )
             )
 
         return self._output
 
     def get_output_as_nparray(self) -> npt.ArrayLike:
-        """Return the signal with a gain as a numpy array.
+        """Get the signal with a gain as a NumPy array.
 
         Returns
         -------
         np.array
-                The summed signal in a numpy array.
+            Summed signal in a NumPy array.
         """
         output = self.get_output()
         return output.data

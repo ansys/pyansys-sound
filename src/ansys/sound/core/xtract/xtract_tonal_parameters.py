@@ -37,7 +37,7 @@ ID_FFT_SIZE = "fft_size"
 
 
 class XtractTonalParameters(XtractParent):
-    """Data class for tonal parameters that can be used in Xtract and XtractTonal."""
+    """Contains tonal parameters for use in an ``Xtract`` or ``XtractDenoiser`` instance."""
 
     def __init__(
         self,
@@ -52,28 +52,27 @@ class XtractTonalParameters(XtractParent):
 
         Parameters
         ----------
-        regularity:
-            Regularity parameter, this parameter is designed to reject tonal components with too
-            much frequency variation. We recommend starting with the default value (1), then
-            lowering it to remove detected tonals whose frequency evolutions are too erratic.
-            Values between 0 and 1. Default is 1.
-        maximum_slope:
-            Maximum slope in Hz/s for each tonal component.
+        regularity: float, default: 1.0
+            Regularity parameter. Values are between 0 and 1. This parameter is designed to
+            reject tonal components with too much frequency variation. You should start with
+            the default value (``1.0``) and then lower it to remove detected tonals whose
+            frequency evolutions are too erratic.
+        maximum_slope: float, default: 750.0
+            Maximum slope in Hz/s for each tonal component. Values are between 0 and 15000 Hz/s.
             A higher value enables finding tonal components with a greater
             frequency slope over time.
-            Values between 0 and 15000 Hz/s. Default is 750 Hz/s.
-        minimum_duration:
-            Minimum duration in s for each tonal components.
-            Values between 0 and 5 s. Default is 1 s.
-        intertonal_gap:
+        minimum_duration: float, default: 1.0
+            Minimum duration in seconds for each tonal components.
+            Values are between 0 and 5.
+        intertonal_gap: float, default: 20.0
             Minimum gap in Hz between two tonal components.
-            Values between 10 and 200 Hz. Default is 20 Hz.
-        local_emergence:
+            Values are between 10 and 200.
+        local_emergence: float, default: 15.0
             Emergence of the tonal components compared to the background noise in dB.
-            Values between 0 and 100 dB. Default is 15 dB.
-        fft_size:
-            Integer, number of samples for the FFT Computation.
-            Must be greater than 0. Default is  8192.
+            Values are between 0 and 100.
+        fft_size: int, default: 8192
+            Number of samples for the FFT computation. The value
+            must be greater than 0.
         """
         self.__generic_data_container = GenericDataContainer()
         self.__generic_data_container.set_property("class_name", ID_TONAL_PARAMETERS_CLASS)
@@ -87,7 +86,7 @@ class XtractTonalParameters(XtractParent):
 
     @property
     def regularity(self):
-        """Regularity property."""
+        """Regularity."""
         return self.__generic_data_container.get_property(ID_REGULARITY)  # pragma: no cover
 
     @regularity.setter
@@ -100,18 +99,18 @@ class XtractTonalParameters(XtractParent):
 
     @regularity.getter
     def regularity(self) -> float:
-        """Get the regularity.
+        """Regularity.
 
         Returns
         -------
         float
-            The regularity.
+            Regularity.
         """
         return self.__generic_data_container.get_property(ID_REGULARITY)
 
     @property
     def maximum_slope(self):
-        """Maximum slope property."""
+        """Maximum slope."""
         return self.__generic_data_container.get_property(ID_MAXIMUM_SLOPE)  # pragma: no cover
 
     @maximum_slope.setter
@@ -124,18 +123,18 @@ class XtractTonalParameters(XtractParent):
 
     @maximum_slope.getter
     def maximum_slope(self) -> float:
-        """Get the maximum slope.
+        """Maximum slope.
 
         Returns
         -------
         float
-            The maximum slope.
+            Maximum slope.
         """
         return self.__generic_data_container.get_property(ID_MAXIMUM_SLOPE)
 
     @property
     def minimum_duration(self):
-        """Minimum duration property."""
+        """Minimum duration."""
         return self.__generic_data_container.get_property(ID_MINIMUM_DURATION)  # pragma: no cover
 
     @minimum_duration.setter
@@ -148,18 +147,18 @@ class XtractTonalParameters(XtractParent):
 
     @minimum_duration.getter
     def minimum_duration(self) -> float:
-        """Get the minimum duration.
+        """Minimum duration.
 
         Returns
         -------
         float
-            The minimum duration.
+            Minimum duration.
         """
         return self.__generic_data_container.get_property(ID_MINIMUM_DURATION)
 
     @property
     def intertonal_gap(self):
-        """Intertonal gap property."""
+        """Intertonal gap."""
         return self.__generic_data_container.get_property(ID_INTERTONAL_GAP)  # pragma: no cover
 
     @intertonal_gap.setter
@@ -172,18 +171,18 @@ class XtractTonalParameters(XtractParent):
 
     @intertonal_gap.getter
     def intertonal_gap(self) -> float:
-        """Get the intertonal gap.
+        """Intertonal gap.
 
         Returns
         -------
         float
-            The intertonal gap.
+            Intertonal gap.
         """
         return self.__generic_data_container.get_property(ID_INTERTONAL_GAP)
 
     @property
     def local_emergence(self):
-        """Local emergence property."""
+        """Local emergence."""
         return self.__generic_data_container.get_property(ID_LOCAL_EMERGENCE)  # pragma: no cover
 
     @local_emergence.setter
@@ -196,45 +195,45 @@ class XtractTonalParameters(XtractParent):
 
     @local_emergence.getter
     def local_emergence(self) -> float:
-        """Get the local emergence.
+        """Local emergence.
 
         Returns
         -------
         float
-            The local emergence.
+            Local emergence.
         """
         return self.__generic_data_container.get_property(ID_LOCAL_EMERGENCE)
 
     @property
     def fft_size(self):
-        """Fft size property."""
+        """FFT size."""
         return self.__generic_data_container.get_property(ID_FFT_SIZE)  # pragma: no cover
 
     @fft_size.setter
     def fft_size(self, fft_size: int):
-        """Set the fft size."""
+        """Set the FFT size."""
         if fft_size < 0:
-            raise PyAnsysSoundException("Fft size must be between greater than 0.")
+            raise PyAnsysSoundException("FFT size must be greater than 0.")
 
         self.__generic_data_container.set_property(ID_FFT_SIZE, fft_size)
 
     @fft_size.getter
     def fft_size(self) -> int:
-        """Get the fft size.
+        """FFT size.
 
         Returns
         -------
         int
-            The local emergence.
+            FFT size.
         """
         return self.__generic_data_container.get_property(ID_FFT_SIZE)
 
     def get_parameters_as_generic_data_container(self) -> GenericDataContainer:
-        """Get the parameters as generic data container.
+        """Get the parameters as a generic data container.
 
         Returns
         -------
         GenericDataContainer
-            The parameter structure as a GenericDataContainer
+           Parameter structure in a generic data container.
         """
         return self.__generic_data_container

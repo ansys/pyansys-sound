@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Resample."""
+"""Resamples signals."""
 
 import warnings
 
@@ -32,22 +32,19 @@ from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Resample(SignalUtilitiesParent):
-    """Resample.
-
-    This class resamples signals.
-    """
+    """Resamples signals."""
 
     def __init__(
         self, signal: Field | FieldsContainer = None, new_sampling_frequency: float = 44100.0
     ):
-        """Create a resample class.
+        """Create a ``Resample`` instance.
 
         Parameters
         ----------
-        signal:
-            Signal to resample as a DPF Field or FieldsContainer.
-        new_sampling_frequency:
-            New sampling frequency to use
+        signal: Field | FieldsContainer, default: None
+            Signal to resample as a DPF field or fields container.
+        new_sampling_frequency: float, default: 44100.0
+            New sampling frequency to use.
         """
         super().__init__()
         self.signal = signal
@@ -56,37 +53,37 @@ class Resample(SignalUtilitiesParent):
 
     @property
     def new_sampling_frequency(self):
-        """Property new sampling frequency."""
+        """New sampling frequency."""
         return self.__new_sampling_frequency  # pragma: no cover
 
     @new_sampling_frequency.setter
     def new_sampling_frequency(self, new_sampling_frequency: float):
-        """Set the new sampling frequency.
+        """Set a new sampling frequency.
 
         Parameters
         ----------
-        new_sampling_frequency:
+        new_sampling_frequency: float
             New sampling frequency.
         """
         if new_sampling_frequency < 0.0:
-            raise PyAnsysSoundException("Sampling frequency must be strictly greater than 0.0.")
+            raise PyAnsysSoundException("Sampling frequency must be greater than 0.0.")
 
         self.__new_sampling_frequency = new_sampling_frequency
 
     @new_sampling_frequency.getter
     def new_sampling_frequency(self) -> float:
-        """Get the sampling frequency.
+        """Get sampling frequency.
 
         Returns
         -------
         float
-                The sampling frequency.
+            Sampling frequency.
         """
         return self.__new_sampling_frequency
 
     @property
     def signal(self):
-        """Property signal."""
+        """Signal."""
         return self.__signal  # pragma: no cover
 
     @signal.setter
@@ -96,22 +93,24 @@ class Resample(SignalUtilitiesParent):
 
     @signal.getter
     def signal(self) -> Field | FieldsContainer:
-        """Get the signal.
+        """Signal.
 
         Returns
         -------
         FieldsContainer | Field
-            The signal as a Field or a FieldsContainer
+            Signal as a DPF field or fields container.
         """
         return self.__signal
 
     def process(self):
         """Resample the signal.
 
-        Calls the appropriate DPF Sound operator to resample the signal.
+        This method calls the appropriate DPF Sound operator to resample the signal.
         """
         if self.signal == None:
-            raise PyAnsysSoundException("No signal to resample. Use Resample.set_signal().")
+            raise PyAnsysSoundException(
+                "No signal to resample. Use the 'Resample.set_signal()' method."
+            )
 
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, float(self.new_sampling_frequency))
@@ -126,28 +125,30 @@ class Resample(SignalUtilitiesParent):
             self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> FieldsContainer | Field:
-        """Return the resampled signal as a fields container.
+        """Get the resampled signal as a DPF fields container.
 
         Returns
         -------
         FieldsContainer
-                The resampled signal in a dpf.FieldsContainer.
+            Resampled signal in a DPF fields container.
         """
         if self._output == None:
             # Computing output if needed
             warnings.warn(
-                PyAnsysSoundWarning("Output has not been yet processed, use Resample.process().")
+                PyAnsysSoundWarning(
+                    "Output is not processed yet. Use the 'Resample.process()' method."
+                )
             )
 
         return self._output
 
     def get_output_as_nparray(self) -> npt.ArrayLike:
-        """Return the resampled signal as a numpy array.
+        """Get the resampled signal as a NumPy array.
 
         Returns
         -------
         np.array
-                The resampled signal in a numpy array.
+            Resampled signal in a NumPy array.
         """
         output = self.get_output()
 

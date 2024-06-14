@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Compute ISO 532-1 loudness for stationary sounds."""
+"""Computes ISO 532-1 loudness for stationary sounds."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -37,19 +37,19 @@ SPECIFIC_LOUDNESS_ID = "specific"
 
 
 class LoudnessISO532_1_Stationary(PsychoacousticsParent):
-    """ISO 532-1 loudness for stationary sounds.
+    """Computes ISO 532-1 loudness for stationary sounds.
 
-    This class computes the loudness of a signal following standard ISO 532-1 for stationary
+    This class computes the loudness of a signal following the ISO 532-1 standard for stationary
     sounds.
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Create a LoudnessISO532_1_Stationary object.
+        """Create a ``LoudnessISO532_1_Stationary`` object.
 
         Parameters
         ----------
         signal: Field | FieldsContainer
-            Signal in Pa on which to compute loudness, as a DPF Field or Fields Container.
+            Signal in Pa to compute loudness on as a DPF field or fields container.
         """
         super().__init__()
         self.signal = signal
@@ -67,7 +67,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         Parameters
         ----------
         signal: FieldsContainer | Field
-            Signal in Pa on which to compute loudness, as a DPF Field or Fields Container.
+            Signal in Pa to compute loudness on as a DPF field or fields container.
 
         """
         self.__signal = signal
@@ -79,18 +79,19 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         Returns
         -------
         FieldsContainer | Field
-            The signal in Pa as a Field or a FieldsContainer.
+            Signal in Pa as a DPF field or fields container.
         """
         return self.__signal
 
     def process(self):
         """Compute loudness.
 
-        Calls the appropriate DPF Sound operator to compute the loudness of the signal.
+        This method calls the appropriate DPF Sound operator to compute the loudness of the signal.
         """
         if self.__signal == None:
             raise PyAnsysSoundException(
-                "No signal for loudness computation. Use LoudnessISO532_1_Stationary.signal."
+                "No signal found for loudness computation. \
+                    Use 'LoudnessISO532_1_Stationary.signal'."
             )
 
         self.__operator.connect(0, self.signal)
@@ -113,32 +114,37 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
             )
 
     def get_output(self) -> tuple[FieldsContainer] | tuple[Field]:
-        """Return loudness data in a tuple of field or fields container.
+        """Get loudness data in a tuple of field or fields container.
 
         Returns
         -------
         tuple(FieldsContainer) | tuple(Field)
             First element is the loudness in sone.
+
             Second element is the loudness level in phon.
+
             Third element is the specific loudness in sone/Bark.
         """
         if self._output == None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output has not been processed yet, use LoudnessISO532_1_Stationary.process()."
+                    "Output is not processed yet. Use the \
+                        'LoudnessISO532_1_Stationary.process()' method."
                 )
             )
 
         return self._output
 
     def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
-        """Return loudness data as a tuple of numpy array.
+        """Get loudness data as a tuple of NumPy array.
 
         Returns
         -------
         tuple[numpy.ndarray]
             First element is the loudness in sone.
+
             Second element is the loudness level in phon.
+
             Third element is the specific loudness in sone/Bark.
         """
         output = self.get_output()
@@ -156,14 +162,14 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         )
 
     def get_loudness_sone(self, channel_index: int = 0) -> np.float64:
-        """Return loudness in sone.
+        """Get the loudness in sone for a signal channel.
 
-           Returns the loudness in sone as a float, for the specified channel index.
+           This method gets the loudness in sone as a float for a specified channel index.
 
         Parameters
         ----------
-        channel_index: int
-            Index of the signal channel (0 by default) for which to return the specified output.
+        channel_index: int, default 0
+            Index of the signal channel to get the specified output for.
 
         Returns
         -------
@@ -173,14 +179,14 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         return self._get_output_parameter(channel_index, LOUDNESS_SONE_ID)
 
     def get_loudness_level_phon(self, channel_index: int = 0) -> np.float64:
-        """Return loudness level in phon.
+        """Get the loudness level in phon for a signal channel.
 
-        Returns the loudness level in phon as a float, for the specified channel index.
+        This method gets the loudness level in phon as a float for a specified channel index.
 
         Parameters
         ----------
-        channel_index: int
-            Index of the signal channel (0 by default) for which to return the specified output.
+        channel_index: int, default: 0
+            Index of the signal channel to get the specified output for.
 
         Returns
         -------
@@ -190,14 +196,14 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         return self._get_output_parameter(channel_index, LOUDNESS_LEVEL_PHON_ID)
 
     def get_specific_loudness(self, channel_index: int = 0) -> npt.ArrayLike:
-        """Return specific loudness.
+        """Get the specific loudness for a signal channel.
 
-        Returns the specific loudness in sone/Bark, for the specified channel index.
+        This method gets the specific loudness in sone/Bark for a specified channel index.
 
         Parameters
         ----------
-        channel_index: int
-            Index of the signal channel (0 by default) for which to return the specified output.
+        channel_index: int, default: 0
+            Index of the signal channel to get the specified output for.
 
         Returns
         -------
@@ -207,9 +213,9 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         return self._get_output_parameter(channel_index, SPECIFIC_LOUDNESS_ID)
 
     def get_bark_band_indexes(self) -> npt.ArrayLike:
-        """Return Bark band indexes.
+        """Get Bark band indexes.
 
-        Returns the Bark band indexes used for loudness calculation as a numpy array.
+        This method gets the Bark band indexes used for the loudness calculation as a NumPy array.
 
         Returns
         -------
@@ -229,9 +235,9 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
             return np.copy(specific_loudness[0].time_freq_support.time_frequencies.data)
 
     def get_bark_band_frequencies(self) -> npt.ArrayLike:
-        """Return Bark band frequencies.
+        """Get Bark band frequencies.
 
-        Return the frequencies corresponding to Bark band indexes as a numpy array.
+        This method gets the frequencies corresponding to Bark band indexes as a NumPy array.
 
         Reference:
         Traunmüller, Hartmut. "Analytical Expressions for the Tonotopic Sensory Scale." Journal of
@@ -247,12 +253,13 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
     def plot(self):
         """Plot specific loudness.
 
-        Creates a figure window where the specific loudness in sone/Bark as a function of Bark band
-        index is displayed.
+        This method creates a figure window that displays the specific loudness in sone/Bark as a
+        function of the Bark band index.
         """
         if self._output == None:
             raise PyAnsysSoundException(
-                "Output has not been processed yet, use LoudnessISO532_1_Stationary.process()."
+                "Output is not processed yet. Use the \
+                    'LoudnessISO532_1_Stationary.process()' method."
             )
 
         bark_band_indexes = self.get_bark_band_indexes()
@@ -284,20 +291,21 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
     def _get_output_parameter(
         self, channel_index: int, output_id: str
     ) -> np.float64 | npt.ArrayLike:
-        """Return individual loudness result.
+        """Get the individual loudness result for a signal channel.
 
-        Returns the loudness or loudness level in phon as a float, or the specific loudness as a
-        numpy array, according to specified output_id, and for the specified channel.
+        This method gets the loudness or loudness level for the specified channel in phon
+        as a float or the specific loudness as a NumPy array according to the output ID.
 
         Parameters
         ----------
         channel_index: int
-            Index of the signal channel for which to return the specified output.
+            Index of the signal channel to get the specified output for.
         output_id: str
-            Identifier of the specific output parameter that should be returned:
-                - "sone" for overall loudness value in sone.
-                - "phon" for overall loudness level value in phon.
-                - "specific" for specific loudness array in sone/Bark.
+            ID of the specific output parameter to return. Options are:
+
+            - ``"sone"``: For overall loudness value in sone
+            - ``"phon"``: For overall loudness level value in phon.
+            - ``"specific"``: For specific loudness array in sone/Bark
 
         Returns
         -------
@@ -326,7 +334,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
             elif output_id == LOUDNESS_LEVEL_PHON_ID:
                 unit_index = 1
             else:
-                raise PyAnsysSoundException("Invalid identifier of output parameter.")
+                raise PyAnsysSoundException("ID of output parameter is invalid.")
 
             if channel_max > 0:
                 return loudness_data[unit_index][channel_index][0]
