@@ -90,7 +90,7 @@ def test_xtract_tonal_parameters_getter_setter_fft_size(dpf_sound_test_server):
     # Invalid value
     with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_tonal_parameters.fft_size = -1500000.0
-    assert str(excinfo.value) == "Fft size must be between greater than 0."
+    assert str(excinfo.value) == "FFT size must be between greater than 0."
 
     xtract_tonal_parameters.fft_size = 20.0
 

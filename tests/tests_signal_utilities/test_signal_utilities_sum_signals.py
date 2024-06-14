@@ -40,7 +40,10 @@ def test_sum_signals_process(dpf_sound_test_server):
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
         sum_gain.process()
-    assert str(excinfo.value) == "No signal on which to apply gain. Use SumSignals.set_signal()."
+    assert (
+        str(excinfo.value)
+        == "No signal to apply gain on. Use the 'SumSignals.set_signal()' method."
+    )
 
     wav_loader.process()
     fc = wav_loader.get_output()
@@ -57,7 +60,8 @@ def test_sum_signals_get_output(dpf_sound_test_server):
     sum_gain = SumSignals(signals=fc_signal)
 
     with pytest.warns(
-        PyAnsysSoundWarning, match="Output has not been yet processed, use SumSignals.process()."
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. Use the 'SumSignals.process()' method.",
     ):
         fc_out = sum_gain.get_output()
 
@@ -78,7 +82,8 @@ def test_sum_signals_get_output_as_np_array(dpf_sound_test_server):
     sum_gain = SumSignals(signals=fc_signal)
 
     with pytest.warns(
-        PyAnsysSoundWarning, match="Output has not been yet processed, use SumSignals.process()."
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. Use the 'SumSignals.process()' method.",
     ):
         fc_out = sum_gain.get_output()
 

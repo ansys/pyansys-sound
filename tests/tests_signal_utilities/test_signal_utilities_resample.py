@@ -42,7 +42,7 @@ def test_resample_process(dpf_sound_test_server):
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
         resampler.process()
-    assert str(excinfo.value) == "No signal to resample. Use Resample.set_signal()."
+    assert str(excinfo.value) == "No signal to resample. Use the 'Resample.set_signal()' method."
 
     wav_loader.process()
     fc = wav_loader.get_output()
@@ -63,7 +63,8 @@ def test_resample_get_output(dpf_sound_test_server):
     resampler = Resample(signal=fc_signal, new_sampling_frequency=88100.0)
 
     with pytest.warns(
-        PyAnsysSoundWarning, match="Output has not been yet processed, use Resample.process()."
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. Use the 'Resample.process()' method.",
     ):
         fc_out = resampler.get_output()
 
@@ -130,7 +131,7 @@ def test_resample_set_get_sampling_frequency(dpf_sound_test_server):
     # Error
     with pytest.raises(PyAnsysSoundException) as excinfo:
         resampler.new_sampling_frequency = -12.0
-    assert str(excinfo.value) == "Sampling frequency must be strictly greater than 0.0."
+    assert str(excinfo.value) == "Sampling frequency must be greater than 0.0."
 
     resampler.new_sampling_frequency = 1234.0
     assert resampler.new_sampling_frequency == 1234.0

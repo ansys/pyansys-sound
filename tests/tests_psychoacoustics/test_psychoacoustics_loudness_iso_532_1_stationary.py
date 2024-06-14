@@ -63,7 +63,8 @@ def test_loudness_iso_532_1_stationary_process(dpf_sound_test_server):
     # No signal -> error
     with pytest.raises(
         PyAnsysSoundException,
-        match="No signal for loudness computation. Use LoudnessISO532_1_Stationary.signal.",
+        match="No signal for loudness computation. \
+            Use 'LoudnessISO532_1_Stationary.signal'.",
     ):
         loudness_computer.process()
 
@@ -96,7 +97,8 @@ def test_loudness_iso_532_1_stationary_get_output(dpf_sound_test_server):
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
+        match="Output is not processed yet. \
+            Use the 'LoudnessISO532_1_Stationary.process()' method.",
     ):
         output = loudness_computer.get_output()
     assert output == None
@@ -126,7 +128,8 @@ def test_loudness_iso_532_1_stationary_get_loudness_sone(dpf_sound_test_server):
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
+        match="Output is not processed yet. \
+        Use the 'LoudnessISO532_1_Stationary.process()' method.",
     ):
         output = loudness_computer.get_loudness_sone()
     assert output == None
@@ -183,7 +186,8 @@ def test_loudness_iso_532_1_stationary_get_loudness_level_phon(dpf_sound_test_se
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
+        match="Output is not processed yet. \
+        Use the 'LoudnessISO532_1_Stationary.process()' method.",
     ):
         output = loudness_computer.get_loudness_level_phon()
     assert output == None
@@ -209,7 +213,8 @@ def test_loudness_iso_532_1_stationary_get_specific_loudness(dpf_sound_test_serv
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
+        match="Output is not processed yet. \
+            Use the 'LoudnessISO532_1_Stationary.process()' method.",
     ):
         output = loudness_computer.get_specific_loudness()
     assert output == None
@@ -254,7 +259,8 @@ def test_loudness_iso_532_1_stationary__get_ouptut_parameter(dpf_sound_test_serv
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
+        match="Output is not processed yet. \
+            Use the 'LoudnessISO532_1_Stationary.process()' method.",
     ):
         output = loudness_computer._get_output_parameter(0, LOUDNESS_SONE_ID)
     assert output == None
@@ -263,7 +269,7 @@ def test_loudness_iso_532_1_stationary__get_ouptut_parameter(dpf_sound_test_serv
     loudness_computer.process()
 
     # Invalid parameter identifier -> error
-    with pytest.raises(PyAnsysSoundException, match="Invalid identifier of output parameter."):
+    with pytest.raises(PyAnsysSoundException, match="ID of output parameter is invalid."):
         param = loudness_computer._get_output_parameter(0, "thisIsNotValid")
 
     # Invalid channel index -> error
@@ -325,7 +331,8 @@ def test_loudness_iso_532_1_stationary_get_bark_band_indexes(dpf_sound_test_serv
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
+        match="Output is notn processed yet. \
+            Use the 'LoudnessISO532_1_Stationary.process()' method.",
     ):
         output = loudness_computer.get_bark_band_indexes()
     assert output == None
@@ -388,7 +395,8 @@ def test_loudness_iso_532_1_stationary_get_output_as_nparray_from_fields_contain
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
+        match="Output is not processed yet. \
+            Use the 'LoudnessISO532_1_Stationary.process()' method.",
     ):
         output = loudness_computer.get_output_as_nparray()
     assert output == None
@@ -458,7 +466,8 @@ def test_loudness_iso_532_1_stationary_plot_from_fields_container(mock_show, dpf
     # Loudness not computed yet -> error
     with pytest.raises(
         PyAnsysSoundException,
-        match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
+        match="Output is not processed yet. \
+            Use the 'LoudnessISO532_1_Stationary.process()' method.",
     ):
         loudness_computer.plot()
 

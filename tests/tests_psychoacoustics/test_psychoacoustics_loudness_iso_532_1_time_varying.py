@@ -44,7 +44,8 @@ def test_loudness_iso_532_1_time_varying_process(dpf_sound_test_server):
         time_varying_loudness_computer.process()
     assert (
         str(excinfo.value)
-        == "No signal for loudness vs time computation. Use LoudnessISO532_1_TimeVarying.signal"
+        == "No signal found for loudness vs time computation. \
+            Use 'LoudnessISO532_1_TimeVarying.signal'."
     )
 
     # get a signal

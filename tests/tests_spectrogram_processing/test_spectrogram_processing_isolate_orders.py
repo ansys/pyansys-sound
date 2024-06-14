@@ -49,14 +49,20 @@ def test_isolate_orders_process(dpf_sound_test_server):
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
         isolate_orders.process()
-    assert str(excinfo.value) == "No signal for order isolation. Use IsolateOrder.signal."
+    assert (
+        str(excinfo.value)
+        == "No signal found for order isolation. Use the 'IsolateOrder.signal' method."
+    )
 
     isolate_orders.signal = signal
 
     # Error 2
     with pytest.raises(PyAnsysSoundException) as excinfo:
         isolate_orders.process()
-    assert str(excinfo.value) == "No RPM profile for order isolation. Use IsolateOrder.rpm_profile."
+    assert (
+        str(excinfo.value)
+        == "No RPM profile found for order isolation. Use the 'IsolateOrder.rpm_profile' method."
+    )
 
     # Testing input fields container (no error expected)
     isolate_orders.rpm_profile = rpm_profile
@@ -64,7 +70,7 @@ def test_isolate_orders_process(dpf_sound_test_server):
     # Error 3
     with pytest.raises(PyAnsysSoundException) as excinfo:
         isolate_orders.process()
-    assert str(excinfo.value) == "No orders for order isolation. Use IsolateOrder.orders."
+    assert str(excinfo.value) == "No orders found for order isolation. Use 'IsolateOrder.orders'."
 
     isolate_orders.orders = [2, 4]
 
@@ -85,7 +91,8 @@ def test_isolate_orders_get_output(dpf_sound_test_server):
     isolate_orders = IsolateOrders(signal=signal, rpm_profile=rpm_profile, orders=[2, 4])
 
     with pytest.warns(
-        PyAnsysSoundWarning, match="Output has not been yet processed, use IsolateOrders.process()."
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. Use the 'IsolateOrders.process()' method.",
     ):
         fc_out = isolate_orders.get_output()
 
@@ -182,8 +189,8 @@ def test_isolate_orders_set_get_window_type(dpf_sound_test_server):
         isolate_orders.window_type = "InvalidWindow"
     assert (
         str(excinfo.value)
-        == "Invalid window type, accepted values are 'HANNING', 'BLACKMANHARRIS', 'HANN', \
-                    'BLACKMAN','HAMMING', 'KAISER', 'BARTLETT', 'RECTANGULAR'."
+        == "Window type is invalid. Options are 'BARTLETT', 'BLACKMAN', 'BLACKMANHARRIS', \
+                'HAMMING', 'HANN', 'HANNING', 'KAISER', and 'RECTANGULAR'."
     )
 
     isolate_orders.window_type = "KAISER"

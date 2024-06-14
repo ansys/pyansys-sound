@@ -358,7 +358,7 @@ class ProminenceRatio(PsychoacousticsParent):
             If the PR is higher, then the tone is prominent.
         """
         if self.__psd == None:
-            raise PyAnsysSoundException("No PSD is set. Use 'ProminenceRatio.psd'.")
+            raise PyAnsysSoundException("No PSD set. Use 'ProminenceRatio.psd'.")
 
         all_frequencies = self.__psd.time_freq_support.time_frequencies.data
         curve_length = len(all_frequencies)
