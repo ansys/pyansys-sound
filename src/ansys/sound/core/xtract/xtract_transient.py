@@ -30,8 +30,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from numpy import typing as npt
 
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-from ._xtract_parent import XtractParent, XtractTransientParameters
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.xtract._xtract_parent import XtractParent, XtractTransientParameters
 
 
 class XtractTransient(XtractParent):

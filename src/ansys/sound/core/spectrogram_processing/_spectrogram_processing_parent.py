@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 """Spectrogram Processing."""
-from .._pyansys_sound import PyAnsysSound
+from ansys.sound.core._pyansys_sound import PyAnsysSound
 
 
 class SpectrogramProcessingParent(PyAnsysSound):

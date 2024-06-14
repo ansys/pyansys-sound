@@ -2,10 +2,8 @@
 
 from datetime import datetime
 import os
-from pathlib import Path
 
 from ansys_sphinx_theme import (
-    get_autoapi_templates_dir_relative_path,
     get_version_match,
     pyansys_logo_black,
 )
@@ -39,6 +37,13 @@ html_logo = pyansys_logo_black
 html_theme = "ansys_sphinx_theme"
 html_short_title = html_title = "PyAnsys Sound"
 
+# specify the location of your github repo
+html_context = {
+    "github_user": "ansys",
+    "github_repo": "pyansys-sound",
+    "github_version": "main",
+    "doc_path": "doc/source",
+}
 # specify the location of your github repo
 html_theme_options = {
     "github_url": "https://github.com/ansys/pyansys-sound",

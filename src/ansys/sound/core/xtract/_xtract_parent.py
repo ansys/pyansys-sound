@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 """Xtract."""
-from .._pyansys_sound import PyAnsysSound
+from ansys.sound.core._pyansys_sound import PyAnsysSound
 
 
 class XtractParent(PyAnsysSound):

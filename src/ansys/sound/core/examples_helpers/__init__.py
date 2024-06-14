@@ -29,7 +29,7 @@ import os
 
 import platformdirs
 
-from ._get_example_files import (
+from ansys.sound.core.examples_helpers._get_example_files import (
     get_absolute_path_for_accel_with_rpm_wav,
     get_absolute_path_for_fluctuating_noise_wav,
     get_absolute_path_for_fluctuating_tone_wav,
@@ -43,7 +43,7 @@ from ._get_example_files import (
     get_absolute_path_for_xtract_demo_signal_1_wav,
     get_absolute_path_for_xtract_demo_signal_2_wav,
 )
-from .download import (
+from ansys.sound.core.examples_helpers.download import (
     download_accel_with_rpm_2_wav,
     download_accel_with_rpm_3_wav,
     download_accel_with_rpm_wav,

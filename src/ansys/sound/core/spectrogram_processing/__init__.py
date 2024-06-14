@@ -25,9 +25,9 @@
 Helper functions related to spectrogram processing.
 """
 
-from ._spectrogram_processing_parent import SpectrogramProcessingParent  # isort:skip
-from .isolate_orders import IsolateOrders
-from .istft import Istft
-from .stft import Stft
+from ansys.sound.core.spectrogram_processing._spectrogram_processing_parent import SpectrogramProcessingParent  # isort:skip
+from ansys.sound.core.spectrogram_processing.isolate_orders import IsolateOrders
+from ansys.sound.core.spectrogram_processing.istft import Istft
+from ansys.sound.core.spectrogram_processing.stft import Stft
 
 __all__ = "SpectrogramProcessingParent", "Stft", "Istft", "IsolateOrders"

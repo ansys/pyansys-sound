@@ -24,7 +24,7 @@
 from ansys.dpf.core import Field
 from numpy import typing as npt
 
-from .._pyansys_sound import PyAnsysSound, PyAnsysSoundException
+from ansys.sound.core._pyansys_sound import PyAnsysSound, PyAnsysSoundException
 
 
 class PsychoacousticsParent(PyAnsysSound):
