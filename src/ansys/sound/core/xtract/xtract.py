@@ -36,7 +36,7 @@ from . import (
     XtractTonalParameters,
     XtractTransientParameters,
 )
-from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Xtract(XtractParent):

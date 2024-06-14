@@ -28,7 +28,7 @@ from ansys.dpf.core import DataSources, FieldsContainer, Operator
 from numpy import typing as npt
 
 from . import SignalUtilitiesParent
-from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class LoadWav(SignalUtilitiesParent):

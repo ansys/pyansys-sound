@@ -23,7 +23,7 @@
 from ansys.dpf.core import GenericDataContainer
 import pytest
 
-from ansys.sound.core.pyansys_sound import PyAnsysSoundException
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.xtract.xtract_tonal_parameters import XtractTonalParameters
 
 

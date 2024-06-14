@@ -24,7 +24,7 @@
 from ansys.dpf.core import Field
 import matplotlib.pyplot as plt
 
-from ..pyansys_sound import PyAnsysSound
+from .._pyansys_sound import PyAnsysSound
 
 
 class SignalUtilitiesParent(PyAnsysSound):

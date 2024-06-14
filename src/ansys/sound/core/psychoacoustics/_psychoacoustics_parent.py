@@ -24,7 +24,7 @@
 from ansys.dpf.core import Field
 from numpy import typing as npt
 
-from ..pyansys_sound import PyAnsysSound, PyAnsysSoundException
+from .._pyansys_sound import PyAnsysSound, PyAnsysSoundException
 
 
 class PsychoacousticsParent(PyAnsysSound):
@@ -77,7 +77,7 @@ class PsychoacousticsParent(PyAnsysSound):
         """Check whether a specified signal channel index is available or not.
 
         Parameters
-        -------
+        ----------
         channel_index: int
             Index of the signal channel to check.
 

@@ -23,7 +23,7 @@
 import numpy as np
 import pytest
 
-from ansys.sound.core.pyansys_sound import PyAnsysSound, PyAnsysSoundWarning
+from ansys.sound.core._pyansys_sound import PyAnsysSound, PyAnsysSoundWarning
 
 
 @pytest.mark.dependency()

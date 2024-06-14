@@ -29,7 +29,7 @@ import numpy as np
 from numpy import typing as npt
 
 from . import PsychoacousticsParent
-from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 TOTAL_ROUGHNESS_ID = "total"
 SPECIFIC_ROUGHNESS_ID = "specific"
