@@ -23,12 +23,12 @@
 """
 .. _load_resample_amplify_write_wav_files_example:
 
-Load / write wav files, resample and apply gain
------------------------------------------------
+Load and use WAV files
+----------------------
 
-This example shows how to load a wav file, modify its sampling frequency,
-amplify it and write the resulting wav file to the disk.
-It also shows how to access the corresponding data and display it using matplotlib.
+This example shows how to load a WAV file, modify its sampling frequency,
+amplify it, and then write the resulting WAV file to the disk.
+It also shows how to access the corresponding data and display it using Matplotlib.
 
 """
 # %%
@@ -37,33 +37,35 @@ It also shows how to access the corresponding data and display it using matplotl
 # Setting up the analysis consists of loading Ansys libraries, connecting to the
 # DPF server, and retrieving the example files.
 
-# Load Ansys & other libraries.
+# Load Ansys and other libraries.
 import matplotlib.pyplot as plt
 
 from ansys.sound.core.examples_helpers import download_flute_wav
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import ApplyGain, LoadWav, Resample, WriteWav
 
-# Connect to remote or start a local server
+# Connect to a remote server or start a local server
 server = connect_to_or_start_server()
 
 # %%
-# Load a wav Signal
+# Load a WAV signal
 # ~~~~~~~~~~~~~~~~~
-# Load a wav signal using LoadWav class, it will be returned as a
-# `DPF Field Container <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_ # noqa: E501
+# Load a WAV signal using the ``LoadWav`` class. It is returned as a DPF
+# field container. For more information, see ``fields_container``
+# <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_
+# in the DPF-Core API documentation.
 
-# Returning the input data of the example file
+# Return the input data of the example file
 path_flute_wav = download_flute_wav()
 
-# Load the wav file.
+# Load the WAV file.
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
 fc_signal_original = wav_loader.get_output()
 
 t1 = fc_signal_original[0].time_freq_support.time_frequencies.data
 sf1 = 1.0 / (t1[1] - t1[0])
-print(f"The sampling frequency of the original signal is {int(sf1)} Hz")
+print(f"The sampling frequency of the original signal is {int(sf1)} Hz.")
 
 # %%
 # Resample the signal
@@ -75,27 +77,27 @@ fc_signal_resampled = resampler.get_output()
 
 t2 = fc_signal_resampled[0].time_freq_support.time_frequencies.data
 sf2 = 1.0 / (t2[1] - t2[0])
-print(f"The new sampling frequency of the signal is {int(sf2)} Hz")
+print(f"The new sampling frequency of the signal is {int(sf2)} Hz.")
 
 # %%
 # Apply a gain to the signal
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Amplify the resampled signal by 10 dB.
+# Amplify the resampled signal by 10 decibels.
 gain = 10.0
 gain_applier = ApplyGain(fc_signal_resampled, gain=gain, gain_in_db=True)
 gain_applier.process()
 fc_signal_modified = gain_applier.get_output()
 
 # %%
-# Plotting signals
-# ~~~~~~~~~~~~~~~~
+# Plot signals
+# ~~~~~~~~~~~~
 # Plot the original and the modified signals.
 
-# get the signals as nparray
+# Get the signals as nparray
 data_original = wav_loader.get_output_as_nparray()
 data_modified = gain_applier.get_output_as_nparray()
 
-# prepare the figure
+# Prepare the figure
 fig, axs = plt.subplots(2)
 fig.suptitle("Signals")
 
@@ -112,13 +114,13 @@ axs[1].set_ylabel("Amplitude(Pa)")
 axs[1].legend(loc="upper right")
 axs[1].set_ylim([-3, 3])
 
-# display the figure
+# Display the figure
 plt.show()
 
 # %%
-# Write the signals as wav files
+# Write the signal as a WAV file
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Write the modified signal to the disk as a wav file.
+# Write the modified signal to the disk as a WAV file.
 output_path = path_flute_wav[:-4] + "_modified.wav"  # "[-4]" is to remove the ".wav" extension
 wav_writer = WriteWav(path_to_write=output_path, signal=fc_signal_modified, bit_depth="int16")
 wav_writer.process()

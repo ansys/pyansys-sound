@@ -29,20 +29,20 @@ Calculate psychoacoustic indicators
 This example shows how to calculate psychoacoustic indicators.
 The following indicators are included:
 
-- **Loudness of stationary sounds** according to ISO 532-1
-- **Loudness of time-varying sounds** according to ISO 532-1
-- **Sharpness** according to Zwicker and Fastl, "Psychoacoustics: Facts and models", 1990
+- **Loudness of stationary sounds** according to ISO 532-1.
+- **Loudness of time-varying sounds** according to ISO 532-1.
+- **Sharpness** according to Zwicker and Fastl, "Psychoacoustics: Facts and models", 1990.
 - **Roughness** according to Daniel and Weber, "Psychoacoustical Roughness: Implementation of an
-  Optimized Model, 1997
+  Optimized Model, 1997.
 - **Fluctuation strength** according to Sontacchi, "Entwicklung eines Modulkonzeptes für die
-  psychoakustische Geräuschanalyse under MatLab Diplomarbeit", 1998
+  psychoakustische Geräuschanalyse under MatLab Diplomarbeit", 1998.
 
 The example shows how to:
 
-- import necessary packages
-- calculate indicators on loaded wav files
-- get calculation outputs
-- plot some corresponding curves
+- Import necessary packages.
+- Calculate indicators on loaded WAV files.
+- Get calculation outputs.
+- Plot some corresponding curves.
 
 """
 
@@ -74,26 +74,26 @@ from ansys.sound.core.psychoacoustics.sharpness import Sharpness
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 
-# Connect to remote or start a local server.
+# Connect to a remote server or start a local server.
 server = connect_to_or_start_server()
 
 
 # %%
 # Calculate ISO 532-1 loudness for a stationary sound
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load a wav signal using LoadWav class, it will be returned as a
-# `DPF Field Container <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_. # noqa: E501
-#
-# Then calculate the loudness of this signal.
+# Load a WAV signal using the ``LoadWav`` class. It is returned as a DPF
+# field container. For more information, see ``fields_container``
+# <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_
+# in the DPF-Core API documentation. Then calculate the loudness of this signal.
 
-# Load example data from wav files
+# Load example data from WAV file
 path_flute_wav = download_flute_wav()
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
 fc_signal = wav_loader.get_output()
 
 # %%
-# Create a LoudnessISO532_1_Stationary object, set its signal, and compute loudness.
+# Create a 'LoudnessISO532_1_Stationary' object, set its signal, and compute loudness.
 loudness_stationary = LoudnessISO532_1_Stationary(signal=fc_signal)
 loudness_stationary.process()
 
@@ -115,13 +115,13 @@ loudness_stationary.plot()
 # %%
 # Calculate ISO 532-1 loudness for several signals at once
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load another wav file, and store it along with the first one.
+# Load another WAV file and store it along with the first one.
 
 path_flute2_wav = download_flute_2_wav()
 wav_loader = LoadWav(path_flute2_wav)
 wav_loader.process()
 
-# Store the second signal as a second field in the fields container.
+# Store the second signal as a second field in the DPF fields container.
 fc_two_signals = fc_signal
 fc_two_signals.add_field({"channel_number": 1}, wav_loader.get_output()[0])
 
@@ -150,14 +150,14 @@ loudness_stationary.plot()
 # %%
 # Calculate ISO 532-1 loudness for a non-stationary sound
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load a new wav signal (non-stationary).
+# Load a new WAV signal (non-stationary).
 path_accel_wav = download_accel_with_rpm_wav()
 wav_loader = LoadWav(path_accel_wav)
 wav_loader.process()
 f_signal = wav_loader.get_output()[0]  # Field 0 only, because the RPM profile is useless here.
 
 # %%
-# Create a LoudnessISO532_1_TimeVarying object, set its signal, and compute loudness.
+# Create a 'LoudnessISO532_1_TimeVarying' object, set its signal, and compute loudness.
 loudness_time_varying = LoudnessISO532_1_TimeVarying(signal=f_signal)
 loudness_time_varying.process()
 
@@ -184,7 +184,7 @@ loudness_time_varying.plot()
 # %%
 # Calculate sharpness, roughness, and fluctuation strength
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Now let's calculate sharpness, roughness, and fluctuation strength for these two sounds.
+# Now calculate sharpness, roughness, and fluctuation strength for these two sounds.
 
 # %%
 # Calculate sharpness.
@@ -208,7 +208,7 @@ fluctuation_strength_values = (
 )
 
 # %%
-# Print out the results.
+# Print the results.
 print(
     f"\nThe sharpness of sound file {file_name} "
     f"is{sharpness_values[0]: .2f} acum, "

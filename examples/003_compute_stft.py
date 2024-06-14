@@ -26,9 +26,10 @@
 Compute the STFT and ISTFT
 --------------------------
 
-This example shows how to compute an STFT (Short-Time Fourier Transform) of a signal.
+This example shows how to compute the short-time Fourier transform (STFT) of a signal.
 
-It also shows how to compute the inverse-STFT from a STFT matrix and get a signal.
+It also shows how to compute the inverse short-time Fourier transform (ISTFT) from a
+STFT matrix and get a signal.
 
 """
 # %%
@@ -43,62 +44,62 @@ from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectrogram_processing import Istft, Stft
 
-# Connect to remote or start a local server
+# Connect to a remote server or start a local server
 my_server = connect_to_or_start_server(use_license_context=True)
 
 # %%
-# Load a wav signal using LoadWav class.
+# Load a WAV signal using the ``LoadWav`` class.
 
-# Returning the input data of the example file
+# Return the input data of the example file
 path_flute_wav = download_flute_wav()
 
-# Loading the wav file
+# Load the WAV file
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
 fc_signal = wav_loader.get_output()
 
-# Plotting the input signal
+# Plot the input signal
 wav_loader.plot()
 
 # %%
-# Instantiate an Stft class using the previously loaded signal as an input,
-# using an FFT size of 1024 points, then display the STFT colormap.
+# Instantiate an instance of the ``Stft`` class using the previously loaded signal.
+# as an input. Use an FFT size of 1024 points and then display the STFT colormap.
 
 stft = Stft(fc_signal, fft_size=1024)
 
-# Processing the STFT
+# Process the STFT
 stft.process()
 
-# Plotting the output
+# Plot the output
 stft.plot()
 
 # %%
-# Modify the STFT parameters using the setters of the Stft class,
-# then display the new STFT colormap.
+# Modify the STFT parameters using the setters of the ``Stft`` class.
+# Display the new STFT colormap.
 
 stft.fft_size = 4096
 stft.window_overlap = 0.95
 stft.window_type = "BARTLETT"
 
-# Re-processing the STFT with newly set parameters
+# Reprocess the STFT with the new parameters
 stft.process()
 
-# Plotting the modified output
+# Plot the modified output
 stft.plot()
 
 # %%
-# Re-obtain a time-domain signal by using the Istft class.
-# The input of the Istft class is the output STFT object previously computed.
+# Obtain a time-domain signal by using the ``Istft`` class.
+# The input of the ``Istft`` class is the output STFT object previously computed.
 
 fc_stft = stft.get_output()
 
-# Instantiating the class
+# Instantiate the class
 istft = Istft(fc_stft)
 
-# Processing the ISTFT
+# Process the ISTFT
 istft.process()
 
 # %%
-# Finally plot the output, which is the original signal.
+# Plot the output, which is the original signal.
 
 istft.plot()

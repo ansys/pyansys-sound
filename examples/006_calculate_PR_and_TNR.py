@@ -23,11 +23,11 @@
 """
 .. _calculate_PR_and_TNR:
 
-Calculate tone-to-noise ratio and prominence ratio
---------------------------------------------------
+Calculate tone-to-noise ratio (TNR) and prominence ratio (PR)
+-------------------------------------------------------------
 
-This example shows how to calculate tone-to-noise ratio (TNR) and prominence ratio (PR), following
-standards ECMA 418-1 and ISO 7779, and extract the desired TNR/PR info.
+This example shows how to calculate TNR and PR following the ECMA 418-1 and
+ISO 7779 standards. It also extracts the desired TNR and PR information.
 """
 
 # %%
@@ -36,7 +36,7 @@ standards ECMA 418-1 and ISO 7779, and extract the desired TNR/PR info.
 # Setting up the analysis consists of loading Ansys libraries, connecting to the
 # DPF server, and retrieving the example files.
 
-# Load Ansys libraries.
+# Load Ansys libraries
 from ansys.dpf.core import TimeFreqSupport, fields_factory, locations
 import numpy as np
 
@@ -48,13 +48,14 @@ from ansys.sound.core.server_helpers import connect_to_or_start_server
 server = connect_to_or_start_server()
 
 # %%
-# Calculate TNR from a power spectral density (PSD)
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load a PSD stored as a text file, and use it to create a field that will serve as an input for
-# the TNR calculation.
+# Calculate TNR from a power spectral density
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Load a power spectral density (PSD) stored as a text file and then use it to create
+# a field that serves as an input for the TNR calculation.
 
-# Load the PSD contained in an ASCII file (2 columns: Frequency (Hz); PSD amplitude (dB SPL/Hz)).
-# The data will be located in "C:\Users\username\AppData\Local\Ansys\ansys_sound_core\examples\""
+# Load the PSD contained in an ASCII file. This file has two columns: 'Frequency (Hz)'
+# and 'PSD amplitude (dB SPL/Hz)'. The data is located in
+# "C:\Users\username\AppData\Local\Ansys\ansys_sound_core\examples\".
 path_flute_psd = download_flute_psd()
 fid = open(path_flute_psd)
 fid.readline()  # Skip the first line (header)
@@ -73,8 +74,8 @@ for line in all_lines:
 psd_dBSPL_per_Hz = np.array(psd_dBSPL_per_Hz)
 psd_Pa2_per_Hz = np.power(10, psd_dBSPL_per_Hz / 10) * 4e-10
 
-# The TNR/PR operators require the frequency array to be strictly regularly spaced.
-# So the original frequencies are interpolated to regularly spaced points.
+# The TNR/PR operators require the frequency array to be regularly spaced.
+# Thus, the original frequencies are interpolated to regularly spaced points.
 frequencies_interp = np.linspace(0, 22050, len(frequencies_original))
 psd_Pa2_per_Hz_interp = np.interp(frequencies_interp, frequencies_original, psd_Pa2_per_Hz)
 
@@ -90,7 +91,7 @@ support.time_frequencies = f_frequencies
 f_psd.time_freq_support = support
 
 # %%
-# Create a ToneToNoiseRatio object, set the created PSD field as input, and compute TNR.
+# Create a 'ToneToNoiseRatio' object, set the created PSD field as input, and compute TNR.
 tone_to_noise_ratio = ToneToNoiseRatio(psd=f_psd)
 tone_to_noise_ratio.process()
 
@@ -117,13 +118,13 @@ print(
 tone_to_noise_ratio.plot()
 
 # %%
-# Recalculate tone-to-noise ratio for specific frequencies.
+# Recalculate TNR for specific frequencies.
 frequencies_i = [261, 525, 786, 1836]
 tone_to_noise_ratio = ToneToNoiseRatio(psd=f_psd, frequency_list=frequencies_i)
 tone_to_noise_ratio.process()
 
 # %%
-# Print info for a specific detected peak.
+# Print information for a specific detected peak.
 tone_to_noise_ratio_525 = tone_to_noise_ratio.get_single_tone_info(tone_index=1)
 TNR_frequency = tone_to_noise_ratio_525[0]
 TNR_width = tone_to_noise_ratio_525[4] - tone_to_noise_ratio_525[3]
@@ -138,9 +139,9 @@ print(
 
 
 # %%
-# Calculate PR from a power spectral density (PSD)
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Create a ProminenceRatio object, set the same created PSD field as input, and compute PR.
+# Calculate PR from a PSD
+# ~~~~~~~~~~~~~~~~~~~~~~~
+# Create a 'ProminenceRatio' object, set the same created PSD field as input, and compute PR.
 prominence_ratio = ProminenceRatio(psd=f_psd)
 prominence_ratio.process()
 
@@ -165,13 +166,13 @@ print(
 prominence_ratio.plot()
 
 # %%
-# Recalculate tone-to-noise ratio for specific frequencies.
+# Recalculate TNR for specific frequencies.
 frequencies_i = [261, 525, 786, 1836]
 prominence_ratio = ProminenceRatio(psd=f_psd, frequency_list=frequencies_i)
 prominence_ratio.process()
 
 # %%
-# Print info for a specific detected peak.
+# Print information for a specific detected peak.
 prominence_ratio_786 = prominence_ratio.get_single_tone_info(tone_index=2)
 PR_frequency = prominence_ratio_786[0]
 PR_width = prominence_ratio_786[4] - prominence_ratio_786[3]
