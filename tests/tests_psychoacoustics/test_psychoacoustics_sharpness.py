@@ -24,8 +24,8 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.psychoacoustics import Sharpness
-from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.signal_utilities import LoadWav
 
 EXP_SHARPNESS_1 = 1.6609569787979126

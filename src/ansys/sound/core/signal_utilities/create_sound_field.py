@@ -28,7 +28,7 @@ import numpy as np
 from numpy import typing as npt
 
 from . import SignalUtilitiesParent
-from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class CreateSoundField(SignalUtilitiesParent):

@@ -65,7 +65,11 @@ These API reference pages describe some key features of PyAnsys Sound:
 * :doc:`api/psychoacoustics`: Psychoacoustic indicators computation to measure perceived sound quality.
 * :doc:`api/xtract`: Separation of a signal in several components, such as tonal, transient, and noise parts.
 
+<<<<<<< HEAD
 Not all features of Ansys Sound SAS are available in PyAnsys Sound. Features are regularly added in new versions.
+=======
+Not all the features of Ansys Sound SAS are available in PyAnsys Sound. Features are regularly added in new versions.
+>>>>>>> 37ccde2368d1149ebf25dc4ac06f7d8866e158e8
 
 .. _limitations:
 

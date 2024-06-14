@@ -31,7 +31,7 @@ import numpy as np
 from numpy import typing as npt
 
 from . import XtractParent, XtractTonalParameters
-from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class XtractTonal(XtractParent):

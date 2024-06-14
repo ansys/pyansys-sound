@@ -29,7 +29,7 @@ import matplotlib.pyplot as plt
 from numpy import typing as npt
 
 from . import SpectrogramProcessingParent
-from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class IsolateOrders(SpectrogramProcessingParent):

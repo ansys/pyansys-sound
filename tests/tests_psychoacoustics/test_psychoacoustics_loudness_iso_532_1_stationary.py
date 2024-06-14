@@ -26,8 +26,8 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.psychoacoustics import LoudnessISO532_1_Stationary
-from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.signal_utilities import LoadWav
 
 EXP_LOUDNESS_1 = 39.58000183105469
