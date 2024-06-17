@@ -31,7 +31,8 @@ import numpy as np
 from numpy import typing as npt
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-from ansys.sound.core.xtract._xtract_parent import XtractParent, XtractTransientParameters
+from ansys.sound.core.xtract._xtract_parent import XtractParent
+from ansys.sound.core.xtract.xtract_transient_parameters import XtractTransientParameters
 
 
 class XtractTransient(XtractParent):
