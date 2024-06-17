@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Apply a gain."""
+"""Applies a gain to a signal."""
 
 import warnings
 
@@ -32,7 +32,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class ApplyGain(SignalUtilitiesParent):
-    """Apply a gain to signals."""
+    """Applies a gain to a signal."""
 
     def __init__(
         self, signal: Field | FieldsContainer = None, gain: float = 0.0, gain_in_db: bool = True

@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Loads WAV signals."""
+"""Loads a WAV signal."""
 
 import warnings
 
@@ -32,7 +32,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class LoadWav(SignalUtilitiesParent):
-    """Loads WAV signals."""
+    """Loads a WAV signal."""
 
     def __init__(self, path_to_wav: str = ""):
         """Create a ``LoadWav`` instance.

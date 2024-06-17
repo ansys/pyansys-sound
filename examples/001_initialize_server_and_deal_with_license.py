@@ -31,7 +31,7 @@ required Ansys license (``increment avrxp_snd_level1``) only once. It also shows
 how to connect to the DPF server, verify where it is located, and get other useful
 information.
 
-This example demonstrates the use of the LicenseContextManager, a mechanism that lets you
+This example also demonstrates the use of the LicenseContextManager, a mechanism that lets you
 check out the license only once for the duration of the session, which greatly improves performance.
 It shows the execution time of a simple DPF Sound operator when you do not use the
 LicenseContextManager versus when you do use it.

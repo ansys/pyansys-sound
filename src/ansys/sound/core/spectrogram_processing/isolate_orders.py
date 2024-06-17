@@ -33,9 +33,9 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class IsolateOrders(SpectrogramProcessingParent):
-    """Isolate orders of a signal.
+    """Isolates orders of a signal.
 
-    This class isolates the order of a given signal that has an associated RPM profile.
+    This class isolates the order of a signal that has an associated RPM profile.
     """
 
     def __init__(

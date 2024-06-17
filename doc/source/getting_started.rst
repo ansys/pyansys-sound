@@ -7,7 +7,7 @@ To see which ``ansys-sound-core`` version corresponds to which Ansys version, se
 Installation
 ^^^^^^^^^^^^
 
-This sections explains how to install PyAnsys Sound and its prerequisites in developer mode. If you are
+This sections explains how to install PyAnsys Sound and its prerequisites in user mode. If you are
 interested in contributing to PyAnsys Sound, see :ref:`ref_contribute` for information on installing
 in developer mode.
 
@@ -83,9 +83,9 @@ DPF Server Docker image
 
 To use a DPF Server Docker image, follow the steps in `Run DPF Server in a Docker container
 <https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#run-dpf-server-in-a-docker-container>`_
-in the PyDPF-Core documentation. Make sure that you also download the Sound plugin for the corresponding release, such as
-``ansys_dpf_sound_win_v2024.1.pre0.zip``. After following these steps, you should have a running DPF Docker container
-that listens on port 6780.
+in the PyDPF-Core documentation. Make sure that you also download the DPF Sound plugin for the corresponding release,
+such as ``ansys_dpf_sound_win_v2024.1.pre0.zip``. After following these steps, you should have a running DPF Docker
+container that listens on port 6780.
 
 .. _Ansys DPF: https://dpf.docs.pyansys.com/version/stable/
 .. _Ansys Sound: https://www.ansys.com/sound

@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Crops signals."""
+"""Crops a signal."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -31,7 +31,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class CropSignal(SignalUtilitiesParent):
-    """Crops signals."""
+    """Crops a signal."""
 
     def __init__(
         self, signal: Field | FieldsContainer = None, start_time: float = 0.0, end_time: float = 0.0

@@ -36,7 +36,7 @@ SPECIFIC_FS_ID = "specific"
 
 
 class FluctuationStrength(PsychoacousticsParent):
-    """Computes fluctuation strength for stationary sounds.
+    """Computes the fluctuation strength for a stationary sound.
 
     This class computes the fluctuation strength of a signal according to Sontacchi's master
     thesis work.

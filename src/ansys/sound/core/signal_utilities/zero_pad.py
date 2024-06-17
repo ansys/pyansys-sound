@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Adds zeros at the end of signals."""
+"""Adds zeros at the end of a signal."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -31,7 +31,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class ZeroPad(SignalUtilitiesParent):
-    """Adds zeros at the end of signals."""
+    """Adds zeros at the end of a signal."""
 
     def __init__(self, signal: Field | FieldsContainer = None, duration_zeros: float = 0.0):
         """Create a ``ZeroPad`` instance.

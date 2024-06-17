@@ -73,8 +73,8 @@ my_server = connect_to_or_start_server(use_license_context=True)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Define a custom function for STFT plots that lets you have
 # more control over what you are displaying.
-# While you could use the ``Stft.plot()`` method, using the
-# custom function defined here restricts the frequency range of the plot.
+# While you could use the ``Stft.plot()`` method, the custom function
+# defined here restricts the frequency range of the plot.
 def plot_stft(stft_class, SPLmax, title="STFT", maximum_frequency=MAX_FREQUENCY_PLOT_STFT):
     """Plot a short-term Fourier transform (STFT) into a figure window.
 

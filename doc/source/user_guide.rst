@@ -3,13 +3,13 @@ User guide
 ==========
 
 This section explains how to start a DPF server, load a WAV signal, and perform operations
-on the signal.
+on this signal.
 
 Start a DPF server
 ------------------
 
 You use the :func:`connect_to_or_start_server() <ansys.sound.core.server_helpers._connect_to_or_start_server.connect_to_or_start_server>`
-function to start either a remote or local DPF server that is required to run PyAnsys Sound.
+function to start either a remote or local DPF server, which is required to run PyAnsys Sound.
 
 You can start the server with this code:
 
@@ -58,11 +58,11 @@ have four methods in common:
   every time an input parameter is changed.
 - ``plot()``: Plots the output of the class. Depending on the nature of the output, the plot might be different.
 - ``get_output()``: Gets the outputs as a DPF object (either a ``Field`` or a ``FieldsContainer`` object).
-- ``get_output_as_nparray()``: Gets the outputs as a NumPy array.
+- ``get_output_as_nparray()``: Gets the output as a NumPy array.
 
 A class might also have some additional methods.
 
-For examples on how to use PyAnsys Sound classes and helpers, see :doc:`examples/index`.
+For comprehensive information on using PyAnsys Sound classes and helpers, see :doc:`examples/index`.
 
 .. _Ansys DPF: https://dpf.docs.pyansys.com/version/stable/
 .. _Ansys Sound: https://www.ansys.com/sound
