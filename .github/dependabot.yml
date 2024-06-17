@@ -9,7 +9,7 @@ updates:
       - "maintenance"
       - "dependencies"
     commit-message:
-      prefix: "maint"
+      prefix: "build"
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -18,7 +18,7 @@ updates:
     labels:
       - "maintenance"
     commit-message:
-      prefix: "maint"
+      prefix: "ci"
     groups:
        actions:
           patterns:
