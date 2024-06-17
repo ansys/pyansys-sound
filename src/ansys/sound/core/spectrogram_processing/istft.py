@@ -114,7 +114,8 @@ class Istft(SpectrogramProcessingParent):
             # Computing output if needed
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the 'Istft.process()' method."
+                    "Output is not processed yet. \
+                        Use the 'Istft.process()' method."
                 )
             )
 

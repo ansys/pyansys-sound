@@ -47,7 +47,7 @@ class ProminenceRatio(PsychoacousticsParent):
         ----------
         psd: Field
             PSD of the signal to compute PR on as a DPF field.
-            The PSD Field has the following characteristics:
+            The PSD field has the following characteristics:
 
             - num_entities = 1
             - location = "TimeFreq_sets"
@@ -83,6 +83,7 @@ class ProminenceRatio(PsychoacousticsParent):
         -------
         psd: Field
             PSD of the signal to compute PR on as a DPF field.
+
             The PSD field has the following characteristics:
 
             - num_entities = 1
@@ -129,7 +130,7 @@ class ProminenceRatio(PsychoacousticsParent):
 
     @frequency_list.getter
     def frequency_list(self) -> list:
-        """Get the frequency list.
+        """Frequency list.
 
         Returns
         -------
@@ -140,7 +141,7 @@ class ProminenceRatio(PsychoacousticsParent):
         return self.__frequency_list
 
     def process(self):
-        """Compute PR.
+        """Compute the PR.
 
         This method calls the appropriate DPF Sound operator to compute the PR on the PSD.
         """
@@ -164,39 +165,40 @@ class ProminenceRatio(PsychoacousticsParent):
         self._output = self.__operator.get_output(0, "generic_data_container")
 
     def get_output(self) -> GenericDataContainer:
-        """Get PR data in a tuple of a generic data container.
+        """Get PR data in a tuple as a generic data container.
 
         Returns
         -------
         GenericDataContainer
-            PR curve.
+            First element is the PR curve.
 
-            PR details.
+            Second element is the PR information.
         """
         if self._output == None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is been processed yet. Use the 'ProminentRatio.process()' method."
+                    "Output is not processed yet. \
+                        Use the 'ProminentRatio.process()' method."
                 )
             )
 
         return self._output
 
     def get_output_as_nparray(self) -> tuple[npt.ArrayLike] | None:
-        """Get PR data as a tuple of a NumPy array.
+        """Get PR data in a tuple as a NumPy array.
 
         Returns
         -------
         tuple
-            First element is the vector of peaks' frequencies in Hz.
+            First element is the vector of the peaks' frequencies in Hz.
 
-            Second element is the vector of peaks' PR values in dB.
+            Second element is the vector of the peaks' PR values in dB.
 
-            Third element is the vector of peaks' level values in dBSPL.
+            Third element is the vector of the peaks' level values in dBSPL.
 
-            Fourth element is the vector of peaks' lower frequency limits in Hz.
+            Fourth element is the vector of the peaks' lower frequency limits in Hz.
 
-            Fifth element is the vector of peaks' higher frequency limits in Hz.
+            Fifth element is the vector of the peaks' higher frequency limits in Hz.
 
             Sixth element is the maximum PR value in dB.
 
@@ -226,18 +228,19 @@ class ProminenceRatio(PsychoacousticsParent):
         """
         if self.get_output() == None:
             raise PyAnsysSoundException(
-                "Output is not processed yet. Use the 'ProminenceRatio.process()' method."
+                "Output is not processed yet. \
+                    Use the 'ProminenceRatio.process()' method."
             )
 
         return len(self.get_output_as_nparray()[0])
 
     def get_peaks_frequencies(self) -> npt.ArrayLike:
-        """Get the vector of peaks' frequencies.
+        """Get the vector of the peaks' frequencies.
 
         Returns
         -------
         numpy.ndarray
-            Vector of peaks' frequencies in Hz.
+            Vector of the peaks' frequencies in Hz.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -245,12 +248,12 @@ class ProminenceRatio(PsychoacousticsParent):
         return self.get_output_as_nparray()[0]
 
     def get_PR_values(self) -> npt.ArrayLike:
-        """Get the vector of peaks' PR values.
+        """Get the vector of the peaks' PR values.
 
         Returns
         -------
         numpy.ndarray
-            Vector of peaks' PR values in dB.
+            Vector of the peaks' PR values in dB.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -258,12 +261,12 @@ class ProminenceRatio(PsychoacousticsParent):
         return self.get_output_as_nparray()[1]
 
     def get_peaks_levels(self) -> npt.ArrayLike:
-        """Get the vector of peaks' level values.
+        """Get the vector of the peaks' level values.
 
         Returns
         -------
         numpy.ndarray
-            Vector of peaks' level values in dBSPL.
+            Vector of the peaks' level values in dBSPL.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -271,12 +274,12 @@ class ProminenceRatio(PsychoacousticsParent):
         return self.get_output_as_nparray()[2]
 
     def get_peaks_low_frequencies(self) -> npt.ArrayLike:
-        """Get the vector of peaks' lower frequency limits.
+        """Get the vector of the peaks' lower-frequency limits.
 
         Returns
         -------
         numpy.ndarray
-            Vector of eaks' lower frequency limits in Hz.
+            Vector of the peaks' lower-frequency limits in Hz.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -284,12 +287,12 @@ class ProminenceRatio(PsychoacousticsParent):
         return self.get_output_as_nparray()[3]
 
     def get_peaks_high_frequencies(self) -> npt.ArrayLike:
-        """Get the vector of peaks' higher frequency limits.
+        """Get the vector of the peaks' higher-frequency limits.
 
         Returns
         -------
         numpy.ndarray
-            Vector of peaks' higher frequency limits in Hz.
+            Vector of the peaks' higher-frequency limits in Hz.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -310,7 +313,7 @@ class ProminenceRatio(PsychoacousticsParent):
         return self.get_output_as_nparray()[5]
 
     def get_single_tone_info(self, tone_index: int) -> tuple[float]:
-        """Get PR details for a given tone.
+        """Get PR information for a given tone.
 
         Parameters
         ----------
@@ -381,10 +384,11 @@ class ProminenceRatio(PsychoacousticsParent):
         return ref_curve
 
     def plot(self):
-        """Plot PR for all identified peaks, along with the reference curve."""
+        """Plot the PR for all identified peaks, along with the reference curve."""
         if self._output == None:
             raise PyAnsysSoundException(
-                "Output is not processed yet. Use the 'ProminenceRatio.process()' method."
+                "Output is not processed yet. \
+                    Use the 'ProminenceRatio.process()' method."
             )
 
         tones_frequencies = self.get_peaks_frequencies()

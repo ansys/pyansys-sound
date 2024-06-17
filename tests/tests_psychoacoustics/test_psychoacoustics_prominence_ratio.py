@@ -196,7 +196,8 @@ def test_prominence_ratio_get_nb_tones(dpf_sound_test_server, create_psd_from_tx
         pr.get_nb_tones()
     assert (
         str(excinfo.value)
-        == "Output is not processed yet. Use the 'ProminenceRatio.process()' method."
+        == "Output is not processed yet. \
+            Use the 'ProminenceRatio.process()' method."
     )
 
     pr.process()
@@ -323,7 +324,8 @@ def test_prominence_ratio_get_all_tone_infos(dpf_sound_test_server, create_psd_f
         pr.get_single_tone_info(1)
     assert (
         str(excinfo.value)
-        == "Output is not processed yet. Use the 'ProminenceRatio.process()' method."
+        == "Output is not processed yet. \
+            Use the 'ProminenceRatio.process()' method."
     )
 
     pr.process()
@@ -387,7 +389,11 @@ def test_prominence_ratio_plot(dpf_sound_test_server, create_psd_from_txt_data):
 
     with pytest.raises(PyAnsysSoundException) as excinfo:
         pr.plot()
-    assert str(excinfo.value) == "Output has not been processed yet, use ProminenceRatio.process()."
+    assert (
+        str(excinfo.value)
+        == "Output is not processed yet. \
+        Use the 'ProminenceRatio.process()' method."
+    )
 
     pr.process()
     pr.plot()

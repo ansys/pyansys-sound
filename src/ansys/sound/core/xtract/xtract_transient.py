@@ -47,8 +47,8 @@ class XtractTransient(XtractParent):
         Parameters
         ----------
         input_signal: FieldsContainer | Field, default: None
-            One or more signal to extract transient components on
-            as a DPF field or fields container. When inputting a fields container,
+            One or more signals to extract transient components on
+            as a DPF fields container or fields. When inputting a fields container,
             each signal (each field of the fields container) is processed individually.
         input_parameters: XtractTransientParameters, default: None
             Structure that contains the parameters of the algorithm:
@@ -59,11 +59,11 @@ class XtractTransient(XtractParent):
             This structure is of the ``XtractTransientParameters`` type. For more information,
             see this class.
         output_transient_signals:
-            One or more transient signals as a DPF field or fields container (depending on
+            One or more transient signals as a DPF fields container or field (depending on
             the input).
         output_non_transient_signals:
             One or more non-transient signals (original signal minus transient signal)
-            as a DPF field or fields container (depending on the input).
+            as a DPF fields container or field (depending on the input).
         """
         super().__init__()
         self.input_signal = input_signal
@@ -85,7 +85,7 @@ class XtractTransient(XtractParent):
         -------
         FieldsContainer | Field
             One or more signals to extract transient components on
-            as a DPF field or fields container. When inputting a fields container,
+            as a DPF fields container or field. When inputting a fields container,
             each signal (each field of the fields container) is processed individually.
         """
         return self.__input_signal  # pragma: no cover
@@ -98,7 +98,7 @@ class XtractTransient(XtractParent):
         ----------
         value: FieldsContainer | Field
             One or more signal to extract transient components on
-            as a DPF field or fields container. When inputting a fields container,
+            as a DPF fields container or field. When inputting a fields container,
             each signal (each field of the fields container) is processed individually.
         """
         self.__input_signal = value
@@ -138,7 +138,7 @@ class XtractTransient(XtractParent):
         Returns
         -------
         FieldsContainer | Field
-            One or more transient signals as a DPF field or fields container (depending on
+            One or more transient signals as a DPF fields container or field (depending on
             the input).
         """
         return self.__output_transient_signals  # pragma: no cover
@@ -151,7 +151,7 @@ class XtractTransient(XtractParent):
         -------
         FieldsContainer | Field
             One or more non-transient signals (original signal minus transient signal)
-            as a DPF field or fields container (depending on the input).
+            as a DPF fields container or field (depending on the input).
         """
         return self.__output_non_transient_signals  # pragma: no cover
 
@@ -189,7 +189,7 @@ class XtractTransient(XtractParent):
         -------
         Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
             One or more transient signals and non-transient signals
-            as a DPF field or fields container (depending on the input).
+            as a DPF fields container or field (depending on the input).
         """
         if self.__output_transient_signals is None or self.__output_non_transient_signals is None:
             warnings.warn(PyAnsysSoundWarning("Output is not processed yet."))

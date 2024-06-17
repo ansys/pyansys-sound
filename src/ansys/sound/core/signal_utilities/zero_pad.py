@@ -100,13 +100,14 @@ class ZeroPad(SignalUtilitiesParent):
         return self.__duration_zeros
 
     def process(self):
-        """Zero pad the signal.
+        """Pad the signal with zeros.
 
         This method calls the appropriate DPF Sound operator to append zeros to the signal.
         """
         if self.signal == None:
             raise PyAnsysSoundException(
-                "No signal found to zero pad. Use the 'ZeroPad.set_signal()' method."
+                "No signal found to zero pad. \
+                    Use the 'ZeroPad.set_signal()' method."
             )
 
         self.__operator.connect(0, self.signal)
@@ -133,7 +134,8 @@ class ZeroPad(SignalUtilitiesParent):
             # Computing output if needed
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the 'ZeroPad.process()' method."
+                    "Output is not processed yet. \
+                        Use the 'ZeroPad.process()' method."
                 )
             )
 

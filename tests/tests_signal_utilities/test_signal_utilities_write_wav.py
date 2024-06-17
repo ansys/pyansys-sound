@@ -49,7 +49,11 @@ def test_write_wav_process(dpf_sound_test_server):
     # Error 2
     with pytest.raises(PyAnsysSoundException) as excinfo:
         wav_writer.process()
-    assert str(excinfo.value) == "No signal is specified for writing. Use 'WriteWav.set_signal'."
+    assert (
+        str(excinfo.value)
+        == "No signal is specified for writing to a WAV file. \
+        Use 'WriteWav.set_signal'."
+    )
 
     wav_loader.process()
     wav_writer.signal = wav_loader.get_output()

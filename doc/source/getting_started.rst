@@ -27,12 +27,12 @@ To install these prerequisites, you can choose from two methods:
   `Install DPF Server`_ in the PyDPF-Core documentation.
 
 .. note::
-  You can also use `DPF Server as a Docker image`_.
+  You can also use a `DPF Server Docker image`_.
 
 Install PyAnsys Sound
 """""""""""""""""""""
 
-To install ``ansys-sound-core`` package with ``pip``, run this command:
+To install the latest ``ansys-sound-core`` package with ``pip``, run this command:
 
 .. code::
 
@@ -45,7 +45,7 @@ requires version 0.1.0 of the ``ansys-sound-core`` package. To install version 0
 
     pip install ansys-sound-core==0.1.0
 
-You should use a `virtual environment <https://docs.python.org/3/library/venv.html>`_,
+You should use a `virtual environment <https://docs.python.org/3/library/venv.html>`_
 because it keeps Python packages isolated from your Python system.
 
 
@@ -72,7 +72,7 @@ By default, DPF Server is started from the latest installed Ansys version.
 Examples
 ^^^^^^^^
 
-Several basic examples for using PyAnsys Sound are available in :doc:`examples/index`.
+Examples for using PyAnsys Sound are available in :doc:`examples/index`.
 At the end of each example, there is a button for downloading the example's Python source code.
 
 
@@ -83,7 +83,7 @@ DPF Server Docker image
 
 To use a DPF Server Docker image, follow the steps in `Run DPF Server in a Docker container
 <https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#run-dpf-server-in-a-docker-container>`_
-in the DPF documentation. Make sure that you also download the Sound plugin for the corresponding release, such as
+in the PyDPF-Core documentation. Make sure that you also download the Sound plugin for the corresponding release, such as
 ``ansys_dpf_sound_win_v2024.1.pre0.zip``. After following these steps, you should have a running DPF Docker container
 that listens on port 6780.
 

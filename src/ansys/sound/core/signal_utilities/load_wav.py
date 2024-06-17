@@ -65,7 +65,7 @@ class LoadWav(SignalUtilitiesParent):
 
     @path_to_wav.getter
     def path_to_wav(self) -> str:
-        """Get the path of the WAV file to load.
+        """Path to the WAV file to load.
 
         Returns
         -------
@@ -111,7 +111,8 @@ class LoadWav(SignalUtilitiesParent):
             # Computing output if needed
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the `LoadWav.process()` method."
+                    "Output is not processed yet. \
+                        Use the 'LoadWav.process()' method."
                 )
             )
 

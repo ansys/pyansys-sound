@@ -73,7 +73,7 @@ class CropSignal(SignalUtilitiesParent):
 
     @start_time.getter
     def start_time(self) -> float:
-        """Get the start time.
+        """Start time.
 
         Returns
         -------
@@ -106,7 +106,7 @@ class CropSignal(SignalUtilitiesParent):
 
     @end_time.getter
     def end_time(self) -> float:
-        """Get the end time.
+        """End time.
 
         Returns
         -------
@@ -127,12 +127,12 @@ class CropSignal(SignalUtilitiesParent):
 
     @signal.getter
     def signal(self) -> Field | FieldsContainer:
-        """Get the signal.
+        """Signal.
 
         Returns
         -------
-        FieldsContainer | Field
-            Signal as a Field or a FieldsContainer
+        Field | FieldsContainer
+            Signal as a DPF field or fields container
         """
         return self.__signal
 
@@ -142,7 +142,10 @@ class CropSignal(SignalUtilitiesParent):
         This method calls the appropriate DPF Sound operator to crop the signal.
         """
         if self.signal == None:
-            raise PyAnsysSoundException("No signal to crop. Use CropSignal.set_signal().")
+            raise PyAnsysSoundException(
+                "No signal found to crop. \
+                Use the 'CropSignal.set_signal()' method."
+            )
 
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, float(self.start_time))
@@ -169,7 +172,8 @@ class CropSignal(SignalUtilitiesParent):
             # Computing output if needed
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the 'CropSignal.process()' method."
+                    "Output is not processed yet. \
+                        Use the 'CropSignal.process()' method."
                 )
             )
 

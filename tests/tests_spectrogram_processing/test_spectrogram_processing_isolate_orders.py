@@ -49,10 +49,7 @@ def test_isolate_orders_process(dpf_sound_test_server):
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
         isolate_orders.process()
-    assert (
-        str(excinfo.value)
-        == "No signal found for order isolation. Use the 'IsolateOrder.signal' method."
-    )
+    assert str(excinfo.value) == "No signal found for order isolation. Use 'IsolateOrder.signal'."
 
     isolate_orders.signal = signal
 
@@ -61,7 +58,7 @@ def test_isolate_orders_process(dpf_sound_test_server):
         isolate_orders.process()
     assert (
         str(excinfo.value)
-        == "No RPM profile found for order isolation. Use the 'IsolateOrder.rpm_profile' method."
+        == "No RPM profile found for order isolation. Use 'IsolateOrder.rpm_profile'."
     )
 
     # Testing input fields container (no error expected)
@@ -92,7 +89,8 @@ def test_isolate_orders_get_output(dpf_sound_test_server):
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the 'IsolateOrders.process()' method.",
+        match="Output is not processed yet. \
+            Use the 'IsolateOrders.process()' method.",
     ):
         fc_out = isolate_orders.get_output()
 

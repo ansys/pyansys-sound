@@ -27,7 +27,7 @@ Use the Xtract feature
 ----------------------
 
 This example shows how to use the Xtract feature in PyAnsys Sound.
-It displays the different capabilities of this feature, such as
+It demonstrates different capabilities of this feature, such as
 noise extraction, tonal extraction, and transient extraction.
 
 """
@@ -73,8 +73,8 @@ my_server = connect_to_or_start_server(use_license_context=True)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Define a custom function for STFT plots that lets you have
 # more control over what you are displaying.
-# While you could use the ``Stft.plot()`` method,
-# this custom function restricts the frequency range of the plot.
+# While you could use the ``Stft.plot()`` method, using the
+# custom function defined here restricts the frequency range of the plot.
 def plot_stft(stft_class, SPLmax, title="STFT", maximum_frequency=MAX_FREQUENCY_PLOT_STFT):
     """Plot a short-term Fourier transform (STFT) into a figure window.
 
@@ -162,26 +162,26 @@ plot_stft(stft_original, SPLmax=max_stft, maximum_frequency=20000.0)
 # %%
 # Use individual extraction features
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# This topic shows how to use different capabilities of Xtract independently.
+# The following topics show how to use different capabilities of Xtract independently.
 
 # %%
-## Noise extraction
-## ~~~~~~~~~~~~~~~~
-## The goal is to isolate a fan noise deprived of any tonal content in the demo signal.
+# Noise extraction
+# ^^^^^^^^^^^^^^^^
+# The goal is to isolate a fan noise deprived of any tonal content in the demo signal.
 
-## Create a noise pattern using the first two seconds of the signal.
-## First crop the first two seconds of the signal.
+# Create a noise pattern using the first two seconds of the signal.
+# First crop the first two seconds of the signal.
 signal_cropper = CropSignal(signal=time_domain_signal, start_time=0.0, end_time=2.0)
 signal_cropper.process()
 cropped_signal = signal_cropper.get_output()
 
-## Then use the 'XtractDenoiserParameters' class to create the noise pattern.
+# Then use the 'XtractDenoiserParameters' class to create the noise pattern.
 xtract_denoiser_params = XtractDenoiserParameters()
 xtract_denoiser_params.noise_psd = xtract_denoiser_params.create_noise_psd_from_noise_samples(
     signal=cropped_signal, sampling_frequency=44100.0, window_length=100
 )
 
-## Denoise the signal using the 'XtractDenoiser' class.
+# Denoise the signal using the 'XtractDenoiser' class.
 xtract_denoiser = XtractDenoiser(
     input_signal=time_domain_signal, input_parameters=xtract_denoiser_params
 )
@@ -189,7 +189,7 @@ xtract_denoiser.process()
 
 noise_signal = xtract_denoiser.get_output()[1]
 
-## Plot the original signal and the noise signal in the same window
+# Plot the original signal and the noise signal in the same window
 plt.plot(time_vector, time_domain_signal.data, label="Original Signal")
 plt.plot(time_vector, noise_signal.data, label="Noise Signal")
 plt.grid(True)
@@ -200,12 +200,12 @@ plt.legend()
 plt.show()
 
 # %%
-## Tone extraction
-## ~~~~~~~~~~~~~~~
-## The goal is to isolate the tones using the right settings.
+# Tone extraction
+# ^^^^^^^^^^^^^^^
+# The goal is to isolate the tones using the right settings.
 
 # Try a first attempt of tone extraction with a
-# first set of parameters using the 'XtractTonalParameters' class.
+# First set of parameters using the 'XtractTonalParameters' class.
 xtract_tonal_params = XtractTonalParameters()
 xtract_tonal_params.regularity = 1.0
 xtract_tonal_params.maximum_slope = 1000.0
@@ -219,7 +219,7 @@ xtract_tonal = XtractTonal(input_signal=time_domain_signal, input_parameters=xtr
 xtract_tonal.process()
 
 # %%
-## Plot the spectrogram to assess the quality of the output
+# Plot the spectrogram to assess the quality of the output
 stft_modified_signal = Stft(signal=xtract_tonal.get_output()[0], fft_size=1024, window_overlap=0.9)
 stft_modified_signal.process()
 
@@ -233,7 +233,7 @@ plot_stft(stft_modified_signal, SPLmax=max_stft, title="Extracted Tones")
 # You can see from the obtained plot that the tones are not properly extracted.
 
 # %%
-## Try again with a different parameter for the maximum slope.
+# Try again with a different parameter for the maximum slope.
 xtract_tonal_params.maximum_slope = 5000.0
 xtract_tonal.process()
 
@@ -247,20 +247,20 @@ stft_modified_signal.process()
 plot_stft(stft_modified_signal, SPLmax=max_stft, title="Extracted Tones")
 
 # %%
-## Transient extraction
-## ~~~~~~~~~~~~~~~~~~~~
-## The goal is to isolate the transients using the right settings.
-## While these settings are not as easy to handle, they are well explained in the tutorial videos
-## installed with the Ansys Sound SAS standalone application (with the user interface).
-## You can also find these videos on the Ansys Learning Hub (SAS - XTRACT transient:
-## https://learninghub.ansys.com/share/asset/view/108)
+# Transient extraction
+# ^^^^^^^^^^^^^^^^^^^^
+# The goal is to isolate the transients using the right settings.
+# While these settings are not as easy to handle, they are well explained in the tutorial videos
+# installed with the Ansys Sound SAS standalone application (with the user interface). You
+# can also find the `SAS - XTRACT transient <https://learninghub.ansys.com/share/asset/view/108>`_
+# videos on the Ansys Learning Hub.
 
-# Create a set of transient parameters
-# for this example, we assume that we already know the best min/max thresholds.
-# The SAS user interface can be used to help setting up these thresholds interactively.
+# Create a set of transient parameters.
+# This example assumes that the best minimum and maximum thresholds are known.
+# You can use the SAS interface to help set up these thresholds interactively.
 xtract_transient_params = XtractTransientParameters(lower_threshold=51.5, upper_threshold=60.0)
 
-# Then perform the transient extraction using the 'XtractTransient' class
+# Perform the transient extraction using the 'XtractTransient' class.
 xtract_transient = XtractTransient(
     input_signal=time_domain_signal, input_parameters=xtract_transient_params
 )

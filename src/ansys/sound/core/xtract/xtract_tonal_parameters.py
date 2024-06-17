@@ -37,7 +37,7 @@ ID_FFT_SIZE = "fft_size"
 
 
 class XtractTonalParameters(XtractParent):
-    """Contains tonal parameters for use in an ``Xtract`` or ``XtractDenoiser`` instance."""
+    """Contains tonal parameters for use in Xtract processing or signal denoising."""
 
     def __init__(
         self,

@@ -41,7 +41,9 @@ def test_zero_pad_process(dpf_sound_test_server):
     with pytest.raises(PyAnsysSoundException) as excinfo:
         zero_pad.process()
     assert (
-        str(excinfo.value) == "No signal found to zero pad. Use the 'ZeroPad.set_signal()' method."
+        str(excinfo.value)
+        == "No signal found to zero pad. \
+            Use the 'ZeroPad.set_signal()' method."
     )
 
     wav_loader.process()
@@ -64,7 +66,8 @@ def test_zero_pad_get_output(dpf_sound_test_server):
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the 'ZeroPad.process()' method.",
+        match="Output is not processed yet. \
+            Use the 'ZeroPad.process()' method.",
     ):
         fc_out = zero_pad.get_output()
 

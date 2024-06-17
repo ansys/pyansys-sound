@@ -64,7 +64,9 @@ def test_stft_get_output(dpf_sound_test_server):
     stft = Stft(signal=fc_signal)
 
     with pytest.warns(
-        PyAnsysSoundWarning, match="Output is not processed yet. Use the 'Stft.process()' method."
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. \
+            Use the 'Stft.process()' method.",
     ):
         fc_out = stft.get_output()
 

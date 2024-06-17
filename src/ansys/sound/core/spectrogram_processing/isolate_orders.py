@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Isolate orders of a signal."""
+"""Isolates orders of a signal."""
 
 import warnings
 
@@ -193,8 +193,8 @@ class IsolateOrders(SpectrogramProcessingParent):
             and window_type != "RECTANGULAR"
         ):
             raise PyAnsysSoundException(
-                "Invalid window type, accepted values are 'HANNING', 'BLACKMANHARRIS', 'HANN', \
-                    'BLACKMAN','HAMMING', 'KAISER', 'BARTLETT', 'RECTANGULAR'."
+                "Window type is invalid. Options are 'BARTLETT', 'BLACKMAN', 'BLACKMANHARRIS', \
+                    'HAMMING', ''HANN', 'HANNING', 'KAISER', and 'RECTANGULAR'."
             )
 
         self.__window_type = window_type
@@ -306,7 +306,8 @@ class IsolateOrders(SpectrogramProcessingParent):
             # Computing output if needed
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the IsolateOrders.process() method."
+                    "Output is not processed yet. \
+                        Use the 'IsolateOrders.process()' method."
                 )
             )
 
@@ -328,7 +329,7 @@ class IsolateOrders(SpectrogramProcessingParent):
         return self.convert_fields_container_to_np_array(output)
 
     def plot(self):
-        """Plot signal after order isolation."""
+        """Plot the signal after order isolation."""
         output = self.get_output()
 
         if type(output) == Field:

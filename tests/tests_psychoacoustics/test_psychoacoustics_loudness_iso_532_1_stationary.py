@@ -63,7 +63,7 @@ def test_loudness_iso_532_1_stationary_process(dpf_sound_test_server):
     # No signal -> error
     with pytest.raises(
         PyAnsysSoundException,
-        match="No signal for loudness computation. \
+        match="No signal found for loudness computation. \
             Use 'LoudnessISO532_1_Stationary.signal'.",
     ):
         loudness_computer.process()

@@ -36,7 +36,7 @@ ISO 7779 standards. It also extracts the desired TNR and PR information.
 # Setting up the analysis consists of loading Ansys libraries, connecting to the
 # DPF server, and retrieving the example files.
 
-# Load Ansys libraries
+# Load Ansys libraries.
 from ansys.dpf.core import TimeFreqSupport, fields_factory, locations
 import numpy as np
 
@@ -44,7 +44,7 @@ from ansys.sound.core.examples_helpers import download_flute_psd
 from ansys.sound.core.psychoacoustics import ProminenceRatio, ToneToNoiseRatio
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 
-# Connect to remote or start a local server.
+# Connect to a remote server or start a local server.
 server = connect_to_or_start_server()
 
 # %%
@@ -91,7 +91,7 @@ support.time_frequencies = f_frequencies
 f_psd.time_freq_support = support
 
 # %%
-# Create a 'ToneToNoiseRatio' object, set the created PSD field as input, and compute TNR.
+# Create a ``ToneToNoiseRatio`` object, set the created PSD field as input, and compute the TNR.
 tone_to_noise_ratio = ToneToNoiseRatio(psd=f_psd)
 tone_to_noise_ratio.process()
 
@@ -114,11 +114,11 @@ print(
 )
 
 # %%
-# Plot TNR over frequency.
+# Plot the TNR over frequency.
 tone_to_noise_ratio.plot()
 
 # %%
-# Recalculate TNR for specific frequencies.
+# Recalculate the TNR for specific frequencies.
 frequencies_i = [261, 525, 786, 1836]
 tone_to_noise_ratio = ToneToNoiseRatio(psd=f_psd, frequency_list=frequencies_i)
 tone_to_noise_ratio.process()
@@ -141,12 +141,12 @@ print(
 # %%
 # Calculate PR from a PSD
 # ~~~~~~~~~~~~~~~~~~~~~~~
-# Create a 'ProminenceRatio' object, set the same created PSD field as input, and compute PR.
+# Create a ``ProminenceRatio`` object, set the same created PSD field as input, and compute the PR.
 prominence_ratio = ProminenceRatio(psd=f_psd)
 prominence_ratio.process()
 
 # %%
-# Print results.
+# Print the results.
 number_tones = prominence_ratio.get_nb_tones()
 PR = prominence_ratio.get_max_PR_value()
 PR_frequencies = prominence_ratio.get_peaks_frequencies()
@@ -162,11 +162,11 @@ print(
 )
 
 # %%
-# Plot PR over frequency.
+# Plot the PR over frequency.
 prominence_ratio.plot()
 
 # %%
-# Recalculate TNR for specific frequencies.
+# Recalculate the TNR for specific frequencies.
 frequencies_i = [261, 525, 786, 1836]
 prominence_ratio = ProminenceRatio(psd=f_psd, frequency_list=frequencies_i)
 prominence_ratio.process()

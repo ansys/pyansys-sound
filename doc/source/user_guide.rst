@@ -2,16 +2,14 @@
 User guide
 ==========
 
-PyAnsys Sound lets you use the main features of `Ansys Sound`_ to perform
-postprocessing and analysis of sounds and vibrations in Python. This library is based on
-`Ansys DPF`_ and the DPF Sound plugin. It is a Python wrapper that implements classes on top
-of DPF Sound operators.
+This section explains how to start a DPF server, load a WAV signal, and perform operations
+on the signal.
 
 Start a DPF server
 ------------------
 
 You use the :func:`connect_to_or_start_server() <ansys.sound.core.server_helpers._connect_to_or_start_server.connect_to_or_start_server>`
-method to start either a remote or local DPF server that is required to run PyAnsys Sound.
+function to start either a remote or local DPF server that is required to run PyAnsys Sound.
 
 You can start the server with this code:
 
@@ -24,7 +22,7 @@ You can start the server with this code:
 If the ``ANSRV_DPF_SOUND_PORT`` environment variable is set, PyAnsys Sound
 attempts to connect to a server located in a Docker container. The default port is ``6780``.
 
-If this environment variable is not specified, PyAnsys Sound tries to start a local server.
+If this environment variable is not set, PyAnsys Sound tries to start a local server.
 
 For more information on local and remote DPF servers, see `Install DPF Server`_ in the PyDPF-Core documentation.
 
@@ -36,7 +34,7 @@ Most of the processing done by PyAnsys Sound relies on temporal sound signals th
 .. vale off
 
 To load a WAV file , you must use the :class:`LoadWav <ansys.sound.core.signal_utilities.LoadWav>` class.
-Once your signal is loaded, you can use all other PyAnsys Sound classes can be used and applied to this signal.
+Once your signal is loaded, you can use all other PyAnsys Sound classes on this signal.
 
 .. vale on
 .. code:: python
@@ -59,8 +57,8 @@ have four methods in common:
 - ``process()``: Performs the operation that the class was made for. This method must be called explicitly
   every time an input parameter is changed.
 - ``plot()``: Plots the output of the class. Depending on the nature of the output, the plot might be different.
-- ``get_output()``: Returns the outputs as a DPF object (either a ``Field`` or a ``FieldsContainer`` object).
-- ``get_output_as_nparray()``: Returns the outputs as a NumPy array.
+- ``get_output()``: Gets the outputs as a DPF object (either a ``Field`` or a ``FieldsContainer`` object).
+- ``get_output_as_nparray()``: Gets the outputs as a NumPy array.
 
 A class might also have some additional methods.
 

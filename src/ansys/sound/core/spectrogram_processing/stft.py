@@ -34,7 +34,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Stft(SpectrogramProcessingParent):
-    """Compute the short-time Fourier transform (STFT) of a signal."""
+    """Computes the short-time Fourier transform (STFT) of a signal."""
 
     def __init__(
         self,
@@ -87,7 +87,7 @@ class Stft(SpectrogramProcessingParent):
 
     @signal.getter
     def signal(self) -> Field:
-        """Get the signal.
+        """Signal.
 
         Returns
         -------
@@ -184,7 +184,7 @@ class Stft(SpectrogramProcessingParent):
         This method calls the appropriate DPF Sound operator to compute the STFT of the signal.
         """
         if self.signal == None:
-            raise PyAnsysSoundException("No signal found for STFT. Use `Stft.signal`.")
+            raise PyAnsysSoundException("No signal found for STFT. Use 'Stft.signal'.")
 
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, int(self.fft_size))
@@ -198,7 +198,7 @@ class Stft(SpectrogramProcessingParent):
         self._output = self.__operator.get_output(0, "fields_container")
 
     def get_output(self) -> FieldsContainer:
-        """Get the STFT as a DPF fields container.
+        """Get the STFT of the signal as a DPF fields container.
 
         Returns
         -------
@@ -208,7 +208,10 @@ class Stft(SpectrogramProcessingParent):
         if self._output == None:
             # Computing output if needed
             warnings.warn(
-                PyAnsysSoundWarning("Output is not processed yet. Use the 'Stft.process()' method.")
+                PyAnsysSoundWarning(
+                    "Output is not processed yet. \
+                    Use the 'Stft.process()' method."
+                )
             )
 
         return self._output

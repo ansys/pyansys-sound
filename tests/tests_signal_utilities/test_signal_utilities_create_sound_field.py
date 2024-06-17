@@ -51,7 +51,8 @@ def test_create_sound_field_get_output(dpf_sound_test_server):
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the 'CreateSoundField.process()' method.",
+        match="Output is not processed yet. \
+            Use the 'CreateSoundField.process()' method.",
     ):
         f_out = sound_field_creator.get_output()
 

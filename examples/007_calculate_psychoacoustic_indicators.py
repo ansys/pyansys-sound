@@ -29,17 +29,17 @@ Calculate psychoacoustic indicators
 This example shows how to calculate psychoacoustic indicators.
 The following indicators are included:
 
-- **Loudness of stationary sounds** according to ISO 532-1.
-- **Loudness of time-varying sounds** according to ISO 532-1.
-- **Sharpness** according to Zwicker and Fastl, "Psychoacoustics: Facts and models", 1990.
-- **Roughness** according to Daniel and Weber, "Psychoacoustical Roughness: Implementation of an
+- Loudness of stationary sounds according to ISO 532-1.
+- Loudness of time-varying sounds according to ISO 532-1.
+- Sharpness according to Zwicker and Fastl, "Psychoacoustics: Facts and models", 1990.
+- Roughness according to Daniel and Weber, "Psychoacoustical Roughness: Implementation of an
   Optimized Model, 1997.
-- **Fluctuation strength** according to Sontacchi, "Entwicklung eines Modulkonzeptes für die
+- Fluctuation strength according to Sontacchi, "Entwicklung eines Modulkonzeptes für die
   psychoakustische Geräuschanalyse under MatLab Diplomarbeit", 1998.
 
-The example shows how to:
+The example shows how to perform these operations:
 
-- Import necessary packages.
+- Set up the analysis.
 - Calculate indicators on loaded WAV files.
 - Get calculation outputs.
 - Plot some corresponding curves.
@@ -82,9 +82,9 @@ server = connect_to_or_start_server()
 # Calculate ISO 532-1 loudness for a stationary sound
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load a WAV signal using the ``LoadWav`` class. It is returned as a DPF
-# field container. For more information, see ``fields_container``
+# field container. For more information, see `fields_container`
 # <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_
-# in the DPF-Core API documentation. Then calculate the loudness of this signal.
+# in the DPF-Core API documentation. Then, calculate the loudness of this signal.
 
 # Load example data from WAV file
 path_flute_wav = download_flute_wav()
@@ -93,12 +93,12 @@ wav_loader.process()
 fc_signal = wav_loader.get_output()
 
 # %%
-# Create a 'LoudnessISO532_1_Stationary' object, set its signal, and compute loudness.
+# Create a ''LoudnessISO532_1_Stationary'' object, set its signal, and compute the loudness.
 loudness_stationary = LoudnessISO532_1_Stationary(signal=fc_signal)
 loudness_stationary.process()
 
 # %%
-# Get value in sone or in phon.
+# Get the value in sone or in phon.
 loudness_sone = loudness_stationary.get_loudness_sone()
 loudness_level_phon = loudness_stationary.get_loudness_level_phon()
 file_name = os.path.basename(path_flute_wav)
@@ -157,7 +157,7 @@ wav_loader.process()
 f_signal = wav_loader.get_output()[0]  # Field 0 only, because the RPM profile is useless here.
 
 # %%
-# Create a 'LoudnessISO532_1_TimeVarying' object, set its signal, and compute loudness.
+# Create a ``LoudnessISO532_1_TimeVarying`` object, set its signal, and compute the loudness.
 loudness_time_varying = LoudnessISO532_1_TimeVarying(signal=f_signal)
 loudness_time_varying.process()
 
@@ -184,22 +184,22 @@ loudness_time_varying.plot()
 # %%
 # Calculate sharpness, roughness, and fluctuation strength
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Now calculate sharpness, roughness, and fluctuation strength for these two sounds.
+# Calculate sharpness, roughness, and fluctuation strength for the two sounds.
 
 # %%
-# Calculate sharpness.
+# Calculate the sharpness.
 sharpness = Sharpness(signal=fc_two_signals)
 sharpness.process()
 sharpness_values = (sharpness.get_sharpness(0), sharpness.get_sharpness(1))
 
 # %%
-# Calculate roughness.
+# Calculate the roughness.
 roughness = Roughness(signal=fc_two_signals)
 roughness.process()
 roughness_values = (roughness.get_roughness(0), roughness.get_roughness(1))
 
 # %%
-# Calculate fluctuation strength.
+# Calculate the fluctuation strength.
 fluctuation_strength = FluctuationStrength(signal=fc_two_signals)
 fluctuation_strength.process()
 fluctuation_strength_values = (

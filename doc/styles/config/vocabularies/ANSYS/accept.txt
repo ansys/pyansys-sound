@@ -11,3 +11,9 @@ psychoacoustics
 Xtract
 xtract
 numpy
+PyAnsys Sound
+DPF
+DPF Sound
+DPF Server
+Docker
+WAV

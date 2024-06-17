@@ -55,7 +55,8 @@ def test_load_wav_get_output(dpf_sound_test_server):
     # Loading a wav signal using LoadWav class
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the 'LoadWav.process()' method.",
+        match="Output is not processed yet. \
+            Use the 'LoadWav.process()' method.",
     ):
         fc = wav_loader.get_output()
 

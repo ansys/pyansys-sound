@@ -196,7 +196,8 @@ def test_tone_to_noise_ratio_get_nb_tones(dpf_sound_test_server, create_psd_from
         tnr.get_nb_tones()
     assert (
         str(excinfo.value)
-        == "Output is not processed yet. Use the 'ToneToNoiseRatio.process()' method."
+        == "Output is not processed yet. \
+            Use the 'ToneToNoiseRatio.process()' method."
     )
 
     tnr.process()

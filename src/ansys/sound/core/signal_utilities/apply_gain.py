@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Apply gain."""
+"""Apply a gain."""
 
 import warnings
 
@@ -32,10 +32,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class ApplyGain(SignalUtilitiesParent):
-    """Apply gain.
-
-    This class applies a gain to signals.
-    """
+    """Apply a gain to signals."""
 
     def __init__(
         self, signal: Field | FieldsContainer = None, gain: float = 0.0, gain_in_db: bool = True
@@ -44,8 +41,8 @@ class ApplyGain(SignalUtilitiesParent):
 
         Parameters
         ----------
-        signal:
-            Signals to apply gain on as a DPF field or fields cContainer.
+        signal: Field | FieldsContainer, default: None
+            Signals to apply gain on as a DPF field or fields container.
         gain: float, default: 0.0
             Gain value in decibels (dB) or linear unit. By default, gain is specified in decibels.
             However, you can use the next parameter to change to a linear unit.
@@ -70,7 +67,7 @@ class ApplyGain(SignalUtilitiesParent):
 
     @signal.getter
     def signal(self) -> Field | FieldsContainer:
-        """Get the signal.
+        """Signal.
 
         Returns
         -------
@@ -97,7 +94,7 @@ class ApplyGain(SignalUtilitiesParent):
 
     @gain.getter
     def gain(self) -> float:
-        """Get the gain.
+        """Gain.
 
         Returns
         -------
@@ -140,9 +137,9 @@ class ApplyGain(SignalUtilitiesParent):
         return self.__gain_in_db
 
     def process(self):
-        """Apply gain to the signal.
+        """Apply a gain to the signal.
 
-        This method calls the appropriate DPF Sound operator to apply gain to the signal.
+        This method calls the appropriate DPF Sound operator to apply a gain to the signal.
         """
         if self.signal == None:
             raise PyAnsysSoundException(

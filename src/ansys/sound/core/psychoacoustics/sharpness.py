@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Computes sharpness according to Zwicker & Fastl's model."""
+"""Computes the sharpness of the signal according to Zwicker & Fastl's model."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -32,10 +32,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Sharpness(PsychoacousticsParent):
-    """Computes sharpness.
-
-    This class computes the sharpness of a signal according to Zwicker & Fastl's model.
-    """
+    """Computes the sharpness of a signal according to Zwicker & Fastl's model."""
 
     def __init__(self, signal: Field | FieldsContainer = None):
         """Create a ``Sharpness`` object.
@@ -68,7 +65,7 @@ class Sharpness(PsychoacousticsParent):
 
     @signal.getter
     def signal(self) -> Field | FieldsContainer:
-        """Get the signal.
+        """Signal.
 
         Returns
         -------
@@ -78,7 +75,7 @@ class Sharpness(PsychoacousticsParent):
         return self.__signal
 
     def process(self):
-        """Compute sharpness.
+        """Compute the sharpness.
 
         This method calls the appropriate DPF Sound operator to compute the sharpness
         of the signal.
@@ -100,7 +97,7 @@ class Sharpness(PsychoacousticsParent):
             self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> FieldsContainer | Field:
-        """Get sharpness in a tuple of field or fields container.
+        """Get the sharpness in a tuple of a DPF fields container or field.
 
         Returns
         -------
@@ -110,14 +107,15 @@ class Sharpness(PsychoacousticsParent):
         if self._output == None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the 'Sharpness.process()' method."
+                    "Output is not processed yet. \
+                        Use the 'Sharpness.process()' method."
                 )
             )
 
         return self._output
 
     def get_output_as_nparray(self) -> npt.ArrayLike:
-        """Get sharpness as a NumPy array.
+        """Get the sharpness as a NumPy array.
 
         Returns
         -------
@@ -135,7 +133,7 @@ class Sharpness(PsychoacousticsParent):
         return self.convert_fields_container_to_np_array(output)
 
     def get_sharpness(self, channel_index: int = 0) -> np.float64:
-        """Get sharpness as a float.
+        """Get the sharpness as a float value.
 
         This method gets the sharpness in acum for the specified channel.
 

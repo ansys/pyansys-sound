@@ -69,8 +69,8 @@ my_server = connect_to_or_start_server()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Defining a custom function for STFT plots lets you have
 # more control over what you are displaying.
-# While you could use the ``Stft.plot()``, this custom function
-# restricts the frequency range of the plot.
+# While you could use the ``Stft.plot()`` method, the custom function
+# defined here restricts the frequency range of the plot.
 def plot_stft(stft_class, vmax):
     out = stft_class.get_output_as_nparray()
 
@@ -115,8 +115,8 @@ def plot_stft(stft_class, vmax):
 
 
 # %%
-# Load a WAV signal with a RPM profile
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Load a WAV signal with an RPM profile
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load a WAV signal that has been generated with Ansys Sound SAS using the ``LoadWav`` class.
 # This class contains two channels:
 #
@@ -197,7 +197,7 @@ plot_stft(stft, max_stft)
 # %%
 # Isolate different orders
 # ~~~~~~~~~~~~~~~~~~~~~~~~
-# Changing FFT size, order indexes, and window type. Then, re-isolate the orders.
+# Change FFT size, order indexes, and window type. Then re-isolate the orders.
 
 # Change some parameters directly using the setters of the class
 isolate_orders.orders = [2, 6]

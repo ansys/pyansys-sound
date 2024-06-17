@@ -126,12 +126,12 @@ class WriteWav(SignalUtilitiesParent):
 
     @path_to_write.getter
     def path_to_write(self) -> str:
-        """Getter for the path to write the WAV file to.
+        """Path to write the WAV file to.
 
         Returns
         -------
         str
-            Path for writing the WAV file to.
+            Path to write the WAV file to.
         """
         return self.__path_to_write
 
@@ -147,7 +147,8 @@ class WriteWav(SignalUtilitiesParent):
 
         if self.signal == None:
             raise PyAnsysSoundException(
-                "No signal is specified for writing to a WAV file. Use 'WriteWav.set_signal'."
+                "No signal is specified for writing to a WAV file. \
+                    Use 'WriteWav.set_signal'."
             )
 
         data_source_out = DataSources()

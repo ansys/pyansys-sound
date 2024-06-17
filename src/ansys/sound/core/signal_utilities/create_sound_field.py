@@ -72,7 +72,7 @@ class CreateSoundField(SignalUtilitiesParent):
 
     @data.getter
     def data(self) -> npt.ArrayLike:
-        """Get the data.
+        """Get data.
 
         Returns
         -------
@@ -169,8 +169,8 @@ class CreateSoundField(SignalUtilitiesParent):
             # Computing output if needed
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output ia not processed yet. Use the \
-                        'CreateSoundField.process()' method."
+                    "Output is not processed yet. \
+                         Use the 'CreateSoundField.process()' method."
                 )
             )
 

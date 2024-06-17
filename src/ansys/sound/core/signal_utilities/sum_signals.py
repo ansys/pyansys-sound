@@ -62,7 +62,7 @@ class SumSignals(SignalUtilitiesParent):
         Returns
         -------
         FieldsContainer
-            Signals as a FieldsContainer
+            Signals as a DPF fields container.
         """
         return self.__signals
 
@@ -96,7 +96,8 @@ class SumSignals(SignalUtilitiesParent):
             # Computing output if needed
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the 'SumSignals.process()' method."
+                    "Output is not processed yet. \
+                        Use the 'SumSignals.process()' method."
                 )
             )
 

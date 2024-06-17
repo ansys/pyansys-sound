@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Compute fluctuation strength."""
+"""Compute the fluctuation strength."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -39,7 +39,9 @@ class FluctuationStrength(PsychoacousticsParent):
     """Computes fluctuation strength for stationary sounds.
 
     This class computes the fluctuation strength of a signal according to Sontacchi's master
-    thesis work: "Entwicklung eines Modulkonzeptes fur die psychoakustische Gerauschanalyse under
+    thesis work.
+
+    Reference: "Entwicklung eines Modulkonzeptes fur die psychoakustische Gerauschanalyse under
     MATLAB". Master thesis, Technischen Universitat Graz, pp. 1-112 (1998).
     """
 
@@ -76,7 +78,7 @@ class FluctuationStrength(PsychoacousticsParent):
 
     @signal.getter
     def signal(self) -> Field | FieldsContainer:
-        """Get the input signal.
+        """Input signal.
 
         Returns
         -------
@@ -86,7 +88,7 @@ class FluctuationStrength(PsychoacousticsParent):
         return self.__signal
 
     def process(self):
-        """Compute fluctuation strength.
+        """Compute the fluctuation strength.
 
         This method calls the corresponding DPF Sound operator to compute the fluctuation strength
         of the signal.
@@ -115,7 +117,7 @@ class FluctuationStrength(PsychoacousticsParent):
             )
 
     def get_output(self) -> tuple[FieldsContainer] | tuple[Field]:
-        """Get fluctuation strength data in a tuple of field or fields container.
+        """Get fluctuation strength data in a tuple as a DPF fields container or field.
 
         Returns
         -------
@@ -127,14 +129,15 @@ class FluctuationStrength(PsychoacousticsParent):
         if self._output == None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the 'FluctuationStrength.process()' method."
+                    "Output is not processed yet. \
+                        Use the 'FluctuationStrength.process()' method."
                 )
             )
 
         return self._output
 
     def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
-        """Get fluctuation strength data as a tuple of NumPy array.
+        """Get fluctuation strength data as a tuple in a NumPy array.
 
         Returns
         -------
@@ -175,15 +178,15 @@ class FluctuationStrength(PsychoacousticsParent):
         return self._get_output_parameter(channel_index, TOTAL_FS_ID)
 
     def get_specific_fluctuation_strength(self, channel_index: int = 0) -> npt.ArrayLike:
-        """Get specific fluctuation strength for a channel index.
+        """Get the specific fluctuation strength for a signal.
 
         This method gets the specific fluctuation strength in vacil/Bark for the specified
         channel index.
 
         Parameters
         ----------
-        channel_index: int
-            Index of the signal channel (0 by default) for which to return the specified output.
+        channel_index: int, default: 0
+            Index of the signal channel to get the specified output for.
 
         Returns
         -------
@@ -193,9 +196,10 @@ class FluctuationStrength(PsychoacousticsParent):
         return self._get_output_parameter(channel_index, SPECIFIC_FS_ID)
 
     def get_bark_band_indexes(self) -> npt.ArrayLike:
-        """Get Bark band indexes.
+        """Get the Bark band indexes.
 
-        Return the Bark band indexes used for fluctuation strength calculation as a NumPy array.
+        This method gets the Bark band indexes used for the fluctuation strength
+        calculation as a NumPy array.
 
         Returns
         -------
@@ -219,9 +223,8 @@ class FluctuationStrength(PsychoacousticsParent):
 
         This method gets the frequencies corresponding to Bark band indexes as a NumPy array.
 
-        Reference:
-        Traunmüller, Hartmut. "Analytical Expressions for the Tonotopic Sensory Scale." Journal of
-        the Acoustical Society of America. Vol. 88, Issue 1, 1990, pp. 97-100.
+        Reference: Traunmüller, Hartmut. "Analytical Expressions for the Tonotopic Sensory Scale."
+        Journal of the Acoustical Society of America. Vol. 88, Issue 1, 1990, pp. 97-100.
 
         Returns
         -------
@@ -231,14 +234,15 @@ class FluctuationStrength(PsychoacousticsParent):
         return self._convert_bark_to_hertz(self.get_bark_band_indexes())
 
     def plot(self):
-        """Plot specific fluctuation strength.
+        """Plot the specific fluctuation strength.
 
         This method creates a figure window displaying the specific fluctuation strength
         in vacil/Bark as a function of the Bark band index.
         """
         if self._output == None:
             raise PyAnsysSoundException(
-                "Output is not processed yet. Use the 'FluctuationStrength.process()' method."
+                "Output is not processed yet. \
+                    Use the 'FluctuationStrength.process()' method."
             )
 
         bark_band_indexes = self.get_bark_band_indexes()

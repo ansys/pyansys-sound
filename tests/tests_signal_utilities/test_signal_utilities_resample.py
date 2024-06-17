@@ -64,7 +64,8 @@ def test_resample_get_output(dpf_sound_test_server):
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the 'Resample.process()' method.",
+        match="Output is not processed yet. \
+            Use the 'Resample.process()' method.",
     ):
         fc_out = resampler.get_output()
 

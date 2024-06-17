@@ -83,7 +83,7 @@ class XtractDenoiser(XtractParent):
         Returns
         -------
         FieldsContainer | Field
-            One or more signals to denoise as a DPF field or fields container. When inputting a
+            One or more signals to denoise as a DPF fields container or field. When inputting a
             fields container, each signal (each field of the fields container) is processed
             individually.
         """
@@ -117,7 +117,7 @@ class XtractDenoiser(XtractParent):
         Returns
         -------
         FieldsContainer | Field
-            One or more denoised signals as a DPF field or fields container (depending on
+            One or more denoised signals as a DPF fields container or field (depending on
             the input).
         """
         return self.__output_denoised_signals  # pragma: no cover
@@ -129,7 +129,7 @@ class XtractDenoiser(XtractParent):
         Returns
         -------
         FieldsContainer | Field
-            One or more noise signals as a DPF field or fields container (depending on the input).
+            One or more noise signals as a DPF fields container or field (depending on the input).
             The noise signal is the original signal minus the denoised signal.
         """
         return self.__output_noise_signals  # pragma: no cover
@@ -164,8 +164,8 @@ class XtractDenoiser(XtractParent):
         Returns
         -------
         Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
-            Denoised signal and noise signal
-            as a DPF field or fields container (depending on the input).
+            Denoised signal and noise signal in a tuple as
+            a DPF fields container or field (depending on the input).
         """
         if self.__output_denoised_signals == None or self.__output_noise_signals == None:
             warnings.warn(PyAnsysSoundWarning("Output is not processed yet."))
@@ -178,7 +178,7 @@ class XtractDenoiser(XtractParent):
         Returns
         -------
         Tuple[npt.ArrayLike, npt.ArrayLike]
-            Denoised signal and noise signal in NumPy arrays.
+            Denoised signal and noise signal in a tuple as NumPy arrays.
         """
         l_output_denoised_signals, l_output_noise_signals = self.get_output()
 
@@ -195,7 +195,7 @@ class XtractDenoiser(XtractParent):
     def plot(self):
         """Plot signals.
 
-        Plot the denoised signal and the noise signal.
+        This method plots both the denoised signal and the noise signal.
         """
         ################
         #
