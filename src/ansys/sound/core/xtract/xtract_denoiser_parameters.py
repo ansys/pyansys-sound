@@ -98,9 +98,10 @@ class XtractDenoiserParameters(XtractParent):
         ----------
         white_noise_level: float
             Power of the white noise  in dB SPL.
-        sampling_frequency: float
+        sampling_frequency: float, optional
             Sampling frequency in Hz of the signal to denoise,
             which can be different from the signal used for creating the noise profile.
+            The default is the sampling frequency of the noise signal.
         window_length: int, default: 50
             Window length for the noise level estimation in milliseconds (ms).
 

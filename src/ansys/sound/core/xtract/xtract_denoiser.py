@@ -47,7 +47,7 @@ class XtractDenoiser(XtractParent):
         Parameters
         ----------
         input_signal: FieldsContainer | Field, default: None
-            One or more signals to denoise as a DPF field or fields container. When inputting a
+            One or more signals to denoise as a DPF fields container or field. When inputting a
             fields container, each signal (each field of the fields container) is processed
             individually.
         input_parameters: XtractDenoiserParametersm default: None
@@ -58,10 +58,10 @@ class XtractDenoiser(XtractParent):
             This structure is of the ``XtractDenoiserParameters`` type. For more information,
             see this class.
         output_denoised_signals:
-            One or more denoised signals as a DPF field or fields container (depending on
+            One or more denoised signals as a DPF fields container or field (depending on
             the input).
         output_noise_signals:
-            Noise signal as a DPF field or fields container (depending on the input).
+            Noise signal as a DPF fields container or field (depending on the input).
             The noise signal is the original signal minus the denoised signal.
         """
         super().__init__()
