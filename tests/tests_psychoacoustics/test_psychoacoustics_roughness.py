@@ -91,7 +91,7 @@ def test_roughness_get_output(dpf_sound_test_server):
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. \
-            Use the 'Roughness.process()' method.",
+                        Use the 'Roughness.process\\(\\)' method.",
     ):
         output = roughness_computer.get_output()
     assert output == None
@@ -120,7 +120,7 @@ def test_roughness_get_roughness(dpf_sound_test_server):
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. \
-            Use the 'Roughness.process()' method.",
+                        Use the 'Roughness.process\\(\\)' method.",
     ):
         output = roughness_computer.get_roughness()
     assert output == None
@@ -182,7 +182,7 @@ def test_roughness_get_specific_roughness(dpf_sound_test_server):
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. \
-            Use the 'Roughness.process()' method.",
+                        Use the 'Roughness.process\\(\\)' method.",
     ):
         output = roughness_computer.get_specific_roughness()
     assert output == None
@@ -217,7 +217,7 @@ def test_roughness_get_specific_roughness(dpf_sound_test_server):
     assert specific_roughness[40] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_2_40)
 
 
-def test_roughness__get_ouptut_parameter(dpf_sound_test_server):
+def test_roughness_get_ouptut_parameter(dpf_sound_test_server):
     roughness_computer = Roughness()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_rough_noise_in_container)
@@ -231,7 +231,7 @@ def test_roughness__get_ouptut_parameter(dpf_sound_test_server):
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. \
-            Use the 'Roughness.process()' method.",
+                        Use the 'Roughness.process\\(\\)' method.",
     ):
         output = roughness_computer._get_output_parameter(0, TOTAL_ROUGHNESS_ID)
     assert output == None
@@ -240,7 +240,7 @@ def test_roughness__get_ouptut_parameter(dpf_sound_test_server):
     roughness_computer.process()
 
     # Invalid parameter identifier -> error
-    with pytest.raises(PyAnsysSoundException, match="ID of output parameter is invalid."):
+    with pytest.raises(PyAnsysSoundException, match="Identifier of output parameter is invalid."):
         param = roughness_computer._get_output_parameter(0, "thisIsNotValid")
 
     # Invalid channel index -> error
@@ -292,7 +292,7 @@ def test_roughness_get_bark_band_indexes(dpf_sound_test_server):
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. \
-            Use the 'Roughness.process()' method.",
+                        Use the 'Roughness.process\\(\\)' method.",
     ):
         output = roughness_computer.get_bark_band_indexes()
     assert output == None
@@ -356,7 +356,7 @@ def test_roughness_get_output_as_nparray_from_fields_container(dpf_sound_test_se
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. \
-            Use the 'Roughness.process()' method.",
+                        Use the 'Roughness.process\\(\\)' method.",
     ):
         output = roughness_computer.get_output_as_nparray()
     assert output == None
@@ -417,7 +417,7 @@ def test_roughness_plot_from_fields_container(mock_show, dpf_sound_test_server):
     with pytest.raises(
         PyAnsysSoundException,
         match="Output is not processed yet. \
-            Use the 'Roughness.process()' method.",
+                    Use the 'Roughness.process\\(\\)' method.",
     ):
         roughness_computer.plot()
 

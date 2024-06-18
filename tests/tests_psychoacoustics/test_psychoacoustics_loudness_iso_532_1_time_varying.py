@@ -44,8 +44,8 @@ def test_loudness_iso_532_1_time_varying_process(dpf_sound_test_server):
         time_varying_loudness_computer.process()
     assert (
         str(excinfo.value)
-        == "No signal found for loudness versus time computation. \
-            Use 'LoudnessISO532_1_TimeVarying.signal'."
+        == "No signal found for loudness versus time computation."
+        + " Use 'LoudnessISO532_1_TimeVarying.signal'."
     )
 
     # get a signal
@@ -474,8 +474,8 @@ def test_loudness_iso_532_1_time_varying_plot_from_field_container(
     # Plot before process -> error
     with pytest.raises(
         PyAnsysSoundException,
-        match="Output is not processed yet. \
-            Use the 'LoudnessISO532_1_TimeVarying.process()' method.",
+        match="Output is not processed yet. Use the "
+        "'LoudnessISO532_1_TimeVarying.process\\(\\)' method.",
     ):
         time_varying_loudness_computer.plot()
 

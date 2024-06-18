@@ -76,8 +76,8 @@ def test_psychoacoustics_parent_check_channel_index(dpf_sound_test_server):
     # Nothing computed -> false
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. \
-            Use the 'LoudnessISO532_1_Stationary.process()' method.",
+        match="Output is not processed yet. Use the "
+        "'LoudnessISO532_1_Stationary.process\\(\\)' method.",
     ):
         valid_status = loudness._check_channel_index(0)
     assert valid_status == False

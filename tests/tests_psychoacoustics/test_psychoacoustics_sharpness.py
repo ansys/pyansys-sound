@@ -97,7 +97,7 @@ def test_sharpness_get_sharpness(dpf_sound_test_server):
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. \
-            Use the 'Sharpness.process()' method.",
+                        Use the 'Sharpness.process\\(\\)' method.",
     ):
         sharpness = sharpness_computer.get_sharpness()
     assert sharpness == None
@@ -154,7 +154,7 @@ def test_sharpness_get_output_as_nparray_from_fields_container(
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. \
-            Use the 'Sharpness.process()' method.",
+                        Use the 'Sharpness.process\\(\\)' method.",
     ):
         sharpness = sharpness_computer.get_output_as_nparray()
     assert sharpness == None
