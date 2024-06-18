@@ -125,17 +125,17 @@ def test_xtract_except1(dpf_sound_test_server):
     xtract = Xtract(Field(), None, GenericDataContainer(), GenericDataContainer())
     with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract.process()
-    assert str(excinfo.value) == "Input parameters denoiser are not set."
+    assert str(excinfo.value) == "Input parameters for the denoiser extraction are not set."
 
     xtract = Xtract(Field(), GenericDataContainer(), None, GenericDataContainer())
     with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract.process()
-    assert str(excinfo.value) == "Input parameters tonal are not set."
+    assert str(excinfo.value) == "Input parameters for the tonal extraction are not set."
 
     xtract = Xtract(Field(), GenericDataContainer(), GenericDataContainer(), None)
     with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract.process()
-    assert str(excinfo.value) == "Input parameters transient are not set."
+    assert str(excinfo.value) == "Input parameters for the transient extraction are not set."
 
 
 def test_xtract_except2(dpf_sound_test_server):
@@ -218,7 +218,7 @@ def test_xtract_get_output_warns(dpf_sound_test_server):
 
     with pytest.warns(PyAnsysSoundWarning) as record:
         xtract.get_output()
-    assert record[0].message.args[0] == "No output available."
+    assert record[0].message.args[0] == "No output is available."
 
 
 def test_xtract_get_output_as_np_array_warns(dpf_sound_test_server):
@@ -250,7 +250,7 @@ def test_xtract_get_output_as_np_array_warns(dpf_sound_test_server):
 
     with pytest.warns(PyAnsysSoundWarning) as record:
         xtract.get_output_as_nparray()
-    assert record[0].message.args[0] == "No output available."
+    assert record[0].message.args[0] == "No output is available."
 
 
 def test_xtract_get_output(dpf_sound_test_server):

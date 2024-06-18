@@ -43,7 +43,7 @@ def test_stft_process(dpf_sound_test_server):
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
         stft.process()
-    assert str(excinfo.value) == "No signal for STFT. Use Stft.signal."
+    assert str(excinfo.value) == "No signal found for STFT. Use 'Stft.signal'."
 
     wav_loader.process()
     fc = wav_loader.get_output()
@@ -120,7 +120,10 @@ def test_stft_set_get_signal(dpf_sound_test_server):
     # Error
     with pytest.raises(PyAnsysSoundException) as excinfo:
         stft.signal = fc
-    assert str(excinfo.value) == "Input as FieldsContainer can only have one Field (mono signal)."
+    assert (
+        str(excinfo.value)
+        == "Input as a DPF fields container can only have one field (mono signal)."
+    )
 
 
 def test_stft_set_get_fft_size(dpf_sound_test_server):

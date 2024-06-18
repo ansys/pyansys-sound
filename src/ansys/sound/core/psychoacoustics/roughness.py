@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Computes roughness."""
+"""Computes roughness for stationary sounds."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -36,11 +36,10 @@ SPECIFIC_ROUGHNESS_ID = "specific"
 
 
 class Roughness(PsychoacousticsParent):
-    """Computes roughness for stationary sounds.
+    """Computes the roughness for stationary sounds.
 
-    This class computes the roughness of a signal according to this article: Daniel and Weber,
-    "Psychoacoustical roughness: implementation of an optimized model." Acta Acustica united
-    with Acustica, 83, pp. 113-123 (1997).
+    Reference: Daniel and Weber, "Psychoacoustical roughness: implementation of an
+    optimized model." Acta Acustica united with Acustica, 83, pp. 113-123 (1997).
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
@@ -74,7 +73,7 @@ class Roughness(PsychoacousticsParent):
 
     @signal.getter
     def signal(self) -> Field | FieldsContainer:
-        """Get the signal.
+        """Signal.
 
         Returns
         -------
@@ -84,7 +83,7 @@ class Roughness(PsychoacousticsParent):
         return self.__signal
 
     def process(self):
-        """Compute roughness.
+        """Compute the roughness.
 
         This method calls the appropriate DPF Sound operator to compute the roughness of the signal.
         """
@@ -111,7 +110,7 @@ class Roughness(PsychoacousticsParent):
             )
 
     def get_output(self) -> tuple[FieldsContainer] | tuple[Field]:
-        """Get roughness data in a tuple of field or fields container.
+        """Get roughness data in a tuple as a PDF fields container or field.
 
         Returns
         -------
@@ -123,14 +122,15 @@ class Roughness(PsychoacousticsParent):
         if self._output == None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the 'Roughness.process()' method."
+                    "Output is not processed yet. \
+                        Use the 'Roughness.process()' method."
                 )
             )
 
         return self._output
 
     def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
-        """Get roughness data as a tuple of a NumPy array.
+        """Get roughness data in a tuple as a NumPy array.
 
         Returns
         -------
@@ -153,7 +153,7 @@ class Roughness(PsychoacousticsParent):
         )
 
     def get_roughness(self, channel_index: int = 0) -> np.float64:
-        """Get roughness in asper for the signal channel.
+        """Get the roughness in asper for a signal.
 
            This method gets the roughness in asper as a float for the specified channel index.
 
@@ -170,7 +170,7 @@ class Roughness(PsychoacousticsParent):
         return self._get_output_parameter(channel_index, TOTAL_ROUGHNESS_ID)
 
     def get_specific_roughness(self, channel_index: int = 0) -> npt.ArrayLike:
-        """Get specific roughness for the signal channel.
+        """Get the specific roughness for a signal.
 
         This method gets the specific roughness in asper/Bark for the specified channel index.
 
@@ -189,7 +189,7 @@ class Roughness(PsychoacousticsParent):
     def get_bark_band_indexes(self) -> npt.ArrayLike:
         """Get Bark band indexes.
 
-        This method gets the Bark band indexes used for roughness calculation as a NumPy array.
+        This method gets the Bark band indexes used for the roughness calculation as a NumPy array.
 
         Returns
         -------
@@ -225,14 +225,15 @@ class Roughness(PsychoacousticsParent):
         return self._convert_bark_to_hertz(self.get_bark_band_indexes())
 
     def plot(self):
-        """Plot specific roughness.
+        """Plot the specific roughness.
 
         This method creates a figure window that displays the specific roughness in asper/Bark as a
         function of the Bark band index.
         """
         if self._output == None:
             raise PyAnsysSoundException(
-                "Output is not processed yet. Use the 'Roughness.process()' method."
+                "Output is not processed yet. \
+                    Use the 'Roughness.process()' method."
             )
 
         bark_band_indexes = self.get_bark_band_indexes()

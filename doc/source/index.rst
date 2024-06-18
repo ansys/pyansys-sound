@@ -12,8 +12,8 @@ PyAnsys Sound
    contribute
 
 
-PyAnsys Sound enables the use of the main features of `Ansys Sound`_ to perform
-postprocessing and analysis of sounds and vibrations in Python. This library is based on
+PyAnsys Sound let you use the main features of `Ansys Sound`_ to perform
+the postprocessing and analysis of sounds and vibrations in Python. This library is based on
 `Ansys DPF`_ and the DPF Sound plugin. It is a Python wrapper that implements classes on top
 of DPF Sound operators.
 
@@ -61,15 +61,11 @@ Key features
 These API reference pages describe some key features of PyAnsys Sound:
 
 * :doc:`api/signal_utilities`: Tools to read/write WAV files in Ansys Sound SAS format and do basic editing of audio signals.
-* :doc:`api/spectrogram_processing`: Time-Frequency/Time-Representation conversion tools and Time-Frequency editing tools.
+* :doc:`api/spectrogram_processing`: Time-frequency and time-representation conversion tools and time-frequency editing tools.
 * :doc:`api/psychoacoustics`: Psychoacoustic indicators computation to measure perceived sound quality.
 * :doc:`api/xtract`: Separation of a signal in several components, such as tonal, transient, and noise parts.
 
-<<<<<<< HEAD
 Not all features of Ansys Sound SAS are available in PyAnsys Sound. Features are regularly added in new versions.
-=======
-Not all the features of Ansys Sound SAS are available in PyAnsys Sound. Features are regularly added in new versions.
->>>>>>> 37ccde2368d1149ebf25dc4ac06f7d8866e158e8
 
 .. _limitations:
 

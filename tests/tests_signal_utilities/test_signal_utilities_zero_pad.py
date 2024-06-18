@@ -40,7 +40,11 @@ def test_zero_pad_process(dpf_sound_test_server):
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
         zero_pad.process()
-    assert str(excinfo.value) == "No signal to zero-pad. Use ZeroPad.set_signal()."
+    assert (
+        str(excinfo.value)
+        == "No signal found to zero pad. \
+            Use the 'ZeroPad.set_signal()' method."
+    )
 
     wav_loader.process()
     fc = wav_loader.get_output()
@@ -61,7 +65,9 @@ def test_zero_pad_get_output(dpf_sound_test_server):
     zero_pad = ZeroPad(signal=fc_signal, duration_zeros=12.0)
 
     with pytest.warns(
-        PyAnsysSoundWarning, match="Output has not been yet processed, use ZeroPad.process()."
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. \
+            Use the 'ZeroPad.process()' method.",
     ):
         fc_out = zero_pad.get_output()
 
@@ -134,6 +140,6 @@ def test_zero_pad_set_get_duration_zeros(dpf_sound_test_server):
     # Error
     with pytest.raises(PyAnsysSoundException) as excinfo:
         zero_pad.duration_zeros = -12.0
-    assert str(excinfo.value) == "Zero duration must be strictly greater than 0.0."
+    assert str(excinfo.value) == "Zero duration must be greater than 0.0."
     zero_pad.duration_zeros = 1234.0
     assert zero_pad.duration_zeros == 1234.0

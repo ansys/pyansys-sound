@@ -44,7 +44,9 @@ def test_load_wav_process(dpf_sound_test_server):
 
     with pytest.raises(PyAnsysSoundException) as excinfo:
         wav_loader_bad.process()
-    assert str(excinfo.value) == "Path for loading wav file is not specified. Use LoadWav.set_path."
+    assert (
+        str(excinfo.value) == "Path for loading WAV file is not specified. Use 'LoadWav.set_path'."
+    )
 
 
 def test_load_wav_get_output(dpf_sound_test_server):
@@ -52,7 +54,9 @@ def test_load_wav_get_output(dpf_sound_test_server):
 
     # Loading a wav signal using LoadWav class
     with pytest.warns(
-        PyAnsysSoundWarning, match="Output has not been yet processed, use LoadWav.process()."
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. \
+            Use the 'LoadWav.process()' method.",
     ):
         fc = wav_loader.get_output()
 

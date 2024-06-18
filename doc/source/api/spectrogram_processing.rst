@@ -1,4 +1,4 @@
-Spectrogram Processing
+Spectrogram processing
 ----------------------
 
 .. module:: ansys.sound.core.spectrogram_processing

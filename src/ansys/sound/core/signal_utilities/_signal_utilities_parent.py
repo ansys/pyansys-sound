@@ -42,10 +42,7 @@ class SignalUtilitiesParent(PyAnsysSound):
         super().__init__()
 
     def plot(self):
-        """Plot signals.
-
-        Plots the resulting signals in a single figure.
-        """
+        """Plot the resulting signals in a single figure."""
         output = self.get_output()
 
         if type(output) == Field:

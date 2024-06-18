@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Isolate orders of a signal."""
+"""Isolates orders of a signal."""
 
 import warnings
 
@@ -33,9 +33,9 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class IsolateOrders(SpectrogramProcessingParent):
-    """Isolate orders of a signal.
+    """Isolates orders of a signal.
 
-    This class isolates the order of a given signal that has an associated RPM profile.
+    This class isolates the order of a signal that has an associated RPM profile.
     """
 
     def __init__(
@@ -306,7 +306,8 @@ class IsolateOrders(SpectrogramProcessingParent):
             # Computing output if needed
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the IsolateOrders.process() method."
+                    "Output is not processed yet. \
+                        Use the 'IsolateOrders.process()' method."
                 )
             )
 
@@ -328,7 +329,7 @@ class IsolateOrders(SpectrogramProcessingParent):
         return self.convert_fields_container_to_np_array(output)
 
     def plot(self):
-        """Plot signal after order isolation."""
+        """Plot the signal after order isolation."""
         output = self.get_output()
 
         if type(output) == Field:

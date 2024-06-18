@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Computes ECMA 418-1/ISO 7779 tone-to-noise ratio (TNR)."""
+"""Computes the ECMA 418-1/ISO 7779 tone-to-noise ratio (TNR)."""
 from math import log10
 import warnings
 
@@ -99,12 +99,12 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
     @psd.getter
     def psd(self) -> Field:
-        """Get the PSD.
+        """Power spectral density.
 
         Returns
         -------
         Field
-            PSD of the signal to compute TNR onas a DPF field.
+            PSD of the signal to compute TNR on as a DPF field.
         """
         return self.__psd
 
@@ -129,18 +129,17 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
     @frequency_list.getter
     def frequency_list(self) -> list:
-        """Get the frequency list.
+        """Get a list of the frequencies in Hz of the tones to calculate TNR for.
 
         Returns
         -------
         list
-            List of the frequencies in Hz of the tones (peaks in the spectrum)
-            to calculate TNR for.
+            Frequencies in Hz of the tones (peaks in the spectrum) to calculate TNR for.
         """
         return self.__frequency_list
 
     def process(self):
-        """Compute TNR.
+        """Compute the TNR.
 
         This method calls the appropriate DPF Sound operator to compute the TNR on the PSD.
         """
@@ -164,12 +163,12 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         self._output = self.__operator.get_output(0, "generic_data_container")
 
     def get_output(self) -> GenericDataContainer:
-        """Get TBR data in a tuple of a ``GenericDataContainer`` object.
+        """Get TBR data in a tuple as a generic data container.
 
         Returns
         -------
         GenericDataContainer
-            TNR data.
+            TNR data as a generic data container.
         """
         if self._output == None:
             warnings.warn(
@@ -181,7 +180,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         return self._output
 
     def get_output_as_nparray(self) -> tuple[npt.ArrayLike] | None:
-        """Get TNR data as a tuple of a NumPy array.
+        """Get TNR data in a tuple as a NumPy array.
 
         Returns
         -------
@@ -230,7 +229,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         return len(self.get_output_as_nparray()[0])
 
     def get_peaks_frequencies(self) -> npt.ArrayLike:
-        """Get the vector of the peaks' frequencies.
+        """Get the vector of the peaks' frequencies in Hz.
 
         Returns
         -------
@@ -243,7 +242,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         return self.get_output_as_nparray()[0]
 
     def get_TNR_values(self) -> npt.ArrayLike:
-        """Get the vector of the peaks' TNR values.
+        """Get the vector of the peaks' TNR values in dB.
 
         Returns
         -------
@@ -256,7 +255,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         return self.get_output_as_nparray()[1]
 
     def get_peaks_levels(self) -> npt.ArrayLike:
-        """Get the vector of the peaks' level values.
+        """Get the vector of the peaks' level values in dBSPL.
 
         Returns
         -------
@@ -269,7 +268,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         return self.get_output_as_nparray()[2]
 
     def get_peaks_low_frequencies(self) -> npt.ArrayLike:
-        """Get the vector of the peaks' lower-frequency limits.
+        """Get the vector of the peaks' lower-frequency limits in Hz.
 
         Returns
         -------
@@ -282,7 +281,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         return self.get_output_as_nparray()[3]
 
     def get_peaks_high_frequencies(self) -> npt.ArrayLike:
-        """Get the vector of the peaks' higher-frequency limits.
+        """Get the vector of the peaks' higher-frequency limits in Hz.
 
         Returns
         -------
@@ -295,7 +294,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         return self.get_output_as_nparray()[4]
 
     def get_max_TNR_value(self) -> float:
-        """Get the maximum TNR value.
+        """Get the maximum TNR value in dB.
 
         Returns
         -------
@@ -308,7 +307,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         return self.get_output_as_nparray()[5]
 
     def get_single_tone_info(self, tone_index: int) -> tuple[float]:
-        """Get TNR information for a tone.
+        """Get the TNR information for a tone.
 
         Parameters
         ----------
@@ -346,13 +345,13 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         )
 
     def get_reference_curve(self) -> npt.ArrayLike:
-        """Get the reference to compare TNR with.
+        """Get the reference curve to compare the TNR with.
 
         Returns
         -------
         numpy.ndarray
-            Reference curve to compare TNR with as defined in the
-            ECMA 418-1 and ISO 7779 stndards.
+            Reference curve to compare the TNR with as defined in the
+            ECMA 418-1 and ISO 7779 standards.
             If TNR is higher, then the tone is prominent.
         """
         if self.__psd == None:
@@ -379,7 +378,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         return ref_curve
 
     def plot(self):
-        """Plot TNR for all identified peaks, along with the reference curve."""
+        """Plot the TNR for all identified peaks, along with the reference curve."""
         if self._output == None:
             raise PyAnsysSoundException(
                 "Output is not processed yet. Use the 'ToneToNoiseRatio.process()' method."

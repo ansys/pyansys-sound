@@ -51,7 +51,7 @@ server = connect_to_or_start_server()
 # Load a WAV signal
 # ~~~~~~~~~~~~~~~~~
 # Load a WAV signal using the ``LoadWav`` class. It is returned as a DPF
-# field container. For more information, see ``fields_container``
+# field container. For more information, see `fields_container
 # <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_
 # in the DPF-Core API documentation.
 
@@ -91,7 +91,7 @@ fc_signal_modified = gain_applier.get_output()
 # %%
 # Plot signals
 # ~~~~~~~~~~~~
-# Plot the original and the modified signals.
+# Plot both the original signal and modified signal.
 
 # Get the signals as nparray
 data_original = wav_loader.get_output_as_nparray()

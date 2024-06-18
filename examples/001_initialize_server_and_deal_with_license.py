@@ -26,20 +26,20 @@
 Initialize PyAnsys Sound and check out the license
 --------------------------------------------------
 
-This example shows how to initialize DPF-Core, load DPF Sound, check out the
+This example shows how to initialize DPF-Core, load DPF Sound, and check out the
 required Ansys license (``increment avrxp_snd_level1``) only once. It also shows
 how to connect to the DPF server, verify where it is located, and get other useful
 information.
 
-This example demonstrates the use of the LicenseContextManager, a mechanism that lets you
+This example also demonstrates the use of the LicenseContextManager, a mechanism that lets you
 check out the license only once for the duration of the session, which greatly improves performance.
 It shows the execution time of a simple DPF Sound operator when you do not use the
-LicenseContextManager versus when you use it.
+LicenseContextManager versus when you do use it.
 
 **Prerequisites**
 
-Ensure that you have installed DPF-Core and DPF Sound according to procedures in
-the DPF-Core documentation:
+Ensure that you have installed PyDPF-Core and DPF Sound according to procedures in
+the PyDPF-Core documentation:
 
 - If you have installed the latest Ansys release, see `Install using pip
   <https://dpf.docs.pyansys.com/version/stable/getting_started/install.html#installation>`_.
@@ -94,7 +94,7 @@ if has_local_server == True:
 print(f"Server information: {my_server.info}")
 
 # %%
-# Execute the same simple PyAnsys Sound operator (''LoadWav'') several times in a row
+# Execute the same simple PyAnsys Sound operator (``LoadWav``) several times in a row
 # and measure the execution time.
 
 path_flute_wav = download_flute_wav()
@@ -121,7 +121,7 @@ my_server = None
 # Use a DPF server with a LicenseContextManager
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# # Initialize DPF server using a LicenseContextManager.
+# Initialize DPF server using a LicenseContextManager.
 #
 # **Note**: The LicenseContextManager is a mechanism that checks out a license increment
 # when entering the context and releases it when exiting the context.

@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Writes WAV signals."""
+"""Write a WAV signal to disk."""
 
 import warnings
 
@@ -31,7 +31,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class WriteWav(SignalUtilitiesParent):
-    """Writes WAV signals."""
+    """Write a WAV signal to disk."""
 
     def __init__(
         self, signal: FieldsContainer = None, path_to_write: str = "", bit_depth: str = "float32"
@@ -41,7 +41,7 @@ class WriteWav(SignalUtilitiesParent):
         Parameters
         ----------
         signal: FieldsContainer, default: None
-            Signal to save: fields_container with each channel as a field.
+            Signal to save: Each channel in the DPF fields container is a field.
         path_to_write: str, default: ''
             Path to write the WAV file to. This parameter can be set during the instantiation
             of the object or with the ``LoadWav.set_path()`` method.
@@ -126,12 +126,12 @@ class WriteWav(SignalUtilitiesParent):
 
     @path_to_write.getter
     def path_to_write(self) -> str:
-        """Getter for the path to write the WAV file to.
+        """Path to write the WAV file to.
 
         Returns
         -------
         str
-            Path for writing the WAV file to.
+            Path to write the WAV file to.
         """
         return self.__path_to_write
 
@@ -147,7 +147,8 @@ class WriteWav(SignalUtilitiesParent):
 
         if self.signal == None:
             raise PyAnsysSoundException(
-                "No signal is specified for writing to a WAV file. Use 'WriteWav.set_signal'."
+                "No signal is specified for writing to a WAV file. \
+                    Use 'WriteWav.set_signal'."
             )
 
         data_source_out = DataSources()

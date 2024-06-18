@@ -32,7 +32,7 @@ ID_NOISE_PSD = "noise_levels"
 
 
 class XtractDenoiserParameters(XtractParent):
-    """Contains denoiser parameters for use in an ``Xtract`` or ``XtractDenoiser`` instance."""
+    """Contains denoiser parameters for use in Xtract processing or signal denoising."""
 
     def __init__(self, noise_psd: Field = None):
         """Init.
@@ -64,7 +64,7 @@ class XtractDenoiserParameters(XtractParent):
     def noise_psd(self, noise_psd: Field):
         """Set the noise PSD."""
         if noise_psd is None:
-            raise PyAnsysSoundException("Noise PSD must be a non-empty Field.")
+            raise PyAnsysSoundException("Noise PSD must be a non-empty field.")
 
         self.__generic_data_container.set_property(ID_NOISE_PSD, noise_psd)
 
@@ -92,15 +92,16 @@ class XtractDenoiserParameters(XtractParent):
     def create_noise_psd_from_white_noise_level(
         self, white_noise_level: float, sampling_frequency: float, window_length: int = 50
     ) -> Field:
-        """Create a power spectral density (PSD) of noise from white noise level.
+        """Create a power spectral density (PSD) of noise from the white noise level.
 
         Parameters
         ----------
         white_noise_level: float
             Power of the white noise  in dB SPL.
-        sampling_frequency: float
+        sampling_frequency: float, optional
             Sampling frequency in Hz of the signal to denoise,
             which can be different from the signal used for creating the noise profile.
+            The default is the sampling frequency of the noise signal.
         window_length: int, default: 50
             Window length for the noise level estimation in milliseconds (ms).
 

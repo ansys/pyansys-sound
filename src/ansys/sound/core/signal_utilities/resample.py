@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Resamples signals."""
+"""Resample a signal."""
 
 import warnings
 
@@ -32,7 +32,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Resample(SignalUtilitiesParent):
-    """Resamples signals."""
+    """Resample a signal."""
 
     def __init__(
         self, signal: Field | FieldsContainer = None, new_sampling_frequency: float = 44100.0
@@ -72,12 +72,12 @@ class Resample(SignalUtilitiesParent):
 
     @new_sampling_frequency.getter
     def new_sampling_frequency(self) -> float:
-        """Get sampling frequency.
+        """Get the new sampling frequency.
 
         Returns
         -------
         float
-            Sampling frequency.
+            New sampling frequency.
         """
         return self.__new_sampling_frequency
 
@@ -97,7 +97,7 @@ class Resample(SignalUtilitiesParent):
 
         Returns
         -------
-        FieldsContainer | Field
+        Field | FieldsContainer
             Signal as a DPF field or fields container.
         """
         return self.__signal
@@ -136,7 +136,8 @@ class Resample(SignalUtilitiesParent):
             # Computing output if needed
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the 'Resample.process()' method."
+                    "Output is not processed yet. \
+                        Use the 'Resample.process()' method."
                 )
             )
 

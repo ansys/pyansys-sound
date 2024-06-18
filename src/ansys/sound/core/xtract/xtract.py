@@ -44,8 +44,8 @@ class Xtract(XtractParent):
 
     PyAnsys Sound performs XTRACT processing in the same way as Sound SAS. This operator
     chains a denoising step, followed by a tonal extraction step, and then a transient
-     extraction step. It returns the individual signals processed at each step, as well
-     as the remainder.
+    extraction step. It returns the individual signals processed at each step, as well
+    as the remainder.
     """
 
     def __init__(
@@ -60,7 +60,7 @@ class Xtract(XtractParent):
         Parameters
         ----------
         input_signal: FieldsContainer | Field, default: None
-            One or more signal to apply XTRACT processing on as a DPF field or fields container.
+            One or more signals to apply XTRACT processing on as a DPF field or fields container.
         parameters_denoiser:  XtractDenoiserParameters, default: None
             Structure that contains the parameters of the denoising step:
 
@@ -135,7 +135,7 @@ class Xtract(XtractParent):
         XtractDenoiserParameters
             Structure that contains the parameters of the denoising step:
 
-            - Noise PSD (Field): Power spectral density of the noise
+            - Noise PSD (field): Power spectral density of the noise
         """
         return self.__parameters_denoiser
 
@@ -156,7 +156,7 @@ class Xtract(XtractParent):
             - NFFT (int) is the number of points used for the FFT computation.
             - Regularity setting (float) in percent.
             - Maximum slope (float) in dB/Hz.
-            - Minimum duration (float) in seconds.
+            - Minimum duration (float) in seconds (s).
             - Intertonal gap (float) in Hz.
             - Local emergence (float) in dB.
         """
@@ -193,7 +193,7 @@ class Xtract(XtractParent):
         Returns
         -------
         Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
-            Noise signal as a DPF field or fields container.
+            Noise signal in a tuple as DPF fields containers or fields.
         """
         return self.__output_noise_signal  # pragma: no cover
 
@@ -204,7 +204,7 @@ class Xtract(XtractParent):
         Returns
         -------
         Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
-            Tonal signal as a DPF field or fields container.
+            Tonal signal in a tuple of DPF fields containers or fields.
         """
         return self.__output_tonal_signal  # pragma: no cover
 
@@ -217,7 +217,7 @@ class Xtract(XtractParent):
         Returns
         -------
         Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
-            Transient signal as a DPF field or fields container.
+            Transient signal in a tuple as DPF fields containers or fields.
         """
         return self.__output_transient_signal  # pragma: no cover
 
@@ -230,7 +230,7 @@ class Xtract(XtractParent):
         Returns
         -------
         Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
-            Remainder signal as a DPF field or fields container.
+            Remainder signal as a tuple in DPF fields containers or fields.
         """
         return self.__output_remainder_signal  # pragma: no cover
 
@@ -303,7 +303,7 @@ class Xtract(XtractParent):
             or (self.__output_transient_signal is None)
             or (self.__output_remainder_signal is None)
         ):
-            warnings.warn(PyAnsysSoundWarning("No output available."))
+            warnings.warn(PyAnsysSoundWarning("No output is available."))
 
         return (
             self.__output_noise_signal,

@@ -34,8 +34,8 @@ PyAnsys Sound
 
 .. index_start
 
-PyAnsys Sound enables the post-processing and analysis of sounds based on
-`Ansys DPF`_ and the DPF Sound plugin. It is a Python wrapper which
+PyAnsys Sound enables the postprocessing and analysis of sounds based on
+`Ansys DPF`_ and the DPF Sound plugin. It is a Python wrapper that
 implements classes on top of DPF Sound operators. For
 information demonstrating the behavior and usage of PyAnsys Sound,
 see the `Examples`_ section.

@@ -72,7 +72,7 @@ class CreateSoundField(SignalUtilitiesParent):
 
     @data.getter
     def data(self) -> npt.ArrayLike:
-        """Get the data.
+        """Get data.
 
         Returns
         -------

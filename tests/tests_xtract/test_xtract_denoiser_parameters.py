@@ -40,7 +40,7 @@ def test_xtract_denoiser_parameters_getter_setter_upper_threshold(dpf_sound_test
     # Invalid value
     with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_denoiser_parameters.noise_psd = None
-    assert str(excinfo.value) == "Noise PSD must be a non-empty Field."
+    assert str(excinfo.value) == "Noise PSD must be a non-empty field."
 
     xtract_denoiser_parameters.noise_psd = Field()
 

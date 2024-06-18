@@ -57,7 +57,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
     @property
     def signal(self):
-        """Signal property."""
+        """Signal."""
         return self.__signal  # pragma: no cover
 
     @signal.setter
@@ -74,7 +74,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
     @signal.getter
     def signal(self) -> Field | FieldsContainer:
-        """Get the signal.
+        """Signal.
 
         Returns
         -------
@@ -84,7 +84,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         return self.__signal
 
     def process(self):
-        """Compute loudness.
+        """Compute the loudness.
 
         This method calls the appropriate DPF Sound operator to compute the loudness of the signal.
         """
@@ -114,7 +114,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
             )
 
     def get_output(self) -> tuple[FieldsContainer] | tuple[Field]:
-        """Get loudness data in a tuple of field or fields container.
+        """Get loudness data in a tuple of a DPF field or fields container.
 
         Returns
         -------
@@ -136,7 +136,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         return self._output
 
     def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
-        """Get loudness data as a tuple of NumPy array.
+        """Get loudness data in a tuple as a NumPy array.
 
         Returns
         -------
@@ -251,7 +251,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         return self._convert_bark_to_hertz(self.get_bark_band_indexes())
 
     def plot(self):
-        """Plot specific loudness.
+        """Plot the specific loudness.
 
         This method creates a figure window that displays the specific loudness in sone/Bark as a
         function of the Bark band index.

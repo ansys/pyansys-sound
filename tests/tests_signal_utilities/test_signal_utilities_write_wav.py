@@ -40,14 +40,20 @@ def test_write_wav_process(dpf_sound_test_server):
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
         wav_writer.process()
-    assert str(excinfo.value) == "Path for write wav file is not specified. Use WriteWav.set_path."
+    assert (
+        str(excinfo.value) == "Path for writing WAV file is not specified. Use 'WriteWav.set_path'."
+    )
 
     wav_writer.path_to_write = r"C:\data\flute_modified.wav"
 
     # Error 2
     with pytest.raises(PyAnsysSoundException) as excinfo:
         wav_writer.process()
-    assert str(excinfo.value) == "No signal is specified for writing, use WriteWav.set_signal."
+    assert (
+        str(excinfo.value)
+        == "No signal is specified for writing to a WAV file. \
+        Use 'WriteWav.set_signal'."
+    )
 
     wav_loader.process()
     wav_writer.signal = wav_loader.get_output()
@@ -73,7 +79,7 @@ def test_write_wav_set_get_bit_depth(dpf_sound_test_server):
         wav_writer.bit_depth = "int128"
     assert (
         str(excinfo.value)
-        == "Invalid bit depth, accepted values are 'float32', 'int32', 'int16', 'int8'."
+        == "Bit depth is invalid. Accepted values are 'float32', 'int32', 'int16', and 'int8'."
     )
 
     wav_writer.bit_depth = r"int8"

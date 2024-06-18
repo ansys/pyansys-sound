@@ -58,10 +58,10 @@ def connect_to_or_start_server(
         This parameter is ignored if either the port or IP address is set.
     use_license_context: bool, default: False
         Whether to check out the DPF Sound license increment (``avrxp_snd_level1``) before using
-        PyAnsys Sound. It improves performance if you are doing multiple calls to DPF Sound
-        operators, as these require licensing. This parameter can also be used to force check out
-        before running a script when few DPF Sound license increments are available.
-        The license is checked in when the server object is deleted.
+        PyAnsys Sound. Checking out the license increment improves performance if you are doing
+        multiple calls to DPF Sound operators because they require licensing. This parameter
+        can also be used to force check out before running a script when few DPF Sound license
+        increments are available. The license is checked in when the server object is deleted.
 
     Returns
     -------

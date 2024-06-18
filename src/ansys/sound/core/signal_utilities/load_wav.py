@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Loads WAV signals."""
+"""Loads a WAV signal."""
 
 import warnings
 
@@ -32,7 +32,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class LoadWav(SignalUtilitiesParent):
-    """Loads WAV signals."""
+    """Loads a WAV signal."""
 
     def __init__(self, path_to_wav: str = ""):
         """Create a ``LoadWav`` instance.
@@ -65,7 +65,7 @@ class LoadWav(SignalUtilitiesParent):
 
     @path_to_wav.getter
     def path_to_wav(self) -> str:
-        """Get the path of the WAV file to load.
+        """Path to the WAV file to load.
 
         Returns
         -------
@@ -111,7 +111,8 @@ class LoadWav(SignalUtilitiesParent):
             # Computing output if needed
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the `LoadWav.process()` method."
+                    "Output is not processed yet. \
+                        Use the 'LoadWav.process()' method."
                 )
             )
 

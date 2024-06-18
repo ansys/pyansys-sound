@@ -45,52 +45,52 @@ class PyAnsysSound:
     def plot(self):
         """Plot the output.
 
-        There is nothing to plot for the ``PyAnsysSound`` class.
+        There is nothing to plot.
         """
-        warnings.warn(PyAnsysSoundWarning("Nothing to plot for this class."))
+        warnings.warn(PyAnsysSoundWarning("There is nothing to plot."))
         return None
 
     def process(self):
         """Process inputs.
 
-        There is nothing to process for the ``PyAnsysSound`` class.
+        There is nothing to process.
 
         Returns
         -------
         None
                 None.
         """
-        warnings.warn(PyAnsysSoundWarning("Nothing to process for this class."))
+        warnings.warn(PyAnsysSoundWarning("There is nothing to process."))
         return None
 
     def get_output(self) -> None | FieldsContainer:
         """Get output.
 
-        There is nothing to output for the ``PyAnsysSound`` class.
+        There is nothing to output.
 
         Returns
         -------
         FieldsContainer
             Empty DPF fields container.
         """
-        warnings.warn(PyAnsysSoundWarning("Nothing to output."))
+        warnings.warn(PyAnsysSoundWarning("There is nothing to output."))
         return self._output
 
     def get_output_as_nparray(self) -> ArrayLike:
         """Get output as a NumPy array.
 
-        There is nothing to output for the ``PyAnsysSound`` class.
+        There is nothing to output.
 
         Returns
         -------
         np.array
             Empty NumPy array.
         """
-        warnings.warn(PyAnsysSoundWarning("Nothing to output for this class."))
+        warnings.warn(PyAnsysSoundWarning("There is nothing to output."))
         return np.empty(0)
 
     def convert_fields_container_to_np_array(self, fc):
-        """Convert DPF fields container to a NumPy array.
+        """Convert a DPF fields container to a NumPy array.
 
         This method converts a multichannel signal contained in a DPF fields container to a
         NumPy array.
