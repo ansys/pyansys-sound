@@ -174,8 +174,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         if self._output == None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the \
-                        'ToneToNoiseRatio.process()' method."
+                    "Output is not processed yet. Use the 'ToneToNoiseRatio.process()' method."
                 )
             )
 

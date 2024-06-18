@@ -137,8 +137,8 @@ class Stft(SpectrogramProcessingParent):
             and window_type != "RECTANGULAR"
         ):
             raise PyAnsysSoundException(
-                "Window type is invalid. Options are 'BARTLETT', 'BLACKMAN', 'BLACKMANHARRIS', \
-                    'HAMMING', 'HANN', 'HANNING', 'KAISER', and 'RECTANGULAR'."
+                "Window type is invalid. Options are 'BARTLETT', 'BLACKMAN', 'BLACKMANHARRIS', "
+                "'HAMMING', 'HANN', 'HANNING', 'KAISER', and 'RECTANGULAR'."
             )
 
         self.__window_type = window_type

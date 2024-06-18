@@ -182,8 +182,8 @@ def test_isolate_orders_set_get_window_type(dpf_sound_test_server):
         isolate_orders.window_type = "InvalidWindow"
     assert (
         str(excinfo.value)
-        == "Invalid window type, accepted values are 'HANNING', 'BLACKMANHARRIS', 'HANN', \
-                    'BLACKMAN','HAMMING', 'KAISER', 'BARTLETT', 'RECTANGULAR'."
+        == "Invalid window type, accepted values are 'HANNING', 'BLACKMANHARRIS', 'HANN',"
+        " 'BLACKMAN','HAMMING', 'KAISER', 'BARTLETT', 'RECTANGULAR'."
     )
 
     isolate_orders.window_type = "KAISER"

@@ -193,8 +193,8 @@ class IsolateOrders(SpectrogramProcessingParent):
             and window_type != "RECTANGULAR"
         ):
             raise PyAnsysSoundException(
-                "Invalid window type, accepted values are 'HANNING', 'BLACKMANHARRIS', 'HANN', \
-                    'BLACKMAN','HAMMING', 'KAISER', 'BARTLETT', 'RECTANGULAR'."
+                "Invalid window type, accepted values are 'HANNING', 'BLACKMANHARRIS', 'HANN', "
+                "'BLACKMAN','HAMMING', 'KAISER', 'BARTLETT', 'RECTANGULAR'."
             )
 
         self.__window_type = window_type

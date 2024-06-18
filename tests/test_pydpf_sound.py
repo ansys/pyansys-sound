@@ -35,7 +35,7 @@ def test_pyansys_sound_instanciate():
 @pytest.mark.dependency(depends=["test_pyansys_sound_instanciate"])
 def test_pyansys_sound_process():
     pyansys_sound = PyAnsysSound()
-    with pytest.warns(PyAnsysSoundWarning, match="Nothing to process for this class."):
+    with pytest.warns(PyAnsysSoundWarning, match="There is nothing to process."):
         pyansys_sound.process()
     assert pyansys_sound.process() == None
 
@@ -43,7 +43,7 @@ def test_pyansys_sound_process():
 @pytest.mark.dependency(depends=["test_pyansys_sound_instanciate"])
 def test_pyansys_sound_plot():
     pyansys_sound = PyAnsysSound()
-    with pytest.warns(PyAnsysSoundWarning, match="Nothing to plot for this class."):
+    with pytest.warns(PyAnsysSoundWarning, match="There is nothing to plot."):
         pyansys_sound.plot()
 
     assert pyansys_sound.plot() == None
@@ -52,7 +52,7 @@ def test_pyansys_sound_plot():
 @pytest.mark.dependency(depends=["test_pyansys_sound_instanciate"])
 def test_pyansys_sound_get_output():
     pyansys_sound = PyAnsysSound()
-    with pytest.warns(PyAnsysSoundWarning, match="Nothing to output for this class."):
+    with pytest.warns(PyAnsysSoundWarning, match="There is nothing to output."):
         pyansys_sound.get_output()
     out = pyansys_sound.get_output()
     assert out == None
@@ -61,7 +61,7 @@ def test_pyansys_sound_get_output():
 @pytest.mark.dependency(depends=["test_pyansys_sound_instanciate"])
 def test_pyansys_sound_get_output_as_nparray():
     pyansys_sound = PyAnsysSound()
-    with pytest.warns(PyAnsysSoundWarning, match="Nothing to output for this class."):
+    with pytest.warns(PyAnsysSoundWarning, match="There is nothing to output."):
         pyansys_sound.get_output_as_nparray()
     out = pyansys_sound.get_output_as_nparray()
     assert type(out) == type(np.empty(0))

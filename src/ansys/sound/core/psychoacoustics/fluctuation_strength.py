@@ -93,8 +93,8 @@ class FluctuationStrength(PsychoacousticsParent):
         """
         if self.__signal == None:
             raise PyAnsysSoundException(
-                "No signal found for fluctuation strength computation. \
-                    Use 'FluctuationStrength.signal'."
+                "No signal found for fluctuation strength computation."
+                " Use 'FluctuationStrength.signal'."
             )
 
         self.__operator.connect(0, self.signal)

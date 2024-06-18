@@ -66,8 +66,8 @@ class Istft(SpectrogramProcessingParent):
             or not stft.has_label("channel_number")
         ):
             raise PyAnsysSoundException(
-                "STFT is in the wrong format. Make sure that it has been computed \
-                    with the 'Stft' class."
+                "STFT is in the wrong format. Make sure that it has been computed "
+                "with the 'Stft' class."
             )
 
         self.__stft = stft

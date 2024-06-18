@@ -169,8 +169,7 @@ class CreateSoundField(SignalUtilitiesParent):
             # Computing output if needed
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output ia not processed yet. Use the \
-                        'CreateSoundField.process()' method."
+                    "Output ia not processed yet. Use the 'CreateSoundField.process()' method."
                 )
             )
 

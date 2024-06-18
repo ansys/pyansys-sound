@@ -90,8 +90,8 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         """
         if self.__signal == None:
             raise PyAnsysSoundException(
-                "No signal found for loudness computation. \
-                    Use 'LoudnessISO532_1_Stationary.signal'."
+                "No signal found for loudness computation. "
+                "Use 'LoudnessISO532_1_Stationary.signal'."
             )
 
         self.__operator.connect(0, self.signal)
@@ -128,8 +128,8 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         if self._output == None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the \
-                        'LoudnessISO532_1_Stationary.process()' method."
+                    "Output is not processed yet. Use the "
+                    "'LoudnessISO532_1_Stationary.process()' method."
                 )
             )
 
@@ -258,8 +258,8 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         """
         if self._output == None:
             raise PyAnsysSoundException(
-                "Output is not processed yet. Use the \
-                    'LoudnessISO532_1_Stationary.process()' method."
+                "Output is not processed yet. Use the "
+                "'LoudnessISO532_1_Stationary.process()' method."
             )
 
         bark_band_indexes = self.get_bark_band_indexes()

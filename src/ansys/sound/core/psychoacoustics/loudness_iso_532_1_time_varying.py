@@ -136,8 +136,8 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         if self._output == None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the \
-                        'LoudnessISO532_1_TimeVarying.process()' method."
+                    "Output is not processed yet. Use the "
+                    "'LoudnessISO532_1_TimeVarying.process()' method."
                 )
             )
 
@@ -370,8 +370,8 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         """
         if self.get_output() == None:
             raise PyAnsysSoundException(
-                "Output is not processed yet. Use the \
-                    'LoudnessISO532_1_TimeVarying.process()' method."
+                "Output is not processed yet. Use the "
+                "'LoudnessISO532_1_TimeVarying.process()' method."
             )
 
         if type(self._output[0]) == Field:
