@@ -64,7 +64,9 @@ def test_stft_get_output(dpf_sound_test_server):
     stft = Stft(signal=fc_signal)
 
     with pytest.warns(
-        PyAnsysSoundWarning, match="Output is not processed yet. Use the 'Stft.process()' method."
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. \
+                    Use the 'Stft.process\\(\\)' method.",
     ):
         fc_out = stft.get_output()
 
@@ -158,8 +160,8 @@ def test_stft_set_get_window_type(dpf_sound_test_server):
         stft.window_type = "InvalidWindow"
     assert (
         str(excinfo.value)
-        == "Invalid window type, accepted values are 'HANNING', 'BLACKMANHARRIS',"
-        " 'HANN', 'BLACKMAN','HAMMING', 'KAISER', 'BARTLETT', 'RECTANGULAR'."
+        == "Window type is invalid. Options are 'BARTLETT', 'BLACKMAN', 'BLACKMANHARRIS', "
+        "'HAMMING', 'HANN', 'HANNING', 'KAISER', and 'RECTANGULAR'."
     )
 
     stft.window_type = "KAISER"

@@ -67,7 +67,7 @@ def test_istft_get_output(dpf_sound_test_server):
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. \
-            Use the 'Istft.process()' method.",
+                        Use the 'Istft.process\\(\\)' method.",
     ):
         fc_out = istft.get_output()
 
@@ -113,9 +113,8 @@ def test_istft_set_get_signal(dpf_sound_test_server):
     with pytest.raises(PyAnsysSoundException) as excinfo:
         istft.stft = fc
     assert (
-        str(excinfo.value)
-        == "STFT is in the wrong format. Make sure that it has been computed \
-            with the 'Stft' class."
+        str(excinfo.value) == "STFT is in the wrong format. Make sure that it has been computed "
+        "with the 'Stft' class."
     )
 
     # Test 2 - No Error

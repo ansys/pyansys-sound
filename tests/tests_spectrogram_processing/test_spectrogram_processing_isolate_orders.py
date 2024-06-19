@@ -90,7 +90,7 @@ def test_isolate_orders_get_output(dpf_sound_test_server):
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. \
-            Use the 'IsolateOrders.process()' method.",
+                        Use the 'IsolateOrders.process\\(\\)' method.",
     ):
         fc_out = isolate_orders.get_output()
 
