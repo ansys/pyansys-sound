@@ -1,0 +1,12 @@
+FILE TO BE REMOVED
+
+Due to cyclic import warnings, some `from . import ....` had to
+be modified to `from ._filename import ...`.
+
+WARNING: Cannot resolve import of unknown module ansys.dpf.core in ansys.sound.core._pyansys_sound
+
+WARNING: toctree contains reference to nonexisting document 'api/ansys/sound/core/psychoacoustics/PsychoacousticsParent'
+
+WARNING: duplicate object description of ApplyGain.gain_in_db, other instance in api/ansys/sound/core/signal_utilities/apply_gain/ApplyGain, use :no-index: for one of them
+
+build finished with problems, 167 warnings.
