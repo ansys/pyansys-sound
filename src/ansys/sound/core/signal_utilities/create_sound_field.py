@@ -48,7 +48,7 @@ class CreateSoundField(SignalUtilitiesParent):
         Parameters
         ----------
         data:
-            Data to use to create the PyAnsys Sound field as a 1D numpy array.
+            Data to use to create the PyAnsys Sound field as a 1D NumPy array.
         sampling_frequency: float, default: 44100.0
             Sampling frequency of the data.
         unit: str, default: "Pa"
