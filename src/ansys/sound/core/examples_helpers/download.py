@@ -23,10 +23,17 @@
 """Functions to download sample datasets from the pyansys data repository."""
 from functools import wraps
 import os
+import platformdirs
 import shutil
 import urllib.request
 
-from ansys.sound.core.examples_helpers import EXAMPLES_PATH
+
+# Setup data directory
+USER_DATA_PATH = platformdirs.user_data_dir(appname="ansys_sound_core", appauthor="Ansys")
+if not os.path.exists(USER_DATA_PATH):  # pragma: no cover
+    os.makedirs(USER_DATA_PATH)
+
+EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
 
 
 def check_directory_exist(directory):  # pragma no cover
