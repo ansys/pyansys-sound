@@ -23,10 +23,10 @@
 """Functions to download sample datasets from the pyansys data repository."""
 from functools import wraps
 import os
-import platformdirs
 import shutil
 import urllib.request
 
+import platformdirs
 
 # Setup data directory
 USER_DATA_PATH = platformdirs.user_data_dir(appname="ansys_sound_core", appauthor="Ansys")
