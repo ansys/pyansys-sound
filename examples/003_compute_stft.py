@@ -48,7 +48,7 @@ my_server = connect_to_or_start_server(use_license_context=True)
 
 # %%
 
-# Load a WAV signal using the ``LoadWav`` class.
+# Load a signal from a WAV file using the ``LoadWav`` class.
 
 # Return the input data of the example file
 path_flute_wav = download_flute_wav()

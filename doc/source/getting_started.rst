@@ -20,11 +20,12 @@ PyAnsys Sound relies on these Ansys products:
 - `PyDPF-Core`_
 - DPF Sound, which is a plugin for DPF
 
-To install these prerequisites, you can choose from two methods:
+To install these prerequisites, you can use one of these methods:
 
-- From the Ansys installer, install Ansys and Ansys Sound Analysis
-  and Specification (SAS) from the Download Center on the `Ansys Customer Center`_.
-  Then, perform the steps in `Install PyDPF-Core`_ in the PyDPF-Core documentation.
+- From the `Download Center`_ on the Ansys Customer Portal, select the appropriate release
+  and then click the **Ansys Automated Installer** button. Use the downloaded installer to
+  install Ansys and Ansys Sound Analysis and Specification (SAS). Then, perform the steps in
+  `Install PyDPF-Core`_ in the PyDPF-Core documentation.
 - From the DPF pre-release, download and install DPF Server and DPF Sound as described
   in the pre-release guidelines in `Install DPF Server`_ in the PyDPF-Core documentation.
 
@@ -92,6 +93,6 @@ container that listens on port 6780.
 .. LINKS AND REFERENCES
 .. _PyDPF-Core: https://dpf.docs.pyansys.com/version/stable/
 .. _Ansys Sound: https://www.ansys.com/sound
-.. _Ansys Customer Center: https://innovationspace.ansys.com/customer-center/
+.. _Download Center: https://download.ansys.com/Current%20Release
 .. _Install PyDPF-Core: https://dpf.docs.pyansys.com/version/stable/getting_started/index.html#install-pydpf-core
 .. _Install DPF Server: https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#install-dpf-server

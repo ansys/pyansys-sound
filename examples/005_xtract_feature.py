@@ -133,7 +133,8 @@ def plot_stft(stft_class, SPLmax, title="STFT", maximum_frequency=MAX_FREQUENCY_
 # %%
 # Load a demo signal for Xtract
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load a WAV signal using the ``LoadWav`` class, The WAV file contains harmonics and shocks.
+# Load a demo signal from a WAV file using the ``LoadWav`` class.
+# The WAV file contains harmonics and shocks.
 
 # Return the input data of the example file
 path_xtract_demo_signal_1 = download_xtract_demo_signal_1_wav()

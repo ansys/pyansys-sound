@@ -81,7 +81,7 @@ server = connect_to_or_start_server()
 # %%
 # Calculate ISO 532-1 loudness for a stationary sound
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load a WAV signal using the ``LoadWav`` class. It is returned as a DPF
+# Load a signal from a WAV file using the ``LoadWav`` class. It is returned as a DPF
 # field container. For more information, see `fields_container`
 # <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_
 # in the DPF-Core API documentation. Then, calculate the loudness of this signal.
@@ -150,7 +150,7 @@ loudness_stationary.plot()
 # %%
 # Calculate ISO 532-1 loudness for a non-stationary sound
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load a new WAV signal (non-stationary).
+# Load a new signal (non-stationary) from a WAV file.
 path_accel_wav = download_accel_with_rpm_wav()
 wav_loader = LoadWav(path_accel_wav)
 wav_loader.process()

@@ -29,7 +29,7 @@ These documentation sections provide information on installing and using PyAnsys
         Learn how to install PyAnsys Sound and its prerequisites in user mode.
 
     .. grid-item-card:: User guide :material-regular:`menu_book`
-        :link: user_guide/index
+        :link: user_guide
         :link-type: doc
 
         Learn how to start a DPF server, load a WAV signal, and perform operations

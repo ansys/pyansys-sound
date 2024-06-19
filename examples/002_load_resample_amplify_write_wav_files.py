@@ -48,9 +48,9 @@ from ansys.sound.core.signal_utilities import ApplyGain, LoadWav, Resample, Writ
 server = connect_to_or_start_server()
 
 # %%
-# Load a WAV signal
-# ~~~~~~~~~~~~~~~~~
-# Load a WAV signal using the ``LoadWav`` class. It is returned as a DPF
+# Load a signal
+# ~~~~~~~~~~~~~
+# Load a signal from a WAV file using the ``LoadWav`` class. It is returned as a DPF
 # field container. For more information, see `fields_container
 # <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_
 # in the DPF-Core API documentation.

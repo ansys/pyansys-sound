@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Creates a sound field."""
+"""Creates a PyAnsys Sound field."""
 import warnings
 
 from ansys.dpf.core import Field, Operator
@@ -32,9 +32,9 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class CreateSoundField(SignalUtilitiesParent):
-    """Creates a sound field.
+    """Creates a PyAnsys Sound field.
 
-    This class creates a DPF field with sound metadata from a vector.
+    This class creates a PyAnsys Sound field with sound metadata from a vector.
     """
 
     def __init__(
@@ -48,7 +48,7 @@ class CreateSoundField(SignalUtilitiesParent):
         Parameters
         ----------
         data:
-            Data to use to create the sound field as a 1D numpy array.
+            Data to use to create the PyAnsys Sound found as a 1D numpy array.
         sampling_frequency: float, default: 44100.0
             Sampling frequency of the data.
         unit: str, default: "Pa"
@@ -138,9 +138,9 @@ class CreateSoundField(SignalUtilitiesParent):
         return self.__sampling_frequency
 
     def process(self):
-        """Create the sound field.
+        """Create the PyAnsys Sound found.
 
-        This method calls the appropriate DPF Sound operator to create the sound field.
+        This method calls the appropriate DPF Sound operator to create the PyAnsys Sound found.
         """
         if np.size(self.data) == 0:
             raise PyAnsysSoundException(

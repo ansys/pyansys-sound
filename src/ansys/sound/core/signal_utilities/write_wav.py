@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Write a WAV signal to disk."""
+"""Write a signal to a WAV file."""
 
 import warnings
 
@@ -31,7 +31,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class WriteWav(SignalUtilitiesParent):
-    """Write a WAV signal to disk."""
+    """Write a signal to a WAV file."""
 
     def __init__(
         self, signal: FieldsContainer = None, path_to_write: str = "", bit_depth: str = "float32"
@@ -41,9 +41,9 @@ class WriteWav(SignalUtilitiesParent):
         Parameters
         ----------
         signal: FieldsContainer, default: None
-            Signal to save: Each channel in the DPF fields container is a field.
+            Signal to write to a WAV file. Each channel in the DPF fields container is a field.
         path_to_write: str, default: ''
-            Path to write the WAV file to. This parameter can be set during the instantiation
+            Path for the WAV file. This parameter can be set during the instantiation
             of the object or with the ``LoadWav.set_path()`` method.
         bit_depth: str, default: 'float32'
             Bit depth. Options are ``'float32'``, ``'int32'``, ``'int16'``, and ``'int8'``.
@@ -116,17 +116,17 @@ class WriteWav(SignalUtilitiesParent):
 
     @property
     def path_to_write(self):
-        """Path to write WAV file to."""
+        """Path to write the WAV file to."""
         return self.__path_to_write  # pragma: no cover
 
     @path_to_write.setter
     def path_to_write(self, path_to_write: str):
-        """Path to write WAV file to."""
+        """Path to write the WAV file to."""
         self.__path_to_write = path_to_write
 
     @path_to_write.getter
     def path_to_write(self) -> str:
-        """Path to write the WAV file to.
+        """Path to write the the WAV file to.
 
         Returns
         -------
@@ -136,9 +136,9 @@ class WriteWav(SignalUtilitiesParent):
         return self.__path_to_write
 
     def process(self):
-        """Write the WAV file to disk.
+        """Write the signal to a WAV file.
 
-        This method calls the appropriate DPF Sound operator to write the WAV file to disk.
+        This method calls the appropriate DPF Sound operator to write the signal to a WAV file.
         """
         if self.path_to_write == "":
             raise PyAnsysSoundException(
