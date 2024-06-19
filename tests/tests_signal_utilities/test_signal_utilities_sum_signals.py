@@ -62,7 +62,7 @@ def test_sum_signals_get_output(dpf_sound_test_server):
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. \
-            Use the 'SumSignals.process()' method.",
+                        Use the 'SumSignals.process\\(\\)' method.",
     ):
         fc_out = sum_gain.get_output()
 
@@ -84,7 +84,8 @@ def test_sum_signals_get_output_as_np_array(dpf_sound_test_server):
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the 'SumSignals.process()' method.",
+        match="Output is not processed yet. \
+                        Use the 'SumSignals.process\\(\\)' method.",
     ):
         fc_out = sum_gain.get_output()
 

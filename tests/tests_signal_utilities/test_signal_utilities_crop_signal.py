@@ -43,7 +43,7 @@ def test_crop_signal_process(dpf_sound_test_server):
     assert (
         str(excinfo.value)
         == "No signal found to crop. \
-        Use the 'CropSignal.set_signal()' method."
+                Use the 'CropSignal.set_signal()' method."
     )
 
     wav_loader.process()
@@ -66,7 +66,8 @@ def test_crop_signal_get_output(dpf_sound_test_server):
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the 'CropSignal.process()' method.",
+        match="Output is not processed yet. \
+                        Use the 'CropSignal.process\\(\\)' method.",
     ):
         fc_out = signal_cropper.get_output()
 
@@ -95,7 +96,8 @@ def test_crop_signal_get_output_as_np_array(dpf_sound_test_server):
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the 'CropSignal.process()' method.",
+        match="Output is not processed yet. \
+                        Use the 'CropSignal.process\\(\\)' method.",
     ):
         fc_out = signal_cropper.get_output()
 

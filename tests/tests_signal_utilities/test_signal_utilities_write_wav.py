@@ -52,7 +52,7 @@ def test_write_wav_process(dpf_sound_test_server):
     assert (
         str(excinfo.value)
         == "No signal is specified for writing to a WAV file. \
-        Use 'WriteWav.set_signal'."
+                    Use 'WriteWav.set_signal'."
     )
 
     wav_loader.process()

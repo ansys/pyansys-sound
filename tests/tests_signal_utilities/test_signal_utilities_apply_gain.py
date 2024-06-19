@@ -64,7 +64,7 @@ def test_apply_gain_get_output(dpf_sound_test_server):
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the 'ApplyGain.process()' method.",
+        match="Output is not processed yet. Use the 'ApplyGain.process\\(\\)' method.",
     ):
         fc_out = gain_applier.get_output()
 
