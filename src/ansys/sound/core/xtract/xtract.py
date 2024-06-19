@@ -42,10 +42,10 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 class Xtract(XtractParent):
     """Provides Xtract processing.
 
-    PyAnsys Sound performs XTRACT processing in the same way as Sound SAS. This operator
-    chains a denoising step, followed by a tonal extraction step, and then a transient
-    extraction step. It returns the individual signals processed at each step, as well
-    as the remainder.
+    PyAnsys Sound performs XTRACT processing in the same way as Ansys Sound Analysis
+    and Specification (SAS). This operator chains a denoising step, followed by a
+    tonal extraction step, and then a transient extraction step. It returns the
+    individual signals processed at each step, as well as the remainder.
     """
 
     def __init__(

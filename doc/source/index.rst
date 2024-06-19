@@ -14,7 +14,7 @@ PyAnsys Sound
 
 PyAnsys Sound let you use the main features of `Ansys Sound`_ to perform
 the postprocessing and analysis of sounds and vibrations in Python. This library is based on
-`Ansys DPF`_ and the DPF Sound plugin. It is a Python wrapper that implements classes on top
+`PyDPF-Core`_ and the DPF Sound plugin. It is a Python wrapper that implements classes on top
 of DPF Sound operators.
 
 These documentation sections provide information on installing and using PyAnsys Sound:
@@ -32,7 +32,7 @@ These documentation sections provide information on installing and using PyAnsys
         :link: user_guide/index
         :link-type: doc
 
-        Understand how to start a DPF server, load a WAV signal, and perform operations
+        Learn how to start a DPF server, load a WAV signal, and perform operations
         on the signal.
 
     .. grid-item-card:: API reference :material-regular:`bookmark`
@@ -60,12 +60,14 @@ Key features
 
 These API reference pages describe some key features of PyAnsys Sound:
 
-* :doc:`api/signal_utilities`: Tools to read/write WAV files in Ansys Sound SAS format and do basic editing of audio signals.
+* :doc:`api/signal_utilities`: Tools to read and write WAV files in the format used by Ansys Sound Analysis
+  and Specification (SAS) and tools to perform basic editing of audio signals.
 * :doc:`api/spectrogram_processing`: Time-frequency and time-representation conversion tools and time-frequency editing tools.
 * :doc:`api/psychoacoustics`: Psychoacoustic indicators computation to measure perceived sound quality.
 * :doc:`api/xtract`: Separation of a signal in several components, such as tonal, transient, and noise parts.
 
-Not all features of Ansys Sound SAS are available in PyAnsys Sound. Features are regularly added in new versions.
+Not all features of Ansys SAS are available in PyAnsys Sound. Features are regularly
+added in new versions.
 
 .. _limitations:
 
@@ -73,5 +75,6 @@ Not all features of Ansys Sound SAS are available in PyAnsys Sound. Features are
 .. '''''''''''
 .. -  ???
 
-.. _Ansys DPF: https://dpf.docs.pyansys.com/version/stable/
+.. LINKS AND REFERENCES
 .. _Ansys Sound: https://www.ansys.com/sound
+.. _PyDPF-Core: https://dpf.docs.pyansys.com/version/stable/

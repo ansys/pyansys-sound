@@ -32,122 +32,28 @@ PyAnsys Sound
    :alt: Black
 
 
-.. index_start
+PyAnsys Sound let you use the main features of `Ansys Sound`_ to perform
+the postprocessing and analysis of sounds and vibrations in Python. This library is based on
+`PyDPF-Core`_ and the DPF Sound plugin. It is a Python wrapper that implements classes on top
+of DPF Sound operators
 
-PyAnsys Sound enables the postprocessing and analysis of sounds based on
-`Ansys DPF`_ and the DPF Sound plugin. It is a Python wrapper that
-implements classes on top of DPF Sound operators. For
-information demonstrating the behavior and usage of PyAnsys Sound,
-see the `Examples`_ section.
-
-.. START_MARKER_FOR_SPHINX_DOCS
-
-Contribute
-----------
-
-
-Install in development mode
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Installing PyAnsys Sound in development mode allows
-you to modify the source and enhance it.
-
-Before attempting to contribute to PyAnsys Sound, ensure that you are thoroughly
-familiar with the `PyAnsys Developer's Guide`_.
-
-#.  Clone the repository:
-
-    .. code:: bash
-
-        git clone https://github.com/ansys/pyansys-sound
-        cd pyansys-sound
-
-#.  Create a fresh-clean Python environment and activate it. Refer to the official `venv`_ documentation if you require further information:
-
-    .. code:: bash
-
-        # Create a virtual environment
-        python -m venv .venv
-
-#.  Install dependencies:
-
-    .. code:: bash
-
-        pip install -e .
-
-#.  Install additional requirements for tests and documentation (if needed):
-
-    .. code:: bash
-
-        pip install -e.[doc,tests]
-
-
-Test
-^^^^
-
-There are different ways to run the PyAnsys Sound tests, depending on how the DPF
-server is started.
-
-#.  Run tests with a Docker container:
-
-    Follow the steps in `Getting the DPF server Docker image`_ to get
-    and run the DPF docker image. Run the tests with the following command
-
-    .. code:: bash
-
-        pytest .
-
-#.  Run tests with a Docker container from Github:
-
-    .. code:: bash
-
-        docker pull ghcr.io/ansys/ansys-sound:latest
-        pytest .
-
-
-Build documentation
-===================
-
-Follow the description in `Getting the DPF server Docker image`_ image to get
-and run the dpf docker image.
-
-On Windows, build the documentation with:
-
-.. code:: powershell
-
-    .\doc\make.bat html
-
-You can use the latest container from Github to build it with the following command:
-
-.. code:: powershell
-
-    docker pull ghcr.io/ansys/ansys-dpf-sound:latest
-    docker run -d -p 6780:50052 -e ANSYSLMD_LICENSE_FILE=1055@mylicserver -e ANSYS_DPF_ACCEPT_LA=Y ghcr.io/ansys/ansys-sound:latest
-    docker run -d -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@mylicserver" -v $env:LOCALAPPDATA\Ansys\ansys_sound_core\examples:C:\data  -p 6780:50052 ghcr.io/ansys/ansys-dpf-sound:latest
-    .\doc\make.bat html
-
-
-
-Run style checks
-================
-
-The style checks use `pre-commit`_ and can be run from a powershell terminal:
-
-.. code:: bash
-
-    pre-commit run --all-files
-
-
-The style checks can also be configured to run automatically before each ``git commit``:
-
-.. code:: bash
-
-    pre-commit install
-
-View documentation
--------------------
+Documentation and Issues
+------------------------
 Documentation for the latest stable release of PyAnsys Sound is hosted at
-`PyAnsys Sound Documentation <https://sound.docs.pyansys.com/version/stable/>`_.
+`PyAnsys Sound Documentation <https://sound.docs.pyansys.com/version/dev/>`_.
+
+The documentation has these sections:
+
+- `Getting started <https://sound.docs.pyansys.com/version/dev/getting_started.html>`_: Learn
+  how to install PyAnsys Sound and its prerequisites in user mode.
+- `User guide <https://sound.docs.pyansys.com/version/dev/user_guide.html>`_: Learn how to start
+  a DPF server, load a WAV signal, and perform operations on the signal.
+- `API reference <https://sound.docs.pyansys.com/version/dev/api/index.html>`_: Understand how
+  to use Python to interact programmatically with PyAnsys Sound.
+- `Examples <https://sound.docs.pyansys.com/version/dev/examples/index.html>`_: Explore examples
+  that show how to use PyAnsys Sound for various workflows.
+- `Contribute <https://sound.docs.pyansys.com/version/dev/contribute.html>`_: Learn how to
+  contribute to the PyAnsysSound codebase or documentation.
 
 In the upper right corner of the documentation title bar, there is an option
 for switching from viewing the documentation for the latest stable release
@@ -155,16 +61,5 @@ to viewing the documentation for the development version or previously
 released versions.
 
 .. LINKS AND REFERENCES
-.. _black: https://github.com/psf/black
-.. _flake8: https://flake8.pycqa.org/en/latest/
-.. _isort: https://github.com/PyCQA/isort
-.. _PyAnsys Developer's guide: https://dev.docs.pyansys.com/
-.. _pre-commit: https://pre-commit.com/
-.. _pytest: https://docs.pytest.org/en/stable/
-.. _Sphinx: https://www.sphinx-doc.org/en/master/
-.. _pip: https://pypi.org/project/pip/
-.. _tox: https://tox.wiki/en/stable/
-.. _venv: https://docs.python.org/3/library/venv.html
-.. _Getting the DPF server Docker image: https://sound.docs.pyansys.com/version/stable/getting_started.html#getting-the-dpf-server-docker-image
-.. _Examples: https://sound.docs.pyansys.com/version/stable/examples/index.html
-.. _Ansys DPF: https://dpf.docs.pyansys.com/version/stable/
+.. _Ansys Sound: https://www.ansys.com/sound
+.. _PyDPF-Core: https://dpf.docs.pyansys.com/version/stable/
