@@ -43,8 +43,8 @@ from ansys.sound.core.examples_helpers import (
     get_absolute_path_for_xtract_demo_signal_1_wav,
     get_absolute_path_for_xtract_demo_signal_2_wav,
 )
-
 from ansys.sound.core.examples_helpers.download import EXAMPLES_PATH
+
 
 def test_data_path_xtract_demo_signal_1_wav():
     p = get_absolute_path_for_xtract_demo_signal_1_wav()
