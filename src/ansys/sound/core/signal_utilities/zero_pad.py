@@ -39,7 +39,7 @@ class ZeroPad(SignalUtilitiesParent):
         Parameters
         ----------
         signal: Field | FieldsContainer, default: None
-            Signal to resample as a DPF field or fields container.
+            Signal to zero-pad, as a DPF field or fields container.
         duration_zeros: float: default: 0.0
             Duration in seconds of the zeros to append to the input signal.
         """
