@@ -39,7 +39,7 @@ class Stft(SpectrogramProcessingParent):
     def __init__(
         self,
         signal: Field | FieldsContainer = None,
-        fft_size: float = 2048,
+        fft_size: int = 2048,
         window_type: str = "HANN",
         window_overlap: float = 0.5,
     ):
@@ -49,7 +49,7 @@ class Stft(SpectrogramProcessingParent):
         ----------
         signal: Field | FieldsContainer, default: None
             Mono signal to compute the STFT on as a DPF field or fields container.
-        fft_size: float, default: 2048
+        fft_size: int, default: 2048
             Size (as an integer) of the FFT to compute the STFT.
             Use a power of 2 for better performance.
         window_type: str, default: 'HANN'
@@ -102,7 +102,7 @@ class Stft(SpectrogramProcessingParent):
         return self.__fft_size  # pragma: no cover
 
     @fft_size.setter
-    def fft_size(self, fft_size):
+    def fft_size(self, fft_size: int):
         """Set the FFT size."""
         if fft_size < 0:
             raise PyAnsysSoundException("FFT size must be greater than 0.0.")
