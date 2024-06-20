@@ -123,12 +123,12 @@ class ZeroPad(SignalUtilitiesParent):
             self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> FieldsContainer | Field:
-        """Get the zero-padded signal as a DPF fields container.
+        """Get the zero-padded signal as a DPF field or fields container.
 
         Returns
         -------
         FieldsContainer
-             Zero-padded signal in a DPF fields container.
+             Zero-padded signal in a DPF field or fields container.
         """
         if self._output == None:
             # Computing output if needed
