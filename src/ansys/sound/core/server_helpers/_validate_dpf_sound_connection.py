@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Test if DPF Sound is available within the docker container used for tests on GitHub."""
+"""Test if DPF Sound is available within the Docker container used for tests on GitHub."""
 
 import os
 
@@ -30,7 +30,7 @@ DEFAULT_PORT: int = int(os.environ.get("ANSRV_DPF_SOUND_PORT", 6780))
 
 
 def validate_dpf_sound_connection(port=None) -> None:
-    """Validate that DPF Sound is available."""
+    """Validate that the DPF Sound plugin is available."""
     port = port if port is not None else DEFAULT_PORT
     connect_to_server(port=port)
     load_library("dpf_sound.dll", "dpf_sound")

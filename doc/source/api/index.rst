@@ -1,7 +1,7 @@
 API reference
 =============
 
-This section describes the public classes, methods, and attributes of the PyAnsys Sound API.
+This section describes how to use Python to interact programmatically with PyAnsys Sound.
 
 .. module:: ansys.sound.core
 

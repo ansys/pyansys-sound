@@ -38,7 +38,7 @@ def test_create_sound_field_process(dpf_sound_test_server):
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
         sound_field_creator.process()
-    assert str(excinfo.value) == "No data to use. Use CreateSoundField.set_data()."
+    assert str(excinfo.value) == "No data to use. Use the 'CreateSoundField.set_data()' method."
 
     # No error
     arr = np.ones(100)
@@ -51,7 +51,7 @@ def test_create_sound_field_get_output(dpf_sound_test_server):
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output has not been yet processed, use CreateSoundField.process().",
+        match="Output is not processed yet. Use the 'CreateSoundField.process\\(\\)' method.",
     ):
         f_out = sound_field_creator.get_output()
 

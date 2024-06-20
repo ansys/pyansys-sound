@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Compute fluctuation strength."""
+"""Compute the fluctuation strength."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -36,21 +36,23 @@ SPECIFIC_FS_ID = "specific"
 
 
 class FluctuationStrength(PsychoacousticsParent):
-    """Fluctuation strength for stationary sounds.
+    """Computes the fluctuation strength for a stationary sound.
 
-    This class computes the fluctuation strength of a signal, according to Sontacchi's master
-    thesis work: "Entwicklung eines Modulkonzeptes fur die psychoakustische Gerauschanalyse under
+    This class computes the fluctuation strength of a signal according to Sontacchi's master
+    thesis work.
+
+    Reference: "Entwicklung eines Modulkonzeptes fur die psychoakustische Gerauschanalyse under
     MATLAB". Master thesis, Technischen Universitat Graz, pp. 1-112 (1998).
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Create a FluctuationStrength object.
+        """Create a ``FluctuationStrength`` object.
 
         Parameters
         ----------
         signal: Field | FieldsContainer
-            Signal in Pa on which to compute fluctuation strength, as a DPF Field or Fields
-            Container.
+            Signal in Pa to compute fluctuation strength on as a DPF field or fields
+            container.
         """
         super().__init__()
         self.signal = signal
@@ -68,32 +70,33 @@ class FluctuationStrength(PsychoacousticsParent):
         Parameters
         ----------
         signal: FieldsContainer | Field
-            Signal in Pa on which to compute fluctuation strength, as a DPF Field or
-            FieldsContainer.
+            Signal in Pa to compute fluctuation strength on as a DPF field or
+            fields container.
 
         """
         self.__signal = signal
 
     @signal.getter
     def signal(self) -> Field | FieldsContainer:
-        """Get the input signal.
+        """Input signal.
 
         Returns
         -------
         FieldsContainer | Field
-            The signal in Pa as a Field or a FieldsContainer.
+            Signal in Pa as a DPF field or fields container.
         """
         return self.__signal
 
     def process(self):
-        """Compute fluctuation strength.
+        """Compute the fluctuation strength.
 
-        Calls the corresponding DPF Sound operator to compute the fluctuation strength
+        This method calls the corresponding DPF Sound operator to compute the fluctuation strength
         of the signal.
         """
         if self.__signal == None:
             raise PyAnsysSoundException(
-                "No signal for fluctuation strength computation. Use FluctuationStrength.signal."
+                "No signal found for fluctuation strength computation."
+                " Use 'FluctuationStrength.signal'."
             )
 
         self.__operator.connect(0, self.signal)
@@ -114,30 +117,33 @@ class FluctuationStrength(PsychoacousticsParent):
             )
 
     def get_output(self) -> tuple[FieldsContainer] | tuple[Field]:
-        """Return fluctuation strength data in a tuple of field or fields container.
+        """Get fluctuation strength data in a tuple as a DPF fields container or field.
 
         Returns
         -------
         tuple(FieldsContainer) | tuple(Field)
             First element is the fluctuation strength in vacil.
+
             Second element is the specific fluctuation strength in vacil/Bark.
         """
         if self._output == None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output has not been processed yet, use FluctuationStrength.process()."
+                    "Output is not processed yet. \
+                        Use the 'FluctuationStrength.process()' method."
                 )
             )
 
         return self._output
 
     def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
-        """Return fluctuation strength data as a tuple of numpy array.
+        """Get fluctuation strength data as a tuple in a NumPy array.
 
         Returns
         -------
         tuple[numpy.ndarray]
             First element is the fluctuation strength in vacil.
+
             Second element is the specific fluctuation strength in vacil/Bark.
         """
         output = self.get_output()
@@ -154,14 +160,15 @@ class FluctuationStrength(PsychoacousticsParent):
         )
 
     def get_fluctuation_strength(self, channel_index: int = 0) -> np.float64:
-        """Return fluctuation strength in vacil.
+        """Get fluctuation strength in vacil for a channel index.
 
-           Returns the fluctuation strength in vacil as a float, for the specified channel index.
+           This method gets the fluctuation strength in vacil as a float for the
+           specified channel index.
 
         Parameters
         ----------
-        channel_index: int
-            Index of the signal channel (0 by default) for which to return the specified output.
+        channel_index: int, default: 0
+            Index of the signal channel to return the specified output for.
 
         Returns
         -------
@@ -171,14 +178,15 @@ class FluctuationStrength(PsychoacousticsParent):
         return self._get_output_parameter(channel_index, TOTAL_FS_ID)
 
     def get_specific_fluctuation_strength(self, channel_index: int = 0) -> npt.ArrayLike:
-        """Return specific fluctuation strength.
+        """Get the specific fluctuation strength for a signal.
 
-        Return the specific fluctuation strength in vacil/Bark, for the specified channel index.
+        This method gets the specific fluctuation strength in vacil/Bark for the specified
+        channel index.
 
         Parameters
         ----------
-        channel_index: int
-            Index of the signal channel (0 by default) for which to return the specified output.
+        channel_index: int, default: 0
+            Index of the signal channel to get the specified output for.
 
         Returns
         -------
@@ -188,9 +196,10 @@ class FluctuationStrength(PsychoacousticsParent):
         return self._get_output_parameter(channel_index, SPECIFIC_FS_ID)
 
     def get_bark_band_indexes(self) -> npt.ArrayLike:
-        """Return Bark band indexes.
+        """Get the Bark band indexes.
 
-        Return the Bark band indexes used for fluctuation strength calculation as a numpy array.
+        This method gets the Bark band indexes used for the fluctuation strength
+        calculation as a NumPy array.
 
         Returns
         -------
@@ -210,13 +219,12 @@ class FluctuationStrength(PsychoacousticsParent):
             return np.copy(specific_fluctuation_strength[0].time_freq_support.time_frequencies.data)
 
     def get_bark_band_frequencies(self) -> npt.ArrayLike:
-        """Return Bark band frequencies.
+        """Get Bark band frequencies.
 
-        Return the frequencies corresponding to Bark band indexes as a numpy array.
+        This method gets the frequencies corresponding to Bark band indexes as a NumPy array.
 
-        Reference:
-        Traunmüller, Hartmut. "Analytical Expressions for the Tonotopic Sensory Scale." Journal of
-        the Acoustical Society of America. Vol. 88, Issue 1, 1990, pp. 97-100.
+        Reference: Traunmüller, Hartmut. "Analytical Expressions for the Tonotopic Sensory Scale."
+        Journal of the Acoustical Society of America. Vol. 88, Issue 1, 1990, pp. 97-100.
 
         Returns
         -------
@@ -226,14 +234,15 @@ class FluctuationStrength(PsychoacousticsParent):
         return self._convert_bark_to_hertz(self.get_bark_band_indexes())
 
     def plot(self):
-        """Plot specific fluctuation strength.
+        """Plot the specific fluctuation strength.
 
-        Creates a figure window where the specific fluctuation strength in vacil/Bark as a function
-        of Bark band index is displayed.
+        This method creates a figure window displaying the specific fluctuation strength
+        in vacil/Bark as a function of the Bark band index.
         """
         if self._output == None:
             raise PyAnsysSoundException(
-                "Output has not been processed yet, use FluctuationStrength.process()."
+                "Output is not processed yet. \
+                    Use the 'FluctuationStrength.process()' method."
             )
 
         bark_band_indexes = self.get_bark_band_indexes()
@@ -265,19 +274,20 @@ class FluctuationStrength(PsychoacousticsParent):
     def _get_output_parameter(
         self, channel_index: int, output_id: str
     ) -> np.float64 | npt.ArrayLike:
-        """Return individual fluctuation strength result.
+        """Get individual fluctuation strength result for a signal channel.
 
-        Returns the fluctuation strength as a float, or the specific fluctuation strength as a
-        numpy array, according to specified output_id, and for the specified channel.
+        This method gets a total or specific fluctuation strength for a signal channel
+        as a float or NumPy array, according to the output ID.
 
         Parameters
         ----------
         channel_index: int
-            Index of the signal channel for which to return the specified output.
+            Index of the signal channel to get the specified output for.
         output_id: str
-            Identifier of the specific output parameter that should be returned:
-                - "total" for overall fluctuation strength value in vacil.
-                - "specific" for specific fluctuation strength array in vacil/Bark.
+            ID of the specific output parameter to return. Options are:
+
+            - ``"total"``: For overall fluctuation strength value in vacil
+            - ``"specific"``: For specific fluctuation strength array in vacil/Bark
 
         Returns
         -------
@@ -306,4 +316,4 @@ class FluctuationStrength(PsychoacousticsParent):
             else:
                 return fluctuation_strength_data[0][0]
         else:
-            raise PyAnsysSoundException("Invalid identifier of output parameter.")
+            raise PyAnsysSoundException("ID of output parameter is invalid.")

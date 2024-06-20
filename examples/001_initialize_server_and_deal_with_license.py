@@ -23,35 +23,38 @@
 """
 .. _initialize_server_and_deal_with_license:
 
-Initialize PyAnsys Sound and ensure the check out of the license
------------------------------------------------------------------
+Initialize PyAnsys Sound and check out the license
+--------------------------------------------------
 
-This example shows how to initialize DPF core and load DPF Sound, and how to check out the
-required Ansys license increment avrxp_snd_level1 only once.
-It also shows how to connect to the DPF server, verify where it is located and get other useful
+This example shows how to initialize DPF-Core, load DPF Sound, and check out the
+required Ansys license (``increment avrxp_snd_level1``) only once. It also shows
+how to connect to the DPF server, verify where it is located, and get other useful
 information.
 
-This example demonstrates the use of the LicenseContextManager, a mechanism that allows you to
-check out the license only once for the duration of the session and greatly improves performance.
-It shows and compares the execution time of a simple DPF Sound operator when using a
-LicenseContextManager or not.
+This example also demonstrates the use of the LicenseContextManager, a mechanism that lets you
+check out the license only once for the duration of the session, which greatly improves performance.
+It shows the execution time of a simple DPF Sound operator when you do not use the
+LicenseContextManager versus when you do use it.
 
-Prerequisite: ensure that you have installed DPF core and DPF Sound, following the instructions
-here:
+**Prerequisites**
 
-- if you have installed the latest Ansys release: see `how to install PyDPF core \
-<https://dpf.docs.pyansys.com/version/stable/getting_started/install.html#installation>`_
-- if you want to use the DPF standalone version: see `how to install DPF server \
-<https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#dpf-server>`_
+Ensure that you have installed PyDPF-Core and DPF Sound according to procedures in
+the PyDPF-Core documentation:
+
+- If you have installed the latest Ansys release, see `Install using pip
+  <https://dpf.docs.pyansys.com/version/stable/getting_started/install.html#installation>`_.
+- If you want to use the DPF standalone version, see `Install DPF Server
+  <https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#dpf-server>`_.
+
 
 """
 
 # %%
-# Initial set up
-# ~~~~~~~~~~~~~~~
-# Here are the required python imports for this example:
+# Perform required imports
+# ~~~~~~~~~~~~~~~~~~~~~~~~
+# Perform the required imports:
 
-# Load Ansys & other libraries.
+# Load Ansys and other libraries.
 import datetime
 
 import ansys.dpf.core as dpf
@@ -70,28 +73,28 @@ from ansys.sound.core.signal_utilities import LoadWav
 #
 # Initialize DPF server without using a LicenseContextManager.
 #
-# Note: when use_license_context=False, the license is checked out each time
+# **Note**: When ``use_license_context=False``, the license is checked out each time
 # you use a DPF Sound operator.
 
 
-# Connect to a remote server or start a local server, without using a LicenseContextManager
+# Connect to a remote server or start a local server without using a LicenseContextManager
 print("Connecting to the server without using a LicenseContextManager")
 my_server = connect_to_or_start_server(use_license_context=False)
 
-# check if you are using a local or remote server
+# Check if you are using a local or remote server
 has_local_server = dpf.server.has_local_server()
 print(f"Local server: {has_local_server}")
 
-# if using a local server, display the path to the server
+# If using a local server, display the path to the server
 if has_local_server == True:
     print(f"Local server path (server variable): {my_server.ansys_path}")
 
 # %%
-# Display the information about the server you are currently using.
+# Display information about the server that you are using.
 print(f"Server information: {my_server.info}")
 
 # %%
-# Execute the same simple PyAnsys Sound operator (LoadWav) several times in a row,
+# Execute the same simple PyAnsys Sound operator (``LoadWav``) several times in a row
 # and measure the execution time.
 
 path_flute_wav = download_flute_wav()
@@ -110,25 +113,24 @@ for i in range(5):
     )
 
 # %%
-# Disconnect/shutdown the server and release the license increment.
-print("Disconnecting from the server and releasing the license increment")
+# Disconnect (shut down) the server and release the license increment.
+print("Disconnecting from the server and releasing the license increment.")
 my_server = None
 
 # %%
 # Use a DPF server with a LicenseContextManager
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# New connection to a remote server or start a local server,
-# now using the LicenseContextManager.
+# Initialize DPF server using a LicenseContextManager.
 #
-# Note: the LicenseContextManager is a mechanism that checks out a license increment when entering
-# the context and releases it when exiting the context.
+# **Note**: The LicenseContextManager is a mechanism that checks out a license increment
+# when entering the context and releases it when exiting the context.
 
-# Connect to a remote server or start a local server, using a LicenseContextManager
+# Connect to a remote server or start a local server using a LicenseContextManager
 print("Connecting to the server using a LicenseContextManager")
 my_server = connect_to_or_start_server(use_license_context=True)
 
-# Execute the same piece of code as previously, and measure the new execution time
+# Execute the same code as previously and measure the execution time
 for i in range(5):
     now = datetime.datetime.now()
     wav_loader = LoadWav(path_flute_wav)
@@ -143,9 +145,6 @@ for i in range(5):
     )
 
 # %%
-# Conclusion
-# ~~~~~~~~~~~
-# You can notice that the execution time is much faster when you use a LicenseContextManager
-# (second case), compared to not using it (first case).
-# This is because, when not using a LicenseContactManager, the license is checked out
+# You can see that the execution time is much faster when you use a LicenseContextManager.
+# This is because when a LicenseContactManager is not used, the license is checked out
 # each time you use a DPF Sound operator.

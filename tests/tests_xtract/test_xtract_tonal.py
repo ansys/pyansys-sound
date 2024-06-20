@@ -83,7 +83,7 @@ def test_xtract_tonal_process_except1(dpf_sound_test_server):
     xtract_tonal = XtractTonal(None, XtractTonalParameters())
     with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_tonal.process()
-    assert str(excinfo.value) == "No input signal for tonal analysis."
+    assert str(excinfo.value) == "No input signal found for tonal analysis."
 
 
 def test_xtract_tonal_process_except2(dpf_sound_test_server):
@@ -138,14 +138,14 @@ def test_xtract_tonal_get_output_warns(dpf_sound_test_server):
     xtract_tonal = XtractTonal()
     with pytest.warns(PyAnsysSoundWarning) as record:
         xtract_tonal.get_output()
-    assert "Output has not been processed yet." in record[0].message.args[0]
+    assert "Output is not processed yet." in record[0].message.args[0]
 
 
 def test_xtract_tonal_get_output_as_nparray_warns(dpf_sound_test_server):
     xtract_tonal = XtractTonal()
     with pytest.warns(PyAnsysSoundWarning) as record:
         xtract_tonal.get_output_as_nparray()
-    assert "Output has not been processed yet." in record[0].message.args[0]
+    assert "Output is not processed yet." in record[0].message.args[0]
 
 
 def test_xtract_tonal_get_output(dpf_sound_test_server):

@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Inverse Short-time Fourier Transform."""
+"""Inverse short-time Fourier transform."""
 
 import warnings
 
@@ -34,18 +34,16 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Istft(SpectrogramProcessingParent):
-    """Inverse Short-time Fourier Transform.
-
-    This class computes the ISTFT (Inverse Short-time Fourier transform) of a signal.
-    """
+    """Computes the inverse short-time Fourier transform (ISTFT) of a signal."""
 
     def __init__(self, stft: FieldsContainer = None):
-        """Create an Istft class.
+        """Create an ``Istft`` instance.
 
         Parameters
         ----------
-        stft:
-            A FieldsContainer containing an STFT computed with the Stft class.
+        stft: FieldsContainer, default: None
+            DPF fields container containing a short-time Fourier transform (STFT)
+            computed with the ``Stft`` class.
         """
         super().__init__()
         self.stft = stft
@@ -53,14 +51,14 @@ class Istft(SpectrogramProcessingParent):
 
     @property
     def stft(self):
-        """STFT property."""
+        """Short-time Fourier transform."""
         return self.__stft  # pragma: no cover
 
     @stft.setter
     def stft(self, stft: FieldsContainer):
         """Set the STFT."""
         if type(stft) != FieldsContainer and stft != None:
-            raise PyAnsysSoundException("Input must be a Fields container.")
+            raise PyAnsysSoundException("Input must be a DPF fields container.")
 
         if stft != None and (
             not stft.has_label("time")
@@ -68,29 +66,33 @@ class Istft(SpectrogramProcessingParent):
             or not stft.has_label("channel_number")
         ):
             raise PyAnsysSoundException(
-                "STFT is in the wrong format, make sure it has been computed with the Stft class."
+                "STFT is in the wrong format. Make sure that it has been computed "
+                "with the 'Stft' class."
             )
 
         self.__stft = stft
 
     @stft.getter
     def stft(self) -> FieldsContainer:
-        """Get the STFT.
+        """Short-time Fourier transform.
 
         Returns
         -------
         FieldsContainer
-                The STFT as a FieldsContainer.
+            STFT as a DPF fields container.
         """
         return self.__stft
 
     def process(self):
         """Compute the ISTFT.
 
-        Calls the appropriate DPF Sound operator to compute the Inverse STFT of the STFT.
+        This method calls the appropriate DPF Sound operator to compute the
+        inverse STFT of the STFT.
         """
         if self.stft == None:
-            raise PyAnsysSoundException("No STFT input for ISTFT computation. Use Istft.stft.")
+            raise PyAnsysSoundException(
+                "No STFT input found for ISTFT computation. Use 'Istft.stft'."
+            )
 
         self.__operator.connect(0, self.stft)
 
@@ -101,28 +103,31 @@ class Istft(SpectrogramProcessingParent):
         self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> Field:
-        """Return the ISTFT resulting signal as a field.
+        """Get the ISTFT resulting signal as a DPF field.
 
         Returns
         -------
         Field
-                The signal resulting from the ISTFT as a DPF Field.
+            Signal resulting from the ISTFT as a DPF field.
         """
         if self._output == None:
             # Computing output if needed
             warnings.warn(
-                PyAnsysSoundWarning("Output has not been yet processed, use Istft.process().")
+                PyAnsysSoundWarning(
+                    "Output is not processed yet. \
+                        Use the 'Istft.process()' method."
+                )
             )
 
         return self._output
 
     def get_output_as_nparray(self) -> npt.ArrayLike:
-        """Return the ISTFT resulting signal as a numpy array.
+        """Get the ISTFT resulting signal as a NumPy array.
 
         Returns
         -------
         np.array
-                The ISTFT resulting signal in a numpy array.
+            ISTFT resulting signal in a NumPy array.
         """
         output = self.get_output()
         out_as_np_array = output.data
@@ -133,7 +138,7 @@ class Istft(SpectrogramProcessingParent):
     def plot(self):
         """Plot signals.
 
-        Plots the signal resulting from ISTFT.
+        Plot the signal resulting from the ISTFT.
         """
         output = self.get_output()
         field = output

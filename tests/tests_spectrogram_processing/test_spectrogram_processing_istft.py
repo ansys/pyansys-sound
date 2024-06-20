@@ -46,7 +46,7 @@ def test_istft_process(dpf_sound_test_server):
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
         istft.process()
-    assert str(excinfo.value) == "No STFT input for ISTFT computation. Use Istft.stft."
+    assert str(excinfo.value) == "No STFT input found for ISTFT computation. Use 'Istft.stft'."
 
     # Testing input fields container (no error expected)
     istft.stft = stft.get_output()
@@ -65,7 +65,9 @@ def test_istft_get_output(dpf_sound_test_server):
     istft = Istft(stft=stft.get_output())
 
     with pytest.warns(
-        PyAnsysSoundWarning, match="Output has not been yet processed, use Istft.process()."
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. \
+                        Use the 'Istft.process\\(\\)' method.",
     ):
         fc_out = istft.get_output()
 
@@ -106,13 +108,13 @@ def test_istft_set_get_signal(dpf_sound_test_server):
     # Error
     with pytest.raises(PyAnsysSoundException) as excinfo:
         istft.stft = 456
-    assert str(excinfo.value) == "Input must be a Fields container."
+    assert str(excinfo.value) == "Input must be a DPF fields container."
 
     with pytest.raises(PyAnsysSoundException) as excinfo:
         istft.stft = fc
     assert (
-        str(excinfo.value)
-        == "STFT is in the wrong format, make sure it has been computed with the Stft class."
+        str(excinfo.value) == "STFT is in the wrong format. Make sure that it has been computed "
+        "with the 'Stft' class."
     )
 
     # Test 2 - No Error

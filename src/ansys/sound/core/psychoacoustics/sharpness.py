@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Compute sharpness according to Zwicker & Fastl's model."""
+"""Computes the sharpness of the signal according to Zwicker & Fastl's model."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -32,18 +32,15 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Sharpness(PsychoacousticsParent):
-    """Sharpness.
-
-    This class computes the sharpness of a signal according to Zwicker & Fastl's model.
-    """
+    """Computes the sharpness of a signal according to Zwicker & Fastl's model."""
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Create a Sharpness object.
+        """Create a ``Sharpness`` object.
 
         Parameters
         ----------
         signal: Field | FieldsContainer
-            Signal in Pa on which to compute sharpness, as a DPF Field or Fields Container.
+            Signal in Pa to compute sharpness on as a DPF field or fields container.
         """
         super().__init__()
         self.signal = signal
@@ -51,7 +48,7 @@ class Sharpness(PsychoacousticsParent):
 
     @property
     def signal(self):
-        """Signal property."""
+        """Signal."""
         return self.__signal  # pragma: no cover
 
     @signal.setter
@@ -61,30 +58,31 @@ class Sharpness(PsychoacousticsParent):
         Parameters
         -------
         signal: FieldsContainer | Field
-            Signal in Pa on which to compute sharpness, as a DPF Field or Fields Container.
+            Signal in Pa to compute sharpness on as a DPF field or fields container.
 
         """
         self.__signal = signal
 
     @signal.getter
     def signal(self) -> Field | FieldsContainer:
-        """Get the signal.
+        """Signal.
 
         Returns
         -------
         FieldsContainer | Field
-            The signal in Pa as a Field or a FieldsContainer.
+            Signal in Pa as a DPF field or fields container.
         """
         return self.__signal
 
     def process(self):
-        """Compute sharpness.
+        """Compute the sharpness.
 
-        Calls the appropriate DPF Sound operator to compute the sharpness of the signal.
+        This method calls the appropriate DPF Sound operator to compute the sharpness
+        of the signal.
         """
         if self.__signal == None:
             raise PyAnsysSoundException(
-                "No signal for sharpness computation. Use Sharpness.signal."
+                "No signal found for sharpness computation. Use 'Sharpness.signal'."
             )
 
         self.__operator.connect(0, self.signal)
@@ -99,7 +97,7 @@ class Sharpness(PsychoacousticsParent):
             self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> FieldsContainer | Field:
-        """Return sharpness in a tuple of field or fields container.
+        """Get the sharpness in a tuple of a DPF fields container or field.
 
         Returns
         -------
@@ -108,18 +106,21 @@ class Sharpness(PsychoacousticsParent):
         """
         if self._output == None:
             warnings.warn(
-                PyAnsysSoundWarning("Output has not been processed yet, use Sharpness.process().")
+                PyAnsysSoundWarning(
+                    "Output is not processed yet. \
+                        Use the 'Sharpness.process()' method."
+                )
             )
 
         return self._output
 
     def get_output_as_nparray(self) -> npt.ArrayLike:
-        """Return sharpness as a numpy array.
+        """Get the sharpness as a NumPy array.
 
         Returns
         -------
         numpy.ndarray:
-            Array of sharpness values, in acum.
+            Array of sharpness values in acum.
         """
         output = self.get_output()
 
@@ -132,14 +133,14 @@ class Sharpness(PsychoacousticsParent):
         return self.convert_fields_container_to_np_array(output)
 
     def get_sharpness(self, channel_index: int = 0) -> np.float64:
-        """Return sharpness as a float.
+        """Get the sharpness as a float value.
 
-        Returns sharpness in acum for the specified channel.
+        This method gets the sharpness in acum for the specified channel.
 
         Parameters
         ----------
-        channel_index: int
-            Index of the signal channel (0 by default) for which to return the sharpness value.
+        channel_index: int, default: 0
+            Index of the signal channel to get the sharpness value for.
 
         Returns
         -------

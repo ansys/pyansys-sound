@@ -60,7 +60,8 @@ def test_fs_process(dpf_sound_test_server):
     # No signal -> error
     with pytest.raises(
         PyAnsysSoundException,
-        match="No signal for fluctuation strength computation. Use FluctuationStrength.signal.",
+        match="No signal found for fluctuation strength computation."
+        " Use 'FluctuationStrength.signal'.",
     ):
         fs_computer.process()
 
@@ -90,7 +91,8 @@ def test_fs_get_output(dpf_sound_test_server):
     # Fluctuation strength not calculated yet -> warning
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output has not been processed yet, use FluctuationStrength.process().",
+        match="Output is not processed yet. \
+                        Use the 'FluctuationStrength.process\\(\\)' method.",
     ):
         output = fs_computer.get_output()
     assert output == None
@@ -118,7 +120,8 @@ def test_fs_get_fluctuation_strength(dpf_sound_test_server):
     # Fluctuation strength not calculated yet -> warning
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output has not been processed yet, use FluctuationStrength.process().",
+        match="Output is not processed yet. \
+                        Use the 'FluctuationStrength.process\\(\\)' method.",
     ):
         output = fs_computer.get_fluctuation_strength()
     assert output == None
@@ -179,7 +182,8 @@ def test_fs_get_specific_fluctuation_strength(dpf_sound_test_server):
     # Fluctuation strength not calculated yet -> warning
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output has not been processed yet, use FluctuationStrength.process().",
+        match="Output is not processed yet. \
+                        Use the 'FluctuationStrength.process\\(\\)' method.",
     ):
         output = fs_computer.get_specific_fluctuation_strength()
     assert output == None
@@ -229,7 +233,8 @@ def test_fs__get_ouptut_parameter(dpf_sound_test_server):
     # Fluctuation strength not calculated yet -> warning
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output has not been processed yet, use FluctuationStrength.process().",
+        match="Output is not processed yet. \
+                        Use the 'FluctuationStrength.process\\(\\)' method.",
     ):
         output = fs_computer._get_output_parameter(0, TOTAL_FS_ID)
     assert output == None
@@ -238,7 +243,7 @@ def test_fs__get_ouptut_parameter(dpf_sound_test_server):
     fs_computer.process()
 
     # Invalid parameter identifier -> error
-    with pytest.raises(PyAnsysSoundException, match="Invalid identifier of output parameter."):
+    with pytest.raises(PyAnsysSoundException, match="ID of output parameter is invalid."):
         param = fs_computer._get_output_parameter(0, "thisIsNotValid")
 
     # Invalid channel index -> error
@@ -289,7 +294,8 @@ def test_fs_get_bark_band_indexes(dpf_sound_test_server):
     # Fluctuation strength not calculated yet -> warning
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output has not been processed yet, use FluctuationStrength.process().",
+        match="Output is not processed yet. \
+                        Use the 'FluctuationStrength.process\\(\\)' method.",
     ):
         output = fs_computer.get_bark_band_indexes()
     assert output == None
@@ -353,7 +359,8 @@ def test_fs_get_output_as_nparray_from_fields_container(dpf_sound_test_server):
     # Fluctuation strength not calculated yet -> warning
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output has not been processed yet, use FluctuationStrength.process().",
+        match="Output is not processed yet. \
+                        Use the 'FluctuationStrength.process\\(\\)' method.",
     ):
         output = fs_computer.get_output_as_nparray()
     assert output == None
@@ -415,7 +422,8 @@ def test_fs_plot_from_fields_container(mock_show, dpf_sound_test_server):
     # Fluctuation strength not computed yet -> error
     with pytest.raises(
         PyAnsysSoundException,
-        match="Output has not been processed yet, use FluctuationStrength.process().",
+        match="Output is not processed yet. \
+                    Use the 'FluctuationStrength.process\\(\\)' method.",
     ):
         fs_computer.plot()
 

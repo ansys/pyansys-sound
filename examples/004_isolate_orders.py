@@ -23,12 +23,12 @@
 """
 .. _isolate_orders_example:
 
-Isolate Orders
+Isolate orders
 --------------
 
-This example shows how to isolate orders (harmonic and partial components in the sound related to
-the speed of a rotating machine) in a signal containing an RPM profile.
-It also uses additional classes from pyansys-sound to compute spectrograms
+Orders are harmonic and partial components in the sound related to the speed of a
+rotating machine. This example shows how to isolate orders in a signal containing an RPM profile.
+It also uses additional classes from PyAnsys Sound to compute spectrograms
 and the loudness of the isolated signals.
 
 """
@@ -60,30 +60,30 @@ from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav, WriteWav
 from ansys.sound.core.spectrogram_processing import IsolateOrders, Stft
 
-# Connect to remote or start a local server
+# Connect to a remote or start a local server
 my_server = connect_to_or_start_server()
 
 
 # %%
-# Defining a custom function for STFT plots
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Defining a custom function for STFT plots that will allow us to have
-# more control over what we're displaying.
-# Note that we could use Stft.plot(), but in this example
-# we want to restrict the frequency range of the plot, hence the custom function.
+# Define a custom function for STFT plots
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Defining a custom function for STFT plots lets you have
+# more control over what you are displaying.
+# While you could use the ``Stft.plot()`` method, the custom function
+# defined here restricts the frequency range of the plot.
 def plot_stft(stft_class, vmax):
     out = stft_class.get_output_as_nparray()
 
-    # Extracting first half of the STFT (second half is symmetrical)
+    # Extract first half of the STFT (second half is symmetrical)
     half_nfft = int(out.shape[0] / 2) + 1
     magnitude = stft_class.get_stft_magnitude_as_nparray()
 
-    # Voluntarily ignoring a numpy warning
+    # Voluntarily ignore a numpy warning
     np.seterr(divide="ignore")
     magnitude = 20 * np.log10(magnitude[0:half_nfft, :])
     np.seterr(divide="warn")
 
-    # Obtaining sampling frequency, time steps and number of time samples
+    # Obtain sampling frequency, time steps, and number of time samples
     fs = 1.0 / (
         stft_class.signal.time_freq_support.time_frequencies.data[1]
         - stft_class.signal.time_freq_support.time_frequencies.data[0]
@@ -91,10 +91,10 @@ def plot_stft(stft_class, vmax):
     time_step = np.floor(stft_class.fft_size * (1.0 - stft_class.window_overlap) + 0.5) / fs
     num_time_index = len(stft_class.get_output().get_available_ids_for_label("time"))
 
-    # Boundaries of the plot
+    # Define boundaries of the plot
     extent = [0, time_step * num_time_index, 0.0, fs / 2.0]
 
-    # Plotting
+    # Plot
     plt.imshow(
         magnitude,
         origin="lower",
@@ -115,19 +115,19 @@ def plot_stft(stft_class, vmax):
 
 
 # %%
-# Load a wav signal with a RPM profile
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load a wav signal that has been generated with Ansys Sound SAS using LoadWav class.
-# It contains two channels:
+# Load a signal with an RPM profile
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Load a signal that has been generated with Ansys Sound Analysis
+# and Specification (SAS) from a WAV file using the ``LoadWav`` class.
+# This class contains two channels:
 #
 # - The actual signal (an acceleration recording)
-#
 # - The associated RPM profile
 
-# Returning the input data of the example file
+# Return the input data of the example file
 path_accel_wav = download_accel_with_rpm_wav()
 
-# Load the wav file.
+# Load the WAV file.
 wav_loader = LoadWav(path_accel_wav)
 wav_loader.process()
 fc_signal = wav_loader.get_output()
@@ -135,10 +135,10 @@ fc_signal = wav_loader.get_output()
 # Extract the audio signal and the RPM profile
 wav_signal, rpm_signal = wav_loader.get_output_as_nparray()
 
-# Extracting time support associated to the signal
+# Extract time support associated with the signal
 time_support = fc_signal[0].time_freq_support.time_frequencies.data
 
-# Plotting the signal and its associated RPM profile
+# Plot the signal and its associated RPM profile
 fig, ax = plt.subplots(nrows=2, sharex=True)
 ax[0].plot(time_support, wav_signal)
 ax[0].set_title("Audio Signal")
@@ -152,9 +152,9 @@ plt.xlabel("Time (s)")
 plt.show()
 
 # %%
-# Plotting spectrogram of the original signal
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Plotting the Spectrogram of the original signal.
+# Plot spectrogram of the original signal
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Plot the spectrogram of the original signal.
 
 stft = Stft(signal=fc_signal[0], window_overlap=0.9, fft_size=8192)
 stft.process()
@@ -162,13 +162,13 @@ max_stft = 20 * np.log10(np.max(stft.get_stft_magnitude_as_nparray()))
 plot_stft(stft, max_stft)
 
 # %%
-# Isolating Orders
+# Isolate orders
 # ~~~~~~~~~~~~~~~~
-# Isolating orders 2, 4 and 6 with the IsolateOrders class.
+# Isolate orders 2, 4, and 6 with the ``IsolateOrders`` class.
 
 field_wav, field_rpm = wav_loader.get_output()
 
-# Defining parameters for order isolation
+# Define parameters for order isolation
 field_wav.unit = "Pa"
 order_to_isolate = [2, 4, 6]  # Orders indexes to isolate as a list
 fft_size = 8192  # FFT Size (in samples)
@@ -176,7 +176,7 @@ window_type = "HANN"  # Window type
 window_overlap = 0.9  # Window overlap
 width_selection = 3  # Width of the order selection in Hz
 
-# Instantiating the IsolateOrders class with the parameters
+# Instantiate the ``IsolateOrders`` class with the parameters
 isolate_orders = IsolateOrders(
     signal=field_wav,
     rpm_profile=field_rpm,
@@ -187,40 +187,40 @@ isolate_orders = IsolateOrders(
     width_selection=width_selection,
 )
 
-# Actually isolating orders
+# Isolate orders
 isolate_orders.process()
 
-# Plotting the Spectrogram of the isolated orders
+# Plot the spectrogram of the isolated orders
 stft.signal = isolate_orders.get_output()
 stft.process()
 plot_stft(stft, max_stft)
 
 # %%
-# Isolating different orders
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Changing fft size, orders indexes and window type, and then re-isolating the orders.
+# Isolate different orders
+# ~~~~~~~~~~~~~~~~~~~~~~~~
+# Change FFT size, order indexes, and window type. Then re-isolate the orders.
 
-# Changing some parameters directly using the setters of the class
+# Change some parameters directly using the setters of the class
 isolate_orders.orders = [2, 6]
 isolate_orders.window_type = "BLACKMAN"
 
-# Re-processing (needs to be called explicitly, otherwise the output won't be updated)
+# Reprocess (Must be called explicitly. Otherwise, the output won't be updated.)
 isolate_orders.process()
 
 
-# Plotting the Spectrogram of the isolated orders
+# Plot the spectrogram of the isolated orders
 stft.signal = isolate_orders.get_output()
 stft.process()
 plot_stft(stft, max_stft)
 # %%
-# Working with the isolated signal
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Plotting the signal containing the isolated orders and computing its Loudness.
+# Work with the isolated signal
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Plot the signal containing the isolated orders and compute its loudness.
 
-# Plotting the signal directly using the method from the IsolateOrders class
+# Plot the signal directly using the method from the ``IsolateOrders`` class
 isolate_orders.plot()
 
-# Using the Loudness class to compute the loudness of the isolate signal
+# Use the ``Loudness`` class to compute the loudness of the isolate signal
 input_loudness = isolate_orders.get_output()
 input_loudness.unit = "Pa"
 loudness = LoudnessISO532_1_Stationary(signal=input_loudness)
@@ -228,21 +228,21 @@ loudness.process()
 
 loudness_isolated_signal = loudness.get_loudness_level_phon()
 
-# Computing the loudness for the original signal
+# Compute the loudness for the original signal
 loudness.signal = field_wav
 loudness.process()
 
 loudness_original_signal = loudness.get_loudness_level_phon()
 
-print(f"Loudness of the original signal: {loudness_original_signal: .1f} phons.")
-print(f"Loudness of the isolated signal: {loudness_isolated_signal: .1f} phons.")
+print(f"Loudness of the original signal is {loudness_original_signal: .1f} phons.")
+print(f"Loudness of the isolated signal is {loudness_isolated_signal: .1f} phons.")
 
 # %%
-# Isolating orders of several signals in a loop
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Looping over a list of given signals and writing them as a wav file.
+# Isolate orders of several signals in a loop
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Loop over a list of given signals and write them as a WAV file.
 
-# Obtaining parent folder of accel_with_rpm.wav
+# Obtain parent folder of the 'accel_with_rpm.wav' file
 parent_folder = pathlib.Path(path_accel_wav).parent.absolute()
 
 path_accel_wav_2 = download_accel_with_rpm_2_wav()
@@ -253,19 +253,19 @@ fft_sizes = [256, 2048, 4096]
 
 wav_writer = WriteWav()
 
-# Isolating orders for all the files containing RPM profiles in this folder
+# Isolate orders for all the files containing RPM profiles in this folder
 for file, fft_sz in zip(paths, fft_sizes):
     # Loading the file
     wav_loader.path_to_wav = file
     wav_loader.process()
 
-    # Setting Parameters for order isolation
+    # Set parameters for order isolation
     isolate_orders.signal = wav_loader.get_output()[0]
     isolate_orders.rpm_profile = wav_loader.get_output()[1]
     isolate_orders.fft_size = fft_sz
     isolate_orders.process()
 
-    # Write on the disk as a wav file
+    # Write as a WAV file on the disk
     out_name = os.path.basename(file)[:-4] + "_isolated_fft_size_" + str(fft_sz) + ".wav"
     path_to_write = parent_folder / out_name
     wav_writer.path_to_write = str(path_to_write)

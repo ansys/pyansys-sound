@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Compute ISO 532-1 loudness for time-varying sounds."""
+"""Computes ISO 532-1 loudness for time-varying sounds."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -33,19 +33,19 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
-    """ISO 532-1 loudness for time-varying sounds.
+    """Computes ISO 532-1 loudness for time-varying sounds.
 
-    This class computes the loudness of a signal following standard ISO 532-1 for time-varying
+    This class computes the loudness of a signal following the ISO 532-1 standard for time-varying
     sounds.
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Create a LoudnessISO532_1_TimeVarying object.
+        """Create a ``LoudnessISO532_1_TimeVarying`` object.
 
         Parameters
         ----------
         signal: Field | FieldsContainer
-            Signal on which to compute time-varying ISO532-1 Loudness, as a DPF field or fields
+            Signal to compute time-varying ISO532-1 loudness on as a DPF field or fields
             container.
         """
         super().__init__()
@@ -64,30 +64,30 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         Parameters
         ----------
         signal: FieldsContainer | Field
-            Signal in Pa on which to compute loudness, as a DPF field or fields container.
+            Signal in Pa to compute loudness on as a DPF field or fields container.
         """
         self.__signal = signal
 
     @signal.getter
     def signal(self) -> Field | FieldsContainer:
-        """Get the signal.
+        """Signal.
 
         Returns
         -------
-        FieldsContainer | Field
-            The signal as a field or a fields container
+        Field | FieldsContainer
+            Signal as a DPF field or a fields container.
         """
         return self.__signal
 
     def process(self):
-        """Compute the time-varying ISO532-1 Loudness.
+        """Compute the time-varying ISO532-1 loudness.
 
-        Calls the appropriate DPF Sound operator to compute the loudness of the signal.
+        This method calls the appropriate DPF Sound operator to compute the loudness of the signal.
         """
         if self.__signal == None:
             raise PyAnsysSoundException(
-                "No signal for loudness vs time computation."
-                + " Use LoudnessISO532_1_TimeVarying.signal"
+                "No signal found for loudness versus time computation."
+                + " Use 'LoudnessISO532_1_TimeVarying.signal'."
             )
 
         self.__operator.connect(0, self.signal)
@@ -116,39 +116,50 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             )
 
     def get_output(self) -> tuple[FieldsContainer] | tuple[Field]:
-        """Return time-varying loudness data in a tuple of fields or fields.
+        """Get time-varying loudness data in a tuple as a DPF fields container or field.
 
         Returns
         -------
         tuple(FieldsContainer) | tuple(Field)
-            1st element is the loudness vs time in sone.
-            2nd element is the N5 indicator, in sone.
-            3rd element is the N10 indicator, in sone.
-            4th element is the loudness vs time in phon.
-            5th element is the L5 indicator, in phon.
-            6th element is the L10 indicator, in phon.
+            First element is the loudness versus the time in sone.
+
+            Second element is the N5 indicator in sone.
+
+            Third element is the N10 indicator in sone.
+
+            Fourth element is the loudness versus the time in phon.
+
+            Fifth element is the L5 indicator in phon.
+
+            Sixth element is the L10 indicator in phon.
         """
         if self._output == None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output has not been processed yet, use LoudnessISO532_1_TimeVarying.process()."
+                    "Output is not processed yet. Use the "
+                    "'LoudnessISO532_1_TimeVarying.process()' method."
                 )
             )
 
         return self._output
 
     def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
-        """Return the time-varying loudness related indicators as numpy arrays.
+        """Get indicators for time-varying loudness in a tuple as a NumPy array.
 
         Returns
         -------
         tuple[numpy.ndarray]
-            1st element is the loudness vs time in sone.
-            2nd element is the N5 indicator, in sone.
-            3rd element is the N10 indicator, in sone.
-            4th element is the loudness level vs time in phon.
-            5th element is the L5 indicator, in phon.
-            6th element is the L10 indicator, in phon.
+            First element is the loudness versus the time in sone.
+
+            Second element is the N5 indicator in sone.
+
+            Third element is the N10 indicator in sone.
+
+            Fourth element is the loudness versus the time in phon.
+
+            Fifth element is the L5 indicator in phon.
+
+            Sixth element is the L10 indicator in phon.
         """
         output = self.get_output()
 
@@ -175,12 +186,12 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         )
 
     def get_loudness_sone_vs_time(self, channel_index: int = 0) -> npt.ArrayLike:
-        """Return the time-varying loudness in sone for the specified channel_index.
+        """Get the time-varying loudness in sone for a signal channel.
 
         Parameters
         ----------
-        channel_index: int
-            Index of the signal channel (0 by default) for which to return time-varying loudness.
+        channel_index: int, default: 0
+            Index of the signal channel to get time-varying loudness for.
 
         Returns
         -------
@@ -202,20 +213,20 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
                 return loudness_vs_time[channel_index]
 
     def get_N5_sone(self, channel_index: int = 0) -> float:
-        """Return the N5 indicator.
+        """Get the N5 indicator for a signal channel.
 
-        Returns N5, that is, the loudness value in sone that is exceeded 5% of the time, for the
-        specified channel.
+        This method gets the N5 indicator, which is the loudness value in sone that is
+        exceeded 5% of the time.
 
         Parameters
         ----------
-        channel_index: int
-            Index of the signal channel (0 by default) for which to return N5.
+        channel_index: int, default: 0
+            Index of the signal channel to get the N5 indicator for.
 
         Returns
         -------
         numpy.float64
-            N5 value in sone.
+            N5 indicator value in sone.
         """
         if self.get_output() == None or not (self._check_channel_index(channel_index)):
             return None
@@ -228,20 +239,20 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             return N5[channel_index]
 
     def get_N10_sone(self, channel_index: int = 0) -> float:
-        """Return the N10 indicator.
+        """Get the N10 indicator for a signal channel.
 
-        Returns N10, that is, the loudness value in sone that is exceeded 10% of the time, for the
-        specified channel.
+        This method gets the N10 channel, which is the loudness value in sone that is
+        exceeded 10% of the time.
 
         Parameters
         ----------
-        channel_index: int
-            Index of the signal channel (0 by default) for which to return N10.
+        channel_index: int, default: 0
+            Index of the signal channel to get the N10 indicator for.
 
         Returns
         -------
         numpy.float64
-            N10 value in sone.
+            N10 indicator value in sone.
         """
         if self.get_output() == None or not (self._check_channel_index(channel_index)):
             return None
@@ -254,13 +265,12 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             return N10[channel_index]
 
     def get_loudness_level_phon_vs_time(self, channel_index: int = 0) -> npt.ArrayLike:
-        """Return the time-varying loudness level in phon for the specified channel_index.
+        """Get the time-varying loudness level in phon for a signal channel.
 
         Parameters
         ----------
-        channel_index: int
-            Index of the signal channel (0 by default) for which to return time-varying loudness
-            level.
+        channel_index: int, default: 0
+            Index of the signal channel to get the time-varying loudness level for.
 
         Returns
         -------
@@ -282,15 +292,15 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
                 return loudness_level_vs_time[channel_index]
 
     def get_L5_phon(self, channel_index: int = 0) -> float:
-        """Return the L5 indicator.
+        """Get the L5 indicator for a signal channel.
 
-        Returns L5, that is, the loudness level in phon that is exceeded 5% of the time, for the
-        specified channel.
+        This method gets the L5 indicator, which is the loudness level in phon that is
+        exceeded 5% of the time.
 
         Parameters
         ----------
-        channel_index: int
-            Index of the signal channel (0 by default) for which to return L5.
+        channel_index: int, default: 0
+            Index of the signal channel to get the L5 indicator for.
 
         Returns
         -------
@@ -308,15 +318,15 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             return L5[channel_index]
 
     def get_L10_phon(self, channel_index: int = 0) -> float:
-        """Return the L10 indicator.
+        """Get the L10 indicator for a signal channel.
 
-        Returns L10, that is, the loudness level in phon that is exceeded 10% of the time, for the
-        specified channel.
+        This method gets the L10 indicator, which is the loudness level in phon that is
+        exceeded 10% of the time.
 
         Parameters
         ----------
-        channel_index: int
-            Index of the signal channel (0 by default) for which to return L10.
+        channel_index: int, default: 0
+            Index of the signal channel to get the L10 indicator for.
 
         Returns
         -------
@@ -334,15 +344,15 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             return L10[channel_index]
 
     def get_time_scale(self) -> npt.ArrayLike:
-        """Return time scale.
+        """Get the time scale.
 
-        Returns an array of the timestamps, in second, where time-varying loudness and loudness
-        level are defined.
+        This method gets an array of the timestamps, in seconds, where time-varying
+        loudness and loudness level are defined.
 
         Returns
         -------
         numpy.ndarray
-            Timestamps in second.
+            Timestamps in seconds.
         """
         if self.get_output() == None:
             return None
@@ -355,12 +365,13 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
     def plot(self):
         """Plot the time-varying loudness in sone and loudness level in phon.
 
-        Creates a figure window where the time-varying loudness N in sone and loudness level L_N
-        in phon are displayed.
+        This method creates a figure window that displays the time-varying loudness (N)
+        in sone and loudness level (L_N) in phon.
         """
         if self.get_output() == None:
             raise PyAnsysSoundException(
-                "Output has not been processed yet, use LoudnessISO532_1_TimeVarying.process()."
+                "Output is not processed yet. Use the "
+                "'LoudnessISO532_1_TimeVarying.process()' method."
             )
 
         if type(self._output[0]) == Field:
