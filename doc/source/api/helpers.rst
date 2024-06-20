@@ -1,4 +1,4 @@
-Server Helpers
+Server helpers
 --------------
 
 .. module:: ansys.sound.core.server_helpers

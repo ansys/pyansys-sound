@@ -24,6 +24,18 @@ env:
 
 jobs:
 
+  update-changelog:
+    name: "Update CHANGELOG for new tag"
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: ansys/actions/doc-deploy-changelog@v6
+        with:
+          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+
   code-style:
     name: "Running code style checks"
     runs-on: ubuntu-latest
@@ -42,6 +54,20 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+  commit-style:
+    name: "Run commit style checks"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ansys/actions/commit-style@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  branch-name-style:
+    name: "Run branch name style checks"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ansys/actions/branch-name-style@v6
+
   smoke-tests:
     name: "Build and Smoke tests"
     runs-on: ${{ matrix.os }}
@@ -58,7 +84,7 @@ jobs:
             os: macos-latest
     steps:
       - name: "Build wheelhouse and perform smoke test"
-        uses: ansys/actions/build-wheelhouse@v5
+        uses: ansys/actions/build-wheelhouse@v6
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
@@ -152,7 +178,7 @@ jobs:
           retention-days: 7
 
       - name: "Upload coverage reports to Codecov"
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: .cov/xml
@@ -256,7 +282,7 @@ jobs:
   release:
     name: Release project
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
-    needs: [package]
+    needs: [package, update-changelog]
     runs-on: ubuntu-latest
     # Specifying a GitHub environment is optional, but strongly encouraged
     environment: release

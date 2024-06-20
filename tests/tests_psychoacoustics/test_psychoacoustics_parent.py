@@ -23,11 +23,11 @@
 import numpy as np
 import pytest
 
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.psychoacoustics import PsychoacousticsParent
 from ansys.sound.core.psychoacoustics.loudness_iso_532_1_stationary import (
     LoudnessISO532_1_Stationary,
 )
-from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.signal_utilities.load_wav import LoadWav
 
 
@@ -76,7 +76,8 @@ def test_psychoacoustics_parent_check_channel_index(dpf_sound_test_server):
     # Nothing computed -> false
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output has not been processed yet, use LoudnessISO532_1_Stationary.process().",
+        match="Output is not processed yet. Use the "
+        "'LoudnessISO532_1_Stationary.process\\(\\)' method.",
     ):
         valid_status = loudness._check_channel_index(0)
     assert valid_status == False

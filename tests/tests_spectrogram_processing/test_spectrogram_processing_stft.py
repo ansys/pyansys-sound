@@ -26,7 +26,7 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
-from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectrogram_processing import Stft
 
@@ -43,7 +43,7 @@ def test_stft_process(dpf_sound_test_server):
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
         stft.process()
-    assert str(excinfo.value) == "No signal for STFT. Use Stft.signal."
+    assert str(excinfo.value) == "No signal found for STFT. Use 'Stft.signal'."
 
     wav_loader.process()
     fc = wav_loader.get_output()
@@ -64,7 +64,9 @@ def test_stft_get_output(dpf_sound_test_server):
     stft = Stft(signal=fc_signal)
 
     with pytest.warns(
-        PyAnsysSoundWarning, match="Output has not been yet processed, use Stft.process()."
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. \
+                    Use the 'Stft.process\\(\\)' method.",
     ):
         fc_out = stft.get_output()
 
@@ -120,7 +122,10 @@ def test_stft_set_get_signal(dpf_sound_test_server):
     # Error
     with pytest.raises(PyAnsysSoundException) as excinfo:
         stft.signal = fc
-    assert str(excinfo.value) == "Input as FieldsContainer can only have one Field (mono signal)."
+    assert (
+        str(excinfo.value)
+        == "Input as a DPF fields container can only have one field (mono signal)."
+    )
 
 
 def test_stft_set_get_fft_size(dpf_sound_test_server):
@@ -155,8 +160,8 @@ def test_stft_set_get_window_type(dpf_sound_test_server):
         stft.window_type = "InvalidWindow"
     assert (
         str(excinfo.value)
-        == "Invalid window type, accepted values are 'HANNING', 'BLACKMANHARRIS', 'HANN', \
-                    'BLACKMAN','HAMMING', 'KAISER', 'BARTLETT', 'RECTANGULAR'."
+        == "Window type is invalid. Options are 'BARTLETT', 'BLACKMAN', 'BLACKMANHARRIS', "
+        "'HAMMING', 'HANN', 'HANNING', 'KAISER', and 'RECTANGULAR'."
     )
 
     stft.window_type = "KAISER"

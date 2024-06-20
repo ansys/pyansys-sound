@@ -26,7 +26,7 @@ from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer
 import numpy as np
 import pytest
 
-from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.xtract.xtract_transient import XtractTransient
 from ansys.sound.core.xtract.xtract_transient_parameters import XtractTransientParameters
@@ -133,14 +133,14 @@ def test_xtract_transient_get_output_warns(dpf_sound_test_server):
     xtract_transient = XtractTransient()
     with pytest.warns(PyAnsysSoundWarning) as record:
         xtract_transient.get_output()
-    assert "Output has not been processed yet." in record[0].message.args[0]
+    assert "Output is not processed yet." in record[0].message.args[0]
 
 
 def test_xtract_transient_get_output_as_np_array_warns(dpf_sound_test_server):
     xtract_transient = XtractTransient()
     with pytest.warns(PyAnsysSoundWarning) as record:
         xtract_transient.get_output_as_nparray()
-    assert "Output has not been processed yet." in record[0].message.args[0]
+    assert "Output is not processed yet." in record[0].message.args[0]
 
 
 def test_xtract_transient_get_output(dpf_sound_test_server):

@@ -25,7 +25,7 @@
 from ansys.dpf.core import GenericDataContainer
 
 from . import XtractParent
-from ..pyansys_sound import PyAnsysSoundException
+from .._pyansys_sound import PyAnsysSoundException
 
 ID_TRANSIENT_PARAMETERS_CLASS = "Xtract_transient_parameters"
 ID_LOWER_THRESHOLD = "lower_threshold"
@@ -33,23 +33,21 @@ ID_UPPER_THRESHOLD = "upper_threshold"
 
 
 class XtractTransientParameters(XtractParent):
-    """Data class for transient parameters that can be used in Xtract and XtractTransient."""
+    """Contains transient parameters for use in Xtract processing or signal denoising."""
 
     def __init__(self, lower_threshold: float = 0.0, upper_threshold: float = 100.0):
         """Init.
 
         Parameters
         ----------
-        lower_threshold:
-            Minimum threshold is related to the minimum energy of transient components.
-            We recommend setting this parameter as high as possible provided that no transient
-            element remains in the remainder (non-transient signal).
-            Values between 0 and 100. Default is 0.
-        upper_threshold:
-            Maximum threshold (in dB) is related to the maximum energy of transient components.
-            We recommend setting this parameter as low as possible provided that no transient
-            element remains in the remainder (non-transient signal).
-            Values between 0 and 100. Default is 100.
+        lower_threshold: float, default: 0.0
+            Minimum threshold, which is related to the minimum energy of transient components.
+            Values are between 0 and 100. You should set this parameter as high as possible
+            provided that no transient element remains in the remainder (non-transient signal).
+        upper_threshold: float, default: 100.0
+            Maximum threshold in dB, which is related to the maximum energy of transient components.
+            Values are between 0 and 100. You should set this parameter as low as possible provided
+            that no transient element remains in the remainder (non-transient signal).
         """
         self.__generic_data_container = GenericDataContainer()
         self.__generic_data_container.set_property("class_name", ID_TRANSIENT_PARAMETERS_CLASS)
@@ -58,7 +56,7 @@ class XtractTransientParameters(XtractParent):
 
     @property
     def lower_threshold(self):
-        """Lower threshold property."""
+        """Lower threshold."""
         return self.__generic_data_container.get_property(ID_LOWER_THRESHOLD)  # pragma: no cover
 
     @lower_threshold.setter
@@ -71,18 +69,18 @@ class XtractTransientParameters(XtractParent):
 
     @lower_threshold.getter
     def lower_threshold(self) -> float:
-        """Get the lower threshold.
+        """Lower threshold in decibels (dB).
 
         Returns
         -------
         float
-            The lower threshold in dB.
+            Lower threshold in decibels.
         """
         return self.__generic_data_container.get_property(ID_LOWER_THRESHOLD)
 
     @property
     def upper_threshold(self):
-        """Upper threshold property."""
+        """Upper threshold in decibels (dB)."""
         return self.__generic_data_container.get_property(ID_UPPER_THRESHOLD)  # pragma: no cover
 
     @upper_threshold.setter
@@ -95,21 +93,21 @@ class XtractTransientParameters(XtractParent):
 
     @upper_threshold.getter
     def upper_threshold(self) -> float:
-        """Get the upper threshold.
+        """Upper threshold in decibels (dB).
 
         Returns
         -------
         float
-            The upper threshold in dB.
+            Upper threshold in decibels.
         """
         return self.__generic_data_container.get_property(ID_UPPER_THRESHOLD)
 
     def get_parameters_as_generic_data_container(self) -> GenericDataContainer:
-        """Get the parameters as generic data container.
+        """Get the parameters as a generic data container.
 
         Returns
         -------
         GenericDataContainer
-            The parameter structure as a GenericDataContainer
+            Parameter structure in a generic data container.
         """
         return self.__generic_data_container

@@ -22,7 +22,7 @@
 
 """Psychoacoustics functions.
 
-Helper functions related to psychoacoustics indicators computation.
+Helper functions related to the computation of psychoacoustics indicators.
 """
 
 from ._psychoacoustics_parent import PsychoacousticsParent

@@ -24,14 +24,14 @@
 from ansys.dpf.core import Field
 from numpy import typing as npt
 
-from ..pyansys_sound import PyAnsysSound, PyAnsysSoundException
+from .._pyansys_sound import PyAnsysSound, PyAnsysSoundException
 
 
 class PsychoacousticsParent(PyAnsysSound):
     """
-    Abstract mother class for psychoacoustics calculations.
+    Abstract base class for psychoacoustics calculations.
 
-    This is the mother class of all pychoacoustics indicators classes, should not be used as is.
+    This is the base class for all pychoacoustics indicators classes and should not be used as is.
     """
 
     def __init__(self):
@@ -44,19 +44,20 @@ class PsychoacousticsParent(PyAnsysSound):
     def _convert_bark_to_hertz(self, bark_band_indexes: npt.ArrayLike) -> npt.ArrayLike:
         """Convert Bark band indexes into frequencies.
 
-        Converts input Bark band indexes (in Bark) into corresponding frequencies (in Hz),
-        according to: Traunmüller, Hartmut. "Analytical Expressions for the Tonotopic Sensory
-        Scale." Journal of the Acoustical Society of America. Vol. 88, Issue 1, 1990, pp. 97–100.
+        Converts input Bark band indexes (in Bark) into corresponding frequencies (in Hz)
+        according to this article: Traunmüller, Hartmut. "Analytical Expressions for the
+        Tonotopic Sensory Scale." Journal of the Acoustical Society of America. Vol. 88,
+        Issue 1, 1990, pp. 97–100.
 
         Parameters
         ----------
         bark_band_indexes: numpy array
-            Array of Bark band indexes to convert, in Bark.
+            Array of Bark band indexes to convert in Bark.
 
         Returns
         -------
         numpy array
-            Array of corresponding frequencies, in Hz.
+            Array of corresponding frequencies in Hz.
         """
         for ibark in range(len(bark_band_indexes)):
             if not (0 <= bark_band_indexes[ibark] <= 24 + 1e-6):
@@ -74,17 +75,17 @@ class PsychoacousticsParent(PyAnsysSound):
         return 1920 * (bark_band_indexes + 0.53) / (26.28 - bark_band_indexes)
 
     def _check_channel_index(self, channel_index: int) -> bool:
-        """Check whether a specified signal channel index is available or not.
+        """Check whether a specified signal channel index is available.
 
         Parameters
-        -------
+        ----------
         channel_index: int
             Index of the signal channel to check.
 
         Returns
         -------
         bool
-            True if channel index is available, False if not.
+            ``True`` if the channel index is available, ``False`` if it is not.
         """
         output = self.get_output()
         if output == None:

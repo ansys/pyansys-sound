@@ -24,8 +24,8 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.psychoacoustics import Sharpness
-from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.signal_utilities import LoadWav
 
 EXP_SHARPNESS_1 = 1.6609569787979126
@@ -43,7 +43,7 @@ def test_sharpness_process(dpf_sound_test_server):
     # No signal -> error
     with pytest.raises(
         PyAnsysSoundException,
-        match="No signal for sharpness computation. Use Sharpness.signal.",
+        match="No signal found for sharpness computation. Use 'Sharpness.signal'.",
     ):
         sharpness_computer.process()
 
@@ -96,7 +96,8 @@ def test_sharpness_get_sharpness(dpf_sound_test_server):
     # Sharpness not calculated yet -> warning
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output has not been processed yet, use Sharpness.process().",
+        match="Output is not processed yet. \
+                        Use the 'Sharpness.process\\(\\)' method.",
     ):
         sharpness = sharpness_computer.get_sharpness()
     assert sharpness == None
@@ -152,7 +153,8 @@ def test_sharpness_get_output_as_nparray_from_fields_container(
     # Sharpness not calculated yet -> warning
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output has not been processed yet, use Sharpness.process().",
+        match="Output is not processed yet. \
+                        Use the 'Sharpness.process\\(\\)' method.",
     ):
         sharpness = sharpness_computer.get_output_as_nparray()
     assert sharpness == None

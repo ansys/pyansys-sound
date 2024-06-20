@@ -20,18 +20,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Signal Utilities."""
+"""Signal utilities."""
 from ansys.dpf.core import Field
 import matplotlib.pyplot as plt
 
-from ..pyansys_sound import PyAnsysSound
+from .._pyansys_sound import PyAnsysSound
 
 
 class SignalUtilitiesParent(PyAnsysSound):
     """
-    Abstract mother class for signal utilities.
+    Provides the abstract base class for signal utilities.
 
-    This is the mother class of all signal utilities classes, should not be used as is.
+    This is the base class of all signal utilities classes and should not be used as is.
     """
 
     def __init__(self):
@@ -42,10 +42,7 @@ class SignalUtilitiesParent(PyAnsysSound):
         super().__init__()
 
     def plot(self):
-        """Plot signals.
-
-        Plots the resulting signals in a single figure.
-        """
+        """Plot the resulting signals in a single figure."""
         output = self.get_output()
 
         if type(output) == Field:

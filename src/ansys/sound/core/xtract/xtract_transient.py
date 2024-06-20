@@ -31,38 +31,33 @@ import numpy as np
 from numpy import typing as npt
 
 from . import XtractParent, XtractTransientParameters
-from ..pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class XtractTransient(XtractParent):
-    """Xtract transient class.
-
-    Extract the transient components of a signal using the XTRACT algorithm.
-    """
+    """Extracts the transient components of a signal using the XTRACT algorithm."""
 
     def __init__(
         self,
         input_signal: FieldsContainer | Field = None,
         input_parameters: XtractTransientParameters = None,
     ):
-        """Create a XtractTransient class.
+        """Create an ``XtractTransient`` instance.
 
         Parameters
         ----------
-        input_signal:
-            Signal(s) on which we want to extract transient components,
-            as a field or fields container. When inputting a fields container,
+        input_signal: FieldsContainer | Field, default: None
+            One or more signals to extract transient components on
+            as a DPF fields container or fields. When inputting a fields container,
             each signal (each field of the fields container) is processed individually.
-        input_parameters:
+        input_parameters: XtractTransientParameters, default: None
             Structure that contains the parameters of the algorithm:
-            - Lower threshold (float), between 0 and 100.
-            - Upper threshold (float), between 0 and 100.
-            This structure is of type XtractTransientParameters (see this class for more details).
-        output_transient_signals:
-            Transient signal(s), as a field or fields container (depending on the input).
-        output_non_transient_signals:
-            Non-transient signal(s): original signal minus transient signal,
-            as a field or fields container (depending on the input).
+
+            - Lower threshold (float), which is between 0 and 100.
+            - Upper threshold (float), which is between 0 and 100.
+
+            This structure is of the ``XtractTransientParameters`` type. For more information,
+            see this class.
         """
         super().__init__()
         self.input_signal = input_signal
@@ -78,13 +73,13 @@ class XtractTransient(XtractParent):
 
     @property
     def input_signal(self) -> FieldsContainer | Field:
-        """Get input signal.
+        """Input signal.
 
         Returns
         -------
         FieldsContainer | Field
-            Signal(s) on which we want to extract transient components,
-            as a field or fields container. When inputting a fields container,
+            One or more signals to extract transient components on
+            as a DPF fields container or field. When inputting a fields container,
             each signal (each field of the fields container) is processed individually.
         """
         return self.__input_signal  # pragma: no cover
@@ -96,22 +91,23 @@ class XtractTransient(XtractParent):
         Parameters
         ----------
         value: FieldsContainer | Field
-            Signal(s) on which we want to extract transient components,
-            as a field or fields container. When inputting a fields container,
+            One or more signal to extract transient components on
+            as a DPF fields container or field. When inputting a fields container,
             each signal (each field of the fields container) is processed individually.
         """
         self.__input_signal = value
 
     @property
     def input_parameters(self) -> XtractTransientParameters:
-        """Get input parameters.
+        """Input parameters.
 
         Returns
         -------
         XtractTransientParameters
             Structure that contains the parameters of the algorithm:
-                        - Lower threshold (float), between 0 and 100 percent
-                        - Upper threshold (float), between 0 and 100 percent
+
+            - Lower threshold (float), which is between 0 and 100 percent
+            - Upper threshold (float), which is between 0 and 100 percent
         """
         return self.__input_parameters  # pragma: no cover
 
@@ -123,38 +119,40 @@ class XtractTransient(XtractParent):
         ----------
         value: XtractTransientParameters
             Structure that contains the parameters of the algorithm:
-                        - Lower threshold (float), between 0 and 100 percent
-                        - Upper threshold (float), between 0 and 100 percent
+
+            - Lower threshold (float), which is between 0 and 100 percent
+            - Upper threshold (float), which is between 0 and 100 percent
         """
         self.__input_parameters = value
 
     @property
     def output_transient_signals(self) -> FieldsContainer | Field:
-        """Get output transient signals.
+        """Output transient signals.
 
         Returns
         -------
         FieldsContainer | Field
-            Transient signal(s), as a field or fields container (depending on the input).
+            One or more transient signals as a DPF fields container or field (depending on
+            the input).
         """
         return self.__output_transient_signals  # pragma: no cover
 
     @property
     def output_non_transient_signals(self) -> FieldsContainer | Field:
-        """Get output non transient signals.
+        """Output non-transient signals.
 
         Returns
         -------
         FieldsContainer | Field
-            Non-transient signal(s): original signal minus transient signal,
-            as a field or fields container (depending on the input).
+            One or more non-transient signals (original signal minus transient signal)
+            as a DPF fields container or field (depending on the input).
         """
         return self.__output_non_transient_signals  # pragma: no cover
 
     def process(self):
         """Process the transient extraction.
 
-        Extract the transient components of the signal(s) using the XTRACT algorithm.
+        This method extracts the transient components of the signals using the XTRACT algorithm.
         """
         if self.input_signal is None:
             raise PyAnsysSoundException("Input signal is not set.")
@@ -184,21 +182,21 @@ class XtractTransient(XtractParent):
         Returns
         -------
         Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
-            Transient signal(s) and non-transient signal(s),
-            as a field or fields container (depending on the input).
+            One or more transient signals and non-transient signals
+            as a DPF fields container or field (depending on the input).
         """
         if self.__output_transient_signals is None or self.__output_non_transient_signals is None:
-            warnings.warn(PyAnsysSoundWarning("Output has not been processed yet."))
+            warnings.warn(PyAnsysSoundWarning("Output is not processed yet."))
 
         return self.__output_transient_signals, self.__output_non_transient_signals
 
     def get_output_as_nparray(self) -> Tuple[npt.ArrayLike, npt.ArrayLike]:
-        """Get the output of the transient extraction as numpy arrays.
+        """Get the output of the transient extraction as NumPy arrays.
 
         Returns
         -------
         Tuple[np.ArrayLike, np.ArrayLike]
-            Transient signal(s) and non-transient signal(s) as numpy arrays.
+            Transient signals and non-transient signals in NumPy arrays.
         """
         l_output_transient_signals, l_output_non_transient_signals = self.get_output()
 
@@ -221,7 +219,7 @@ class XtractTransient(XtractParent):
     def plot(self):
         """Plot signals.
 
-        Plot the transient signal and the non-transient signal.
+        This method plots the transient signal and non-transient signal.
         """
         l_output_transient_signals = self.get_output()[0]
 

@@ -21,14 +21,14 @@
 # SOFTWARE.
 
 """Xtract."""
-from ..pyansys_sound import PyAnsysSound
+from .._pyansys_sound import PyAnsysSound
 
 
 class XtractParent(PyAnsysSound):
     """
-    Abstract mother class for Xtract.
+    Provides the base class for Xtract.
 
-    This is the mother class of all Xtract classes, should not be used as is.
+    This is the base class of all Xtract classes and should not be used as is.
     """
 
     def __init__(self):

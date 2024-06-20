@@ -26,7 +26,7 @@ from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
 
-from ansys.sound.core.pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.xtract.xtract_denoiser import XtractDenoiser
 from ansys.sound.core.xtract.xtract_denoiser_parameters import XtractDenoiserParameters
@@ -104,7 +104,7 @@ def test_xtract_process(dpf_sound_test_server):
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
     params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
-        -6.0, 44100.0, 50
+        -6.0 + 94.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
     xtract_denoiser.process()
@@ -142,13 +142,13 @@ def test_xtract_denoiser_get_output_warns(dpf_sound_test_server):
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
     params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
-        -6.0, 44100.0, 50
+        -6.0 + 94.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
 
     with pytest.warns(PyAnsysSoundWarning) as record:
         xtract_denoiser.get_output()
-    assert record[0].message.args[0] == "Output has not been processed yet."
+    assert record[0].message.args[0] == "Output is not processed yet."
 
 
 def test_xtract_denoiser_get_output_np_array_warns(dpf_sound_test_server):
@@ -160,13 +160,13 @@ def test_xtract_denoiser_get_output_np_array_warns(dpf_sound_test_server):
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
     params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
-        -6.0, 44100.0, 50
+        -6.0 + 94.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
 
     with pytest.warns(PyAnsysSoundWarning) as record:
         xtract_denoiser.get_output_as_nparray()
-    assert record[0].message.args[0] == "Output has not been processed yet."
+    assert record[0].message.args[0] == "Output is not processed yet."
 
 
 def test_xtract_denoiser_get_output(dpf_sound_test_server):
@@ -178,7 +178,7 @@ def test_xtract_denoiser_get_output(dpf_sound_test_server):
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
     params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
-        -6.0, 44100.0, 50
+        -6.0 + 94.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
     xtract_denoiser.process()
@@ -210,7 +210,7 @@ def test_xtract_denoiser_get_output_noprocess(dpf_sound_test_server):
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
     params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
-        -6.0, 44100.0, 50
+        -6.0 + 94.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
     xtract_denoiser.process()
@@ -231,7 +231,7 @@ def test_xtract_denoiser_get_output_fc(dpf_sound_test_server):
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
     params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
-        -6.0, 44100.0, 50
+        -6.0 + 94.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
     xtract_denoiser.process()
@@ -276,7 +276,7 @@ def test_xtract_denoiser_get_output_as_nparray(dpf_sound_test_server):
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
     params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
-        -6.0, 44100.0, 50
+        -6.0 + 94.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
     xtract_denoiser.process()
@@ -311,7 +311,7 @@ def test_xtract_denoiser_get_output_fc_as_nparray(dpf_sound_test_server):
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
     params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
-        -6.0, 44100.0, 50
+        -6.0 + 94.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
     xtract_denoiser.process()
@@ -339,7 +339,7 @@ def test_xtract_denoiser_setters(dpf_sound_test_server):
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
     params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
-        -6.0, 44100.0, 50
+        -6.0 + 94.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
     xtract_denoiser.process()
@@ -365,7 +365,7 @@ def test_xtract_denoiser_plot_output(mock_show, dpf_sound_test_server):
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
     params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
-        -6.0, 44100.0, 50
+        -6.0 + 94.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
     xtract_denoiser.process()
@@ -386,7 +386,7 @@ def test_xtract_denoiser_plot_output_fc(mock_show, dpf_sound_test_server):
     # Setting Denoiser parameters
     params_denoiser = XtractDenoiserParameters()
     params_denoiser.noise_psd = params_denoiser.create_noise_psd_from_white_noise_level(
-        -6.0, 44100.0, 50
+        -6.0 + 94.0, 44100.0, 50
     )
     xtract_denoiser = XtractDenoiser(bird_plus_idle_sig, params_denoiser)
     xtract_denoiser.process()
