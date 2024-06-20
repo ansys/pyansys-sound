@@ -58,12 +58,6 @@ class XtractTransient(XtractParent):
 
             This structure is of the ``XtractTransientParameters`` type. For more information,
             see this class.
-        output_transient_signals:
-            One or more transient signals as a DPF fields container or field (depending on
-            the input).
-        output_non_transient_signals:
-            One or more non-transient signals (original signal minus transient signal)
-            as a DPF fields container or field (depending on the input).
         """
         super().__init__()
         self.input_signal = input_signal

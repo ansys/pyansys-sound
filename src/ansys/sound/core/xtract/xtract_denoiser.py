@@ -57,12 +57,6 @@ class XtractDenoiser(XtractParent):
 
             This structure is of the ``XtractDenoiserParameters`` type. For more information,
             see this class.
-        output_denoised_signals:
-            One or more denoised signals as a DPF fields container or field (depending on
-            the input).
-        output_noise_signals:
-            Noise signal as a DPF fields container or field (depending on the input).
-            The noise signal is the original signal minus the denoised signal.
         """
         super().__init__()
         self.input_signal = input_signal

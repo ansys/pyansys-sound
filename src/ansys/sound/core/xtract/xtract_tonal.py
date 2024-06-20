@@ -63,8 +63,6 @@ class XtractTonal(XtractParent):
 
             This structure is of the ``XtractTonalParameters`` type. For more information,
             see this class.
-        output_tonal_signals:
-            One or more tonal signal as a DPF field or fields container (depending on the input).
         """
         super().__init__()
         self.input_signal = input_signal
