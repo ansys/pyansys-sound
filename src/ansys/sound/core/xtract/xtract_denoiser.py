@@ -35,7 +35,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class XtractDenoiser(XtractParent):
-    """Provides signal denoising using the XTRACT algorithm."""
+    """Provides signal denoising using the Xtract algorithm."""
 
     def __init__(
         self,
@@ -159,7 +159,7 @@ class XtractDenoiser(XtractParent):
         -------
         Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
             Denoised signal and noise signal in a tuple as
-            a DPF fields container or field (depending on the input).
+            DPF fields containers or fields (depending on the input).
         """
         if self.__output_denoised_signals == None or self.__output_noise_signals == None:
             warnings.warn(PyAnsysSoundWarning("Output is not processed yet."))

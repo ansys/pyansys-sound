@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Loads a WAV signal."""
+"""Loads a signal from a WAV file."""
 
 import warnings
 
@@ -32,7 +32,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class LoadWav(SignalUtilitiesParent):
-    """Loads a WAV signal."""
+    """Loads a signal from a WAV file."""
 
     def __init__(self, path_to_wav: str = ""):
         """Create a ``LoadWav`` instance.
@@ -54,23 +54,23 @@ class LoadWav(SignalUtilitiesParent):
 
     @path_to_wav.setter
     def path_to_wav(self, path_to_wav: str):
-        """Set the path to the WAV file to load.
+        """Set the path to the WAV file.
 
         Parameters
         ----------
         path_to_wav: str
-            Path to the wav file to load.
+            Path to the WAV file.
         """
         self.__path_to_wav = path_to_wav
 
     @path_to_wav.getter
     def path_to_wav(self) -> str:
-        """Path to the WAV file to load.
+        """Path to the WAV file.
 
         Returns
         -------
         str
-            Path to the WAV file to load.
+            Path to the WAV file.
         """
         return self.__path_to_wav
 
@@ -100,12 +100,12 @@ class LoadWav(SignalUtilitiesParent):
         self._output = self.__operator.get_output(0, "fields_container")
 
     def get_output(self) -> FieldsContainer:
-        """Get the loaded WAV signal as a DPF fields container.
+        """Get the signal loaded from the WAV file as a DPF fields container.
 
         Returns
         -------
         FieldsContainer
-            Loaded WAV signal in a DPF fields container.
+            Signal loaded from the WAV file in a DPF fields container.
         """
         if self._output == None:
             # Computing output if needed
@@ -119,12 +119,12 @@ class LoadWav(SignalUtilitiesParent):
         return self._output
 
     def get_output_as_nparray(self) -> npt.ArrayLike:
-        """Get the loaded WAV signal as a NumPy array.
+        """Get the signal loaded from the WAV file as a NumPy array.
 
         Returns
         -------
         np.array
-            Loaded WAV signal in a NumPy array.
+            Signal loaded from the WAV file in a NumPy array.
         """
         fc = self.get_output()
 

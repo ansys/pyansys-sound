@@ -185,7 +185,7 @@ class CropSignal(SignalUtilitiesParent):
         Returns
         -------
         np.array
-            Cropped signal in a numpy array.
+            Cropped signal in a NumPy array.
         """
         output = self.get_output()
 

@@ -71,7 +71,7 @@ my_server = connect_to_or_start_server(use_license_context=True)
 # %%
 # Define a custom function for STFT plots
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Define a custom function for STFT plots that lets you have
+# Define a custom function for STFT plots lets you have
 # more control over what you are displaying.
 # While you could use the ``Stft.plot()`` method, the custom function
 # defined here restricts the frequency range of the plot.
@@ -220,7 +220,7 @@ xtract_tonal = XtractTonal(input_signal=time_domain_signal, input_parameters=xtr
 xtract_tonal.process()
 
 # %%
-# Plot the spectrogram to assess the quality of the output
+# Plot the spectrogram to assess the quality of the output.
 stft_modified_signal = Stft(signal=xtract_tonal.get_output()[0], fft_size=1024, window_overlap=0.9)
 stft_modified_signal.process()
 

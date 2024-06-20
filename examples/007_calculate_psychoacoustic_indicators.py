@@ -82,9 +82,9 @@ server = connect_to_or_start_server()
 # Calculate ISO 532-1 loudness for a stationary sound
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load a signal from a WAV file using the ``LoadWav`` class. It is returned as a DPF
-# field container. For more information, see `fields_container`
+# field container. For more information, see `fields_container
 # <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_
-# in the DPF-Core API documentation. Then, calculate the loudness of this signal.
+# in the DPF-Core API documentation.
 
 # Load example data from WAV file
 path_flute_wav = download_flute_wav()
@@ -93,7 +93,7 @@ wav_loader.process()
 fc_signal = wav_loader.get_output()
 
 # %%
-# Create a ''LoudnessISO532_1_Stationary'' object, set its signal, and compute the loudness.
+# Create a ``LoudnessISO532_1_Stationary`` object, set its signal, and compute the loudness.
 loudness_stationary = LoudnessISO532_1_Stationary(signal=fc_signal)
 loudness_stationary.process()
 
@@ -143,7 +143,7 @@ print(
 )
 
 # %%
-# Plot specific loudness for both signals into a single figure. Note how the first sound has a
+# Plot specific loudness for both signals in a single figure. Note how the first sound has a
 # higher specific loudness than the second.
 loudness_stationary.plot()
 

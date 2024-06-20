@@ -57,7 +57,7 @@ class Sharpness(PsychoacousticsParent):
 
         Parameters
         -------
-        signal: FieldsContainer | Field
+        signal: Field | FieldsContainer
             Signal in Pa to compute sharpness on as a DPF field or fields container.
 
         """

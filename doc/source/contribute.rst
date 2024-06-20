@@ -17,7 +17,7 @@ Installing PyAnsys Sound in development mode allows you to modify and enhance
 the source.
 
 .. note::
-  For information on prerequisites, see :ref:`prerequisites`.
+  For information on prerequisites, see :ref:`prerequisistes`.
 
 Perform these steps to install PyAnsys Sound in developer mode:
 
@@ -63,9 +63,9 @@ Test
 There are different ways to run the PyAnsys Sound tests, depending on how the DPF
 server is started.
 
-- Run tests with a Docker container:
+- Run tests with a Docker container.
 
-  For information on getting and running the DPF Server docker image, see: `DPF Server Docker image`_.
+  For information on getting and running the DPF Server Docker image, see :ref:`DPF Server Docker image`.
   Run the tests with this command:
 
   .. code:: bash
@@ -83,7 +83,7 @@ server is started.
 Run style checks
 ----------------
 
-The style checks use `pre-commit`_ and can be run from a Powershell terminal:
+The style checks use `pre-commit`_, which can be run from a Powershell terminal:
 
 .. code:: bash
 
@@ -99,8 +99,8 @@ You can also install this as a Git pre-commit hook by running this command:
 Build documentation
 -------------------
 
-Follow the description in `Getting the DPF Server Docker image`_ image to get
-and run the dpf docker image.
+Before you can build the documentation, you must get and run the DPF Server Docker image.
+For more information, see :ref:`DPF Server Docker image`.
 
 On Windows, build the documentation with this command:
 

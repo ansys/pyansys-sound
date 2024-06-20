@@ -65,7 +65,7 @@ class WriteWav(SignalUtilitiesParent):
     def signal(self, signal: FieldsContainer):
         """Setter for the signal.
 
-        Sets the value of the signal to write on the disk.
+        Sets the value of the signal to write to the disk.
         """
         self.__signal = signal
 
@@ -76,7 +76,7 @@ class WriteWav(SignalUtilitiesParent):
         Returns
         -------
         FieldsContainer
-            Signal to write on the disk as a DPF fields container.
+            Signal to write to the disk as a DPF fields container.
         """
         return self.__signal
 

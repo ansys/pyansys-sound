@@ -26,7 +26,7 @@
 Initialize PyAnsys Sound and check out the license
 --------------------------------------------------
 
-This example shows how to initialize DPF-Core, load DPF Sound, and check out the
+This example shows how to initialize PyDPF-Core, load DPF Sound, and check out the
 required Ansys license (``increment avrxp_snd_level1``) only once. It also shows
 how to connect to the DPF server, verify where it is located, and get other useful
 information.
@@ -71,7 +71,7 @@ from ansys.sound.core.signal_utilities import LoadWav
 # Use a DPF server without a LicenseContextManager
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Initialize DPF server without using a LicenseContextManager.
+# Initialize a DPF server without using a LicenseContextManager.
 #
 # **Note**: When ``use_license_context=False``, the license is checked out each time
 # you use a DPF Sound operator.
@@ -94,7 +94,7 @@ if has_local_server == True:
 print(f"Server information: {my_server.info}")
 
 # %%
-# Execute the same simple PyAnsys Sound operator (``LoadWav``) several times in a row
+# Execute the PyAnsys Sound ``LoadWav`` operator several times in a row
 # and measure the execution time.
 
 path_flute_wav = download_flute_wav()
@@ -121,7 +121,7 @@ my_server = None
 # Use a DPF server with a LicenseContextManager
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Initialize DPF server using a LicenseContextManager.
+# Initialize a DPF server using a LicenseContextManager and execute the same code as run previously.
 #
 # **Note**: The LicenseContextManager is a mechanism that checks out a license increment
 # when entering the context and releases it when exiting the context.
@@ -130,7 +130,7 @@ my_server = None
 print("Connecting to the server using a LicenseContextManager")
 my_server = connect_to_or_start_server(use_license_context=True)
 
-# Execute the same code as previously and measure the execution time
+# Execute the same and measure the execution time
 for i in range(5):
     now = datetime.datetime.now()
     wav_loader = LoadWav(path_flute_wav)

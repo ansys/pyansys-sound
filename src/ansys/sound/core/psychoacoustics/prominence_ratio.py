@@ -194,11 +194,11 @@ class ProminenceRatio(PsychoacousticsParent):
 
             Second element is the vector of the peaks' PR values in dB.
 
-            Third element is the vector of the peaks' level values in dBSPL.
+            Third element is the vector of the peaks' level values in dB SPL.
 
-            Fourth element is the vector of the peaks' lower frequency limits in Hz.
+            Fourth element is the vector of the peaks' lower-frequency limits in Hz.
 
-            Fifth element is the vector of the peaks' higher frequency limits in Hz.
+            Fifth element is the vector of the peaks' higher-frequency limits in Hz.
 
             Sixth element is the maximum PR value in dB.
 
@@ -266,7 +266,7 @@ class ProminenceRatio(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Vector of the peaks' level values in dBSPL.
+            Vector of the peaks' level values in dB SPL.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -313,7 +313,7 @@ class ProminenceRatio(PsychoacousticsParent):
         return self.get_output_as_nparray()[5]
 
     def get_single_tone_info(self, tone_index: int) -> tuple[float]:
-        """Get PR information for a given tone.
+        """Get the PR information for a tone.
 
         Parameters
         ----------
@@ -327,11 +327,11 @@ class ProminenceRatio(PsychoacousticsParent):
 
             Second element is the PR value in dB.
 
-            Third element is the peak's level value in dBSPL.
+            Third element is the peak's level value in dB SPL.
 
-            Fourth element is the peak's lower frequency limit in Hz.
+            Fourth element is the peak's lower-frequency limit in Hz.
 
-            Fifth element is the peak's higher frequency limit in Hz.
+            Fifth element is the peak's higher-frequency limit in Hz.
         """
         nb_tones = self.get_nb_tones()
         if nb_tones == 0:
@@ -351,12 +351,12 @@ class ProminenceRatio(PsychoacousticsParent):
         )
 
     def get_reference_curve(self) -> npt.ArrayLike:
-        """Get reference curve to compare PR with.
+        """Get a reference curve to compare the PR with.
 
         Returns
         -------
         numpy.ndarray
-            Reference curve to compare PR with as defined in the
+            Reference curve to compare the PR with as defined in the
             ECMA 418-1 and ISO 7779 standards.
             If the PR is higher, then the tone is prominent.
         """

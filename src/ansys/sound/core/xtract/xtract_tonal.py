@@ -35,7 +35,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class XtractTonal(XtractParent):
-    """Performs signal tonal analysis using the XTRACT algorithm."""
+    """Performs signal tonal analysis using the Xtract algorithm."""
 
     def __init__(
         self,
@@ -171,7 +171,7 @@ class XtractTonal(XtractParent):
         Returns
         -------
         Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
-            Tonal and non-tonal signals as DPF fields containers or fields.
+            Tonal and non-tonal signals in a tuple as DPF fields containers or fields.
         """
         if self.__output_tonal_signals == None or self.__output_non_tonal_signals == None:
             warnings.warn(PyAnsysSoundWarning("Output is not processed yet."))
@@ -184,7 +184,7 @@ class XtractTonal(XtractParent):
         Returns
         -------
         Tuple[npt.ArrayLike, npt.ArrayLike]
-            Tonal and non-tonal signals in NumPy arrays.
+            Tonal and non-tonal signals as a tuple in NumPy arrays.
         """
         l_output_tonal_signals, l_output_non_tonal_signals = self.get_output()
 
