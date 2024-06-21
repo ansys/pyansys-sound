@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Isolates orders of a signal."""
+"""Isolates the orders of a signal."""
 
 import warnings
 
@@ -33,7 +33,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class IsolateOrders(SpectrogramProcessingParent):
-    """Isolates orders of a signal.
+    """Isolates the orders of a signal.
 
     This class isolates the order of a signal that has an associated RPM profile.
     """
@@ -99,8 +99,8 @@ class IsolateOrders(SpectrogramProcessingParent):
 
         Returns
         -------
-        Field
-             Signal as a DPF field or fields container.
+        Field | FieldsContainer
+            Signal as a DPF field or fields container.
         """
         return self.__signal
 
@@ -258,7 +258,7 @@ class IsolateOrders(SpectrogramProcessingParent):
         return self.__width_selection
 
     def process(self):
-        """Isolate the orders.
+        """Isolate the orders of the signal.
 
         This method calls the appropriate DPF Sound operator to isolate the orders of the signal.
         """

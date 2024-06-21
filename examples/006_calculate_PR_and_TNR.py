@@ -23,11 +23,12 @@
 """
 .. _calculate_PR_and_TNR:
 
-Calculate tone-to-noise ratio (TNR) and prominence ratio (PR)
--------------------------------------------------------------
+Calculate TNR and PR
+--------------------
 
-This example shows how to calculate TNR and PR following the ECMA 418-1 and
-ISO 7779 standards. It also extracts the desired TNR and PR information.
+This example shows how to calculate tone-to-noise ratio (TNR) and prominence
+ratio (PR) following the ECMA 418-1 and ISO 7779 standards. It also extracts
+the desired TNR and PR information.
 """
 
 # %%
@@ -48,8 +49,8 @@ from ansys.sound.core.server_helpers import connect_to_or_start_server
 server = connect_to_or_start_server()
 
 # %%
-# Calculate TNR from a power spectral density
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Calculate TNR from a PSD
+# ~~~~~~~~~~~~~~~~~~~~~~~~
 # Load a power spectral density (PSD) stored as a text file and then use it to create
 # a field that serves as an input for the TNR calculation.
 

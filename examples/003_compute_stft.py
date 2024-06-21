@@ -47,8 +47,12 @@ from ansys.sound.core.spectrogram_processing import Istft, Stft
 my_server = connect_to_or_start_server(use_license_context=True)
 
 # %%
-
-# Load a signal from a WAV file using the ``LoadWav`` class.
+# Load a signal
+# ~~~~~~~~~~~~~
+# Load a signal from a WAV file using the ``LoadWav`` class. It is returned as a DPF
+# field container. For more information, see `fields_container
+# <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_
+# in the DPF-Core API documentation.
 
 # Return the input data of the example file
 path_flute_wav = download_flute_wav()
@@ -62,6 +66,9 @@ fc_signal = wav_loader.get_output()
 wav_loader.plot()
 
 # %%
+# Compute and plot STFT
+# ~~~~~~~~~~~~~~~~~~~~~
+
 # Instantiate an instance of the ``Stft`` class using the previously loaded signal
 # as an input. Use an FFT size of 1024 points and then display the STFT colormap.
 
@@ -88,6 +95,9 @@ stft.process()
 stft.plot()
 
 # %%
+# Compute and plot ISTFT
+# ~~~~~~~~~~~~~~~~~~~~~
+
 # Obtain a time-domain signal using the ``Istft`` class.
 # The input of the ``Istft`` class is the output STFT object previously computed.
 

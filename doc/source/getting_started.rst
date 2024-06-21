@@ -2,7 +2,7 @@
 Getting started
 ===============
 
-This sections explains how to install PyAnsys Sound (``ansys-sound-core``) in user mode.
+This section explains how to install PyAnsys Sound (``ansys-sound-core``) in user mode.
 If you are interested in contributing to PyAnsys Sound, see :ref:`ref_contribute` for
 information on installing in developer mode.
 
@@ -60,7 +60,7 @@ Compatibility
 The following table shows which ``ansys-sound-core`` version is compatible with which DPF Server
 version (Ansys version).
 
-By default, DPF Server is started from the latest installed Ansys version.
+By default, a DPF server is started from the latest installed Ansys version.
 
 .. list-table::
    :widths: 20 20

@@ -65,7 +65,7 @@ class Roughness(PsychoacousticsParent):
 
         Parameters
         ----------
-        signal: FieldsContainer | Field
+        signal: Field | FieldsContainer
             Signal in Pa to compute roughness on as a DPF field or fields container.
 
         """
@@ -77,7 +77,7 @@ class Roughness(PsychoacousticsParent):
 
         Returns
         -------
-        FieldsContainer | Field
+        Field | FieldsContainer
             Signal in Pa as a DPF field or fields container.
         """
         return self.__signal

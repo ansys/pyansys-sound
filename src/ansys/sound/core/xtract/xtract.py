@@ -42,9 +42,9 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 class Xtract(XtractParent):
     """Provides Xtract processing.
 
-    PyAnsys Sound performs XTRACT processing in the same way as Ansys Sound Analysis
+    PyAnsys Sound performs Xtract processing in the same way as Ansys Sound Analysis
     and Specification (SAS). This operator chains a denoising step, followed by a
-    tonal extraction step, and then a transient extraction step. It returns the
+    tonal extraction step and then a transient extraction step. It returns the
     individual signals processed at each step, as well as the remainder.
     """
 
@@ -60,7 +60,7 @@ class Xtract(XtractParent):
         Parameters
         ----------
         input_signal: FieldsContainer | Field, default: None
-            One or more signals to apply XTRACT processing on as a DPF field or fields container.
+            One or more signals to apply Xtract processing on as a DPF field or fields container.
         parameters_denoiser:  XtractDenoiserParameters, default: None
             Structure that contains the parameters of the denoising step:
 
@@ -117,7 +117,8 @@ class Xtract(XtractParent):
         Returns
         -------
         FieldsContainer | Field
-            One or more signal to apply the XTRACT processing on as a DPF field or fields container.
+            One or more signals to apply the Xtract processing on as a
+            DPF fields container or field.
         """
         return self.__input_signal  # pragma: no cover
 
@@ -135,7 +136,7 @@ class Xtract(XtractParent):
         XtractDenoiserParameters
             Structure that contains the parameters of the denoising step:
 
-            - Noise PSD (field): Power spectral density of the noise
+            - Noise PSD (field): Power spectral density of the noise.
         """
         return self.__parameters_denoiser
 
@@ -204,7 +205,7 @@ class Xtract(XtractParent):
         Returns
         -------
         Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
-            Tonal signal in a tuple of DPF fields containers or fields.
+            Tonal signal in a tuple as DPF fields containers or fields.
         """
         return self.__output_tonal_signal  # pragma: no cover
 
@@ -230,12 +231,12 @@ class Xtract(XtractParent):
         Returns
         -------
         Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
-            Remainder signal as a tuple in DPF fields containers or fields.
+            Remainder signal in a tuple as DPF fields containers or fields.
         """
         return self.__output_remainder_signal  # pragma: no cover
 
     def process(self):
-        """Process the XTRACT algorithm."""
+        """Process the Xtract algorithm."""
         if self.input_signal is None:
             raise PyAnsysSoundException("Input signal is not set.")
 
@@ -288,14 +289,14 @@ class Xtract(XtractParent):
         Tuple[FieldsContainer, FieldsContainer, FieldsContainer, FieldsContainer]
         | Tuple[Field, Field, Field, Field]
     ):
-        """Get the output of the XTRACT algorithm.
+        """Get the output of the Xtract algorithm in a tuple as DPF fields containers or fields.
 
         Returns
         -------
         Tuple[FieldsContainer, FieldsContainer, FieldsContainer, FieldsContainer] |
         Tuple[Field, Field, Field, Field]
-            Noise signal, tonal signal, transient signal, and remainder signal,
-            as DPF fields or fields containers.
+            Noise signal, tonal signal, transient signal, and remainder signal
+            in a tuple of DPF fields or fields containers.
         """
         if (
             (self.__output_noise_signal is None)
@@ -315,12 +316,13 @@ class Xtract(XtractParent):
     def get_output_as_nparray(
         self,
     ) -> Tuple[npt.ArrayLike, npt.ArrayLike, npt.ArrayLike, npt.ArrayLike]:
-        """Get the output of the XTRACT algorithm as NumPy arrays.
+        """Get the output of the Xtract algorithm in a tuple as NumPy arrays.
 
         Returns
         -------
         Tuple[numpy.array, numpy.array, numpy.array, numpy.array]
-            Noise signal, tonal signal, transient signal, and remainder signal in NumPy arrays.
+            Noise signal, tonal signal, transient signal, and remainder signal in a
+            tuple as NumPy arrays.
         """
         (
             l_output_noise_signal,
@@ -353,7 +355,7 @@ class Xtract(XtractParent):
                 )
 
     def plot(self):
-        """Plot the XTRACT algorithm results."""
+        """Plot the Xtract algorithm results."""
         l_output_noise_signal = self.get_output()[0]
 
         l_output_noise_signal_as_field = (

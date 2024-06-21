@@ -2,7 +2,7 @@
 User guide
 ==========
 
-This section explains how to start a DPF server, load a WAV signal, and perform operations
+This section explains how to start a DPF server, load a signal from a WAV file, and perform operations
 on this signal.
 
 Start a DPF server
@@ -26,12 +26,12 @@ If this environment variable is not set, PyAnsys Sound tries to start a local se
 
 For more information on local and remote DPF servers, see `Install DPF Server`_ in the PyDPF-Core documentation.
 
-Load a WAV signal
------------------
+Load a signal
+-------------
 
 Most of the processing done by PyAnsys Sound relies on temporal sound signals that are saved as WAV files.
 
-To load a WAV file , you must use the :class:`LoadWav <ansys.sound.core.signal_utilities.LoadWav>` class.
+To load a WAV file, you must use the :class:`LoadWav <ansys.sound.core.signal_utilities.LoadWav>` class.
 Once your signal is loaded, you can use all other PyAnsys Sound classes on this signal.
 
 .. code:: python

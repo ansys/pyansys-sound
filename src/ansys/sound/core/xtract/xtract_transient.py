@@ -35,7 +35,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class XtractTransient(XtractParent):
-    """Extracts the transient components of a signal using the XTRACT algorithm."""
+    """Extracts the transient components of a signal using the Xtract algorithm."""
 
     def __init__(
         self,
@@ -152,7 +152,7 @@ class XtractTransient(XtractParent):
     def process(self):
         """Process the transient extraction.
 
-        This method extracts the transient components of the signals using the XTRACT algorithm.
+        This method extracts the transient components of the signals using the Xtract algorithm.
         """
         if self.input_signal is None:
             raise PyAnsysSoundException("Input signal is not set.")
@@ -183,7 +183,7 @@ class XtractTransient(XtractParent):
         -------
         Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
             One or more transient signals and non-transient signals
-            as a DPF fields container or field (depending on the input).
+            in a tuple as DPF fields containers or fields (depending on the input).
         """
         if self.__output_transient_signals is None or self.__output_non_transient_signals is None:
             warnings.warn(PyAnsysSoundWarning("Output is not processed yet."))
@@ -196,7 +196,7 @@ class XtractTransient(XtractParent):
         Returns
         -------
         Tuple[np.ArrayLike, np.ArrayLike]
-            Transient signals and non-transient signals in NumPy arrays.
+            Transient signals and non-transient signals in a tuple as NumPy arrays.
         """
         l_output_transient_signals, l_output_non_transient_signals = self.get_output()
 

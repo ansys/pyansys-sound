@@ -34,7 +34,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class ToneToNoiseRatio(PsychoacousticsParent):
-    """Computes ECMA 418-1/ISO 7779 tone-to-noise ratio (TNR).
+    """Computes the ECMA 418-1/ISO 7779 tone-to-noise ratio (TNR).
 
     This class computes the TNR on a power spectral density (PSD)
     following the ECMA 418-1 and ISO 7779 standards.
@@ -163,12 +163,12 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         self._output = self.__operator.get_output(0, "generic_data_container")
 
     def get_output(self) -> GenericDataContainer:
-        """Get TBR data in a tuple as a generic data container.
+        """Get TNR data as a generic data container.
 
         Returns
         -------
         GenericDataContainer
-            TNR data as a generic data container.
+            TNR data in a generic data container.
         """
         if self._output == None:
             warnings.warn(
@@ -189,13 +189,13 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
             Second element is the vector of peaks' TNR values in dB.
 
-            Third element is the vector of peaks' level values in dBSPL.
+            Third element is the vector of peaks' level values in dB SPL.
 
-            Fourth element is the vector of peaks' lower frequency limits in Hz.
+            Fourth element is the vector of peaks' lower-frequency limits in Hz.
 
-            Fifth element is the vector of peaks' higher frequency limits in Hz.
+            Fifth element is the vector of peaks' higher-frequency limits in Hz.
 
-            Sixth element is the maximum TNR value, in dB.
+            Sixth element is the maximum TNR value in dB.
 
             Note: The first five elements are vectors of the same length. The sixth
             element is a float.
@@ -255,12 +255,12 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         return self.get_output_as_nparray()[1]
 
     def get_peaks_levels(self) -> npt.ArrayLike:
-        """Get the vector of the peaks' level values in dBSPL.
+        """Get the vector of the peaks' level values in dB SPL.
 
         Returns
         -------
         numpy.ndarray
-            Vector of the peaks' level values in dBSPL.
+            Vector of the peaks' level values in dB SPL.
         """
         if self.get_output_as_nparray() == None:
             return None
@@ -321,11 +321,11 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
             Second element is the TNR value in dB.
 
-            Third element is the peak's level value in dBSPL.
+            Third element is the peak's level value in dB SPL.
 
-            Fourth element is the peak's lower frequency limit in Hz.
+            Fourth element is the peak's lower-frequency limit in Hz.
 
-            Fifth element is the peak's higher frequency limit in Hz.
+            Fifth element is the peak's higher-frequency limit in Hz.
         """
         nb_tones = self.get_nb_tones()
         if nb_tones == 0:
@@ -345,7 +345,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         )
 
     def get_reference_curve(self) -> npt.ArrayLike:
-        """Get the reference curve to compare the TNR with.
+        """Get a reference curve to compare the TNR with.
 
         Returns
         -------
