@@ -46,7 +46,7 @@ doc = [
     "vtk==9.3.0",
     "trame==3.6.1",
     "trame_vtk==2.8.9",
-    "pyvista==0.43.8",
+    "pyvista==0.43.10",
     "pypandoc==1.12.0",
     "jupyter-sphinx==0.5.3",
     "sphinx-autobuild==2024.4.16",
