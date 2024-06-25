@@ -44,7 +44,7 @@ doc = [
     "sphinx-gallery==0.15.0",
     "sphinx-design==0.6.0",
     "vtk==9.3.0",
-    "trame==3.6.1",
+    "trame==3.6.3",
     "trame_vtk==2.8.9",
     "pyvista==0.43.8",
     "pypandoc==1.13",
