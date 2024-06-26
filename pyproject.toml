@@ -44,10 +44,10 @@ doc = [
     "sphinx-gallery==0.15.0",
     "sphinx-design==0.6.0",
     "vtk==9.3.0",
-    "trame==3.6.1",
+    "trame==3.6.3",
     "trame_vtk==2.8.9",
     "pyvista==0.43.10",
-    "pypandoc==1.12.0",
+    "pypandoc==1.13",
     "jupyter-sphinx==0.5.3",
     "sphinx-autobuild==2024.4.16",
     "platformdirs==4.2.2"
