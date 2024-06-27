@@ -23,12 +23,13 @@
 """
 .. _load_resample_amplify_write_wav_files_example:
 
-Load and use WAV files
-----------------------
+Load a signal from a WAV file
+-----------------------------
 
-This example shows how to load a WAV file, modify its sampling frequency,
-amplify it, and then write the resulting WAV file to the disk.
-It also shows how to access the corresponding data and display it using Matplotlib.
+This example shows how to load a signal from a WAV file, modify the signal's
+sampling frequency, and amplify it. It also shows how to access the corresponding
+data, display it using Matplotlib, and then write the modified signal to the disk as
+a new WAV file.
 
 """
 # %%
@@ -51,7 +52,7 @@ server = connect_to_or_start_server()
 # Load a signal
 # ~~~~~~~~~~~~~
 # Load a signal from a WAV file using the ``LoadWav`` class. It is returned as a DPF
-# field container. For more information, see `fields_container
+# fields container. For more information, see `fields_container
 # <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_
 # in the DPF-Core API documentation.
 

@@ -158,7 +158,7 @@ class CreateSoundField(SignalUtilitiesParent):
         self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> Field:
-        """Get the data as a field.
+        """Get the data as a DPF field.
 
         Returns
         -------

@@ -32,7 +32,7 @@ PyAnsys Sound
    :alt: Black
 
 
-PyAnsys Sound let you use the main features of `Ansys Sound`_ to perform
+PyAnsys Sound lets you use the main features of `Ansys Sound`_ to perform
 the postprocessing and analysis of sounds and vibrations in Python. This library is based on
 `PyDPF-Core`_ and the DPF Sound plugin. It is a Python wrapper that implements classes on top
 of DPF Sound operators
@@ -40,14 +40,14 @@ of DPF Sound operators
 Documentation and Issues
 ------------------------
 Documentation for the latest stable release of PyAnsys Sound is hosted at
-`PyAnsys Sound Documentation <https://sound.docs.pyansys.com/version/dev/>`_.
+`PyAnsys Sound documentation <https://sound.docs.pyansys.com/version/dev/>`_.
 
 The documentation has these sections:
 
 - `Getting started <https://sound.docs.pyansys.com/version/dev/getting_started.html>`_: Learn
-  how to install PyAnsys Sound and its prerequisites in user mode.
+  how to install PyAnsys Sound in user mode.
 - `User guide <https://sound.docs.pyansys.com/version/dev/user_guide.html>`_: Learn how to start
-  a DPF server, load a WAV signal, and perform operations on the signal.
+  a DPF server, load a signal from a WAV file, and perform operations on the signal.
 - `API reference <https://sound.docs.pyansys.com/version/dev/api/index.html>`_: Understand how
   to use Python to interact programmatically with PyAnsys Sound.
 - `Examples <https://sound.docs.pyansys.com/version/dev/examples/index.html>`_: Explore examples
@@ -55,7 +55,7 @@ The documentation has these sections:
 - `Contribute <https://sound.docs.pyansys.com/version/dev/contribute.html>`_: Learn how to
   contribute to the PyAnsysSound codebase or documentation.
 
-In the upper right corner of the documentation title bar, there is an option
+In the upper right corner of the documentation's title bar, there is an option
 for switching from viewing the documentation for the latest stable release
 to viewing the documentation for the development version or previously
 released versions.

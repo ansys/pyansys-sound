@@ -82,7 +82,7 @@ class FluctuationStrength(PsychoacousticsParent):
 
         Returns
         -------
-        FieldsContainer | Field
+        Field | FieldsContainer
             Signal in Pa as a DPF field or fields container.
         """
         return self.__signal
@@ -137,7 +137,7 @@ class FluctuationStrength(PsychoacousticsParent):
         return self._output
 
     def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
-        """Get fluctuation strength data as a tuple in a NumPy array.
+        """Get fluctuation strength data in a tuple as a NumPy array.
 
         Returns
         -------

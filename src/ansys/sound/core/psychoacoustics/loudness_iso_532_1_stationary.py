@@ -78,7 +78,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Returns
         -------
-        FieldsContainer | Field
+        Field | FieldsContainer
             Signal in Pa as a DPF field or fields container.
         """
         return self.__signal
@@ -114,7 +114,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
             )
 
     def get_output(self) -> tuple[FieldsContainer] | tuple[Field]:
-        """Get loudness data in a tuple of a DPF field or fields container.
+        """Get loudness data in a tuple of a DPF field container or field.
 
         Returns
         -------

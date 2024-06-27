@@ -346,7 +346,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
     def get_time_scale(self) -> npt.ArrayLike:
         """Get the time scale.
 
-        This method gets an array of the timestamps, in seconds, where time-varying
+        This method gets an array of the timestamps in seconds where time-varying
         loudness and loudness level are defined.
 
         Returns

@@ -78,7 +78,7 @@ class ApplyGain(SignalUtilitiesParent):
 
     @property
     def gain(self):
-        """Gain."""
+        """Gain value."""
         return self.__gain  # pragma: no cover
 
     @gain.setter
@@ -94,7 +94,7 @@ class ApplyGain(SignalUtilitiesParent):
 
     @gain.getter
     def gain(self) -> float:
-        """Gain.
+        """Gain value.
 
         Returns
         -------

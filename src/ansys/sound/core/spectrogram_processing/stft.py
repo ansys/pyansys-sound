@@ -144,7 +144,7 @@ class Stft(SpectrogramProcessingParent):
         self.__window_type = window_type
 
     @window_type.getter
-    def window_type(self) -> float:
+    def window_type(self) -> str:
         """Window type.
 
         Returns

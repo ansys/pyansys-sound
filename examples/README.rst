@@ -3,4 +3,4 @@
 ========
 Examples
 ========
-These examples demonstrate the behavior and usage of PyAnsys Sound.
+These examples show how to use PyAnsys Sound for various workflows.

@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Adds zeros at the end of a signal."""
+"""Adds zeros to the end of a signal."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -31,7 +31,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class ZeroPad(SignalUtilitiesParent):
-    """Adds zeros at the end of a signal."""
+    """Adds zeros to the end of a signal."""
 
     def __init__(self, signal: Field | FieldsContainer = None, duration_zeros: float = 0.0):
         """Create a ``ZeroPad`` instance.
@@ -39,7 +39,7 @@ class ZeroPad(SignalUtilitiesParent):
         Parameters
         ----------
         signal: Field | FieldsContainer, default: None
-            Signal to zero-pad, as a DPF field or fields container.
+            Signal to add zeros to the end of as a DPF field or fields container.
         duration_zeros: float: default: 0.0
             Duration in seconds of the zeros to append to the input signal.
         """
@@ -64,7 +64,7 @@ class ZeroPad(SignalUtilitiesParent):
 
         Returns
         -------
-        FieldsContainer | Field
+        Field | FieldsContainer
             Signal as a DPF field or fields container.
         """
         return self.__signal
@@ -100,9 +100,10 @@ class ZeroPad(SignalUtilitiesParent):
         return self.__duration_zeros
 
     def process(self):
-        """Pad the signal with zeros.
+        """Pad the end of the signal with zeros.
 
-        This method calls the appropriate DPF Sound operator to append zeros to the signal.
+        This method calls the appropriate DPF Sound operator to append zeros to the
+        end of the signal.
         """
         if self.signal == None:
             raise PyAnsysSoundException(
@@ -123,12 +124,12 @@ class ZeroPad(SignalUtilitiesParent):
             self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> FieldsContainer | Field:
-        """Get the zero-padded signal as a DPF field or fields container.
+        """Get the zero-padded signal as a DPF fields container or field.
 
         Returns
         -------
-        FieldsContainer
-             Zero-padded signal in a DPF field or fields container.
+        FieldsContainer | Field
+             Zero-padded signal in a DPF fields container or field.
         """
         if self._output == None:
             # Computing output if needed
