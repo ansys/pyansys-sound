@@ -29,13 +29,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 from numpy import typing as npt
 
-from . import PowerSpectralDensityParent
+from . import SpectralProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 ID_POWER_SPECTRAL_DENSITY = "compute_power_spectral_density"
 
 
-class PowerSpectralDensity(PowerSpectralDensityParent):
+class PowerSpectralDensity(SpectralProcessingParent):
     """Power Spectral Density (PSD) class.
 
     This class provides the Power Spectral Density (PSD) calculation for a given signal.

@@ -20,11 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""PowerSpectralDensityParent."""
+"""SpectralProcessingParent."""
 from .._pyansys_sound import PyAnsysSound
 
 
-class PowerSpectralDensityParent(PyAnsysSound):
+class SpectralProcessingParent(PyAnsysSound):
     """
     Provides the base class for PowerSpectralDensity classes.
 
