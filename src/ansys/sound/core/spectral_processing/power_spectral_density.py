@@ -246,17 +246,34 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
         return l_frequencies
 
-    def plot(self):
+    def plot(self, display_in_dB: bool = False):
         """Plot the Power Spectral Density (PSD) calculation.
 
         This method plots the Power Spectral Density (PSD) calculation.
-        """
-        # Get the output
-        psd_values, l_frequencies = self.get_output_as_nparray()
 
-        # Plot the PSD
-        plt.plot(l_frequencies, psd_values)
-        plt.title("Power Spectral Density (PSD)")
-        plt.xlabel("Frequency")
-        plt.ylabel("PSD")
-        plt.show()
+        Parameters
+        ----------
+        display_in_dB : bool, optional
+            Display the PSD in dB otherwise in Unit^2/Hz, by default False.
+        """
+        if display_in_dB == False:
+            # Get the output in linear scale
+            psd_values, l_frequencies = self.get_output_as_nparray()
+
+            # Plot the PSD
+            plt.plot(l_frequencies, psd_values)
+            plt.title("Power Spectral Density (PSD)")
+            plt.xlabel("Frequency")
+            plt.ylabel("PSD")
+            plt.show()
+        else:
+            # Get the output in dB
+            psd_dB_values = self.get_PSD_as_dB_as_nparray()
+            l_frequencies = self.get_frequencies()
+
+            # Plot the PSD in dB
+            plt.plot(l_frequencies, psd_dB_values)
+            plt.title("Power Spectral Density (PSD) in dB")
+            plt.xlabel("Frequency")
+            plt.ylabel("PSD (dB)")
+            plt.show()
