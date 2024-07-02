@@ -27,8 +27,8 @@ import numpy as np
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-from ansys.sound.core.spectral_processing import PowerSpectralDensity
 from ansys.sound.core.signal_utilities import LoadWav
+from ansys.sound.core.spectral_processing import PowerSpectralDensity
 
 
 def test_power_spectral_density_instantiation(dpf_sound_test_server):
@@ -157,6 +157,110 @@ def test_power_spectral_density_get_output_as_nparray(dpf_sound_test_server):
 
     assert psd_values[0] == pytest.approx(1.27088645e-10)
     assert psd_frequencies[1] == pytest.approx(21.533203125000000)
+
+
+def test_get_PSD_as_square_linear(dpf_sound_test_server):
+    """Test PowerSpectralDensity get_PSD_as_square_linear."""
+    # Test get_PSD_as_square_linear
+    op_load_wav = LoadWav(pytest.data_path_flute_in_container)
+    op_load_wav.process()
+    input_signal = op_load_wav.get_output()[0]
+
+    psd = PowerSpectralDensity(input_signal)
+    psd.process()
+
+    output = psd.get_PSD_as_square_linear()
+    assert output is not None
+
+    # Check psd values
+    assert output.data[0] == pytest.approx(1.27088645e-10)
+    assert output.data[11] == pytest.approx(2.05275264e-05)
+    assert output.data[12] == pytest.approx(0.000141005585)
+    assert output.data[24] == pytest.approx(0.000813542807)
+    assert output.data[26] == pytest.approx(1.11639283e-05)
+    assert output.data[36] == pytest.approx(0.000375645177)
+    assert output.data[37] == pytest.approx(0.000426257000)
+    assert output.data[209] == pytest.approx(5.73722625e-09)
+
+    # Check frequencies
+    assert output.time_freq_support.time_frequencies.data[0] == pytest.approx(0.0)
+    assert output.time_freq_support.time_frequencies.data[1] == pytest.approx(21.533203125000000)
+    assert output.time_freq_support.time_frequencies.data[1023] == pytest.approx(22028.466796875000)
+    assert output.time_freq_support.time_frequencies.data[1024] == pytest.approx(22050.000000000000)
+
+
+def test_get_PSD_as_square_linear_as_nparray(dpf_sound_test_server):
+    """Test PowerSpectralDensity get_PSD_as_square_linear_as_nparray."""
+    op_load_wav = LoadWav(pytest.data_path_flute_in_container)
+    op_load_wav.process()
+    input_signal = op_load_wav.get_output()[0]
+
+    psd = PowerSpectralDensity(input_signal)
+    psd.process()
+
+    psd_values, psd_frequencies = psd.get_PSD_as_square_linear_as_nparray()
+
+    assert psd_values[0] == pytest.approx(1.27088645e-10)
+    assert psd_frequencies[1] == pytest.approx(21.533203125000000)
+
+
+def test_get_PSD_as_dB(dpf_sound_test_server):
+    op_load_wav = LoadWav(pytest.data_path_flute_in_container)
+    op_load_wav.process()
+    input_signal = op_load_wav.get_output()[0]
+
+    psd = PowerSpectralDensity(input_signal)
+    psd.process()
+
+    output = psd.get_PSD_as_dB()
+    assert output is not None
+
+    # Check psd values (dB)
+    assert output.data[0] == pytest.approx(-98.95893250101041)
+    assert output.data[11] == pytest.approx(-46.87663380012381)
+    assert output.data[12] == pytest.approx(-38.507636861208304)
+    assert output.data[24] == pytest.approx(-30.896195904115586)
+    assert output.data[26] == pytest.approx(-49.5218296062214)
+
+    # Check frequencies
+    assert output.time_freq_support.time_frequencies.data[0] == pytest.approx(0.0)
+    assert output.time_freq_support.time_frequencies.data[1] == pytest.approx(21.533203125000000)
+    assert output.time_freq_support.time_frequencies.data[1023] == pytest.approx(22028.466796875000)
+    assert output.time_freq_support.time_frequencies.data[1024] == pytest.approx(22050.000000000000)
+
+
+def test_get_PSD_as_dB_as_nparray(dpf_sound_test_server):
+    op_load_wav = LoadWav(pytest.data_path_flute_in_container)
+    op_load_wav.process()
+    input_signal = op_load_wav.get_output()[0]
+
+    psd = PowerSpectralDensity(input_signal)
+    psd.process()
+
+    psd_values = psd.get_PSD_as_dB_as_nparray()
+
+    # Check psd values (dB)
+    assert psd_values[0] == pytest.approx(-98.95893250101041)
+    assert psd_values[11] == pytest.approx(-46.87663380012381)
+    assert psd_values[12] == pytest.approx(-38.507636861208304)
+    assert psd_values[24] == pytest.approx(-30.896195904115586)
+    assert psd_values[26] == pytest.approx(-49.5218296062214)
+
+
+def test_get_frequencies(dpf_sound_test_server):
+    op_load_wav = LoadWav(pytest.data_path_flute_in_container)
+    op_load_wav.process()
+    input_signal = op_load_wav.get_output()[0]
+
+    psd = PowerSpectralDensity(input_signal)
+    psd.process()
+    frequencies = psd.get_frequencies()
+
+    # Check frequencies
+    assert frequencies[0] == pytest.approx(0.0)
+    assert frequencies[1] == pytest.approx(21.533203125000000)
+    assert frequencies[1023] == pytest.approx(22028.466796875000)
+    assert frequencies[1024] == pytest.approx(22050.000000000000)
 
 
 @patch("matplotlib.pyplot.show")

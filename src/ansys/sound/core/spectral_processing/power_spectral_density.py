@@ -24,7 +24,7 @@
 
 import warnings
 
-from ansys.dpf.core import Field, Operator
+from ansys.dpf.core import Field, Operator, TimeFreqSupport, fields_factory, locations
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy import typing as npt
@@ -163,6 +163,88 @@ class PowerSpectralDensity(SpectralProcessingParent):
         l_frequencies = l_output.time_freq_support.time_frequencies.data
 
         return (np.array(l_psd), np.array(l_frequencies))
+
+    def get_PSD_as_square_linear(self) -> Field:
+        """Get the Power Spectral Density (PSD) as a square linear field.
+
+        Returns
+        -------
+        Field
+            The Power Spectral Density (PSD) as a square linear field.
+        """
+        return self.get_output()
+
+    def get_PSD_as_square_linear_as_nparray(self) -> npt.ArrayLike:
+        """Get the Power Spectral Density (PSD) as a square linear field as a numpy array.
+
+        Returns
+        -------
+        numpy.ndarray
+            The Power Spectral Density (PSD) as a square linear field as a numpy array.
+        """
+        return self.get_output_as_nparray()
+
+    def get_PSD_as_dB(self, ref_value: float = 1.0) -> Field:
+        """Get the Power Spectral Density (PSD) as dB.
+
+        Parameters
+        ----------
+        ref_value : float, optional
+            Reference value for dB calculation, by default 1.0.
+
+        Returns
+        -------
+        Field
+            The Power Spectral Density (PSD) as dB.
+        """
+        # Get the output
+        psd_values, frequencies = self.get_output_as_nparray()
+
+        # Apply the formula to each element
+        psd_dB_values = 10 * np.log10(psd_values / ref_value**2)
+
+        psd_dB_field = fields_factory.create_scalar_field(
+            num_entities=1, location=locations.time_freq
+        )
+        psd_dB_field.append(psd_dB_values, 1)
+        support = TimeFreqSupport()
+        frequencies_field = fields_factory.create_scalar_field(
+            num_entities=1, location=locations.time_freq
+        )
+        frequencies_field.append(frequencies, 1)
+        support.time_frequencies = frequencies_field
+
+        psd_dB_field.time_freq_support = support
+
+        return psd_dB_field
+
+    def get_PSD_as_dB_as_nparray(self, ref_value: float = 1.0) -> npt.ArrayLike:
+        """Get the Power Spectral Density (PSD) as dB as a numpy array.
+
+        Parameters
+        ----------
+        ref_value : float, optional
+            Reference value for dB calculation, by default 1.0.
+
+        Returns
+        -------
+        numpy.ndarray
+            The Power Spectral Density (PSD) as dB as a numpy array.
+        """
+        return np.array(self.get_PSD_as_dB(ref_value).data)
+
+    def get_frequencies(self) -> npt.ArrayLike:
+        """Get the frequencies.
+
+        Returns
+        -------
+        numpy.ndarray
+            The frequencies.
+        """
+        # Get the output
+        _, l_frequencies = self.get_output_as_nparray()
+
+        return l_frequencies
 
     def plot(self):
         """Plot the Power Spectral Density (PSD) calculation.
