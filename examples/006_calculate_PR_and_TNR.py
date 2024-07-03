@@ -41,9 +41,11 @@ the desired TNR and PR information.
 from ansys.dpf.core import TimeFreqSupport, fields_factory, locations
 import numpy as np
 
-from ansys.sound.core.examples_helpers import download_flute_psd
+from ansys.sound.core.examples_helpers import download_flute_psd, download_flute_wav
 from ansys.sound.core.psychoacoustics import ProminenceRatio, ToneToNoiseRatio
 from ansys.sound.core.server_helpers import connect_to_or_start_server
+from ansys.sound.core.signal_utilities import LoadWav
+from ansys.sound.core.spectral_processing import PowerSpectralDensity
 
 # Connect to a remote server or start a local server.
 server = connect_to_or_start_server()
@@ -185,3 +187,45 @@ print(
     f"Tone width: {round(PR_width, 2)} Hz\n"
     f"PR value: {round(PR, 2)} dB\n"
 )
+
+# %%
+# Compute ProminenceRatio (PR) from a PowerSpectralDensity (psd) applied to the file flute.wav
+# Load example data from WAV file
+path_flute_wav = download_flute_wav()
+wav_loader = LoadWav(path_flute_wav)
+wav_loader.process()
+flute_signal = wav_loader.get_output()[0]
+
+# %%
+# Create a PowerSpectralDensity (psd) object, set its signal, and compute the psd.
+psd_object = PowerSpectralDensity(flute_signal)
+psd_object.process()
+
+# %%
+# Get the computed psd as a field.
+f_psd = psd_object.get_output()
+
+# %%
+# Create a ProminenceRatio (PR) with the computed psd and process it.
+prominence_ratio = ProminenceRatio(psd=f_psd)
+prominence_ratio.process()
+
+# %%
+# Print the results.
+number_tones = prominence_ratio.get_nb_tones()
+PR = prominence_ratio.get_max_PR_value()
+PR_frequencies = prominence_ratio.get_peaks_frequencies()
+PR_values = prominence_ratio.get_PR_values()
+PR_levels = prominence_ratio.get_peaks_levels()
+print(
+    f"\n"
+    f"Number of tones found: {number_tones}\n"
+    f"Maximum PR value: {np.round(PR, 1)} dB\n"
+    f"All detected peaks' frequencies (Hz): {np.round(PR_frequencies)}\n"
+    f"All peaks' PR values (dB): {np.round(PR_values, 1)}\n"
+    f"All peaks' absolute levels (dB SPL): {np.round(PR_levels, 1)}\n"
+)
+
+# %%
+# Plot the PR over frequency.
+prominence_ratio.plot()
