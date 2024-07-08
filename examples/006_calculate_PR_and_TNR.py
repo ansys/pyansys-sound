@@ -140,11 +140,29 @@ print(
     f"TNR value: {round(TNR, 2)} dB\n\n"
 )
 
-
 # %%
 # Calculate PR from a PSD
 # ~~~~~~~~~~~~~~~~~~~~~~~
-# Create a ``ProminenceRatio`` object, set the same created PSD field as input, and compute the PR.
+# Compute ProminenceRatio (PR) from a PowerSpectralDensity (psd) applied to the file flute.wav
+# Load example data from WAV file
+path_flute_wav = download_flute_wav()
+wav_loader = LoadWav(path_flute_wav)
+wav_loader.process()
+flute_signal = wav_loader.get_output()[0]
+
+# %%
+# Create a PowerSpectralDensity (psd) object, set its signal, and compute the psd.
+psd_object = PowerSpectralDensity(
+    flute_signal, fft_size=8192, window_type="HANN", window_length=8192, overlap=0.8
+)
+psd_object.process()
+
+# %%
+# Get the computed psd as a field.
+f_psd = psd_object.get_output()
+
+# %%
+# Create a ProminenceRatio (PR) with the computed psd and process it.
 prominence_ratio = ProminenceRatio(psd=f_psd)
 prominence_ratio.process()
 
@@ -187,45 +205,3 @@ print(
     f"Tone width: {round(PR_width, 2)} Hz\n"
     f"PR value: {round(PR, 2)} dB\n"
 )
-
-# %%
-# Compute ProminenceRatio (PR) from a PowerSpectralDensity (psd) applied to the file flute.wav
-# Load example data from WAV file
-path_flute_wav = download_flute_wav()
-wav_loader = LoadWav(path_flute_wav)
-wav_loader.process()
-flute_signal = wav_loader.get_output()[0]
-
-# %%
-# Create a PowerSpectralDensity (psd) object, set its signal, and compute the psd.
-psd_object = PowerSpectralDensity(flute_signal)
-psd_object.process()
-
-# %%
-# Get the computed psd as a field.
-f_psd = psd_object.get_output()
-
-# %%
-# Create a ProminenceRatio (PR) with the computed psd and process it.
-prominence_ratio = ProminenceRatio(psd=f_psd)
-prominence_ratio.process()
-
-# %%
-# Print the results.
-number_tones = prominence_ratio.get_nb_tones()
-PR = prominence_ratio.get_max_PR_value()
-PR_frequencies = prominence_ratio.get_peaks_frequencies()
-PR_values = prominence_ratio.get_PR_values()
-PR_levels = prominence_ratio.get_peaks_levels()
-print(
-    f"\n"
-    f"Number of tones found: {number_tones}\n"
-    f"Maximum PR value: {np.round(PR, 1)} dB\n"
-    f"All detected peaks' frequencies (Hz): {np.round(PR_frequencies)}\n"
-    f"All peaks' PR values (dB): {np.round(PR_values, 1)}\n"
-    f"All peaks' absolute levels (dB SPL): {np.round(PR_levels, 1)}\n"
-)
-
-# %%
-# Plot the PR over frequency.
-prominence_ratio.plot()

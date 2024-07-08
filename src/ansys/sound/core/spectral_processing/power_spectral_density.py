@@ -44,14 +44,31 @@ class PowerSpectralDensity(SpectralProcessingParent):
     def __init__(
         self,
         input_signal: Field,
+        fft_size: int = 2048,
         window_type: str = "HANN",
         window_length: int = 2048,
-        fft_size: int = 2048,
-        overlap: int = 1536,
+        overlap: float = 0.25,
     ):
         """Init.
 
         Init the class.
+
+        Parameters
+        ----------
+        signal: Field
+            Mono signal to compute a DPF field.
+        window_type: str, default: 'HANN'
+            Window type used for the FFT computation. Options are ``'BARTLETT'``, ``'BLACKMAN'``,
+            ``'BLACKMANHARRIS'``,``'HAMMING'``, ``'HANN'``, ``'KAISER'``, and
+            ``'RECTANGULAR'``.
+        window_length : int, optional
+            Window length, by default 2048.
+        fft_size: int, default: 2048
+            Size (as an integer) of the FFT to compute the STFT.
+            Use a power of 2 for better performance.
+        overlap: float, default: 0.25
+            Overlap value between two successive FFT computations. Values can range from 0 to 1.
+            For example, ``0`` means no overlap, and ``0.5`` means 50% overlap.
         """
         super().__init__()
 
@@ -82,9 +99,22 @@ class PowerSpectralDensity(SpectralProcessingParent):
         """Window type."""
         return self.__window_type  # pragma: no cover
 
+    # check supporté variables
     @window_type.setter
     def window_type(self, value: str):
         """Set window type."""
+        if (
+            value != "BLACKMANHARRIS"
+            and value != "HANN"
+            and value != "HAMMING"
+            and value != "KAISER"
+            and value != "BARTLETT"
+            and value != "RECTANGULAR"
+        ):
+            raise PyAnsysSoundException(
+                "Window type is invalid. Options are 'BARTLETT', 'BLACKMAN', 'BLACKMANHARRIS', "
+                "'HAMMING', 'HANN', 'KAISER', and 'RECTANGULAR'."
+            )
         self.__window_type = value
 
     @property
@@ -95,6 +125,8 @@ class PowerSpectralDensity(SpectralProcessingParent):
     @window_length.setter
     def window_length(self, value: int):
         """Set window length."""
+        if value < 0:
+            raise PyAnsysSoundException("Window length must be positive")
         self.__window_length = value
 
     @property
@@ -105,6 +137,8 @@ class PowerSpectralDensity(SpectralProcessingParent):
     @fft_size.setter
     def fft_size(self, value: int):
         """Set FFT size."""
+        if value < 0:
+            raise PyAnsysSoundException("FFT size must be positive")
         self.__fft_size = value
 
     @property
@@ -115,6 +149,8 @@ class PowerSpectralDensity(SpectralProcessingParent):
     @overlap.setter
     def overlap(self, value: int):
         """Set overlap."""
+        if value < 0.0 or value > 1.0:
+            raise PyAnsysSoundException("Window overlap must be between 0.0 and 1.0.")
         self.__overlap = value
 
     def process(self):
@@ -164,28 +200,28 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
         return (np.array(l_psd), np.array(l_frequencies))
 
-    def get_PSD_as_square_linear(self) -> Field:
-        """Get the Power Spectral Density (PSD) as a square linear field.
+    def get_PSD_squared_linear(self) -> Field:
+        """Get the Power Spectral Density (PSD) as a squared linear field.
 
         Returns
         -------
         Field
-            The Power Spectral Density (PSD) as a square linear field.
+            The Power Spectral Density (PSD) as a squared linear field.
         """
         return self.get_output()
 
-    def get_PSD_as_square_linear_as_nparray(self) -> npt.ArrayLike:
-        """Get the Power Spectral Density (PSD) as a square linear field as a numpy array.
+    def get_PSD_squared_linear_as_nparray(self) -> npt.ArrayLike:
+        """Get the Power Spectral Density (PSD) as a squared linear field as a numpy array.
 
         Returns
         -------
         numpy.ndarray
-            The Power Spectral Density (PSD) as a square linear field as a numpy array.
+            The Power Spectral Density (PSD) as a squared linear field as a numpy array.
         """
         return self.get_output_as_nparray()
 
-    def get_PSD_as_dB(self, ref_value: float = 1.0) -> Field:
-        """Get the Power Spectral Density (PSD) as dB.
+    def get_PSD_dB(self, ref_value: float = 1.0) -> Field:
+        """Get the Power Spectral Density (PSD) as dB/Hz.
 
         Parameters
         ----------
@@ -218,8 +254,8 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
         return psd_dB_field
 
-    def get_PSD_as_dB_as_nparray(self, ref_value: float = 1.0) -> npt.ArrayLike:
-        """Get the Power Spectral Density (PSD) as dB as a numpy array.
+    def get_PSD_dB_as_nparray(self, ref_value: float = 1.0) -> npt.ArrayLike:
+        """Get the Power Spectral Density (PSD) as dB/Hz as a numpy array.
 
         Parameters
         ----------
@@ -231,7 +267,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
         numpy.ndarray
             The Power Spectral Density (PSD) as dB as a numpy array.
         """
-        return np.array(self.get_PSD_as_dB(ref_value).data)
+        return np.array(self.get_PSD_dB(ref_value).data)
 
     def get_frequencies(self) -> npt.ArrayLike:
         """Get the frequencies.
@@ -247,15 +283,14 @@ class PowerSpectralDensity(SpectralProcessingParent):
         return l_frequencies
 
     def plot(self, display_in_dB: bool = False):
-        """Plot the Power Spectral Density (PSD) calculation.
-
-        This method plots the Power Spectral Density (PSD) calculation.
+        """Plot the Power Spectral Density (PSD).
 
         Parameters
         ----------
         display_in_dB : bool, optional
             Display the PSD in dB otherwise in Unit^2/Hz, by default False.
         """
+        unit = self.input_signal.unit
         if display_in_dB == False:
             # Get the output in linear scale
             psd_values, l_frequencies = self.get_output_as_nparray()
@@ -263,17 +298,17 @@ class PowerSpectralDensity(SpectralProcessingParent):
             # Plot the PSD
             plt.plot(l_frequencies, psd_values)
             plt.title("Power Spectral Density (PSD)")
-            plt.xlabel("Frequency")
-            plt.ylabel("PSD")
+            plt.xlabel("Frequency (Hz)")
+            plt.ylabel(f"Level {unit}^2/Hz")
             plt.show()
         else:
             # Get the output in dB
-            psd_dB_values = self.get_PSD_as_dB_as_nparray()
+            psd_dB_values = self.get_PSD_dB_as_nparray()
             l_frequencies = self.get_frequencies()
 
             # Plot the PSD in dB
             plt.plot(l_frequencies, psd_dB_values)
-            plt.title("Power Spectral Density (PSD) in dB")
-            plt.xlabel("Frequency")
-            plt.ylabel("PSD (dB)")
+            plt.title("Power Spectral Density (PSD) in dB/Hz")
+            plt.xlabel("Frequency (Hz)")
+            plt.ylabel("Level (dB/Hz)")
             plt.show()
