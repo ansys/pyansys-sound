@@ -25,9 +25,8 @@ from functools import wraps
 import os
 import shutil
 
-import requests
-
 import platformdirs
+import requests
 
 # Setup data directory
 USER_DATA_PATH = platformdirs.user_data_dir(appname="ansys_sound_core", appauthor="Ansys")
