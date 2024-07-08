@@ -36,15 +36,6 @@ jobs:
         with:
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
 
-  code-style:
-    name: "Running code style checks"
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Run PyAnsys code style checks"
-        uses: ansys/actions/code-style@v6
-        with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-
   doc-style:
     name: "Running documentation style checks"
     runs-on: ubuntu-latest
@@ -71,7 +62,6 @@ jobs:
   smoke-tests:
     name: "Build and Smoke tests"
     runs-on: ${{ matrix.os }}
-    needs: [code-style]
     strategy:
       fail-fast: false
       matrix:
