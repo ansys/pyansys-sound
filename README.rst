@@ -7,7 +7,7 @@ PyAnsys Sound
    :target: https://docs.pyansys.com/
    :alt: PyAnsys
 
-.. |python| image:: https://img.shields.io/badge/Python-%3E%3D3.9-blue
+.. |python| image:: https://img.shields.io/pypi/pyversions/ansys-sound-core?logo=pypi
    :target: https://pypi.org/project/ansys-dpf-sound/
    :alt: Python
 
