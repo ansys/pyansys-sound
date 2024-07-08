@@ -37,7 +37,7 @@ the postprocessing and analysis of sounds and vibrations in Python. This library
 `PyDPF-Core`_ and the DPF Sound plugin. It is a Python wrapper that implements classes on top
 of DPF Sound operators
 
-Documentation and Issues
+Documentation and issues
 ------------------------
 Documentation for the latest stable release of PyAnsys Sound is hosted at
 `PyAnsys Sound documentation <https://sound.docs.pyansys.com/version/dev/>`_.
