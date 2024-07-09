@@ -20,8 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.sound.core import __version__
 import regex as re
 
+from ansys.sound.core import __version__
+
+
 def test_pkg_version():
-    assert re.match(r"[\d]+.[\d]+.[\w]+", __version__) is not None # check version format
+    assert re.match(r"[\d]+.[\d]+.[\w]+", __version__) is not None  # check version format
