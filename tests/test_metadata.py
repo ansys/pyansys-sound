@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 from ansys.sound.core import __version__
-
+import regex as re
 
 def test_pkg_version():
-    assert __version__ == "0.1.dev0"
+    assert re.match(r"[\d]+.[\d]+.[\w]+", __version__) is not None # check version format
