@@ -43,19 +43,19 @@ of DPF Sound operators
 Documentation and issues
 ------------------------
 Documentation for the latest stable release of PyAnsys Sound is hosted at
-`PyAnsys Sound documentation <https://sound.docs.pyansys.com/version/dev/>`_.
+`PyAnsys Sound documentation <https://sound.docs.pyansys.com/version/stable/>`_.
 
 The documentation has these sections:
 
-- `Getting started <https://sound.docs.pyansys.com/version/dev/getting_started.html>`_: Learn
+- `Getting started <https://sound.docs.pyansys.com/version/stable/getting_started.html>`_: Learn
   how to install PyAnsys Sound in user mode.
-- `User guide <https://sound.docs.pyansys.com/version/dev/user_guide.html>`_: Learn how to start
+- `User guide <https://sound.docs.pyansys.com/version/stable/user_guide.html>`_: Learn how to start
   a DPF server, load a signal from a WAV file, and perform operations on the signal.
-- `API reference <https://sound.docs.pyansys.com/version/dev/api/index.html>`_: Understand how
+- `API reference <https://sound.docs.pyansys.com/version/stable/api/index.html>`_: Understand how
   to use Python to interact programmatically with PyAnsys Sound.
-- `Examples <https://sound.docs.pyansys.com/version/dev/examples/index.html>`_: Explore examples
+- `Examples <https://sound.docs.pyansys.com/version/stable/examples/index.html>`_: Explore examples
   that show how to use PyAnsys Sound for various workflows.
-- `Contribute <https://sound.docs.pyansys.com/version/dev/contribute.html>`_: Learn how to
+- `Contribute <https://sound.docs.pyansys.com/version/stable/contribute.html>`_: Learn how to
   contribute to the PyAnsysSound codebase or documentation.
 
 In the upper right corner of the documentation's title bar, there is an option
