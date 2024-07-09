@@ -24,9 +24,9 @@
 from functools import wraps
 import os
 import shutil
-import urllib.request
 
 import platformdirs
+import requests
 
 # Setup data directory
 USER_DATA_PATH = platformdirs.user_data_dir(appname="ansys_sound_core", appauthor="Ansys")
@@ -83,8 +83,13 @@ def _retrieve_file(url, filename, _test=False):  # pragma no cover
         return local_path_no_zip
 
     # Perform download
-    saved_file, resp = urllib.request.urlretrieve(url)
-    shutil.move(saved_file, local_path)
+    try:
+        file_content = requests.get(url, timeout=10).text  # 10 seconds
+    except requests.exceptions.Timeout:
+        print("Timed out")
+
+    with open(local_path, "w") as f:
+        f.write(file_content)
     return local_path
 
 
