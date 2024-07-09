@@ -13,4 +13,4 @@ For contributing to this project, please refer to the [PyAnsys Developer's Guide
 Further information about contributing to PyAnsys Sound can be found in [Contributing].
 
 [PyAnsys Developer's Guide]: https://dev.docs.pyansys.com/index.html
-[Contributing]: https://sound.docs.pyansys.com/version/dev/contribute.html
+[Contributing]: https://sound.docs.pyansys.com/version/stable/contribute.html
