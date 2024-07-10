@@ -162,7 +162,7 @@ psd_object.process()
 f_psd = psd_object.get_output()
 
 # %%
-# Create a ProminenceRatio (PR) with the computed psd and process it.
+# Create a ProminenceRatio object, set the computed PSD as inpout, then process.
 prominence_ratio = ProminenceRatio(psd=f_psd)
 prominence_ratio.process()
 
