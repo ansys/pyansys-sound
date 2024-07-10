@@ -1,3 +1,10 @@
+## [0.1.1](https://github.com/ansys/pyansys-sound/releases/tag/v0.1.1) - 2024-07-10
+
+
+### Changed
+
+- chore: update CHANGELOG for v0.1.0 [#75](https://github.com/ansys/pyansys-sound/pull/75)
+
 ## [0.1.0](https://github.com/ansys/pyansys-sound/releases/tag/v0.1.0) - 2024-07-09
 
 
