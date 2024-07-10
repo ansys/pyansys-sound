@@ -38,7 +38,7 @@ ID_POWER_SPECTRAL_DENSITY = "compute_power_spectral_density"
 class PowerSpectralDensity(SpectralProcessingParent):
     """Power Spectral Density (PSD) class.
 
-    This class provides the Power Spectral Density (PSD) calculation for a given signal.
+    This class provides the Power Spectral Density (PSD) calculation for a given signal, using Welch's method
     """
 
     def __init__(
