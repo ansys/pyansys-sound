@@ -270,12 +270,12 @@ class PowerSpectralDensity(SpectralProcessingParent):
         return np.array(self.get_PSD_dB(ref_value).data)
 
     def get_frequencies(self) -> npt.ArrayLike:
-        """Get the frequencies.
+        """Get the vector of frequencies associated to the PSD.
 
         Returns
         -------
         numpy.ndarray
-            The frequencies.
+            The vector of frequencies, in Hz.
         """
         # Get the output
         _, l_frequencies = self.get_output_as_nparray()
