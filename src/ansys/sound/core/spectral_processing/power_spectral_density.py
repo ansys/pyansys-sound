@@ -216,7 +216,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
         Returns
         -------
         numpy.ndarray
-            The Power Spectral Density (PSD) as a squared linear field as a numpy array.
+            The Power Spectral Density (PSD), as squared linear values, in a numpy array.
         """
         return self.get_output_as_nparray()
 
