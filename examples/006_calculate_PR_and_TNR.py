@@ -158,7 +158,7 @@ psd_object = PowerSpectralDensity(
 psd_object.process()
 
 # %%
-# Get the computed psd as a field.
+# Get the computed PSD as a Field.
 f_psd = psd_object.get_output()
 
 # %%
