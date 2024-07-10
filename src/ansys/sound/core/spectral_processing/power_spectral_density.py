@@ -260,7 +260,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
         Parameters
         ----------
         ref_value : float, optional
-            Reference value for dB calculation, by default 1.0. Example: ref_value = 2e-5 for Pa.  
+            Reference value for dB calculation, by default 1.0. Example: ref_value = 2e-5 for Pa.
 
         Returns
         -------
