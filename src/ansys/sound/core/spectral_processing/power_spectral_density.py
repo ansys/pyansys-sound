@@ -255,17 +255,17 @@ class PowerSpectralDensity(SpectralProcessingParent):
         return psd_dB_field
 
     def get_PSD_dB_as_nparray(self, ref_value: float = 1.0) -> npt.ArrayLike:
-        """Get the Power Spectral Density (PSD) as dB/Hz as a numpy array.
+        """Get the Power Spectral Density (PSD) in dB/Hz as a numpy array.
 
         Parameters
         ----------
         ref_value : float, optional
-            Reference value for dB calculation, by default 1.0.
+            Reference value for dB calculation, by default 1.0. Example: ref_value = 2e-5 for Pa.  
 
         Returns
         -------
         numpy.ndarray
-            The Power Spectral Density (PSD) as dB as a numpy array.
+            The Power Spectral Density (PSD) in dB/Hz as a numpy array.
         """
         return np.array(self.get_PSD_dB(ref_value).data)
 
