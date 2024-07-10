@@ -235,15 +235,15 @@ def test_get_PSD_dB(dpf_sound_test_server):
     psd = PowerSpectralDensity(input_signal)
     psd.process()
 
-    output = psd.get_PSD_dB()
+    output = psd.get_PSD_dB(ref_value=2e-5)
     assert output is not None
 
     # Check psd values (dB)
-    assert output.data[0] == pytest.approx(-99.02809470595948)
-    assert output.data[11] == pytest.approx(-46.91898865309873)
-    assert output.data[12] == pytest.approx(-38.54039776267062)
-    assert output.data[24] == pytest.approx(-30.924964892045686)
-    assert output.data[26] == pytest.approx(-49.574152218783794)
+    assert output.data[0] == pytest.approx(-5.0486946192390985)
+    assert output.data[11] == pytest.approx(47.060411433621645)
+    assert output.data[12] == pytest.approx(55.43900232404976)
+    assert output.data[24] == pytest.approx(63.054435194674696)
+    assert output.data[26] == pytest.approx(44.40524786793658)
 
     # Check frequencies
     assert output.time_freq_support.time_frequencies.data[0] == pytest.approx(0.0)
@@ -260,14 +260,14 @@ def test_get_PSD_dB_as_nparray(dpf_sound_test_server):
     psd = PowerSpectralDensity(input_signal)
     psd.process()
 
-    psd_values = psd.get_PSD_dB_as_nparray()
+    psd_values = psd.get_PSD_dB_as_nparray(ref_value=2e-5)
 
     # Check psd values (dB)
-    assert psd_values[0] == pytest.approx(-99.02809470595948)
-    assert psd_values[11] == pytest.approx(-46.91898865309873)
-    assert psd_values[12] == pytest.approx(-38.54039776267062)
-    assert psd_values[24] == pytest.approx(-30.924964892045686)
-    assert psd_values[26] == pytest.approx(-49.574152218783794)
+    assert psd_values[0] == pytest.approx(-5.0486946192390985)
+    assert psd_values[11] == pytest.approx(47.060411433621645)
+    assert psd_values[12] == pytest.approx(55.43900232404976)
+    assert psd_values[24] == pytest.approx(63.054435194674696)
+    assert psd_values[26] == pytest.approx(44.40524786793658)
 
 
 def test_get_frequencies(dpf_sound_test_server):
