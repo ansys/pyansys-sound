@@ -143,7 +143,7 @@ print(
 # %%
 # Calculate PR from a PSD
 # ~~~~~~~~~~~~~~~~~~~~~~~
-# Compute ProminenceRatio (PR) from a PowerSpectralDensity (psd) applied to the file flute.wav
+# Compute Prominence Ratio (PR) from a Power Spectral Density (psd) calculated from the file flute.wav
 # Load example data from WAV file
 path_flute_wav = download_flute_wav()
 wav_loader = LoadWav(path_flute_wav)
