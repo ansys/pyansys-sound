@@ -231,7 +231,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
         Returns
         -------
         Field
-            The Power Spectral Density (PSD) as dB.
+            The Power Spectral Density (PSD) in dB/Hz.
         """
         # Get the output
         psd_values, frequencies = self.get_output_as_nparray()
