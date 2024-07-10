@@ -221,7 +221,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
         return self.get_output_as_nparray()
 
     def get_PSD_dB(self, ref_value: float = 1.0) -> Field:
-        """Get the Power Spectral Density (PSD) as dB/Hz.
+        """Get the Power Spectral Density (PSD) in dB/Hz, as a Field.
 
         Parameters
         ----------
