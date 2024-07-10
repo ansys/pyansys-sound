@@ -201,7 +201,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
         return (np.array(l_psd), np.array(l_frequencies))
 
     def get_PSD_squared_linear(self) -> Field:
-        """Get the Power Spectral Density (PSD) as a squared linear field.
+        """Get the Power Spectral Density (PSD), as squared linear values, in a Field.
 
         Returns
         -------
