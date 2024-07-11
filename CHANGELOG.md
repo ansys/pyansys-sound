@@ -1,3 +1,18 @@
+## [0.1.2](https://github.com/ansys/pyansys-sound/releases/tag/v0.1.2) - 2024-07-11
+
+
+### Changed
+
+- chore: update CHANGELOG for v0.1.1 [#77](https://github.com/ansys/pyansys-sound/pull/77)
+- build: using `flit_core` as build-system [#78](https://github.com/ansys/pyansys-sound/pull/78)
+
+## [0.1.1](https://github.com/ansys/pyansys-sound/releases/tag/v0.1.1) - 2024-07-10
+
+
+### Changed
+
+- chore: update CHANGELOG for v0.1.0 [#75](https://github.com/ansys/pyansys-sound/pull/75)
+
 ## [0.1.0](https://github.com/ansys/pyansys-sound/releases/tag/v0.1.0) - 2024-07-09
 
 
