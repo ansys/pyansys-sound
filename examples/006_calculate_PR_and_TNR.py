@@ -143,16 +143,16 @@ print(
 # %%
 # Calculate PR from a PSD
 # ~~~~~~~~~~~~~~~~~~~~~~~
-# Compute Prominence Ratio (PR) from a Power Spectral Density (psd) calculated
-# from the file flute.wav
-# Load example data from WAV file
+# Use the PowerSpectralDensity class to calculate a PSD, and compute Prominence Ratio (PR).
+
+# Load example data from WAV file.
 path_flute_wav = download_flute_wav()
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
 flute_signal = wav_loader.get_output()[0]
 
 # %%
-# Create a PowerSpectralDensity object, set its input signal and parameters, then compute the PSD.
+# Create a PowerSpectralDensity object, set its input signal and parameters, and compute the PSD.
 psd_object = PowerSpectralDensity(
     flute_signal, fft_size=8192, window_type="HANN", window_length=8192, overlap=0.8
 )
@@ -163,7 +163,7 @@ psd_object.process()
 f_psd = psd_object.get_output()
 
 # %%
-# Create a ProminenceRatio object, set the computed PSD as input, then process.
+# Create a ProminenceRatio object, set the computed PSD as input, and compute the PR.
 prominence_ratio = ProminenceRatio(psd=f_psd)
 prominence_ratio.process()
 
@@ -184,11 +184,11 @@ print(
 )
 
 # %%
-# Plot the PR over frequency.
+# Plot the PR as a function of frequency.
 prominence_ratio.plot()
 
 # %%
-# Recalculate the TNR for specific frequencies.
+# Recalculate the PR for specific frequencies.
 frequencies_i = [261, 525, 786, 1836]
 prominence_ratio = ProminenceRatio(psd=f_psd, frequency_list=frequencies_i)
 prominence_ratio.process()
