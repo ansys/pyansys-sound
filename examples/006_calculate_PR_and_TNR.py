@@ -41,9 +41,11 @@ the desired TNR and PR information.
 from ansys.dpf.core import TimeFreqSupport, fields_factory, locations
 import numpy as np
 
-from ansys.sound.core.examples_helpers import download_flute_psd
+from ansys.sound.core.examples_helpers import download_flute_psd, download_flute_wav
 from ansys.sound.core.psychoacoustics import ProminenceRatio, ToneToNoiseRatio
 from ansys.sound.core.server_helpers import connect_to_or_start_server
+from ansys.sound.core.signal_utilities import LoadWav
+from ansys.sound.core.spectral_processing import PowerSpectralDensity
 
 # Connect to a remote server or start a local server.
 server = connect_to_or_start_server()
@@ -138,11 +140,30 @@ print(
     f"TNR value: {round(TNR, 2)} dB\n\n"
 )
 
-
 # %%
 # Calculate PR from a PSD
 # ~~~~~~~~~~~~~~~~~~~~~~~
-# Create a ``ProminenceRatio`` object, set the same created PSD field as input, and compute the PR.
+# Use the PowerSpectralDensity class to calculate a PSD, and compute Prominence Ratio (PR).
+
+# Load example data from WAV file.
+path_flute_wav = download_flute_wav()
+wav_loader = LoadWav(path_flute_wav)
+wav_loader.process()
+flute_signal = wav_loader.get_output()[0]
+
+# %%
+# Create a PowerSpectralDensity object, set its input signal and parameters, and compute the PSD.
+psd_object = PowerSpectralDensity(
+    flute_signal, fft_size=8192, window_type="HANN", window_length=8192, overlap=0.8
+)
+psd_object.process()
+
+# %%
+# Get the computed PSD as a Field.
+f_psd = psd_object.get_output()
+
+# %%
+# Create a ProminenceRatio object, set the computed PSD as input, and compute the PR.
 prominence_ratio = ProminenceRatio(psd=f_psd)
 prominence_ratio.process()
 
@@ -163,11 +184,11 @@ print(
 )
 
 # %%
-# Plot the PR over frequency.
+# Plot the PR as a function of frequency.
 prominence_ratio.plot()
 
 # %%
-# Recalculate the TNR for specific frequencies.
+# Recalculate the PR for specific frequencies.
 frequencies_i = [261, 525, 786, 1836]
 prominence_ratio = ProminenceRatio(psd=f_psd, frequency_list=frequencies_i)
 prominence_ratio.process()
