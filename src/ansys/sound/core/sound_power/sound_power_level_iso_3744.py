@@ -95,7 +95,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self._output = None
 
         # Define DPF Sound operators.
-        self.__operator_compute = Operator(ID_POWER_SOUND_LEVEL)
+        self.__operator_compute = Operator(ID_COMPUTE_POWER_SOUND_LEVEL)
         self.__operator_load = Operator(ID_LOAD_POWER_SOUND_LEVEL)
 
     def __str__(self):
