@@ -31,7 +31,7 @@ from numpy import typing as npt
 from . import SoundPowerParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
-ID_COMPUTE_POWER_SOUND_LEVEL = "compute_power_sound_level_iso3744"
+ID_COMPUTE_POWER_SOUND_LEVEL = "compute_sound_power_level_iso3744"
 ID_LOAD_POWER_SOUND_LEVEL = "load_project_sound_power_level_iso3744"
 LW = 0
 LWA = 1
