@@ -106,8 +106,8 @@ class SoundPowerLevelISO3744(SoundPowerParent):
             + "  Measurement surface:\n"
             + f"    Shape: {self.surface_shape}\n"
             + f"    Radius: {self.surface_radius}\n"
-            + f"    Area: {self.__get_surface_area()}\n"
-            + f"    Number of microphones: {len(self.__signals)}"
+            + f"    Area: {np.round(self.__get_surface_area(), 1)}\n"
+            + f"    Number of microphones: {len(self.__signals)}\n"
             + "  Correction coefficient:\n"
             + f"    K1 (background noise): {self.K1} dB\n"
             + f"    K2 (measurement environment): {self.K2} dB\n"
@@ -115,7 +115,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
             + f"    C2 (meteorological radiation impedance): {self.C2} dB\n"
             + "  Sound power level (Lw):\n"
             + f"    Unweighted: {self.get_Lw()} dB\n"
-            + f"    A-weighted: {self.get_Lw_A()} dBA"
+            + f"    A-weighted: {self.get_Lw_A()} dBA\n"
         )
         # TODO (maybe): add microphone positions
 
@@ -123,7 +123,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
     @property
     def surface_shape(self):
-        """Signal."""
+        """Surface shape."""
         return self.__surface_shape  # pragma: no cover
 
     @surface_shape.setter
@@ -138,125 +138,116 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
     @property
     def surface_radius(self):
-        """Signal."""
+        """Surface radius."""
         return self.__surface_radius  # pragma: no cover
 
     @surface_radius.setter
     def surface_radius(self, surface_radius: float):
-        """Set the shape of measurement surface."""
+        """Set the radius of measurement surface."""
         if surface_radius <= 0:
             raise PyAnsysSoundException("Input surface radius must be strictly positive.")
         self.__surface_radius = surface_radius
 
     @property
     def K1(self):
-        """Signal."""
+        """K1 correction."""
         return self.__K1  # pragma: no cover
 
     @K1.setter
     def K1(self, K1: str):
-        """Set the shape of measurement surface."""
+        """Set the K1 correction."""
         self.__K1 = K1
 
     @property
     def K2(self):
-        """Signal."""
+        """K2 correction."""
         return self.__K2  # pragma: no cover
 
     @K2.setter
     def K2(self, K2: str):
-        """Set the shape of measurement surface."""
+        """Set the  correction."""
         self.__K2 = K2
 
     @property
     def C1(self):
-        """Signal."""
+        """C1 correction."""
         return self.__C1  # pragma: no cover
 
     @C1.setter
     def C1(self, C1: str):
-        """Set the shape of measurement surface."""
+        """Set the C1 correction."""
         self.__C1 = C1
 
     @property
     def C2(self):
-        """Signal."""
+        """C2 correction."""
         return self.__C2  # pragma: no cover
 
     @C2.setter
     def C2(self, C2: str):
-        """Set the shape of measurement surface."""
+        """Set the C2 correction."""
         self.__C2 = C2
 
-    def add_microphone_signal(self, signal: Field, coordinates: tuple):
+    def add_microphone_signal(self, signal: Field, name: str):
         """Add microphone signal.
 
-        Adds a microphone-recorded signal, along with the microphone coordinates relative to the
-        measured sound source position.
-        Note: the coordinates have no impact whatsoever on the sound power level calculation, they
-        are mostly used here for reference; it is assumed that the microphone positions follow
+        Adds a microphone-recorded signal, along with a signal name.
+        Note: It is assumed that the microphone positions where the signals were recorded follow
         Annex B of ISO 3744 for the specific measurement surface shape used.
 
         Parameters
         ----------
         signal: Field
             Recorded signal in Pa from one specific position.
-        position: tuple
-            Microphone position as a set of 3 coordinates (x,y,z), in m, relative to the sound
-            source position.
+        name: str
+            Signal name. Must be unique.
         """
-        self.__signals[coordinates] = signal
+        self.__signals[name] = signal
 
-    def get_microphone_signal(self, coordinates: tuple) -> Field:
+    def get_microphone_signal(self, name: str) -> Field:
         """Get microphone signal.
 
-        Gets the microphone signal that corresponds to the specified coordinates.
+        Gets the microphone signal that corresponds to the specified name.
 
         Parameters
         ----------
-        position: tuple
-            Microphone position as a set of 3 coordinates (x,y,z), in m, relative to the sound
-            source position.
+        name: str
+            Signal name.
 
         Returns
         -------
         Field
-            Microphone signal in Pa at the specified position.
-
+            Microphone signal in Pa for the specified name.
         """
         try:
-            return self.__signals[coordinates]
+            return self.__signals[name]
         except KeyError:
-            raise PyAnsysSoundException("No microphone signal associated with these coordinates.")
+            raise PyAnsysSoundException("No microphone signal associated with this name.")
 
-    def delete_microphone_signal(self, coordinates: tuple):
+    def delete_microphone_signal(self, name: str):
         """Delete microphone signal.
 
-        Deletes the microphone signal that corresponds to the specified coordinates.
+        Deletes the microphone signal that corresponds to the specified name.
 
         Parameters
         ----------
-        position: tuple
-            Microphone position as a set of 3 coordinates (x,y,z), in m, relative to the sound
-            source position.
+        name: str
+            Signal name.
         """
         try:
-            del self.__signals[coordinates]
+            del self.__signals[name]
         except KeyError:
-            warnings.warn(
-                PyAnsysSoundWarning("No microphone signal associated with these coordinates.")
-            )
+            warnings.warn(PyAnsysSoundWarning("No microphone signal associated with this name."))
 
-    def get_all_microphone_coordinates(self) -> tuple:
-        """Get all microphone coordinates.
+    def get_all_signal_names(self) -> tuple:
+        """Get all signal names.
 
-        Gets the list of the coordinates of all microphones for which a signal was added.
+        Gets the list of the names of all signals that were added.
 
         Returns
         -------
         tuple
-            List of all microphone coordinates in a tuple of N tuples of 3 coordinate values in m
-            (where N is the number of stored microphone signals).
+            List of all signal names.
         """
         return tuple(self.__signals.keys())
 
@@ -292,7 +283,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         return (C1, C2)
 
     def set_K2_from_room_properties(
-        self, length: float, width: float, height: float, alpha_bar: float
+        self, length: float, width: float, height: float, alpha: float
     ) -> float:
         """Set K2 from measurement room properties.
 
@@ -307,12 +298,12 @@ class SoundPowerLevelISO3744(SoundPowerParent):
                 Measurement room width in m.
             height: float
                 Measurement room height in m.
-            alpha_bar: float
-                Averaged sound absorption coefficient between 0 and 1. Typical example values are
+            alpha: float
+                Mean sound absorption coefficient between 0 and 1. Typical example values are
                 given in Table A.1 of ISO 3744.
         """
         # Equation A.7 of ISO 3744.
-        A = alpha_bar * 2 * (length * width + length * height + width * height)
+        A = alpha * 2 * (length * width + length * height + width * height)
 
         S = self.__get_surface_area()
 
@@ -346,11 +337,13 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self.C1 = self.__operator_load.get_output(4, "double")
         self.C2 = self.__operator_load.get_output(5, "double")
         fc_signals = self.__operator_load.get_output(6, "fields_container")
-        fc_coordinates = self.__operator_load.get_output(7, "fields_container")
 
+        # Convert signals stored as a fields container into a dictionary.
+        del self.__signals
         self.__signals = {}
         for i in range(len(fc_signals)):
-            self.__signals[fc_coordinates[i]] = fc_signals[i]
+            name = fc_signals[i].name
+            self.__signals[name] = fc_signals[i]
 
     def process(self):
         """Calculate the sound power level.
@@ -366,8 +359,10 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         # Create a fields container containing all microphone signals.
         fc_signals = FieldsContainer()
-        for coor, signal in self.__signals.items():
-            fc_signals.add_field({"coordinates": coor}, signal)
+        i = 0
+        for signal in self.__signals.values():
+            fc_signals.add_field({"index": i}, signal)
+            i += 1
 
         # Set operator inputs.
         self.__operator_compute.connect(0, self.__get_surface_area())
