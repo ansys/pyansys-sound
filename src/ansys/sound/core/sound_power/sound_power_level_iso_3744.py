@@ -504,7 +504,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         return output[LWA]
 
-    def get_Lw_thirdoctave(self) -> npt.ArrayLike:
+    def get_Lw_octave(self) -> npt.ArrayLike:
         """Get octave-band power sound levels.
 
         Returns
