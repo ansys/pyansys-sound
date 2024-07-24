@@ -31,8 +31,8 @@ from numpy import typing as npt
 from . import SoundPowerParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
-ID_COMPUTE_POWER_SOUND_LEVEL = "compute_sound_power_level_iso3744"
-ID_LOAD_POWER_SOUND_LEVEL = "load_project_sound_power_level_iso3744"
+ID_COMPUTE_SOUND_POWER_LEVEL = "compute_sound_power_level_iso3744"
+ID_LOAD_SOUND_POWER_LEVEL = "load_project_sound_power_level_iso3744"
 LW = 0
 LWA = 1
 LW_OCTAVE = 2
@@ -95,8 +95,8 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self._output = None
 
         # Define DPF Sound operators.
-        self.__operator_compute = Operator(ID_COMPUTE_POWER_SOUND_LEVEL)
-        self.__operator_load = Operator(ID_LOAD_POWER_SOUND_LEVEL)
+        self.__operator_compute = Operator(ID_COMPUTE_SOUND_POWER_LEVEL)
+        self.__operator_load = Operator(ID_LOAD_SOUND_POWER_LEVEL)
 
     def __str__(self):
         """Overloads the __str__ method."""
