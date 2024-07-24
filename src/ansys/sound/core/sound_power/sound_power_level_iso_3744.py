@@ -52,11 +52,11 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     def __init__(
         self,
         surface_shape: str = "Hemisphere",
-        surface_radius: float = 1,
-        K1: float = 0,
-        K2: float = 0,
-        C1: float = 0,
-        C2: float = 0,
+        surface_radius: float = 1.0,
+        K1: float = 0.0,
+        K2: float = 0.0,
+        C1: float = 0.0,
+        C2: float = 0.0,
     ):
         """Create a ``SoundPowerLevelISO3744`` object.
 
@@ -202,6 +202,8 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         name: str
             Signal name. Must be unique.
         """
+        if type(signal) is not Field:
+            raise PyAnsysSoundException("Added signal must be provided as a DPF field.")
         self.__signals[name] = signal
 
     def get_microphone_signal(self, name: str) -> Field:
@@ -277,8 +279,9 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         theta1 = 296.0  # Reference temperature in K (equal to 23 °C).
 
         C1 = -10.0 * np.log10(pressure / ps0) + 5.0 * np.log10((273.15 + temperature) / theta0)
-
         C2 = -10.0 * np.log10(pressure / ps0) + 15.0 * np.log10((273.15 + temperature) / theta1)
+
+        self.C1, self.C2 = C1, C2
 
         return (C1, C2)
 
@@ -309,6 +312,8 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         # Equation A.2 of ISO 3744.
         K2 = 10 * np.log10(1 + 4 * S / A)
+
+        self.K2 = K2
 
         return K2
 
