@@ -253,38 +253,6 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         """
         return tuple(self.__signals.keys())
 
-    def set_C1_C2_from_meteo_parameters(
-        self, pressure: float = 101.325, temperature: float = 23.0
-    ) -> tuple:
-        """Set C1 and C2 from static pressure and temperature.
-
-        Sets C1 and C2 following Annex G of ISO 3744, based on specified static pressure and
-        temperature.
-
-        Parameters
-        ----------
-        pressure: float, default: 101.325
-            Static pressure in kPa.
-        temperature: float, default: 23.0
-            Temperature in °C.
-
-        Returns
-        -------
-        tuple[float]
-            First element is the correction C1 in dB.
-            Second element is the correction C2 in dB.
-        """
-        ps0 = 101.325  # Reference static pressure in kPa.
-        theta0 = 314.0  # Reference temperature in K under an air impedance of 400 N s/m^3.
-        theta1 = 296.0  # Reference temperature in K (equal to 23 °C).
-
-        C1 = -10.0 * np.log10(pressure / ps0) + 5.0 * np.log10((273.15 + temperature) / theta0)
-        C2 = -10.0 * np.log10(pressure / ps0) + 15.0 * np.log10((273.15 + temperature) / theta1)
-
-        self.C1, self.C2 = C1, C2
-
-        return (C1, C2)
-
     def set_K2_from_room_properties(
         self, length: float, width: float, height: float, alpha: float
     ) -> float:
@@ -327,6 +295,38 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self.K2 = K2
 
         return K2
+
+    def set_C1_C2_from_meteo_parameters(
+        self, pressure: float = 101.325, temperature: float = 23.0
+    ) -> tuple:
+        """Set C1 and C2 from static pressure and temperature.
+
+        Sets C1 and C2 following Annex G of ISO 3744, based on specified static pressure and
+        temperature.
+
+        Parameters
+        ----------
+        pressure: float, default: 101.325
+            Static pressure in kPa.
+        temperature: float, default: 23.0
+            Temperature in °C.
+
+        Returns
+        -------
+        tuple[float]
+            First element is the correction C1 in dB.
+            Second element is the correction C2 in dB.
+        """
+        ps0 = 101.325  # Reference static pressure in kPa.
+        theta0 = 314.0  # Reference temperature in K under an air impedance of 400 N s/m^3.
+        theta1 = 296.0  # Reference temperature in K (equal to 23 °C).
+
+        C1 = -10.0 * np.log10(pressure / ps0) + 5.0 * np.log10((273.15 + temperature) / theta0)
+        C2 = -10.0 * np.log10(pressure / ps0) + 15.0 * np.log10((273.15 + temperature) / theta1)
+
+        self.C1, self.C2 = C1, C2
+
+        return (C1, C2)
 
     def load_project(self, filename: str):
         """Set all sound power level parameters according to a project file created in SAS.
@@ -469,7 +469,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         output = self.get_output()
 
         if output == None:
-            return None
+            return (np.nan, np.nan, np.array([]), np.array([]), np.array([]), np.array([]))
 
         return (
             output[LW],
