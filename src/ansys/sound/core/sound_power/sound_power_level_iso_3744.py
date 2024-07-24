@@ -305,6 +305,17 @@ class SoundPowerLevelISO3744(SoundPowerParent):
                 Mean sound absorption coefficient between 0 and 1. Typical example values are
                 given in Table A.1 of ISO 3744.
         """
+        if length <= 0.0 or width <= 0.0 or height <= 0.0:
+            raise PyAnsysSoundException(
+                "Specified room length, width and height must be all strictly greater than 0 m."
+            )
+
+        if alpha <= 0 or alpha > 1.0:
+            raise PyAnsysSoundException(
+                "Specified mean absorption coefficient alpha must be strictly greater than 0, "
+                "and smaller than 1."
+            )
+
         # Equation A.7 of ISO 3744.
         A = alpha * 2 * (length * width + length * height + width * height)
 
