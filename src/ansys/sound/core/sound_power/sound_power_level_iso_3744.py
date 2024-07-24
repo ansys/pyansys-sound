@@ -488,10 +488,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         float
             Unweighted sound power level (Lw) in dB.
         """
-        output = self.get_output()
-
-        if output == None:
-            return None
+        output = self.get_output_as_nparray()
 
         return output[LW]
 
@@ -503,10 +500,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         float
             A-weighted sound power level (Lw(A)) in dBA.
         """
-        output = self.get_output()
-
-        if output == None:
-            return None
+        output = self.get_output_as_nparray()
 
         return output[LWA]
 
@@ -520,9 +514,6 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         """
         output = self.get_output_as_nparray()
 
-        if output == None:
-            return None
-
         return output[LW_OCTAVE_NP]
 
     def get_octave_center_frequencies(self) -> npt.ArrayLike:
@@ -534,9 +525,6 @@ class SoundPowerLevelISO3744(SoundPowerParent):
             Array of octave-band center frequencies in Hz.
         """
         output = self.get_output_as_nparray()
-
-        if output == None:
-            return None
 
         return output[OCTAVE_CENTER_FREQUENCIES]
 
@@ -550,9 +538,6 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         """
         output = self.get_output_as_nparray()
 
-        if output == None:
-            return None
-
         return output[LW_THIRDOCTAVE_NP]
 
     def get_thirdoctave_center_frequencies(self) -> npt.ArrayLike:
@@ -564,9 +549,6 @@ class SoundPowerLevelISO3744(SoundPowerParent):
             Array of one-third-octave-band center frequencies in Hz.
         """
         output = self.get_output_as_nparray()
-
-        if output == None:
-            return None
 
         return output[THIRDOCTAVE_CENTER_FREQUENCIES]
 
