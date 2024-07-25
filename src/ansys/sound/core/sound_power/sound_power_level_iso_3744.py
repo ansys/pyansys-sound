@@ -105,17 +105,17 @@ class SoundPowerLevelISO3744(SoundPowerParent):
             + "Data:\n"
             + "  Measurement surface:\n"
             + f"    Shape: {self.surface_shape}\n"
-            + f"    Radius: {self.surface_radius} m\n"
+            + f"    Radius: {np.round(self.surface_radius, 1)} m\n"
             + f"    Area: {np.round(self.__get_surface_area(), 1)} m^2\n"
             + f"    Number of microphone signals: {len(self.__signals)}\n"
             + "  Correction coefficient:\n"
-            + f"    K1 (background noise): {self.K1} dB\n"
-            + f"    K2 (measurement environment): {self.K2} dB\n"
-            + f"    C1 (meteorological reference quantity): {self.C1} dB\n"
-            + f"    C2 (meteorological radiation impedance): {self.C2} dB\n"
+            + f"    K1 (background noise): {np.round(self.K1, 1)} dB\n"
+            + f"    K2 (measurement environment): {np.round(self.K2, 1)} dB\n"
+            + f"    C1 (meteorological reference quantity): {np.round(self.C1, 1)} dB\n"
+            + f"    C2 (meteorological radiation impedance): {np.round(self.C2, 1)} dB\n"
             + "  Sound power level (Lw):\n"
-            + f"    Unweighted: {self.get_Lw()} dB\n"
-            + f"    A-weighted: {self.get_Lw_A()} dBA\n"
+            + f"    Unweighted: {np.round(self.get_Lw(), 1)} dB\n"
+            + f"    A-weighted: {np.round(self.get_Lw_A(), 1)} dBA\n"
         )
         # TODO (maybe): add microphone positions
 
@@ -357,8 +357,20 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         # Convert signals stored as a fields container into a dictionary.
         del self.__signals
         self.__signals = {}
+        name_list = []
         for i in range(len(fc_signals)):
             name = fc_signals[i].name
+
+            # Check for name duplicates. If there are, a '_<n>' suffix is appended.
+            count = 0
+            while name in name_list:
+                count += 1
+                if count == 1:
+                    name = name + "_1"
+                else:
+                    name = name[:-1] + str(count)
+            name_list.append(name)
+
             self.__signals[name] = fc_signals[i]
 
     def process(self):

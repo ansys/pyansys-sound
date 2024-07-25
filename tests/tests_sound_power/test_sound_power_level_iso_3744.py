@@ -29,17 +29,24 @@ import pytest
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.sound_power import SoundPowerLevelISO3744
 
+REF_PROJECT_FILENAME = "SWLprojecFile.extension"
+EXP_SHAPE = "Hemisphere"
 EXP_K2 = 9.320628889992298
 EXP_C1 = -0.10519597099301761
 EXP_C2 = 0.1266523291988306
-EXP_AREA1 = 6.2832
-EXP_AREA2 = 3.1416
+EXP_AREA_H = 6.2832
+EXP_AREA_HH = 3.1416
 EXP_SHAPE_FROM_PROJECT = "Hemisphere"  # To set when feature is available in SAS
 EXP_RADIUS_FROM_PROJECT = 1.0  # To set when feature is available in SAS
 EXP_K1_FROM_PROJECT = 0.0  # To set when feature is available in SAS
 EXP_K2_FROM_PROJECT = 0.0  # To set when feature is available in SAS
 EXP_C1_FROM_PROJECT = 0.0  # To set when feature is available in SAS
 EXP_C2_FROM_PROJECT = 0.0  # To set when feature is available in SAS
+EXP_SIGNAL_LIST_FROM_PROJECT = (
+    "sig",
+    "sig_1",
+    "sig_2",
+)  # To update (must include same signal name used at least 3 times, here "sig")
 EXP_LW = 80.0  # To set when feature is available in SAS
 EXP_LWA = 80.0  # To set when feature is available in SAS
 EXP_LW_OCT_5 = 60.0  # To set when feature is available in SAS
@@ -51,17 +58,17 @@ EXP_STR = (
     + "Data:\n"
     + "  Measurement surface:\n"
     + f"    Shape: Hemisphere\n"
-    + f"    Radius: 2 m\n"
+    + f"    Radius: 2.0 m\n"
     + f"    Area: 25.13 m^2\n"
     + f"    Number of microphone signals: 10\n"
     + "  Correction coefficient:\n"
-    + f"    K1 (background noise): 20 dB\n"
-    + f"    K2 (measurement environment): 30 dB\n"
+    + f"    K1 (background noise): 20.0 dB\n"
+    + f"    K2 (measurement environment): 30.0 dB\n"
     + f"    C1 (meteorological reference quantity): 0.1 dB\n"
     + f"    C2 (meteorological radiation impedance): 0.2 dB\n"
     + "  Sound power level (Lw):\n"
-    + f"    Unweighted: 80 dB\n"
-    + f"    A-weighted: 90 dBA\n"
+    + f"    Unweighted: 80.0 dB\n"
+    + f"    A-weighted: 90.0 dBA\n"
 )  # To set when feature is available in SAS
 
 
@@ -69,7 +76,7 @@ def test_sound_power_level_iso_3744_instantiation(dpf_sound_test_server):
     """Test SoundPowerLevelISO3744 instantiation."""
     # Test instantiation.
     swl = SoundPowerLevelISO3744()
-    assert swl.surface_shape == "Hemisphere"
+    assert swl.surface_shape == EXP_SHAPE
     assert swl.surface_radius == 1.0
     assert swl.K1 == 0.0
     assert swl.K2 == 0.0
@@ -244,9 +251,7 @@ def test_sound_power_level_iso_3744_set_K2_from_room_properties_exception2(dpf_s
 def test_sound_power_level_iso_3744_load_project(dpf_sound_test_server):
     """Test load_project method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(
-        "SWLprojecFile.extension"
-    )  # File name (and file location) to adjust when feature is implemented in SAS
+    swl.load_project(REF_PROJECT_FILENAME)
 
     assert swl.surface_shape == EXP_SHAPE_FROM_PROJECT
     assert swl.surface_radius == pytest.approx(EXP_RADIUS_FROM_PROJECT)
@@ -254,22 +259,16 @@ def test_sound_power_level_iso_3744_load_project(dpf_sound_test_server):
     assert swl.K2 == pytest.approx(EXP_K2_FROM_PROJECT)
     assert swl.C1 == pytest.approx(EXP_C1_FROM_PROJECT)
     assert swl.C2 == pytest.approx(EXP_C2_FROM_PROJECT)
-    assert swl.get_all_signal_names() == (
-        "sig1",
-        "sig2",
-        "sig3",
-    )  # To adjust when when feature is implemented in SAS
-    assert (
-        type(swl.get_microphone_signal("sig1")) == Field
-    )  # To adjust (name) when when feature is implemented in SAS
+
+    signal_list = swl.get_all_signal_names()
+    assert signal_list == EXP_SIGNAL_LIST_FROM_PROJECT
+    assert type(swl.get_microphone_signal(signal_list[0])) == Field
 
 
 def test_process(dpf_sound_test_server):
     """Test process method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(
-        "SWLprojecFile.extension"
-    )  # File name (and file location) to adjust when feature is implemented in SAS
+    swl.load_project(REF_PROJECT_FILENAME)
     swl.process()
 
 
@@ -288,9 +287,7 @@ def test_process_exception(dpf_sound_test_server):
 def test_sound_power_level_iso_3744_get_output(dpf_sound_test_server):
     """Test get_output method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(
-        "SWLprojecFile.extension"
-    )  # File name (and file location) to adjust when feature is implemented in SAS
+    swl.load_project(REF_PROJECT_FILENAME)
     swl.process()
 
     output = swl.get_output()
@@ -311,9 +308,7 @@ def test_sound_power_level_iso_3744_get_output_warning(dpf_sound_test_server):
 def test_sound_power_level_iso_3744_get_output_as_nparray(dpf_sound_test_server):
     """Test get_output_as_nparray method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(
-        "SWLprojecFile.extension"
-    )  # File name (and file location) to adjust when feature is implemented in SAS
+    swl.load_project(REF_PROJECT_FILENAME)
     swl.process()
 
     Lw, LwA, Lw_oct, fc_oct, Lw_3, fc_3 = swl.get_output_as_nparray()
@@ -345,9 +340,7 @@ def test_sound_power_level_iso_3744_get_output_as_nparray_warning(dpf_sound_test
 def test_sound_power_level_iso_3744_get_Lw(dpf_sound_test_server):
     """Test get_Lw method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(
-        "SWLprojecFile.extension"
-    )  # File name (and file location) to adjust when feature is implemented in SAS
+    swl.load_project(REF_PROJECT_FILENAME)
     swl.process()
 
     Lw = swl.get_Lw()
@@ -357,9 +350,7 @@ def test_sound_power_level_iso_3744_get_Lw(dpf_sound_test_server):
 def test_sound_power_level_iso_3744_get_LwA(dpf_sound_test_server):
     """Test get_LwA method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(
-        "SWLprojecFile.extension"
-    )  # File name (and file location) to adjust when feature is implemented in SAS
+    swl.load_project(REF_PROJECT_FILENAME)
     swl.process()
 
     LwA = swl.get_LwA()
@@ -369,9 +360,7 @@ def test_sound_power_level_iso_3744_get_LwA(dpf_sound_test_server):
 def test_sound_power_level_iso_3744_get_Lw_octave(dpf_sound_test_server):
     """Test get_Lw_octave method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(
-        "SWLprojecFile.extension"
-    )  # File name (and file location) to adjust when feature is implemented in SAS
+    swl.load_project(REF_PROJECT_FILENAME)
     swl.process()
 
     Lw_oct = swl.get_Lw_octave()
@@ -381,9 +370,7 @@ def test_sound_power_level_iso_3744_get_Lw_octave(dpf_sound_test_server):
 def test_sound_power_level_iso_3744_get_octave_center_frequencies(dpf_sound_test_server):
     """Test get_octave_center_frequencies method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(
-        "SWLprojecFile.extension"
-    )  # File name (and file location) to adjust when feature is implemented in SAS
+    swl.load_project(REF_PROJECT_FILENAME)
     swl.process()
 
     fc_oct = swl.get_octave_center_frequencies()
@@ -393,9 +380,7 @@ def test_sound_power_level_iso_3744_get_octave_center_frequencies(dpf_sound_test
 def test_sound_power_level_iso_3744_get_Lw_thirdoctave(dpf_sound_test_server):
     """Test get_Lw_thirdoctave method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(
-        "SWLprojecFile.extension"
-    )  # File name (and file location) to adjust when feature is implemented in SAS
+    swl.load_project(REF_PROJECT_FILENAME)
     swl.process()
 
     Lw_3 = swl.get_Lw_thirdoctave()
@@ -405,9 +390,7 @@ def test_sound_power_level_iso_3744_get_Lw_thirdoctave(dpf_sound_test_server):
 def test_sound_power_level_iso_3744_get_thirdoctave_center_frequencies(dpf_sound_test_server):
     """Test get_thirdoctave_center_frequencies method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(
-        "SWLprojecFile.extension"
-    )  # File name (and file location) to adjust when feature is implemented in SAS
+    swl.load_project(REF_PROJECT_FILENAME)
     swl.process()
 
     fc_3 = swl.get_thirdoctave_center_frequencies()
@@ -418,9 +401,7 @@ def test_sound_power_level_iso_3744_get_thirdoctave_center_frequencies(dpf_sound
 def test_sound_power_level_iso_3744_plot(mock_show, dpf_sound_test_server):
     """Test plot method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(
-        "SWLprojecFile.extension"
-    )  # File name (and file location) to adjust when feature is implemented in SAS
+    swl.load_project(REF_PROJECT_FILENAME)
     swl.process()
 
     swl.plot()  # Plot over a linear frequency scale.
@@ -432,18 +413,16 @@ def test_sound_power_level_iso_3744___get_surface_area(dpf_sound_test_server):
     swl = SoundPowerLevelISO3744()
 
     area = swl.__get_surface_area()
-    assert area == pytest.approx(EXP_AREA1)
+    assert area == pytest.approx(EXP_AREA_H)
 
     swl.surface_shape = "Half-hemisphere"
     area = swl.__get_surface_area()
-    assert area == pytest.approx(EXP_AREA2)
+    assert area == pytest.approx(EXP_AREA_HH)
 
 
 def test_sound_power_level_iso_3744___str__(dpf_sound_test_server):
     """Test __str__ method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(
-        "SWLprojecFile.extension"
-    )  # File name (and file location) to adjust when feature is implemented in SAS
+    swl.load_project(REF_PROJECT_FILENAME)
 
     assert swl.__str__() == EXP_STR
