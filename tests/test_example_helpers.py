@@ -51,6 +51,7 @@ def test_data_path_xtract_demo_signal_1_wav():
     p = get_absolute_path_for_xtract_demo_signal_1_wav()
     assert p == "C:\\data\\xtract_demo_signal_1.wav"
 
+
 def test_data_path_xtract_demo_signal_2_wav():
     p = get_absolute_path_for_xtract_demo_signal_2_wav()
     assert p == "C:\\data\\xtract_demo_signal_2.wav"
