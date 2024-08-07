@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 import pathlib
-import simpleaudio
+import os
 
 from ansys.sound.core.examples_helpers import (
     download_accel_with_rpm_2_wav,
@@ -106,49 +106,41 @@ def test_download_flute_psd():
     p = str(EXAMPLES_PATH) + "/flute_psd.txt"
     assert pathlib.Path(p).exists() == True
 
-    f = open(p,"r")
-    assert len(f.readlines()) == 8194
+    assert os.path.getsize(p) ==  118119
 
 
 def test_download_flute_wav():
     download_flute_wav()[0]
     p = str(EXAMPLES_PATH) + "/flute.wav"
     assert pathlib.Path(p).exists() == True
-    f = simpleaudio.wave.Wave_read(p)
-    assert f.getnframes() ==  156048
+    assert os.path.getsize(p) ==  312297
     p = str(EXAMPLES_PATH) + "/flute2.wav"
     download_flute_2_wav()[0]
     assert pathlib.Path(p).exists() == True
-    f = simpleaudio.wave.Wave_read(p)
-    assert f.getnframes() ==  156048
+    assert os.path.getsize(p) ==  312281
 
 
 def test_download_accel_with_rpm_wav():
     download_accel_with_rpm_wav()[0]
     p = str(EXAMPLES_PATH) + "/accel_with_rpm.wav"
     assert pathlib.Path(p).exists() == True
-    f = simpleaudio.wave.Wave_read(p)
-    assert f.getnframes() ==  909956
+    assert os.path.getsize(p) ==  3639982
     p = str(EXAMPLES_PATH) + "/accel_with_rpm_2.wav"
     download_accel_with_rpm_2_wav()[0]
     assert pathlib.Path(p).exists() == True
-    f = simpleaudio.wave.Wave_read(p)
-    assert f.getnframes() ==  909956
+    assert os.path.getsize(p) ==  3639982
     p = str(EXAMPLES_PATH) + "/accel_with_rpm_3.wav"
     download_accel_with_rpm_3_wav()[0]
     assert pathlib.Path(p).exists() == True
-    f = simpleaudio.wave.Wave_read(p)
-    assert f.getnframes() ==  909956
+    assert os.path.getsize(p) ==  3639982
 
 
 def test_download_xtract_demo_signal_wav():
     download_xtract_demo_signal_1_wav()[0]
     p = str(EXAMPLES_PATH) + "/xtract_demo_signal_1.wav"
     assert pathlib.Path(p).exists() == True
-    f = simpleaudio.wave.Wave_read(p)
-    assert f.getnframes() ==  220500
+    assert os.path.getsize(p) ==  882363
     p = str(EXAMPLES_PATH) + "/xtract_demo_signal_2.wav"
     download_xtract_demo_signal_2_wav()[0]
     assert pathlib.Path(p).exists() == True
-    f = simpleaudio.wave.Wave_read(p)
-    assert f.getnframes() ==  220500
+    assert os.path.getsize(p) ==  882363
