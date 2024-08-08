@@ -1,3 +1,25 @@
+## [0.1.3](https://github.com/ansys/pyansys-sound/releases/tag/v0.1.3) - 2024-08-08
+
+
+### Added
+
+- feat: Add a new helper for the power spectral density operator (psd) in PyAnsys Sound [#67](https://github.com/ansys/pyansys-sound/pull/67)
+
+
+### Changed
+
+- chore: update CHANGELOG for v0.1.2 [#79](https://github.com/ansys/pyansys-sound/pull/79)
+
+
+### Fixed
+
+- fix: fixed a malfunction of the functions to download sample files used in examples [#93](https://github.com/ansys/pyansys-sound/pull/93)
+
+
+### Dependencies
+
+- build: bump sphinx from 7.3.7 to 7.4.0 [#80](https://github.com/ansys/pyansys-sound/pull/80)
+
 ## [0.1.2](https://github.com/ansys/pyansys-sound/releases/tag/v0.1.2) - 2024-07-11
 
 
