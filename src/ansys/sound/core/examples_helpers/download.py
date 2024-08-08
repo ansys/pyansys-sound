@@ -84,11 +84,11 @@ def _retrieve_file(url, filename, _test=False):  # pragma no cover
 
     # Perform download
     try:
-        file_content = requests.get(url, timeout=10).text  # 10 seconds
+        file_content = requests.get(url, timeout=10).content  # 10 seconds
     except requests.exceptions.Timeout:
         print("Timed out")
 
-    with open(local_path, "w") as f:
+    with open(local_path, "wb") as f:
         f.write(file_content)
     return local_path
 
