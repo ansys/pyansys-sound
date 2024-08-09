@@ -23,8 +23,8 @@
 """
 .. _compute_stft_example:
 
-Compute the STFT and ISTFT
---------------------------
+Spectrogram: compute the STFT and ISTFT
+---------------------------------------
 
 This example shows how to compute the short-time Fourier transform (STFT) of a signal.
 It also shows how to compute the inverse short-time Fourier transform (ISTFT) from a
@@ -42,6 +42,10 @@ from ansys.sound.core.examples_helpers import download_flute_wav
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectrogram_processing import Istft, Stft
+
+# sphinx_gallery_start_ignore
+# sphinx_gallery_thumbnail_path = '_static/_image/example003_thumbnail.png'
+# sphinx_gallery_end_ignore
 
 # Connect to a remote server or start a local server
 my_server = connect_to_or_start_server(use_license_context=True)
@@ -96,7 +100,7 @@ stft.plot()
 
 # %%
 # Compute and plot ISTFT
-# ~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~
 
 # Obtain a time-domain signal using the ``Istft`` class.
 # The input of the ``Istft`` class is the output STFT object previously computed.
