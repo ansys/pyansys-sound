@@ -161,7 +161,7 @@ def test_stft_set_get_window_type(dpf_sound_test_server):
     assert (
         str(excinfo.value)
         == "Window type is invalid. Options are 'BARTLETT', 'BLACKMAN', 'BLACKMANHARRIS', "
-        "'HAMMING', 'HANN', 'HANNING', 'KAISER', and 'RECTANGULAR'."
+        "'HAMMING', 'HANN', 'KAISER', and 'RECTANGULAR'."
     )
 
     stft.window_type = "KAISER"
