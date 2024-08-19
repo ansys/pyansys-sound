@@ -1,5 +1,5 @@
-Spectrogram processing
-----------------------
+Sound power
+-----------
 
 .. module:: ansys.sound.core.sound_power
 
