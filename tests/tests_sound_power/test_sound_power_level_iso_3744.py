@@ -422,6 +422,18 @@ def test_sound_power_level_iso_3744_plot(mock_show, dpf_sound_test_server):
     swl.plot(logfreq=True)  # Plot over a logarithmic frequency scale.
 
 
+def test_sound_power_level_iso_3744_plot_exception(dpf_sound_test_server):
+    """Test plot method's exception."""
+    swl = SoundPowerLevelISO3744()
+    swl.load_project(pytest.data_path_swl_project_file_in_container)
+
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Output is not processed yet. Use the 'SoundPowerLevelISO3744.process\\(\\)' method.",
+    ):
+        swl.plot()
+
+
 def test_sound_power_level_iso_3744___get_surface_area(dpf_sound_test_server):
     """Test __get_surface_area method."""
     swl = SoundPowerLevelISO3744()
