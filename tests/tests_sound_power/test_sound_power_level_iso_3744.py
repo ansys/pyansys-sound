@@ -29,47 +29,42 @@ import pytest
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.sound_power import SoundPowerLevelISO3744
 
-REF_PROJECT_FILENAME = "SWLprojecFile.extension"
 EXP_SHAPE = "Hemisphere"
-EXP_K2 = 9.320628889992298
+EXP_K2 = 1.1463640629030585
 EXP_C1 = -0.10519597099301761
 EXP_C2 = 0.1266523291988306
-EXP_AREA_H = 6.2832
-EXP_AREA_HH = 3.1416
-EXP_SHAPE_FROM_PROJECT = "Hemisphere"  # To set when feature is available in SAS
-EXP_RADIUS_FROM_PROJECT = 1.0  # To set when feature is available in SAS
-EXP_K1_FROM_PROJECT = 0.0  # To set when feature is available in SAS
-EXP_K2_FROM_PROJECT = 0.0  # To set when feature is available in SAS
-EXP_C1_FROM_PROJECT = 0.0  # To set when feature is available in SAS
-EXP_C2_FROM_PROJECT = 0.0  # To set when feature is available in SAS
-EXP_SIGNAL_LIST_FROM_PROJECT = (
-    "sig",
-    "sig_1",
-    "sig_2",
-)  # To update (must include same signal name used at least 3 times, here "sig")
-EXP_LW = 80.0  # To set when feature is available in SAS
-EXP_LWA = 80.0  # To set when feature is available in SAS
-EXP_LW_OCT_5 = 60.0  # To set when feature is available in SAS
-EXP_FC_OCT_6 = 1000.0  # To set when feature is available in SAS
-EXP_LW_3_10 = 60.0  # To set when feature is available in SAS
-EXP_FC_3_12 = 500.0  # To set when feature is available in SAS
+EXP_AREA_H = 6.283185
+EXP_AREA_HH = 3.141593
+EXP_SHAPE_FROM_PROJECT = "Hemisphere"
+EXP_RADIUS_FROM_PROJECT = 3.0
+EXP_K1_FROM_PROJECT = 1.0
+EXP_K2_FROM_PROJECT = 2.0
+EXP_C1_FROM_PROJECT = 3.0
+EXP_C2_FROM_PROJECT = 4.0
+EXP_SIGNAL_LIST_FROM_PROJECT = ("AI_Aircraft", "AI_Aircraft_1")
+EXP_LW = 77.95555114746094
+EXP_LWA = 72.23556518554688
+EXP_LW_OCT_5 = 66.78573608398438
+EXP_FC_OCT_6 = 1000.0
+EXP_LW_3_10 = 68.98728942871094
+EXP_FC_3_12 = 500.0
 EXP_STR = (
     "SoundPowerLevelISO3744 object\n"
     + "Data:\n"
     + "  Measurement surface:\n"
     + f"    Shape: Hemisphere\n"
-    + f"    Radius: 2.0 m\n"
-    + f"    Area: 25.13 m^2\n"
-    + f"    Number of microphone signals: 10\n"
+    + f"    Radius: 3.0 m\n"
+    + f"    Area: 56.5 m^2\n"
+    + f"    Number of microphone signals: 2\n"
     + "  Correction coefficient:\n"
-    + f"    K1 (background noise): 20.0 dB\n"
-    + f"    K2 (measurement environment): 30.0 dB\n"
-    + f"    C1 (meteorological reference quantity): 0.1 dB\n"
-    + f"    C2 (meteorological radiation impedance): 0.2 dB\n"
+    + f"    K1 (background noise): 1.0 dB\n"
+    + f"    K2 (measurement environment): 2.0 dB\n"
+    + f"    C1 (meteorological reference quantity): 3.0 dB\n"
+    + f"    C2 (meteorological radiation impedance): 4.0 dB\n"
     + "  Sound power level (Lw):\n"
-    + f"    Unweighted: 80.0 dB\n"
-    + f"    A-weighted: 90.0 dBA\n"
-)  # To set when feature is available in SAS
+    + f"    Unweighted: 78.0 dB\n"
+    + f"    A-weighted: 72.2 dBA\n"
+)
 
 
 def test_sound_power_level_iso_3744_instantiation(dpf_sound_test_server):
@@ -268,7 +263,7 @@ def test_sound_power_level_iso_3744_set_K2_from_room_properties_exception2(dpf_s
 def test_sound_power_level_iso_3744_load_project(dpf_sound_test_server):
     """Test load_project method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(REF_PROJECT_FILENAME)
+    swl.load_project(pytest.data_path_swl_project_file_in_container)
 
     assert swl.surface_shape == EXP_SHAPE_FROM_PROJECT
     assert swl.surface_radius == pytest.approx(EXP_RADIUS_FROM_PROJECT)
@@ -282,14 +277,14 @@ def test_sound_power_level_iso_3744_load_project(dpf_sound_test_server):
     assert type(swl.get_microphone_signal(signal_list[0])) == Field
 
 
-def test_process(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_process(dpf_sound_test_server):
     """Test process method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(REF_PROJECT_FILENAME)
+    swl.load_project(pytest.data_path_swl_project_file_in_container)
     swl.process()
 
 
-def test_process_exception(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_process_exception(dpf_sound_test_server):
     """Test process method's exception."""
     swl = SoundPowerLevelISO3744()
 
@@ -304,7 +299,7 @@ def test_process_exception(dpf_sound_test_server):
 def test_sound_power_level_iso_3744_get_output(dpf_sound_test_server):
     """Test get_output method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(REF_PROJECT_FILENAME)
+    swl.load_project(pytest.data_path_swl_project_file_in_container)
     swl.process()
 
     output = swl.get_output()
@@ -317,7 +312,8 @@ def test_sound_power_level_iso_3744_get_output_warning(dpf_sound_test_server):
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the 'SoundPowerLevelISO3744.process()' method.",
+        match="Output is not processed yet. "
+        "Use the 'SoundPowerLevelISO3744.process\\(\\)' method.",
     ):
         swl.get_output()
 
@@ -325,7 +321,7 @@ def test_sound_power_level_iso_3744_get_output_warning(dpf_sound_test_server):
 def test_sound_power_level_iso_3744_get_output_as_nparray(dpf_sound_test_server):
     """Test get_output_as_nparray method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(REF_PROJECT_FILENAME)
+    swl.load_project(pytest.data_path_swl_project_file_in_container)
     swl.process()
 
     Lw, LwA, Lw_oct, fc_oct, Lw_3, fc_3 = swl.get_output_as_nparray()
@@ -343,7 +339,8 @@ def test_sound_power_level_iso_3744_get_output_as_nparray_warning(dpf_sound_test
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the 'SoundPowerLevelISO3744.process()' method.",
+        match="Output is not processed yet. "
+        "Use the 'SoundPowerLevelISO3744.process\\(\\)' method.",
     ):
         Lw, LwA, Lw_oct, fc_oct, Lw_3, fc_3 = swl.get_output_as_nparray()
     assert np.isnan(Lw) == True
@@ -357,27 +354,27 @@ def test_sound_power_level_iso_3744_get_output_as_nparray_warning(dpf_sound_test
 def test_sound_power_level_iso_3744_get_Lw(dpf_sound_test_server):
     """Test get_Lw method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(REF_PROJECT_FILENAME)
+    swl.load_project(pytest.data_path_swl_project_file_in_container)
     swl.process()
 
     Lw = swl.get_Lw()
     assert Lw == pytest.approx(EXP_LW)
 
 
-def test_sound_power_level_iso_3744_get_LwA(dpf_sound_test_server):
-    """Test get_LwA method."""
+def test_sound_power_level_iso_3744_get_Lw_A(dpf_sound_test_server):
+    """Test get_Lw_A method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(REF_PROJECT_FILENAME)
+    swl.load_project(pytest.data_path_swl_project_file_in_container)
     swl.process()
 
-    LwA = swl.get_LwA()
+    LwA = swl.get_Lw_A()
     assert LwA == pytest.approx(EXP_LWA)
 
 
 def test_sound_power_level_iso_3744_get_Lw_octave(dpf_sound_test_server):
     """Test get_Lw_octave method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(REF_PROJECT_FILENAME)
+    swl.load_project(pytest.data_path_swl_project_file_in_container)
     swl.process()
 
     Lw_oct = swl.get_Lw_octave()
@@ -387,7 +384,7 @@ def test_sound_power_level_iso_3744_get_Lw_octave(dpf_sound_test_server):
 def test_sound_power_level_iso_3744_get_octave_center_frequencies(dpf_sound_test_server):
     """Test get_octave_center_frequencies method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(REF_PROJECT_FILENAME)
+    swl.load_project(pytest.data_path_swl_project_file_in_container)
     swl.process()
 
     fc_oct = swl.get_octave_center_frequencies()
@@ -397,7 +394,7 @@ def test_sound_power_level_iso_3744_get_octave_center_frequencies(dpf_sound_test
 def test_sound_power_level_iso_3744_get_Lw_thirdoctave(dpf_sound_test_server):
     """Test get_Lw_thirdoctave method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(REF_PROJECT_FILENAME)
+    swl.load_project(pytest.data_path_swl_project_file_in_container)
     swl.process()
 
     Lw_3 = swl.get_Lw_thirdoctave()
@@ -407,7 +404,7 @@ def test_sound_power_level_iso_3744_get_Lw_thirdoctave(dpf_sound_test_server):
 def test_sound_power_level_iso_3744_get_thirdoctave_center_frequencies(dpf_sound_test_server):
     """Test get_thirdoctave_center_frequencies method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(REF_PROJECT_FILENAME)
+    swl.load_project(pytest.data_path_swl_project_file_in_container)
     swl.process()
 
     fc_3 = swl.get_thirdoctave_center_frequencies()
@@ -418,7 +415,7 @@ def test_sound_power_level_iso_3744_get_thirdoctave_center_frequencies(dpf_sound
 def test_sound_power_level_iso_3744_plot(mock_show, dpf_sound_test_server):
     """Test plot method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(REF_PROJECT_FILENAME)
+    swl.load_project(pytest.data_path_swl_project_file_in_container)
     swl.process()
 
     swl.plot()  # Plot over a linear frequency scale.
@@ -429,17 +426,18 @@ def test_sound_power_level_iso_3744___get_surface_area(dpf_sound_test_server):
     """Test __get_surface_area method."""
     swl = SoundPowerLevelISO3744()
 
-    area = swl.__get_surface_area()
+    area = swl._SoundPowerLevelISO3744__get_surface_area()
     assert area == pytest.approx(EXP_AREA_H)
 
     swl.surface_shape = "Half-hemisphere"
-    area = swl.__get_surface_area()
+    area = swl._SoundPowerLevelISO3744__get_surface_area()
     assert area == pytest.approx(EXP_AREA_HH)
 
 
 def test_sound_power_level_iso_3744___str__(dpf_sound_test_server):
     """Test __str__ method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(REF_PROJECT_FILENAME)
+    swl.load_project(pytest.data_path_swl_project_file_in_container)
+    swl.process()
 
     assert swl.__str__() == EXP_STR

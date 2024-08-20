@@ -47,6 +47,9 @@ def pytest_configure():
     pytest.data_path_white_noise_in_container = "C:\\data\\white_noise.wav"
     pytest.data_path_accel_with_rpm_in_container = "C:\\data\\accel_with_rpm.wav"
     pytest.data_path_flute_psd_in_container = "C:\\data\\flute_psd.txt"
+    pytest.data_path_swl_project_file_in_container = (
+        "C:\\data\\archive_geneSoundPowerLevelProject_hemisphere.spw"
+    )
 
 
 @pytest.fixture(scope="session")

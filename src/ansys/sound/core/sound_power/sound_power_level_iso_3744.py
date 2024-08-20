@@ -336,7 +336,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     def load_project(self, filename: str):
         """Set all sound power level parameters according to a project file created in SAS.
 
-        Sets measurement surface shape and area, K1, K2, C1, C2, and list of signals as specified
+        Sets measurement surface shape and radius, K1, K2, C1, C2, and list of signals as specified
         in a sound power level project created in Ansys Sound Analysis & Specification.
 
         Parameters
@@ -392,6 +392,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         # Create a fields container containing all microphone signals.
         fc_signals = FieldsContainer()
+        fc_signals.labels = ["index"]
         i = 0
         for signal in self.__signals.values():
             fc_signals.add_field({"index": i}, signal)
@@ -415,29 +416,6 @@ class SoundPowerLevelISO3744(SoundPowerParent):
             self.__operator_compute.get_output(2, "field"),
             self.__operator_compute.get_output(3, "field"),
         )
-
-        # # (DEBUG) For testing purpose while DPF sound operators are being developed
-        # out1 = fields_factory.create_scalar_field(num_entities=1,location=locations.time_freq)
-        # out1.append([1,2,3],1)
-        # sup = TimeFreqSupport()
-        # tmp = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
-        # tmp.append([25,50,100], 1)
-        # sup.time_frequencies = tmp
-        # out1.time_freq_support = sup
-        # out2 = fields_factory.create_scalar_field(num_entities=1,location=locations.time_freq)
-        # out2.append([5,9,2,3,8,9,7,6,3],1)
-        # sup = TimeFreqSupport()
-        # tmp = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
-        # tmp.append([20,25,31.5,40,50,63,80,100,125], 1)
-        # sup.time_frequencies = tmp
-        # out2.time_freq_support = sup
-
-        # self._output = (
-        #     6,
-        #     61.8,
-        #     out1,
-        #     out2,
-        # )
 
     def get_output(self) -> tuple:
         """Get the sound power level data as floats and DPF fields.
