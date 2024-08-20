@@ -204,6 +204,11 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         """
         if type(signal) is not Field:
             raise PyAnsysSoundException("Added signal must be provided as a DPF field.")
+        if name in self.get_all_signal_names():
+            raise PyAnsysSoundException(
+                f"A signal with the same name ('{name}') already exists. "
+                "Please provide a unique signal name."
+            )
         self.__signals[name] = signal
 
     def get_microphone_signal(self, name: str) -> Field:

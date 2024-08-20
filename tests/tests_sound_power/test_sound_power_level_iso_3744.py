@@ -130,14 +130,31 @@ def test_sound_power_level_iso_3744_add_microphone_signal(dpf_sound_test_server)
     swl.add_microphone_signal(Field(), name="MySignal1")
 
 
-def test_sound_power_level_iso_3744_add_microphone_signal_exception(dpf_sound_test_server):
-    """Test add_microphone_signal method's exception."""
+def test_sound_power_level_iso_3744_add_microphone_signal_exception_signal_type(
+    dpf_sound_test_server,
+):
+    """Test add_microphone_signal method's exception for invalid signal type."""
     swl = SoundPowerLevelISO3744()
 
     with pytest.raises(
         PyAnsysSoundException, match="Added signal must be provided as a DPF field."
     ):
         swl.add_microphone_signal([1, 2, 3], name="MySignal1")
+
+
+def test_sound_power_level_iso_3744_add_microphone_signal_exception_name_duplicate(
+    dpf_sound_test_server,
+):
+    """Test add_microphone_signal method's exception for already used signal name."""
+    swl = SoundPowerLevelISO3744()
+
+    swl.add_microphone_signal(Field(), name="MySignal1")
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="A signal with the same name \\('MySignal1'\\) already exists. "
+        "Please provide a unique signal name.",
+    ):
+        swl.add_microphone_signal(Field(), name="MySignal1")
 
 
 def test_sound_power_level_iso_3744_get_all_signal_names(dpf_sound_test_server):
