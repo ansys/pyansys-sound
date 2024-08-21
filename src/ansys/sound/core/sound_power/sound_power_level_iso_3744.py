@@ -252,7 +252,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         """
         all_signals = []
         for isig in range(len(self.__signals)):
-            all_signals.append([isig, self.__signals[isig]])
+            all_signals.append([isig, self.__signals[isig].name])
 
         return all_signals
 

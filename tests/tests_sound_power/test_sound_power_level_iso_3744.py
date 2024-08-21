@@ -41,7 +41,7 @@ EXP_K1_FROM_PROJECT = 1.0
 EXP_K2_FROM_PROJECT = 2.0
 EXP_C1_FROM_PROJECT = 3.0
 EXP_C2_FROM_PROJECT = 4.0
-EXP_SIGNAL_LIST_FROM_PROJECT = ("AI_Aircraft", "AI_Aircraft_1")
+EXP_SIGNAL_LIST_FROM_PROJECT = [[0, "AI_Aircraft"], [1, "AI_Aircraft"]]
 EXP_LW = 77.95555114746094
 EXP_LWA = 72.23556518554688
 EXP_LW_OCT_5 = 66.78573608398438
@@ -122,7 +122,7 @@ def test_sound_power_level_iso_3744_add_microphone_signal(dpf_sound_test_server)
     """Test add_microphone_signal method."""
     swl = SoundPowerLevelISO3744()
 
-    swl.add_microphone_signal(Field(), name="MySignal1")
+    swl.add_microphone_signal(Field())
 
 
 def test_sound_power_level_iso_3744_add_microphone_signal_exception_signal_type(
@@ -134,71 +134,58 @@ def test_sound_power_level_iso_3744_add_microphone_signal_exception_signal_type(
     with pytest.raises(
         PyAnsysSoundException, match="Added signal must be provided as a DPF field."
     ):
-        swl.add_microphone_signal([1, 2, 3], name="MySignal1")
-
-
-def test_sound_power_level_iso_3744_add_microphone_signal_exception_name_duplicate(
-    dpf_sound_test_server,
-):
-    """Test add_microphone_signal method's exception for already used signal name."""
-    swl = SoundPowerLevelISO3744()
-
-    swl.add_microphone_signal(Field(), name="MySignal1")
-    with pytest.raises(
-        PyAnsysSoundException,
-        match="A signal with the same name \\('MySignal1'\\) already exists. "
-        "Please provide a unique signal name.",
-    ):
-        swl.add_microphone_signal(Field(), name="MySignal1")
+        swl.add_microphone_signal([1, 2, 3])
 
 
 def test_sound_power_level_iso_3744_get_all_signal_names(dpf_sound_test_server):
     """Test get_all_signal_names method."""
     swl = SoundPowerLevelISO3744()
-    swl.add_microphone_signal(Field(), name="MySignal1")
-    swl.add_microphone_signal(Field(), name="MySignal2")
+    swl.add_microphone_signal(Field())
+    swl.add_microphone_signal(Field())
 
     names = swl.get_all_signal_names()
-    assert names == ("MySignal1", "MySignal2")
+    assert names == [[0, ""], [1, ""]]
 
 
 def test_sound_power_level_iso_3744_get_microphone_signal(dpf_sound_test_server):
     """Test get_microphone_signal method."""
     swl = SoundPowerLevelISO3744()
-    swl.add_microphone_signal(Field(), name="MySignal1")
+    swl.add_microphone_signal(Field())
 
-    signal = swl.get_microphone_signal("MySignal1")
+    signal = swl.get_microphone_signal(0)
     assert type(signal) is Field
 
 
 def test_sound_power_level_iso_3744_get_microphone_signal_exception(dpf_sound_test_server):
     """Test get_microphone_signal method's exception."""
     swl = SoundPowerLevelISO3744()
-    swl.add_microphone_signal(Field(), name="ValidKey")
+    swl.add_microphone_signal(Field())
 
     with pytest.raises(
-        PyAnsysSoundException, match="No microphone signal associated with this name."
+        PyAnsysSoundException, match="No microphone signal associated with this index."
     ):
-        swl.get_microphone_signal("InvalidKey")
+        swl.get_microphone_signal(1)
 
 
 def test_sound_power_level_iso_3744_delete_microphone_signal(dpf_sound_test_server):
     """Test delete_microphone_signal method."""
     swl = SoundPowerLevelISO3744()
-    swl.add_microphone_signal(Field(), name="MySignal1")
-    swl.add_microphone_signal(Field(), name="MySignal2")
+    swl.add_microphone_signal(Field())
+    swl.add_microphone_signal(Field())
 
-    swl.delete_microphone_signal("MySignal1")
-    assert swl.get_all_signal_names() == ("MySignal2",)
+    swl.delete_microphone_signal(0)
+    assert swl.get_all_signal_names() == [[0, ""]]
 
 
-def test_sound_power_level_iso_3744_get_microphone_signal_warning(dpf_sound_test_server):
-    """Test get_microphone_signal method's exception."""
+def test_sound_power_level_iso_3744_delete_microphone_signal_warning(dpf_sound_test_server):
+    """Test delete_microphone_signal method's exception."""
     swl = SoundPowerLevelISO3744()
-    swl.add_microphone_signal(Field(), name="ValidKey")
+    swl.add_microphone_signal(Field())
 
-    with pytest.warns(PyAnsysSoundWarning, match="No microphone signal associated with this name."):
-        swl.delete_microphone_signal("InvalidKey")
+    with pytest.warns(
+        PyAnsysSoundWarning, match="No microphone signal associated with this index."
+    ):
+        swl.delete_microphone_signal(1)
 
 
 def test_sound_power_level_iso_3744_set_C1_C2_from_meteo_parameters(dpf_sound_test_server):
@@ -272,9 +259,9 @@ def test_sound_power_level_iso_3744_load_project(dpf_sound_test_server):
     assert swl.C1 == pytest.approx(EXP_C1_FROM_PROJECT)
     assert swl.C2 == pytest.approx(EXP_C2_FROM_PROJECT)
 
-    signal_list = swl.get_all_signal_names()
-    assert signal_list == EXP_SIGNAL_LIST_FROM_PROJECT
-    assert type(swl.get_microphone_signal(signal_list[0])) == Field
+    all_signals = swl.get_all_signal_names()
+    assert all_signals == EXP_SIGNAL_LIST_FROM_PROJECT
+    assert type(swl.get_microphone_signal(0)) == Field
 
 
 def test_sound_power_level_iso_3744_process(dpf_sound_test_server):
