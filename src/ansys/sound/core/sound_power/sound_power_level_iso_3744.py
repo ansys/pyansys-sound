@@ -88,8 +88,8 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self.C1 = C1
         self.C2 = C2
 
-        # Initialize an empty dictionary meant to store microphone signals.
-        self.__signals = {}
+        # Initialize an empty list meant to store microphone signals.
+        self.__signals = []
 
         # Define output field.
         self._output = None
@@ -188,10 +188,10 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         """Set the C2 correction."""
         self.__C2 = C2
 
-    def add_microphone_signal(self, signal: Field, name: str):
+    def add_microphone_signal(self, signal: Field):
         """Add microphone signal.
 
-        Adds a microphone-recorded signal, along with a signal name.
+        Adds a microphone-recorded signal as a DPF field.
         Note: It is assumed that the microphone positions where the signals were recorded follow
         Annex B of ISO 3744 for the specific measurement surface shape used.
 
@@ -199,64 +199,62 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         ----------
         signal: Field
             Recorded signal in Pa from one specific position.
-        name: str
-            Signal name. Must be unique.
         """
         if type(signal) is not Field:
             raise PyAnsysSoundException("Added signal must be provided as a DPF field.")
-        if name in self.get_all_signal_names():
-            raise PyAnsysSoundException(
-                f"A signal with the same name ('{name}') already exists. "
-                "Please provide a unique signal name."
-            )
-        self.__signals[name] = signal
 
-    def get_microphone_signal(self, name: str) -> Field:
+        self.__signals.append(signal)
+
+    def get_microphone_signal(self, index: int) -> Field:
         """Get microphone signal.
 
-        Gets the microphone signal that corresponds to the specified name.
+        Gets the microphone signal that corresponds to the specified index.
 
         Parameters
         ----------
-        name: str
-            Signal name.
+        index: int
+            Signal index.
 
         Returns
         -------
         Field
-            Microphone signal in Pa for the specified name.
+            Microphone signal in Pa for the specified index.
         """
-        try:
-            return self.__signals[name]
-        except KeyError:
-            raise PyAnsysSoundException("No microphone signal associated with this name.")
+        if index > len(self.__signals) - 1:
+            raise PyAnsysSoundException("No microphone signal associated with this index.")
 
-    def delete_microphone_signal(self, name: str):
+        return self.__signals[index]
+
+    def delete_microphone_signal(self, index: int):
         """Delete microphone signal.
 
-        Deletes the microphone signal that corresponds to the specified name.
+        Deletes the microphone signal that corresponds to the specified index.
 
         Parameters
         ----------
-        name: str
-            Signal name.
+        index: int
+            Signal index.
         """
-        try:
-            del self.__signals[name]
-        except KeyError:
-            warnings.warn(PyAnsysSoundWarning("No microphone signal associated with this name."))
+        if index > len(self.__signals) - 1:
+            warnings.warn(PyAnsysSoundWarning("No microphone signal associated with this index."))
+        else:
+            self.__signals.pop(index)
 
-    def get_all_signal_names(self) -> tuple:
+    def get_all_signal_names(self) -> tuple[tuple]:
         """Get all signal names.
 
         Gets the list of the names of all signals that were added.
 
         Returns
         -------
-        tuple
-            List of all signal names.
+        tuple[tuple]
+            List of all signal names, preceded by their indexes in the list.
         """
-        return tuple(self.__signals.keys())
+        all_signals = []
+        for isig in range(len(self.__signals)):
+            all_signals.append([isig, self.__signals[isig]])
+
+        return all_signals
 
     def set_K2_from_room_properties(
         self, length: float, width: float, height: float, alpha: float
@@ -359,24 +357,11 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self.C2 = self.__operator_load.get_output(5, "double")
         fc_signals = self.__operator_load.get_output(6, "fields_container")
 
-        # Convert signals stored as a fields container into a dictionary.
+        # Convert signals stored as a fields container into a list of fields.
         del self.__signals
-        self.__signals = {}
-        name_list = []
+        self.__signals = []
         for i in range(len(fc_signals)):
-            name = fc_signals[i].name
-
-            # Check for name duplicates. If there are, a '_<n>' suffix is appended.
-            count = 0
-            while name in name_list:
-                count += 1
-                if count == 1:
-                    name = name + "_1"
-                else:
-                    name = name[:-1] + str(count)
-            name_list.append(name)
-
-            self.__signals[name] = fc_signals[i]
+            self.__signals.append(fc_signals[i])
 
     def process(self):
         """Calculate the sound power level.
@@ -394,7 +379,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         fc_signals = FieldsContainer()
         fc_signals.labels = ["index"]
         i = 0
-        for signal in self.__signals.values():
+        for signal in self.__signals:
             fc_signals.add_field({"index": i}, signal)
             i += 1
 
