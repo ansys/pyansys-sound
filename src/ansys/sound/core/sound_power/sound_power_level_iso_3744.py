@@ -117,7 +117,6 @@ class SoundPowerLevelISO3744(SoundPowerParent):
             + f"    Unweighted: {np.round(self.get_Lw(), 1)} dB\n"
             + f"    A-weighted: {np.round(self.get_Lw_A(), 1)} dBA\n"
         )
-        # TODO (maybe): add microphone positions
 
         return string
 
