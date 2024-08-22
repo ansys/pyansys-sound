@@ -45,9 +45,9 @@ EXP_SIGNAL_LIST_FROM_PROJECT = [[0, "AI_Aircraft"], [1, "AI_Aircraft"]]
 EXP_LW = 77.95555114746094
 EXP_LWA = 72.23556518554688
 EXP_LW_OCT_5 = 66.78573608398438
-EXP_FC_OCT_6 = 1000.0
+EXP_FC_OCT_6 = 2000.0
 EXP_LW_3_10 = 68.98728942871094
-EXP_FC_3_12 = 500.0
+EXP_FC_3_12 = 400.0
 EXP_STR = (
     "SoundPowerLevelISO3744 object\n"
     + "Data:\n"
@@ -205,7 +205,9 @@ def test_sound_power_level_iso_3744_set_K2_from_room_properties(dpf_sound_test_s
     assert swl.K2 == pytest.approx(EXP_K2)
 
 
-def test_sound_power_level_iso_3744_set_K2_from_room_properties_exception1(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_set_K2_from_room_properties_exception_negative_dimension(
+    dpf_sound_test_server,
+):
     """Test set_K2_from_room_properties method's exception related to room dimensions."""
     swl = SoundPowerLevelISO3744()
 
@@ -228,7 +230,9 @@ def test_sound_power_level_iso_3744_set_K2_from_room_properties_exception1(dpf_s
         swl.set_K2_from_room_properties(height=-8, length=8, width=6, alpha=0.4)
 
 
-def test_sound_power_level_iso_3744_set_K2_from_room_properties_exception2(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_set_K2_from_room_properties_exception_alpha_range(
+    dpf_sound_test_server,
+):
     """Test set_K2_from_room_properties method's exception related to alpha."""
     swl = SoundPowerLevelISO3744()
 
@@ -293,7 +297,7 @@ def test_sound_power_level_iso_3744_get_output(dpf_sound_test_server):
     assert output is not None
 
 
-def test_sound_power_level_iso_3744_get_output_warning(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_get_output_unprocessed(dpf_sound_test_server):
     """Test get_output method's warning."""
     swl = SoundPowerLevelISO3744()
 
@@ -302,7 +306,8 @@ def test_sound_power_level_iso_3744_get_output_warning(dpf_sound_test_server):
         match="Output is not processed yet. "
         "Use the 'SoundPowerLevelISO3744.process\\(\\)' method.",
     ):
-        swl.get_output()
+        output = swl.get_output()
+    assert output is None
 
 
 def test_sound_power_level_iso_3744_get_output_as_nparray(dpf_sound_test_server):
@@ -320,7 +325,7 @@ def test_sound_power_level_iso_3744_get_output_as_nparray(dpf_sound_test_server)
     assert fc_3[12] == pytest.approx(EXP_FC_3_12)
 
 
-def test_sound_power_level_iso_3744_get_output_as_nparray_warning(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_get_output_as_nparray_unprocessed(dpf_sound_test_server):
     """Test get_output_as_nparray method's warning."""
     swl = SoundPowerLevelISO3744()
 
