@@ -569,6 +569,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
             plt.semilogx(f_boundary, Lw)
         else:
             plt.plot(f_boundary, Lw)
+        plt.legend(["Octave-band levels"])
         plt.title("Sound power level (SWL)")
         plt.ylabel(r"$\mathregular{L_w}$ (dB)")
 
@@ -589,9 +590,10 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         plt.subplot(212)
         if logfreq == True:
-            plt.semilogx(f_boundary, Lw)
+            plt.semilogx(f_boundary, Lw, "#ff7f0e")
         else:
-            plt.plot(f_boundary, Lw)
+            plt.plot(f_boundary, Lw, "#ff7f0e")
+        plt.legend(["1/3-octave-band levels"])
         plt.ylabel(r"$\mathregular{L_w}$ (dB)")
         plt.xlabel("Frequency (Hz)")
         plt.show()
