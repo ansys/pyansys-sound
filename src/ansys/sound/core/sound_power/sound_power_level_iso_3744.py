@@ -123,7 +123,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     @property
     def surface_shape(self):
         """Surface shape."""
-        return self.__surface_shape  # pragma: no cover
+        return self.__surface_shape
 
     @surface_shape.setter
     def surface_shape(self, surface_shape: str):
@@ -138,7 +138,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     @property
     def surface_radius(self):
         """Surface radius."""
-        return self.__surface_radius  # pragma: no cover
+        return self.__surface_radius
 
     @surface_radius.setter
     def surface_radius(self, surface_radius: float):
@@ -150,7 +150,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     @property
     def K1(self):
         """K1 correction."""
-        return self.__K1  # pragma: no cover
+        return self.__K1
 
     @K1.setter
     def K1(self, K1: str):
@@ -160,7 +160,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     @property
     def K2(self):
         """K2 correction."""
-        return self.__K2  # pragma: no cover
+        return self.__K2
 
     @K2.setter
     def K2(self, K2: str):
@@ -170,7 +170,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     @property
     def C1(self):
         """C1 correction."""
-        return self.__C1  # pragma: no cover
+        return self.__C1
 
     @C1.setter
     def C1(self, C1: str):
@@ -180,7 +180,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     @property
     def C2(self):
         """C2 correction."""
-        return self.__C2  # pragma: no cover
+        return self.__C2
 
     @C2.setter
     def C2(self, C2: str):
@@ -274,6 +274,11 @@ class SoundPowerLevelISO3744(SoundPowerParent):
             alpha: float
                 Mean sound absorption coefficient between 0 and 1. Typical example values are
                 given in Table A.1 of ISO 3744.
+
+        Returns
+        -------
+            float
+                Calculated correction K2 in dB
         """
         if length <= 0.0 or width <= 0.0 or height <= 0.0:
             raise PyAnsysSoundException(
@@ -359,8 +364,8 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         # Convert signals stored as a fields container into a list of fields.
         del self.__signals
         self.__signals = []
-        for i in range(len(fc_signals)):
-            self.__signals.append(fc_signals[i])
+        for isig in range(len(fc_signals)):
+            self.__signals.append(fc_signals[isig])
 
     def process(self):
         """Calculate the sound power level.
@@ -377,10 +382,8 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         # Create a fields container containing all microphone signals.
         fc_signals = FieldsContainer()
         fc_signals.labels = ["index"]
-        i = 0
-        for signal in self.__signals:
-            fc_signals.add_field({"index": i}, signal)
-            i += 1
+        for isig in range(len(self.__signals)):
+            fc_signals.add_field({"index": isig}, self.__signals[isig])
 
         # Set operator inputs.
         self.__operator_compute.connect(0, self.__get_surface_area())
@@ -460,7 +463,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         )
 
     def get_Lw(self) -> float:
-        """Get unweighted sound power  level.
+        """Get unweighted sound power level.
 
         Returns
         -------
@@ -536,10 +539,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         Parameters
         ----------
-        bands: str, default: 'Third'
-            Parameter that specifies whether the sound power level should be plotted in octave
-            ('Octave') or one-third-octave ('Third') bands.
-        logfreq: bool, default: False
+        logfreq: bool, default: True
             Parameter that specifies whether the sound power level should be plotted over a linear
             (False) or logarithmic (True) frequency scale.
         """
@@ -551,7 +551,6 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         # Assign each octave Lw value to its lower and upper boundary frequencies (in order to
         # display the Lw values over the entire bands).
-        N = len(output[ID_LW_OCTAVE_NP])
         Lw = np.repeat(output[ID_LW_OCTAVE_NP], 2)
         f_lower = output[ID_OCTAVE_CENTER_FREQUENCIES] * 2 ** (-1 / 2)
         f_higher = output[ID_OCTAVE_CENTER_FREQUENCIES] * 2 ** (1 / 2)
@@ -574,7 +573,6 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         # Assign each third-octave Lw value to its lower and upper boundary frequencies (in order
         # to display the Lw values over the entire bands).
-        N = len(output[ID_LW_THIRDOCTAVE_NP])
         Lw = np.repeat(output[ID_LW_THIRDOCTAVE_NP], 2)
         f_lower = output[ID_THIRDOCTAVE_CENTER_FREQUENCIES] * 2 ** (-1 / 6)
         f_higher = output[ID_THIRDOCTAVE_CENTER_FREQUENCIES] * 2 ** (1 / 6)
