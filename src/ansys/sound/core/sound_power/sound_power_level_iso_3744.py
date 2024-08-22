@@ -33,14 +33,14 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 ID_COMPUTE_SOUND_POWER_LEVEL = "compute_sound_power_level_iso3744"
 ID_LOAD_SOUND_POWER_LEVEL = "load_project_sound_power_level_iso3744"
-LW = 0
-LWA = 1
-LW_OCTAVE = 2
-LW_THIRDOCTAVE = 3
-LW_OCTAVE_NP = 2
-OCTAVE_CENTER_FREQUENCIES = 3
-LW_THIRDOCTAVE_NP = 4
-THIRDOCTAVE_CENTER_FREQUENCIES = 5
+ID_LW = 0
+ID_LWA = 1
+ID_LW_OCTAVE = 2
+ID_LW_THIRDOCTAVE = 3
+ID_LW_OCTAVE_NP = 2
+ID_OCTAVE_CENTER_FREQUENCIES = 3
+ID_LW_THIRDOCTAVE_NP = 4
+ID_THIRDOCTAVE_CENTER_FREQUENCIES = 5
 
 
 class SoundPowerLevelISO3744(SoundPowerParent):
@@ -452,12 +452,12 @@ class SoundPowerLevelISO3744(SoundPowerParent):
             return (np.nan, np.nan, np.array([]), np.array([]), np.array([]), np.array([]))
 
         return (
-            output[LW],
-            output[LWA],
-            np.array(output[LW_OCTAVE].data),
-            np.array(output[LW_OCTAVE].time_freq_support.time_frequencies.data),
-            np.array(output[LW_THIRDOCTAVE].data),
-            np.array(output[LW_THIRDOCTAVE].time_freq_support.time_frequencies.data),
+            output[ID_LW],
+            output[ID_LWA],
+            np.array(output[ID_LW_OCTAVE].data),
+            np.array(output[ID_LW_OCTAVE].time_freq_support.time_frequencies.data),
+            np.array(output[ID_LW_THIRDOCTAVE].data),
+            np.array(output[ID_LW_THIRDOCTAVE].time_freq_support.time_frequencies.data),
         )
 
     def get_Lw(self) -> float:
@@ -470,7 +470,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         """
         output = self.get_output_as_nparray()
 
-        return output[LW]
+        return output[ID_LW]
 
     def get_Lw_A(self) -> float:
         """Get A-weighted sound power level.
@@ -482,7 +482,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         """
         output = self.get_output_as_nparray()
 
-        return output[LWA]
+        return output[ID_LWA]
 
     def get_Lw_octave(self) -> npt.ArrayLike:
         """Get octave-band power sound levels.
@@ -494,7 +494,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         """
         output = self.get_output_as_nparray()
 
-        return output[LW_OCTAVE_NP]
+        return output[ID_LW_OCTAVE_NP]
 
     def get_octave_center_frequencies(self) -> npt.ArrayLike:
         """Get octave-band center frequencies.
@@ -506,7 +506,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         """
         output = self.get_output_as_nparray()
 
-        return output[OCTAVE_CENTER_FREQUENCIES]
+        return output[ID_OCTAVE_CENTER_FREQUENCIES]
 
     def get_Lw_thirdoctave(self) -> npt.ArrayLike:
         """Get one-third-octave-band power sound levels.
@@ -518,7 +518,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         """
         output = self.get_output_as_nparray()
 
-        return output[LW_THIRDOCTAVE_NP]
+        return output[ID_LW_THIRDOCTAVE_NP]
 
     def get_thirdoctave_center_frequencies(self) -> npt.ArrayLike:
         """Get one-third-octave-band center frequencies.
@@ -530,7 +530,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         """
         output = self.get_output_as_nparray()
 
-        return output[THIRDOCTAVE_CENTER_FREQUENCIES]
+        return output[ID_THIRDOCTAVE_CENTER_FREQUENCIES]
 
     def plot(self, logfreq: bool = True):
         """Plot the sound power level in octave or one-third-octave bands.
@@ -552,10 +552,10 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         # Assign each octave Lw value to its lower and upper boundary frequencies (in order to
         # display the Lw values over the entire bands).
-        N = len(output[LW_OCTAVE_NP])
-        Lw = np.repeat(output[LW_OCTAVE_NP], 2)
-        f_lower = output[OCTAVE_CENTER_FREQUENCIES] * 2 ** (-1 / 2)
-        f_higher = output[OCTAVE_CENTER_FREQUENCIES] * 2 ** (1 / 2)
+        N = len(output[ID_LW_OCTAVE_NP])
+        Lw = np.repeat(output[ID_LW_OCTAVE_NP], 2)
+        f_lower = output[ID_OCTAVE_CENTER_FREQUENCIES] * 2 ** (-1 / 2)
+        f_higher = output[ID_OCTAVE_CENTER_FREQUENCIES] * 2 ** (1 / 2)
         f_boundary = np.stack((f_lower, f_higher)).flatten("F")
 
         # Check that every lower boundary is higher than previous band's upper boundary.
@@ -575,10 +575,10 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         # Assign each third-octave Lw value to its lower and upper boundary frequencies (in order
         # to display the Lw values over the entire bands).
-        N = len(output[LW_THIRDOCTAVE_NP])
-        Lw = np.repeat(output[LW_THIRDOCTAVE_NP], 2)
-        f_lower = output[THIRDOCTAVE_CENTER_FREQUENCIES] * 2 ** (-1 / 6)
-        f_higher = output[THIRDOCTAVE_CENTER_FREQUENCIES] * 2 ** (1 / 6)
+        N = len(output[ID_LW_THIRDOCTAVE_NP])
+        Lw = np.repeat(output[ID_LW_THIRDOCTAVE_NP], 2)
+        f_lower = output[ID_THIRDOCTAVE_CENTER_FREQUENCIES] * 2 ** (-1 / 6)
+        f_higher = output[ID_THIRDOCTAVE_CENTER_FREQUENCIES] * 2 ** (1 / 6)
         f_boundary = np.stack((f_lower, f_higher)).flatten("F")
 
         # Check that every lower boundary is higher than the previous band's upper boundary.
