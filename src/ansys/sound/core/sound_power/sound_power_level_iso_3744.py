@@ -532,7 +532,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         return output[THIRDOCTAVE_CENTER_FREQUENCIES]
 
-    def plot(self, logfreq: bool = False):
+    def plot(self, logfreq: bool = True):
         """Plot the sound power level in octave or one-third-octave bands.
 
         Parameters
