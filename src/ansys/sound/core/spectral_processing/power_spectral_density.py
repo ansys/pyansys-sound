@@ -117,7 +117,15 @@ class PowerSpectralDensity(SpectralProcessingParent):
     @window_type.setter
     def window_type(self, value: str):
         """Set window type."""
-        if value not in ["BLACKMANHARRIS", "HANN", "HAMMING", "KAISER", "BARTLETT", "RECTANGULAR"]:
+        if value not in [
+            "BARTLETT",
+            "BLACKMAN",
+            "BLACKMANHARRIS",
+            "HAMMING",
+            "HANN",
+            "KAISER",
+            "RECTANGULAR",
+        ]:
             raise PyAnsysSoundException(
                 "Window type is invalid. Options are 'BARTLETT', 'BLACKMAN', 'BLACKMANHARRIS', "
                 "'HAMMING', 'HANN', 'KAISER', and 'RECTANGULAR'."
