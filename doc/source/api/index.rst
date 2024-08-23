@@ -11,6 +11,7 @@ This section describes how to use Python to interact programmatically with PyAns
     signal_utilities
     spectral_processing
     spectrogram_processing
+    sound_power
     psychoacoustics
     xtract
     helpers
