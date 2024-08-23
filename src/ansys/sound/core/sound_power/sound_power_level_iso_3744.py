@@ -33,14 +33,6 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 ID_COMPUTE_SOUND_POWER_LEVEL = "compute_sound_power_level_iso3744"
 ID_LOAD_SOUND_POWER_LEVEL = "load_project_sound_power_level_iso3744"
-ID_LW = 0
-ID_LWA = 1
-ID_LW_OCTAVE = 2
-ID_LW_THIRDOCTAVE = 3
-ID_LW_OCTAVE_NP = 2
-ID_OCTAVE_CENTER_FREQUENCIES = 3
-ID_LW_THIRDOCTAVE_NP = 4
-ID_THIRDOCTAVE_CENTER_FREQUENCIES = 5
 
 
 class SoundPowerLevelISO3744(SoundPowerParent):
@@ -454,12 +446,12 @@ class SoundPowerLevelISO3744(SoundPowerParent):
             return (np.nan, np.nan, np.array([]), np.array([]), np.array([]), np.array([]))
 
         return (
-            output[ID_LW],
-            output[ID_LWA],
-            np.array(output[ID_LW_OCTAVE].data),
-            np.array(output[ID_LW_OCTAVE].time_freq_support.time_frequencies.data),
-            np.array(output[ID_LW_THIRDOCTAVE].data),
-            np.array(output[ID_LW_THIRDOCTAVE].time_freq_support.time_frequencies.data),
+            output[0],
+            output[1],
+            np.array(output[2].data),
+            np.array(output[2].time_freq_support.time_frequencies.data),
+            np.array(output[3].data),
+            np.array(output[3].time_freq_support.time_frequencies.data),
         )
 
     def get_Lw(self) -> float:
@@ -472,7 +464,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         """
         output = self.get_output_as_nparray()
 
-        return output[ID_LW]
+        return output[0]
 
     def get_Lw_A(self) -> float:
         """Get A-weighted sound power level.
@@ -484,7 +476,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         """
         output = self.get_output_as_nparray()
 
-        return output[ID_LWA]
+        return output[1]
 
     def get_Lw_octave(self) -> npt.ArrayLike:
         """Get octave-band power sound levels.
@@ -496,7 +488,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         """
         output = self.get_output_as_nparray()
 
-        return output[ID_LW_OCTAVE_NP]
+        return output[2]
 
     def get_octave_center_frequencies(self) -> npt.ArrayLike:
         """Get octave-band center frequencies.
@@ -508,7 +500,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         """
         output = self.get_output_as_nparray()
 
-        return output[ID_OCTAVE_CENTER_FREQUENCIES]
+        return output[3]
 
     def get_Lw_thirdoctave(self) -> npt.ArrayLike:
         """Get one-third-octave-band power sound levels.
@@ -520,7 +512,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         """
         output = self.get_output_as_nparray()
 
-        return output[ID_LW_THIRDOCTAVE_NP]
+        return output[4]
 
     def get_thirdoctave_center_frequencies(self) -> npt.ArrayLike:
         """Get one-third-octave-band center frequencies.
@@ -532,7 +524,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         """
         output = self.get_output_as_nparray()
 
-        return output[ID_THIRDOCTAVE_CENTER_FREQUENCIES]
+        return output[5]
 
     def plot(self):
         """Plot the sound power level in octave or one-third-octave bands.
@@ -547,8 +539,8 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         output = self.get_output_as_nparray()
 
         # Display octave-band levels in the upper subplot.
-        Lw = output[ID_LW_OCTAVE_NP]
-        f_center = output[ID_OCTAVE_CENTER_FREQUENCIES]
+        Lw = self.get_Lw_octave()
+        f_center = self.get_octave_center_frequencies()
 
         plt.subplot(211)
         plt.bar(range(len(Lw)), Lw)
@@ -557,8 +549,8 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         plt.ylabel(r"$\mathregular{L_w}$ (dB)")
 
         # Display 1/3-octave-band levels in the lower subplot.
-        Lw = output[ID_LW_THIRDOCTAVE_NP]
-        f_center = output[ID_THIRDOCTAVE_CENTER_FREQUENCIES]
+        Lw = self.get_Lw_thirdoctave()
+        f_center = self.get_thirdoctave_center_frequencies()
 
         plt.subplot(212)
         plt.bar(range(len(Lw)), Lw)
