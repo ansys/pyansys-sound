@@ -410,8 +410,7 @@ def test_sound_power_level_iso_3744_plot(mock_show, dpf_sound_test_server):
     swl.load_project(pytest.data_path_swl_project_file_in_container)
     swl.process()
 
-    swl.plot()  # Plot over a logarithmic frequency scale.
-    swl.plot(logfreq=False)  # Plot over a linear frequency scale.
+    swl.plot()
 
 
 def test_sound_power_level_iso_3744_plot_exception(dpf_sound_test_server):

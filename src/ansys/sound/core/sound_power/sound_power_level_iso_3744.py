@@ -534,14 +534,11 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         return output[ID_THIRDOCTAVE_CENTER_FREQUENCIES]
 
-    def plot(self, logfreq: bool = True):
+    def plot(self):
         """Plot the sound power level in octave or one-third-octave bands.
 
-        Parameters
-        ----------
-        logfreq: bool, default: True
-            Parameter that specifies whether the sound power level should be plotted over a linear
-            (False) or logarithmic (True) frequency scale.
+        Creates a figure that displays the sound power level in each octave band in the upper graph,
+        and in each 1/3-octave band in the lower graph.
         """
         if self._output == None:
             raise PyAnsysSoundException(
@@ -549,50 +546,28 @@ class SoundPowerLevelISO3744(SoundPowerParent):
             )
         output = self.get_output_as_nparray()
 
-        # Assign each octave Lw value to its lower and upper boundary frequencies (in order to
-        # display the Lw values over the entire bands).
-        Lw = np.repeat(output[ID_LW_OCTAVE_NP], 2)
-        f_lower = output[ID_OCTAVE_CENTER_FREQUENCIES] * 2 ** (-1 / 2)
-        f_higher = output[ID_OCTAVE_CENTER_FREQUENCIES] * 2 ** (1 / 2)
-        f_boundary = np.stack((f_lower, f_higher)).flatten("F")
-
-        # Check that every lower boundary is higher than previous band's upper boundary.
-        # If not, assign the previous band's upper boundary to the lower boundary value.
-        for i in range(int(len(f_boundary) / 2 - 1)):
-            if f_boundary[2 * i + 2] < f_boundary[2 * i + 1]:
-                f_boundary[2 * i + 2] = f_boundary[2 * i + 1]
+        # Display octave-band levels in the upper subplot.
+        Lw = output[ID_LW_OCTAVE_NP]
+        f_center = output[ID_OCTAVE_CENTER_FREQUENCIES]
 
         plt.subplot(211)
-        if logfreq == True:
-            plt.semilogx(f_boundary, Lw)
-        else:
-            plt.plot(f_boundary, Lw)
-        plt.legend(["Octave-band levels"])
-        plt.title("Sound power level (SWL)")
+        plt.bar(range(len(Lw)), Lw)
+        plt.xticks(range(len(Lw)), f_center.astype(int), rotation=45, fontsize=9)
+        plt.title("Octave-band sound power level")
         plt.ylabel(r"$\mathregular{L_w}$ (dB)")
 
-        # Assign each third-octave Lw value to its lower and upper boundary frequencies (in order
-        # to display the Lw values over the entire bands).
-        Lw = np.repeat(output[ID_LW_THIRDOCTAVE_NP], 2)
-        f_lower = output[ID_THIRDOCTAVE_CENTER_FREQUENCIES] * 2 ** (-1 / 6)
-        f_higher = output[ID_THIRDOCTAVE_CENTER_FREQUENCIES] * 2 ** (1 / 6)
-        f_boundary = np.stack((f_lower, f_higher)).flatten("F")
-
-        # Check that every lower boundary is higher than the previous band's upper boundary.
-        # If not, assign the previous band's upper boundary to the lower boundary value of the
-        # next band.
-        for i in range(int(len(f_boundary) / 2 - 1)):
-            if f_boundary[2 * i + 2] < f_boundary[2 * i + 1]:
-                f_boundary[2 * i + 2] = f_boundary[2 * i + 1]
+        # Display 1/3-octave-band levels in the lower subplot.
+        Lw = output[ID_LW_THIRDOCTAVE_NP]
+        f_center = output[ID_THIRDOCTAVE_CENTER_FREQUENCIES]
 
         plt.subplot(212)
-        if logfreq == True:
-            plt.semilogx(f_boundary, Lw, "#ff7f0e")
-        else:
-            plt.plot(f_boundary, Lw, "#ff7f0e")
-        plt.legend(["1/3-octave-band levels"])
+        plt.bar(range(len(Lw)), Lw)
+        plt.xticks(range(len(Lw)), f_center.astype(int), rotation=45, fontsize=9)
+        plt.title("1/3-octave-band sound power level")
         plt.ylabel(r"$\mathregular{L_w}$ (dB)")
         plt.xlabel("Frequency (Hz)")
+
+        plt.tight_layout()
         plt.show()
 
     def __get_surface_area(self) -> float:
