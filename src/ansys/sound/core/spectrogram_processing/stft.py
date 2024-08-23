@@ -127,18 +127,18 @@ class Stft(SpectrogramProcessingParent):
     @window_type.setter
     def window_type(self, window_type):
         """Set the window type."""
-        if (
-            window_type != "BLACKMANHARRIS"
-            and window_type != "HANN"
-            and window_type != "HAMMING"
-            and window_type != "HANNING"
-            and window_type != "KAISER"
-            and window_type != "BARTLETT"
-            and window_type != "RECTANGULAR"
-        ):
+        if window_type not in [
+            "BARTLETT",
+            "BLACKMAN",
+            "BLACKMANHARRIS",
+            "HAMMING",
+            "HANN",
+            "KAISER",
+            "RECTANGULAR",
+        ]:
             raise PyAnsysSoundException(
                 "Window type is invalid. Options are 'BARTLETT', 'BLACKMAN', 'BLACKMANHARRIS', "
-                "'HAMMING', 'HANN', 'HANNING', 'KAISER', and 'RECTANGULAR'."
+                "'HAMMING', 'HANN', 'KAISER', and 'RECTANGULAR'."
             )
 
         self.__window_type = window_type
