@@ -232,11 +232,12 @@ jobs:
           python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
       - name: "Run Ansys documentation building action"
-        uses: ansys/actions/doc-build@v7
+        uses: ansys/actions/doc-build@fix/doc-build-without-python-cache
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           skip-install: true
           sphinxopts: -j auto -W --keep-going
+          use-python-cache: false
 
       - name: "Stop the DPF-Sound service"
         if: always()
