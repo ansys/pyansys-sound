@@ -41,12 +41,12 @@ EXP_K1_FROM_PROJECT = 1.0
 EXP_K2_FROM_PROJECT = 2.0
 EXP_C1_FROM_PROJECT = 3.0
 EXP_C2_FROM_PROJECT = 4.0
-EXP_SIGNAL_LIST_FROM_PROJECT = [[0, "AI_Aircraft"], [1, "AI_Aircraft"]]
-EXP_LW = 77.95555114746094
-EXP_LWA = 72.23556518554688
-EXP_LW_OCT_5 = 66.78573608398438
+EXP_SIGNAL_LIST_FROM_PROJECT = [[0, "flute.wav"], [1, "flute.wav"]]
+EXP_LW = 91.18597412109375
+EXP_LWA = 89.71100616455078
+EXP_LW_OCT_5 = 86.20396423339844
 EXP_FC_OCT_6 = 2000.0
-EXP_LW_3_10 = 68.98728942871094
+EXP_LW_3_10 = 79.6201400756836
 EXP_FC_3_12 = 400.0
 EXP_STR = (
     "SoundPowerLevelISO3744 object\n"
@@ -62,8 +62,8 @@ EXP_STR = (
     + f"    C1 (meteorological reference quantity): 3.0 dB\n"
     + f"    C2 (meteorological radiation impedance): 4.0 dB\n"
     + "  Sound power level (Lw):\n"
-    + f"    Unweighted: 78.0 dB\n"
-    + f"    A-weighted: 72.2 dBA\n"
+    + f"    Unweighted: 91.2 dB\n"
+    + f"    A-weighted: 89.7 dBA\n"
 )
 
 

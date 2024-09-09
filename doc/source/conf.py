@@ -135,6 +135,13 @@ exclude_patterns = [
     "*convert_fields_container_to_np_array.rst",
 ]
 
+# User agent
+user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.2739.63"  # noqa: E501
+
+linkcheck_ignore = [
+    "https://download.ansys.com/*",
+    "https://www.ansys.com/*",
+]
 
 # static path
 html_static_path = ["_static"]
