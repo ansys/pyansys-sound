@@ -87,3 +87,46 @@ jobs:
               docker rm $dockerContainers
           }
 
+  doc-build-linux:
+    name: "Building library documentation"
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: "Run Ansys documentation building action"
+        uses: ansys/actions/doc-build@fix/inconsistent-behavior
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          skip-install: true
+          sphinxopts: -j auto -W --keep-going
+
+  tests-pytest:
+    name: "tests-pytest"
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: "tests-pytest"
+        uses: ansys/actions/tests-pytest@fix/inconsistent-behavior
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+
+  code-style:
+    name: "code-style"
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: "code-style"
+        uses: ansys/actions/code-style@fix/inconsistent-behavior
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+
+  check-vulnerabilities:
+    name: "check-vulnerabilities"
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: "check-vulnerabilities"
+        uses: ansys/actions/check-vulnerabilities@fix/inconsistent-behavior
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+
+
