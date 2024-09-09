@@ -40,10 +40,10 @@ tests = [
 ]
 
 doc = [
-    "Sphinx==7.4.7",
+    "Sphinx==8.0.2",
     "ansys-sphinx-theme==1.0.7",
     "numpydoc==1.8.0",
-    "sphinx-autodoc-typehints==2.2.3",
+    "sphinx-autodoc-typehints==2.3.0",
     "sphinx-copybutton==0.5.2",
     "sphinx-gallery==0.17.1",
     "sphinx-design==0.6.1",
