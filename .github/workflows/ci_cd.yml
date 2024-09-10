@@ -25,7 +25,7 @@ env:
 jobs:
 
   doc-build:
-    name: "Building library documentation"
+    name: "Building library documentation windows"
     runs-on: [self-hosted, Windows, pyansys-sound]
     steps:
 
@@ -88,7 +88,7 @@ jobs:
           }
 
   doc-build-linux:
-    name: "Building library documentation"
+    name: "Building library documentation linux"
     runs-on: ubuntu-latest
     steps:
 
