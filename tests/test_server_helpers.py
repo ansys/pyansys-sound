@@ -20,10 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.sound.core.server_helpers import (
-    connect_to_or_start_server,
-    validate_dpf_sound_connection,
-)
+from ansys.sound.core.server_helpers import (connect_to_or_start_server,
+                                             validate_dpf_sound_connection)
 
 
 def test_validate_dpf_sound_connection():

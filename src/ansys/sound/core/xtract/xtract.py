@@ -22,21 +22,17 @@
 
 """Xtract class."""
 
-from typing import Tuple
 import warnings
+from typing import Tuple
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
+from ansys.dpf.core import Field, FieldsContainer, Operator
 from numpy import typing as npt
 
-from . import (
-    XtractDenoiserParameters,
-    XtractParent,
-    XtractTonalParameters,
-    XtractTransientParameters,
-)
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from . import (XtractDenoiserParameters, XtractParent, XtractTonalParameters,
+               XtractTransientParameters)
 
 
 class Xtract(XtractParent):

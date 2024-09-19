@@ -22,16 +22,16 @@
 
 """Xtract  transient module."""
 
-from typing import Tuple
 import warnings
+from typing import Tuple
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
+from ansys.dpf.core import Field, FieldsContainer, Operator
 from numpy import typing as npt
 
-from . import XtractParent, XtractTransientParameters
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from . import XtractParent, XtractTransientParameters
 
 
 class XtractTransient(XtractParent):

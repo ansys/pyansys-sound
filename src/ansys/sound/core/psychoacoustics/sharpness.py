@@ -23,12 +23,12 @@
 """Computes the sharpness of the signal according to Zwicker & Fastl's model."""
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
 import numpy as np
+from ansys.dpf.core import Field, FieldsContainer, Operator
 from numpy import typing as npt
 
-from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from . import PsychoacousticsParent
 
 
 class Sharpness(PsychoacousticsParent):

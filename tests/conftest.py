@@ -22,13 +22,9 @@
 
 import os
 
-from ansys.dpf.core import (
-    AvailableServerContexts,
-    LicenseContextManager,
-    connect_to_server,
-    load_library,
-)
 import pytest
+from ansys.dpf.core import (AvailableServerContexts, LicenseContextManager,
+                            connect_to_server, load_library)
 
 CONTAINER_SERVER_PORT = 6780
 STR_DPF_SOUND = "dpf_sound.dll"

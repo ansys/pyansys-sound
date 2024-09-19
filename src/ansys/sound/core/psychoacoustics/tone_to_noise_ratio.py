@@ -21,16 +21,16 @@
 # SOFTWARE.
 
 """Computes the ECMA 418-1/ISO 7779 tone-to-noise ratio (TNR)."""
-from math import log10
 import warnings
+from math import log10
 
-from ansys.dpf.core import Field, GenericDataContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
+from ansys.dpf.core import Field, GenericDataContainer, Operator
 from numpy import typing as npt
 
-from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from . import PsychoacousticsParent
 
 
 class ToneToNoiseRatio(PsychoacousticsParent):

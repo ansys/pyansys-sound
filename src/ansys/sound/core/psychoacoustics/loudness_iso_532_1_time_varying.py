@@ -23,13 +23,13 @@
 """Computes ISO 532-1 loudness for time-varying sounds."""
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
+from ansys.dpf.core import Field, FieldsContainer, Operator
 from numpy import typing as npt
 
-from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from . import PsychoacousticsParent
 
 
 class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):

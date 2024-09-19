@@ -22,9 +22,9 @@
 
 from unittest.mock import patch
 
-from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
+from ansys.dpf.core import Field, FieldsContainer
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.psychoacoustics import LoudnessISO532_1_TimeVarying

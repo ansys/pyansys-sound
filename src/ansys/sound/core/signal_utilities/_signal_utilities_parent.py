@@ -21,8 +21,8 @@
 # SOFTWARE.
 
 """Signal utilities."""
-from ansys.dpf.core import Field
 import matplotlib.pyplot as plt
+from ansys.dpf.core import Field
 
 from .._pyansys_sound import PyAnsysSound
 

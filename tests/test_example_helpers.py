@@ -24,26 +24,20 @@ import os
 import pathlib
 
 from ansys.sound.core.examples_helpers import (
-    download_accel_with_rpm_2_wav,
-    download_accel_with_rpm_3_wav,
-    download_accel_with_rpm_wav,
-    download_flute_2_wav,
-    download_flute_psd,
-    download_flute_wav,
-    download_xtract_demo_signal_1_wav,
+    download_accel_with_rpm_2_wav, download_accel_with_rpm_3_wav,
+    download_accel_with_rpm_wav, download_flute_2_wav, download_flute_psd,
+    download_flute_wav, download_xtract_demo_signal_1_wav,
     download_xtract_demo_signal_2_wav,
     get_absolute_path_for_accel_with_rpm_wav,
     get_absolute_path_for_fluctuating_noise_wav,
     get_absolute_path_for_fluctuating_tone_wav,
-    get_absolute_path_for_flute2_wav,
-    get_absolute_path_for_flute_wav,
+    get_absolute_path_for_flute2_wav, get_absolute_path_for_flute_wav,
     get_absolute_path_for_rough_noise_wav,
     get_absolute_path_for_rough_tone_wav,
     get_absolute_path_for_sharp_noise_wav,
     get_absolute_path_for_sharper_noise_wav,
     get_absolute_path_for_xtract_demo_signal_1_wav,
-    get_absolute_path_for_xtract_demo_signal_2_wav,
-)
+    get_absolute_path_for_xtract_demo_signal_2_wav)
 from ansys.sound.core.examples_helpers.download import EXAMPLES_PATH
 
 

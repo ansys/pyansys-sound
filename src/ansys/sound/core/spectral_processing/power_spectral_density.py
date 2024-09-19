@@ -24,13 +24,14 @@
 
 import warnings
 
-from ansys.dpf.core import Field, Operator, TimeFreqSupport, fields_factory, locations
 import matplotlib.pyplot as plt
 import numpy as np
+from ansys.dpf.core import (Field, Operator, TimeFreqSupport, fields_factory,
+                            locations)
 from numpy import typing as npt
 
-from . import SpectralProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from . import SpectralProcessingParent
 
 ID_POWER_SPECTRAL_DENSITY = "compute_power_spectral_density"
 

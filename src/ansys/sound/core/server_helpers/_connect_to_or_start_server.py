@@ -25,12 +25,8 @@
 import os
 from typing import Any, Optional, Union
 
-from ansys.dpf.core import (
-    LicenseContextManager,
-    connect_to_server,
-    load_library,
-    start_local_server,
-)
+from ansys.dpf.core import (LicenseContextManager, connect_to_server,
+                            load_library, start_local_server)
 
 
 def connect_to_or_start_server(

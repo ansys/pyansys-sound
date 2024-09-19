@@ -23,8 +23,8 @@
 """PyAnsys Sound interface."""
 import warnings
 
-from ansys.dpf.core import FieldsContainer
 import numpy as np
+from ansys.dpf.core import FieldsContainer
 from numpy.typing import ArrayLike
 
 

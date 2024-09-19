@@ -23,11 +23,11 @@
 import numpy as np
 import pytest
 
-from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core._pyansys_sound import (PyAnsysSoundException,
+                                             PyAnsysSoundWarning)
 from ansys.sound.core.psychoacoustics import PsychoacousticsParent
-from ansys.sound.core.psychoacoustics.loudness_iso_532_1_stationary import (
-    LoudnessISO532_1_Stationary,
-)
+from ansys.sound.core.psychoacoustics.loudness_iso_532_1_stationary import \
+    LoudnessISO532_1_Stationary
 from ansys.sound.core.signal_utilities.load_wav import LoadWav
 
 

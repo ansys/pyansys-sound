@@ -26,8 +26,8 @@ import warnings
 from ansys.dpf.core import Field, FieldsContainer, Operator
 from numpy import typing as npt
 
-from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from . import SignalUtilitiesParent
 
 
 class SumSignals(SignalUtilitiesParent):

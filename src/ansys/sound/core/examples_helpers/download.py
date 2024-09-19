@@ -21,9 +21,9 @@
 # SOFTWARE.
 
 """Functions to download sample datasets from the PyAnsys Sound examples repository."""
-from functools import wraps
 import os
 import shutil
+from functools import wraps
 
 import platformdirs
 import requests
