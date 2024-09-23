@@ -19,7 +19,7 @@ repos:
   rev: v2.3.0
   hooks:
   - id: codespell
-    exclude: Docker
+    exclude: "^(docker/|pyproject.toml)"
 
 - repo: https://github.com/pycqa/pydocstyle
   rev: 6.3.0
