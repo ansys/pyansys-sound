@@ -35,7 +35,7 @@ tests = [
     "pytest==8.3.3",
     "pytest-cov==5.0.0",
     "pytest-dependency==0.6.0",
-    "platformdirs==4.2.2",
+    "platformdirs==4.3.6",
     "regex==2024.9.11",
 ]
 
@@ -43,7 +43,7 @@ doc = [
     "Sphinx==8.0.2",
     "ansys-sphinx-theme==1.0.11",
     "numpydoc==1.8.0",
-    "sphinx-autodoc-typehints==2.4.1",
+    "sphinx-autodoc-typehints==2.4.4",
     "sphinx-copybutton==0.5.2",
     "sphinx-gallery==0.17.1",
     "sphinx-design==0.6.1",
@@ -53,8 +53,8 @@ doc = [
     "pyvista==0.44.1",
     "pypandoc==1.13",
     "jupyter-sphinx==0.5.3",
-    "sphinx-autobuild==2024.9.3",
-    "platformdirs==4.2.2"
+    "sphinx-autobuild==2024.9.19",
+    "platformdirs==4.3.6"
 ]
 
 [tool.flit.module]
