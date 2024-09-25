@@ -70,6 +70,7 @@ EXP_LWA_CALIB = 152.14
 EXP_LW_OCT_5_CALIB = 137.08978271484375
 EXP_LW_3_10_CALIB = 89.90057373046875
 
+
 def test_sound_power_level_iso_3744_instantiation(dpf_sound_test_server):
     """Test SoundPowerLevelISO3744 instantiation."""
     # Test instantiation.
