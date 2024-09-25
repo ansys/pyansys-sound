@@ -42,11 +42,11 @@ EXP_K2_FROM_PROJECT = 2.0
 EXP_C1_FROM_PROJECT = 3.0
 EXP_C2_FROM_PROJECT = 4.0
 EXP_SIGNAL_LIST_FROM_PROJECT = [[0, "flute.wav"], [1, "flute.wav"]]
-EXP_LW = 91.18597412109375
-EXP_LWA = 89.71100616455078
-EXP_LW_OCT_5 = 86.20396423339844
+EXP_LW = 103.73870086669922
+EXP_LWA = 102.26373291015625
+EXP_LW_OCT_5 = 98.7566909790039
 EXP_FC_OCT_6 = 2000.0
-EXP_LW_3_10 = 79.6201400756836
+EXP_LW_3_10 = 92.17286682128906
 EXP_FC_3_12 = 400.0
 EXP_STR = (
     "SoundPowerLevelISO3744 object\n"
@@ -62,10 +62,13 @@ EXP_STR = (
     + f"    C1 (meteorological reference quantity): 3.0 dB\n"
     + f"    C2 (meteorological radiation impedance): 4.0 dB\n"
     + "  Sound power level (Lw):\n"
-    + f"    Unweighted: 91.2 dB\n"
-    + f"    A-weighted: 89.7 dBA\n"
+    + f"    Unweighted: 103.7 dB\n"
+    + f"    A-weighted: 102.3 dBA\n"
 )
-
+EXP_LW_CALIB = 151.41583251953125
+EXP_LWA_CALIB = 152.14
+EXP_LW_OCT_5_CALIB = 137.08978271484375
+EXP_LW_3_10_CALIB = 89.90057373046875
 
 def test_sound_power_level_iso_3744_instantiation(dpf_sound_test_server):
     """Test SoundPowerLevelISO3744 instantiation."""
@@ -400,6 +403,21 @@ def test_sound_power_level_iso_3744_get_thirdoctave_center_frequencies(dpf_sound
     swl.process()
 
     fc_3 = swl.get_thirdoctave_center_frequencies()
+    assert fc_3[12] == pytest.approx(EXP_FC_3_12)
+
+
+def test_sound_power_level_iso_3744_load_project_with_calibrations(dpf_sound_test_server):
+    """Test get_output_as_nparray method."""
+    swl = SoundPowerLevelISO3744()
+    swl.load_project(pytest.data_path_swl_project_file_with_calibration_in_container)
+    swl.process()
+
+    Lw, LwA, Lw_oct, fc_oct, Lw_3, fc_3 = swl.get_output_as_nparray()
+    assert Lw == pytest.approx(EXP_LW_CALIB)
+    assert LwA == pytest.approx(EXP_LWA_CALIB)
+    assert Lw_oct[5] == pytest.approx(EXP_LW_OCT_5_CALIB)
+    assert fc_oct[6] == pytest.approx(EXP_FC_OCT_6)
+    assert Lw_3[10] == pytest.approx(EXP_LW_3_10_CALIB)
     assert fc_3[12] == pytest.approx(EXP_FC_3_12)
 
 

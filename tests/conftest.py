@@ -50,6 +50,9 @@ def pytest_configure():
     pytest.data_path_swl_project_file_in_container = (
         "C:\\data\\archive_geneSoundPowerLevelProject_hemisphere_2025R1_20243008.spw"
     )
+    pytest.data_path_swl_project_file_with_calibration_in_container = (
+        "C:\\data\\Hemisphere_SwlProject_signalsWithCalibration_2025R1_20240919.spw"
+    )
 
 
 @pytest.fixture(scope="session")
