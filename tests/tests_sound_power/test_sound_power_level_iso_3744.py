@@ -407,7 +407,7 @@ def test_sound_power_level_iso_3744_get_thirdoctave_center_frequencies(dpf_sound
 
 
 def test_sound_power_level_iso_3744_load_project_with_calibrations(dpf_sound_test_server):
-    """Test get_output_as_nparray method."""
+    """Test loading swl project created with signals with calibrations."""
     swl = SoundPowerLevelISO3744()
     swl.load_project(pytest.data_path_swl_project_file_with_calibration_in_container)
     swl.process()
