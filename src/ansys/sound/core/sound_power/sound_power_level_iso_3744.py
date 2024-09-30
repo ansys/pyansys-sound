@@ -378,12 +378,13 @@ class SoundPowerLevelISO3744(SoundPowerParent):
             fc_signals.add_field({"index": isig}, self.__signals[isig])
 
         # Set operator inputs.
-        self.__operator_compute.connect(0, self.__get_surface_area())
-        self.__operator_compute.connect(1, self.K1)
-        self.__operator_compute.connect(2, self.K2)
-        self.__operator_compute.connect(3, self.C1)
-        self.__operator_compute.connect(4, self.C2)
-        self.__operator_compute.connect(5, fc_signals)
+        self.__operator_compute.connect(0, self.surface_shape)
+        self.__operator_compute.connect(1, self.surface_radius)
+        self.__operator_compute.connect(2, self.K1)
+        self.__operator_compute.connect(3, self.K2)
+        self.__operator_compute.connect(4, self.C1)
+        self.__operator_compute.connect(5, self.C2)
+        self.__operator_compute.connect(6, fc_signals)
 
         # Run the operator.
         self.__operator_compute.run()

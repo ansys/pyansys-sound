@@ -48,7 +48,10 @@ def pytest_configure():
     pytest.data_path_accel_with_rpm_in_container = "C:\\data\\accel_with_rpm.wav"
     pytest.data_path_flute_psd_in_container = "C:\\data\\flute_psd.txt"
     pytest.data_path_swl_project_file_in_container = (
-        "C:\\data\\archive_geneSoundPowerLevelProject_hemisphere_2025R1_20243008.spw"
+        "C:\\data\\SoundPowerLevelProject_hemisphere_2025R1_20243008.spw"
+    )
+    pytest.data_path_swl_project_file_with_calibration_in_container = (
+        "C:\\data\\SoundPowerLevelProject_hemisphere_signalsWithCalibration_2025R1_20240919.spw"
     )
 
 
