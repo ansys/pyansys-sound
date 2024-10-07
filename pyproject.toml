@@ -53,7 +53,7 @@ doc = [
     "pyvista==0.44.1",
     "pypandoc==1.13",
     "jupyter-sphinx==0.5.3",
-    "sphinx-autobuild==2024.9.19",
+    "sphinx-autobuild==2024.10.3",
     "platformdirs==4.3.6"
 ]
 
