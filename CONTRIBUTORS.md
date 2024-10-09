@@ -1,6 +1,6 @@
 # Contributors
 
-## Project Lead or Owner
+## Project Lead
 
 * [Alexandre Bouthéon](https://github.com/a-bouth)
 * [Stéphane Molla](https://github.com/anssmolla)
