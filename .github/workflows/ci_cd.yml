@@ -47,19 +47,15 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  commit-style:
-    name: "Run commit style checks"
+  pull-request-name:
+    if: github.event_name == 'pull_request'
+    name: Check the name of the pull-request
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/commit-style@v8
+      - name: Check pull-request name
+        uses: ansys/actions/check-pr-title@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-
-  branch-name-style:
-    name: "Run branch name style checks"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ansys/actions/branch-name-style@v8
 
   smoke-tests:
     name: "Build and Smoke tests"
