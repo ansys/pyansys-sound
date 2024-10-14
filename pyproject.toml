@@ -51,7 +51,7 @@ doc = [
     "trame==3.6.5",
     "trame_vtk==2.8.10",
     "pyvista==0.44.1",
-    "pypandoc==1.13",
+    "pypandoc==1.14",
     "jupyter-sphinx==0.5.3",
     "sphinx-autobuild==2024.10.3",
     "platformdirs==4.3.6"
