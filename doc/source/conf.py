@@ -48,6 +48,11 @@ html_theme_options = {
         "version_match": get_version_match(__version__),
     },
     "check_switcher": False,
+    "static_search": {
+        "threshold": 0.5,
+        "min_chars_for_search": 2,
+        "ignoreLocation": True,
+    },
 }
 
 # Sphinx extensions

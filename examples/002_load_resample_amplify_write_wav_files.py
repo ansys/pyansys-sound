@@ -46,7 +46,7 @@ from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import ApplyGain, LoadWav, Resample, WriteWav
 
 # Connect to a remote server or start a local server
-server = connect_to_or_start_server()
+server = connect_to_or_start_server(use_license_context=True)
 
 # %%
 # Load a signal
