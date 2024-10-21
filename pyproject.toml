@@ -49,7 +49,7 @@ doc = [
     "sphinx-design==0.6.1",
     "vtk==9.3.1",
     "trame==3.6.5",
-    "trame_vtk==2.8.10",
+    "trame_vtk==2.8.11",
     "pyvista==0.44.1",
     "pypandoc==1.14",
     "jupyter-sphinx==0.5.3",
