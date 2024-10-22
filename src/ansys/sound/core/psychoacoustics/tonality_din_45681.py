@@ -1,0 +1,417 @@
+# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+"""Computes DIN 45681 tonality."""
+import warnings
+
+from ansys.dpf.core import Field, Operator
+import matplotlib.pyplot as plt
+import numpy as np
+from numpy import typing as npt
+
+from . import PsychoacousticsParent
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+
+
+class TonalityDIN45681(PsychoacousticsParent):
+    """Computes DIN 45681 tonality.
+
+    This class computes the tonality (mean difference) and tonal adjustment of a signal following 
+    the DIN 45681 standard.
+    """
+
+    def __init__(self, signal: Field = None, window_length: float = 3.0, overlap: float = 0.0):
+        """Create a ``TonalityDIN45681`` object.
+
+        Parameters
+        ----------
+        signal: Field, default: None
+            Signal in Pa as a DPF field.
+        window_length: float, default: 3.0
+            Window length in s.
+        overlap: float, default: 0.0
+            Overlap in %.
+        """
+        super().__init__()
+        self.signal = signal
+        self.window_length = window_length
+        self.overlap = overlap
+        self.__operator = Operator("compute_tonality_din45681")
+
+    def __str__(self):
+        """Overloads the __str__ method."""
+        string = (
+            "TonalityDIN45681 object.\n"
+            + "Data\n"
+            + f"Signal name: \"{self.signal.name}\"\n"
+            + f"Window length: {self.window_length} s\n"
+            + f"Overlap: {self.overlap} %\n"
+            + f"Mean difference DL: {np.round(self.get_mean_difference(), 1)} (+/-{np.round(self.get_uncertainty(), 1)}) dB\n"
+            + f"Tonal adjustment Kt: {np.round(self.get_tonal_adjustment(), 1)} dB\n"
+        )
+
+        return string
+
+    @property
+    def signal(self):
+        """Signal property."""
+        return self.__signal
+
+    @signal.setter
+    def signal(self, signal: Field):
+        """Set signal property."""
+        if type(signal) is not Field:
+            raise PyAnsysSoundException("Signal must be specified as a DPF field.")
+        self.__signal = signal
+
+    @property
+    def window_length(self):
+        """Signal property."""
+        return self.__window_length
+
+    @window_length.setter
+    def window_length(self, window_length: float):
+        """Set window length property."""
+        if window_length <= 0.0:
+            raise PyAnsysSoundException("Window length must be strictly positive.")
+        self.__window_length = window_length
+
+    @property
+    def overlap(self):
+        """Overlap property."""
+        return self.__overlap
+
+    @overlap.setter
+    def overlap(self, overlap: float):
+        """Set overlap property."""
+        if not(0.0 <= overlap < 100.0):
+            raise PyAnsysSoundException("Overlap must be positive and strictly smaller than 100.0 %.")
+        self.__overlap = overlap
+
+    def process(self):
+        """Compute the DIN 45681 tonality.
+
+        This method calls the appropriate DPF Sound operator.
+        """
+        if self.signal == None:
+            raise PyAnsysSoundException(
+                "No input signal defined. Use 'TonalityDIN45681.signal'."
+            )
+
+        # Connect the operator input(s).
+        self.__operator.connect(0, self.signal)
+        self.__operator.connect(1, self.window_length)
+        self.__operator.connect(2, self.overlap)
+
+        # Run the operator.
+        self.__operator.run()
+
+        # Store the operator outputs in a tuple.
+        self._output = (
+            self.__operator.get_output(0, "double"),
+            self.__operator.get_output(1, "double"),
+            self.__operator.get_output(2, "double"),
+            self.__operator.get_output(3, "field"),
+            self.__operator.get_output(4, "field"),
+            self.__operator.get_output(5, "field"),
+            self.__operator.get_output(6, "field"),
+            self.__operator.get_output(7, "generic_data_container"),
+        )
+
+    def get_output(self) -> tuple:
+        """Get DIN 45681 tonality data in a tuple of various types.
+
+        Returns
+        -------
+        tuple
+            First element (float) is the DIN 45681 tonality (mean difference DL) in dB.
+
+            Second element (float) is the DIN 45681 tonality uncertainty in dB.
+
+            Third element (float) is the DIN 45681 tonal adjustment Kt in dB.
+
+            Fourth element (Field) is the DIN 45681 tonality over time (decisive difference DLj) in
+            dB.
+
+            Fifth element (Field) is the DIN 45681 tonality uncertainty over time in dB.
+
+            Sixth element (Field) is the DIN 45681 decisive frequency over time in Hz.
+
+            Seventh element (Field) is the DIN 45681 tonal adjustment Kt over time in dB.
+
+            Eighth element (GenericDataContainer) is the DIN 45681 tonality details (spectrum 
+            data, tone data).
+        """
+        if self._output == None:
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    "Output is not processed yet. Use the 'TonalityDIN45681.process()' method."
+                )
+            )
+
+        return self._output
+
+    def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
+        """Get DIN 45681 tonality data in a tuple of NumPy arrays.
+
+        Returns
+        -------
+        tuple[numpy.ndarray]
+            First element is the DIN 45681 tonality (mean difference DL) in dB.
+
+            Second element is the DIN 45681 tonality uncertainty in dB.
+
+            Third element is the DIN 45681 tonal adjustment Kt in dB.
+
+            Fourth element is the DIN 45681 tonality over time (decisive difference DLj) in dB.
+
+            Fifth element is the DIN 45681 tonality uncertainty over time in dB.
+
+            Sixth element is the DIN 45681 decisive frequency over time in Hz.
+
+            Seventh element is the DIN 45681 tonal adjustment Kt over time in dB.
+
+            Eighth element is the time scale in s.
+
+            Nineth element is the DIN 45681 tonality details (spectrum data, tone data).
+        """
+        output = self.get_output()
+
+        if output == None:
+            return (
+                np.array([]),
+                np.array([]),
+                np.array([]),
+                np.array([]),
+                np.array([]),
+                np.array([]),
+                np.array([]),
+                np.array([]),
+                np.array([]))
+
+        return (
+            np.array(output[0]),
+            np.array(output[1]),
+            np.array(output[2]),
+            np.array(output[3].data),
+            np.array(output[4].data),
+            np.array(output[5].data),
+            np.array(output[6].data),
+            np.array(output[3].time_freq_support.time_frequencies.data),
+            np.array(output[7].data),
+        )
+
+    def get_mean_difference(self) -> float:
+        """Get the DIN 45681 tonality (mean difference DL) in dB.
+
+        Returns
+        -------
+        float
+            Mean difference DL in dB.
+        """
+        output_data = self.get_output()
+
+        return output_data[0]
+
+    def get_uncertainty(self) -> float:
+        """Get the DIN 45681 uncertainty in dB.
+
+        Returns
+        -------
+        float
+            Uncertainty in dB.
+        """
+        output_data = self.get_output()
+
+        return output_data[1]
+
+    def get_tonal_adjustment(self) -> float:
+        """Get the DIN 45681 tonal adjustment in dB.
+
+        Returns
+        -------
+        float
+            Tonal adjustment Kt in dB.
+        """
+        output_data = self.get_output()
+
+        return output_data[2]
+
+    def get_decisive_difference_over_time(self) -> npt.ArrayLike:
+        """Get the DIN 45681 decisive difference DLj in dB over time.
+
+        Returns
+        -------
+        numpy.ndarray
+            Decisive difference DLj in dB over time.
+        """
+        output_data = self.get_output_as_nparray()
+        
+        return output_data[3]
+
+    def get_uncertainty_over_time(self) -> npt.ArrayLike:
+        """Get the DIN 45681 decisive difference uncertainty in dB over time.
+
+        Returns
+        -------
+        numpy.ndarray
+            Decisive difference uncertainty in dB over time.
+        """
+        output_data = self.get_output_as_nparray()
+        
+        return output_data[4]
+
+    def get_decisive_frequency_over_time(self) -> npt.ArrayLike:
+        """Get the DIN 45681 decisive frequency in Hz over time.
+
+        Returns
+        -------
+        numpy.ndarray
+            Decisive frequency in Hz over time.
+        """
+        output_data = self.get_output_as_nparray()
+
+        return output_data[5]
+
+    def get_tonal_adjustment_over_time(self) -> npt.ArrayLike:
+        """Get the DIN 45681 tonal adjustment Kt in dB over time.
+
+        Returns
+        -------
+        numpy.ndarray
+            Tonal adjustment Kt in dB over time.
+        """
+        output_data = self.get_output_as_nparray()
+
+        return output_data[6]
+
+    def get_time_scale(self) -> npt.ArrayLike:
+        """Get the DIN 45681 time scale in s.
+
+        Returns
+        -------
+        numpy.ndarray
+            Computation timestamps in s.
+        """
+        output_data = self.get_output_as_nparray()
+
+        return output_data[7]
+    
+    def get_spectrum_number(self) -> int:
+        """Get the number of spectra.
+
+        Returns
+        -------
+        int
+            Number of spectra.
+        """
+        pass
+
+    def get_spectrum_details(self, spectrum_index: int = 0) -> tuple[float,float,float]:
+        """Get the spectrum data.
+
+        Parameters
+        ----------
+        spectrum_index: int, default: 0
+            Index of the spectrum to get.
+
+        Returns
+        -------
+        tuple[float,float,float]
+            Decisive difference DLj in dB.
+            Uncertainty in dB.
+            Decisive frequency in Hz.
+        """
+        pass
+    
+    def get_tone_number(self, spectrum_index: int = 0) -> int:
+        """Get the number of tones.
+
+        Returns
+        -------
+        int
+            Number of tones.
+        """
+        pass
+
+    def get_tone_details(self, spectrum_index: int = 0, tone_index: int = 0) -> tuple[float,float,float,str,float,float,float,float,float]:
+        """Get the tone data.
+
+        Parameters
+        ----------
+        spectrum_index: int, default: 0
+            Index of the spectrum where the tone was detected.
+        tone_index: int, default: 0
+            Index of the tone whose details are requested.
+
+        Returns
+        -------
+        tuple[float,float,float,str,float,float,float,float,float]
+            Decisive difference DLj in dB.
+            Uncertainty in dB.
+            Decisive frequency in Hz.
+            Tone type ('' or 'FG').
+            Critical band lower limit in Hz.
+            Critical band upper limit in Hz.
+            Tone level Lt in dBA.
+            Masking noise level Lg in dBA.
+            Masking index av in dB.
+        """
+        pass
+
+    def plot(self):
+        """Plot the DIN 45681 decisive difference, decisive frequency, and tonal adjustment over time.
+
+        This method creates a figure window that displays decisive difference DLj in dB, decisive 
+        frequency in Hz, and tonal adjustment Kt in dB, over time.
+        """
+        if self._output == None:
+            raise PyAnsysSoundException(
+                "Output is not processed yet. Use the 'TonalityDIN45681.process()' method."
+            )
+        
+        decisive_difference_over_time = self.get_decisive_difference_over_time()
+        decisive_frequency_over_time = self.get_decisive_frequency_over_time()
+        tonal_adjustment_over_time = self.get_tonal_adjustment_over_time()
+
+        time_scale = self.get_time_scale()
+
+        # Plot DIN 45681 parameters over time.
+        _, axes = plt.subplots(3, 1, sharex=True)
+        axes[0].plot(time_scale, decisive_difference_over_time)
+        axes[0].set_title("DIN45681 decisive difference")
+        axes[0].set_ylabel(r"$\mathregular{\Delta L_j}$ (dB)")
+        axes[0].grid(True)
+
+        axes[1].plot(time_scale, decisive_frequency_over_time)
+        axes[1].set_title("DIN45681 decisive frequency")
+        axes[1].set_ylabel(r"$\mathregular{f_T}$ (Hz)")
+        axes[1].grid(True)
+
+        axes[2].plot(time_scale, tonal_adjustment_over_time)
+        axes[2].set_title("DIN45681 tonal adjustment")
+        axes[2].set_xlabel("Time (s)")
+        axes[2].set_ylabel(r"$\mathregular{K_T}$ (dB)")
+        axes[2].grid(True)
+
+        plt.tight_layout()
+        plt.show()

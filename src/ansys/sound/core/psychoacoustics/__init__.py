@@ -33,6 +33,7 @@ from .prominence_ratio import ProminenceRatio
 from .roughness import Roughness
 from .sharpness import Sharpness
 from .tone_to_noise_ratio import ToneToNoiseRatio
+from .tonality_din_45681 import TonalityDIN45681
 
 __all__ = (
     "PsychoacousticsParent",
@@ -43,4 +44,5 @@ __all__ = (
     "Sharpness",
     "Roughness",
     "FluctuationStrength",
+    "TonalityDIN45681",
 )
