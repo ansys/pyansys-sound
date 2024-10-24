@@ -197,7 +197,6 @@ jobs:
   doc-build:
     name: "Building library documentation"
     runs-on: [self-hosted, Windows, pyansys-sound]
-    needs: doc-style
     steps:
 
       - uses: actions/checkout@v4
@@ -235,12 +234,21 @@ jobs:
           docker run -d --name ${{ env.DPF_SOUND_CONT_NAME }} -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ secrets.LICENSE_SERVER }}" -v $env:LOCALAPPDATA\Ansys\ansys_sound_core\examples:C:\data -p ${{ env.ANSRV_DPF_SOUND_PORT }}:50052 --dns '8.8.8.8' ${{ env.ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG }}
           python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
-      - name: "Run Ansys documentation building action"
-        uses: ansys/actions/doc-build@v7
+      - name: "Build documentation"
+        uses: ansys/actions/doc-build@fix/doc-build-without-python-cache-new
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           skip-install: true
           sphinxopts: -j auto -W --keep-going
+          use-python-cache: false
+
+      - name: "Build documentation with check"
+        uses: ansys/actions/doc-build@fix/doc-build-without-python-cache-new
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          skip-install: true
+          sphinxopts: -j auto -W --keep-going
+          use-python-cache: true
 
       - name: "Stop the DPF-Sound service"
         if: always()
@@ -260,61 +268,3 @@ jobs:
 
 # =================================================================================================
 # =================================================================================================
-
-
-  package:
-    name: Package library
-    needs: [testing-windows,doc-build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Build library source and wheel artifacts
-        uses: ansys/actions/build-library@v7
-        with:
-          library-name: ${{ env.PACKAGE_NAME }}
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-
-  release:
-    name: Release project
-    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
-    needs: [package, update-changelog]
-    runs-on: ubuntu-latest
-    # Specifying a GitHub environment is optional, but strongly encouraged
-    environment: release
-    permissions:
-      id-token: write
-      contents: write
-    steps:
-      - name: Release to the public PyPI repository
-        uses: ansys/actions/release-pypi-public@v7
-        with:
-          library-name: ${{ env.PACKAGE_NAME }}
-          use-trusted-publisher: true
-
-      - name: Release to GitHub
-        uses: ansys/actions/release-github@v7
-        with:
-          library-name: ${{ env.PACKAGE_NAME }}
-
-  doc-deploy-dev:
-    name: "Upload developers documentation"
-    runs-on: ubuntu-latest
-    needs: [check-vulnerabilities-main, package]
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - name: "Deploy the latest documentation"
-        uses: ansys/actions/doc-deploy-dev@v7
-        with:
-            cname: ${{ env.DOCUMENTATION_CNAME }}
-            token: ${{ secrets.GITHUB_TOKEN }}
-
-  doc-deploy-release:
-    name: "Upload release documentation"
-    runs-on: ubuntu-latest
-    needs: release
-    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
-    steps:
-      - name: "Deploy the latest documentation"
-        uses: ansys/actions/doc-deploy-stable@v7
-        with:
-            cname: ${{ env.DOCUMENTATION_CNAME }}
-            token: ${{ secrets.GITHUB_TOKEN }}
