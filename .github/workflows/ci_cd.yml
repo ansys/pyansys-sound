@@ -241,6 +241,7 @@ jobs:
           skip-install: true
           sphinxopts: -j auto -W --keep-going
           use-python-cache: false
+          add-pdf-html-docs-as-assets: true
 
       - name: "Build documentation with check"
         uses: ansys/actions/doc-build@fix/doc-build-without-python-cache-new
@@ -249,6 +250,7 @@ jobs:
           skip-install: true
           sphinxopts: -j auto -W --keep-going
           use-python-cache: true
+          add-pdf-html-docs-as-assets: true
 
       - name: "Stop the DPF-Sound service"
         if: always()
