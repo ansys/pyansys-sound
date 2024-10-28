@@ -32,32 +32,30 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: ansys/actions/doc-deploy-changelog@v7
+      - uses: ansys/actions/doc-deploy-changelog@v8
         with:
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+          bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
+          bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
 
   doc-style:
     name: "Running documentation style checks"
     runs-on: ubuntu-latest
     steps:
       - name: "Running documentation style checks"
-        uses: ansys/actions/doc-style@v7
+        uses: ansys/actions/doc-style@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  commit-style:
-    name: "Run commit style checks"
+  pull-request-name:
+    if: github.event_name == 'pull_request'
+    name: Check the name of the pull-request
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/commit-style@v7
+      - name: Check pull-request name
+        uses: ansys/actions/check-pr-title@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-
-  branch-name-style:
-    name: "Run branch name style checks"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ansys/actions/branch-name-style@v7
 
   smoke-tests:
     name: "Build and Smoke tests"
@@ -74,7 +72,7 @@ jobs:
             os: macos-latest
     steps:
       - name: "Build wheelhouse and perform smoke test"
-        uses: ansys/actions/build-wheelhouse@v7
+        uses: ansys/actions/build-wheelhouse@v8
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
@@ -101,7 +99,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Check library vulnerabilities with default mode"
-        uses: ansys/actions/check-vulnerabilities@v7
+        uses: ansys/actions/check-vulnerabilities@v8
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
@@ -236,7 +234,7 @@ jobs:
           python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
       - name: "Run Ansys documentation building action"
-        uses: ansys/actions/doc-build@v7
+        uses: ansys/actions/doc-build@v8
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           skip-install: true
@@ -268,7 +266,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Build library source and wheel artifacts
-        uses: ansys/actions/build-library@v7
+        uses: ansys/actions/build-library@v8
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
@@ -285,13 +283,13 @@ jobs:
       contents: write
     steps:
       - name: Release to the public PyPI repository
-        uses: ansys/actions/release-pypi-public@v7
+        uses: ansys/actions/release-pypi-public@v8
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           use-trusted-publisher: true
 
       - name: Release to GitHub
-        uses: ansys/actions/release-github@v7
+        uses: ansys/actions/release-github@v8
         with:
           library-name: ${{ env.PACKAGE_NAME }}
 
@@ -302,10 +300,12 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - name: "Deploy the latest documentation"
-        uses: ansys/actions/doc-deploy-dev@v7
+        uses: ansys/actions/doc-deploy-dev@v8
         with:
-            cname: ${{ env.DOCUMENTATION_CNAME }}
-            token: ${{ secrets.GITHUB_TOKEN }}
+          cname: ${{ env.DOCUMENTATION_CNAME }}
+          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+          bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
+          bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
 
   doc-deploy-release:
     name: "Upload release documentation"
@@ -314,7 +314,9 @@ jobs:
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     steps:
       - name: "Deploy the latest documentation"
-        uses: ansys/actions/doc-deploy-stable@v7
+        uses: ansys/actions/doc-deploy-stable@v8
         with:
-            cname: ${{ env.DOCUMENTATION_CNAME }}
-            token: ${{ secrets.GITHUB_TOKEN }}
+          cname: ${{ env.DOCUMENTATION_CNAME }}
+          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+          bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
+          bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
