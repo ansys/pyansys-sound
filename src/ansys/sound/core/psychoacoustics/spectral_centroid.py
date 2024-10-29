@@ -124,7 +124,7 @@ class SpectralCentroid(PsychoacousticsParent):
         float
             Spectral centroid in Hz.
         """
-        return self._output
+        return self.get_output()
 
     def __str__(self):
         """Create the string for print() call.
