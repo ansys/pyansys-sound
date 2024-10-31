@@ -32,32 +32,30 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: ansys/actions/doc-deploy-changelog@v7
+      - uses: ansys/actions/doc-deploy-changelog@v8
         with:
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+          bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
+          bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
 
   doc-style:
     name: "Running documentation style checks"
     runs-on: ubuntu-latest
     steps:
       - name: "Running documentation style checks"
-        uses: ansys/actions/doc-style@v7
+        uses: ansys/actions/doc-style@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  commit-style:
-    name: "Run commit style checks"
+  pull-request-name:
+    if: github.event_name == 'pull_request'
+    name: Check the name of the pull-request
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/commit-style@v7
+      - name: Check pull-request name
+        uses: ansys/actions/check-pr-title@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-
-  branch-name-style:
-    name: "Run branch name style checks"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ansys/actions/branch-name-style@v7
 
   smoke-tests:
     name: "Build and Smoke tests"
@@ -74,7 +72,7 @@ jobs:
             os: macos-latest
     steps:
       - name: "Build wheelhouse and perform smoke test"
-        uses: ansys/actions/build-wheelhouse@v7
+        uses: ansys/actions/build-wheelhouse@v8
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
@@ -101,7 +99,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Check library vulnerabilities with default mode"
-        uses: ansys/actions/check-vulnerabilities@v7
+        uses: ansys/actions/check-vulnerabilities@v8
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
@@ -268,5 +266,4 @@ jobs:
               docker rm $dockerContainers
           }
 
-# =================================================================================================
 # =================================================================================================
