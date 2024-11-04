@@ -118,7 +118,7 @@ class SpectralCentroid(PsychoacousticsParent):
 
         if output == None:
             return None
-        
+
         return np.array([output])
 
     def get_spectral_centroid(self) -> float:
