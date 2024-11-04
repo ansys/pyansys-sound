@@ -40,7 +40,7 @@ class SpectralCentroid(PsychoacousticsParent):
         Parameters
         ----------
         signal: Field
-            Signal in Pa to compute spectral centroid on as a DPF field.
+            Signal to compute spectral centroid on as a DPF field.
         """
         super().__init__()
         self.signal = signal
@@ -58,7 +58,7 @@ class SpectralCentroid(PsychoacousticsParent):
         Parameters
         -------
         signal: Field
-            Signal in Pa to compute spectral centroid on as a DPF field.
+            Signal to compute spectral centroid on as a DPF field.
         """
         self.__signal = signal
 
@@ -69,7 +69,7 @@ class SpectralCentroid(PsychoacousticsParent):
         Returns
         -------
         Field
-            Signal in Pa as a DPF field.
+            Signal as a DPF field.
         """
         return self.__signal
 
@@ -114,7 +114,12 @@ class SpectralCentroid(PsychoacousticsParent):
         numpy.ndarray:
             Array of spectral centroid values in Hz.
         """
-        return np.array([self._output])
+        output = self.get_output()
+
+        if output == None:
+            return None
+        
+        return np.array([output])
 
     def get_spectral_centroid(self) -> float:
         """Get the spectral centroid.
@@ -134,9 +139,9 @@ class SpectralCentroid(PsychoacousticsParent):
         str
             Formatted info about self.
         """
-        str = __class__.__name__ + "\n"
+        str = __class__.__name__ + " object\n"
         str += "Data\n"
         str += "\t Signal name: " + self.signal.name + "\n"
-        str += f"\t Spectral centroid: {self.get_spectral_centroid()} Hz\n"
+        str += f"\t Spectral centroid: {self.get_spectral_centroid():.1f} Hz\n"
 
         return str

@@ -100,7 +100,6 @@ def test_spectral_centroid_get_spectral_centroid(dpf_sound_test_server):
     spectral_centroid_computer.process()
 
     spectral_centroid = spectral_centroid_computer.get_spectral_centroid()
-    assert spectral_centroid != None
     assert type(spectral_centroid) == float
     assert spectral_centroid == pytest.approx(EXP_SPECTRAL_CENTROID)
 
@@ -114,6 +113,9 @@ def test_spectral_centroid_get_output_as_nparray(dpf_sound_test_server):
 
     # Set signal
     spectral_centroid_computer.signal = fc[0]
+
+    spectral_centroid = spectral_centroid_computer.get_output_as_nparray()
+    assert spectral_centroid == None
 
     # Compute
     spectral_centroid_computer.process()
@@ -151,5 +153,5 @@ def test_spectral_centroid_print(dpf_sound_test_server):
     str = spectral_centroid_computer.__str__()
     assert (
         str
-        == "SpectralCentroid\nData\n\t Signal name: flute\n\t Spectral centroid: 816.0070190429688 Hz\n"  # noqa: E501
+        == "SpectralCentroid object\nData\n\t Signal name: flute\n\t Spectral centroid: 816.0 Hz\n"  # noqa: E501
     )
