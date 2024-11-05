@@ -32,6 +32,7 @@ from .loudness_iso_532_1_time_varying import LoudnessISO532_1_TimeVarying
 from .prominence_ratio import ProminenceRatio
 from .roughness import Roughness
 from .sharpness import Sharpness
+from .spectral_centroid import SpectralCentroid
 from .tone_to_noise_ratio import ToneToNoiseRatio
 
 __all__ = (
@@ -43,4 +44,5 @@ __all__ = (
     "Sharpness",
     "Roughness",
     "FluctuationStrength",
+    "SpectralCentroid",
 )
