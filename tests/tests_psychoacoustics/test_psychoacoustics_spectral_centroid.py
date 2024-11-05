@@ -115,7 +115,8 @@ def test_spectral_centroid_get_output_as_nparray(dpf_sound_test_server):
     spectral_centroid_computer.signal = fc[0]
 
     spectral_centroid = spectral_centroid_computer.get_output_as_nparray()
-    assert spectral_centroid == None
+    assert type(spectral_centroid) == np.ndarray
+    assert len(spectral_centroid) == 0
 
     # Compute
     spectral_centroid_computer.process()

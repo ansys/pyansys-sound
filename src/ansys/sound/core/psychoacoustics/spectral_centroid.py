@@ -117,7 +117,7 @@ class SpectralCentroid(PsychoacousticsParent):
         output = self.get_output()
 
         if output == None:
-            return None
+            return np.array([])
         
         return np.array([output])
 
