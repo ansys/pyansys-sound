@@ -23,7 +23,7 @@
 """Computes DIN 45681 tonality."""
 import warnings
 
-from ansys.dpf.core import Field, Operator
+from ansys.dpf.core import Field, Operator, GenericDataContainerCollection
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy import typing as npt
@@ -134,7 +134,7 @@ class TonalityDIN45681(PsychoacousticsParent):
             self.__operator.get_output(4, "field"),
             self.__operator.get_output(5, "field"),
             self.__operator.get_output(6, "field"),
-            self.__operator.get_output(7, "generic_data_container"),
+            self.__operator.get_output(7, GenericDataContainerCollection),
         )
 
     def get_output(self) -> tuple:
@@ -217,7 +217,7 @@ class TonalityDIN45681(PsychoacousticsParent):
             np.array(output[5].data),
             np.array(output[6].data),
             np.array(output[3].time_freq_support.time_frequencies.data),
-            np.array(output[7].data),
+            np.array(output[7]),
         )
 
     def get_mean_difference(self) -> float:
@@ -228,9 +228,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         float
             Mean difference DL in dB.
         """
-        output_data = self.get_output()
-
-        return output_data[0]
+        return self.get_output()[0]
 
     def get_uncertainty(self) -> float:
         """Get the DIN 45681 uncertainty in dB.
@@ -240,9 +238,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         float
             Uncertainty in dB.
         """
-        output_data = self.get_output()
-
-        return output_data[1]
+        return self.get_output()[1]
 
     def get_tonal_adjustment(self) -> float:
         """Get the DIN 45681 tonal adjustment in dB.
@@ -252,9 +248,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         float
             Tonal adjustment Kt in dB.
         """
-        output_data = self.get_output()
-
-        return output_data[2]
+        return self.get_output()[2]
 
     def get_decisive_difference_over_time(self) -> npt.ArrayLike:
         """Get the DIN 45681 decisive difference DLj in dB over time.
@@ -264,9 +258,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         numpy.ndarray
             Decisive difference DLj in dB over time.
         """
-        output_data = self.get_output_as_nparray()
-        
-        return output_data[3]
+        return self.get_output_as_nparray()[3]
 
     def get_uncertainty_over_time(self) -> npt.ArrayLike:
         """Get the DIN 45681 decisive difference uncertainty in dB over time.
@@ -276,9 +268,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         numpy.ndarray
             Decisive difference uncertainty in dB over time.
         """
-        output_data = self.get_output_as_nparray()
-        
-        return output_data[4]
+        return self.get_output_as_nparray()[4]
 
     def get_decisive_frequency_over_time(self) -> npt.ArrayLike:
         """Get the DIN 45681 decisive frequency in Hz over time.
@@ -288,9 +278,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         numpy.ndarray
             Decisive frequency in Hz over time.
         """
-        output_data = self.get_output_as_nparray()
-
-        return output_data[5]
+        return self.get_output_as_nparray()[5]
 
     def get_tonal_adjustment_over_time(self) -> npt.ArrayLike:
         """Get the DIN 45681 tonal adjustment Kt in dB over time.
@@ -300,9 +288,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         numpy.ndarray
             Tonal adjustment Kt in dB over time.
         """
-        output_data = self.get_output_as_nparray()
-
-        return output_data[6]
+        return self.get_output_as_nparray()[6]
 
     def get_time_scale(self) -> npt.ArrayLike:
         """Get the DIN 45681 time scale in s.
@@ -312,9 +298,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         numpy.ndarray
             Computation timestamps in s.
         """
-        output_data = self.get_output_as_nparray()
-
-        return output_data[7]
+        return self.get_output_as_nparray()[7]
     
     def get_spectrum_number(self) -> int:
         """Get the number of spectra.
@@ -324,7 +308,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         int
             Number of spectra.
         """
-        pass
+        return len(self.get_output()[7])
 
     def get_spectrum_details(self, spectrum_index: int = 0) -> tuple[float,float,float]:
         """Get the spectrum data.
@@ -341,7 +325,14 @@ class TonalityDIN45681(PsychoacousticsParent):
             Uncertainty in dB.
             Decisive frequency in Hz.
         """
-        pass
+        collection = self.get_output()[7]
+        spectrum = collection.at(spectrum_index)
+
+        return (
+            spectrum.get_property("decisive_difference"),
+            spectrum.get_property("uncertainty"),
+            spectrum.get_property("decisive_frequency")
+        )
     
     def get_tone_number(self, spectrum_index: int = 0) -> int:
         """Get the number of tones.
@@ -351,7 +342,10 @@ class TonalityDIN45681(PsychoacousticsParent):
         int
             Number of tones.
         """
-        pass
+        collection = self.get_output()[7]
+        spectrum = collection.at(spectrum_index)
+
+        return len(spectrum.get_property("differences"))
 
     def get_tone_details(self, spectrum_index: int = 0, tone_index: int = 0) -> tuple[float,float,float,str,float,float,float,float,float]:
         """Get the tone data.
@@ -376,7 +370,20 @@ class TonalityDIN45681(PsychoacousticsParent):
             Masking noise level Lg in dBA.
             Masking index av in dB.
         """
-        pass
+        collection = self.get_output()[7]
+        spectrum = collection.at(spectrum_index)
+
+        return (
+            spectrum.get_property("differences")[tone_index],
+            spectrum.get_property("uncertainties")[tone_index],
+            spectrum.get_property("frequencies")[tone_index],
+            spectrum.get_property("types")[tone_index],
+            spectrum.get_property("critical_band_lower_limits")[tone_index],
+            spectrum.get_property("critical_band_upper_limits")[tone_index],
+            spectrum.get_property("levels")[tone_index],
+            spectrum.get_property("masking_noise_levels")[tone_index],
+            spectrum.get_property("masking_indices")[tone_index]
+        )
 
     def plot(self):
         """Plot the DIN 45681 decisive difference, decisive frequency, and tonal adjustment over time.

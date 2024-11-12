@@ -537,7 +537,6 @@ class SoundPowerLevelISO3744(SoundPowerParent):
             raise PyAnsysSoundException(
                 "Output is not processed yet. Use the 'SoundPowerLevelISO3744.process()' method."
             )
-        output = self.get_output_as_nparray()
 
         # Display octave-band levels in the upper subplot.
         Lw = self.get_Lw_octave()

@@ -38,10 +38,14 @@ EXP_UJ3 = 10.73870086669922
 EXP_FTJ3 = 10.73870086669922
 EXP_KTJ3 = 10.73870086669922
 EXP_TIME3 = 10.73870086669922
-EXP_DETAILS3 = 10.73870086669922
 EXP_SPECTRUM_NUMBER = 3
+EXP_SPECTRUM1_DECISIVE_DIFFERENCE = 10.73870086669922
+EXP_SPECTRUM1_UNCERTAINTY = 10.73870086669922
+EXP_SPECTRUM1_DECISIVE_FREQUENCY = 10.73870086669922
 EXP_TONE_NUMBER = 2
-EXP_TONE_DETAILS21 = 10.73870086669922
+EXP_SPECTRUM1_TONE2_DIFFERENCE = 10.73870086669922
+EXP_SPECTRUM1_TONE2_TYPE = 10.73870086669922
+EXP_SPECTRUM1_TONE2_MASKING_NOISE_LEVEL = 10.73870086669922
 EXP_STR = (
     "TonalityDIN45681 object.\n"
     + "Data\n"
@@ -170,7 +174,7 @@ def test_tonality_din45681_get_output_as_nparray(dpf_sound_test_server):
     assert fTj[3] == pytest.approx(EXP_FTJ3)
     assert Ktj[3] == pytest.approx(EXP_KTJ3)
     assert time[3] == pytest.approx(EXP_TIME3)
-    assert details[3] == pytest.approx(EXP_DETAILS3)
+    assert details[3] == pytest.approx(EXP_SPECTRUM1_DECISIVE_DIFFERENCE)
 
 
 def test_tonality_din45681_get_output_as_nparray_unprocessed(dpf_sound_test_server):
@@ -315,8 +319,10 @@ def test_tonality_din45681_get_spectrum_details(dpf_sound_test_server):
     tonality = TonalityDIN45681(signal=fc[0])
     tonality.process()
 
-    details = tonality.get_spectrum_details()
-    assert details[3] == pytest.approx(EXP_DETAILS3)
+    decicive_difference, uncertainty, decisive_frequency = tonality.get_spectrum_details(spectrum_index=1)
+    assert decicive_difference == pytest.approx(EXP_SPECTRUM1_DECISIVE_DIFFERENCE)
+    assert uncertainty == pytest.approx(EXP_SPECTRUM1_UNCERTAINTY)
+    assert decisive_frequency == pytest.approx(EXP_SPECTRUM1_DECISIVE_FREQUENCY)
 
 
 def test_tonality_din45681_get_tone_number(dpf_sound_test_server):
@@ -342,7 +348,9 @@ def test_tonality_din45681_get_tone_details(dpf_sound_test_server):
     tonality.process()
 
     details = tonality.get_tone_details(spectrum_index=2, tone_index=1)
-    assert details == pytest.approx(EXP_TONE_DETAILS21)
+    assert details[0] == pytest.approx(EXP_SPECTRUM1_TONE2_DIFFERENCE)
+    assert details[3] == pytest.approx(EXP_SPECTRUM1_TONE2_TYPE)
+    assert details[7] == pytest.approx(EXP_SPECTRUM1_TONE2_MASKING_NOISE_LEVEL)
 
 
 @patch("matplotlib.pyplot.show")
