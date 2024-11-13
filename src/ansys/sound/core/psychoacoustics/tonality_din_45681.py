@@ -23,7 +23,7 @@
 """Computes DIN 45681 tonality."""
 import warnings
 
-from ansys.dpf.core import Field, Operator, GenericDataContainerCollection
+from ansys.dpf.core import Field, Operator
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy import typing as npt
