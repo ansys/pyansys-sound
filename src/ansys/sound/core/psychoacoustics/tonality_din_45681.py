@@ -23,7 +23,7 @@
 """Computes DIN 45681 tonality."""
 import warnings
 
-from ansys.dpf.core import Field, Operator
+from ansys.dpf.core import Field, Operator, GenericDataContainersCollection
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy import typing as npt
@@ -134,7 +134,7 @@ class TonalityDIN45681(PsychoacousticsParent):
             self.__operator.get_output(4, "field"),
             self.__operator.get_output(5, "field"),
             self.__operator.get_output(6, "field"),
-            self.__operator.get_output(7, GenericDataContainerCollection),
+            self.__operator.get_output(7, GenericDataContainersCollection),
         )
 
     def get_output(self) -> tuple:
