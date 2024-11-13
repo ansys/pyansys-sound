@@ -53,7 +53,7 @@ class SourceControlSpectrum(SourceControlParent):
     def duration(self, duration: float):
         """Set the duration."""
         if duration < 0.0:
-            raise PyAnsysSoundException("Duration must be non-negative.")
+            raise PyAnsysSoundException("Duration must be positive.")
         self._duration = duration
 
     @property
@@ -65,7 +65,9 @@ class SourceControlSpectrum(SourceControlParent):
     def method(self, method: int):
         """Set the method."""
         if method not in (0, 1):
-            raise PyAnsysSoundException(f"Method must be either 0 (Inverse FFT) or 1 (Hybrid).")
+            raise PyAnsysSoundException(
+                f"Method must be either 0 ({METHODS[0]}) or 1 ({METHODS[1]})."
+            )
         self._method = method
 
     def __str__(self) -> str:
