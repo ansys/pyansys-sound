@@ -25,7 +25,7 @@ import pytest
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.sound_composer import SourceControlSpectrum
 
-EXP_STR = "Duration: 0.0\nMethod: Inverse FFT"
+EXP_STR = "Duration: 0.0 s\nMethod: Inverse FFT"
 
 
 def test_source_control_spectrum_instantiation(dpf_sound_test_server):
@@ -56,6 +56,7 @@ def test_source_control_spectrum_propertiess_exceptions(dpf_sound_test_server):
     with pytest.raises(PyAnsysSoundException, match="Duration must be positive."):
         control.duration = -1.0
 
+    # Test method setter exception.
     with pytest.raises(
         PyAnsysSoundException, match="Method must be either 0 \\(Inverse FFT\\) or 1 \\(Hybrid\\)."
     ):

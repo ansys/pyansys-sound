@@ -36,9 +36,9 @@ class SourceControlSpectrum(SourceControlParent):
     Parameters
     ----------
     duration : float, default 0.0
-        Duration of the spectrum.
+        Duration of the spectrum source control in s.
     method : int, default 0
-        Method of the spectrum. 0 for Inverse FFT, 1 for Hybrid.
+        Method of the spectrum source control. 0 for Inverse FFT, 1 for Hybrid.
     """
 
     __duration: float = 0.0
@@ -72,4 +72,4 @@ class SourceControlSpectrum(SourceControlParent):
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
-        return f"Duration: {self.duration}\nMethod: {METHODS[self.method]}"
+        return f"Duration: {self.duration} s\nMethod: {METHODS[self.method]}"
