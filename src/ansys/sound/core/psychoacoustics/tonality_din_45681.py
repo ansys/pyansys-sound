@@ -31,6 +31,7 @@ from numpy import typing as npt
 from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
+TONE_TYPES = ('', 'FG')
 
 class TonalityDIN45681(PsychoacousticsParent):
     """Computes DIN 45681 tonality.
@@ -347,7 +348,7 @@ class TonalityDIN45681(PsychoacousticsParent):
 
         return len(spectrum.get_property("differences"))
 
-    def get_tone_details(self, spectrum_index: int = 0, tone_index: int = 0) -> tuple[float,float,float,str,float,float,float,float,float]:
+    def get_tone_details(self, spectrum_index: int = 0, tone_index: int = 0) -> tuple[float,float,float,str,float,float,float,float,float,float]:
         """Get the tone data.
 
         Parameters
@@ -359,13 +360,14 @@ class TonalityDIN45681(PsychoacousticsParent):
 
         Returns
         -------
-        tuple[float,float,float,str,float,float,float,float,float]
+        tuple[float,float,float,str,float,float,float,float,float,float]
             Decisive difference DLj in dB.
             Uncertainty in dB.
             Decisive frequency in Hz.
             Tone type ('' or 'FG').
             Critical band lower limit in Hz.
             Critical band upper limit in Hz.
+            Mean narrow-band masking noise level Ls in dBA.
             Tone level Lt in dBA.
             Masking noise level Lg in dBA.
             Masking index av in dB.
@@ -377,10 +379,11 @@ class TonalityDIN45681(PsychoacousticsParent):
             spectrum.get_property("differences")[tone_index],
             spectrum.get_property("uncertainties")[tone_index],
             spectrum.get_property("frequencies")[tone_index],
-            spectrum.get_property("types")[tone_index],
+            TONE_TYPES[spectrum.get_property("types")[tone_index]],
             spectrum.get_property("critical_band_lower_limits")[tone_index],
             spectrum.get_property("critical_band_upper_limits")[tone_index],
-            spectrum.get_property("levels")[tone_index],
+            spectrum.get_property("mean_narrowband_masking_noise_levels")[tone_index],
+            spectrum.get_property("tone_levels")[tone_index],
             spectrum.get_property("masking_noise_levels")[tone_index],
             spectrum.get_property("masking_indices")[tone_index]
         )
