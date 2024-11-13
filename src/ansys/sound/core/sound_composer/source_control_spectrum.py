@@ -41,25 +41,25 @@ class SourceControlSpectrum(SourceControlParent):
         Method of the spectrum. 0 for Inverse FFT, 1 for Hybrid.
     """
 
-    _duration: float = 0.0
-    _method: int = 0
+    __duration: float = 0.0
+    __method: int = 0
 
     @property
     def duration(self) -> float:
         """Get the duration."""
-        return self._duration
+        return self.__duration
 
     @duration.setter
     def duration(self, duration: float):
         """Set the duration."""
         if duration < 0.0:
             raise PyAnsysSoundException("Duration must be positive.")
-        self._duration = duration
+        self.__duration = duration
 
     @property
     def method(self) -> int:
         """Get the method."""
-        return self._method
+        return self.__method
 
     @method.setter
     def method(self, method: int):
@@ -68,7 +68,7 @@ class SourceControlSpectrum(SourceControlParent):
             raise PyAnsysSoundException(
                 f"Method must be either 0 ({METHODS[0]}) or 1 ({METHODS[1]})."
             )
-        self._method = method
+        self.__method = method
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
