@@ -21,12 +21,9 @@
 # SOFTWARE.
 
 """Sound composer's source control."""
-from dataclasses import dataclass
-
 from ._sound_composer_parent import SoundComposerParent
 
 
-@dataclass
 class SourceControlParent(SoundComposerParent):
     """
     Provides the abstract base class for the sound composer's source controls.
@@ -34,7 +31,3 @@ class SourceControlParent(SoundComposerParent):
     This is the base class of all sound composer's source control classes and should not be used as
     is.
     """
-
-    def __post_init__(self):
-        """Use parent's class initialization."""
-        super().__init__()

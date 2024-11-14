@@ -21,28 +21,36 @@
 # SOFTWARE.
 
 """Sound composer's spectrum source control."""
-from dataclasses import dataclass
-
 from .._pyansys_sound import PyAnsysSoundException
 from ._source_control_parent import SourceControlParent
 
 METHODS = ("Inverse FFT", "Hybrid")
 
 
-@dataclass
 class SourceControlSpectrum(SourceControlParent):
     """Sound composer's spectrum source control class.
 
-    Parameters
-    ----------
-    duration : float, default 0.0
-        Duration of the spectrum source control in s.
-    method : int, default 0
-        Method of the spectrum source control. 0 for Inverse FFT, 1 for Hybrid.
+    This class stores parameters for a spectrum source control.
     """
 
-    __duration: float = 0.0
-    __method: int = 0
+    def __init__(self, duration: float = 0.0, method: int = 1):
+        """
+        Create a ``SourceControlSpectrum object.
+
+        Parameters
+        ----------
+        duration : float, default 0.0
+            Duration of the spectrum source control in s.
+        method : int, default 0
+            Method of the spectrum source control. 0 for Inverse FFT, 1 for Hybrid.
+        """
+        super().__init__()
+        self.duration = duration
+        self.method = method
+
+    def __str__(self) -> str:
+        """Return the string representation of the object."""
+        return f"Duration: {self.duration} s\nMethod: {METHODS[self.method]}"
 
     @property
     def duration(self) -> float:
@@ -58,18 +66,14 @@ class SourceControlSpectrum(SourceControlParent):
 
     @property
     def method(self) -> int:
-        """Get the method."""
+        """Get the method. pouet."""
         return self.__method
 
     @method.setter
     def method(self, method: int):
-        """Set the method."""
+        """Set the method. toto."""
         if method not in (0, 1):
             raise PyAnsysSoundException(
                 f"Method must be either 0 ({METHODS[0]}) or 1 ({METHODS[1]})."
             )
         self.__method = method
-
-    def __str__(self) -> str:
-        """Return the string representation of the object."""
-        return f"Duration: {self.duration} s\nMethod: {METHODS[self.method]}"
