@@ -58,9 +58,9 @@ def test_source_control_spectrum_propertiess_exceptions(dpf_sound_test_server):
 
     # Test method setter exception.
     with pytest.raises(
-        PyAnsysSoundException, match="Method must be either 0 \\(Inverse FFT\\) or 1 \\(Hybrid\\)."
+        PyAnsysSoundException, match="Method must be either 1 \\(Inverse FFT\\) or 2 \\(Hybrid\\)."
     ):
-        control.method = 2
+        control.method = 3
 
 
 def test_source_control_spectrum___str__(dpf_sound_test_server):
