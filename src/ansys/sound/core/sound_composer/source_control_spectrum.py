@@ -30,10 +30,11 @@ METHODS = ("Inverse FFT", "Hybrid")
 class SourceControlSpectrum(SourceControlParent):
     """Sound composer's spectrum source control class.
 
-    This class stores parameters for a spectrum source control.
+    This class stores parameters for a spectrum source control, namely its duration in s and
+    method used.
     """
 
-    def __init__(self, duration: float = 0.0, method: int = 1):
+    def __init__(self, duration: float = 0.0, method: int = 0):
         """
         Create a ``SourceControlSpectrum object.
 
@@ -54,7 +55,7 @@ class SourceControlSpectrum(SourceControlParent):
 
     @property
     def duration(self) -> float:
-        """Get the duration."""
+        """Spectrum source control duration in s."""
         return self.__duration
 
     @duration.setter
@@ -66,12 +67,12 @@ class SourceControlSpectrum(SourceControlParent):
 
     @property
     def method(self) -> int:
-        """Get the method. pouet."""
+        """Spectrum source control method, 0 for Inverse FFT, 1 for Hybrid."""
         return self.__method
 
     @method.setter
     def method(self, method: int):
-        """Set the method. toto."""
+        """Set the method."""
         if method not in (0, 1):
             raise PyAnsysSoundException(
                 f"Method must be either 0 ({METHODS[0]}) or 1 ({METHODS[1]})."
