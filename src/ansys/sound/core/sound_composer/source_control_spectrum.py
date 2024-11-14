@@ -24,8 +24,6 @@
 from .._pyansys_sound import PyAnsysSoundException
 from ._source_control_parent import SourceControlParent
 
-METHODS = ("Inverse FFT", "Hybrid")
-
 
 class SourceControlSpectrum(SourceControlParent):
     """Sound composer's spectrum source control class.
@@ -34,7 +32,7 @@ class SourceControlSpectrum(SourceControlParent):
     method used.
     """
 
-    def __init__(self, duration: float = 0.0, method: int = 0):
+    def __init__(self, duration: float = 0.0, method: int = 1):
         """
         Create a ``SourceControlSpectrum`` object.
 
@@ -42,8 +40,8 @@ class SourceControlSpectrum(SourceControlParent):
         ----------
         duration : float, default 0.0
             Duration of the spectrum source control in s.
-        method : int, default 0
-            Method of the spectrum source control. 0 for Inverse FFT, 1 for Hybrid.
+        method : int, default 1
+            Method of the spectrum source control. 1 for inverse FFT, 2 for hybrid.
         """
         super().__init__()
         self.duration = duration
@@ -51,7 +49,10 @@ class SourceControlSpectrum(SourceControlParent):
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
-        return f"Duration: {self.duration} s\nMethod: {METHODS[self.method]}"
+        return (
+            f"Duration: {self.duration} s\n"
+            f"Method: {self._spectrum_synthesis_methods(self.method).name}"
+        )
 
     @property
     def duration(self) -> float:
@@ -67,14 +68,15 @@ class SourceControlSpectrum(SourceControlParent):
 
     @property
     def method(self) -> int:
-        """Spectrum source control method, 0 for Inverse FFT, 1 for Hybrid."""
+        """Spectrum source synthesis method, 1 for inverse FFT, 2 for hybrid."""
         return self.__method
 
     @method.setter
     def method(self, method: int):
         """Set the method."""
-        if method not in (0, 1):
+        if method not in (1, 2):
             raise PyAnsysSoundException(
-                f"Method must be either 0 ({METHODS[0]}) or 1 ({METHODS[1]})."
+                f"Method must be either 1 ({self._spectrum_synthesis_methods(1).name}) "
+                f"or 2 ({self._spectrum_synthesis_methods(2).name})."
             )
         self.__method = method
