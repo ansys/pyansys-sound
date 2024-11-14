@@ -36,7 +36,7 @@ class SourceControlSpectrum(SourceControlParent):
 
     def __init__(self, duration: float = 0.0, method: int = 0):
         """
-        Create a ``SourceControlSpectrum object.
+        Create a ``SourceControlSpectrum`` object.
 
         Parameters
         ----------
