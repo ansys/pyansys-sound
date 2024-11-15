@@ -41,7 +41,7 @@ class SourceControlSpectrum(SourceControlParent):
         duration : float, default 0.0
             Duration of the spectrum source control in s.
         method : int, default 1
-            Method of the spectrum source control. 1 for inverse FFT, 2 for hybrid.
+            Method of the spectrum source control. 1 for IFFT, 2 for Hybrid.
         """
         super().__init__()
         self.duration = duration
@@ -68,7 +68,7 @@ class SourceControlSpectrum(SourceControlParent):
 
     @property
     def method(self) -> int:
-        """Spectrum source synthesis method, 1 for inverse FFT, 2 for hybrid."""
+        """Spectrum source synthesis method, 1 for IFFT, 2 for Hybrid."""
         return self.__method
 
     @method.setter

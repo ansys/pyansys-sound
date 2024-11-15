@@ -34,4 +34,4 @@ class SoundComposerParent(PyAnsysSound):
     """
 
     # Class attribute (constant) containing an enum of available spectrum synthesis methods.
-    _spectrum_synthesis_methods = Enum("method", [("Inverse FFT", 1), ("Hybrid", 2)])
+    _spectrum_synthesis_methods = Enum("method", [("IFFT", 1), ("Hybrid", 2)])
