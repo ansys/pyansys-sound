@@ -30,7 +30,8 @@ class SpectrumSynthesisMethods(Enum):
     """Class providing a list of available spectrum synthesis methods.
 
     Note: The method names used here must all correspond to existing synthesis method identifiers
-    in the DPF Sound operators."""
+    in the DPF Sound operators.
+    """
 
     IFFT = 1
     Hybrid = 2
