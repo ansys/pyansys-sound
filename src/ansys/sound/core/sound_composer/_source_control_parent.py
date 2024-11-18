@@ -21,7 +21,14 @@
 # SOFTWARE.
 
 """Sound composer's source control."""
+from enum import Enum
+
 from ._sound_composer_parent import SoundComposerParent
+
+
+class SpectrumSynthesisMethods(Enum):
+    IFFT = 1
+    Hybrid = 2
 
 
 class SourceControlParent(SoundComposerParent):
