@@ -27,6 +27,8 @@ from ._sound_composer_parent import SoundComposerParent
 
 
 class SpectrumSynthesisMethods(Enum):
+    """Class providing a list of available spectrum synthesis methods."""
+
     IFFT = 1
     Hybrid = 2
 
