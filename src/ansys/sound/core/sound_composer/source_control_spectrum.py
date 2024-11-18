@@ -21,6 +21,8 @@
 # SOFTWARE.
 
 """Sound composer's spectrum source control."""
+from enum import Enum
+
 from .._pyansys_sound import PyAnsysSoundException
 from ._source_control_parent import SourceControlParent
 
@@ -31,6 +33,9 @@ class SourceControlSpectrum(SourceControlParent):
     This class stores parameters for a spectrum source control, namely its duration in s and
     method used.
     """
+
+    # Class attribute (constant) containing an enum of available spectrum synthesis methods.
+    __spectrum_synthesis_methods = Enum("method", [("IFFT", 1), ("Hybrid", 2)])
 
     def __init__(self, duration: float = 0.0, method: int = 1):
         """
@@ -49,10 +54,7 @@ class SourceControlSpectrum(SourceControlParent):
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
-        return (
-            f"Duration: {self.duration} s\n"
-            f"Method: {self._spectrum_synthesis_methods(self.method).name}"
-        )
+        return f"Duration: {self.duration} s\nMethod: {self.get_method_name()}"
 
     @property
     def duration(self) -> float:
@@ -76,7 +78,11 @@ class SourceControlSpectrum(SourceControlParent):
         """Set the method."""
         if method not in (1, 2):
             raise PyAnsysSoundException(
-                f"Method must be either 1 ({self._spectrum_synthesis_methods(1).name}) "
-                f"or 2 ({self._spectrum_synthesis_methods(2).name})."
+                f"Method must be either 1 ({self.__spectrum_synthesis_methods(1).name}) "
+                f"or 2 ({self.__spectrum_synthesis_methods(2).name})."
             )
         self.__method = method
+
+    def get_method_name(self) -> str:
+        """Get the method name."""
+        return self.__spectrum_synthesis_methods(self.method).name

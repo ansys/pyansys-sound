@@ -21,8 +21,6 @@
 # SOFTWARE.
 
 """Sound composer."""
-from enum import Enum
-
 from .._pyansys_sound import PyAnsysSound
 
 
@@ -32,6 +30,3 @@ class SoundComposerParent(PyAnsysSound):
 
     This is the base class of all sound composer classes and should not be used as is.
     """
-
-    # Class attribute (constant) containing an enum of available spectrum synthesis methods.
-    _spectrum_synthesis_methods = Enum("method", [("IFFT", 1), ("Hybrid", 2)])
