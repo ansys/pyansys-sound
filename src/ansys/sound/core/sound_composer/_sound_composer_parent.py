@@ -26,7 +26,7 @@ from .._pyansys_sound import PyAnsysSound
 
 class SoundComposerParent(PyAnsysSound):
     """
-    Provides the abstract base class for the sound composer.
+    Provides the abstract base class for the Sound Composer.
 
-    This is the base class of all sound composer classes and should not be used as is.
+    This is the base class of all Sound Composer classes and should not be used as is.
     """

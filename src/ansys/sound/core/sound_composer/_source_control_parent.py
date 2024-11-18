@@ -27,23 +27,24 @@ from ._sound_composer_parent import SoundComposerParent
 
 
 class SpectrumSynthesisMethods(Enum):
-    """Class providing a list of available spectrum synthesis methods.
+    """Class (enum) providing the list of the available methods to generate a sound from a spectrum.
 
     Note: The method names used here must all correspond to existing synthesis method identifiers
     in the DPF Sound operators.
     """
 
     IFFT = 1
-    """Synthesis method using the inverse fast Fourier transform."""
+    """Synthesis method based on the Inverse Fast Fourier Transform of the input spectrum."""
     Hybrid = 2
-    """Hybrid synthesis method (Harmonic/IFFT). If tones are detected, they are synthesized as
-    pure sines. The rest is synthesized using the inverse fast Fourier transform."""
+    """Hybrid synthesis method (Harmonic/IFFT), which combines pure tones generation and IFFT.
+    If peaks are detected in the spectrum, they are synthesized as pure tones (sine waves).
+    The rest is synthesized using the Inverse Fast Fourier Transform method."""
 
 
 class SourceControlParent(SoundComposerParent):
     """
-    Provides the abstract base class for the sound composer's source controls.
+    Provides the abstract base class for the Sound Composer's source controls.
 
-    This is the base class of all sound composer's source control classes and should not be used as
+    This is the base class of all Sound Composer's source control classes and should not be used as
     is.
     """
