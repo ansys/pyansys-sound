@@ -26,7 +26,12 @@ Helper functions related to the sound composer.
 """
 
 from ._sound_composer_parent import SoundComposerParent
-from ._source_control_parent import SourceControlParent
+from ._source_control_parent import SourceControlParent, SpectrumSynthesisMethods
 from .source_control_spectrum import SourceControlSpectrum
 
-__all__ = ("SoundComposerParent", "SourceControlParent", "SourceControlSpectrum")
+__all__ = (
+    "SoundComposerParent",
+    "SourceControlParent",
+    "SpectrumSynthesisMethods",
+    "SourceControlSpectrum",
+)
