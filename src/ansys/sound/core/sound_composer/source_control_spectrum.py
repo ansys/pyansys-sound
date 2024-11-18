@@ -71,10 +71,10 @@ class SourceControlSpectrum(SourceControlParent):
     @method.setter
     def method(self, method: int):
         """Set the method."""
-        if method not in (1, 2):
+        if method not in [m.value for m in SpectrumSynthesisMethods]:
             raise PyAnsysSoundException(
-                f"Method must be either 1 ({SpectrumSynthesisMethods(1).name}) "
-                f"or 2 ({SpectrumSynthesisMethods(2).name})."
+                "Method must be an integer. Available options are:"
+                f"{"".join(list(f"\n{m.value}: {m.name}" for m in SpectrumSynthesisMethods))}"
             )
         self.__method = method
 
