@@ -30,30 +30,30 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.psychoacoustics import TonalityDIN45681
 from ansys.sound.core.signal_utilities import LoadWav
 
-EXP_DL = 10.73870086669922
-EXP_U = 10.73870086669922
-EXP_KT = 10.73870086669922
-EXP_DLJ3 = 10.73870086669922
-EXP_UJ3 = 10.73870086669922
-EXP_FTJ3 = 10.73870086669922
-EXP_KTJ3 = 10.73870086669922
-EXP_TIME3 = 10.73870086669922
-EXP_SPECTRUM_NUMBER = 3
-EXP_SPECTRUM1_DECISIVE_DIFFERENCE = 10.73870086669922
-EXP_SPECTRUM1_UNCERTAINTY = 10.73870086669922
-EXP_SPECTRUM1_DECISIVE_FREQUENCY = 10.73870086669922
-EXP_TONE_NUMBER = 2
-EXP_SPECTRUM1_TONE2_DIFFERENCE = 10.73870086669922
-EXP_SPECTRUM1_TONE2_TYPE = 10.73870086669922
-EXP_SPECTRUM1_TONE2_MASKING_NOISE_LEVEL = 10.73870086669922
+EXP_DL = 9.791362762451172
+EXP_U = 0.8512110114097595
+EXP_KT = 5.0
+EXP_DLJ3 = 7.5474515
+EXP_UJ3 = 1.98501456
+EXP_FTJ3 = 16370.6171875
+EXP_KTJ3 = 4.0
+EXP_TIME3 = 10.48607731
+EXP_SPECTRUM_NUMBER = 6
+EXP_SPECTRUM1_DECISIVE_DIFFERENCE = 7.948031425476074
+EXP_SPECTRUM1_UNCERTAINTY = 1.4828895330429077
+EXP_SPECTRUM1_DECISIVE_FREQUENCY = 16359.8515625
+EXP_SPECTRUM1_TONE_NUMBER = 4
+EXP_SPECTRUM1_TONE3_DIFFERENCE = 4.765020370483398
+EXP_SPECTRUM1_TONE3_TYPE = ""
+EXP_SPECTRUM1_TONE3_MASKING_NOISE_LEVEL = -5.367661476135254
 EXP_STR = (
     "TonalityDIN45681 object.\n"
     + "Data\n"
-    + f"Signal name: \"flute.wav\"\n"
+    + f'Signal name: "accel_with_rpm.wav"\n'
     + f"Window length: 3.0 s\n"
     + f"Overlap: 0.0 %\n"
-    + f"Mean difference DL: 1.0 (+/-2.0) dB\n"
-    + f"Tonal adjustment Kt: 3.0 dB\n"
+    + f"Mean difference DL: 9.8 (+/-0.9) dB\n"
+    + f"Tonal adjustment Kt: 5.0 dB\n"
 )
 
 
@@ -80,6 +80,18 @@ def test_tonality_din45681_setters(dpf_sound_test_server):
     assert tonality.overlap == 15.6
 
 
+def test_tonality_din45681___str__(dpf_sound_test_server):
+    """Test __str__ method."""
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader.process()
+    fc = wav_loader.get_output()
+
+    tonality = TonalityDIN45681(signal=fc[0])
+    tonality.process()
+
+    assert tonality.__str__() == EXP_STR
+
+
 def test_tonality_din45681_setters_exceptions(dpf_sound_test_server):
     """Test TonalityDIN45681 setters' exceptions."""
     tonality = TonalityDIN45681()
@@ -89,17 +101,13 @@ def test_tonality_din45681_setters_exceptions(dpf_sound_test_server):
     ):
         tonality.signal = "Invalid"
 
-    with pytest.raises(
-        PyAnsysSoundException, match="Window length must be strictly positive."
-    ):
+    with pytest.raises(PyAnsysSoundException, match="Window length must be strictly positive."):
         tonality.window_length = 0.0
-
 
     with pytest.raises(
         PyAnsysSoundException, match="Overlap must be positive and strictly smaller than 100.0 %."
     ):
         tonality.overlap = 100.0
-
 
     with pytest.raises(
         PyAnsysSoundException, match="Overlap must be positive and strictly smaller than 100.0 %."
@@ -110,7 +118,7 @@ def test_tonality_din45681_setters_exceptions(dpf_sound_test_server):
 def test_tonality_din45681_process(dpf_sound_test_server):
     """Test process method."""
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_non_unitary_calib_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -124,15 +132,14 @@ def test_tonality_din45681_process_exception(dpf_sound_test_server):
 
     with pytest.raises(
         PyAnsysSoundException,
-        match="No input signal defined. Use 'TonalityDIN45681.signal'.",
+        match="No input signal defined. Use ``TonalityDIN45681.signal``.",
     ):
         tonality.process()
 
 
 def test_tonality_din45681_get_output(dpf_sound_test_server):
     """Test get_output method."""
-    # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_non_unitary_calib_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -149,7 +156,7 @@ def test_tonality_din45681_get_output_unprocessed(dpf_sound_test_server):
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the 'TonalityDIN45681.process()' method.",
+        match="Output is not processed yet. Use the ``TonalityDIN45681.process\\(\\)`` method.",
     ):
         output = tonality.get_output()
     assert output is None
@@ -157,24 +164,22 @@ def test_tonality_din45681_get_output_unprocessed(dpf_sound_test_server):
 
 def test_tonality_din45681_get_output_as_nparray(dpf_sound_test_server):
     """Test get_output_as_nparray method."""
-    # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_non_unitary_calib_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
     tonality = TonalityDIN45681(signal=fc[0])
     tonality.process()
 
-    DL, Kt, U, DLj, Uj, fTj, Ktj, time, details = tonality.get_output_as_nparray()
+    DL, Kt, U, DLj, Uj, fTj, Ktj, time, _ = tonality.get_output_as_nparray()
     assert DL == pytest.approx(EXP_DL)
     assert Kt == pytest.approx(EXP_KT)
-    assert U == pytest.approx(EXP_U)    
+    assert U == pytest.approx(EXP_U)
     assert DLj[3] == pytest.approx(EXP_DLJ3)
     assert Uj[3] == pytest.approx(EXP_UJ3)
     assert fTj[3] == pytest.approx(EXP_FTJ3)
     assert Ktj[3] == pytest.approx(EXP_KTJ3)
     assert time[3] == pytest.approx(EXP_TIME3)
-    assert details[3] == pytest.approx(EXP_SPECTRUM1_DECISIVE_DIFFERENCE)
 
 
 def test_tonality_din45681_get_output_as_nparray_unprocessed(dpf_sound_test_server):
@@ -183,24 +188,23 @@ def test_tonality_din45681_get_output_as_nparray_unprocessed(dpf_sound_test_serv
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the 'TonalityDIN45681.process()' method.",
-   ):
-        DL, Kt, U, DLj, Uj, fTj, Ktj, time, details = tonality.get_output_as_nparray()
-    assert np.isnan(DL) == True
-    assert np.isnan(Kt) == True
-    assert np.isnan(U) == True
+        match="Output is not processed yet. Use the ``TonalityDIN45681.process\\(\\)`` method.",
+    ):
+        DL, Kt, U, DLj, Uj, fTj, Ktj, time, _ = tonality.get_output_as_nparray()
+    assert np.isnan(DL)
+    assert np.isnan(Kt)
+    assert np.isnan(U)
     assert len(DLj) == 0
     assert len(Uj) == 0
     assert len(fTj) == 0
     assert len(Ktj) == 0
     assert len(time) == 0
-    assert len(details) == 0
 
 
 def test_tonality_din45681_get_mean_difference(dpf_sound_test_server):
     """Test get_mean_difference method."""
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_non_unitary_calib_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -214,7 +218,7 @@ def test_tonality_din45681_get_mean_difference(dpf_sound_test_server):
 def test_tonality_din45681_get_uncertainty(dpf_sound_test_server):
     """Test get_uncertainty method."""
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_non_unitary_calib_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -228,7 +232,7 @@ def test_tonality_din45681_get_uncertainty(dpf_sound_test_server):
 def test_tonality_din45681_get_tonal_adjustment(dpf_sound_test_server):
     """Test get_tonal_adjustment method."""
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_non_unitary_calib_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -242,7 +246,7 @@ def test_tonality_din45681_get_tonal_adjustment(dpf_sound_test_server):
 def test_tonality_din45681_get_decisive_difference_over_time(dpf_sound_test_server):
     """Test get_decisive_difference_over_time method."""
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_non_unitary_calib_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -256,7 +260,7 @@ def test_tonality_din45681_get_decisive_difference_over_time(dpf_sound_test_serv
 def test_tonality_din45681_get_uncertainty_over_time(dpf_sound_test_server):
     """Test get_uncertainty_over_time method."""
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_non_unitary_calib_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -270,7 +274,7 @@ def test_tonality_din45681_get_uncertainty_over_time(dpf_sound_test_server):
 def test_tonality_din45681_get_tonal_adjustment_over_time(dpf_sound_test_server):
     """Test get_tonal_adjustment_over_time method."""
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_non_unitary_calib_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -284,7 +288,7 @@ def test_tonality_din45681_get_tonal_adjustment_over_time(dpf_sound_test_server)
 def test_tonality_din45681_get_time_scale(dpf_sound_test_server):
     """Test get_time_scale method."""
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_non_unitary_calib_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -298,7 +302,7 @@ def test_tonality_din45681_get_time_scale(dpf_sound_test_server):
 def test_tonality_din45681_get_spectrum_number(dpf_sound_test_server):
     """Test get_spectrum_number method."""
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_non_unitary_calib_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -312,14 +316,16 @@ def test_tonality_din45681_get_spectrum_number(dpf_sound_test_server):
 def test_tonality_din45681_get_spectrum_details(dpf_sound_test_server):
     """Test get_spectrum_details method."""
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_non_unitary_calib_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
     tonality = TonalityDIN45681(signal=fc[0])
     tonality.process()
 
-    decicive_difference, uncertainty, decisive_frequency = tonality.get_spectrum_details(spectrum_index=1)
+    decicive_difference, uncertainty, decisive_frequency = tonality.get_spectrum_details(
+        spectrum_index=1
+    )
     assert decicive_difference == pytest.approx(EXP_SPECTRUM1_DECISIVE_DIFFERENCE)
     assert uncertainty == pytest.approx(EXP_SPECTRUM1_UNCERTAINTY)
     assert decisive_frequency == pytest.approx(EXP_SPECTRUM1_DECISIVE_FREQUENCY)
@@ -327,36 +333,52 @@ def test_tonality_din45681_get_spectrum_details(dpf_sound_test_server):
 
 def test_tonality_din45681_get_tone_number(dpf_sound_test_server):
     """Test get_tone_number method."""
-    wav_loader = LoadWav(pytest.data_path_flute_non_unitary_calib_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
     tonality = TonalityDIN45681(signal=fc[0])
     tonality.process()
 
-    tone_number = tonality.get_tone_number(spectrum_index=2)
-    assert tone_number == EXP_TONE_NUMBER
+    tone_number = tonality.get_tone_number(spectrum_index=1)
+    assert tone_number == EXP_SPECTRUM1_TONE_NUMBER
 
 
 def test_tonality_din45681_get_tone_details(dpf_sound_test_server):
     """Test get_tone_details method."""
-    wav_loader = LoadWav(pytest.data_path_flute_non_unitary_calib_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
     tonality = TonalityDIN45681(signal=fc[0])
     tonality.process()
 
-    details = tonality.get_tone_details(spectrum_index=2, tone_index=1)
-    assert details[0] == pytest.approx(EXP_SPECTRUM1_TONE2_DIFFERENCE)
-    assert details[3] == pytest.approx(EXP_SPECTRUM1_TONE2_TYPE)
-    assert details[7] == pytest.approx(EXP_SPECTRUM1_TONE2_MASKING_NOISE_LEVEL)
+    details = tonality.get_tone_details(spectrum_index=1, tone_index=3)
+    assert details[0] == pytest.approx(EXP_SPECTRUM1_TONE3_DIFFERENCE)
+    assert details[3] == pytest.approx(EXP_SPECTRUM1_TONE3_TYPE)
+    assert details[7] == pytest.approx(EXP_SPECTRUM1_TONE3_MASKING_NOISE_LEVEL)
+
+
+def test_tonality_din45681_get_tone_details_exception(dpf_sound_test_server):
+    """Test get_tone_details method's exception."""
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader.process()
+    fc = wav_loader.get_output()
+
+    tonality = TonalityDIN45681(signal=fc[0])
+    tonality.process()
+
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Tone index 10 is out of bounds \\(total tone count is 4\\).",
+    ):
+        tonality.get_tone_details(spectrum_index=1, tone_index=10)
 
 
 @patch("matplotlib.pyplot.show")
 def test_tonality_din45681_plot(mock_show, dpf_sound_test_server):
     """Test plot method."""
-    wav_loader = LoadWav(pytest.data_path_flute_non_unitary_calib_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -368,7 +390,7 @@ def test_tonality_din45681_plot(mock_show, dpf_sound_test_server):
 
 def test_tonality_din45681_plot_exception(dpf_sound_test_server):
     """Test plot method's exception."""
-    wav_loader = LoadWav(pytest.data_path_flute_non_unitary_calib_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -376,18 +398,23 @@ def test_tonality_din45681_plot_exception(dpf_sound_test_server):
 
     with pytest.raises(
         PyAnsysSoundException,
-        match="Output is not processed yet. Use the 'TonalityDIN45681.process\\(\\)' method.",
+        match="Output is not processed yet. Use the ``TonalityDIN45681.process\\(\\)`` method.",
     ):
         tonality.plot()
 
 
-def test_tonality_din45681___str__(dpf_sound_test_server):
-    """Test __str__ method."""
-    wav_loader = LoadWav(pytest.data_path_flute_non_unitary_calib_in_container)
+def test_tonality_din45681___check_spectrum_index(dpf_sound_test_server):
+    """Test __check_spectrum_index method."""
+    # Get a signal
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
     tonality = TonalityDIN45681(signal=fc[0])
     tonality.process()
 
-    assert tonality.__str__() == EXP_STR
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Spectrum index 10 is out of bounds \\(total spectrum count is 6\\).",
+    ):
+        tonality.__check_spectrum_index(spectrum_index=10)
