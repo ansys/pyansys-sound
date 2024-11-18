@@ -36,7 +36,7 @@ class SpectrumSynthesisMethods(Enum):
     IFFT = 1
     """Synthesis method using the inverse fast Fourier transform."""
     Hybrid = 2
-    """Hybrid synthesis method (Harmonic/IFFT). If tones are detected, they are synthesized as 
+    """Hybrid synthesis method (Harmonic/IFFT). If tones are detected, they are synthesized as
     pure sines. The rest is synthesized using the inverse fast Fourier transform."""
 
 
