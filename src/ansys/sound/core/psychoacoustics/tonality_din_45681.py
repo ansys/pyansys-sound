@@ -61,33 +61,32 @@ class TonalityDIN45681(PsychoacousticsParent):
 
     def __str__(self):
         """Overloads the __str__ method."""
-        string = (
+        return (
             f"{__class__.__name__} object.\n"
             "Data\n"
             f'Signal name: "{self.signal.name}"\n'
-            f"Window length: {self.window_length:.1f} s\n"
-            f"Overlap: {self.overlap:.1f} %\n"
-            f"Mean difference DL: {self.get_mean_difference():.1f} (+/-{self.get_uncertainty():.1f}) dB\n"
-            f"Tonal adjustment Kt: {self.get_tonal_adjustment():d} dB\n"
+            f"Window length: {self.window_length} s\n"
+            f"Overlap: {self.overlap} %\n"
+            f"Mean difference DL: "
+            f"{self.get_mean_difference():.1f} (+/-{self.get_uncertainty():.1f}) dB\n"
+            f"Tonal adjustment Kt: {self.get_tonal_adjustment():.0f} dB\n"
         )
 
-        return string
-
     @property
-    def signal(self):
-        """Signal property."""
+    def signal(self) -> Field:
+        """Signal in Pa as a DPF field. Default is None."""
         return self.__signal
 
     @signal.setter
     def signal(self, signal: Field):
         """Set signal property."""
-        if not isinstance(signal, Field):
+        if not (isinstance(signal, Field) or signal is None):
             raise PyAnsysSoundException("Signal must be specified as a DPF field.")
         self.__signal = signal
 
     @property
-    def window_length(self):
-        """Signal property."""
+    def window_length(self) -> float:
+        """Analysis window length in s. Default is 3.0  s."""
         return self.__window_length
 
     @window_length.setter
@@ -98,8 +97,8 @@ class TonalityDIN45681(PsychoacousticsParent):
         self.__window_length = window_length
 
     @property
-    def overlap(self):
-        """Overlap property."""
+    def overlap(self) -> float:
+        """Analysis window overlap in %. Default is 0.0 %."""
         return self.__overlap
 
     @overlap.setter
@@ -142,7 +141,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         )
 
     def get_output(self) -> tuple:
-        """Get DIN 45681 tonality data in a tuple of various types.
+        """Get the DIN 45681 tonality data in a tuple of various types.
 
         Returns
         -------
@@ -162,20 +161,21 @@ class TonalityDIN45681(PsychoacousticsParent):
 
             Seventh element (Field) is the DIN 45681 tonal adjustment Kt over time in dB.
 
-            Eighth element (GenericDataContainer) is the DIN 45681 tonality details (spectrum
-            data, tone data).
+            Eighth element (GenericDataContainer) is the DIN 45681 tonality details (individual
+            tone data for each spectrum).
         """
         if self._output == None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    f"Output is not processed yet. Use the ``{__class__.__name__}.process()`` method."
+                    f"Output is not processed yet. "
+                    f"Use the ``{__class__.__name__}.process()`` method."
                 )
             )
 
         return self._output
 
     def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
-        """Get DIN 45681 tonality data in a tuple of NumPy arrays.
+        """Get the DIN 45681 tonality data in a tuple of NumPy arrays.
 
         Returns
         -------
@@ -196,7 +196,8 @@ class TonalityDIN45681(PsychoacousticsParent):
 
             Eighth element is the time scale in s.
 
-            Ninth element is the DIN 45681 tonality details (spectrum data, tone data).
+            Ninth element is the DIN 45681 tonality details (individual tone data for each
+            spectrum).
         """
         output = self.get_output()
 
@@ -308,6 +309,8 @@ class TonalityDIN45681(PsychoacousticsParent):
     def get_spectrum_number(self) -> int:
         """Get the number of spectra.
 
+        Returns the number of analyzed spectra, ie the number of computation time steps.
+
         Returns
         -------
         int
@@ -318,6 +321,9 @@ class TonalityDIN45681(PsychoacousticsParent):
     def get_spectrum_details(self, spectrum_index: int = 0) -> tuple[float, float, float]:
         """Get the spectrum data.
 
+        Returns the data (decisive difference, uncertainty, and decisive frequency) corresponding
+        to a specific spectrum (ie time step).
+
         Parameters
         ----------
         spectrum_index: int, default: 0
@@ -327,9 +333,12 @@ class TonalityDIN45681(PsychoacousticsParent):
         -------
         tuple[float,float,float]
             Decisive difference DLj in dB.
+
             Uncertainty in dB.
+
             Decisive frequency in Hz.
         """
+        # Check validity of the input spectrum index.
         self.__check_spectrum_index(spectrum_index)
 
         return (
@@ -341,14 +350,19 @@ class TonalityDIN45681(PsychoacousticsParent):
     def get_tone_number(self, spectrum_index: int = 0) -> int:
         """Get the number of tones.
 
+        Returns the number of tones detected in a specific spectrum (ie time step).
+
         Returns
         -------
         int
             Number of tones.
         """
+        # Check validity of the input spectrum index.
         self.__check_spectrum_index(spectrum_index)
 
+        # Extract collection.
         collection = self.get_output()[7]
+        # Extract spectrum tones' data from collection, as a GenericDataContainer.
         spectrum = collection.get_entry(spectrum_index)
 
         return len(spectrum.get_property("differences"))
@@ -357,6 +371,9 @@ class TonalityDIN45681(PsychoacousticsParent):
         self, spectrum_index: int = 0, tone_index: int = 0
     ) -> tuple[float, float, float, str, float, float, float, float, float, float]:
         """Get the tone data.
+
+        Returns all data corresponding to a specific detected tone, in a specific spectrum (ie time
+        step).
 
         Parameters
         ----------
@@ -369,24 +386,37 @@ class TonalityDIN45681(PsychoacousticsParent):
         -------
         tuple[float,float,float,str,float,float,float,float,float,float]
             Decisive difference DLj in dB.
+
             Uncertainty in dB.
+
             Decisive frequency in Hz.
+
             Tone type ('' or 'FG').
+
             Critical band lower limit in Hz.
+
             Critical band upper limit in Hz.
+
             Mean narrow-band masking noise level Ls in dBA.
+
             Tone level Lt in dBA.
+
             Masking noise level Lg in dBA.
+
             Masking index av in dB.
         """
+        # Check validities of input indexes.
         self.__check_spectrum_index(spectrum_index)
 
         if tone_index >= self.get_tone_number(spectrum_index):
             raise PyAnsysSoundException(
-                f"Tone index {tone_index} out of bounds (total tone count in specified spectrum is {self.get_spectrum_number()})."
+                f"Tone index {tone_index} is out of bounds "
+                f"(total tone count in specified spectrum is {self.get_spectrum_number()})."
             )
 
+        # Extract collection.
         collection = self.get_output()[7]
+        # Extract spectrum tones' data from collection, as a GenericDataContainer.
         spectrum = collection.get_entry(spectrum_index)
 
         return (
@@ -403,7 +433,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         )
 
     def plot(self):
-        """Plot the DIN 45681 decisive difference, decisive frequency, and tonal adjustment over time.
+        """Plot the DIN 45681 decisive difference and frequency, and tonal adjustment over time.
 
         This method creates a figure window that displays decisive difference DLj in dB, decisive
         frequency in Hz, and tonal adjustment Kt in dB, over time.
@@ -413,10 +443,10 @@ class TonalityDIN45681(PsychoacousticsParent):
                 f"Output is not processed yet. Use the ``{__class__.__name__}.process()`` method."
             )
 
+        # Get data to plot
         decisive_difference_over_time = self.get_decisive_difference_over_time()
         decisive_frequency_over_time = self.get_decisive_frequency_over_time()
         tonal_adjustment_over_time = self.get_tonal_adjustment_over_time()
-
         time_scale = self.get_time_scale()
 
         # Plot DIN 45681 parameters over time.
@@ -452,5 +482,6 @@ class TonalityDIN45681(PsychoacousticsParent):
         """
         if spectrum_index >= self.get_spectrum_number():
             raise PyAnsysSoundException(
-                f"Spectrum index {spectrum_index} is out of bounds (total spectrum count is {self.get_spectrum_number()})."
+                f"Spectrum index {spectrum_index} is out of bounds "
+                f"(total spectrum count is {self.get_spectrum_number()})."
             )
