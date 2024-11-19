@@ -28,7 +28,7 @@ from ansys.sound.core.sound_composer import SourceControlSpectrum, SourceSpectru
 
 EXP_SPECTRUM_DATA3 = 3.4100000858306885
 EXP_OUTPUT_DATA5 = 0.0
-EXP_STR_NOT_SET = "Spectrum source: Not set\nSource control: Not set"
+EXP_STR_NOT_SET = "Spectrum source: Not set\nSource control: Not set/valid"
 EXP_STR_ALL_SET = (
     "Spectrum source: 'toto'\n"
     "\tFmax: 22050 Hz\n"
@@ -99,20 +99,20 @@ def test_source_spectrum_propertiess_exceptions(dpf_sound_test_server):
         source_spectrum.source_spectrum_data = "InvalidType"
 
 
-def test_source_spectrum_is_source_control_set(dpf_sound_test_server):
-    """Test SourceSpectrum is_source_control_set method."""
+def test_source_spectrum_is_source_control_valid(dpf_sound_test_server):
+    """Test SourceSpectrum is_source_control_valid method."""
     source_spectrum = SourceSpectrum()
 
-    # Test is_source_control_set method (not set case).
-    assert source_spectrum.is_source_control_set() is False
+    # Test is_source_control_valid method (not set case).
+    assert source_spectrum.is_source_control_valid() is False
 
-    # Test is_source_control_set method (set, but duration=0 case).
+    # Test is_source_control_valid method (set, but duration=0 case).
     source_spectrum.source_control = SourceControlSpectrum()
-    assert source_spectrum.is_source_control_set() is False
+    assert source_spectrum.is_source_control_valid() is False
 
-    # Test is_source_control_set method (set, duration>0).
+    # Test is_source_control_valid method (set, duration>0).
     source_spectrum.source_control.duration = 1.0
-    assert source_spectrum.is_source_control_set() is True
+    assert source_spectrum.is_source_control_valid() is True
 
 
 def test_source_specrum_load_source(dpf_sound_test_server):
@@ -155,7 +155,11 @@ def test_source_spectrum_process_exceptions(dpf_sound_test_server):
     source_spectrum = SourceSpectrum(pytest.data_path_sound_composer_spectrum_source_in_container)
     with pytest.raises(
         PyAnsysSoundException,
-        match="Spectrum source control is not set. Use ``SourceSpectrum.source_control``.",
+        match=(
+            "Spectrum source control is not valid. Either it is not set "
+            "\\(use ``SourceSpectrum.source_control``\\) or its duration is not strictly positive "
+            "\\(use ``SourceSpectrum.source_control.duration``\\)."
+        ),
     ):
         source_spectrum.process()
 

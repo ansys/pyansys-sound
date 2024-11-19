@@ -31,6 +31,6 @@ class SourceParent(SoundComposerParent):
     This is the base class of all sound composer's source classes and should not be used as is.
     """
 
-    def is_source_control_set(self) -> bool:
-        """Check if the source control is set."""
+    def is_source_control_valid(self) -> bool:
+        """Check if the source control is valid."""
         return False

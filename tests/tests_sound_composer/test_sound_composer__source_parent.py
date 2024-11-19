@@ -23,9 +23,9 @@
 from ansys.sound.core.sound_composer import SourceParent
 
 
-def test__source_parent_is_source_control_set(dpf_sound_test_server):
-    """Test SourceParent's is_source_control_set method."""
+def test__source_parent_is_source_control_valid(dpf_sound_test_server):
+    """Test SourceParent's is_source_control_valid method."""
     control = SourceParent()
 
-    result = control.is_source_control_set()
+    result = control.is_source_control_valid()
     assert result is False

@@ -79,12 +79,12 @@ class SourceSpectrum(SourceParent):
         else:
             str_source = "Not set"
 
-        if self.is_source_control_set():
+        if self.is_source_control_valid():
             str_source_control = (
                 f"{self.source_control.get_method_name()}, {self.source_control.duration} s"
             )
         else:
-            str_source_control = "Not set"
+            str_source_control = "Not set/valid"
 
         return f"Spectrum source: {str_source}\nSource control: {str_source_control}"
 
@@ -122,7 +122,7 @@ class SourceSpectrum(SourceParent):
             )
         self.__source_spectrum_data = source_spectrum_data
 
-    def is_source_control_set(self) -> bool:
+    def is_source_control_valid(self) -> bool:
         """Source control verification.
 
         Check if the spectrum source control is set and its duration is strictly positive.
@@ -165,9 +165,12 @@ class SourceSpectrum(SourceParent):
         sampling_frequency: float, default 44100.0
             Sampling frequency of the generated sound in Hz.
         """
-        if not self.is_source_control_set():
+        if not self.is_source_control_valid():
             raise PyAnsysSoundException(
-                f"Spectrum source control is not set. Use ``{__class__.__name__}.source_control``."
+                "Spectrum source control is not valid. Either it is not set "
+                f"(use ``{__class__.__name__}.source_control``) "
+                "or its duration is not strictly positive "
+                f"(use ``{__class__.__name__}.source_control.duration``)."
             )
 
         if self.source_spectrum_data is None:
