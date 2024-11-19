@@ -20,31 +20,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Psychoacoustics functions.
+"""Sound composer functions.
 
-Helper functions related to the computation of psychoacoustics indicators.
+Helper functions related to the sound composer.
 """
 
-from ._psychoacoustics_parent import PsychoacousticsParent
-from .fluctuation_strength import FluctuationStrength
-from .loudness_iso_532_1_stationary import LoudnessISO532_1_Stationary
-from .loudness_iso_532_1_time_varying import LoudnessISO532_1_TimeVarying
-from .prominence_ratio import ProminenceRatio
-from .roughness import Roughness
-from .sharpness import Sharpness
-from .spectral_centroid import SpectralCentroid
-from .tonality_din_45681 import TonalityDIN45681
-from .tone_to_noise_ratio import ToneToNoiseRatio
+from ._sound_composer_parent import SoundComposerParent
+from ._source_control_parent import SourceControlParent, SpectrumSynthesisMethods
+from .source_control_spectrum import SourceControlSpectrum
 
 __all__ = (
-    "PsychoacousticsParent",
-    "LoudnessISO532_1_Stationary",
-    "LoudnessISO532_1_TimeVarying",
-    "ProminenceRatio",
-    "ToneToNoiseRatio",
-    "Sharpness",
-    "Roughness",
-    "FluctuationStrength",
-    "TonalityDIN45681",
-    "SpectralCentroid",
+    "SoundComposerParent",
+    "SourceControlParent",
+    "SpectrumSynthesisMethods",
+    "SourceControlSpectrum",
 )

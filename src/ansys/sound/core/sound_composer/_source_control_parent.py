@@ -20,31 +20,31 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Psychoacoustics functions.
+"""Sound composer's source control."""
+from enum import Enum
 
-Helper functions related to the computation of psychoacoustics indicators.
-"""
+from ._sound_composer_parent import SoundComposerParent
 
-from ._psychoacoustics_parent import PsychoacousticsParent
-from .fluctuation_strength import FluctuationStrength
-from .loudness_iso_532_1_stationary import LoudnessISO532_1_Stationary
-from .loudness_iso_532_1_time_varying import LoudnessISO532_1_TimeVarying
-from .prominence_ratio import ProminenceRatio
-from .roughness import Roughness
-from .sharpness import Sharpness
-from .spectral_centroid import SpectralCentroid
-from .tonality_din_45681 import TonalityDIN45681
-from .tone_to_noise_ratio import ToneToNoiseRatio
 
-__all__ = (
-    "PsychoacousticsParent",
-    "LoudnessISO532_1_Stationary",
-    "LoudnessISO532_1_TimeVarying",
-    "ProminenceRatio",
-    "ToneToNoiseRatio",
-    "Sharpness",
-    "Roughness",
-    "FluctuationStrength",
-    "TonalityDIN45681",
-    "SpectralCentroid",
-)
+class SpectrumSynthesisMethods(Enum):
+    """Class (enum) providing the list of the available methods to generate a sound from a spectrum.
+
+    Note: The method names used here must all correspond to existing synthesis method identifiers
+    in the DPF Sound operators.
+    """
+
+    IFFT = 1
+    """Synthesis method based on the Inverse Fast Fourier Transform of the input spectrum."""
+    Hybrid = 2
+    """Hybrid synthesis method (Harmonic/IFFT), which combines pure tones generation and IFFT.
+    If peaks are detected in the spectrum, they are synthesized as pure tones (sine waves).
+    The rest is synthesized using the Inverse Fast Fourier Transform method."""
+
+
+class SourceControlParent(SoundComposerParent):
+    """
+    Provides the abstract base class for the Sound Composer's source controls.
+
+    This is the base class of all Sound Composer's source control classes and should not be used as
+    is.
+    """

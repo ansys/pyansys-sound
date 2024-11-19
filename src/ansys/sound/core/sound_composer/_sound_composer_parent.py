@@ -20,31 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Psychoacoustics functions.
+"""Sound composer."""
+from .._pyansys_sound import PyAnsysSound
 
-Helper functions related to the computation of psychoacoustics indicators.
-"""
 
-from ._psychoacoustics_parent import PsychoacousticsParent
-from .fluctuation_strength import FluctuationStrength
-from .loudness_iso_532_1_stationary import LoudnessISO532_1_Stationary
-from .loudness_iso_532_1_time_varying import LoudnessISO532_1_TimeVarying
-from .prominence_ratio import ProminenceRatio
-from .roughness import Roughness
-from .sharpness import Sharpness
-from .spectral_centroid import SpectralCentroid
-from .tonality_din_45681 import TonalityDIN45681
-from .tone_to_noise_ratio import ToneToNoiseRatio
+class SoundComposerParent(PyAnsysSound):
+    """
+    Provides the abstract base class for the Sound Composer.
 
-__all__ = (
-    "PsychoacousticsParent",
-    "LoudnessISO532_1_Stationary",
-    "LoudnessISO532_1_TimeVarying",
-    "ProminenceRatio",
-    "ToneToNoiseRatio",
-    "Sharpness",
-    "Roughness",
-    "FluctuationStrength",
-    "TonalityDIN45681",
-    "SpectralCentroid",
-)
+    This is the base class of all Sound Composer classes and should not be used as is.
+    """
