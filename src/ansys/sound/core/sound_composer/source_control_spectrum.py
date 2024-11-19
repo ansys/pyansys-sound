@@ -30,19 +30,17 @@ class SourceControlSpectrum(SourceControlParent):
 
     This class stores the control parameters used by the Sound Composer for a spectrum source,
     namely its duration in seconds and the sound generation method to be used.
+
+    Parameters
+    ----------
+    duration : float, default 0.0
+        Duration of the sound generated from the spectrum source, in seconds.
+    method : int, default 1
+        Sound generation method to be used. 1 for IFFT, 2 for Hybrid.
     """
 
     def __init__(self, duration: float = 0.0, method: int = 1):
-        """
-        Create a ``SourceControlSpectrum`` object.
-
-        Parameters
-        ----------
-        duration : float, default 0.0
-            Duration of the sound generated from the spectrum source, in seconds.
-        method : int, default 1
-            Sound generation method to be used. 1 for IFFT, 2 for Hybrid.
-        """
+        """Create a ``SourceControlSpectrum`` object."""
         super().__init__()
         self.duration = duration
         self.method = method
