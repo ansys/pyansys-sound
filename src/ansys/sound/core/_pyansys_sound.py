@@ -95,6 +95,11 @@ class PyAnsysSound:
         This method converts a multichannel signal contained in a DPF fields container to a
         NumPy array.
 
+        Parameters
+        ----------
+        fc : FieldsContainer
+            DPF fields container to convert to NumPy arrays.
+
         Returns
         -------
         np.array
