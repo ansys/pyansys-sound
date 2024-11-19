@@ -52,8 +52,7 @@ class SourceSpectrum(SourceParent):
         file_source: str, default ""
             File path to the spectrum source data file.
         source_control: SourceControlSpectrum, default None
-            Spectrum source control object.
-
+            Spectrum source control object associated to this source.
         """
         super().__init__()
         self.source_control = source_control
@@ -91,7 +90,10 @@ class SourceSpectrum(SourceParent):
 
     @property
     def source_control(self) -> SourceControlSpectrum:
-        """Source control as a ``SourceControlSpectrum``."""
+        """Spectrum source control object.
+
+        Contains the duration and the method used to generate the sound.
+        """
         return self.__source_control
 
     @source_control.setter
@@ -105,7 +107,7 @@ class SourceSpectrum(SourceParent):
 
     @property
     def source_spectrum_data(self) -> Field:
-        """Spectrum source as a DPF field.
+        """Spectrum source data as a DPF field.
 
         Contains the frequencies, the levels (as a PSD) and the unit (unit^2/Hz).
         """
@@ -121,7 +123,9 @@ class SourceSpectrum(SourceParent):
         self.__source_spectrum_data = source_spectrum_data
 
     def is_source_control_set(self) -> bool:
-        """Check if the spectrum source control is set.
+        """Source control verification.
+
+        Check if the spectrum source control is set and its duration is strictly positive.
 
         Returns
         -------
@@ -159,7 +163,7 @@ class SourceSpectrum(SourceParent):
         Parameters
         ----------
         sampling_frequency: float, default 44100.0
-            Generated sound sampling frequency in Hz.
+            Sampling frequency of the generated sound in Hz.
         """
         if not self.is_source_control_set():
             raise PyAnsysSoundException(
