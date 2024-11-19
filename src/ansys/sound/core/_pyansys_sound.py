@@ -89,7 +89,7 @@ class PyAnsysSound:
         warnings.warn(PyAnsysSoundWarning("There is nothing to output."))
         return np.empty(0)
 
-    def convert_fields_container_to_np_array(self, fc):
+    def convert_fields_container_to_np_array(self, fc) -> ArrayLike:
         """Convert a DPF fields container to a NumPy array.
 
         This method converts a multichannel signal contained in a DPF fields container to a
