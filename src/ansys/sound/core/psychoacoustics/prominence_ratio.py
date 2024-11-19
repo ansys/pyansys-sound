@@ -38,33 +38,32 @@ class ProminenceRatio(PsychoacousticsParent):
 
     This class computes the PR on a power spectral density (PSD)
     following the ECMA 418-1 and ISO 7779 standards.
+
+    Parameters
+    ----------
+    psd: Field
+        PSD of the signal to compute PR on as a DPF field.
+        The PSD field has the following characteristics:
+
+        - num_entities = 1
+        - location = "TimeFreq_sets"
+        - data: Vector of amplitude values in unit^2/Hz
+        - time_freq_support: Vector of regularly spaced frequencies in Hz associated with
+            amplitude values (from 0 Hz to the maximum frequency)
+        - unit = "<unit>^2/Hz" (where <unit> is Pa for example).
+
+        You can use the ``ansys.dpf.core.fields_factory.create_scalar_field()`` function
+        to create the field.
+
+    frequency_list: list, default: None
+        List of the frequencies in Hz of the tones (peaks in the spectrum)
+        to calculate the PR on. The default is ``None``, in which case a peak
+        detection method is applied to automatically find the tones in the input
+        spectrum. Then, the PR is calculated for each detected tone.
     """
 
     def __init__(self, psd: Field = None, frequency_list: list = None):
-        """Create a ``ProminenceRatio`` object.
-
-        Parameters
-        ----------
-        psd: Field
-            PSD of the signal to compute PR on as a DPF field.
-            The PSD field has the following characteristics:
-
-            - num_entities = 1
-            - location = "TimeFreq_sets"
-            - data: Vector of amplitude values in unit^2/Hz
-            - time_freq_support: Vector of regularly spaced frequencies in Hz associated with
-              amplitude values (from 0 Hz to the maximum frequency)
-            - unit = "<unit>^2/Hz" (where <unit> is Pa for example).
-
-            You can use the ``ansys.dpf.core.fields_factory.create_scalar_field()`` function
-            to create the field.
-
-        frequency_list: list, default: None
-            List of the frequencies in Hz of the tones (peaks in the spectrum)
-            to calculate the PR on. The default is ``None``, in which case a peak
-            detection method is applied to automatically find the tones in the input
-            spectrum. Then, the PR is calculated for each detected tone.
-        """
+        """Create a ``ProminenceRatio`` object."""
         super().__init__()
         self.psd = psd  # uses the setter
         self.frequency_list = frequency_list  # uses the setter

@@ -40,16 +40,15 @@ class Roughness(PsychoacousticsParent):
 
     Reference: Daniel and Weber, "Psychoacoustical roughness: implementation of an
     optimized model." Acta Acustica united with Acustica, 83, pp. 113-123 (1997).
+
+    Parameters
+    ----------
+    signal: Field | FieldsContainer
+        Signal in Pa to compute roughness on as a DPF field or fields container.
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Create a ``Roughness`` object.
-
-        Parameters
-        ----------
-        signal: Field | FieldsContainer
-            Signal in Pa to compute roughness on as a DPF field or fields container.
-        """
+        """Create a ``Roughness`` object."""
         super().__init__()
         self.signal = signal
         self.__operator = Operator("compute_roughness")

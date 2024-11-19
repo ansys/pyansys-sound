@@ -31,25 +31,25 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class WriteWav(SignalUtilitiesParent):
-    """Write a signal to a WAV file."""
+    """Write a signal to a WAV file.
+
+    Parameters
+    ----------
+    signal: FieldsContainer, default: None
+        Signal to write to a WAV file. Each channel in the DPF fields container is a field.
+    path_to_write: str, default: ''
+        Path for the WAV file. This parameter can be set during the instantiation
+        of the object or with the ``LoadWav.set_path()`` method.
+    bit_depth: str, default: 'float32'
+        Bit depth. Options are ``'float32'``, ``'int32'``, ``'int16'``, and ``'int8'``.
+        This means that the samples are respectively coded into the WAV file
+        using 32 bits (32-bit IEEE Float), 32 bits (int), 16 bits (int), or 8 bits (int).
+    """
 
     def __init__(
         self, signal: FieldsContainer = None, path_to_write: str = "", bit_depth: str = "float32"
     ):
-        """Create a ``WriteWav`` class.
-
-        Parameters
-        ----------
-        signal: FieldsContainer, default: None
-            Signal to write to a WAV file. Each channel in the DPF fields container is a field.
-        path_to_write: str, default: ''
-            Path for the WAV file. This parameter can be set during the instantiation
-            of the object or with the ``LoadWav.set_path()`` method.
-        bit_depth: str, default: 'float32'
-            Bit depth. Options are ``'float32'``, ``'int32'``, ``'int16'``, and ``'int8'``.
-            This means that the samples are respectively coded into the WAV file
-            using 32 bits (32-bit IEEE Float), 32 bits (int), 16 bits (int), or 8 bits (int).
-        """
+        """Create a ``WriteWav`` class."""
         super().__init__()
         self.path_to_write = path_to_write
         self.signal = signal

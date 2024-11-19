@@ -35,35 +35,35 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class XtractTonal(XtractParent):
-    """Performs signal tonal analysis using the Xtract algorithm."""
+    """Performs signal tonal analysis using the Xtract algorithm.
+
+    Parameters
+    ----------
+    input_signal: FieldsContainer | Field, default: None
+        One or more signals to extract tonal components from
+        as a DPF field or fields container.
+        When inputting a fields container,
+        each signal (each field of the fields container) is processed individually.
+    input_parameters:
+        Structure that contains the parameters of the algorithm:
+
+        - NFFT (int) is the number of points used for the FFT computation.
+        - Regularity setting (float) in percent.
+        - Maximum slope (float) in dB/Hz.
+        - Minimum duration (float) in seconds.
+        - Intertonal gap (float) in Hz.
+        - Local smergence (float) in dB.
+
+        This structure is of the ``XtractTonalParameters`` type. For more information,
+        see this class.
+    """
 
     def __init__(
         self,
         input_signal: FieldsContainer | Field = None,
         input_parameters: XtractTonalParameters = None,
     ):
-        """Create an ``XtractTonal`` instance.
-
-        Parameters
-        ----------
-        input_signal: FieldsContainer | Field, default: None
-            One or more signals to extract tonal components from
-            as a DPF field or fields container.
-            When inputting a fields container,
-            each signal (each field of the fields container) is processed individually.
-        input_parameters:
-            Structure that contains the parameters of the algorithm:
-
-            - NFFT (int) is the number of points used for the FFT computation.
-            - Regularity setting (float) in percent.
-            - Maximum slope (float) in dB/Hz.
-            - Minimum duration (float) in seconds.
-            - Intertonal gap (float) in Hz.
-            - Local smergence (float) in dB.
-
-            This structure is of the ``XtractTonalParameters`` type. For more information,
-            see this class.
-        """
+        """Create an ``XtractTonal`` instance."""
         super().__init__()
         self.input_signal = input_signal
         self.input_parameters = input_parameters

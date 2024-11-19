@@ -31,22 +31,22 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class CropSignal(SignalUtilitiesParent):
-    """Crops a signal."""
+    """Crops a signal.
+
+    Parameters
+    ----------
+    signal: FieldsContainer | Field, default: None
+        Signal to resample as a DPF field or fields container.
+    start_time: float, default: 0.0
+        Start time of the part to crop in seconds.
+    end_time: float, default: 0.0
+        End time of the part to crop in seconds.
+    """
 
     def __init__(
         self, signal: Field | FieldsContainer = None, start_time: float = 0.0, end_time: float = 0.0
     ):
-        """Create a ``CropSignal`` instance.
-
-        Parameters
-        ----------
-        signal: FieldsContainer | Field, default: None
-            Signal to resample as a DPF field or fields container.
-        start_time: float, default: 0.0
-            Start time of the part to crop in seconds.
-        end_time: float, default: 0.0
-            End time of the part to crop in seconds.
-        """
+        """Create a ``CropSignal`` instance."""
         super().__init__()
         self.signal = signal
         self.start_time = start_time

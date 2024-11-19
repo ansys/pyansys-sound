@@ -32,23 +32,23 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class ApplyGain(SignalUtilitiesParent):
-    """Applies a gain to a signal."""
+    """Applies a gain to a signal.
+
+    Parameters
+    ----------
+    signal: Field | FieldsContainer, default: None
+        Signals to apply gain on as a DPF field or fields container.
+    gain: float, default: 0.0
+        Gain value in decibels (dB) or linear unit. By default, gain is specified in decibels.
+        However, you can use the next parameter to change to a linear unit.
+    gain_in_db: bool, default: True
+        Whether gain is in dB. When ``False``, gain is in a linear unit.
+    """
 
     def __init__(
         self, signal: Field | FieldsContainer = None, gain: float = 0.0, gain_in_db: bool = True
     ):
-        """Create an ``ApplyGain`` instance.
-
-        Parameters
-        ----------
-        signal: Field | FieldsContainer, default: None
-            Signals to apply gain on as a DPF field or fields container.
-        gain: float, default: 0.0
-            Gain value in decibels (dB) or linear unit. By default, gain is specified in decibels.
-            However, you can use the next parameter to change to a linear unit.
-        gain_in_db: bool, default: True
-            Whether gain is in dB. When ``False``, gain is in a linear unit.
-        """
+        """Create an ``ApplyGain`` instance."""
         super().__init__()
         self.signal = signal
         self.gain = gain

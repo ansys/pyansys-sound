@@ -39,6 +39,26 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     """Computes ISO 3744 sound power level.
 
     This class computes the sound power level following the ISO 3744 standard.
+
+    Parameters
+    ----------
+    surface_shape: str, default: 'Hemisphere'
+        Shape of measurement surface. Available options are 'Hemisphere' (default) and
+        'Half-hemisphere'.
+    surface_radius: float, default: 1.0
+        Radius in m of the hemisphere or half-hemisphere measurement surface.
+        By default, 1.0 meter.
+    K1: float, default: 0.0
+        Background noise correction K1 in dB (section 8.2.3 of ISO 3744).
+        By default, 0.0 dB.
+    K2: float, default: 0.0
+        Environmental correction K2 in dB (Annex A of ISO 3744). By default, 0.0 dB.
+    C1: float, default: 0.0
+        Meteorological reference quantity correction C1 in dB (Annex G of ISO 3744).
+        By default, 0.0 dB.
+    C2: float, default: 0.0
+        Meteorological radiation impedance correction C2 in dB (Annex G of ISO 3744).
+        By default, 0.0 dB.
     """
 
     def __init__(
@@ -50,28 +70,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         C1: float = 0.0,
         C2: float = 0.0,
     ):
-        """Create a ``SoundPowerLevelISO3744`` object.
-
-        Parameters
-        ----------
-        surface_shape: str, default: 'Hemisphere'
-            Shape of measurement surface. Available options are 'Hemisphere' (default) and
-            'Half-hemisphere'.
-        surface_radius: float, default: 1.0
-            Radius in m of the hemisphere or half-hemisphere measurement surface.
-            By default, 1.0 meter.
-        K1: float, default: 0.0
-            Background noise correction K1 in dB (section 8.2.3 of ISO 3744).
-            By default, 0.0 dB.
-        K2: float, default: 0.0
-            Environmental correction K2 in dB (Annex A of ISO 3744). By default, 0.0 dB.
-        C1: float, default: 0.0
-            Meteorological reference quantity correction C1 in dB (Annex G of ISO 3744).
-            By default, 0.0 dB.
-        C2: float, default: 0.0
-            Meteorological radiation impedance correction C2 in dB (Annex G of ISO 3744).
-            By default, 0.0 dB.
-        """
+        """Create a ``SoundPowerLevelISO3744`` object."""
         super().__init__()
         self.surface_shape = surface_shape
         self.surface_radius = surface_radius

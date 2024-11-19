@@ -35,29 +35,29 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class XtractDenoiser(XtractParent):
-    """Provides signal denoising using the Xtract algorithm."""
+    """Provides signal denoising using the Xtract algorithm.
+
+    Parameters
+    ----------
+    input_signal: FieldsContainer | Field, default: None
+        One or more signals to denoise as a DPF fields container or field. When inputting a
+        fields container, each signal (each field of the fields container) is processed
+        individually.
+    input_parameters: XtractDenoiserParametersm default: None
+        Structure that contains the parameters of the algorithm:
+
+        - Noise PSD (Field): Power spectral density of the noise
+
+        This structure is of the ``XtractDenoiserParameters`` type. For more information,
+        see this class.
+    """
 
     def __init__(
         self,
         input_signal: FieldsContainer | Field = None,
         input_parameters: XtractDenoiserParameters = None,
     ):
-        """Create an ``XtractDenoiser`` instance.
-
-        Parameters
-        ----------
-        input_signal: FieldsContainer | Field, default: None
-            One or more signals to denoise as a DPF fields container or field. When inputting a
-            fields container, each signal (each field of the fields container) is processed
-            individually.
-        input_parameters: XtractDenoiserParametersm default: None
-            Structure that contains the parameters of the algorithm:
-
-            - Noise PSD (Field): Power spectral density of the noise
-
-            This structure is of the ``XtractDenoiserParameters`` type. For more information,
-            see this class.
-        """
+        """Create an ``XtractDenoiser`` instance."""
         super().__init__()
         self.input_signal = input_signal
         self.input_parameters = input_parameters

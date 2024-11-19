@@ -32,17 +32,17 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class LoadWav(SignalUtilitiesParent):
-    """Loads a signal from a WAV file."""
+    """Loads a signal from a WAV file.
+
+    Parameters
+    ----------
+    path_to_wav: str, default: ""
+        Path to the WAV file to load. The path can be set during the instantiation
+        of the object or with the ``LoadWav.set_path()`` method.
+    """
 
     def __init__(self, path_to_wav: str = ""):
-        """Create a ``LoadWav`` instance.
-
-        Parameters
-        ----------
-        path_to_wav: str, default: ""
-            Path to the WAV file to load. The path can be set during the instantiation
-            of the object or with the ``LoadWav.set_path()`` method.
-        """
+        """Create a ``LoadWav`` instance."""
         super().__init__()
         self.path_to_wav = path_to_wav
         self.__operator = Operator("load_wav_sas")

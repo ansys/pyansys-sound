@@ -31,18 +31,18 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class ZeroPad(SignalUtilitiesParent):
-    """Adds zeros to the end of a signal."""
+    """Adds zeros to the end of a signal.
+
+    Parameters
+    ----------
+    signal: Field | FieldsContainer, default: None
+        Signal to add zeros to the end of as a DPF field or fields container.
+    duration_zeros: float: default: 0.0
+        Duration in seconds of the zeros to append to the input signal.
+    """
 
     def __init__(self, signal: Field | FieldsContainer = None, duration_zeros: float = 0.0):
-        """Create a ``ZeroPad`` instance.
-
-        Parameters
-        ----------
-        signal: Field | FieldsContainer, default: None
-            Signal to add zeros to the end of as a DPF field or fields container.
-        duration_zeros: float: default: 0.0
-            Duration in seconds of the zeros to append to the input signal.
-        """
+        """Create a ``ZeroPad`` instance."""
         super().__init__()
         self.signal = signal
         self.duration_zeros = duration_zeros

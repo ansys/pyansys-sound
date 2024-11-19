@@ -43,17 +43,16 @@ class FluctuationStrength(PsychoacousticsParent):
 
     Reference: "Entwicklung eines Modulkonzeptes fur die psychoakustische Gerauschanalyse under
     MATLAB". Master thesis, Technischen Universitat Graz, pp. 1-112 (1998).
+
+    Parameters
+    ----------
+    signal: Field | FieldsContainer
+        Signal in Pa to compute fluctuation strength on as a DPF field or fields
+        container.
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Create a ``FluctuationStrength`` object.
-
-        Parameters
-        ----------
-        signal: Field | FieldsContainer
-            Signal in Pa to compute fluctuation strength on as a DPF field or fields
-            container.
-        """
+        """Create a ``FluctuationStrength`` object."""
         super().__init__()
         self.signal = signal
         self.__operator = Operator("compute_fluctuation_strength")

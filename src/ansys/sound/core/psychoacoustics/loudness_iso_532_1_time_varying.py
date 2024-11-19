@@ -37,17 +37,16 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
     This class computes the loudness of a signal following the ISO 532-1 standard for time-varying
     sounds.
+
+    Parameters
+    ----------
+    signal: Field | FieldsContainer
+        Signal to compute time-varying ISO532-1 loudness on as a DPF field or fields
+        container.
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Create a ``LoudnessISO532_1_TimeVarying`` object.
-
-        Parameters
-        ----------
-        signal: Field | FieldsContainer
-            Signal to compute time-varying ISO532-1 loudness on as a DPF field or fields
-            container.
-        """
+        """Create a ``LoudnessISO532_1_TimeVarying`` object."""
         super().__init__()
         self.signal = signal
         self.__operator = Operator("compute_loudness_iso532_1_vs_time")

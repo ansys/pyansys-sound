@@ -32,16 +32,16 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Sharpness(PsychoacousticsParent):
-    """Computes the sharpness of a signal according to Zwicker & Fastl's model."""
+    """Computes the sharpness of a signal according to Zwicker & Fastl's model.
+
+    Parameters
+    ----------
+    signal: Field | FieldsContainer
+        Signal in Pa to compute sharpness on as a DPF field or fields container.
+    """
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Create a ``Sharpness`` object.
-
-        Parameters
-        ----------
-        signal: Field | FieldsContainer
-            Signal in Pa to compute sharpness on as a DPF field or fields container.
-        """
+        """Create a ``Sharpness`` object."""
         super().__init__()
         self.signal = signal
         self.__operator = Operator("compute_sharpness")
