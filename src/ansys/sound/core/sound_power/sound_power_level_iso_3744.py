@@ -114,8 +114,8 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
     @property
     def surface_shape(self):
-        """ Shape of the measurement surface. 
-        
+        """Shape of the measurement surface.
+
         Available options are 'Hemisphere' and 'Half-hemisphere'. Default is 'Hemisphere'.
         """
         return self.__surface_shape
@@ -145,7 +145,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     @property
     def K1(self):
         """Background noise correction K1 in dB.
-        
+
         See section 8.2.3 of ISO 3744. Default is 0.0 dB.
         """
         return self.__K1
@@ -158,7 +158,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     @property
     def K2(self):
         """Environmental correction K2 in dB.
-        
+
         See annex A of ISO 3744. Default is 0.0 dB.
         """
         return self.__K2
@@ -171,7 +171,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     @property
     def C1(self):
         """Meteorological reference quantity correction C1 in dB.
-        
+
         See annex G of ISO 3744. Default is 0.0 dB.
         """
         return self.__C1
@@ -183,8 +183,8 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
     @property
     def C2(self):
-        """ Meteorological radiation impedance correction C2 in dB.
-        
+        """Meteorological radiation impedance correction C2 in dB.
+
         See annex G of ISO 3744).Default is 0.0 dB.
         """
         return self.__C2
