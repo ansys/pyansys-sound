@@ -391,7 +391,7 @@ class TonalityDIN45681(PsychoacousticsParent):
 
             Decisive frequency in Hz.
 
-            Tone type ('' or 'FG').
+            Tone type ('' for individual tones, or 'FG' for groups of tones).
 
             Critical band lower limit in Hz.
 
