@@ -38,9 +38,9 @@ class SourceControlSpectrum(SourceControlParent):
 
         Parameters
         ----------
-        duration : float, default 0.0
+        duration: float, default: 0.0
             Duration of the sound generated from the spectrum source, in seconds.
-        method : int, default 1
+        method: int, default: 1
             Sound generation method to be used. 1 for IFFT, 2 for Hybrid.
         """
         super().__init__()

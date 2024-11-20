@@ -65,7 +65,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
             Window type used for the PSD computation. Options are ``'BARTLETT'``, ``'BLACKMAN'``,
             ``'BLACKMANHARRIS'``,``'HAMMING'``, ``'HANN'``, ``'KAISER'``, and
             ``'RECTANGULAR'``.
-        window_length : int, default: 2048
+        window_length: int, default: 2048
             Number of points of the window used for the PSD computation , by default 2048.
         overlap: float, default: 0.25
             Overlap value between two successive segments where the FFT is computed.
@@ -242,7 +242,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
         Parameters
         ----------
-        ref_value : float, default: 1.0
+        ref_value: float, default: 1.0
             Reference value for dB level calculation, by default 1.0. Example: ref_value = 2e-5 Pa
             for sound pressure level (dBSPL/Hz).
 
@@ -278,7 +278,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
         Parameters
         ----------
-        ref_value : float, default: 1.0
+        ref_value: float, default: 1.0
             Reference value for dB level calculation, by default 1.0. Example: ref_value = 2e-5 Pa
             for sound pressure level (dBSPL/Hz).
 
@@ -306,7 +306,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
         Parameters
         ----------
-        display_in_dB : bool, default: False
+        display_in_dB: bool, default: False
             Parameter that specifies whether the PSD should be plotted in dB/Hz (True)
             or unit^2/Hz (False).
         """

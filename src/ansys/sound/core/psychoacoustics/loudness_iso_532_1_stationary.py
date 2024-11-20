@@ -168,7 +168,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default 0
+        channel_index: int, default: 0
             Index of the signal channel to get the specified output for.
 
         Returns
