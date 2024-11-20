@@ -31,7 +31,7 @@ DEFAULT_PORT: int = int(os.environ.get("ANSRV_DPF_SOUND_PORT", 6780))
 
 def validate_dpf_sound_connection(port=None) -> None:
     """Validate that the DPF Sound plugin is available.
-    
+
     Parameters
     ----------
     port: int, default None
