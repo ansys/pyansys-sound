@@ -41,17 +41,18 @@ class SourceSpectrum(SourceParent):
     """Sound composer's spectrum source class.
 
     This class create a spectrum source for the sound composer.
-
-    Parameters
-    ----------
-    file_source: str, default ""
-        File path to the spectrum source data file.
-    source_control: SourceControlSpectrum, default None
-        Spectrum source control object associated to this source.
     """
 
     def __init__(self, file_source: str = "", source_control: SourceControlSpectrum = None):
-        """Create a ``SourceSpectrum`` object."""
+        """Class instantiation takes the following parameters.
+
+        Parameters
+        ----------
+        file_source: str, default ""
+            File path to the spectrum source data file.
+        source_control: SourceControlSpectrum, default None
+            Spectrum source control object associated to this source.
+        """
         super().__init__()
         self.source_control = source_control
 
