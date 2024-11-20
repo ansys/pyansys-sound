@@ -35,7 +35,7 @@ class LoadWav(SignalUtilitiesParent):
     """Loads a signal from a WAV file."""
 
     def __init__(self, path_to_wav: str = ""):
-        """Create a ``LoadWav`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

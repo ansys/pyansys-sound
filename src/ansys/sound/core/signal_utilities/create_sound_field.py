@@ -43,7 +43,7 @@ class CreateSoundField(SignalUtilitiesParent):
         sampling_frequency: float = 44100.0,
         unit: str = "Pa",
     ):
-        """Create a ``CreateSoundField`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

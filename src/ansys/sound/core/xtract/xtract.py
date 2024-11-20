@@ -44,7 +44,7 @@ class Xtract(XtractParent):
 
     PyAnsys Sound performs Xtract processing in the same way as Ansys Sound Analysis
     and Specification (SAS). This operator chains a denoising step, followed by a
-    tonal extraction step and then a transient extraction step. It returns the
+    tonal extraction step, and then a transient extraction step. It returns the
     individual signals processed at each step, as well as the remainder.
     """
 
@@ -55,7 +55,7 @@ class Xtract(XtractParent):
         parameters_tonal: XtractTonalParameters = None,
         parameters_transient: XtractTransientParameters = None,
     ):
-        """Create a ``Xtract`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

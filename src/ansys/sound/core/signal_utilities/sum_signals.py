@@ -34,7 +34,7 @@ class SumSignals(SignalUtilitiesParent):
     """Sums signals."""
 
     def __init__(self, signals: FieldsContainer = None):
-        """Create a ``SumSignals`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

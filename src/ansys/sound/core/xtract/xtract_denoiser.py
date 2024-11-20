@@ -42,7 +42,7 @@ class XtractDenoiser(XtractParent):
         input_signal: FieldsContainer | Field = None,
         input_parameters: XtractDenoiserParameters = None,
     ):
-        """Create an ``XtractDenoiser`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

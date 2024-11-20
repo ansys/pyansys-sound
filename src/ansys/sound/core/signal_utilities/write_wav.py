@@ -31,12 +31,12 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class WriteWav(SignalUtilitiesParent):
-    """Write a signal to a WAV file."""
+    """Writes a signal into a WAV file."""
 
     def __init__(
         self, signal: FieldsContainer = None, path_to_write: str = "", bit_depth: str = "float32"
     ):
-        """Create a ``WriteWav`` class.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

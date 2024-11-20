@@ -43,7 +43,7 @@ class Roughness(PsychoacousticsParent):
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Create a ``Roughness`` object.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

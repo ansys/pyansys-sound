@@ -50,7 +50,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         C1: float = 0.0,
         C2: float = 0.0,
     ):
-        """Create a ``SoundPowerLevelISO3744`` object.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

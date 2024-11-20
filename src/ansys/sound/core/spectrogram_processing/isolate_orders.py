@@ -48,7 +48,7 @@ class IsolateOrders(SpectrogramProcessingParent):
         window_overlap: float = 0.5,
         width_selection: int = 10,
     ):
-        """Create an ``Istft`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

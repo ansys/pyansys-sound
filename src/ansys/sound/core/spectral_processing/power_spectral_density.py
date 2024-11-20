@@ -50,9 +50,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
         window_length: int = 2048,
         overlap: float = 0.25,
     ):
-        """Init.
-
-        Init the class.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
