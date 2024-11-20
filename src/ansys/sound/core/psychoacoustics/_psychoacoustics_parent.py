@@ -51,12 +51,12 @@ class PsychoacousticsParent(PyAnsysSound):
 
         Parameters
         ----------
-        bark_band_indexes: numpy array
+        bark_band_indexes : numpy.array
             Array of Bark band indexes to convert in Bark.
 
         Returns
         -------
-        numpy array
+        numpy.array
             Array of corresponding frequencies in Hz.
         """
         for ibark in range(len(bark_band_indexes)):
@@ -79,7 +79,7 @@ class PsychoacousticsParent(PyAnsysSound):
 
         Parameters
         ----------
-        channel_index: int
+        channel_index : int
             Index of the signal channel to check.
 
         Returns

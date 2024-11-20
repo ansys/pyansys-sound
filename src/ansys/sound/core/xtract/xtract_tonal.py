@@ -46,12 +46,12 @@ class XtractTonal(XtractParent):
 
         Parameters
         ----------
-        input_signal: FieldsContainer | Field, default: None
+        input_signal : FieldsContainer | Field, default: None
             One or more signals to extract tonal components from
             as a DPF field or fields container.
             When inputting a fields container,
             each signal (each field of the fields container) is processed individually.
-        input_parameters:
+        input_parameters : XtractTonalParameters, default: None
             Structure that contains the parameters of the algorithm:
 
             - NFFT (int) is the number of points used for the FFT computation.

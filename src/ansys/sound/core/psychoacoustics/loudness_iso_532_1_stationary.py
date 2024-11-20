@@ -48,7 +48,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Parameters
         ----------
-        signal: Field | FieldsContainer
+        signal : Field | FieldsContainer
             Signal in Pa to compute loudness on as a DPF field or fields container.
         """
         super().__init__()
@@ -66,7 +66,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Parameters
         ----------
-        signal: FieldsContainer | Field
+        signal : FieldsContainer | Field
             Signal in Pa to compute loudness on as a DPF field or fields container.
 
         """
@@ -168,7 +168,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get the specified output for.
 
         Returns
@@ -185,7 +185,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get the specified output for.
 
         Returns
@@ -202,7 +202,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get the specified output for.
 
         Returns
@@ -298,9 +298,9 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int
+        channel_index : int
             Index of the signal channel to get the specified output for.
-        output_id: str
+        output_id : str
             ID of the specific output parameter to return. Options are:
 
             - ``"sone"``: For overall loudness value in sone

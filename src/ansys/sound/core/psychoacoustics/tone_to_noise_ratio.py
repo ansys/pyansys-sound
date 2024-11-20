@@ -45,7 +45,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
         Parameters
         ----------
-        psd: Field
+        psd : Field
             PSD of the signal to compute TNR on as a DPF field.
             The PSD field has the following characteristics:
 
@@ -59,7 +59,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
             You can use the ``ansys.dpf.core.fields_factory.create_scalar_field()`` function
             to create the field.
 
-        frequency_list: list, default: None
+        frequency_list : list, default: None
             List of the frequencies in Hz of the tones (peaks in the spectrum) for which
             to calculate the TNR. The default is ``None``, in which case a peak detection
             method is applied to automatically find the tones in the input spectrum. Then,
@@ -81,7 +81,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
         Parameters
         -------
-        psd: Field
+        psd : Field
             PSD of the signal to compute TNR on as a DPF field.
             The PSD field has the following characteristics:
 
@@ -119,7 +119,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
         Parameters
         -------
-        frequency_list: list
+        frequency_list : list
             List of the frequencies in Hz of the tones (peaks in the spectrum)
             to calculate the TNR on. If this input is empty (not specified), a peak
             detection method is applied to automatically find the tones in the input
@@ -311,7 +311,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
         Parameters
         ----------
-        tone_index: int
+        tone_index : int
             Index of the tone.
 
         Returns

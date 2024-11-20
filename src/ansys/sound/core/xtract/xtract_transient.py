@@ -46,11 +46,11 @@ class XtractTransient(XtractParent):
 
         Parameters
         ----------
-        input_signal: FieldsContainer | Field, default: None
+        input_signal : FieldsContainer | Field, default: None
             One or more signals to extract transient components on
             as a DPF fields container or fields. When inputting a fields container,
             each signal (each field of the fields container) is processed individually.
-        input_parameters: XtractTransientParameters, default: None
+        input_parameters : XtractTransientParameters, default: None
             Structure that contains the parameters of the algorithm:
 
             - Lower threshold (float), which is between 0 and 100.
@@ -90,7 +90,7 @@ class XtractTransient(XtractParent):
 
         Parameters
         ----------
-        value: FieldsContainer | Field
+        value : FieldsContainer | Field
             One or more signal to extract transient components on
             as a DPF fields container or field. When inputting a fields container,
             each signal (each field of the fields container) is processed individually.
@@ -117,7 +117,7 @@ class XtractTransient(XtractParent):
 
         Parameters
         ----------
-        value: XtractTransientParameters
+        value : XtractTransientParameters
             Structure that contains the parameters of the algorithm:
 
             - Lower threshold (float), which is between 0 and 100 percent
