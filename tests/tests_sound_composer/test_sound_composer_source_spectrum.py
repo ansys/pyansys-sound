@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 from unittest.mock import patch
+
 from ansys.dpf.core import Field
 import pytest
 
