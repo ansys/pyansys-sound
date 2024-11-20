@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from unittest.mock import patch
 from ansys.dpf.core import Field
 import pytest
 
@@ -27,13 +28,13 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.sound_composer import SourceControlSpectrum, SourceSpectrum
 
 EXP_SPECTRUM_DATA3 = 3.4100000858306885
-EXP_OUTPUT_DATA5 = 0.0
+EXP_OUTPUT_DATA5 = -196.50457763671875
 EXP_STR_NOT_SET = "Spectrum source: Not set\nSource control: Not set/valid"
 EXP_STR_ALL_SET = (
-    "Spectrum source: 'toto'\n"
-    "\tFmax: 22050 Hz\n"
-    "\tDeltaF: 1 Hz\n"
-    "Source control: (IFFT, 1.0 s)"
+    "Spectrum source: ''\n"
+    "\tFmax: 968.75 Hz\n"
+    "\tDeltaF: 7.809999942779541 Hz\n"
+    "Source control: IFFT, 1.0 s"
 )
 
 
@@ -219,6 +220,7 @@ def test_source_spectrum_get_output_as_nparray_unprocessed(dpf_sound_test_server
     assert len(output) == 0
 
 
+@patch("matplotlib.pyplot.show")
 def test_source_spectrum_plot(dpf_sound_test_server):
     """Test SourceSpectrum plot method."""
     source_spectrum = SourceSpectrum(
