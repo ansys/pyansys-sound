@@ -49,8 +49,8 @@ def connect_to_or_start_server(
 
     Parameters
     ----------
-    port: str, default: None
-        Port that the DPF server is listening on.
+    port: int, default: None
+        Port that the DPF server is listening to.
     ip: str, default: None
         IP address for the DPF server.
     ansys_path: str, default: None

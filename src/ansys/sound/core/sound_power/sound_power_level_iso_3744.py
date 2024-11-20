@@ -112,7 +112,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         return string
 
     @property
-    def surface_shape(self):
+    def surface_shape(self) -> str:
         """Shape of the measurement surface.
 
         Available options are 'Hemisphere' and 'Half-hemisphere'. Default is 'Hemisphere'.
@@ -130,7 +130,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self.__surface_shape = surface_shape
 
     @property
-    def surface_radius(self):
+    def surface_radius(self) -> float:
         """Radius of the measurement surface in m. Default is 1.0 m."""
         return self.__surface_radius
 
@@ -142,7 +142,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self.__surface_radius = surface_radius
 
     @property
-    def K1(self):
+    def K1(self) -> float:
         """Background noise correction K1 in dB.
 
         See section 8.2.3 of ISO 3744. Default is 0.0 dB.
@@ -155,7 +155,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self.__K1 = K1
 
     @property
-    def K2(self):
+    def K2(self) -> float:
         """Environmental correction K2 in dB.
 
         See annex A of ISO 3744. Default is 0.0 dB.
@@ -168,7 +168,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self.__K2 = K2
 
     @property
-    def C1(self):
+    def C1(self) -> float:
         """Meteorological reference quantity correction C1 in dB.
 
         See annex G of ISO 3744. Default is 0.0 dB.
@@ -181,10 +181,10 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self.__C1 = C1
 
     @property
-    def C2(self):
+    def C2(self) -> float:
         """Meteorological radiation impedance correction C2 in dB.
 
-        See annex G of ISO 3744).Default is 0.0 dB.
+        See annex G of ISO 3744). Default is 0.0 dB.
         """
         return self.__C2
 
