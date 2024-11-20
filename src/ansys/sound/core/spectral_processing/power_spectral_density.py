@@ -108,8 +108,10 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
     @property
     def window_type(self) -> str:
-        """Window type. Supported options are 'BARTLETT', 'BLACKMAN', 'BLACKMANHARRIS', 'HAMMING',
-        'HANN', 'KAISER', 'RECTANGULAR'.
+        """Window type. 
+        
+        Supported options are 'BARTLETT', 'BLACKMAN', 'BLACKMANHARRIS', 'HAMMING', 'HANN',
+        'KAISER', 'RECTANGULAR'.
         """
         return self.__window_type  # pragma: no cover
 
