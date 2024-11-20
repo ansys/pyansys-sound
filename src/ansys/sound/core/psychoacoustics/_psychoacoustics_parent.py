@@ -34,13 +34,6 @@ class PsychoacousticsParent(PyAnsysSound):
     This is the base class for all pychoacoustics indicators classes and should not be used as is.
     """
 
-    def __init__(self):
-        """Init.
-
-        Init the class.
-        """
-        super().__init__()
-
     def _convert_bark_to_hertz(self, bark_band_indexes: npt.ArrayLike) -> npt.ArrayLike:
         """Convert Bark band indexes into frequencies.
 
