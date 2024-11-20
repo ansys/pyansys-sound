@@ -40,24 +40,6 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
     This class allows the calculation of Power Spectral Density (PSD) for a given signal,
     using Welch's method
-
-    Parameters
-    ----------
-    signal: Field
-        Mono signal as a DPF field on which to compute the PSD.
-    fft_size: int, default: 2048
-        Number of FFT points to use for the PSD estimate.
-        Use a power of 2 for better performance.
-    window_type: str, default: 'HANN'
-        Window type used for the PSD computation. Options are ``'BARTLETT'``, ``'BLACKMAN'``,
-        ``'BLACKMANHARRIS'``,``'HAMMING'``, ``'HANN'``, ``'KAISER'``, and
-        ``'RECTANGULAR'``.
-    window_length : int, default: 2048
-        Number of points of the window used for the PSD computation , by default 2048.
-    overlap: float, default: 0.25
-        Overlap value between two successive segments where the FFT is computed.
-        Values range from 0 to 1. For example, ``0`` means no overlap,
-        and ``0.5`` means 50% overlap.
     """
 
     def __init__(
@@ -71,6 +53,24 @@ class PowerSpectralDensity(SpectralProcessingParent):
         """Init.
 
         Init the class.
+
+        Parameters
+        ----------
+        signal: Field
+            Mono signal as a DPF field on which to compute the PSD.
+        fft_size: int, default: 2048
+            Number of FFT points to use for the PSD estimate.
+            Use a power of 2 for better performance.
+        window_type: str, default: 'HANN'
+            Window type used for the PSD computation. Options are ``'BARTLETT'``, ``'BLACKMAN'``,
+            ``'BLACKMANHARRIS'``,``'HAMMING'``, ``'HANN'``, ``'KAISER'``, and
+            ``'RECTANGULAR'``.
+        window_length : int, default: 2048
+            Number of points of the window used for the PSD computation , by default 2048.
+        overlap: float, default: 0.25
+            Overlap value between two successive segments where the FFT is computed.
+            Values range from 0 to 1. For example, ``0`` means no overlap,
+            and ``0.5`` means 50% overlap.
         """
         super().__init__()
 

@@ -32,21 +32,21 @@ ID_NOISE_PSD = "noise_levels"
 
 
 class XtractDenoiserParameters(XtractParent):
-    """Contains denoiser parameters for use in Xtract processing or signal denoising.
-
-    Parameters
-    ----------
-    noise_psd:
-        Power spectral density of the noise in unit^2/Hz (Pa^2/Hz for example).
-        This parameter can be produced using one of the following methods:
-
-        - ``XtractDenoiserParameters.create_noise_psd_from_white_noise_level()``
-        - ``XtractDenoiserParameters.create_noise_psd_from_noise_samples()``
-        - ``XtractDenoiserParameters.create_noise_psd_from_automatic_estimation()``
-    """
+    """Contains denoiser parameters for use in Xtract processing or signal denoising."""
 
     def __init__(self, noise_psd: Field = None):
-        """Init."""
+        """Init.
+
+        Parameters
+        ----------
+        noise_psd:
+            Power spectral density of the noise in unit^2/Hz (Pa^2/Hz for example).
+            This parameter can be produced using one of the following methods:
+
+            - ``XtractDenoiserParameters.create_noise_psd_from_white_noise_level()``
+            - ``XtractDenoiserParameters.create_noise_psd_from_noise_samples()``
+            - ``XtractDenoiserParameters.create_noise_psd_from_automatic_estimation()``
+        """
         self.__generic_data_container = GenericDataContainer()
         self.__generic_data_container.set_property("class_name", ID_DENOISER_PARAMETERS_CLASS)
 

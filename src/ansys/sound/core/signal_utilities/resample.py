@@ -32,20 +32,20 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Resample(SignalUtilitiesParent):
-    """Resample a signal.
-
-    Parameters
-    ----------
-    signal: Field | FieldsContainer, default: None
-        Signal to resample as a DPF field or fields container.
-    new_sampling_frequency: float, default: 44100.0
-        New sampling frequency to use.
-    """
+    """Resample a signal."""
 
     def __init__(
         self, signal: Field | FieldsContainer = None, new_sampling_frequency: float = 44100.0
     ):
-        """Create a ``Resample`` instance."""
+        """Create a ``Resample`` instance.
+
+        Parameters
+        ----------
+        signal: Field | FieldsContainer, default: None
+            Signal to resample as a DPF field or fields container.
+        new_sampling_frequency: float, default: 44100.0
+            New sampling frequency to use.
+        """
         super().__init__()
         self.signal = signal
         self.new_sampling_frequency = new_sampling_frequency

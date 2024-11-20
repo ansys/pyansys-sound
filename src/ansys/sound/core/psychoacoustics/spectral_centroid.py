@@ -32,16 +32,16 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class SpectralCentroid(PsychoacousticsParent):
-    """Computes the spectral centroid of a signal.
-
-    Parameters
-    ----------
-    signal: Field
-        Signal to compute spectral centroid on as a DPF field.
-    """
+    """Computes the spectral centroid of a signal."""
 
     def __init__(self, signal: Field = None):
-        """Create a ``SpectralCentroid`` object."""
+        """Create a ``SpectralCentroid`` object.
+
+        Parameters
+        ----------
+        signal: Field
+            Signal to compute spectral centroid on as a DPF field.
+        """
         super().__init__()
         self.signal = signal
         self.__operator = Operator("compute_spectral_centroid")

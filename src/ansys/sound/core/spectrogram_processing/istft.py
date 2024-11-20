@@ -34,17 +34,17 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Istft(SpectrogramProcessingParent):
-    """Computes the inverse short-time Fourier transform (ISTFT) of a signal.
-
-    Parameters
-    ----------
-    stft: FieldsContainer, default: None
-        DPF fields container containing a short-time Fourier transform (STFT)
-        computed with the ``Stft`` class.
-    """
+    """Computes the inverse short-time Fourier transform (ISTFT) of a signal."""
 
     def __init__(self, stft: FieldsContainer = None):
-        """Create an ``Istft`` instance."""
+        """Create an ``Istft`` instance.
+
+        Parameters
+        ----------
+        stft: FieldsContainer, default: None
+            DPF fields container containing a short-time Fourier transform (STFT)
+            computed with the ``Stft`` class.
+        """
         super().__init__()
         self.stft = stft
         self.__operator = Operator("compute_istft")

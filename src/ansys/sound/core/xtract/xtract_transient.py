@@ -35,30 +35,30 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class XtractTransient(XtractParent):
-    """Extracts the transient components of a signal using the Xtract algorithm.
-
-    Parameters
-    ----------
-    input_signal: FieldsContainer | Field, default: None
-        One or more signals to extract transient components on
-        as a DPF fields container or fields. When inputting a fields container,
-        each signal (each field of the fields container) is processed individually.
-    input_parameters: XtractTransientParameters, default: None
-        Structure that contains the parameters of the algorithm:
-
-        - Lower threshold (float), which is between 0 and 100.
-        - Upper threshold (float), which is between 0 and 100.
-
-        This structure is of the ``XtractTransientParameters`` type. For more information,
-        see this class.
-    """
+    """Extracts the transient components of a signal using the Xtract algorithm."""
 
     def __init__(
         self,
         input_signal: FieldsContainer | Field = None,
         input_parameters: XtractTransientParameters = None,
     ):
-        """Create an ``XtractTransient`` instance."""
+        """Create an ``XtractTransient`` instance.
+
+        Parameters
+        ----------
+        input_signal: FieldsContainer | Field, default: None
+            One or more signals to extract transient components on
+            as a DPF fields container or fields. When inputting a fields container,
+            each signal (each field of the fields container) is processed individually.
+        input_parameters: XtractTransientParameters, default: None
+            Structure that contains the parameters of the algorithm:
+
+            - Lower threshold (float), which is between 0 and 100.
+            - Upper threshold (float), which is between 0 and 100.
+
+            This structure is of the ``XtractTransientParameters`` type. For more information,
+            see this class.
+        """
         super().__init__()
         self.input_signal = input_signal
         self.input_parameters = input_parameters

@@ -46,38 +46,6 @@ class Xtract(XtractParent):
     and Specification (SAS). This operator chains a denoising step, followed by a
     tonal extraction step and then a transient extraction step. It returns the
     individual signals processed at each step, as well as the remainder.
-
-    Parameters
-    ----------
-    input_signal: FieldsContainer | Field, default: None
-        One or more signals to apply Xtract processing on as a DPF field or fields container.
-    parameters_denoiser:  XtractDenoiserParameters, default: None
-        Structure that contains the parameters of the denoising step:
-
-        - Noise PSD (field) is the power spectral density (PSD) of the noise.
-
-        This structure is of the ``XtractDenoiserParameters`` type. For more information,
-        see this class.
-    parameters_tonal: XtractTonalParameters, default: None
-        Structure that contains the parameters of the tonal extraction step:
-
-        - NFFT (int) is the number of points used for the FFT computation.
-        - Regularity setting (float) in percent.
-        - Maximum slope (float) in dB/Hz.
-        - Minimum duration (float) in seconds.
-        - Intertonal gap (float) in Hz.
-        - Local emergence (float) in dB.
-
-        This structure is of the ``XtractTonalParameters`` type. For more information,
-        see this class.
-    parameters_transient:
-        Structure that contains the parameters of the transient extraction step:
-
-        - Lower threshold (float), which is between 0 and 100 percent.
-        - Upper threshold (float), which is between 0 and 100 percent.
-
-        This structure is of the ``XtractTransientParameters`` type. For more information,
-        see this class.
     """
 
     def __init__(
@@ -87,7 +55,40 @@ class Xtract(XtractParent):
         parameters_tonal: XtractTonalParameters = None,
         parameters_transient: XtractTransientParameters = None,
     ):
-        """Create an ``Xtract`` instance."""
+        """Create a ``Xtract`` instance.
+
+        Parameters
+        ----------
+        input_signal: FieldsContainer | Field, default: None
+            One or more signals to apply Xtract processing on as a DPF field or fields container.
+        parameters_denoiser:  XtractDenoiserParameters, default: None
+            Structure that contains the parameters of the denoising step:
+
+            - Noise PSD (field) is the power spectral density (PSD) of the noise.
+
+            This structure is of the ``XtractDenoiserParameters`` type. For more information,
+            see this class.
+        parameters_tonal: XtractTonalParameters, default: None
+            Structure that contains the parameters of the tonal extraction step:
+
+            - NFFT (int) is the number of points used for the FFT computation.
+            - Regularity setting (float) in percent.
+            - Maximum slope (float) in dB/Hz.
+            - Minimum duration (float) in seconds.
+            - Intertonal gap (float) in Hz.
+            - Local emergence (float) in dB.
+
+            This structure is of the ``XtractTonalParameters`` type. For more information,
+            see this class.
+        parameters_transient:
+            Structure that contains the parameters of the transient extraction step:
+
+            - Lower threshold (float), which is between 0 and 100 percent.
+            - Upper threshold (float), which is between 0 and 100 percent.
+
+            This structure is of the ``XtractTransientParameters`` type. For more information,
+            see this class.
+        """
         super().__init__()
         self.input_signal = input_signal
         self.parameters_denoiser = parameters_denoiser

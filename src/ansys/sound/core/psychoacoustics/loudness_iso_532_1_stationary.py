@@ -41,15 +41,16 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
     This class computes the loudness of a signal following the ISO 532-1 standard for stationary
     sounds.
-
-    Parameters
-    ----------
-    signal: Field | FieldsContainer
-        Signal in Pa to compute loudness on as a DPF field or fields container.
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Create a ``LoudnessISO532_1_Stationary`` object."""
+        """Create a ``LoudnessISO532_1_Stationary`` object.
+
+        Parameters
+        ----------
+        signal: Field | FieldsContainer
+            Signal in Pa to compute loudness on as a DPF field or fields container.
+        """
         super().__init__()
         self.signal = signal
         self.__operator = Operator("compute_loudness_iso532_1")

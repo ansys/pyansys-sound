@@ -31,16 +31,16 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class SumSignals(SignalUtilitiesParent):
-    """Sums signals.
-
-    Parameters
-    ----------
-    signals: FieldsContainer, default: None
-        Input signals to sum. Each field of the signal is summed.
-    """
+    """Sums signals."""
 
     def __init__(self, signals: FieldsContainer = None):
-        """Create a ``SumSignals`` instance."""
+        """Create a ``SumSignals`` instance.
+
+        Parameters
+        ----------
+        signals: FieldsContainer, default: None
+            Input signals to sum. Each field of the signal is summed.
+        """
         super().__init__()
         self.signals = signals
         self.__operator = Operator("sum_signals")

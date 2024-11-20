@@ -35,15 +35,6 @@ class CreateSoundField(SignalUtilitiesParent):
     """Creates a PyAnsys Sound field.
 
     This class creates a DPF field with correct PyAnsys Sound metadata from a vector.
-
-    Parameters
-    ----------
-    data:
-        Data to use to create the PyAnsys Sound field as a 1D NumPy array.
-    sampling_frequency: float, default: 44100.0
-        Sampling frequency of the data.
-    unit: str, default: "Pa"
-        Unit of the data.
     """
 
     def __init__(
@@ -52,7 +43,17 @@ class CreateSoundField(SignalUtilitiesParent):
         sampling_frequency: float = 44100.0,
         unit: str = "Pa",
     ):
-        """Create a ``CreateSoundField`` instance."""
+        """Create a ``CreateSoundField`` instance.
+
+        Parameters
+        ----------
+        data:
+            Data to use to create the PyAnsys Sound field as a 1D NumPy array.
+        sampling_frequency: float, default: 44100.0
+            Sampling frequency of the data.
+        unit: str, default: "Pa"
+            Unit of the data.
+        """
         super().__init__()
         self.data = data
         self.sampling_frequency = sampling_frequency
