@@ -61,8 +61,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
             Use a power of 2 for better performance.
         window_type: str, default: 'HANN'
             Window type used for the PSD computation. Options are ``'BARTLETT'``, ``'BLACKMAN'``,
-            ``'BLACKMANHARRIS'``,``'HAMMING'``, ``'HANN'``, ``'KAISER'``, and
-            ``'RECTANGULAR'``.
+            ``'BLACKMANHARRIS'``, ``'HAMMING'``, ``'HANN'``, ``'KAISER'``, and ``'RECTANGULAR'``.
         window_length : int, default: 2048
             Number of points of the window used for the PSD computation , by default 2048.
         overlap: float, default: 0.25
@@ -110,8 +109,8 @@ class PowerSpectralDensity(SpectralProcessingParent):
     def window_type(self) -> str:
         """Window type.
 
-        Supported options are 'BARTLETT', 'BLACKMAN', 'BLACKMANHARRIS', 'HAMMING', 'HANN',
-        'KAISER', 'RECTANGULAR'.
+        Supported options are ``'BARTLETT'``, ``'BLACKMAN'``, ``'BLACKMANHARRIS'``, ``'HAMMING'``,
+        ``'HANN'``, ``'KAISER'``, ``'RECTANGULAR'``.
         """
         return self.__window_type  # pragma: no cover
 
