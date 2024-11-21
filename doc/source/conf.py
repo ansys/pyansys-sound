@@ -3,7 +3,7 @@
 from datetime import datetime
 import os
 
-from ansys_sphinx_theme import get_version_match
+from ansys_sphinx_theme import ansys_favicon, get_version_match
 from ansys_sphinx_theme import pyansys_logo_black as logo
 import numpy as np
 import pyvista
@@ -29,23 +29,32 @@ copyright = f"(c) {datetime.now().year} ANSYS, Inc. All rights reserved"
 author = "ANSYS, Inc."
 release = version = __version__
 cname = os.getenv("DOCUMENTATION_CNAME", "sound.docs.pyansys.com")
+switcher_version = get_version_match(__version__)
+
+REPOSITORY_NAME = "pyansys-sound"
+USERNAME = "ansys"
+BRANCH = "main"
 
 # Select desired logo, theme, and declare the html title
 html_logo = logo
 html_theme = "ansys_sphinx_theme"
 html_short_title = html_title = "PyAnsys Sound"
 
+# Favicon
+html_favicon = ansys_favicon
+
 # specify the location of your github repo
 html_theme_options = {
-    "github_url": "https://github.com/ansys/pyansys-sound",
+    "github_url": f"https://github.com/{USERNAME}/{REPOSITORY_NAME}",
     "show_prev_next": False,
     "show_breadcrumbs": True,
+    "collapse_navigation": True,
     "additional_breadcrumbs": [
         ("PyAnsys", "https://docs.pyansys.com/"),
     ],
     "switcher": {
         "json_url": f"https://{cname}/versions.json",
-        "version_match": get_version_match(__version__),
+        "version_match": switcher_version,
     },
     "check_switcher": False,
     "static_search": {
@@ -55,17 +64,26 @@ html_theme_options = {
     },
 }
 
+html_context = {
+    "display_github": True,  # Integrate GitHub
+    "github_user": USERNAME,
+    "github_repo": REPOSITORY_NAME,
+    "github_version": BRANCH,
+    "doc_path": "doc/source",
+}
+
 # Sphinx extensions
 extensions = [
+    "jupyter_sphinx",
+    "numpydoc",
+    "sphinx_autodoc_typehints",
+    "sphinx_copybutton",
+    "sphinx_design",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
-    "numpydoc",
+    "sphinx.ext.extlinks",
     "sphinx.ext.intersphinx",
-    "sphinx_copybutton",
-    "sphinx.ext.napoleon",
-    "sphinx_autodoc_typehints",
     "sphinx_gallery.gen_gallery",
-    "sphinx_design",
     "pyvista.ext.viewer_directive",
 ]
 
@@ -159,6 +177,9 @@ source_suffix = ".rst"
 
 # The master toctree document.
 master_doc = "index"
+
+# The name of the Pygments (syntax highlighting) style to use.
+pygments_style = "sphinx"
 
 # -- Options for LaTeX output ------------------------------------------------
 latex_elements = {}

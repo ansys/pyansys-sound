@@ -47,7 +47,7 @@ class Roughness(PsychoacousticsParent):
 
         Parameters
         ----------
-        signal: Field | FieldsContainer
+        signal : Field | FieldsContainer
             Signal in Pa to compute roughness on as a DPF field or fields container.
         """
         super().__init__()
@@ -65,7 +65,7 @@ class Roughness(PsychoacousticsParent):
 
         Parameters
         ----------
-        signal: Field | FieldsContainer
+        signal : Field | FieldsContainer
             Signal in Pa to compute roughness on as a DPF field or fields container.
 
         """
@@ -159,7 +159,7 @@ class Roughness(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get the specified output for.
 
         Returns
@@ -176,7 +176,7 @@ class Roughness(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get the specified output for.
 
         Returns
@@ -272,7 +272,7 @@ class Roughness(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int
+        channel_index : int
             Index of the signal channel to get the specified output for.
         output_id: str
             ID of the specific output parameter to return. Options are:

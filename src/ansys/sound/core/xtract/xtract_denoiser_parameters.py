@@ -39,7 +39,7 @@ class XtractDenoiserParameters(XtractParent):
 
         Parameters
         ----------
-        noise_psd:
+        noise_psd : Field, optional
             Power spectral density of the noise in unit^2/Hz (Pa^2/Hz for example).
             This parameter can be produced using one of the following methods:
 
@@ -96,13 +96,13 @@ class XtractDenoiserParameters(XtractParent):
 
         Parameters
         ----------
-        white_noise_level: float
+        white_noise_level : float
             Power of the white noise  in dB SPL.
-        sampling_frequency: float, optional
+        sampling_frequency : float, optional
             Sampling frequency in Hz of the signal to denoise,
             which can be different from the signal used for creating the noise profile.
             The default is the sampling frequency of the noise signal.
-        window_length: int, default: 50
+        window_length : int, default: 50
             Window length for the noise level estimation in milliseconds (ms).
 
         Returns
@@ -126,13 +126,13 @@ class XtractDenoiserParameters(XtractParent):
 
         Parameters
         ----------
-        signal: Field
+        signal : Field
             Noise signal.
-        sampling_frequency: float, optional
+        sampling_frequency : float, optional
             Sampling frequency in Hz of the signal to denoise,
             which can be different from the signal used for creating the noise profile.
             The default is the sampling frequency of the noise signal.
-        window_length: int, default: 50
+        window_length : int, default: 50
             Window length for the noise level estimation in milliseconds (ms).
 
         Returns
@@ -156,9 +156,9 @@ class XtractDenoiserParameters(XtractParent):
 
         Parameters
         ----------
-        signal: Field
+        signal : Field
             Signal to estimate the noise profile from.
-        window_length: int, default: 50
+        window_length : int, default: 50
             Window length for the noise level estimation in milliseconds (ms).
 
         Returns
