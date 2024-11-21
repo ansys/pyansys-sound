@@ -38,9 +38,9 @@ class ZeroPad(SignalUtilitiesParent):
 
         Parameters
         ----------
-        signal: Field | FieldsContainer, default: None
+        signal : Field | FieldsContainer, default: None
             Signal to add zeros to the end of as a DPF field or fields container.
-        duration_zeros: float: default: 0.0
+        duration_zeros : float: default: 0.0
             Duration in seconds of the zeros to append to the input signal.
         """
         super().__init__()
@@ -80,7 +80,7 @@ class ZeroPad(SignalUtilitiesParent):
 
         Parameters
         ----------
-        new_duration_zeros: float
+        new_duration_zeros : float
             New duration for the zero padding in seconds.
         """
         if new_duration_zeros < 0.0:

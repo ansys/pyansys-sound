@@ -59,16 +59,16 @@ class Xtract(XtractParent):
 
         Parameters
         ----------
-        input_signal: FieldsContainer | Field, default: None
+        input_signal : FieldsContainer | Field, default: None
             One or more signals to apply Xtract processing on as a DPF field or fields container.
-        parameters_denoiser:  XtractDenoiserParameters, default: None
+        parameters_denoiser : XtractDenoiserParameters, default: None
             Structure that contains the parameters of the denoising step:
 
             - Noise PSD (field) is the power spectral density (PSD) of the noise.
 
             This structure is of the ``XtractDenoiserParameters`` type. For more information,
             see this class.
-        parameters_tonal: XtractTonalParameters, default: None
+        parameters_tonal : XtractTonalParameters, default: None
             Structure that contains the parameters of the tonal extraction step:
 
             - NFFT (int) is the number of points used for the FFT computation.
@@ -80,7 +80,7 @@ class Xtract(XtractParent):
 
             This structure is of the ``XtractTonalParameters`` type. For more information,
             see this class.
-        parameters_transient:
+        parameters_transient : XtractTransientParameters, default: None
             Structure that contains the parameters of the transient extraction step:
 
             - Lower threshold (float), which is between 0 and 100 percent.

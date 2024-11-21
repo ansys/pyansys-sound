@@ -47,16 +47,16 @@ class Stft(SpectrogramProcessingParent):
 
         Parameters
         ----------
-        signal: Field | FieldsContainer, default: None
+        signal : Field | FieldsContainer, default: None
             Mono signal to compute the STFT on as a DPF field or fields container.
-        fft_size: int, default: 2048
+        fft_size : int, default: 2048
             Size (as an integer) of the FFT to compute the STFT.
             Use a power of 2 for better performance.
-        window_type: str, default: 'HANN'
+        window_type : str, default: 'HANN'
             Window type used for the FFT computation. Options are ``'BARTLETT'``, ``'BLACKMAN'``,
             ``'BLACKMANHARRIS'``,``'HAMMING'``, ``'HANN'``, ``'KAISER'``, and
             ``'RECTANGULAR'``.
-        window_overlap: float, default: 0.5
+        window_overlap : float, default: 0.5
             Overlap value between two successive FFT computations. Values can range from 0 to 1.
             For example, ``0`` means no overlap, and ``0.5`` means 50% overlap.
         """

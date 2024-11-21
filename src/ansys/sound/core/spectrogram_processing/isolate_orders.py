@@ -52,24 +52,24 @@ class IsolateOrders(SpectrogramProcessingParent):
 
         Parameters
         ----------
-        signal: FieldsContainer | Field, default: None
+        signal : FieldsContainer | Field, default: None
             One or more input signals to isolate orders on as a DPF fields container or field.
-        rpm_profile: Field, default: None
+        rpm_profile : Field, default: None
             RPM signal associated with the time signals as a DPF field.
             It is assumed that the signal's unit is ``rpm``. If this is not the case,
             inaccurate behavior might occur during the conversion from RPM to frequency.
-        orders: list, default: None
+        orders : list, default: None
             List of the order numbers to isolate. The list must contain at least one value.
-        fft_size: int, default: 1024
+        fft_size : int, default: 1024
             Size of the FFT used to compute the STFT.
-        window_type: str, default: 'HANN'
+        window_type : str, default: 'HANN'
             Window type used for the FFT computation. Options are ``'BARTLETT'``, ``'BLACKMAN'``,
             ``'BLACKMANHARRIS'``,``'HAMMING'``, ``'HANN'``, ``'HANNING'``, ``'KAISER'``, and
             ``'RECTANGULAR'``.
-        window_overlap: float, default: 0.5
+        window_overlap : float, default: 0.5
             Overlap value between two successive FFT computations. Values can range from 0 to 1.
             For example, ``0`` means no overlap, and ``0.5`` means 50% overlap.
-        width_selection: int, default: 10
+        width_selection : int, default: 10
             Width in Hz of the area used to select each individual order.
             Note that its precision depends on the FFT size.
         """

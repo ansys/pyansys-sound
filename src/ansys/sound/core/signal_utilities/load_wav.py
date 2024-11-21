@@ -39,7 +39,7 @@ class LoadWav(SignalUtilitiesParent):
 
         Parameters
         ----------
-        path_to_wav: str, default: ""
+        path_to_wav : str, default: ""
             Path to the WAV file to load. The path can be set during the instantiation
             of the object or with the ``LoadWav.set_path()`` method.
         """
@@ -58,7 +58,7 @@ class LoadWav(SignalUtilitiesParent):
 
         Parameters
         ----------
-        path_to_wav: str
+        path_to_wav : str
             Path to the WAV file.
         """
         self.__path_to_wav = path_to_wav

@@ -39,7 +39,7 @@ class Sharpness(PsychoacousticsParent):
 
         Parameters
         ----------
-        signal: Field | FieldsContainer
+        signal : Field | FieldsContainer
             Signal in Pa to compute sharpness on as a DPF field or fields container.
         """
         super().__init__()
@@ -57,7 +57,7 @@ class Sharpness(PsychoacousticsParent):
 
         Parameters
         -------
-        signal: Field | FieldsContainer
+        signal : Field | FieldsContainer
             Signal in Pa to compute sharpness on as a DPF field or fields container.
 
         """
@@ -139,7 +139,7 @@ class Sharpness(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get the sharpness value for.
 
         Returns

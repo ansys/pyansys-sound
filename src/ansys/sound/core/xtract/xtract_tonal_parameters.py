@@ -52,25 +52,25 @@ class XtractTonalParameters(XtractParent):
 
         Parameters
         ----------
-        regularity: float, default: 1.0
+        regularity : float, default: 1.0
             Regularity parameter. Values are between 0 and 1. This parameter is designed to
             reject tonal components with too much frequency variation. You should start with
             the default value (``1.0``) and then lower it to remove detected tonals whose
             frequency evolutions are too erratic.
-        maximum_slope: float, default: 750.0
+        maximum_slope : float, default: 750.0
             Maximum slope in Hz/s for each tonal component. Values are between 0 and 15000 Hz/s.
             A higher value enables finding tonal components with a greater
             frequency slope over time.
-        minimum_duration: float, default: 1.0
+        minimum_duration : float, default: 1.0
             Minimum duration in seconds for each tonal components.
             Values are between 0 and 5.
-        intertonal_gap: float, default: 20.0
+        intertonal_gap : float, default: 20.0
             Minimum gap in Hz between two tonal components.
             Values are between 10 and 200.
-        local_emergence: float, default: 15.0
+        local_emergence : float, default: 15.0
             Emergence of the tonal components compared to the background noise in dB.
             Values are between 0 and 100.
-        fft_size: int, default: 8192
+        fft_size : int, default: 8192
             Number of samples for the FFT computation. The value
             must be greater than 0.
         """

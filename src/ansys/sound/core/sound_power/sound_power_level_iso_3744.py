@@ -54,21 +54,21 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         Parameters
         ----------
-        surface_shape: str, default: 'Hemisphere'
+        surface_shape : str, default: 'Hemisphere'
             Shape of measurement surface. Available options are 'Hemisphere' (default) and
             'Half-hemisphere'.
-        surface_radius: float, default: 1.0
+        surface_radius : float, default: 1.0
             Radius in m of the hemisphere or half-hemisphere measurement surface.
             By default, 1.0 meter.
-        K1: float, default: 0.0
+        K1 : float, default: 0.0
             Background noise correction K1 in dB (section 8.2.3 of ISO 3744).
             By default, 0.0 dB.
-        K2: float, default: 0.0
+        K2 : float, default: 0.0
             Environmental correction K2 in dB (Annex A of ISO 3744). By default, 0.0 dB.
-        C1: float, default: 0.0
+        C1 : float, default: 0.0
             Meteorological reference quantity correction C1 in dB (Annex G of ISO 3744).
             By default, 0.0 dB.
-        C2: float, default: 0.0
+        C2 : float, default: 0.0
             Meteorological radiation impedance correction C2 in dB (Annex G of ISO 3744).
             By default, 0.0 dB.
         """
@@ -203,7 +203,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         Parameters
         ----------
-        signal: Field
+        signal : Field
             Recorded signal in Pa from one specific position.
         """
         if type(signal) is not Field:
@@ -218,7 +218,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         Parameters
         ----------
-        index: int
+        index : int
             Signal index.
 
         Returns
@@ -238,7 +238,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         Parameters
         ----------
-        index: int
+        index : int
             Signal index.
         """
         if index > len(self.__signals) - 1:
@@ -272,20 +272,20 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         Parameters
         ----------
-            length: float
-                Measurement room length in m.
-            width: float
-                Measurement room width in m.
-            height: float
-                Measurement room height in m.
-            alpha: float
-                Mean sound absorption coefficient between 0 and 1. Typical example values are
-                given in Table A.1 of ISO 3744.
+        length : float
+            Measurement room length in m.
+        width : float
+            Measurement room width in m.
+        height : float
+            Measurement room height in m.
+        alpha : float
+            Mean sound absorption coefficient between 0 and 1. Typical example values are
+            given in Table A.1 of ISO 3744.
 
         Returns
         -------
-            float
-                Calculated correction K2 in dB
+        float
+            Calculated correction K2 in dB
         """
         if length <= 0.0 or width <= 0.0 or height <= 0.0:
             raise PyAnsysSoundException(
@@ -320,9 +320,9 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         Parameters
         ----------
-        pressure: float, default: 101.325
+        pressure : float, default: 101.325
             Static pressure in kPa.
-        temperature: float, default: 23.0
+        temperature : float, default: 23.0
             Temperature in °C.
 
         Returns
@@ -350,8 +350,8 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         Parameters
         ----------
-            filename: string
-                Sound power level project file.
+        filename: string
+            Sound power level project file.
         """
         # Set operator inputs.
         self.__operator_load.connect(0, filename)

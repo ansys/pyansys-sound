@@ -41,12 +41,12 @@ class ApplyGain(SignalUtilitiesParent):
 
         Parameters
         ----------
-        signal: Field | FieldsContainer, default: None
+        signal : Field | FieldsContainer, default: None
             Signals to apply gain on as a DPF field or fields container.
-        gain: float, default: 0.0
+        gain : float, default: 0.0
             Gain value in decibels (dB) or linear unit. By default, gain is specified in decibels.
             However, you can use the next parameter to change to a linear unit.
-        gain_in_db: bool, default: True
+        gain_in_db : bool, default: True
             Whether gain is in dB. When ``False``, gain is in a linear unit.
         """
         super().__init__()
@@ -87,7 +87,7 @@ class ApplyGain(SignalUtilitiesParent):
 
         Parameters
         ----------
-        new_gain:
+        new_gain : float
             New gain value.
         """
         self.__gain = new_gain
@@ -114,7 +114,7 @@ class ApplyGain(SignalUtilitiesParent):
 
         Parameters
         ----------
-        new_gain_in_db:
+        new_gain_in_db : bool
             Whether to set the new gain in decibels(dB). When ``False``, gain is
             set in a linear unit.
         """

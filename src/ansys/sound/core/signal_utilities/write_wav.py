@@ -40,12 +40,12 @@ class WriteWav(SignalUtilitiesParent):
 
         Parameters
         ----------
-        signal: FieldsContainer, default: None
+        signal : FieldsContainer, default: None
             Signal to write to a WAV file. Each channel in the DPF fields container is a field.
-        path_to_write: str, default: ''
+        path_to_write : str, default: ''
             Path for the WAV file. This parameter can be set during the instantiation
             of the object or with the ``LoadWav.set_path()`` method.
-        bit_depth: str, default: 'float32'
+        bit_depth : str, default: 'float32'
             Bit depth. Options are ``'float32'``, ``'int32'``, ``'int16'``, and ``'int8'``.
             This means that the samples are respectively coded into the WAV file
             using 32 bits (32-bit IEEE Float), 32 bits (int), 16 bits (int), or 8 bits (int).

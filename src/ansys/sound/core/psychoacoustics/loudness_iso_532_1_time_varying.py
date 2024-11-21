@@ -44,7 +44,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Parameters
         ----------
-        signal: Field | FieldsContainer
+        signal : Field | FieldsContainer
             Signal to compute time-varying ISO532-1 loudness on as a DPF field or fields
             container.
         """
@@ -63,7 +63,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Parameters
         ----------
-        signal: FieldsContainer | Field
+        signal : FieldsContainer | Field
             Signal in Pa to compute loudness on as a DPF field or fields container.
         """
         self.__signal = signal
@@ -190,7 +190,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get time-varying loudness for.
 
         Returns
@@ -220,7 +220,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get the N5 indicator for.
 
         Returns
@@ -246,7 +246,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get the N10 indicator for.
 
         Returns
@@ -269,7 +269,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get the time-varying loudness level for.
 
         Returns
@@ -299,7 +299,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get the L5 indicator for.
 
         Returns
@@ -325,7 +325,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get the L10 indicator for.
 
         Returns

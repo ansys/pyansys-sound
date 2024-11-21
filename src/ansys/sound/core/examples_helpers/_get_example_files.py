@@ -165,7 +165,7 @@ def _get_absolute_path(filename: str) -> str:
 
     Parameters
     ----------
-    filename: str
+    filename : str
         Name of the WAV file to get the absolute path for.
 
     Returns

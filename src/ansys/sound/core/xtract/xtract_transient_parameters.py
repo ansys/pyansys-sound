@@ -40,11 +40,11 @@ class XtractTransientParameters(XtractParent):
 
         Parameters
         ----------
-        lower_threshold: float, default: 0.0
+        lower_threshold : float, default: 0.0
             Minimum threshold, which is related to the minimum energy of transient components.
             Values are between 0 and 100. You should set this parameter as high as possible
             provided that no transient element remains in the remainder (non-transient signal).
-        upper_threshold: float, default: 100.0
+        upper_threshold : float, default: 100.0
             Maximum threshold in dB, which is related to the maximum energy of transient components.
             Values are between 0 and 100. You should set this parameter as low as possible provided
             that no transient element remains in the remainder (non-transient signal).
