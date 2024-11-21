@@ -189,16 +189,16 @@ def test_source_spectrum_get_output(dpf_sound_test_server):
 
     output_signal = source_spectrum.get_output()
     time = output_signal.time_freq_support.time_frequencies.data
-    fs = 1.0/(time[1] - time[0])
+    fs = 1.0 / (time[1] - time[0])
     assert isinstance(output_signal, Field)
     assert fs == pytest.approx(44100.0)
 
     psd = PowerSpectralDensity(
-        input_signal=output_signal, 
-        fft_size=250, 
-        window_type="HANN", 
-        window_length=250, 
-        overlap=0.75
+        input_signal=output_signal,
+        fft_size=250,
+        window_type="HANN",
+        window_length=250,
+        overlap=0.75,
     )
     psd.process()
     assert psd.get_PSD_squared_linear_as_nparray()[5] == pytest.approx(EXP_OUTPUT_DATA5, rel=1e-2)
