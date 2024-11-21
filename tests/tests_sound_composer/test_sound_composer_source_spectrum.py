@@ -27,9 +27,10 @@ import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.sound_composer import SourceControlSpectrum, SourceSpectrum
+from ansys.sound.core.spectral_processing import PowerSpectralDensity
 
 EXP_SPECTRUM_DATA3 = 3.4100000858306885
-EXP_OUTPUT_DATA5 = -196.50457763671875
+EXP_OUTPUT_DATA5 = -315.5
 EXP_STR_NOT_SET = "Spectrum source: Not set\nSource control: Not set/valid"
 EXP_STR_ALL_SET = (
     "Spectrum source: ''\n"
@@ -184,9 +185,23 @@ def test_source_spectrum_get_output(dpf_sound_test_server):
         pytest.data_path_sound_composer_spectrum_source_in_container,
         SourceControlSpectrum(duration=1.0),
     )
-    source_spectrum.process()
-    assert isinstance(source_spectrum.get_output(), Field)
-    assert source_spectrum.get_output().data[5] == pytest.approx(EXP_OUTPUT_DATA5)
+    source_spectrum.process(sampling_frequency=44100.0)
+
+    output_signal = source_spectrum.get_output()
+    time = output_signal.time_freq_support.time_frequencies.data
+    fs = 1.0/(time[1] - time[0])
+    assert isinstance(output_signal, Field)
+    assert fs == pytest.approx(44100.0)
+
+    psd = PowerSpectralDensity(
+        input_signal=output_signal, 
+        fft_size=250, 
+        window_type="HANN", 
+        window_length=250, 
+        overlap=0.75
+    )
+    psd.process()
+    assert psd.get_PSD_squared_linear_as_nparray()[5] == pytest.approx(EXP_OUTPUT_DATA5, rel=1e-2)
 
 
 def test_source_spectrum_get_output_unprocessed(dpf_sound_test_server):
