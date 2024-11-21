@@ -34,7 +34,7 @@ def validate_dpf_sound_connection(port=None) -> None:
 
     Parameters
     ----------
-    port: int, default None
+    port : int, default None
         Port that the DPF server is listening to.
     """
     port = port if port is not None else DEFAULT_PORT
