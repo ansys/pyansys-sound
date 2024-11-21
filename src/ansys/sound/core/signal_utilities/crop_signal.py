@@ -40,11 +40,11 @@ class CropSignal(SignalUtilitiesParent):
 
         Parameters
         ----------
-        signal: FieldsContainer | Field, default: None
+        signal : FieldsContainer | Field, default: None
             Signal to resample as a DPF field or fields container.
-        start_time: float, default: 0.0
+        start_time : float, default: 0.0
             Start time of the part to crop in seconds.
-        end_time: float, default: 0.0
+        end_time : float, default: 0.0
             End time of the part to crop in seconds.
         """
         super().__init__()
@@ -64,7 +64,7 @@ class CropSignal(SignalUtilitiesParent):
 
         Parameters
         ----------
-        new_start:
+        new_start : float
             New start time in seconds.
         """
         if new_start < 0.0:
@@ -88,12 +88,12 @@ class CropSignal(SignalUtilitiesParent):
         return self.__end_time  # pragma: no cover
 
     @end_time.setter
-    def end_time(self, new_end: bool):
+    def end_time(self, new_end: float):
         """Set a new end time.
 
         Parameters
         ----------
-        new_end:
+        new_end : float
             New end time in seconds.
         """
         if new_end < 0.0:

@@ -41,9 +41,9 @@ class Resample(SignalUtilitiesParent):
 
         Parameters
         ----------
-        signal: Field | FieldsContainer, default: None
+        signal : Field | FieldsContainer, default: None
             Signal to resample as a DPF field or fields container.
-        new_sampling_frequency: float, default: 44100.0
+        new_sampling_frequency : float, default: 44100.0
             New sampling frequency to use.
         """
         super().__init__()
@@ -62,7 +62,7 @@ class Resample(SignalUtilitiesParent):
 
         Parameters
         ----------
-        new_sampling_frequency: float
+        new_sampling_frequency : float
             New sampling frequency.
         """
         if new_sampling_frequency < 0.0:
