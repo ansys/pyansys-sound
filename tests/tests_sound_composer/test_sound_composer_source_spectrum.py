@@ -22,21 +22,23 @@
 
 from unittest.mock import patch
 
-from ansys.dpf.core import Field
+from ansys.dpf.core import Field, TimeFreqSupport, fields_factory, locations
+import numpy as np
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.sound_composer import SourceControlSpectrum, SourceSpectrum
 from ansys.sound.core.spectral_processing import PowerSpectralDensity
 
-EXP_SPECTRUM_DATA3 = 3.4100000858306885
-EXP_OUTPUT_DATA5 = -315.5
+REF_ACOUSTIC_POWER = 4e-10
+
+EXP_SPECTRUM_DATA3 = 9.75124494289048e-05
+EXP_LEVEL_BAND_3RD_250_Hz = 69.10828
+EXP_LEVEL_BAND_3RD_500_Hz = 66.06081
+EXP_LEVEL_BAND_3RD_1000_Hz = 62.85511
 EXP_STR_NOT_SET = "Spectrum source: Not set\nSource control: Not set/valid"
 EXP_STR_ALL_SET = (
-    "Spectrum source: ''\n"
-    "\tFmax: 968.75 Hz\n"
-    "\tDeltaF: 7.809999942779541 Hz\n"
-    "Source control: IFFT, 1.0 s"
+    "Spectrum source: ''\n\tFmax: 24000 Hz\n\tDeltaF: 5.9 Hz\nSource control: IFFT, 1.0 s"
 )
 
 
@@ -187,21 +189,45 @@ def test_source_spectrum_get_output(dpf_sound_test_server):
     )
     source_spectrum.process(sampling_frequency=44100.0)
 
+    # Checkout output type and sampling frequency.
     output_signal = source_spectrum.get_output()
     time = output_signal.time_freq_support.time_frequencies.data
     fs = 1.0 / (time[1] - time[0])
     assert isinstance(output_signal, Field)
     assert fs == pytest.approx(44100.0)
 
+    # Compute the power spectral density over the output signal.
     psd = PowerSpectralDensity(
         input_signal=output_signal,
-        fft_size=250,
+        fft_size=8192,
         window_type="HANN",
-        window_length=250,
+        window_length=8192,
         overlap=0.75,
     )
     psd.process()
-    assert psd.get_PSD_squared_linear_as_nparray()[5] == pytest.approx(EXP_OUTPUT_DATA5, rel=1e-2)
+    psd_squared, psd_freq = psd.get_PSD_squared_linear_as_nparray()
+    delat_f = psd_freq[1] - psd_freq[0]
+
+    # Check the sound power level in the 1/3-octave bands centered at 250, 500, and 1000 Hz.
+    # Due to the non-deterministic nature of the produced signal, tolerance is set to 3 dB.
+    # Differences are typically of a few tenths of dB, but can sometimes reach larger values.
+    psd_squared_250 = psd_squared[
+        (psd_freq >= 250 * 2 ** (-1 / 6)) & (psd_freq < 250 * 2 ** (1 / 6))
+    ]
+    level_250 = 10 * np.log10(psd_squared_250.sum() * delat_f / REF_ACOUSTIC_POWER)
+    assert level_250 == pytest.approx(EXP_LEVEL_BAND_3RD_250_Hz, abs=3.0)
+
+    psd_squared_500 = psd_squared[
+        (psd_freq >= 500 * 2 ** (-1 / 6)) & (psd_freq < 500 * 2 ** (1 / 6))
+    ]
+    level_500 = 10 * np.log10(psd_squared_500.sum() * delat_f / REF_ACOUSTIC_POWER)
+    assert level_500 == pytest.approx(EXP_LEVEL_BAND_3RD_500_Hz, abs=3.0)
+
+    psd_squared_1000 = psd_squared[
+        (psd_freq >= 1000 * 2 ** (-1 / 6)) & (psd_freq < 1000 * 2 ** (1 / 6))
+    ]
+    level_1000 = 10 * np.log10(psd_squared_1000.sum() * delat_f / REF_ACOUSTIC_POWER)
+    assert level_1000 == pytest.approx(EXP_LEVEL_BAND_3RD_1000_Hz, abs=3.0)
 
 
 def test_source_spectrum_get_output_unprocessed(dpf_sound_test_server):
@@ -221,8 +247,53 @@ def test_source_spectrum_get_output_as_nparray(dpf_sound_test_server):
         pytest.data_path_sound_composer_spectrum_source_in_container,
         SourceControlSpectrum(duration=1.0),
     )
-    source_spectrum.process()
-    assert source_spectrum.get_output_as_nparray()[5] == pytest.approx(EXP_OUTPUT_DATA5)
+    source_spectrum.process(sampling_frequency=44100.0)
+
+    # Checkout output type.
+    output_signal = source_spectrum.get_output_as_nparray()
+    assert isinstance(output_signal, np.ndarray)
+
+    # Reconstruct a DPF field from the output signal to compute the PSD.
+    signal_field = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    signal_field.append(output_signal, 1)
+    support = TimeFreqSupport()
+    time_field = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    time_field.append(np.array(range(len(output_signal))) / 44100.0, 1)
+    support.time_frequencies = time_field
+    signal_field.time_freq_support = support
+
+    # Compute the power spectral density over the output signal.
+    psd = PowerSpectralDensity(
+        input_signal=signal_field,
+        fft_size=8192,
+        window_type="HANN",
+        window_length=8192,
+        overlap=0.75,
+    )
+    psd.process()
+    psd_squared, psd_freq = psd.get_PSD_squared_linear_as_nparray()
+    delat_f = psd_freq[1] - psd_freq[0]
+
+    # Check the sound power level in the 1/3-octave bands centered at 250, 500, and 1000 Hz.
+    # Due to the non-deterministic nature of the produced signal, tolerance is set to 3 dB.
+    # Differences are typically of a few tenths of dB, but can sometimes reach larger values.
+    psd_squared_250 = psd_squared[
+        (psd_freq >= 250 * 2 ** (-1 / 6)) & (psd_freq < 250 * 2 ** (1 / 6))
+    ]
+    level_250 = 10 * np.log10(psd_squared_250.sum() * delat_f / REF_ACOUSTIC_POWER)
+    assert level_250 == pytest.approx(EXP_LEVEL_BAND_3RD_250_Hz, abs=3.0)
+
+    psd_squared_500 = psd_squared[
+        (psd_freq >= 500 * 2 ** (-1 / 6)) & (psd_freq < 500 * 2 ** (1 / 6))
+    ]
+    level_500 = 10 * np.log10(psd_squared_500.sum() * delat_f / REF_ACOUSTIC_POWER)
+    assert level_500 == pytest.approx(EXP_LEVEL_BAND_3RD_500_Hz, abs=3.0)
+
+    psd_squared_1000 = psd_squared[
+        (psd_freq >= 1000 * 2 ** (-1 / 6)) & (psd_freq < 1000 * 2 ** (1 / 6))
+    ]
+    level_1000 = 10 * np.log10(psd_squared_1000.sum() * delat_f / REF_ACOUSTIC_POWER)
+    assert level_1000 == pytest.approx(EXP_LEVEL_BAND_3RD_1000_Hz, abs=3.0)
 
 
 def test_source_spectrum_get_output_as_nparray_unprocessed(dpf_sound_test_server):

@@ -72,8 +72,8 @@ class SourceSpectrum(SourceParent):
             support_data = self.source_spectrum_data.time_freq_support.time_frequencies.data
             str_source = (
                 f"'{self.source_spectrum_data.name}'\n"
-                f"\tFmax: {support_data[-1]} Hz\n"
-                f"\tDeltaF: {support_data[1] - support_data[0]} Hz"
+                f"\tFmax: {support_data[-1]:.0f} Hz\n"
+                f"\tDeltaF: {support_data[1] - support_data[0]:.1f} Hz"
             )
         else:
             str_source = "Not set"
@@ -233,8 +233,7 @@ class SourceSpectrum(SourceParent):
         time_data = output.time_freq_support.time_frequencies.data
 
         plt.plot(time_data, output.data)
-        plt.title(output.name)
-        plt.legend()
+        plt.title("Signal from spectrum source")
         plt.xlabel("Time (s)")
         plt.ylabel("Amplitude (Pa)")
         plt.grid(True)
