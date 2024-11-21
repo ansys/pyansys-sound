@@ -47,32 +47,14 @@ class Sharpness(PsychoacousticsParent):
         self.__operator = Operator("compute_sharpness")
 
     @property
-    def signal(self):
-        """Signal."""
-        return self.__signal  # pragma: no cover
+    def signal(self) -> Field | FieldsContainer:
+        """Input sound signal in Pa as a DPF field or fields container."""
+        return self.__signal
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):
-        """Set the signal.
-
-        Parameters
-        -------
-        signal : Field | FieldsContainer
-            Signal in Pa to compute sharpness on as a DPF field or fields container.
-
-        """
+        """Set the signal."""
         self.__signal = signal
-
-    @signal.getter
-    def signal(self) -> Field | FieldsContainer:
-        """Signal.
-
-        Returns
-        -------
-        FieldsContainer | Field
-            Signal in Pa as a DPF field or fields container.
-        """
-        return self.__signal
 
     def process(self):
         """Compute the sharpness.
