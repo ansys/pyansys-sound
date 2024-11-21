@@ -41,7 +41,7 @@ class Istft(SpectrogramProcessingParent):
 
         Parameters
         ----------
-        stft: FieldsContainer, default: None
+        stft : FieldsContainer, default: None
             DPF fields container containing a short-time Fourier transform (STFT)
             computed with the ``Stft`` class.
         """

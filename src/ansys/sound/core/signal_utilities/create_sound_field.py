@@ -47,11 +47,11 @@ class CreateSoundField(SignalUtilitiesParent):
 
         Parameters
         ----------
-        data:
+        data : np.array, default: np.empty(0)
             Data to use to create the PyAnsys Sound field as a 1D NumPy array.
-        sampling_frequency: float, default: 44100.0
+        sampling_frequency : float, default: 44100.0
             Sampling frequency of the data.
-        unit: str, default: "Pa"
+        unit : str, default: "Pa"
             Unit of the data.
         """
         super().__init__()
@@ -92,7 +92,7 @@ class CreateSoundField(SignalUtilitiesParent):
 
         Parameters
         ----------
-        new_unit: str
+        new_unit : str
             New unit as a string.
         """
         self.__unit = new_unit
@@ -119,7 +119,7 @@ class CreateSoundField(SignalUtilitiesParent):
 
         Parameters
         ----------
-        new_sampling_frequency: float
+        new_sampling_frequency : float
             New sampling frequency in Hz.
         """
         if new_sampling_frequency < 0.0:

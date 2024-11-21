@@ -38,7 +38,7 @@ class SumSignals(SignalUtilitiesParent):
 
         Parameters
         ----------
-        signals: FieldsContainer, default: None
+        signals : FieldsContainer, default: None
             Input signals to sum. Each field of the signal is summed.
         """
         super().__init__()
