@@ -79,7 +79,7 @@ class SourceControlSpectrum(SourceControlParent):
 
     def get_method_name(self) -> str:
         """Get the sound generation method name.
-        
+
         Returns
         -------
         str
