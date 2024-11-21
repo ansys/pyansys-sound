@@ -48,9 +48,9 @@ class SourceSpectrum(SourceParent):
 
         Parameters
         ----------
-        file_source: str, default ""
+        file_source : str, default ""
             File path to the spectrum source data file.
-        source_control: SourceControlSpectrum, default None
+        source_control : SourceControlSpectrum, default None
             Spectrum source control object associated to this source.
         """
         super().__init__()
@@ -139,7 +139,7 @@ class SourceSpectrum(SourceParent):
 
         Parameters
         ----------
-        file_source: str
+        file_source : str
             File path to the spectrum source data file.
         """
         if not os.path.exists(file_source):
@@ -161,7 +161,7 @@ class SourceSpectrum(SourceParent):
 
         Parameters
         ----------
-        sampling_frequency: float, default 44100.0
+        sampling_frequency : float, default 44100.0
             Sampling frequency of the generated sound in Hz.
         """
         if not self.is_source_control_valid():
