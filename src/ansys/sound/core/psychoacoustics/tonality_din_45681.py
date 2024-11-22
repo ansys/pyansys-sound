@@ -312,6 +312,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         """Get the number of spectra.
 
         Returns the number of analyzed spectra, that is, the number of computation time steps.
+        Returns the number of analyzed spectra, that is, the number of computation time steps.
 
         Returns
         -------
@@ -324,7 +325,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         """Get the spectrum data for a specific spectrum.
 
         Returns the data (decisive difference, uncertainty, and decisive frequency) corresponding
-        to a specific spectrum (that is, time step).
+        to a specific spectrum (time step).
 
         Parameters
         ----------
@@ -352,7 +353,7 @@ class TonalityDIN45681(PsychoacousticsParent):
     def get_tone_number(self, spectrum_index: int = 0) -> int:
         """Get the number of tones for a specific spectrum.
 
-        Returns the number of tones detected in a specific spectrum (that is, time step).
+        Returns the number of tones detected in a specific spectrum (time step).
 
         Returns
         -------
@@ -374,8 +375,8 @@ class TonalityDIN45681(PsychoacousticsParent):
     ) -> tuple[float, float, float, str, float, float, float, float, float, float]:
         """Get the tone data, for a specific spectrum.
 
-        Returns all data associated to a specific detected tone, in a specific spectrum
-        (that is, time step).
+        Returns all data corresponding to a specific detected tone, in a specific spectrum (time
+        step).
 
         Parameters
         ----------
