@@ -90,7 +90,7 @@ class XtractDenoiser(XtractParent):
         """Input parameters.
 
         Structure that contains the parameters of the algorithm:
-         
+
         - Power spectral density of the noise, as a DPF field.
         """
         return self.__input_parameters
