@@ -291,7 +291,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
         return np.array(self.get_PSD_dB(ref_value).data)
 
     def get_frequencies(self) -> npt.ArrayLike:
-        """Get the frequencies associated to the PSD.
+        """Get the frequencies associated with the PSD.
 
         Returns
         -------

@@ -52,7 +52,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
             - ``num_entities`` = 1
             - ``location`` = "TimeFreq_sets"
             - ``data``: Vector of amplitude values in unit^2/Hz
-            - ``time_freq_support``: Vector of regularly spaced frequencies in Hz associated to
+            - ``time_freq_support``: Vector of regularly spaced frequencies in Hz associated with
                 amplitude values (from 0 Hz to the maximum frequency)
             - ``unit`` = "<unit>^2/Hz" (where <unit> is Pa for example).
 
@@ -79,7 +79,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         - ``num_entities`` = 1
         - ``location`` = "TimeFreq_sets"
         - ``data``: Vector of amplitude values in unit^2/Hz
-        - ``time_freq_support``: Vector of regularly spaced frequencies in Hz associated to
+        - ``time_freq_support``: Vector of regularly spaced frequencies in Hz associated with
             amplitude values (from 0 Hz to the maximum frequency)
         - ``unit`` = "<unit>^2/Hz" (where <unit> is Pa for example).
 
