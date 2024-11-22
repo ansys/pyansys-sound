@@ -377,7 +377,7 @@ class TonalityDIN45681(PsychoacousticsParent):
     ) -> tuple[float, float, float, str, float, float, float, float, float, float]:
         """Get the tone data, for a specific spectrum.
 
-        Returns all data corresponding to a specific detected tone, in a specific spectrum (time
+        Returns all data associated with a specific detected tone, in a specific spectrum (time
         step).
 
         Parameters
@@ -438,10 +438,10 @@ class TonalityDIN45681(PsychoacousticsParent):
         )
 
     def plot(self):
-        """Plot the DIN 45681 decisive difference and frequency, and the tonal adjustment over time.
+        """Plot the DIN 45681's decisive difference and frequency, and tonal adjustment, over time.
 
-        This method creates a figure window that displays decisive difference DLj in dB, decisive
-        frequency in Hz, and tonal adjustment Kt in dB, over time.
+        This method creates a figure window that displays the decisive difference DLj in dB, the
+        decisive frequency in Hz, and the tonal adjustment Kt in dB, over time.
         """
         if self._output == None:
             raise PyAnsysSoundException(
@@ -476,7 +476,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         plt.show()
 
     def __check_spectrum_index(self, spectrum_index: int):
-        """Check whether a specific spectrum index exists.
+        """Check whether a specific spectrum index is valid.
 
         Raises an error if the spectrum index is out of bounds.
 
