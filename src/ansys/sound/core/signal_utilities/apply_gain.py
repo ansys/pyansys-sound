@@ -86,7 +86,7 @@ class ApplyGain(SignalUtilitiesParent):
 
     @gain_in_db.setter
     def gain_in_db(self, new_gain_in_db: bool):
-        """Set gain_in_db (bool)."""
+        """Set gain_in_db."""
         if type(new_gain_in_db) is not bool:
             raise PyAnsysSoundException(
                 "'new_gain_in_db' must be a Boolean value. Specify 'True' or 'False'."

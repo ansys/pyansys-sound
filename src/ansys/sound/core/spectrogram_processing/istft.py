@@ -50,9 +50,12 @@ class Istft(SpectrogramProcessingParent):
         self.__operator = Operator("compute_istft")
 
     @property
-    def stft(self):
-        """Short-time Fourier transform."""
-        return self.__stft  # pragma: no cover
+    def stft(self) -> FieldsContainer:
+        """Input short-time Fourier transform as a DPF fields container.
+
+        STFT format is the same as that which is produced by the ``Stft`` class.
+        """
+        return self.__stft
 
     @stft.setter
     def stft(self, stft: FieldsContainer):
@@ -71,17 +74,6 @@ class Istft(SpectrogramProcessingParent):
             )
 
         self.__stft = stft
-
-    @stft.getter
-    def stft(self) -> FieldsContainer:
-        """Short-time Fourier transform.
-
-        Returns
-        -------
-        FieldsContainer
-            STFT as a DPF fields container.
-        """
-        return self.__stft
 
     def process(self):
         """Compute the ISTFT.

@@ -78,7 +78,7 @@ class WriteWav(SignalUtilitiesParent):
 
     @bit_depth.setter
     def bit_depth(self, bit_depth: str):
-        """Sets the bit depth."""
+        """Set the bit depth."""
         if bit_depth not in ("int8", "int16", "int32", "float32"):
             raise PyAnsysSoundException(
                 "Bit depth is invalid. Accepted values are 'float32', 'int32', 'int16', and 'int8'."

@@ -89,7 +89,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
     @property
     def input_signal(self) -> Field:
         """Input signal."""
-        return self.__input_signal  # pragma: no cover
+        return self.__input_signal
 
     @input_signal.setter
     def input_signal(self, value: Field):
@@ -99,7 +99,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
     @property
     def fft_size(self) -> int:
         """FFT size."""
-        return self.__fft_size  # pragma: no cover
+        return self.__fft_size
 
     @fft_size.setter
     def fft_size(self, value: int):
@@ -111,9 +111,9 @@ class PowerSpectralDensity(SpectralProcessingParent):
     @property
     def window_type(self) -> str:
         """Window type."""
-        return self.__window_type  # pragma: no cover
+        return self.__window_type
 
-    # check supporté variables
+    # Check supported window types.
     @window_type.setter
     def window_type(self, value: str):
         """Set window type."""
@@ -135,7 +135,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
     @property
     def window_length(self) -> int:
         """Window length."""
-        return self.__window_length  # pragma: no cover
+        return self.__window_length
 
     @window_length.setter
     def window_length(self, value: int):
@@ -147,7 +147,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
     @property
     def overlap(self) -> int:
         """Overlap."""
-        return self.__overlap  # pragma: no cover
+        return self.__overlap
 
     @overlap.setter
     def overlap(self, value: int):
