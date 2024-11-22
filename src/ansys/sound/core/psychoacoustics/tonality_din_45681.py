@@ -315,7 +315,6 @@ class TonalityDIN45681(PsychoacousticsParent):
         """Get the number of spectra.
 
         Returns the number of analyzed spectra, that is, the number of computation time steps.
-        Returns the number of analyzed spectra, that is, the number of computation time steps.
 
         Returns
         -------
