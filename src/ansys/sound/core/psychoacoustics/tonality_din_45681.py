@@ -88,7 +88,10 @@ class TonalityDIN45681(PsychoacousticsParent):
 
     @property
     def window_length(self) -> float:
-        """Length, in s, of a slice of the signal used to compute each spectrum. Default is 3.0 s."""
+        """Length, in s, of a slice of the signal used to compute each spectrum.
+
+        Default is 3.0 s.
+        """
         return self.__window_length
 
     @window_length.setter
@@ -358,7 +361,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         Returns
         -------
         int
-            Number of tones detected in thsi spectrum.
+            Number of tones detected in this spectrum.
         """
         # Check validity of the input spectrum index.
         self.__check_spectrum_index(spectrum_index)
