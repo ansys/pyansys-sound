@@ -44,7 +44,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Create a ``LoudnessISO532_1_Stationary`` object.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

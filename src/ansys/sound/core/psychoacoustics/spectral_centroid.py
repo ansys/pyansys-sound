@@ -35,7 +35,7 @@ class SpectralCentroid(PsychoacousticsParent):
     """Computes the spectral centroid of a signal."""
 
     def __init__(self, signal: Field = None):
-        """Create a ``SpectralCentroid`` object.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

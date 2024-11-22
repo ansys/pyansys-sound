@@ -35,7 +35,7 @@ class Sharpness(PsychoacousticsParent):
     """Computes the sharpness of a signal according to Zwicker & Fastl's model."""
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Create a ``Sharpness`` object.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

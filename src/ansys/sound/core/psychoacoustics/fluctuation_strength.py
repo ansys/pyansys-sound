@@ -46,7 +46,7 @@ class FluctuationStrength(PsychoacousticsParent):
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Create a ``FluctuationStrength`` object.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

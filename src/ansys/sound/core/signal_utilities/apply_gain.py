@@ -37,7 +37,7 @@ class ApplyGain(SignalUtilitiesParent):
     def __init__(
         self, signal: Field | FieldsContainer = None, gain: float = 0.0, gain_in_db: bool = True
     ):
-        """Create an ``ApplyGain`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
