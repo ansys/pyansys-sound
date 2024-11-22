@@ -48,7 +48,7 @@ class XtractTonalParameters(XtractParent):
         local_emergence: float = 15.0,
         fft_size: int = 8192,
     ):
-        """Init.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

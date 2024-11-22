@@ -30,10 +30,3 @@ class SpectrogramProcessingParent(PyAnsysSound):
 
     This is the base class of all spectrogram processing and should not be used as is.
     """
-
-    def __init__(self):
-        """Init.
-
-        Init the class.
-        """
-        super().__init__()

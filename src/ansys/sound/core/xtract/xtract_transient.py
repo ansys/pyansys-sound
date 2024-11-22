@@ -42,7 +42,7 @@ class XtractTransient(XtractParent):
         input_signal: FieldsContainer | Field = None,
         input_parameters: XtractTransientParameters = None,
     ):
-        """Create an ``XtractTransient`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

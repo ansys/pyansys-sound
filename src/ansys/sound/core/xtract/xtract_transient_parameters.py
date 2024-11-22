@@ -36,7 +36,7 @@ class XtractTransientParameters(XtractParent):
     """Contains transient parameters for use in Xtract processing or signal denoising."""
 
     def __init__(self, lower_threshold: float = 0.0, upper_threshold: float = 100.0):
-        """Init.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

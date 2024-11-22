@@ -36,7 +36,7 @@ class CropSignal(SignalUtilitiesParent):
     def __init__(
         self, signal: Field | FieldsContainer = None, start_time: float = 0.0, end_time: float = 0.0
     ):
-        """Create a ``CropSignal`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

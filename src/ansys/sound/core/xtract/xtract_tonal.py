@@ -42,7 +42,7 @@ class XtractTonal(XtractParent):
         input_signal: FieldsContainer | Field = None,
         input_parameters: XtractTonalParameters = None,
     ):
-        """Create an ``XtractTonal`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

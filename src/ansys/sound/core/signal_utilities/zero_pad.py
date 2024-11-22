@@ -34,7 +34,7 @@ class ZeroPad(SignalUtilitiesParent):
     """Adds zeros to the end of a signal."""
 
     def __init__(self, signal: Field | FieldsContainer = None, duration_zeros: float = 0.0):
-        """Create a ``ZeroPad`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

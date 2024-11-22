@@ -41,7 +41,7 @@ class ProminenceRatio(PsychoacousticsParent):
     """
 
     def __init__(self, psd: Field = None, frequency_list: list = None):
-        """Create a ``ProminenceRatio`` object.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

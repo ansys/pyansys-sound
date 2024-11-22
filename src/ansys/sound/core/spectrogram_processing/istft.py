@@ -37,7 +37,7 @@ class Istft(SpectrogramProcessingParent):
     """Computes the inverse short-time Fourier transform (ISTFT) of a signal."""
 
     def __init__(self, stft: FieldsContainer = None):
-        """Create an ``Istft`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
