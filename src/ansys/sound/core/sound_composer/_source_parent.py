@@ -20,15 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Sound composer's source."""
+"""Sound Composer's source."""
 from ._sound_composer_parent import SoundComposerParent
 
 
 class SourceParent(SoundComposerParent):
     """
-    Provides the abstract base class for the sound composer's sources.
+    Provides the abstract base class for the Sound Composer's sources.
 
-    This is the base class of all sound composer's source classes and should not be used as is.
+    This is the base class of all Sound Composer's source classes and should not be used as is.
     """
 
     def is_source_control_valid(self) -> bool:

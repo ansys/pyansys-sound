@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Sound composer's spectrum source."""
+"""Sound Composer's spectrum source."""
 import os
 import warnings
 
@@ -38,9 +38,11 @@ ID_COMPUTE_GENERATE_SOUND_SPECTRUM = "sound_composer_generate_sound_spectrum"
 
 
 class SourceSpectrum(SourceParent):
-    """Sound composer's spectrum source class.
+    """Sound Composer's spectrum source class.
 
-    This class create a spectrum source for the sound composer.
+    This class creates a spectrum source for the Sound Composer.
+    A spectrum source is made to generate a sound signal from a given spectrum and its source control.
+    The source control contains the duration of the sound and the method used to generate it.
     """
 
     def __init__(self, file_source: str = "", source_control: SourceControlSpectrum = None):
@@ -49,9 +51,9 @@ class SourceSpectrum(SourceParent):
         Parameters
         ----------
         file_source : str, default ""
-            File path to the spectrum source data file.
+            Path to the spectrum file.
         source_control : SourceControlSpectrum, default None
-            Spectrum source control object associated to this source.
+            The source control to be used when generating the sound from this source.
         """
         super().__init__()
         self.source_control = source_control
@@ -91,7 +93,7 @@ class SourceSpectrum(SourceParent):
     def source_control(self) -> SourceControlSpectrum:
         """Spectrum source control object.
 
-        Contains the duration and the method used to generate the sound.
+        Contains the duration in seconds, and the method used to generate the sound.
         """
         return self.__source_control
 
@@ -106,15 +108,16 @@ class SourceSpectrum(SourceParent):
 
     @property
     def source_spectrum_data(self) -> Field:
-        """Spectrum source data as a DPF field.
+        """Spectrum source data, as a DPF field.
 
-        Contains the frequencies, the levels (as a PSD) and the unit (unit^2/Hz).
+        Power Spectral Density (PSD) as a DPF field which contains the frequencies in Hz and
+        the levels in unit^2/Hz (for example Pa^2/Hz).
         """
         return self.__source_spectrum_data
 
     @source_spectrum_data.setter
     def source_spectrum_data(self, source_spectrum_data: Field):
-        """Set the spectrum source as a DPF field."""
+        """Set the spectrum source data, from a DPF field."""
         if not (isinstance(source_spectrum_data, Field) or source_spectrum_data is None):
             raise PyAnsysSoundException(
                 "Specified spectrum source must be provided as a DPF field."
@@ -122,25 +125,27 @@ class SourceSpectrum(SourceParent):
         self.__source_spectrum_data = source_spectrum_data
 
     def is_source_control_valid(self) -> bool:
-        """Source control verification.
+        """Source control verification function.
 
-        Check if the spectrum source control is set and its duration is strictly positive.
+        Check if the source control is set and its duration is strictly positive.
 
         Returns
         -------
         bool
-            True if the spectrum control is set and its duration is strictly positive, False
+            True if the source control is set and its duration is strictly positive, False
             otherwise.
         """
         return (self.source_control is not None) and (self.source_control.duration > 0.0)
 
     def load_source_spectrum(self, file_source: str):
-        """Load the spectrum source.
+        """Load the spectrum source data from a spectrum file.
 
         Parameters
         ----------
         file_source : str
-            File path to the spectrum source data file.
+            Path to the spectrum file.
+            Supported files are: XML files and text files with the header AnsysSound_Spectrum,
+            as supported by Ansys Sound SAS.
         """
         if not os.path.exists(file_source):
             raise PyAnsysSoundException(
@@ -157,7 +162,7 @@ class SourceSpectrum(SourceParent):
         self.source_spectrum_data = self.__operator_load.get_output(0, "field")
 
     def process(self, sampling_frequency: float = 44100.0):
-        """Generate the sound of the spectrum source.
+        """Generate the sound of the spectrum source, using the current source data and source control.
 
         Parameters
         ----------
