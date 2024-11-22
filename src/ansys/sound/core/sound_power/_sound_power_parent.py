@@ -30,10 +30,3 @@ class SoundPowerParent(PyAnsysSound):
 
     This is the base class of all sound power classes and should not be used as is.
     """
-
-    def __init__(self):
-        """Init.
-
-        Init the class.
-        """
-        super().__init__()

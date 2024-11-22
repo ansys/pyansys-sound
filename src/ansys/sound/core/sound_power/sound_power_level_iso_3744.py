@@ -50,27 +50,27 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         C1: float = 0.0,
         C2: float = 0.0,
     ):
-        """Create a ``SoundPowerLevelISO3744`` object.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
         surface_shape : str, default: 'Hemisphere'
             Shape of measurement surface. Available options are 'Hemisphere' (default) and
             'Half-hemisphere'.
-        surface_radius : float, default: 1
+        surface_radius : float, default: 1.0
             Radius in m of the hemisphere or half-hemisphere measurement surface.
-            By default, 1 meter.
-        K1 : float, default: 0
+            By default, 1.0 meter.
+        K1 : float, default: 0.0
             Background noise correction K1 in dB (section 8.2.3 of ISO 3744).
-            By default, 0 dB.
-        K2 : float, default: 0
-            Environmental correction K2 in dB (Annex A of ISO 3744). By default, 0 dB.
-        C1 : float, default: 0
+            By default, 0.0 dB.
+        K2 : float, default: 0.0
+            Environmental correction K2 in dB (Annex A of ISO 3744). By default, 0.0 dB.
+        C1 : float, default: 0.0
             Meteorological reference quantity correction C1 in dB (Annex G of ISO 3744).
-            By default, 0 dB.
-        C2 : float, default: 0
+            By default, 0.0 dB.
+        C2 : float, default: 0.0
             Meteorological radiation impedance correction C2 in dB (Annex G of ISO 3744).
-            By default, 0 dB.
+            By default, 0.0 dB.
         """
         super().__init__()
         self.surface_shape = surface_shape
@@ -113,8 +113,11 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         return string
 
     @property
-    def surface_shape(self):
-        """Surface shape."""
+    def surface_shape(self) -> str:
+        """Shape of the measurement surface.
+
+        Available options are 'Hemisphere' and 'Half-hemisphere'. Default is 'Hemisphere'.
+        """
         return self.__surface_shape
 
     @surface_shape.setter
@@ -128,8 +131,8 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self.__surface_shape = surface_shape
 
     @property
-    def surface_radius(self):
-        """Surface radius."""
+    def surface_radius(self) -> float:
+        """Radius of the measurement surface in m. Default is 1.0 m."""
         return self.__surface_radius
 
     @surface_radius.setter
@@ -140,8 +143,11 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self.__surface_radius = surface_radius
 
     @property
-    def K1(self):
-        """K1 correction."""
+    def K1(self) -> float:
+        """Background noise correction K1 in dB.
+
+        See section 8.2.3 of ISO 3744. Default is 0.0 dB.
+        """
         return self.__K1
 
     @K1.setter
@@ -150,8 +156,11 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self.__K1 = K1
 
     @property
-    def K2(self):
-        """K2 correction."""
+    def K2(self) -> float:
+        """Environmental correction K2 in dB.
+
+        See annex A of ISO 3744. Default is 0.0 dB.
+        """
         return self.__K2
 
     @K2.setter
@@ -160,8 +169,11 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self.__K2 = K2
 
     @property
-    def C1(self):
-        """C1 correction."""
+    def C1(self) -> float:
+        """Meteorological reference quantity correction C1 in dB.
+
+        See annex G of ISO 3744. Default is 0.0 dB.
+        """
         return self.__C1
 
     @C1.setter
@@ -170,8 +182,11 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self.__C1 = C1
 
     @property
-    def C2(self):
-        """C2 correction."""
+    def C2(self) -> float:
+        """Meteorological radiation impedance correction C2 in dB.
+
+        See annex G of ISO 3744). Default is 0.0 dB.
+        """
         return self.__C2
 
     @C2.setter
@@ -250,10 +265,10 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     def set_K2_from_room_properties(
         self, length: float, width: float, height: float, alpha: float
     ) -> float:
-        """Set K2 from measurement room properties.
+        """Set K2 from measurement room properties and measurement surface area.
 
         Sets K2 following Annex A of ISO 3744, based on specified room dimensions and averaged
-        sound absorption coefficient.
+        sound absorption coefficient, and current measurement surface area (ie shape and radius).
 
         Parameters
         ----------

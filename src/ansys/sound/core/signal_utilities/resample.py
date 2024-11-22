@@ -32,12 +32,12 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Resample(SignalUtilitiesParent):
-    """Resample a signal."""
+    """Resamples a signal."""
 
     def __init__(
         self, signal: Field | FieldsContainer = None, new_sampling_frequency: float = 44100.0
     ):
-        """Create a ``Resample`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

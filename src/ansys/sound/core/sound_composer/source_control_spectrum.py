@@ -33,8 +33,7 @@ class SourceControlSpectrum(SourceControlParent):
     """
 
     def __init__(self, duration: float = 0.0, method: int = 1):
-        """
-        Create a ``SourceControlSpectrum`` object.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

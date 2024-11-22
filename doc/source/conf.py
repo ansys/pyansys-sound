@@ -124,6 +124,9 @@ numpydoc_validation_checks = {
     # type, unless multiple values are being returned"
 }
 
+# autodoc configuration
+autoclass_content = "both"
+
 # sphinx gallery options
 sphinx_gallery_conf = {
     # convert rst to md for ipynb
