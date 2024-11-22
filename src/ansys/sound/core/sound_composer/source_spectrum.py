@@ -40,9 +40,9 @@ ID_COMPUTE_GENERATE_SOUND_SPECTRUM = "sound_composer_generate_sound_spectrum"
 class SourceSpectrum(SourceParent):
     """Sound Composer's spectrum source class.
 
-    This class creates a spectrum source for the Sound Composer.
-    A spectrum source is made to generate a sound signal from a given spectrum and its source control.
-    The source control contains the duration of the sound and the method used to generate it.
+    This class creates a spectrum source for the Sound Composer. A spectrum source is used to
+    generate a sound signal from a given spectrum and its source control. The source control
+    contains the duration of the sound and the method used to generate it.
     """
 
     def __init__(self, file_source: str = "", source_control: SourceControlSpectrum = None):
@@ -53,7 +53,7 @@ class SourceSpectrum(SourceParent):
         file_source : str, default ""
             Path to the spectrum file.
         source_control : SourceControlSpectrum, default None
-            The source control to be used when generating the sound from this source.
+            Source control to use when generating the sound from this source.
         """
         super().__init__()
         self.source_control = source_control
@@ -110,7 +110,7 @@ class SourceSpectrum(SourceParent):
     def source_spectrum_data(self) -> Field:
         """Spectrum source data, as a DPF field.
 
-        Power Spectral Density (PSD) as a DPF field which contains the frequencies in Hz and
+        Power spectral density (PSD) as a DPF field, which contains the frequencies in Hz and
         the levels in unit^2/Hz (for example Pa^2/Hz).
         """
         return self.__source_spectrum_data
@@ -143,9 +143,8 @@ class SourceSpectrum(SourceParent):
         Parameters
         ----------
         file_source : str
-            Path to the spectrum file.
-            Supported files are: XML files and text files with the header AnsysSound_Spectrum,
-            as supported by Ansys Sound SAS.
+            Path to the spectrum file. Supported files are XML files and text files with the header
+            AnsysSound_Spectrum, as supported by Ansys Sound SAS.
         """
         if not os.path.exists(file_source):
             raise PyAnsysSoundException(
@@ -162,7 +161,8 @@ class SourceSpectrum(SourceParent):
         self.source_spectrum_data = self.__operator_load.get_output(0, "field")
 
     def process(self, sampling_frequency: float = 44100.0):
-        """Generate the sound of the spectrum source, using the current source data and source control.
+        """Generate the sound of the spectrum source, using the current source data and source
+        control.
 
         Parameters
         ----------
