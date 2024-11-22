@@ -82,7 +82,7 @@ class CreateSoundField(SignalUtilitiesParent):
 
     @property
     def sampling_frequency(self) -> float:
-        """Sampling frequency of the data in Hz."""
+        """Sampling frequency in Hz of the data."""
         return self.__sampling_frequency
 
     @sampling_frequency.setter
