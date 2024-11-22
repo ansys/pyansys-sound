@@ -192,6 +192,12 @@ jobs:
               docker rm $dockerContainers
           }
 
+      - name: "Delete the Docker images (and untagged ones)"
+        if: always()
+        run: |
+          docker image rm ghcr.io/ansys/ansys-sound:latest
+          docker system prune -f
+
   doc-build:
     name: "Building library documentation"
     runs-on: [self-hosted, Windows, pyansys-sound]
@@ -255,6 +261,12 @@ jobs:
               docker stop $dockerContainers
               docker rm $dockerContainers
           }
+
+      - name: "Delete the Docker images (and untagged ones)"
+        if: always()
+        run: |
+          docker image rm ghcr.io/ansys/ansys-sound:latest
+          docker system prune -f
 
 # =================================================================================================
 # =================================================================================================
