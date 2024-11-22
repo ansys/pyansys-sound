@@ -61,81 +61,36 @@ class CreateSoundField(SignalUtilitiesParent):
         self.__operator = Operator("create_field_from_vector")
 
     @property
-    def data(self):
-        """Data."""
-        return self.__data  # pragma: no cover
+    def data(self) -> npt.ArrayLike:
+        """Data to store in the created DPF field."""
+        return self.__data
 
     @data.setter
     def data(self, data: npt.ArrayLike):
         """Set the data."""
         self.__data = data
 
-    @data.getter
-    def data(self) -> npt.ArrayLike:
-        """Get data.
-
-        Returns
-        -------
-        np.array
-            Data as a NumPy array.
-        """
-        return self.__data
-
     @property
-    def unit(self):
-        """Unit."""
-        return self.__unit  # pragma: no cover
+    def unit(self) -> str:
+        """Unit of the data to store."""
+        return self.__unit
 
     @unit.setter
     def unit(self, new_unit: str):
-        """Set a new unit.
-
-        Parameters
-        ----------
-        new_unit : str
-            New unit as a string.
-        """
+        """Set a new unit."""
         self.__unit = new_unit
 
-    @unit.getter
-    def unit(self) -> str:
-        """Get the unit.
-
-        Returns
-        -------
-        str
-            Unit.
-        """
-        return self.__unit
-
     @property
-    def sampling_frequency(self):
-        """Sampling frequency."""
-        return self.__sampling_frequency  # pragma: no cover
+    def sampling_frequency(self) -> float:
+        """Sampling frequency of the data in Hz."""
+        return self.__sampling_frequency
 
     @sampling_frequency.setter
     def sampling_frequency(self, new_sampling_frequency: float):
-        """Set a new sampling frequency.
-
-        Parameters
-        ----------
-        new_sampling_frequency : float
-            New sampling frequency in Hz.
-        """
+        """Set a new sampling frequency."""
         if new_sampling_frequency < 0.0:
             raise PyAnsysSoundException("Sampling frequency must be greater than or equal to 0.0.")
         self.__sampling_frequency = new_sampling_frequency
-
-    @sampling_frequency.getter
-    def sampling_frequency(self) -> float:
-        """Get the sampling frequency.
-
-        Returns
-        -------
-        float
-            Sampling frequency.
-        """
-        return self.__sampling_frequency
 
     def process(self):
         """Create the PyAnsys Sound field.

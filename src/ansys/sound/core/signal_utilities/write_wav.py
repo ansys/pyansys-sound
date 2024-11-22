@@ -47,8 +47,8 @@ class WriteWav(SignalUtilitiesParent):
             of the object or with the ``LoadWav.set_path()`` method.
         bit_depth : str, default: 'float32'
             Bit depth. Options are ``'float32'``, ``'int32'``, ``'int16'``, and ``'int8'``.
-            This means that the samples are respectively coded into the WAV file
-            using 32 bits (32-bit IEEE Float), 32 bits (int), 16 bits (int), or 8 bits (int).
+            These mean that the samples are coded into the WAV file using 32 bits (32-bit IEEE
+            Float), 32 bits (int), 16 bits (int), or 8 bits (int), respectively.
         """
         super().__init__()
         self.path_to_write = path_to_write
@@ -57,83 +57,44 @@ class WriteWav(SignalUtilitiesParent):
         self.__operator = Operator("write_wav_sas")
 
     @property
-    def signal(self):
-        """Signal."""
-        return self.__signal  # pragma: no cover
+    def signal(self) -> FieldsContainer:
+        """Input signal as a DPF fields container."""
+        return self.__signal
 
     @signal.setter
     def signal(self, signal: FieldsContainer):
-        """Setter for the signal.
-
-        Sets the value of the signal to write to the disk.
-        """
+        """Setter for the signal."""
         self.__signal = signal
 
-    @signal.getter
-    def signal(self) -> FieldsContainer:
-        """Signal.
-
-        Returns
-        -------
-        FieldsContainer
-            Signal to write to the disk as a DPF fields container.
-        """
-        return self.__signal
-
     @property
-    def bit_depth(self):
-        """Bit depth."""
-        return self.__bit_depth  # pragma: no cover
+    def bit_depth(self) -> str:
+        """Bit depth.
+
+        Options are ``'float32'``, ``'int32'``, ``'int16'``, and ``'int8'``. These mean that the
+        samples are coded into the WAV file using 32 bits (32-bit IEEE Float), 32 bits (int),
+        16 bits (int), or 8 bits (int), respectively.
+        """
+        return self.__bit_depth
 
     @bit_depth.setter
     def bit_depth(self, bit_depth: str):
-        """Setter for the bit depth.
-
-        Sets the bit depth.
-        """
-        if (
-            bit_depth != "int8"
-            and bit_depth != "int16"
-            and bit_depth != "int32"
-            and bit_depth != "float32"
-        ):
+        """Sets the bit depth."""
+        if bit_depth not in ("int8", "int16", "int32", "float32"):
             raise PyAnsysSoundException(
                 "Bit depth is invalid. Accepted values are 'float32', 'int32', 'int16', and 'int8'."
             )
 
         self.__bit_depth = bit_depth
 
-    @bit_depth.getter
-    def bit_depth(self) -> str:
-        """Bit depth.
-
-        Returns
-        -------
-        str
-            Bit depth.
-        """
-        return self.__bit_depth
-
     @property
-    def path_to_write(self):
-        """Path to write the WAV file to."""
-        return self.__path_to_write  # pragma: no cover
+    def path_to_write(self) -> str:
+        """Path of the WAV file to write."""
+        return self.__path_to_write
 
     @path_to_write.setter
     def path_to_write(self, path_to_write: str):
-        """Path to write the WAV file to."""
+        """Path of the WAV file to write."""
         self.__path_to_write = path_to_write
-
-    @path_to_write.getter
-    def path_to_write(self) -> str:
-        """Path to write the the WAV file to.
-
-        Returns
-        -------
-        str
-            Path to write the WAV file to.
-        """
-        return self.__path_to_write
 
     def process(self):
         """Write the signal to a WAV file.

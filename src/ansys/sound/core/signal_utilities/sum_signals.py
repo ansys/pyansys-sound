@@ -46,25 +46,14 @@ class SumSignals(SignalUtilitiesParent):
         self.__operator = Operator("sum_signals")
 
     @property
-    def signals(self):
-        """Signals."""
-        return self.__signals  # pragma: no cover
+    def signals(self) -> FieldsContainer:
+        """Input signals as a DPF fields container."""
+        return self.__signals
 
     @signals.setter
     def signals(self, signals: FieldsContainer):
         """Set the signals to sum."""
         self.__signals = signals
-
-    @signals.getter
-    def signals(self) -> FieldsContainer:
-        """Signals.
-
-        Returns
-        -------
-        FieldsContainer
-            Signals as a DPF fields container.
-        """
-        return self.__signals
 
     def process(self):
         """Sum signals.

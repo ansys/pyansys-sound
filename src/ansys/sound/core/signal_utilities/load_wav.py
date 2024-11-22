@@ -48,31 +48,14 @@ class LoadWav(SignalUtilitiesParent):
         self.__operator = Operator("load_wav_sas")
 
     @property
-    def path_to_wav(self):
+    def path_to_wav(self) -> str:
         """Path to the WAV file."""
-        return self.__path_to_wav  # pragma: no cover
+        return self.__path_to_wav
 
     @path_to_wav.setter
     def path_to_wav(self, path_to_wav: str):
-        """Set the path to the WAV file.
-
-        Parameters
-        ----------
-        path_to_wav : str
-            Path to the WAV file.
-        """
+        """Set the path to the WAV file."""
         self.__path_to_wav = path_to_wav
-
-    @path_to_wav.getter
-    def path_to_wav(self) -> str:
-        """Path to the WAV file.
-
-        Returns
-        -------
-        str
-            Path to the WAV file.
-        """
-        return self.__path_to_wav
 
     def process(self):
         """Load the WAV file.
