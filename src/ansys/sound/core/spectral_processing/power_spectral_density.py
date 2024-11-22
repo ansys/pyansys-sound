@@ -50,9 +50,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
         window_length: int = 2048,
         overlap: float = 0.25,
     ):
-        """Init.
-
-        Init the class.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
@@ -63,8 +61,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
             Use a power of 2 for better performance.
         window_type : str, default: 'HANN'
             Window type used for the PSD computation. Options are ``'BARTLETT'``, ``'BLACKMAN'``,
-            ``'BLACKMANHARRIS'``,``'HAMMING'``, ``'HANN'``, ``'KAISER'``, and
-            ``'RECTANGULAR'``.
+            ``'BLACKMANHARRIS'``, ``'HAMMING'``, ``'HANN'``, ``'KAISER'``, and ``'RECTANGULAR'``.
         window_length : int, default: 2048
             Number of points of the window used for the PSD computation , by default 2048.
         overlap : float, default: 0.25
@@ -88,7 +85,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
     @property
     def input_signal(self) -> Field:
-        """Input signal."""
+        """Input signal as a DPF field."""
         return self.__input_signal  # pragma: no cover
 
     @input_signal.setter
@@ -98,7 +95,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
     @property
     def fft_size(self) -> int:
-        """FFT size."""
+        """Number of FFT points."""
         return self.__fft_size  # pragma: no cover
 
     @fft_size.setter
@@ -110,7 +107,11 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
     @property
     def window_type(self) -> str:
-        """Window type."""
+        """Window type.
+
+        Supported options are ``'BARTLETT'``, ``'BLACKMAN'``, ``'BLACKMANHARRIS'``, ``'HAMMING'``,
+        ``'HANN'``, ``'KAISER'``, ``'RECTANGULAR'``.
+        """
         return self.__window_type  # pragma: no cover
 
     # check supporté variables
@@ -134,7 +135,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
     @property
     def window_length(self) -> int:
-        """Window length."""
+        """Number of window points."""
         return self.__window_length  # pragma: no cover
 
     @window_length.setter
@@ -146,7 +147,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
     @property
     def overlap(self) -> int:
-        """Overlap."""
+        """Window overlap in %."""
         return self.__overlap  # pragma: no cover
 
     @overlap.setter

@@ -34,13 +34,6 @@ class SignalUtilitiesParent(PyAnsysSound):
     This is the base class of all signal utilities classes and should not be used as is.
     """
 
-    def __init__(self):
-        """Init.
-
-        Init the class.
-        """
-        super().__init__()
-
     def plot(self):
         """Plot the resulting signals in a single figure."""
         output = self.get_output()

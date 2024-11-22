@@ -43,7 +43,7 @@ class Stft(SpectrogramProcessingParent):
         window_type: str = "HANN",
         window_overlap: float = 0.5,
     ):
-        """Create a ``Stft`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

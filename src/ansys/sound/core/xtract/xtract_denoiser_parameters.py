@@ -35,7 +35,7 @@ class XtractDenoiserParameters(XtractParent):
     """Contains denoiser parameters for use in Xtract processing or signal denoising."""
 
     def __init__(self, noise_psd: Field = None):
-        """Init.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
