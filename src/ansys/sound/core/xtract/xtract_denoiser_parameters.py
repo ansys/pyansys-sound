@@ -56,9 +56,9 @@ class XtractDenoiserParameters(XtractParent):
         self.noise_psd = noise_psd
 
     @property
-    def noise_psd(self):
+    def noise_psd(self) -> Field:
         """Power spectral density (PSD) of the noise in unit^2/Hz (Pa^2/Hz for example)."""
-        return self.__generic_data_container.get_property(ID_NOISE_PSD)  # pragma: no cover
+        return self.__generic_data_container.get_property(ID_NOISE_PSD)
 
     @noise_psd.setter
     def noise_psd(self, noise_psd: Field):
@@ -67,17 +67,6 @@ class XtractDenoiserParameters(XtractParent):
             raise PyAnsysSoundException("Noise PSD must be a non-empty field.")
 
         self.__generic_data_container.set_property(ID_NOISE_PSD, noise_psd)
-
-    @noise_psd.getter
-    def noise_psd(self) -> Field:
-        """Power spectral density (PSD) of the noise in unit^2/Hz (Pa^2/Hz for example).
-
-        Returns
-        -------
-        Field
-            Noise PSD as a DPF field.
-        """
-        return self.__generic_data_container.get_property(ID_NOISE_PSD)
 
     def get_parameters_as_generic_data_container(self) -> GenericDataContainer:
         """Get the parameters as a generic data container.
