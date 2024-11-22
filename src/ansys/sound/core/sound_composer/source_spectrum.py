@@ -161,8 +161,7 @@ class SourceSpectrum(SourceParent):
         self.source_spectrum_data = self.__operator_load.get_output(0, "field")
 
     def process(self, sampling_frequency: float = 44100.0):
-        """Generate the sound of the spectrum source, using the current source data and source
-        control.
+        """Generate the sound of the spectrum source, using the current spectrum and source control.
 
         Parameters
         ----------
