@@ -77,7 +77,7 @@ class ApplyGain(SignalUtilitiesParent):
 
     @property
     def gain_in_db(self) -> bool:
-        """``True`` if input gain is in dB, or ``False`` if it is linear unit.
+        """``True`` if input gain is in dB, or ``False`` if it is in linear unit.
 
         Boolean that indicates whether the input gain is provided in decibels (``True``) or in
         linear unit (``False``).
