@@ -55,7 +55,7 @@ def pytest_configure():
         "C:\\data\\SoundPowerLevelProject_hemisphere_signalsWithCalibration_2025R1_20240919.spw"
     )
     pytest.data_path_sound_composer_spectrum_source_in_container = (
-        "C:\\data\\AnsysSound Spectrum v3 - nominal - dBSPLperHz_2024R2_20241121.txt"
+        "C:\\data\\AnsysSound_Spectrum_v3_-_nominal_-_dBSPLperHz_2024R2_20241121.txt"
     )
 
 
