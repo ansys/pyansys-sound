@@ -195,7 +195,6 @@ jobs:
       - name: "Delete the Docker images (and untagged ones)"
         if: always()
         run: |
-          docker image rm ghcr.io/ansys/ansys-sound:latest
           docker system prune -f
 
   doc-build:
