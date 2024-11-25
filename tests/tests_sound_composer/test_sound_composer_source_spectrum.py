@@ -130,18 +130,6 @@ def test_source_specrum_load_source(dpf_sound_test_server):
     assert source_spectrum.source_spectrum_data.data[3] == pytest.approx(EXP_SPECTRUM_DATA3)
 
 
-def test_source_spectrum_load_source_exceptions(dpf_sound_test_server):
-    """Test SourceSpectrum load_source method exceptions."""
-    source_spectrum = SourceSpectrum()
-
-    # Test load_source method exception.
-    with pytest.raises(
-        PyAnsysSoundException, match="Specified spectrum source file 'InvalidPath' does not exist."
-    ):
-        source_spectrum.load_source_spectrum("InvalidPath")
-    assert source_spectrum.source_spectrum_data is None
-
-
 def test_source_spectrum_process(dpf_sound_test_server):
     """Test SourceSpectrum process method."""
     source_spectrum = SourceSpectrum(

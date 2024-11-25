@@ -21,7 +21,6 @@
 # SOFTWARE.
 
 """Sound Composer's spectrum source."""
-import os
 import warnings
 
 from ansys.dpf.core import Field, Operator
@@ -146,11 +145,6 @@ class SourceSpectrum(SourceParent):
             Path to the spectrum file. Supported files are the same XML and text (with the
             AnsysSound_Spectrum header) formats as supported by Ansys Sound SAS.
         """
-        if not os.path.exists(file_source):
-            raise PyAnsysSoundException(
-                f"Specified spectrum source file '{file_source}' does not exist."
-            )
-
         # Set operator inputs.
         self.__operator_load.connect(0, file_source)
 
