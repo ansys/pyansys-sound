@@ -54,6 +54,9 @@ def pytest_configure():
     pytest.data_path_swl_project_file_with_calibration_in_container = (
         "C:\\data\\SoundPowerLevelProject_hemisphere_signalsWithCalibration_2025R1_20240919.spw"
     )
+    pytest.data_path_flute_nonUnitaryCalib_as_txt_in_container = (
+        "C:\\data\\flute_nonUnitaryCalib_as_text_2024R2_20241125.txt"
+    )
 
 
 @pytest.fixture(scope="session")
