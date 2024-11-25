@@ -143,8 +143,8 @@ class SourceSpectrum(SourceParent):
         Parameters
         ----------
         file_source : str
-            Path to the spectrum file. Supported files are XML files and text files with the header
-            AnsysSound_Spectrum, as supported by Ansys Sound SAS.
+            Path to the spectrum file. Supported files are the same XML and text (with the
+            AnsysSound_Spectrum header) formats as supported by Ansys Sound SAS.
         """
         if not os.path.exists(file_source):
             raise PyAnsysSoundException(
