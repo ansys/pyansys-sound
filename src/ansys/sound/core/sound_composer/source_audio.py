@@ -47,8 +47,9 @@ class SourceAudio(SourceParent):
 
         Parameters
         ----------
-        file : str, default: ""
-            Path to the control data file (WAV or text format).
+        file : str, default ""
+            Path to the the audio data file (WAV format or text format with header
+            `AnsysSound_SoundSamples`).
         """
         super().__init__()
 
