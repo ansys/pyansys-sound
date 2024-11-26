@@ -56,85 +56,43 @@ class ApplyGain(SignalUtilitiesParent):
         self.__operator = Operator("apply_gain")
 
     @property
-    def signal(self):
-        """Signal."""
-        return self.__signal  # pragma: no cover
+    def signal(self) -> Field | FieldsContainer:
+        """Input signal as a DPF field or fields container."""
+        return self.__signal
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):
         """Set the signal."""
         self.__signal = signal
 
-    @signal.getter
-    def signal(self) -> Field | FieldsContainer:
-        """Signal.
-
-        Returns
-        -------
-        FieldsContainer | Field
-            Signal as a DPF field or fields container.
-        """
-        return self.__signal
-
     @property
-    def gain(self):
-        """Gain value."""
-        return self.__gain  # pragma: no cover
+    def gain(self) -> float:
+        """Gain value in dB or in linear unit (depending on ``gain_in_db`` value)."""
+        return self.__gain
 
     @gain.setter
     def gain(self, new_gain: float):
-        """Set a new gain value.
-
-        Parameters
-        ----------
-        new_gain : float
-            New gain value.
-        """
+        """Set a new gain value."""
         self.__gain = new_gain
 
-    @gain.getter
-    def gain(self) -> float:
-        """Gain value.
-
-        Returns
-        -------
-        float
-            Gain value.
-        """
-        return self.__gain
-
     @property
-    def gain_in_db(self):
-        """Gain in decibels (dB)."""
-        return self.__gain_in_db  # pragma: no cover
+    def gain_in_db(self) -> bool:
+        """``True`` if input gain is in dB, or ``False`` if it is in linear unit.
+
+        Boolean that indicates whether the input gain is provided in decibels (``True``) or in
+        linear unit (``False``).
+        """
+        return self.__gain_in_db
 
     @gain_in_db.setter
     def gain_in_db(self, new_gain_in_db: bool):
-        """Set a new value for gain in decibels (dB).
-
-        Parameters
-        ----------
-        new_gain_in_db : bool
-            Whether to set the new gain in decibels(dB). When ``False``, gain is
-            set in a linear unit.
-        """
+        """Set gain_in_db."""
         if type(new_gain_in_db) is not bool:
             raise PyAnsysSoundException(
                 "'new_gain_in_db' must be a Boolean value. Specify 'True' or 'False'."
             )
 
         self.__gain_in_db = new_gain_in_db
-
-    @gain_in_db.getter
-    def gain_in_db(self) -> bool:
-        """Flag indicating if the gain is in decibels (dB).
-
-        Returns
-        -------
-        bool
-            ``True`` if gain is in decibels, ``False`` if it is in a linear unit.
-        """
-        return self.__gain_in_db
 
     def process(self):
         """Apply a gain to the signal.

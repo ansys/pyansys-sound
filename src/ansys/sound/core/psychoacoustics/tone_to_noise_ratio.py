@@ -49,12 +49,12 @@ class ToneToNoiseRatio(PsychoacousticsParent):
             PSD of the signal to compute TNR on as a DPF field.
             The PSD field has the following characteristics:
 
-            - num_entities = 1
-            - location = "TimeFreq_sets"
-            - data: Vector of amplitude values in unit^2/Hz
-            - time_freq_support: Vector of regularly spaced frequencies in Hz associated with
-              amplitude values (from 0 Hz to the maximum frequency)
-            - unit = "<unit>^2/Hz" (where <unit> is Pa for example)
+            - ``num_entities`` = 1
+            - ``location`` = "TimeFreq_sets"
+            - ``data``: Vector of amplitude values in unit^2/Hz
+            - ``time_freq_support``: Vector of regularly spaced frequencies in Hz associated with
+                amplitude values (from 0 Hz to the maximum frequency)
+            - ``unit`` = "<unit>^2/Hz" (where <unit> is Pa for example).
 
             You can use the ``ansys.dpf.core.fields_factory.create_scalar_field()`` function
             to create the field.
@@ -71,72 +71,43 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         self.__operator = Operator("compute_TNR")
 
     @property
-    def psd(self):
-        """Power spectral density."""
-        return self.__psd  # pragma: no cover
-
-    @psd.setter
-    def psd(self, psd: Field):
-        """Set the PSD.
-
-        Parameters
-        -------
-        psd : Field
-            PSD of the signal to compute TNR on as a DPF field.
-            The PSD field has the following characteristics:
-
-            - num_entities = 1
-            - location = "TimeFreq_sets"
-            - data: vector of amplitude values in unit^2/Hz
-            - time_freq_support: Vector of regularly spaced frequencies in Hz associated with
-              amplitude values (from 0 Hz to the maximum frequency)
-            - unit = "<unit>^2/Hz" (where <unit> is Pa for example)
-
-            You can use the ``ansys.dpf.core.fields_factory.create_scalar_field()`` function
-            to create the field.
-        """
-        self.__psd = psd
-
-    @psd.getter
     def psd(self) -> Field:
-        """Power spectral density.
+        """Input power spectral density (PSD) as a DPF field.
 
-        Returns
-        -------
-        Field
-            PSD of the signal to compute TNR on as a DPF field.
+        The PSD field has the following characteristics:
+
+        - ``num_entities`` = 1
+        - ``location`` = "TimeFreq_sets"
+        - ``data``: Vector of amplitude values in unit^2/Hz
+        - ``time_freq_support``: Vector of regularly spaced frequencies in Hz associated with
+            amplitude values (from 0 Hz to the maximum frequency)
+        - ``unit`` = "<unit>^2/Hz" (where <unit> is Pa for example).
+
+        You can use the ``ansys.dpf.core.fields_factory.create_scalar_field()`` function
+        to create the field.
         """
         return self.__psd
 
+    @psd.setter
+    def psd(self, psd: Field):
+        """Set the PSD."""
+        self.__psd = psd
+
     @property
-    def frequency_list(self):
-        """Frequency list."""
-        return self.__frequency_list  # pragma: no cover
+    def frequency_list(self) -> list[float]:
+        """Tone frequency list in Hz.
+
+        List of the frequencies in Hz of the tones (peaks in the PSD) where the TNR shall be
+        calculated. If this parameter is unspecified (``None``), a peak detection algorithm is
+        applied to locate the tones in the input PSD. Then, the TNR is calculated for each detected
+        tone.
+        """
+        return self.__frequency_list
 
     @frequency_list.setter
     def frequency_list(self, frequency_list: list):
-        """Set the frequency list.
-
-        Parameters
-        -------
-        frequency_list : list
-            List of the frequencies in Hz of the tones (peaks in the spectrum)
-            to calculate the TNR on. If this input is empty (not specified), a peak
-            detection method is applied to automatically find the tones in the input
-            spectrum. Then, the TNR is calculated for each detected tone.
-        """
+        """Set the tone frequency list."""
         self.__frequency_list = frequency_list
-
-    @frequency_list.getter
-    def frequency_list(self) -> list:
-        """Get a list of the frequencies in Hz of the tones to calculate TNR for.
-
-        Returns
-        -------
-        list
-            Frequencies in Hz of the tones (peaks in the spectrum) to calculate TNR for.
-        """
-        return self.__frequency_list
 
     def process(self):
         """Compute the TNR.
