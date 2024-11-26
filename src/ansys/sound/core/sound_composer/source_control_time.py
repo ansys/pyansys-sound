@@ -124,6 +124,9 @@ class SourceControlTime(SourceControlParent):
         # Get the loaded sound power level parameters.
         self.control = self.__operator_load.get_output(0, "field")
 
+        # Clear the control unit, as this operator always returns the unit as "Pa".
+        self.control.unit = ""
+
     def plot(self):
         """Plot the control profile in a figure."""
         time_data = self.control.time_freq_support.time_frequencies.data
