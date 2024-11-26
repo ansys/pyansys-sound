@@ -44,8 +44,9 @@ class SourceControlTime(SourceControlParent):
 
         Parameters
         ----------
-        file_str : str, default: ""
-            Path to the control data file (WAV or text format).
+        file_str : str, default ""
+            Path to the control data file (WAV format or text format with header
+            `AnsysSound_SoundSamples`).
         """
         super().__init__()
 
@@ -113,7 +114,8 @@ class SourceControlTime(SourceControlParent):
         Parameters
         ----------
         file_str : str
-            Path to the text file.
+            Path to the text file. The text file shall have the same text format (with the header
+            `AnsysSound_SoundSamples`), as supported by Ansys Sound SAS.
         """
         # Set operator inputs.
         self.__operator_load.connect(0, file_str)
