@@ -21,8 +21,10 @@
 # SOFTWARE.
 
 from unittest.mock import patch
+
+from ansys.dpf.core import Field
 import pytest
-from ansys.dpf.core import Field, TimeFreqSupport, fields_factory, locations
+
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.sound_composer import SourceControlTime
 
@@ -33,27 +35,27 @@ EXP_STR_NOT_SET = "Not set"
 def test_source_control_time_instantiation_no_file(dpf_sound_test_server):
     """Test SourceControlTime instantiation."""
     # Test instantiation.
-    control_time =  SourceControlTime()
+    control_time = SourceControlTime()
     assert isinstance(control_time, SourceControlTime)
 
 
 def test_source_control_time_instantiation_wav_file(dpf_sound_test_server):
     """Test SourceControlTime instantiation."""
     # Test instantiation.
-    control_time =  SourceControlTime(pytest.data_path_rpm_profile_as_wav_in_container)
+    control_time = SourceControlTime(pytest.data_path_rpm_profile_as_wav_in_container)
     assert isinstance(control_time, SourceControlTime)
 
 
 def test_source_control_time_instantiation_txt_file(dpf_sound_test_server):
     """Test SourceControlTime instantiation."""
     # Test instantiation.
-    control_time =  SourceControlTime(pytest.data_path_rpm_profile_as_txt_in_container)
+    control_time = SourceControlTime(pytest.data_path_rpm_profile_as_txt_in_container)
     assert isinstance(control_time, SourceControlTime)
 
 
 def test_source_control_time_properties(dpf_sound_test_server):
     """Test SourceControlTime properties."""
-    control_time =  SourceControlTime()
+    control_time = SourceControlTime()
 
     # Test control setter.
     control_time.control = Field()
@@ -62,7 +64,7 @@ def test_source_control_time_properties(dpf_sound_test_server):
 
 def test_source_control_time_propertiess_exceptions(dpf_sound_test_server):
     """Test SourceControlTime properties' exceptions."""
-    control_time =  SourceControlTime()
+    control_time = SourceControlTime()
 
     # Test control setter exception.
     with pytest.raises(
@@ -74,26 +76,26 @@ def test_source_control_time_propertiess_exceptions(dpf_sound_test_server):
 
 def test_source_control_time___str__(dpf_sound_test_server):
     """Test SourceControlTime __str__ method."""
-    control_time =  SourceControlTime(pytest.data_path_rpm_profile_as_wav_in_container)
+    control_time = SourceControlTime(pytest.data_path_rpm_profile_as_wav_in_container)
     assert str(control_time) == EXP_STR_ALL_SET
 
 
 def test_source_control_time___str___not_set(dpf_sound_test_server):
     """Test SourceControlTime __str__ method."""
-    control_time =  SourceControlTime()
+    control_time = SourceControlTime()
     assert str(control_time) == EXP_STR_NOT_SET
 
 
 def test_source_control_time_load_from_wave_file(dpf_sound_test_server):
     """Test SourceControlTime load_from_wave_file method."""
-    control_time =  SourceControlTime()
+    control_time = SourceControlTime()
     control_time.load_from_wave_file(pytest.data_path_rpm_profile_as_wav_in_container)
     assert isinstance(control_time.control, Field)
 
 
 def test_source_control_time_load_from_text_file(dpf_sound_test_server):
     """Test SourceControlTime load_from_text_file method."""
-    control_time =  SourceControlTime()
+    control_time = SourceControlTime()
     control_time.load_from_text_file(pytest.data_path_rpm_profile_as_txt_in_container)
     assert isinstance(control_time.control, Field)
 
