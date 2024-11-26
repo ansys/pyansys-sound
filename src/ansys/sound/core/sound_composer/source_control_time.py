@@ -65,9 +65,11 @@ class SourceControlTime(SourceControlParent):
         if self.control is None:
             return "Not set"
         else:
+            support_data = self.control.time_freq_support.time_frequencies.data
+            str_duration = f"{support_data[-1]:.1f} s" if len(support_data) > 0 else "N/A"
             return (
                 f"Unit: {self.control.unit}\n"
-                f"Duration: {self.control.time_freq_support.time_frequencies.data[-1]:.1f} s\n"
+                f"Duration: {str_duration}\n"
                 f"Min - max: {self.control.data.min():.1f} - {self.control.data.max():.1f} "
                 f"{self.control.unit}"
             )
@@ -80,10 +82,17 @@ class SourceControlTime(SourceControlParent):
     @control.setter
     def control(self, control: Field):
         """Set the control."""
-        if not (isinstance(control, Field) or control is None):
-            raise PyAnsysSoundException(
-                "Specified control profile must be provided as a DPF field."
-            )
+        if control is not None:
+            if not (isinstance(control, Field) or control is None):
+                raise PyAnsysSoundException(
+                    "Specified control profile must be provided as a DPF field."
+                )
+
+            if len(control.data) == 0:
+                raise PyAnsysSoundException(
+                    "Specified control profile must have at least one element."
+                )
+
         self.__control = control
 
     def load_from_wave_file(self, file_str: str):

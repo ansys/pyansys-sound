@@ -26,6 +26,7 @@ from ansys.dpf.core import Field
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException
+from ansys.sound.core.signal_utilities.load_wav import LoadWav
 from ansys.sound.core.sound_composer import SourceControlTime
 
 EXP_STR_ALL_SET = "Unit: \nDuration: 20.6 s\nMin - max: 968.8 - 4821.3 "
@@ -56,22 +57,33 @@ def test_source_control_time_instantiation_txt_file(dpf_sound_test_server):
 def test_source_control_time_properties(dpf_sound_test_server):
     """Test SourceControlTime properties."""
     control_time = SourceControlTime()
+    loader = LoadWav(pytest.data_path_rpm_profile_as_wav_in_container)
+    loader.process()
+    control = loader.get_output()[0]
 
     # Test control setter.
-    control_time.control = Field()
+    control_time.control = control
     assert isinstance(control_time.control, Field)
+    assert len(control_time.control.data) > 0
 
 
 def test_source_control_time_propertiess_exceptions(dpf_sound_test_server):
     """Test SourceControlTime properties' exceptions."""
     control_time = SourceControlTime()
 
-    # Test control setter exception.
+    # Test control setter exception 1 (wrong control type).
     with pytest.raises(
         PyAnsysSoundException,
         match="Specified control profile must be provided as a DPF field.",
     ):
         control_time.control = "WrongType"
+
+    # Test control setter exception 2 (empty control).
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Specified control profile must have at least one element.",
+    ):
+        control_time.control = Field()
 
 
 def test_source_control_time___str__(dpf_sound_test_server):
