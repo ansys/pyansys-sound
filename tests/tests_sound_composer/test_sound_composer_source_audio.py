@@ -32,9 +32,7 @@ from ansys.sound.core.spectral_processing import PowerSpectralDensity
 
 EXP_AUDIO_DATA17640 = -0.5416082739830017
 EXP_STR_NOT_SET = "Audio source: Not set"
-EXP_STR_ALL_SET = (
-    "Audio source: 'flute'\n\tDuration: 3.5 s\n\tSampling frequency: 44100.0 Hz"
-)
+EXP_STR_ALL_SET = "Audio source: 'flute'\n\tDuration: 3.5 s\n\tSampling frequency: 44100.0 Hz"
 
 
 def test_source_audio_instantiation_no_arg(dpf_sound_test_server):
@@ -92,7 +90,9 @@ def test_source_audio_load_source_audio_from_text(dpf_sound_test_server):
         pytest.data_path_flute_nonUnitaryCalib_as_txt_in_container
     )
     assert isinstance(source_audio.source_audio_data, Field)
-    assert source_audio.source_audio_data.data[17640] == pytest.approx(EXP_AUDIO_DATA17640, rel=1e-3)
+    assert source_audio.source_audio_data.data[17640] == pytest.approx(
+        EXP_AUDIO_DATA17640, rel=1e-3
+    )
 
 
 def test_source_audio_process_no_resample(dpf_sound_test_server):
