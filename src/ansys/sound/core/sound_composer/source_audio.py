@@ -47,21 +47,22 @@ class SourceAudio(SourceParent):
 
         Parameters
         ----------
-        file : str, default ""
-            Path to the audio file (WAV format).
+        file : str, default: ""
+            Path to the control data file (WAV or text format).
         """
         super().__init__()
 
-        # Load the audio file, if specified.
-        if len(file) > 0:
-            loader = LoadWav(file)
-            loader.process()
-            self.source_audio_data = loader.get_output()[0]
-        else:
-            self.source_audio_data = None
-
         # Define DPF Sound operators.
         self.__operator_load = Operator(ID_LOAD_FROM_TEXT)
+
+        # Load the audio file, if specified.
+        if len(file) > 0:
+            if file.endswith(".wav"):
+                self.load_from_wave_file(file)
+            else:
+                self.load_from_text_file(file)
+        else:
+            self.source_audio_data = None
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
@@ -105,7 +106,19 @@ class SourceAudio(SourceParent):
             )
         self.__source_audio_data = source_audio_data
 
-    def load_source_audio_from_text(self, file: str):
+    def load_from_wave_file(self, file: str):
+        """Load the audio source data from a WAV file.
+
+        Parameters
+        ----------
+        file : str
+            Path to the WAV file.
+        """
+        loader = LoadWav(file)
+        loader.process()
+        self.source_audio_data = loader.get_output()[0]
+
+    def load_from_text_file(self, file: str):
         """Load the audio source data from a text file.
 
         Parameters

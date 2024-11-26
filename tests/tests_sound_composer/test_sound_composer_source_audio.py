@@ -43,10 +43,18 @@ def test_source_audio_instantiation_no_arg(dpf_sound_test_server):
     assert source_audio.source_audio_data is None
 
 
-def test_source_audio_instantiation_file_arg(dpf_sound_test_server):
+def test_source_audio_instantiation_wav_file(dpf_sound_test_server):
     """Test SourceAudio instantiation with file argument."""
     # Test instantiation.
     source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    assert isinstance(source_audio, SourceAudio)
+    assert source_audio.source_audio_data is not None
+
+
+def test_source_audio_instantiation_txt_file(dpf_sound_test_server):
+    """Test SourceAudio instantiation with file argument."""
+    # Test instantiation.
+    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_as_txt_in_container)
     assert isinstance(source_audio, SourceAudio)
     assert source_audio.source_audio_data is not None
 
@@ -91,12 +99,20 @@ def test_source_audio_propertiess_exceptions(dpf_sound_test_server):
         source_audio.source_audio_data = "InvalidType"
 
 
-def test_source_audio_load_source_audio_from_text(dpf_sound_test_server):
+def test_source_audio_load_from_wave_file(dpf_sound_test_server):
     """Test SourceAudio load_source_audio_from_text method."""
     source_audio = SourceAudio()
-    source_audio.load_source_audio_from_text(
-        pytest.data_path_flute_nonUnitaryCalib_as_txt_in_container
+    source_audio.load_from_wave_file(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    assert isinstance(source_audio.source_audio_data, Field)
+    assert source_audio.source_audio_data.data[17640] == pytest.approx(
+        EXP_AUDIO_DATA17640, rel=1e-3
     )
+
+
+def test_source_audio_load_from_text_file(dpf_sound_test_server):
+    """Test SourceAudio load_source_audio_from_text method."""
+    source_audio = SourceAudio()
+    source_audio.load_from_text_file(pytest.data_path_flute_nonUnitaryCalib_as_txt_in_container)
     assert isinstance(source_audio.source_audio_data, Field)
     assert source_audio.source_audio_data.data[17640] == pytest.approx(
         EXP_AUDIO_DATA17640, rel=1e-3
