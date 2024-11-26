@@ -114,7 +114,7 @@ def test_source_spectrum_properties(dpf_sound_test_server):
     assert isinstance(source_spectrum.source_spectrum_data, Field)
 
 
-def test_source_spectrum_propertiess_exceptions(dpf_sound_test_server):
+def test_source_spectrum_properties_exceptions(dpf_sound_test_server):
     """Test SourceSpectrum properties' exceptions."""
     source_spectrum = SourceSpectrum()
 

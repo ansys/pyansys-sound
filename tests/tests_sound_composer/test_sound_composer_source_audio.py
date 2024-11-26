@@ -32,6 +32,7 @@ from ansys.sound.core.sound_composer import SourceAudio
 EXP_AUDIO_DATA17640 = -0.5416082739830017
 EXP_STR_NOT_SET = "Audio source: Not set"
 EXP_STR_ALL_SET = "Audio source: 'flute'\n\tDuration: 3.5 s\n\tSampling frequency: 44100.0 Hz"
+EXP_STR_EMPTY_AUDIO = "Audio source: 'flute'\n\tDuration: N/A\n\tSampling frequency: N/A"
 
 
 def test_source_audio_instantiation_no_arg(dpf_sound_test_server):
@@ -60,6 +61,14 @@ def test_source_audio___str___all_set(dpf_sound_test_server):
     """Test SourceAudio __str__ method when all data are set."""
     source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
     assert str(source_audio) == EXP_STR_ALL_SET
+
+
+def test_source_audio___str___empty_audio(dpf_sound_test_server):
+    """Test SourceAudio __str__ method when all data are set."""
+    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    source_audio.source_audio_data.data = []
+    source_audio.source_audio_data.time_freq_support.time_frequencies.data = []
+    assert str(source_audio) == EXP_STR_EMPTY_AUDIO
 
 
 def test_source_audio_properties(dpf_sound_test_server):
@@ -110,6 +119,7 @@ def test_source_audio_process_resample(dpf_sound_test_server):
 
 def test_source_audio_process_exceptions(dpf_sound_test_server):
     """Test SourceAudio process method exceptions."""
+    # Test process method exception1 (missing audio).
     source_audio = SourceAudio()
     with pytest.raises(
         PyAnsysSoundException,
@@ -119,6 +129,13 @@ def test_source_audio_process_exceptions(dpf_sound_test_server):
         ),
     ):
         source_audio.process()
+
+    # Test process method exception2 (invalid sampling frequency value).
+    source_audio = SourceAudio()
+    with pytest.raises(
+        PyAnsysSoundException, match="Sampling frequency must be strictly positive."
+    ):
+        source_audio.process(sampling_frequency=0.0)
 
 
 def test_source_audio_get_output(dpf_sound_test_server):

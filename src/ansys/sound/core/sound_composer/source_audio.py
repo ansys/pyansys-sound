@@ -67,10 +67,21 @@ class SourceAudio(SourceParent):
         """Return the string representation of the object."""
         if self.source_audio_data is not None:
             support_data = self.source_audio_data.time_freq_support.time_frequencies.data
+
+            if len(support_data) < 1:
+                str_duration = "N/A"
+            else:
+                str_duration = f"{support_data[-1]:.1f} s"
+
+            if len(support_data) < 2:
+                str_fs = "N/A"
+            else:
+                str_fs = f"{1/(support_data[1] - support_data[0]):.1f} Hz"
+
             str_source = (
                 f"'{self.source_audio_data.name}'\n"
-                f"\tDuration: {support_data[-1]:.1f} s\n"
-                f"\tSampling frequency: {1/(support_data[1] - support_data[0]):.1f} Hz"
+                f"\tDuration: {str_duration}\n"
+                f"\tSampling frequency: {str_fs}"
             )
         else:
             str_source = "Not set"
@@ -121,6 +132,9 @@ class SourceAudio(SourceParent):
         sampling_frequency : float, default 44100.0
             Sampling frequency of the generated sound in Hz.
         """
+        if sampling_frequency <= 0.0:
+            raise PyAnsysSoundException("Sampling frequency must be strictly positive.")
+
         if self.source_audio_data is None:
             raise PyAnsysSoundException(
                 f"Source's audio data is not set. Use "
