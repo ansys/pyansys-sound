@@ -22,13 +22,12 @@
 
 from unittest.mock import patch
 
-from ansys.dpf.core import Field, TimeFreqSupport, fields_factory, locations
+from ansys.dpf.core import Field
 import numpy as np
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.sound_composer import SourceAudio
-from ansys.sound.core.spectral_processing import PowerSpectralDensity
 
 EXP_AUDIO_DATA17640 = -0.5416082739830017
 EXP_STR_NOT_SET = "Audio source: Not set"
