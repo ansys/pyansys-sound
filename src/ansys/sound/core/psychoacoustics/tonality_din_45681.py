@@ -307,8 +307,8 @@ class TonalityDIN45681(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Array of computation times, in seconds, of the DIN 45681 parameters over time (decisive
-            difference, uncertainty, and tonal adjustment).
+            Array of the computation times, in seconds, of the DIN 45681 parameters over time
+            (decisive difference, uncertainty, and tonal adjustment).
         """
         return self.get_output_as_nparray()[7]
 
