@@ -6,5 +6,6 @@ Sound composer
 .. autosummary::
     :toctree: _autosummary
 
+    SourceSpectrum
     SourceControlSpectrum
     SpectrumSynthesisMethods

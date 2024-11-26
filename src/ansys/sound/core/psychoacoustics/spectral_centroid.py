@@ -40,38 +40,21 @@ class SpectralCentroid(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field
-            Signal to compute spectral centroid on as a DPF field.
+            Signal on which to compute spectral centroid as a DPF field.
         """
         super().__init__()
         self.signal = signal
         self.__operator = Operator("compute_spectral_centroid")
 
     @property
-    def signal(self):
-        """Signal."""
-        return self.__signal  # pragma: no cover
+    def signal(self) -> Field:
+        """Input sound signal as a DPF field."""
+        return self.__signal
 
     @signal.setter
     def signal(self, signal: Field):
-        """Set the signal.
-
-        Parameters
-        -------
-        signal : Field
-            Signal to compute spectral centroid on as a DPF field.
-        """
+        """Set the signal."""
         self.__signal = signal
-
-    @signal.getter
-    def signal(self) -> Field:
-        """Signal.
-
-        Returns
-        -------
-        Field
-            Signal as a DPF field.
-        """
-        return self.__signal
 
     def process(self):
         """Compute the spectral centroid."""

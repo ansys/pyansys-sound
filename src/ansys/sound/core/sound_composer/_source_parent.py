@@ -20,24 +20,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Sound composer functions.
-
-Helper functions related to the sound composer.
-"""
-
+"""Sound Composer's source."""
 from ._sound_composer_parent import SoundComposerParent
-from ._source_control_parent import SourceControlParent, SpectrumSynthesisMethods
-from ._source_parent import SourceParent
-from .source_control_spectrum import SourceControlSpectrum
-from .source_spectrum import SourceSpectrum
-from .source_audio import SourceAudio
 
-__all__ = (
-    "SoundComposerParent",
-    "SourceParent",
-    "SourceControlParent",
-    "SpectrumSynthesisMethods",
-    "SourceSpectrum",
-    "SourceControlSpectrum",
-    "SourceAudio",
-)
+
+class SourceParent(SoundComposerParent):
+    """
+    Provides the abstract base class for the Sound Composer's sources.
+
+    This is the base class of all Sound Composer's source classes and should not be used as is.
+    """
+
+    def is_source_control_valid(self) -> bool:
+        """Check if the source control is valid."""
+        return False

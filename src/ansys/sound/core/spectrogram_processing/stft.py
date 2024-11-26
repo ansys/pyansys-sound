@@ -68,9 +68,13 @@ class Stft(SpectrogramProcessingParent):
         self.__operator = Operator("compute_stft")
 
     @property
-    def signal(self):
-        """Signal."""
-        return self.__signal  # pragma: no cover
+    def signal(self) -> Field:
+        """Input signal as a DPF field.
+
+        Can be provided as a DPF field or fields container, but will be stored as DPF field
+        regardless.
+        """
+        return self.__signal
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):
@@ -85,21 +89,10 @@ class Stft(SpectrogramProcessingParent):
         else:
             self.__signal = signal
 
-    @signal.getter
-    def signal(self) -> Field:
-        """Signal.
-
-        Returns
-        -------
-        Field
-            Signal as a DPF field.
-        """
-        return self.__signal
-
     @property
-    def fft_size(self):
-        """FFT size."""
-        return self.__fft_size  # pragma: no cover
+    def fft_size(self) -> int:
+        """Number of FFT points."""
+        return self.__fft_size
 
     @fft_size.setter
     def fft_size(self, fft_size: int):
@@ -108,24 +101,17 @@ class Stft(SpectrogramProcessingParent):
             raise PyAnsysSoundException("FFT size must be greater than 0.0.")
         self.__fft_size = fft_size
 
-    @fft_size.getter
-    def fft_size(self) -> float:
-        """FFT size.
-
-        Returns
-        -------
-        float
-            FFT size.
-        """
-        return self.__fft_size
-
     @property
-    def window_type(self):
-        """Window type property."""
-        return self.__window_type  # pragma: no cover
+    def window_type(self) -> str:
+        """Window type.
+
+        Supported options are ``'BARTLETT'``, ``'BLACKMAN'``, ``'BLACKMANHARRIS'``, ``'HAMMING'``,
+        ``'HANN'``, ``'KAISER'``, ``'RECTANGULAR'``.
+        """
+        return self.__window_type
 
     @window_type.setter
-    def window_type(self, window_type):
+    def window_type(self, window_type: str):
         """Set the window type."""
         if window_type not in [
             "BARTLETT",
@@ -143,40 +129,18 @@ class Stft(SpectrogramProcessingParent):
 
         self.__window_type = window_type
 
-    @window_type.getter
-    def window_type(self) -> str:
-        """Window type.
-
-        Returns
-        -------
-        str
-            Window type.
-        """
-        return self.__window_type
-
     @property
-    def window_overlap(self):
-        """Window overlap."""
-        return self.__window_overlap  # pragma: no cover
+    def window_overlap(self) -> float:
+        """Window overlap in %."""
+        return self.__window_overlap
 
     @window_overlap.setter
-    def window_overlap(self, window_overlap):
+    def window_overlap(self, window_overlap: float):
         """Window overlap."""
         if window_overlap < 0.0 or window_overlap > 1.0:
             raise PyAnsysSoundException("Window overlap must be between 0.0 and 1.0.")
 
         self.__window_overlap = window_overlap
-
-    @window_overlap.getter
-    def window_overlap(self) -> float:
-        """Window overlap.
-
-        Returns
-        -------
-        float
-            Window overlap.
-        """
-        return self.__window_overlap
 
     def process(self):
         """Compute the STFT.
