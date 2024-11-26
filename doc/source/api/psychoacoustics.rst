@@ -14,3 +14,4 @@ Psychoacoustics
     FluctuationStrength
     ProminenceRatio
     ToneToNoiseRatio
+    TonalityDIN45681
