@@ -33,7 +33,7 @@ from ansys.sound.core.signal_utilities import LoadWav, Resample
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._source_parent import SourceParent
 
-ID_COMPUTE_LOAD_AUDIO = "load_sound_samples_from_txt"
+ID_LOAD_FROM_TEXT = "load_sound_samples_from_txt"
 
 
 class SourceAudio(SourceParent):
@@ -48,7 +48,7 @@ class SourceAudio(SourceParent):
         Parameters
         ----------
         file : str, default ""
-            Path to the audio file (WAV fomat).
+            Path to the audio file (WAV format).
         """
         super().__init__()
 
@@ -61,8 +61,7 @@ class SourceAudio(SourceParent):
             self.source_audio_data = None
 
         # Define DPF Sound operators.
-        self.__operator_load = Operator(ID_COMPUTE_LOAD_AUDIO)
-
+        self.__operator_load = Operator(ID_LOAD_FROM_TEXT)
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
@@ -132,7 +131,9 @@ class SourceAudio(SourceParent):
         # Check sampling frequency, and resample if necessary.
         support_data = self.source_audio_data.time_freq_support.time_frequencies.data
         if np.round(1 / (support_data[1] - support_data[0]), 1) != np.round(sampling_frequency, 1):
-            resampler = Resample(signal=self.source_audio_data, new_sampling_frequency=sampling_frequency)
+            resampler = Resample(
+                signal=self.source_audio_data, new_sampling_frequency=sampling_frequency
+            )
             resampler.process()
             self._output = resampler.get_output()
         else:
