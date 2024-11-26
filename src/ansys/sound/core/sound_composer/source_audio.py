@@ -47,7 +47,7 @@ class SourceAudio(SourceParent):
 
         Parameters
         ----------
-        file : str, default ""
+        file : str, default: ""
             Path to the the audio data file (WAV format or text format with header
             `AnsysSound_SoundSamples`).
         """
@@ -143,7 +143,7 @@ class SourceAudio(SourceParent):
 
         Parameters
         ----------
-        sampling_frequency : float, default 44100.0
+        sampling_frequency : float, default: 44100.0
             Sampling frequency of the generated sound in Hz.
         """
         if sampling_frequency <= 0.0:
