@@ -117,10 +117,17 @@ class SourceSpectrum(SourceParent):
     @source_spectrum_data.setter
     def source_spectrum_data(self, source_spectrum_data: Field):
         """Set the spectrum source data, from a DPF field."""
-        if not (isinstance(source_spectrum_data, Field) or source_spectrum_data is None):
-            raise PyAnsysSoundException(
-                "Specified spectrum source must be provided as a DPF field."
-            )
+        if source_spectrum_data is not None:
+            if not isinstance(source_spectrum_data, Field):
+                raise PyAnsysSoundException(
+                    "Specified spectrum source must be provided as a DPF field."
+                )
+
+            if len(source_spectrum_data.time_freq_support.time_frequencies.data) < 2:
+                raise PyAnsysSoundException(
+                    "Specified spectrum source must contain at least two elements."
+                )
+
         self.__source_spectrum_data = source_spectrum_data
 
     def is_source_control_valid(self) -> bool:
@@ -162,6 +169,9 @@ class SourceSpectrum(SourceParent):
         sampling_frequency : float, default 44100.0
             Sampling frequency of the generated sound in Hz.
         """
+        if sampling_frequency <= 0.0:
+            raise PyAnsysSoundException("Sampling frequency must be strictly positive.")
+
         if not self.is_source_control_valid():
             raise PyAnsysSoundException(
                 "Spectrum source control is not valid. Either it is not set "

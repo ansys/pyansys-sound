@@ -27,6 +27,7 @@ import numpy as np
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.signal_utilities.load_wav import LoadWav
 from ansys.sound.core.sound_composer import SourceControlSpectrum, SourceSpectrum
 from ansys.sound.core.spectral_processing import PowerSpectralDensity
 
@@ -81,8 +82,20 @@ def test_source_spectrum_properties(dpf_sound_test_server):
     source_spectrum.source_control = SourceControlSpectrum()
     assert isinstance(source_spectrum.source_control, SourceControlSpectrum)
 
+    # Compute a signal's power spectral density to check source_spectrum_data property.
+    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader.process()
+    psd = PowerSpectralDensity(
+        input_signal=wav_loader.get_output()[0],
+        fft_size=8192,
+        window_type="HANN",
+        window_length=8192,
+        overlap=0.75,
+    )
+    psd.process()
+
     # Test source_spectrum_data property.
-    source_spectrum.source_spectrum_data = Field()
+    source_spectrum.source_spectrum_data = psd.get_output()
     assert isinstance(source_spectrum.source_spectrum_data, Field)
 
 
@@ -97,11 +110,33 @@ def test_source_spectrum_propertiess_exceptions(dpf_sound_test_server):
     ):
         source_spectrum.source_control = "InvalidType"
 
-    # Test source_spectrum_data setter exception (str instead a Field).
+    # Test source_spectrum_data setter exception 1 (str instead a Field).
     with pytest.raises(
         PyAnsysSoundException, match="Specified spectrum source must be provided as a DPF field."
     ):
         source_spectrum.source_spectrum_data = "InvalidType"
+
+    # Compute a signal's power spectral density to check source_spectrum_data property exception 2.
+    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader.process()
+    psd = PowerSpectralDensity(
+        input_signal=wav_loader.get_output()[0],
+        fft_size=8192,
+        window_type="HANN",
+        window_length=8192,
+        overlap=0.75,
+    )
+    psd.process()
+    field = psd.get_output()
+
+    # Remove all frequencies from the field to trigger the exception.
+    field.time_freq_support.time_frequencies.data = []
+
+    # Test source_spectrum_data setter exception 2 (not enough elements).
+    with pytest.raises(
+        PyAnsysSoundException, match="Specified spectrum source must contain at least two elements."
+    ):
+        source_spectrum.source_spectrum_data = field
 
 
 def test_source_spectrum_is_source_control_valid(dpf_sound_test_server):
@@ -142,8 +177,6 @@ def test_source_spectrum_process(dpf_sound_test_server):
 
 def test_source_spectrum_process_exceptions(dpf_sound_test_server):
     """Test SourceSpectrum process method exceptions."""
-    source_spectrum = SourceSpectrum(pytest.data_path_sound_composer_spectrum_source_in_container)
-
     # Test process method exception1 (missing control).
     source_spectrum = SourceSpectrum(pytest.data_path_sound_composer_spectrum_source_in_container)
     with pytest.raises(
@@ -167,6 +200,13 @@ def test_source_spectrum_process_exceptions(dpf_sound_test_server):
         ),
     ):
         source_spectrum.process()
+
+    # Test process method exception3 (invalid sampling frequency value).
+    source_spectrum = SourceSpectrum()
+    with pytest.raises(
+        PyAnsysSoundException, match="Sampling frequency must be strictly positive."
+    ):
+        source_spectrum.process(sampling_frequency=0.0)
 
 
 def test_source_spectrum_get_output(dpf_sound_test_server):
