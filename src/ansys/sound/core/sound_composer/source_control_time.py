@@ -44,7 +44,7 @@ class SourceControlTime(SourceControlParent):
 
         Parameters
         ----------
-        file_str : str, default ""
+        file_str : str, default: ""
             Path to the control data file (WAV format or text format with header
             `AnsysSound_SoundSamples`).
         """
