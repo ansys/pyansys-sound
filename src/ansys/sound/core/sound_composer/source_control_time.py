@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Sound Composer's time control source."""
+"""Sound Composer's time source control."""
 from ansys.dpf.core import Field, Operator
 from matplotlib import pyplot as plt
 
@@ -33,10 +33,10 @@ ID_LOAD_FROM_TEXT = "load_sound_samples_from_txt"
 
 
 class SourceControlTime(SourceControlParent):
-    """Sound Composer's spectrum source's control class.
+    """Sound Composer's time source control class.
 
-    This class stores the control parameters used by the Sound Composer for a BBN or harmonic
-    source.
+    This class stores the source control used by the Sound Composer to generate a sound
+    from a BBN or harmonic source. It is the evolution of the control parameter over time.
     """
 
     def __init__(self, file_str: str = ""):
@@ -77,7 +77,7 @@ class SourceControlTime(SourceControlParent):
 
     @property
     def control(self) -> Field:
-        """Control profile (control parameter values over time). Unit depends on loaded data."""
+        """Control profile (control parameter values over time)."""
         return self.__control
 
     @control.setter
