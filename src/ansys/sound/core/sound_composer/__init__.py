@@ -29,8 +29,8 @@ from ._sound_composer_parent import SoundComposerParent
 from ._source_control_parent import SourceControlParent, SpectrumSynthesisMethods
 from ._source_parent import SourceParent
 from .source_control_spectrum import SourceControlSpectrum
-from .source_spectrum import SourceSpectrum
 from .source_control_time import SourceControlTime
+from .source_spectrum import SourceSpectrum
 
 __all__ = (
     "SoundComposerParent",

@@ -25,6 +25,7 @@ from ansys.dpf.core import Field, Operator
 from matplotlib import pyplot as plt
 
 from ansys.sound.core.signal_utilities.load_wav import LoadWav
+
 from .._pyansys_sound import PyAnsysSoundException
 from ._source_control_parent import SourceControlParent, SpectrumSynthesisMethods
 
@@ -87,7 +88,7 @@ class SourceControlTime(SourceControlParent):
 
     def load_from_wave_file(self, file_str: str):
         """Load control data from a WAV file.
-        
+
         Parameters
         ----------
         file_str : str
@@ -96,10 +97,10 @@ class SourceControlTime(SourceControlParent):
         loader = LoadWav(file_str)
         loader.process()
         self.control = loader.get_output()[0]
-    
+
     def load_from_text_file(self, file_str: str):
         """Load control data from a text file.
-        
+
         Parameters
         ----------
         file_str : str
@@ -119,9 +120,9 @@ class SourceControlTime(SourceControlParent):
         time_data = self.control.time_freq_support.time_frequencies.data
 
         plt.plot(time_data, self.control.data)
-        plt.title(self.control.name if len(self.control.name)>0 else "Control profile")
+        plt.title(self.control.name if len(self.control.name) > 0 else "Control profile")
         plt.xlabel("Time (s)")
-        str_unit = f" ({self.control.unit})" if len(self.control.unit)>0 else ""
+        str_unit = f" ({self.control.unit})" if len(self.control.unit) > 0 else ""
         plt.ylabel("Control parameter" + str_unit)
         plt.grid(True)
         plt.show()
