@@ -186,8 +186,7 @@ def test_isolate_orders_set_get_window_type(dpf_sound_test_server):
     with pytest.raises(PyAnsysSoundException) as excinfo:
         isolate_orders.window_type = "InvalidWindow"
     assert (
-        str(excinfo.value)
-        == "Invalid window type, accepted values are 'HANNING', 'BLACKMANHARRIS', 'HANN',"
+        str(excinfo.value) == "Invalid window type, accepted values are 'BLACKMANHARRIS', 'HANN',"
         " 'BLACKMAN','HAMMING', 'KAISER', 'BARTLETT', 'RECTANGULAR'."
     )
 

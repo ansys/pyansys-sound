@@ -53,31 +53,14 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         self.__operator = Operator("compute_loudness_iso532_1_vs_time")
 
     @property
-    def signal(self):
-        """Signal property."""
-        return self.__signal  # pragma: no cover
+    def signal(self) -> Field | FieldsContainer:
+        """Input sound signal in Pa as a DPF field or fields container."""
+        return self.__signal
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):
-        """Set the signal.
-
-        Parameters
-        ----------
-        signal : FieldsContainer | Field
-            Signal in Pa to compute loudness on as a DPF field or fields container.
-        """
+        """Set the signal."""
         self.__signal = signal
-
-    @signal.getter
-    def signal(self) -> Field | FieldsContainer:
-        """Signal.
-
-        Returns
-        -------
-        Field | FieldsContainer
-            Signal as a DPF field or a fields container.
-        """
-        return self.__signal
 
     def process(self):
         """Compute the time-varying ISO532-1 loudness.
