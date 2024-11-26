@@ -71,10 +71,16 @@ class SourceSpectrum(SourceParent):
         """Return the string representation of the object."""
         if self.source_spectrum_data is not None:
             support_data = self.source_spectrum_data.time_freq_support.time_frequencies.data
+
+            if len(support_data) < 2:
+                str_deltaf = "N/A"
+            else:
+                str_deltaf = f"{support_data[1] - support_data[0]:.1f} Hz"
+
             str_source = (
                 f"'{self.source_spectrum_data.name}'\n"
                 f"\tFmax: {support_data[-1]:.0f} Hz\n"
-                f"\tDeltaF: {support_data[1] - support_data[0]:.1f} Hz"
+                f"\tDeltaF: {str_deltaf}"
             )
         else:
             str_source = "Not set"
@@ -123,9 +129,10 @@ class SourceSpectrum(SourceParent):
                     "Specified spectrum source must be provided as a DPF field."
                 )
 
-            if len(source_spectrum_data.time_freq_support.time_frequencies.data) < 2:
+            support_data = source_spectrum_data.time_freq_support.time_frequencies.data
+            if len(source_spectrum_data.data) < 1 or len(support_data) < 1:
                 raise PyAnsysSoundException(
-                    "Specified spectrum source must contain at least two elements."
+                    "Specified spectrum source must contain at least one element."
                 )
 
         self.__source_spectrum_data = source_spectrum_data

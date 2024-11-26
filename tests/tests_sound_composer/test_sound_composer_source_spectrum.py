@@ -41,6 +41,9 @@ EXP_STR_NOT_SET = "Spectrum source: Not set\nSource control: Not set/valid"
 EXP_STR_ALL_SET = (
     "Spectrum source: ''\n\tFmax: 24000 Hz\n\tDeltaF: 5.9 Hz\nSource control: IFFT, 1.0 s"
 )
+EXP_STR_ALL_SET_DF_NA = (
+    "Spectrum source: ''\n\tFmax: 0 Hz\n\tDeltaF: N/A\nSource control: IFFT, 1.0 s"
+)
 
 
 def test_source_spectrum_instantiation_no_arg(dpf_sound_test_server):
@@ -72,6 +75,18 @@ def test_source_spectrum___str___all_set(dpf_sound_test_server):
         SourceControlSpectrum(duration=1.0),
     )
     assert str(source_spectrum) == EXP_STR_ALL_SET
+
+
+def test_source_spectrum___str___all_set_deltaf_not_applicable(dpf_sound_test_server):
+    """Test SourceSpectrum __str__ method when all data are set."""
+    source_spectrum = SourceSpectrum(
+        pytest.data_path_sound_composer_spectrum_source_in_container,
+        SourceControlSpectrum(duration=1.0),
+    )
+
+    # Artificially reduce the psd support to a single point to trigger the "N/A" DeltaF.
+    source_spectrum.source_spectrum_data.time_freq_support.time_frequencies.data = [0.0]
+    assert str(source_spectrum) == EXP_STR_ALL_SET_DF_NA
 
 
 def test_source_spectrum_properties(dpf_sound_test_server):
@@ -134,7 +149,7 @@ def test_source_spectrum_propertiess_exceptions(dpf_sound_test_server):
 
     # Test source_spectrum_data setter exception 2 (not enough elements).
     with pytest.raises(
-        PyAnsysSoundException, match="Specified spectrum source must contain at least two elements."
+        PyAnsysSoundException, match="Specified spectrum source must contain at least one element."
     ):
         source_spectrum.source_spectrum_data = field
 
