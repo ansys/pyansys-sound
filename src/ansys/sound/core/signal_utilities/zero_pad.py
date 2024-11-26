@@ -49,55 +49,27 @@ class ZeroPad(SignalUtilitiesParent):
         self.__operator = Operator("append_zeros_to_signal")
 
     @property
-    def signal(self):
-        """Signal."""
-        return self.__signal  # pragma: no cover
+    def signal(self) -> Field | FieldsContainer:
+        """Input signal as a DPF field or fields container."""
+        return self.__signal
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):
         """Set the signal."""
         self.__signal = signal
 
-    @signal.getter
-    def signal(self) -> Field | FieldsContainer:
-        """Signal.
-
-        Returns
-        -------
-        Field | FieldsContainer
-            Signal as a DPF field or fields container.
-        """
-        return self.__signal
-
     @property
-    def duration_zeros(self):
-        """Duration zeros property."""
-        return self.__duration_zeros  # pragma: no cover
+    def duration_zeros(self) -> float:
+        """Duration in s of the zero-padding at the end of the signal."""
+        return self.__duration_zeros
 
     @duration_zeros.setter
     def duration_zeros(self, new_duration_zeros: float):
-        """Set the new duration of zeros.
-
-        Parameters
-        ----------
-        new_duration_zeros : float
-            New duration for the zero padding in seconds.
-        """
+        """Set the zero-padding duration."""
         if new_duration_zeros < 0.0:
             raise PyAnsysSoundException("Zero duration must be greater than 0.0.")
 
         self.__duration_zeros = new_duration_zeros
-
-    @duration_zeros.getter
-    def duration_zeros(self) -> float:
-        """Get the sampling frequency.
-
-        Returns
-        -------
-        float
-            Sampling frequency.
-        """
-        return self.__duration_zeros
 
     def process(self):
         """Pad the end of the signal with zeros.

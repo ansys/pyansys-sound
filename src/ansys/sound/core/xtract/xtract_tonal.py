@@ -55,11 +55,11 @@ class XtractTonal(XtractParent):
             Structure that contains the parameters of the algorithm:
 
             - NFFT (int) is the number of points used for the FFT computation.
-            - Regularity setting (float) in percent.
+            - Regularity setting (float) between 0 and 1.
             - Maximum slope (float) in dB/Hz.
             - Minimum duration (float) in seconds.
             - Intertonal gap (float) in Hz.
-            - Local smergence (float) in dB.
+            - Local emergence (float) in dB.
 
             This structure is of the ``XtractTonalParameters`` type. For more information,
             see this class.
@@ -80,15 +80,11 @@ class XtractTonal(XtractParent):
     def input_signal(self) -> FieldsContainer | Field:
         """Input signal.
 
-        Returns
-        -------
-        FieldsContainer | Field
-            One or more signals to extract tonal components from
-            as a DPF fields container or field.
-            When inputting a fields container, each signal (each field of the fields container)
-            is processed individually.
+        One or more signals from which to extract tonal components, as a DPF field or fields
+        container. When inputting a fields container, each signal (each field of the fields
+        container) is processed individually.
         """
-        return self.__input_signal  # pragma: no cover
+        return self.__input_signal
 
     @input_signal.setter
     def input_signal(self, value: FieldsContainer | Field):
@@ -99,17 +95,14 @@ class XtractTonal(XtractParent):
     def input_parameters(self) -> XtractTonalParameters:
         """Input parameters.
 
-        Returns
-        -------
-        GenericDataContainer
-            Structure that contains the parameters of the algorithm:
+        Structure that contains the parameters of the algorithm:
 
-            - NFFT (int) is the number of points used for the FFT computation.
-            - Regularity setting (float) in percent.
-            - Maximum slope (float) in dB/Hz.
-            - Minimum duration (float) in seconds (s).
-            - Intertonal gap (float) in Hz.
-            - Local smergence (float) in dB.
+        - NFFT (int) is the number of points used for the FFT computation.
+        - Regularity setting (float) between 0 and 1.
+        - Maximum slope (float) in dB/Hz.
+        - Minimum duration (float) in seconds (s).
+        - Intertonal gap (float) in Hz.
+        - Local emergence (float) in dB.
         """
         return self.__input_parameters
 
@@ -122,24 +115,17 @@ class XtractTonal(XtractParent):
     def output_tonal_signals(self) -> FieldsContainer | Field:
         """Output tonal signals.
 
-        Returns
-        -------
-        FieldsContainer | Field
-            One or more tonal signals as a DPF fields container or field (depending on the input).
+        One or more tonal signals as a DPF field or fields container (depending on the input).
         """
-        return self.__output_tonal_signals  # pragma: no cover
+        return self.__output_tonal_signals
 
     @property
     def output_non_tonal_signals(self) -> FieldsContainer | Field:
         """Output non-tonal signals.
 
-        Returns
-        -------
-        FieldsContainer | Field
-            One or more non-tonal signals as a DPF fields container or field (depending on
-            the input).
+        One or more non-tonal signals as a DPF field or fields container (depending on the input).
         """
-        return self.__output_non_tonal_signals  # pragma: no cover
+        return self.__output_non_tonal_signals
 
     def process(self):
         """Process the tonal analysis."""
