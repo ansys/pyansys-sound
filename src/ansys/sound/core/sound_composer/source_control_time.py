@@ -35,8 +35,8 @@ ID_LOAD_FROM_TEXT = "load_sound_samples_from_txt"
 class SourceControlTime(SourceControlParent):
     """Sound Composer's time source control class.
 
-    This class stores the source control used by the Sound Composer to generate a sound
-    from a BBN or harmonic source. It is the evolution of the control parameter over time.
+    This class stores the source control, that is the control parameter values over time, used by
+    the Sound Composer to generate a sound from a BBN or harmonic source.
     """
 
     def __init__(self, file_str: str = ""):
