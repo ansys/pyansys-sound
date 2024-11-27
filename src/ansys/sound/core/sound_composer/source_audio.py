@@ -184,12 +184,12 @@ class SourceAudio(SourceParent):
         return self._output
 
     def get_output_as_nparray(self) -> np.ndarray:
-        """Get the generated sound as a numpy array.
+        """Get the generated sound as a NumPy array.
 
         Returns
         -------
         numpy.ndarray
-            Generated sound as a numpy array.
+            Generated sound as a NumPy array.
         """
         output = self.get_output()
 
