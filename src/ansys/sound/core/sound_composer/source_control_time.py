@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Sound Composer's time source control."""
+"""Sound Composer's source control over time."""
 from ansys.dpf.core import Field, Operator
 from matplotlib import pyplot as plt
 
