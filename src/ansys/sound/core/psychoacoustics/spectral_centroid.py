@@ -25,7 +25,6 @@ import warnings
 
 from ansys.dpf.core import Field, Operator
 import numpy as np
-from numpy import typing as npt
 
 from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -89,7 +88,7 @@ class SpectralCentroid(PsychoacousticsParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get the spectral centroid as a NumPy array.
 
         Returns

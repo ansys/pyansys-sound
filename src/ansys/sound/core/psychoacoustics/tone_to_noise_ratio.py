@@ -27,7 +27,6 @@ import warnings
 from ansys.dpf.core import Field, GenericDataContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -150,7 +149,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> tuple[npt.ArrayLike] | None:
+    def get_output_as_nparray(self) -> tuple[np.ndarray] | None:
         """Get TNR data in a tuple as a NumPy array.
 
         Returns
@@ -199,7 +198,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
         return len(self.get_output_as_nparray()[0])
 
-    def get_peaks_frequencies(self) -> npt.ArrayLike:
+    def get_peaks_frequencies(self) -> np.ndarray:
         """Get the vector of the peaks' frequencies in Hz.
 
         Returns
@@ -212,7 +211,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
         return self.get_output_as_nparray()[0]
 
-    def get_TNR_values(self) -> npt.ArrayLike:
+    def get_TNR_values(self) -> np.ndarray:
         """Get the vector of the peaks' TNR values in dB.
 
         Returns
@@ -225,7 +224,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
         return self.get_output_as_nparray()[1]
 
-    def get_peaks_levels(self) -> npt.ArrayLike:
+    def get_peaks_levels(self) -> np.ndarray:
         """Get the vector of the peaks' level values in dB SPL.
 
         Returns
@@ -238,7 +237,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
         return self.get_output_as_nparray()[2]
 
-    def get_peaks_low_frequencies(self) -> npt.ArrayLike:
+    def get_peaks_low_frequencies(self) -> np.ndarray:
         """Get the vector of the peaks' lower-frequency limits in Hz.
 
         Returns
@@ -251,7 +250,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
         return self.get_output_as_nparray()[3]
 
-    def get_peaks_high_frequencies(self) -> npt.ArrayLike:
+    def get_peaks_high_frequencies(self) -> np.ndarray:
         """Get the vector of the peaks' higher-frequency limits in Hz.
 
         Returns
@@ -315,7 +314,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
             self.get_peaks_high_frequencies()[tone_index],
         )
 
-    def get_reference_curve(self) -> npt.ArrayLike:
+    def get_reference_curve(self) -> np.ndarray:
         """Get a reference curve to compare the TNR with.
 
         Returns

@@ -22,13 +22,11 @@
 
 """Xtract class."""
 
-from typing import Tuple
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import (
     XtractDenoiserParameters,
@@ -176,7 +174,7 @@ class Xtract(XtractParent):
         self.__parameters_transient = value
 
     @property
-    def output_noise_signal(self) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
+    def output_noise_signal(self) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
         """Noise signal.
 
         Noise signal in a tuple of DPF fields or fields containers.
@@ -184,7 +182,7 @@ class Xtract(XtractParent):
         return self.__output_noise_signal
 
     @property
-    def output_tonal_signal(self) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
+    def output_tonal_signal(self) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
         """Tonal signal.
 
         Tonal signal in a tuple of DPF fields or fields containers.
@@ -194,7 +192,7 @@ class Xtract(XtractParent):
     @property
     def output_transient_signal(
         self,
-    ) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
+    ) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
         """Transient signal.
 
         Transient signal in a tuple of DPF fields or fields containers.
@@ -204,7 +202,7 @@ class Xtract(XtractParent):
     @property
     def output_remainder_signal(
         self,
-    ) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
+    ) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
         """Remainder signal.
 
         Remainder signal in a tuple of DPF fields or fields containers.
@@ -262,15 +260,15 @@ class Xtract(XtractParent):
     def get_output(
         self,
     ) -> (
-        Tuple[FieldsContainer, FieldsContainer, FieldsContainer, FieldsContainer]
-        | Tuple[Field, Field, Field, Field]
+        tuple[FieldsContainer, FieldsContainer, FieldsContainer, FieldsContainer]
+        | tuple[Field, Field, Field, Field]
     ):
         """Get the output of the Xtract algorithm in a tuple as DPF fields containers or fields.
 
         Returns
         -------
-        Tuple[FieldsContainer, FieldsContainer, FieldsContainer, FieldsContainer] |
-        Tuple[Field, Field, Field, Field]
+        tuple[FieldsContainer, FieldsContainer, FieldsContainer, FieldsContainer] |
+        tuple[Field, Field, Field, Field]
             Noise signal, tonal signal, transient signal, and remainder signal
             in a tuple of DPF fields or fields containers.
         """
@@ -291,12 +289,12 @@ class Xtract(XtractParent):
 
     def get_output_as_nparray(
         self,
-    ) -> Tuple[npt.ArrayLike, npt.ArrayLike, npt.ArrayLike, npt.ArrayLike]:
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         """Get the output of the Xtract algorithm in a tuple as NumPy arrays.
 
         Returns
         -------
-        Tuple[numpy.array, numpy.array, numpy.array, numpy.array]
+        tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray]
             Noise signal, tonal signal, transient signal, and remainder signal in a
             tuple as NumPy arrays.
         """

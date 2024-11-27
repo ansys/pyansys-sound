@@ -22,13 +22,11 @@
 
 """Xtract tonal module."""
 
-from typing import Tuple
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import XtractParent, XtractTonalParameters
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -151,12 +149,12 @@ class XtractTonal(XtractParent):
 
         self._output = (self.__output_tonal_signals, self.__output_non_tonal_signals)
 
-    def get_output(self) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
+    def get_output(self) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
         """Get the output of the tonal analysis.
 
         Returns
         -------
-        Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
+        tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]
             Tonal and non-tonal signals in a tuple as DPF fields containers or fields.
         """
         if self.__output_tonal_signals == None or self.__output_non_tonal_signals == None:
@@ -164,12 +162,12 @@ class XtractTonal(XtractParent):
 
         return self.__output_tonal_signals, self.__output_non_tonal_signals
 
-    def get_output_as_nparray(self) -> Tuple[npt.ArrayLike, npt.ArrayLike]:
+    def get_output_as_nparray(self) -> tuple[np.ndarray, np.ndarray]:
         """Get the output of the tonal analysis as NumPy arrays.
 
         Returns
         -------
-        Tuple[npt.ArrayLike, npt.ArrayLike]
+        tuple[np.ndarray, np.ndarray]
             Tonal and non-tonal signals as a tuple in NumPy arrays.
         """
         l_output_tonal_signals, l_output_non_tonal_signals = self.get_output()
