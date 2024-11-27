@@ -38,7 +38,8 @@ ID_LOAD_FROM_TEXT = "load_sound_samples_from_txt"
 class SourceAudio(SourceParent):
     """Sound Composer's audio source class.
 
-    This class creates an audio source for the Sound Composer.
+    This class creates an audio source for the Sound Composer. An audio source is a sound signal
+    made of samples over time, in Pa. The audio source can be loaded from a WAV file or a text file.
     """
 
     def __init__(self, file: str = ""):
@@ -47,7 +48,7 @@ class SourceAudio(SourceParent):
         Parameters
         ----------
         file : str, default: ""
-            Path to the the audio data file (WAV format or text format with header
+            Path to the audio file (WAV format or text format with header
             `AnsysSound_SoundSamples`).
         """
         super().__init__()
@@ -93,7 +94,7 @@ class SourceAudio(SourceParent):
     def source_audio_data(self) -> Field:
         """Audio source data, as a DPF field.
 
-        Audio samples over time, in Pa, as a DPF field.
+        Samples over time, in Pa, as a DPF field.
         """
         return self.__source_audio_data
 
@@ -124,7 +125,7 @@ class SourceAudio(SourceParent):
         Parameters
         ----------
         file : str
-            Path to the text file containing the audio samples over time. Supported files shall
+            Path to the text file containing the samples over time. Supported files shall
             have the same text format (with the AnsysSound_SoundSamples header) as supported by
             Ansys Sound SAS.
         """
@@ -139,11 +140,12 @@ class SourceAudio(SourceParent):
 
     def process(self, sampling_frequency: float = 44100.0):
         """Generate the sound of the audio source.
+        The generated sound simply corresponds to the audio source data, resampled if necessary.
 
         Parameters
         ----------
         sampling_frequency : float, default: 44100.0
-            Sampling frequency of the generated sound in Hz.
+            Sampling frequency of the returned sound in Hz.
         """
         if sampling_frequency <= 0.0:
             raise PyAnsysSoundException("Sampling frequency must be strictly positive.")
@@ -199,7 +201,7 @@ class SourceAudio(SourceParent):
         return np.array(output.data)
 
     def plot(self):
-        """Plot the resulting signal in a figure."""
+        """Plot the generated sound in a figure."""
         if self._output == None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the ``{__class__.__name__}.process()`` method."
@@ -213,7 +215,7 @@ class SourceAudio(SourceParent):
         if len(name) > 0:
             plt.title(name)
         else:
-            plt.title("Signal from audio source")
+            plt.title("Sound generated from the audio source")
         plt.xlabel("Time (s)")
         plt.ylabel("Amplitude (Pa)")
         plt.grid(True)
