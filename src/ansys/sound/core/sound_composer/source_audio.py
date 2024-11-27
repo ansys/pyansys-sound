@@ -38,8 +38,10 @@ ID_LOAD_FROM_TEXT = "load_sound_samples_from_txt"
 class SourceAudio(SourceParent):
     """Sound Composer's audio source class.
 
-    This class creates an audio source for the Sound Composer. An audio source is a sound signal
-    made of samples over time, in Pa. The audio source can be loaded from a WAV file or a text file.
+    This class creates an audio source for the Sound Composer. An audio source is simply made of a
+    sound signal, that is, sound samples over time, in Pa, that is meant to be played, as is
+    (unless resampling is necessary), along with other Sound Composer sources. The audio source can
+    be loaded from a WAV file or a text file.
     """
 
     def __init__(self, file: str = ""):
@@ -146,7 +148,7 @@ class SourceAudio(SourceParent):
         Parameters
         ----------
         sampling_frequency : float, default: 44100.0
-            Sampling frequency of the returned sound in Hz.
+            Sampling frequency of the generated sound in Hz.
         """
         if sampling_frequency <= 0.0:
             raise PyAnsysSoundException("Sampling frequency must be strictly positive.")
