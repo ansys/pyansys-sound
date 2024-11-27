@@ -27,7 +27,6 @@ import warnings
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import SpectrogramProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -113,12 +112,12 @@ class Istft(SpectrogramProcessingParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get the ISTFT resulting signal as a NumPy array.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             ISTFT resulting signal in a NumPy array.
         """
         output = self.get_output()

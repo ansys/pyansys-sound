@@ -26,7 +26,6 @@ import warnings
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -126,7 +125,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
+    def get_output_as_nparray(self) -> tuple[np.ndarray]:
         """Get indicators for time-varying loudness in a tuple as a NumPy array.
 
         Returns
@@ -168,7 +167,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             self.convert_fields_container_to_np_array(output[5]),
         )
 
-    def get_loudness_sone_vs_time(self, channel_index: int = 0) -> npt.ArrayLike:
+    def get_loudness_sone_vs_time(self, channel_index: int = 0) -> np.ndarray:
         """Get the time-varying loudness in sone for a signal channel.
 
         Parameters
@@ -247,7 +246,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             N10 = self.get_output_as_nparray()[2]
             return N10[channel_index]
 
-    def get_loudness_level_phon_vs_time(self, channel_index: int = 0) -> npt.ArrayLike:
+    def get_loudness_level_phon_vs_time(self, channel_index: int = 0) -> np.ndarray:
         """Get the time-varying loudness level in phon for a signal channel.
 
         Parameters
@@ -326,7 +325,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             L10 = self.get_output_as_nparray()[5]
             return L10[channel_index]
 
-    def get_time_scale(self) -> npt.ArrayLike:
+    def get_time_scale(self) -> np.ndarray:
         """Get the time scale.
 
         This method gets an array of the timestamps in seconds where time-varying

@@ -26,7 +26,6 @@ import warnings
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -111,7 +110,7 @@ class Roughness(PsychoacousticsParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
+    def get_output_as_nparray(self) -> tuple[np.ndarray]:
         """Get roughness data in a tuple as a NumPy array.
 
         Returns
@@ -151,7 +150,7 @@ class Roughness(PsychoacousticsParent):
         """
         return self._get_output_parameter(channel_index, TOTAL_ROUGHNESS_ID)
 
-    def get_specific_roughness(self, channel_index: int = 0) -> npt.ArrayLike:
+    def get_specific_roughness(self, channel_index: int = 0) -> np.ndarray:
         """Get the specific roughness for a signal.
 
         This method gets the specific roughness in asper/Bark for the specified channel index.
@@ -168,7 +167,7 @@ class Roughness(PsychoacousticsParent):
         """
         return self._get_output_parameter(channel_index, SPECIFIC_ROUGHNESS_ID)
 
-    def get_bark_band_indexes(self) -> npt.ArrayLike:
+    def get_bark_band_indexes(self) -> np.ndarray:
         """Get Bark band indexes.
 
         This method gets the Bark band indexes used for the roughness calculation as a NumPy array.
@@ -190,7 +189,7 @@ class Roughness(PsychoacousticsParent):
         else:
             return np.copy(specific_roughness[0].time_freq_support.time_frequencies.data)
 
-    def get_bark_band_frequencies(self) -> npt.ArrayLike:
+    def get_bark_band_frequencies(self) -> np.ndarray:
         """Get Bark band frequencies.
 
         This method gets the frequencies corresponding to Bark band indexes as a NumPy array.
@@ -244,9 +243,7 @@ class Roughness(PsychoacousticsParent):
             plt.legend()
         plt.show()
 
-    def _get_output_parameter(
-        self, channel_index: int, output_id: str
-    ) -> np.float64 | npt.ArrayLike:
+    def _get_output_parameter(self, channel_index: int, output_id: str) -> np.float64 | np.ndarray:
         """Get the individual roughness result for the signal channel.
 
         This method returns the roughness as a float or the specific roughness as a
@@ -265,7 +262,7 @@ class Roughness(PsychoacousticsParent):
         Returns
         -------
         numpy.float64 | numpy.ndarray
-            Roughness (float) in asper or specific roughness (numpy array) in asper/Bark.
+            Roughness (float) in asper or specific roughness (NumPy array) in asper/Bark.
         """
         if self.get_output() == None or not (self._check_channel_index(channel_index)):
             return None
