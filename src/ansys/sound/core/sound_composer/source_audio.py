@@ -26,7 +26,6 @@ import warnings
 from ansys.dpf.core import Field, Operator
 from matplotlib import pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from ansys.sound.core.signal_utilities import LoadWav, Resample
 
@@ -184,7 +183,7 @@ class SourceAudio(SourceParent):
             )
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get the generated sound as a numpy array.
 
         Returns
