@@ -27,7 +27,6 @@ import warnings
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import SpectrogramProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -180,12 +179,12 @@ class Stft(SpectrogramProcessingParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get the STFT of the signal as a NumPy array.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             STFT of the signal in a NumPy array.
         """
         output = self.get_output()
@@ -205,23 +204,23 @@ class Stft(SpectrogramProcessingParent):
         # return out_as_np_array
         return np.transpose(out_as_np_array)
 
-    def get_stft_magnitude_as_nparray(self) -> npt.ArrayLike:
+    def get_stft_magnitude_as_nparray(self) -> np.ndarray:
         """Get the amplitude of the STFT as a NumPy array.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             Amplitude of the STFT in a NumPy array.
         """
         output = self.get_output_as_nparray()
         return np.absolute(output)
 
-    def get_stft_phase_as_nparray(self) -> npt.ArrayLike:
+    def get_stft_phase_as_nparray(self) -> np.ndarray:
         """Get the phase of the STFT as a NumPy array.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             Phase of the STFT in a NumPy array.
         """
         output = self.get_output_as_nparray()

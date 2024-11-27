@@ -26,7 +26,6 @@ import warnings
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -117,7 +116,7 @@ class FluctuationStrength(PsychoacousticsParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
+    def get_output_as_nparray(self) -> tuple[np.ndarray]:
         """Get fluctuation strength data in a tuple as a NumPy array.
 
         Returns
@@ -158,7 +157,7 @@ class FluctuationStrength(PsychoacousticsParent):
         """
         return self._get_output_parameter(channel_index, TOTAL_FS_ID)
 
-    def get_specific_fluctuation_strength(self, channel_index: int = 0) -> npt.ArrayLike:
+    def get_specific_fluctuation_strength(self, channel_index: int = 0) -> np.ndarray:
         """Get the specific fluctuation strength for a signal.
 
         This method gets the specific fluctuation strength in vacil/Bark for the specified
@@ -176,7 +175,7 @@ class FluctuationStrength(PsychoacousticsParent):
         """
         return self._get_output_parameter(channel_index, SPECIFIC_FS_ID)
 
-    def get_bark_band_indexes(self) -> npt.ArrayLike:
+    def get_bark_band_indexes(self) -> np.ndarray:
         """Get the Bark band indexes.
 
         This method gets the Bark band indexes used for the fluctuation strength
@@ -199,7 +198,7 @@ class FluctuationStrength(PsychoacousticsParent):
         else:
             return np.copy(specific_fluctuation_strength[0].time_freq_support.time_frequencies.data)
 
-    def get_bark_band_frequencies(self) -> npt.ArrayLike:
+    def get_bark_band_frequencies(self) -> np.ndarray:
         """Get Bark band frequencies.
 
         This method gets the frequencies corresponding to Bark band indexes as a NumPy array.
@@ -252,9 +251,7 @@ class FluctuationStrength(PsychoacousticsParent):
             plt.legend()
         plt.show()
 
-    def _get_output_parameter(
-        self, channel_index: int, output_id: str
-    ) -> np.float64 | npt.ArrayLike:
+    def _get_output_parameter(self, channel_index: int, output_id: str) -> np.float64 | np.ndarray:
         """Get individual fluctuation strength result for a signal channel.
 
         This method gets a total or specific fluctuation strength for a signal channel
@@ -273,7 +270,7 @@ class FluctuationStrength(PsychoacousticsParent):
         Returns
         -------
         numpy.float64 | numpy.ndarray
-            Fluctuation strength (float) in vacil or specific fluctuation strength (numpy array)
+            Fluctuation strength (float) in vacil or specific fluctuation strength (NumPy array)
             in vacil/Bark.
         """
         if self.get_output() == None or not (self._check_channel_index(channel_index)):

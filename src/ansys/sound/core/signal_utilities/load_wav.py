@@ -25,7 +25,7 @@
 import warnings
 
 from ansys.dpf.core import DataSources, FieldsContainer, Operator
-from numpy import typing as npt
+import numpy as np
 
 from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -101,12 +101,12 @@ class LoadWav(SignalUtilitiesParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get the signal loaded from the WAV file as a NumPy array.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             Signal loaded from the WAV file in a NumPy array.
         """
         fc = self.get_output()

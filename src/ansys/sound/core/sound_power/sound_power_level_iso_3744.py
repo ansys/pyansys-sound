@@ -26,7 +26,6 @@ import warnings
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import SoundPowerParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -494,7 +493,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         return output[1]
 
-    def get_Lw_octave(self) -> npt.ArrayLike:
+    def get_Lw_octave(self) -> np.ndarray:
         """Get octave-band power sound levels.
 
         Returns
@@ -506,7 +505,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         return output[2]
 
-    def get_octave_center_frequencies(self) -> npt.ArrayLike:
+    def get_octave_center_frequencies(self) -> np.ndarray:
         """Get octave-band center frequencies.
 
         Returns
@@ -518,7 +517,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         return output[3]
 
-    def get_Lw_thirdoctave(self) -> npt.ArrayLike:
+    def get_Lw_thirdoctave(self) -> np.ndarray:
         """Get one-third-octave-band power sound levels.
 
         Returns
@@ -530,7 +529,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         return output[4]
 
-    def get_thirdoctave_center_frequencies(self) -> npt.ArrayLike:
+    def get_thirdoctave_center_frequencies(self) -> np.ndarray:
         """Get one-third-octave-band center frequencies.
 
         Returns

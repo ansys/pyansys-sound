@@ -25,7 +25,6 @@ import warnings
 
 from ansys.dpf.core import Field, Operator
 import numpy as np
-from numpy import typing as npt
 
 from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -39,7 +38,7 @@ class CreateSoundField(SignalUtilitiesParent):
 
     def __init__(
         self,
-        data: npt.ArrayLike = np.empty(0),
+        data: np.ndarray = np.empty(0),
         sampling_frequency: float = 44100.0,
         unit: str = "Pa",
     ):
@@ -47,7 +46,7 @@ class CreateSoundField(SignalUtilitiesParent):
 
         Parameters
         ----------
-        data : np.array, default: np.empty(0)
+        data : numpy.ndarray, default: np.empty(0)
             Data to use to create the PyAnsys Sound field as a 1D NumPy array.
         sampling_frequency : float, default: 44100.0
             Sampling frequency of the data.
@@ -61,12 +60,12 @@ class CreateSoundField(SignalUtilitiesParent):
         self.__operator = Operator("create_field_from_vector")
 
     @property
-    def data(self) -> npt.ArrayLike:
+    def data(self) -> np.ndarray:
         """Data to store in the created DPF field."""
         return self.__data
 
     @data.setter
-    def data(self, data: npt.ArrayLike):
+    def data(self, data: np.ndarray):
         """Set the data."""
         self.__data = data
 
@@ -130,12 +129,12 @@ class CreateSoundField(SignalUtilitiesParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get the data as a NumPy array.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             Data in a NumPy array.
         """
         output = self.get_output()

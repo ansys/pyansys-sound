@@ -22,13 +22,11 @@
 
 """Xtract  transient module."""
 
-from typing import Tuple
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import XtractParent, XtractTransientParameters
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -146,12 +144,12 @@ class XtractTransient(XtractParent):
 
         self._output = (self.__output_transient_signals, self.__output_non_transient_signals)
 
-    def get_output(self) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
+    def get_output(self) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
         """Get the output of the transient extraction.
 
         Returns
         -------
-        Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
+        tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]
             One or more transient signals and non-transient signals
             in a tuple as DPF fields containers or fields (depending on the input).
         """
@@ -160,12 +158,12 @@ class XtractTransient(XtractParent):
 
         return self.__output_transient_signals, self.__output_non_transient_signals
 
-    def get_output_as_nparray(self) -> Tuple[npt.ArrayLike, npt.ArrayLike]:
+    def get_output_as_nparray(self) -> tuple[np.ndarray, np.ndarray]:
         """Get the output of the transient extraction as NumPy arrays.
 
         Returns
         -------
-        Tuple[np.ArrayLike, np.ArrayLike]
+        tuple[numpy.ndarray, numpy.ndarray]
             Transient signals and non-transient signals in a tuple as NumPy arrays.
         """
         l_output_transient_signals, l_output_non_transient_signals = self.get_output()

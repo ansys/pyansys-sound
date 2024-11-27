@@ -26,7 +26,6 @@ import warnings
 from ansys.dpf.core import Field, GenericDataContainersCollection, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -179,7 +178,7 @@ class TonalityDIN45681(PsychoacousticsParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
+    def get_output_as_nparray(self) -> tuple[np.ndarray]:
         """Get the DIN 45681 tonality data, in a tuple of NumPy arrays.
 
         Returns
@@ -261,7 +260,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         """
         return self.get_output()[2]
 
-    def get_decisive_difference_over_time(self) -> npt.ArrayLike:
+    def get_decisive_difference_over_time(self) -> np.ndarray:
         """Get the DIN 45681 decisive difference DLj, in dB over time.
 
         Returns
@@ -271,7 +270,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         """
         return self.get_output_as_nparray()[3]
 
-    def get_uncertainty_over_time(self) -> npt.ArrayLike:
+    def get_uncertainty_over_time(self) -> np.ndarray:
         """Get the DIN 45681 decisive difference uncertainty, in dB over time.
 
         Returns
@@ -281,7 +280,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         """
         return self.get_output_as_nparray()[4]
 
-    def get_decisive_frequency_over_time(self) -> npt.ArrayLike:
+    def get_decisive_frequency_over_time(self) -> np.ndarray:
         """Get the DIN 45681 decisive frequency, in Hz over time.
 
         Returns
@@ -291,7 +290,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         """
         return self.get_output_as_nparray()[5]
 
-    def get_tonal_adjustment_over_time(self) -> npt.ArrayLike:
+    def get_tonal_adjustment_over_time(self) -> np.ndarray:
         """Get the DIN 45681 tonal adjustment Kt, in dB over time.
 
         Returns
@@ -301,7 +300,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         """
         return self.get_output_as_nparray()[6]
 
-    def get_time_scale(self) -> npt.ArrayLike:
+    def get_time_scale(self) -> np.ndarray:
         """Get the DIN 45681 time scale, in s.
 
         Returns
