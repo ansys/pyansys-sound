@@ -22,13 +22,11 @@
 
 """Xtract denoiser class."""
 
-from typing import Tuple
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import XtractDenoiserParameters, XtractParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -142,12 +140,12 @@ class XtractDenoiser(XtractParent):
 
         self._output = (self.__output_denoised_signals, self.__output_noise_signals)
 
-    def get_output(self) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
+    def get_output(self) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
         """Get the output of the denoising.
 
         Returns
         -------
-        Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
+        tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]
             Denoised signal and noise signal in a tuple as
             DPF fields containers or fields (depending on the input).
         """
@@ -156,12 +154,12 @@ class XtractDenoiser(XtractParent):
 
         return self._output  # i.e. self.__output_denoised_signals, self.__output_noise_signals
 
-    def get_output_as_nparray(self) -> Tuple[npt.ArrayLike, npt.ArrayLike]:
+    def get_output_as_nparray(self) -> tuple[np.ndarray, np.ndarray]:
         """Get the output of the denoising as NumPy arrays.
 
         Returns
         -------
-        Tuple[npt.ArrayLike, npt.ArrayLike]
+        tuple[np.ndarray, np.ndarray]
             Denoised signal and noise signal in a tuple as NumPy arrays.
         """
         l_output_denoised_signals, l_output_noise_signals = self.get_output()

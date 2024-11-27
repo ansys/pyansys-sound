@@ -27,7 +27,6 @@ import warnings
 from ansys.dpf.core import Field, Operator, TimeFreqSupport, fields_factory, locations
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import SpectralProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -196,8 +195,8 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
-        """Get the PSD data as numpy arrays.
+    def get_output_as_nparray(self) -> tuple[np.ndarray]:
+        """Get the PSD data as NumPy arrays.
 
         Returns
         -------
@@ -226,8 +225,8 @@ class PowerSpectralDensity(SpectralProcessingParent):
         """
         return self.get_output()
 
-    def get_PSD_squared_linear_as_nparray(self) -> tuple[npt.ArrayLike]:
-        """Get the PSD in squared linear unit, as numpy arrays.
+    def get_PSD_squared_linear_as_nparray(self) -> tuple[np.ndarray]:
+        """Get the PSD in squared linear unit, as NumPy arrays.
 
         Returns
         -------
@@ -274,8 +273,8 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
         return psd_dB_field
 
-    def get_PSD_dB_as_nparray(self, ref_value: float = 1.0) -> npt.ArrayLike:
-        """Get the PSD in dB/Hz as a numpy array.
+    def get_PSD_dB_as_nparray(self, ref_value: float = 1.0) -> np.ndarray:
+        """Get the PSD in dB/Hz as a NumPy array.
 
         Parameters
         ----------
@@ -286,11 +285,11 @@ class PowerSpectralDensity(SpectralProcessingParent):
         Returns
         -------
         numpy.ndarray
-            The PSD in dB/Hz as a numpy array.
+            The PSD in dB/Hz as a NumPy array.
         """
         return np.array(self.get_PSD_dB(ref_value).data)
 
-    def get_frequencies(self) -> npt.ArrayLike:
+    def get_frequencies(self) -> np.ndarray:
         """Get the frequencies associated with the PSD.
 
         Returns

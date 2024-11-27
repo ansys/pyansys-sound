@@ -25,7 +25,7 @@
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
-from numpy import typing as npt
+import numpy as np
 
 from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -135,12 +135,12 @@ class ApplyGain(SignalUtilitiesParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get the signal with a gain as a NumPy array.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             Signal with an applied gain as a NumPy array.
         """
         output = self.get_output()
