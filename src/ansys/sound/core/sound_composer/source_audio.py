@@ -140,6 +140,7 @@ class SourceAudio(SourceParent):
 
     def process(self, sampling_frequency: float = 44100.0):
         """Generate the sound of the audio source.
+
         The generated sound simply corresponds to the audio source data, resampled if necessary.
 
         Parameters
