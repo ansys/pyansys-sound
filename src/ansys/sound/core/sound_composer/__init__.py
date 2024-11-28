@@ -32,6 +32,7 @@ from .source_audio import SourceAudio
 from .source_control_spectrum import SourceControlSpectrum
 from .source_control_time import SourceControlTime
 from .source_spectrum import SourceSpectrum
+from .source_broadband_noise import SourceBroadbandNoise
 
 __all__ = (
     "SoundComposerParent",
@@ -40,6 +41,7 @@ __all__ = (
     "SpectrumSynthesisMethods",
     "SourceSpectrum",
     "SourceControlSpectrum",
-    "SourceAudio",
+    "SourceBroadbandNoise",
     "SourceControlTime",
+    "SourceAudio",
 )
