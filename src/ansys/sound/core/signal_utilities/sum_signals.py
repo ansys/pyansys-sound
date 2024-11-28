@@ -24,7 +24,7 @@
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
-from numpy import typing as npt
+import numpy as np
 
 from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -34,11 +34,11 @@ class SumSignals(SignalUtilitiesParent):
     """Sums signals."""
 
     def __init__(self, signals: FieldsContainer = None):
-        """Create a ``SumSignals`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        signals: FieldsContainer, default: None
+        signals : FieldsContainer, default: None
             Input signals to sum. Each field of the signal is summed.
         """
         super().__init__()
@@ -46,25 +46,14 @@ class SumSignals(SignalUtilitiesParent):
         self.__operator = Operator("sum_signals")
 
     @property
-    def signals(self):
-        """Signals."""
-        return self.__signals  # pragma: no cover
+    def signals(self) -> FieldsContainer:
+        """Input signals as a DPF fields container."""
+        return self.__signals
 
     @signals.setter
     def signals(self, signals: FieldsContainer):
         """Set the signals to sum."""
         self.__signals = signals
-
-    @signals.getter
-    def signals(self) -> FieldsContainer:
-        """Signals.
-
-        Returns
-        -------
-        FieldsContainer
-            Signals as a DPF fields container.
-        """
-        return self.__signals
 
     def process(self):
         """Sum signals.
@@ -103,12 +92,12 @@ class SumSignals(SignalUtilitiesParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get the signal with a gain as a NumPy array.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             Summed signal in a NumPy array.
         """
         output = self.get_output()

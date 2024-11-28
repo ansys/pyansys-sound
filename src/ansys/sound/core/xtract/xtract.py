@@ -22,13 +22,11 @@
 
 """Xtract class."""
 
-from typing import Tuple
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import (
     XtractDenoiserParameters,
@@ -44,7 +42,7 @@ class Xtract(XtractParent):
 
     PyAnsys Sound performs Xtract processing in the same way as Ansys Sound Analysis
     and Specification (SAS). This operator chains a denoising step, followed by a
-    tonal extraction step and then a transient extraction step. It returns the
+    tonal extraction step, and then a transient extraction step. It returns the
     individual signals processed at each step, as well as the remainder.
     """
 
@@ -55,20 +53,20 @@ class Xtract(XtractParent):
         parameters_tonal: XtractTonalParameters = None,
         parameters_transient: XtractTransientParameters = None,
     ):
-        """Create a ``Xtract`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        input_signal: FieldsContainer | Field, default: None
+        input_signal : FieldsContainer | Field, default: None
             One or more signals to apply Xtract processing on as a DPF field or fields container.
-        parameters_denoiser:  XtractDenoiserParameters, default: None
+        parameters_denoiser : XtractDenoiserParameters, default: None
             Structure that contains the parameters of the denoising step:
 
             - Noise PSD (field) is the power spectral density (PSD) of the noise.
 
             This structure is of the ``XtractDenoiserParameters`` type. For more information,
             see this class.
-        parameters_tonal: XtractTonalParameters, default: None
+        parameters_tonal : XtractTonalParameters, default: None
             Structure that contains the parameters of the tonal extraction step:
 
             - NFFT (int) is the number of points used for the FFT computation.
@@ -80,7 +78,7 @@ class Xtract(XtractParent):
 
             This structure is of the ``XtractTonalParameters`` type. For more information,
             see this class.
-        parameters_transient:
+        parameters_transient : XtractTransientParameters, default: None
             Structure that contains the parameters of the transient extraction step:
 
             - Lower threshold (float), which is between 0 and 100 percent.
@@ -114,13 +112,10 @@ class Xtract(XtractParent):
     def input_signal(self) -> FieldsContainer | Field:
         """Input signal.
 
-        Returns
-        -------
-        FieldsContainer | Field
-            One or more signals to apply the Xtract processing on as a
-            DPF fields container or field.
+        One or more signals on which to apply the Xtract processing, as a DPF field or fields
+        container.
         """
-        return self.__input_signal  # pragma: no cover
+        return self.__input_signal
 
     @input_signal.setter
     def input_signal(self, value: FieldsContainer | Field):
@@ -131,12 +126,9 @@ class Xtract(XtractParent):
     def parameters_denoiser(self) -> XtractDenoiserParameters:
         """Parameters of the denoiser step.
 
-        Returns
-        -------
-        XtractDenoiserParameters
-            Structure that contains the parameters of the denoising step:
+        Structure that contains the parameters of the denoising step:
 
-            - Noise PSD (field): Power spectral density of the noise.
+        - Power spectral density of the noise as a DPF field.
         """
         return self.__parameters_denoiser
 
@@ -149,19 +141,16 @@ class Xtract(XtractParent):
     def parameters_tonal(self) -> XtractTonalParameters:
         """Parameters of the tonal extraction step.
 
-        Returns
-        -------
-        GenericDataContainer
-            Structure that contains the parameters of the tonal extraction step:
+        Structure that contains the parameters of the tonal extraction step:
 
-            - NFFT (int) is the number of points used for the FFT computation.
-            - Regularity setting (float) in percent.
-            - Maximum slope (float) in dB/Hz.
-            - Minimum duration (float) in seconds (s).
-            - Intertonal gap (float) in Hz.
-            - Local emergence (float) in dB.
+        - NFFT (int) is the number of points used for the FFT computation.
+        - Regularity setting (float) between 0 and 1.
+        - Maximum slope (float) in dB/Hz.
+        - Minimum duration (float) in seconds (s).
+        - Intertonal gap (float) in Hz.
+        - Local emergence (float) in dB.
         """
-        return self.__parameters_tonal  # pragma: no cover
+        return self.__parameters_tonal
 
     @parameters_tonal.setter
     def parameters_tonal(self, value: XtractTonalParameters):
@@ -172,15 +161,12 @@ class Xtract(XtractParent):
     def parameters_transient(self) -> XtractTransientParameters:
         """Parameters of the transient extraction step.
 
-        Returns
-        -------
-        XtractTransientParameters
-            Structure that contains the parameters of the transient extraction step:
+        Structure that contains the parameters of the transient extraction step:
 
-            - Lower threshold (float), which is between 0 and 100 percent.
-            - Upper threshold (float), which is between 0 and 100 percent
+        - Lower threshold (float), which is between 0 and 100.
+        - Upper threshold (float), which is between 0 and 100.
         """
-        return self.__parameters_transient  # pragma: no cover
+        return self.__parameters_transient
 
     @parameters_transient.setter
     def parameters_transient(self, value: XtractTransientParameters):
@@ -188,52 +174,40 @@ class Xtract(XtractParent):
         self.__parameters_transient = value
 
     @property
-    def output_noise_signal(self) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
+    def output_noise_signal(self) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
         """Noise signal.
 
-        Returns
-        -------
-        Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
-            Noise signal in a tuple as DPF fields containers or fields.
+        Noise signal in a tuple of DPF fields or fields containers.
         """
-        return self.__output_noise_signal  # pragma: no cover
+        return self.__output_noise_signal
 
     @property
-    def output_tonal_signal(self) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
+    def output_tonal_signal(self) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
         """Tonal signal.
 
-        Returns
-        -------
-        Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
-            Tonal signal in a tuple as DPF fields containers or fields.
+        Tonal signal in a tuple of DPF fields or fields containers.
         """
-        return self.__output_tonal_signal  # pragma: no cover
+        return self.__output_tonal_signal
 
     @property
     def output_transient_signal(
         self,
-    ) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
+    ) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
         """Transient signal.
 
-        Returns
-        -------
-        Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
-            Transient signal in a tuple as DPF fields containers or fields.
+        Transient signal in a tuple of DPF fields or fields containers.
         """
-        return self.__output_transient_signal  # pragma: no cover
+        return self.__output_transient_signal
 
     @property
     def output_remainder_signal(
         self,
-    ) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
+    ) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
         """Remainder signal.
 
-        Returns
-        -------
-        Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
-            Remainder signal in a tuple as DPF fields containers or fields.
+        Remainder signal in a tuple of DPF fields or fields containers.
         """
-        return self.__output_remainder_signal  # pragma: no cover
+        return self.__output_remainder_signal
 
     def process(self):
         """Process the Xtract algorithm."""
@@ -286,15 +260,15 @@ class Xtract(XtractParent):
     def get_output(
         self,
     ) -> (
-        Tuple[FieldsContainer, FieldsContainer, FieldsContainer, FieldsContainer]
-        | Tuple[Field, Field, Field, Field]
+        tuple[FieldsContainer, FieldsContainer, FieldsContainer, FieldsContainer]
+        | tuple[Field, Field, Field, Field]
     ):
         """Get the output of the Xtract algorithm in a tuple as DPF fields containers or fields.
 
         Returns
         -------
-        Tuple[FieldsContainer, FieldsContainer, FieldsContainer, FieldsContainer] |
-        Tuple[Field, Field, Field, Field]
+        tuple[FieldsContainer, FieldsContainer, FieldsContainer, FieldsContainer] |
+        tuple[Field, Field, Field, Field]
             Noise signal, tonal signal, transient signal, and remainder signal
             in a tuple of DPF fields or fields containers.
         """
@@ -315,12 +289,12 @@ class Xtract(XtractParent):
 
     def get_output_as_nparray(
         self,
-    ) -> Tuple[npt.ArrayLike, npt.ArrayLike, npt.ArrayLike, npt.ArrayLike]:
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         """Get the output of the Xtract algorithm in a tuple as NumPy arrays.
 
         Returns
         -------
-        Tuple[numpy.array, numpy.array, numpy.array, numpy.array]
+        tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray]
             Noise signal, tonal signal, transient signal, and remainder signal in a
             tuple as NumPy arrays.
         """

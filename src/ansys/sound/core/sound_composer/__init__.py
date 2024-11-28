@@ -27,11 +27,19 @@ Helper functions related to the sound composer.
 
 from ._sound_composer_parent import SoundComposerParent
 from ._source_control_parent import SourceControlParent, SpectrumSynthesisMethods
+from ._source_parent import SourceParent
+from .source_audio import SourceAudio
 from .source_control_spectrum import SourceControlSpectrum
+from .source_control_time import SourceControlTime
+from .source_spectrum import SourceSpectrum
 
 __all__ = (
     "SoundComposerParent",
+    "SourceParent",
     "SourceControlParent",
     "SpectrumSynthesisMethods",
+    "SourceSpectrum",
     "SourceControlSpectrum",
+    "SourceAudio",
+    "SourceControlTime",
 )

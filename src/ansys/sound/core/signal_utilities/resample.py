@@ -25,25 +25,25 @@
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
-from numpy import typing as npt
+import numpy as np
 
 from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Resample(SignalUtilitiesParent):
-    """Resample a signal."""
+    """Resamples a signal."""
 
     def __init__(
         self, signal: Field | FieldsContainer = None, new_sampling_frequency: float = 44100.0
     ):
-        """Create a ``Resample`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        signal: Field | FieldsContainer, default: None
+        signal : Field | FieldsContainer, default: None
             Signal to resample as a DPF field or fields container.
-        new_sampling_frequency: float, default: 44100.0
+        new_sampling_frequency : float, default: 44100.0
             New sampling frequency to use.
         """
         super().__init__()
@@ -52,55 +52,27 @@ class Resample(SignalUtilitiesParent):
         self.__operator = Operator("resample")
 
     @property
-    def new_sampling_frequency(self):
-        """New sampling frequency."""
-        return self.__new_sampling_frequency  # pragma: no cover
+    def new_sampling_frequency(self) -> float:
+        """New sampling frequency in Hz."""
+        return self.__new_sampling_frequency
 
     @new_sampling_frequency.setter
     def new_sampling_frequency(self, new_sampling_frequency: float):
-        """Set a new sampling frequency.
-
-        Parameters
-        ----------
-        new_sampling_frequency: float
-            New sampling frequency.
-        """
+        """Set a new sampling frequency."""
         if new_sampling_frequency < 0.0:
             raise PyAnsysSoundException("Sampling frequency must be greater than 0.0.")
 
         self.__new_sampling_frequency = new_sampling_frequency
 
-    @new_sampling_frequency.getter
-    def new_sampling_frequency(self) -> float:
-        """Get the new sampling frequency.
-
-        Returns
-        -------
-        float
-            New sampling frequency.
-        """
-        return self.__new_sampling_frequency
-
     @property
-    def signal(self):
-        """Signal."""
-        return self.__signal  # pragma: no cover
+    def signal(self) -> Field | FieldsContainer:
+        """Input signal as a DPF field or fields container."""
+        return self.__signal
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):
         """Set the signal."""
         self.__signal = signal
-
-    @signal.getter
-    def signal(self) -> Field | FieldsContainer:
-        """Signal.
-
-        Returns
-        -------
-        Field | FieldsContainer
-            Signal as a DPF field or fields container.
-        """
-        return self.__signal
 
     def process(self):
         """Resample the signal.
@@ -143,12 +115,12 @@ class Resample(SignalUtilitiesParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get the resampled signal as a NumPy array.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             Resampled signal in a NumPy array.
         """
         output = self.get_output()

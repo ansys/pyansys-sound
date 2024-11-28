@@ -25,7 +25,6 @@ import warnings
 
 from ansys.dpf.core import Field, Operator
 import numpy as np
-from numpy import typing as npt
 
 from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -35,43 +34,26 @@ class SpectralCentroid(PsychoacousticsParent):
     """Computes the spectral centroid of a signal."""
 
     def __init__(self, signal: Field = None):
-        """Create a ``SpectralCentroid`` object.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        signal: Field
-            Signal to compute spectral centroid on as a DPF field.
+        signal : Field
+            Signal on which to compute spectral centroid as a DPF field.
         """
         super().__init__()
         self.signal = signal
         self.__operator = Operator("compute_spectral_centroid")
 
     @property
-    def signal(self):
-        """Signal."""
-        return self.__signal  # pragma: no cover
+    def signal(self) -> Field:
+        """Input sound signal as a DPF field."""
+        return self.__signal
 
     @signal.setter
     def signal(self, signal: Field):
-        """Set the signal.
-
-        Parameters
-        -------
-        signal: Field
-            Signal to compute spectral centroid on as a DPF field.
-        """
+        """Set the signal."""
         self.__signal = signal
-
-    @signal.getter
-    def signal(self) -> Field:
-        """Signal.
-
-        Returns
-        -------
-        Field
-            Signal as a DPF field.
-        """
-        return self.__signal
 
     def process(self):
         """Compute the spectral centroid."""
@@ -106,7 +88,7 @@ class SpectralCentroid(PsychoacousticsParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get the spectral centroid as a NumPy array.
 
         Returns

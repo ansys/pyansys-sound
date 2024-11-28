@@ -25,7 +25,6 @@ import warnings
 
 from ansys.dpf.core import FieldsContainer
 import numpy as np
-from numpy.typing import ArrayLike
 
 
 class PyAnsysSound:
@@ -76,28 +75,33 @@ class PyAnsysSound:
         warnings.warn(PyAnsysSoundWarning("There is nothing to output."))
         return self._output
 
-    def get_output_as_nparray(self) -> ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get output as a NumPy array.
 
         There is nothing to output.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             Empty NumPy array.
         """
         warnings.warn(PyAnsysSoundWarning("There is nothing to output."))
         return np.empty(0)
 
-    def convert_fields_container_to_np_array(self, fc):
+    def convert_fields_container_to_np_array(self, fc) -> np.ndarray:
         """Convert a DPF fields container to a NumPy array.
 
         This method converts a multichannel signal contained in a DPF fields container to a
         NumPy array.
 
+        Parameters
+        ----------
+        fc : FieldsContainer
+            DPF fields container to convert to NumPy arrays.
+
         Returns
         -------
-        np.array
+        numpy.ndarray
             DPF fields container in a NumPy array.
         """
         num_channels = len(fc)

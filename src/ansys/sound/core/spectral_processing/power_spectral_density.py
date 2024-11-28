@@ -27,7 +27,6 @@ import warnings
 from ansys.dpf.core import Field, Operator, TimeFreqSupport, fields_factory, locations
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import SpectralProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -50,24 +49,21 @@ class PowerSpectralDensity(SpectralProcessingParent):
         window_length: int = 2048,
         overlap: float = 0.25,
     ):
-        """Init.
-
-        Init the class.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        signal: Field
+        signal : Field
             Mono signal as a DPF field on which to compute the PSD.
-        fft_size: int, default: 2048
+        fft_size : int, default: 2048
             Number of FFT points to use for the PSD estimate.
             Use a power of 2 for better performance.
-        window_type: str, default: 'HANN'
+        window_type : str, default: 'HANN'
             Window type used for the PSD computation. Options are ``'BARTLETT'``, ``'BLACKMAN'``,
-            ``'BLACKMANHARRIS'``,``'HAMMING'``, ``'HANN'``, ``'KAISER'``, and
-            ``'RECTANGULAR'``.
+            ``'BLACKMANHARRIS'``, ``'HAMMING'``, ``'HANN'``, ``'KAISER'``, and ``'RECTANGULAR'``.
         window_length : int, default: 2048
             Number of points of the window used for the PSD computation , by default 2048.
-        overlap: float, default: 0.25
+        overlap : float, default: 0.25
             Overlap value between two successive segments where the FFT is computed.
             Values range from 0 to 1. For example, ``0`` means no overlap,
             and ``0.5`` means 50% overlap.
@@ -88,8 +84,8 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
     @property
     def input_signal(self) -> Field:
-        """Input signal."""
-        return self.__input_signal  # pragma: no cover
+        """Input signal as a DPF field."""
+        return self.__input_signal
 
     @input_signal.setter
     def input_signal(self, value: Field):
@@ -98,8 +94,8 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
     @property
     def fft_size(self) -> int:
-        """FFT size."""
-        return self.__fft_size  # pragma: no cover
+        """Number of FFT points."""
+        return self.__fft_size
 
     @fft_size.setter
     def fft_size(self, value: int):
@@ -110,10 +106,14 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
     @property
     def window_type(self) -> str:
-        """Window type."""
-        return self.__window_type  # pragma: no cover
+        """Window type.
 
-    # check supporté variables
+        Supported options are ``'BARTLETT'``, ``'BLACKMAN'``, ``'BLACKMANHARRIS'``, ``'HAMMING'``,
+        ``'HANN'``, ``'KAISER'``, ``'RECTANGULAR'``.
+        """
+        return self.__window_type
+
+    # Check supported window types.
     @window_type.setter
     def window_type(self, value: str):
         """Set window type."""
@@ -134,8 +134,8 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
     @property
     def window_length(self) -> int:
-        """Window length."""
-        return self.__window_length  # pragma: no cover
+        """Number of window points."""
+        return self.__window_length
 
     @window_length.setter
     def window_length(self, value: int):
@@ -146,8 +146,8 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
     @property
     def overlap(self) -> int:
-        """Overlap."""
-        return self.__overlap  # pragma: no cover
+        """Window overlap in %."""
+        return self.__overlap
 
     @overlap.setter
     def overlap(self, value: int):
@@ -195,8 +195,8 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
-        """Get the PSD data as numpy arrays.
+    def get_output_as_nparray(self) -> tuple[np.ndarray]:
+        """Get the PSD data as NumPy arrays.
 
         Returns
         -------
@@ -225,8 +225,8 @@ class PowerSpectralDensity(SpectralProcessingParent):
         """
         return self.get_output()
 
-    def get_PSD_squared_linear_as_nparray(self) -> tuple[npt.ArrayLike]:
-        """Get the PSD in squared linear unit, as numpy arrays.
+    def get_PSD_squared_linear_as_nparray(self) -> tuple[np.ndarray]:
+        """Get the PSD in squared linear unit, as NumPy arrays.
 
         Returns
         -------
@@ -273,8 +273,8 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
         return psd_dB_field
 
-    def get_PSD_dB_as_nparray(self, ref_value: float = 1.0) -> npt.ArrayLike:
-        """Get the PSD in dB/Hz as a numpy array.
+    def get_PSD_dB_as_nparray(self, ref_value: float = 1.0) -> np.ndarray:
+        """Get the PSD in dB/Hz as a NumPy array.
 
         Parameters
         ----------
@@ -285,12 +285,12 @@ class PowerSpectralDensity(SpectralProcessingParent):
         Returns
         -------
         numpy.ndarray
-            The PSD in dB/Hz as a numpy array.
+            The PSD in dB/Hz as a NumPy array.
         """
         return np.array(self.get_PSD_dB(ref_value).data)
 
-    def get_frequencies(self) -> npt.ArrayLike:
-        """Get the frequencies associated to the PSD.
+    def get_frequencies(self) -> np.ndarray:
+        """Get the frequencies associated with the PSD.
 
         Returns
         -------

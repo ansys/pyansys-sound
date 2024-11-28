@@ -49,14 +49,14 @@ def connect_to_or_start_server(
 
     Parameters
     ----------
-    port: str, default: None
-        Port that the DPF server is listening on.
-    ip: str, default: None
+    port : int, default: None
+        Port that the DPF server is listening to.
+    ip : str, default: None
         IP address for the DPF server.
-    ansys_path: str, default: None
+    ansys_path : str, default: None
         Root path for the Ansys installation. For example, ``C:\\Program Files\\ANSYS Inc\\v242``.
         This parameter is ignored if either the port or IP address is set.
-    use_license_context: bool, default: False
+    use_license_context : bool, default: False
         Whether to check out the DPF Sound license increment (``avrxp_snd_level1``) before using
         PyAnsys Sound. Checking out the license increment improves performance if you are doing
         multiple calls to DPF Sound operators because they require licensing. This parameter

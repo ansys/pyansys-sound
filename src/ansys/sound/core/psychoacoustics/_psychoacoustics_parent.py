@@ -22,7 +22,7 @@
 
 """Psychoacoustics functions."""
 from ansys.dpf.core import Field
-from numpy import typing as npt
+import numpy as np
 
 from .._pyansys_sound import PyAnsysSound, PyAnsysSoundException
 
@@ -34,14 +34,7 @@ class PsychoacousticsParent(PyAnsysSound):
     This is the base class for all pychoacoustics indicators classes and should not be used as is.
     """
 
-    def __init__(self):
-        """Init.
-
-        Init the class.
-        """
-        super().__init__()
-
-    def _convert_bark_to_hertz(self, bark_band_indexes: npt.ArrayLike) -> npt.ArrayLike:
+    def _convert_bark_to_hertz(self, bark_band_indexes: np.ndarray) -> np.ndarray:
         """Convert Bark band indexes into frequencies.
 
         Converts input Bark band indexes (in Bark) into corresponding frequencies (in Hz)
@@ -51,12 +44,12 @@ class PsychoacousticsParent(PyAnsysSound):
 
         Parameters
         ----------
-        bark_band_indexes: numpy array
+        bark_band_indexes : numpy.ndarray
             Array of Bark band indexes to convert in Bark.
 
         Returns
         -------
-        numpy array
+        numpy.ndarray
             Array of corresponding frequencies in Hz.
         """
         for ibark in range(len(bark_band_indexes)):
@@ -79,7 +72,7 @@ class PsychoacousticsParent(PyAnsysSound):
 
         Parameters
         ----------
-        channel_index: int
+        channel_index : int
             Index of the signal channel to check.
 
         Returns

@@ -25,7 +25,6 @@ import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import numpy as np
-from numpy import typing as npt
 
 from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -35,11 +34,11 @@ class Sharpness(PsychoacousticsParent):
     """Computes the sharpness of a signal according to Zwicker & Fastl's model."""
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Create a ``Sharpness`` object.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        signal: Field | FieldsContainer
+        signal : Field | FieldsContainer
             Signal in Pa to compute sharpness on as a DPF field or fields container.
         """
         super().__init__()
@@ -47,32 +46,14 @@ class Sharpness(PsychoacousticsParent):
         self.__operator = Operator("compute_sharpness")
 
     @property
-    def signal(self):
-        """Signal."""
-        return self.__signal  # pragma: no cover
+    def signal(self) -> Field | FieldsContainer:
+        """Input sound signal in Pa as a DPF field or fields container."""
+        return self.__signal
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):
-        """Set the signal.
-
-        Parameters
-        -------
-        signal: Field | FieldsContainer
-            Signal in Pa to compute sharpness on as a DPF field or fields container.
-
-        """
+        """Set the signal."""
         self.__signal = signal
-
-    @signal.getter
-    def signal(self) -> Field | FieldsContainer:
-        """Signal.
-
-        Returns
-        -------
-        FieldsContainer | Field
-            Signal in Pa as a DPF field or fields container.
-        """
-        return self.__signal
 
     def process(self):
         """Compute the sharpness.
@@ -114,7 +95,7 @@ class Sharpness(PsychoacousticsParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get the sharpness as a NumPy array.
 
         Returns
@@ -139,7 +120,7 @@ class Sharpness(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get the sharpness value for.
 
         Returns

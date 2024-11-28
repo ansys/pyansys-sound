@@ -24,7 +24,7 @@
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
-from numpy import typing as npt
+import numpy as np
 
 from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -36,15 +36,15 @@ class CropSignal(SignalUtilitiesParent):
     def __init__(
         self, signal: Field | FieldsContainer = None, start_time: float = 0.0, end_time: float = 0.0
     ):
-        """Create a ``CropSignal`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        signal: FieldsContainer | Field, default: None
+        signal : FieldsContainer | Field, default: None
             Signal to resample as a DPF field or fields container.
-        start_time: float, default: 0.0
+        start_time : float, default: 0.0
             Start time of the part to crop in seconds.
-        end_time: float, default: 0.0
+        end_time : float, default: 0.0
             End time of the part to crop in seconds.
         """
         super().__init__()
@@ -54,48 +54,25 @@ class CropSignal(SignalUtilitiesParent):
         self.__operator = Operator("get_cropped_signal")
 
     @property
-    def start_time(self):
-        """Start time."""
-        return self.__start_time  # pragma: no cover
+    def start_time(self) -> float:
+        """Start time of the part to crop in s."""
+        return self.__start_time
 
     @start_time.setter
     def start_time(self, new_start: float):
-        """Set a new start time.
-
-        Parameters
-        ----------
-        new_start:
-            New start time in seconds.
-        """
+        """Set a new start time."""
         if new_start < 0.0:
             raise PyAnsysSoundException("Start time must be greater than or equal to 0.0.")
         self.__start_time = new_start
 
-    @start_time.getter
-    def start_time(self) -> float:
-        """Start time.
-
-        Returns
-        -------
-        float
-            Start time.
-        """
-        return self.__start_time
-
     @property
-    def end_time(self):
-        """End time."""
-        return self.__end_time  # pragma: no cover
+    def end_time(self) -> float:
+        """End time of the part to crop in s."""
+        return self.__end_time
 
     @end_time.setter
-    def end_time(self, new_end: bool):
-        """Set a new end time.
-
-        Parameters
-        ----------
-        new_end:
-            New end time in seconds.
-        """
+    def end_time(self, new_end: float):
+        """Set a new end time."""
         if new_end < 0.0:
             raise PyAnsysSoundException("End time must be greater than or equal to 0.0.")
 
@@ -104,37 +81,15 @@ class CropSignal(SignalUtilitiesParent):
 
         self.__end_time = new_end
 
-    @end_time.getter
-    def end_time(self) -> float:
-        """End time.
-
-        Returns
-        -------
-        float
-            End time.
-        """
-        return self.__end_time
-
     @property
-    def signal(self):
-        """Signal."""
-        return self.__signal  # pragma: no cover*
+    def signal(self) -> Field | FieldsContainer:
+        """Input signal as a DPF field or fields container."""
+        return self.__signal
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):
         """Set the signal."""
         self.__signal = signal
-
-    @signal.getter
-    def signal(self) -> Field | FieldsContainer:
-        """Signal.
-
-        Returns
-        -------
-        Field | FieldsContainer
-            Signal as a DPF field or fields container
-        """
-        return self.__signal
 
     def process(self):
         """Crop the signal.
@@ -179,12 +134,12 @@ class CropSignal(SignalUtilitiesParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get the cropped signal as a NumPy array.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             Cropped signal in a NumPy array.
         """
         output = self.get_output()

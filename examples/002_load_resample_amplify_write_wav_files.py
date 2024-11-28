@@ -94,7 +94,7 @@ fc_signal_modified = gain_applier.get_output()
 # ~~~~~~~~~~~~
 # Plot both the original signal and modified signal.
 
-# Get the signals as nparray
+# Get the signals as NumPy arrays
 data_original = wav_loader.get_output_as_nparray()
 data_modified = gain_applier.get_output_as_nparray()
 

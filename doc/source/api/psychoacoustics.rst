@@ -8,8 +8,10 @@ Psychoacoustics
 
     LoudnessISO532_1_Stationary
     LoudnessISO532_1_TimeVarying
+    SpectralCentroid
     Sharpness
     Roughness
     FluctuationStrength
     ProminenceRatio
     ToneToNoiseRatio
+    TonalityDIN45681

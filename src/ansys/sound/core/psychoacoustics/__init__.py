@@ -33,6 +33,7 @@ from .prominence_ratio import ProminenceRatio
 from .roughness import Roughness
 from .sharpness import Sharpness
 from .spectral_centroid import SpectralCentroid
+from .tonality_din_45681 import TonalityDIN45681
 from .tone_to_noise_ratio import ToneToNoiseRatio
 
 __all__ = (
@@ -44,5 +45,6 @@ __all__ = (
     "Sharpness",
     "Roughness",
     "FluctuationStrength",
+    "TonalityDIN45681",
     "SpectralCentroid",
 )

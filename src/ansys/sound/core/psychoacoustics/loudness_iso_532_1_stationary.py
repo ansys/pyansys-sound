@@ -26,7 +26,6 @@ import warnings
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -44,11 +43,11 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Create a ``LoudnessISO532_1_Stationary`` object.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        signal: Field | FieldsContainer
+        signal : Field | FieldsContainer
             Signal in Pa to compute loudness on as a DPF field or fields container.
         """
         super().__init__()
@@ -56,32 +55,14 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         self.__operator = Operator("compute_loudness_iso532_1")
 
     @property
-    def signal(self):
-        """Signal."""
-        return self.__signal  # pragma: no cover
+    def signal(self) -> Field | FieldsContainer:
+        """Input sound signal in Pa as a DPF field or fields container."""
+        return self.__signal
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):
-        """Set the signal.
-
-        Parameters
-        ----------
-        signal: FieldsContainer | Field
-            Signal in Pa to compute loudness on as a DPF field or fields container.
-
-        """
+        """Set the signal."""
         self.__signal = signal
-
-    @signal.getter
-    def signal(self) -> Field | FieldsContainer:
-        """Signal.
-
-        Returns
-        -------
-        Field | FieldsContainer
-            Signal in Pa as a DPF field or fields container.
-        """
-        return self.__signal
 
     def process(self):
         """Compute the loudness.
@@ -135,7 +116,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
+    def get_output_as_nparray(self) -> tuple[np.ndarray]:
         """Get loudness data in a tuple as a NumPy array.
 
         Returns
@@ -168,7 +149,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default 0
+        channel_index : int, default: 0
             Index of the signal channel to get the specified output for.
 
         Returns
@@ -185,7 +166,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get the specified output for.
 
         Returns
@@ -195,14 +176,14 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         """
         return self._get_output_parameter(channel_index, LOUDNESS_LEVEL_PHON_ID)
 
-    def get_specific_loudness(self, channel_index: int = 0) -> npt.ArrayLike:
+    def get_specific_loudness(self, channel_index: int = 0) -> np.ndarray:
         """Get the specific loudness for a signal channel.
 
         This method gets the specific loudness in sone/Bark for a specified channel index.
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get the specified output for.
 
         Returns
@@ -212,7 +193,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         """
         return self._get_output_parameter(channel_index, SPECIFIC_LOUDNESS_ID)
 
-    def get_bark_band_indexes(self) -> npt.ArrayLike:
+    def get_bark_band_indexes(self) -> np.ndarray:
         """Get Bark band indexes.
 
         This method gets the Bark band indexes used for the loudness calculation as a NumPy array.
@@ -234,7 +215,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         else:
             return np.copy(specific_loudness[0].time_freq_support.time_frequencies.data)
 
-    def get_bark_band_frequencies(self) -> npt.ArrayLike:
+    def get_bark_band_frequencies(self) -> np.ndarray:
         """Get Bark band frequencies.
 
         This method gets the frequencies corresponding to Bark band indexes as a NumPy array.
@@ -288,9 +269,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
             plt.legend()
         plt.show()
 
-    def _get_output_parameter(
-        self, channel_index: int, output_id: str
-    ) -> np.float64 | npt.ArrayLike:
+    def _get_output_parameter(self, channel_index: int, output_id: str) -> np.float64 | np.ndarray:
         """Get the individual loudness result for a signal channel.
 
         This method gets the loudness or loudness level for the specified channel in phon
@@ -298,9 +277,9 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int
+        channel_index : int
             Index of the signal channel to get the specified output for.
-        output_id: str
+        output_id : str
             ID of the specific output parameter to return. Options are:
 
             - ``"sone"``: For overall loudness value in sone
@@ -311,7 +290,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         -------
         numpy.float64 | numpy.ndarray
             Loudness or loudness level value (float, in sone or phon, respectively), or specific
-            loudness (numpy array, in sone/Bark).
+            loudness (NumPy array, in sone/Bark).
         """
         if self.get_output() == None or not (self._check_channel_index(channel_index)):
             return None

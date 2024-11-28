@@ -22,13 +22,11 @@
 
 """Xtract  transient module."""
 
-from typing import Tuple
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import XtractParent, XtractTransientParameters
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -42,15 +40,15 @@ class XtractTransient(XtractParent):
         input_signal: FieldsContainer | Field = None,
         input_parameters: XtractTransientParameters = None,
     ):
-        """Create an ``XtractTransient`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        input_signal: FieldsContainer | Field, default: None
+        input_signal : FieldsContainer | Field, default: None
             One or more signals to extract transient components on
             as a DPF fields container or fields. When inputting a fields container,
             each signal (each field of the fields container) is processed individually.
-        input_parameters: XtractTransientParameters, default: None
+        input_parameters : XtractTransientParameters, default: None
             Structure that contains the parameters of the algorithm:
 
             - Lower threshold (float), which is between 0 and 100.
@@ -75,79 +73,49 @@ class XtractTransient(XtractParent):
     def input_signal(self) -> FieldsContainer | Field:
         """Input signal.
 
-        Returns
-        -------
-        FieldsContainer | Field
-            One or more signals to extract transient components on
-            as a DPF fields container or field. When inputting a fields container,
-            each signal (each field of the fields container) is processed individually.
+        One or more signals from which to extract transient components, as a DPF field or fields
+        container. When inputting a fields container, each signal (each field of the fields
+        container) is processed individually.
         """
-        return self.__input_signal  # pragma: no cover
+        return self.__input_signal
 
     @input_signal.setter
     def input_signal(self, value: FieldsContainer | Field):
-        """Set input signal.
-
-        Parameters
-        ----------
-        value: FieldsContainer | Field
-            One or more signal to extract transient components on
-            as a DPF fields container or field. When inputting a fields container,
-            each signal (each field of the fields container) is processed individually.
-        """
+        """Set input signal."""
         self.__input_signal = value
 
     @property
     def input_parameters(self) -> XtractTransientParameters:
         """Input parameters.
 
-        Returns
-        -------
-        XtractTransientParameters
-            Structure that contains the parameters of the algorithm:
+        Structure that contains the parameters of the algorithm:
 
-            - Lower threshold (float), which is between 0 and 100 percent
-            - Upper threshold (float), which is between 0 and 100 percent
+        - Lower threshold (float), which is between 0 and 100.
+        - Upper threshold (float), which is between 0 and 100.
         """
-        return self.__input_parameters  # pragma: no cover
+        return self.__input_parameters
 
     @input_parameters.setter
     def input_parameters(self, value: XtractTransientParameters):
-        """Set input parameters.
-
-        Parameters
-        ----------
-        value: XtractTransientParameters
-            Structure that contains the parameters of the algorithm:
-
-            - Lower threshold (float), which is between 0 and 100 percent
-            - Upper threshold (float), which is between 0 and 100 percent
-        """
+        """Set input parameters."""
         self.__input_parameters = value
 
     @property
     def output_transient_signals(self) -> FieldsContainer | Field:
         """Output transient signals.
 
-        Returns
-        -------
-        FieldsContainer | Field
-            One or more transient signals as a DPF fields container or field (depending on
-            the input).
+        One or more transient signals as a DPF field or fields container (depending on the input).
         """
-        return self.__output_transient_signals  # pragma: no cover
+        return self.__output_transient_signals
 
     @property
     def output_non_transient_signals(self) -> FieldsContainer | Field:
         """Output non-transient signals.
 
-        Returns
-        -------
-        FieldsContainer | Field
-            One or more non-transient signals (original signal minus transient signal)
-            as a DPF fields container or field (depending on the input).
+        One or more non-transient signals (original signal minus transient signal) as a DPF field
+        or fields container (depending on the input).
         """
-        return self.__output_non_transient_signals  # pragma: no cover
+        return self.__output_non_transient_signals
 
     def process(self):
         """Process the transient extraction.
@@ -176,12 +144,12 @@ class XtractTransient(XtractParent):
 
         self._output = (self.__output_transient_signals, self.__output_non_transient_signals)
 
-    def get_output(self) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
+    def get_output(self) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
         """Get the output of the transient extraction.
 
         Returns
         -------
-        Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
+        tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]
             One or more transient signals and non-transient signals
             in a tuple as DPF fields containers or fields (depending on the input).
         """
@@ -190,12 +158,12 @@ class XtractTransient(XtractParent):
 
         return self.__output_transient_signals, self.__output_non_transient_signals
 
-    def get_output_as_nparray(self) -> Tuple[npt.ArrayLike, npt.ArrayLike]:
+    def get_output_as_nparray(self) -> tuple[np.ndarray, np.ndarray]:
         """Get the output of the transient extraction as NumPy arrays.
 
         Returns
         -------
-        Tuple[np.ArrayLike, np.ArrayLike]
+        tuple[numpy.ndarray, numpy.ndarray]
             Transient signals and non-transient signals in a tuple as NumPy arrays.
         """
         l_output_transient_signals, l_output_non_transient_signals = self.get_output()

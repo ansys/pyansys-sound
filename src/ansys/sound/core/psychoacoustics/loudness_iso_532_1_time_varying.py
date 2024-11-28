@@ -26,7 +26,6 @@ import warnings
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -40,11 +39,11 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
     """
 
     def __init__(self, signal: Field | FieldsContainer = None):
-        """Create a ``LoudnessISO532_1_TimeVarying`` object.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        signal: Field | FieldsContainer
+        signal : Field | FieldsContainer
             Signal to compute time-varying ISO532-1 loudness on as a DPF field or fields
             container.
         """
@@ -53,31 +52,14 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         self.__operator = Operator("compute_loudness_iso532_1_vs_time")
 
     @property
-    def signal(self):
-        """Signal property."""
-        return self.__signal  # pragma: no cover
+    def signal(self) -> Field | FieldsContainer:
+        """Input sound signal in Pa as a DPF field or fields container."""
+        return self.__signal
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):
-        """Set the signal.
-
-        Parameters
-        ----------
-        signal: FieldsContainer | Field
-            Signal in Pa to compute loudness on as a DPF field or fields container.
-        """
+        """Set the signal."""
         self.__signal = signal
-
-    @signal.getter
-    def signal(self) -> Field | FieldsContainer:
-        """Signal.
-
-        Returns
-        -------
-        Field | FieldsContainer
-            Signal as a DPF field or a fields container.
-        """
-        return self.__signal
 
     def process(self):
         """Compute the time-varying ISO532-1 loudness.
@@ -143,7 +125,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> tuple[npt.ArrayLike]:
+    def get_output_as_nparray(self) -> tuple[np.ndarray]:
         """Get indicators for time-varying loudness in a tuple as a NumPy array.
 
         Returns
@@ -185,12 +167,12 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             self.convert_fields_container_to_np_array(output[5]),
         )
 
-    def get_loudness_sone_vs_time(self, channel_index: int = 0) -> npt.ArrayLike:
+    def get_loudness_sone_vs_time(self, channel_index: int = 0) -> np.ndarray:
         """Get the time-varying loudness in sone for a signal channel.
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get time-varying loudness for.
 
         Returns
@@ -220,7 +202,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get the N5 indicator for.
 
         Returns
@@ -246,7 +228,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get the N10 indicator for.
 
         Returns
@@ -264,12 +246,12 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             N10 = self.get_output_as_nparray()[2]
             return N10[channel_index]
 
-    def get_loudness_level_phon_vs_time(self, channel_index: int = 0) -> npt.ArrayLike:
+    def get_loudness_level_phon_vs_time(self, channel_index: int = 0) -> np.ndarray:
         """Get the time-varying loudness level in phon for a signal channel.
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get the time-varying loudness level for.
 
         Returns
@@ -299,7 +281,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get the L5 indicator for.
 
         Returns
@@ -325,7 +307,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
         Parameters
         ----------
-        channel_index: int, default: 0
+        channel_index : int, default: 0
             Index of the signal channel to get the L10 indicator for.
 
         Returns
@@ -343,7 +325,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             L10 = self.get_output_as_nparray()[5]
             return L10[channel_index]
 
-    def get_time_scale(self) -> npt.ArrayLike:
+    def get_time_scale(self) -> np.ndarray:
         """Get the time scale.
 
         This method gets an array of the timestamps in seconds where time-varying
