@@ -9,4 +9,5 @@ Sound composer
     SourceSpectrum
     SourceAudio
     SourceControlSpectrum
+    SourceControlTime
     SpectrumSynthesisMethods

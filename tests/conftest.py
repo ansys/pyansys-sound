@@ -60,6 +60,8 @@ def pytest_configure():
     pytest.data_path_flute_nonUnitaryCalib_as_txt_in_container = (
         "C:\\data\\flute_nonUnitaryCalib_as_text_2024R2_20241125.txt"
     )
+    pytest.data_path_rpm_profile_as_wav_in_container = "C:\\data\\RPM_profile_2024R2_20241126.wav"
+    pytest.data_path_rpm_profile_as_txt_in_container = "C:\\data\\RPM_profile_2024R2_20241126.txt"
 
 
 @pytest.fixture(scope="session")
