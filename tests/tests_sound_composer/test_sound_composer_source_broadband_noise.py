@@ -148,7 +148,7 @@ def test_source_broadband_noise_properties_exceptions(dpf_sound_test_server):
     # Test source_bbn setter exception 1 (str instead a Field).
     with pytest.raises(
         PyAnsysSoundException,
-        match="Specified spectrum source must be provided as a DPF fields container.",
+        match="Specified broadband noise source must be provided as a DPF fields container.",
     ):
         source_bbn_obj.source_bbn = "InvalidType"
 

@@ -151,7 +151,7 @@ class SourceBroadbandNoise(SourceParent):
         if source_bbn is not None:
             if not isinstance(source_bbn, FieldsContainer):
                 raise PyAnsysSoundException(
-                    "Specified spectrum source must be provided as a DPF fields container."
+                    "Specified broadband noise source must be provided as a DPF fields container."
                 )
 
             if len(source_bbn) < 1:
