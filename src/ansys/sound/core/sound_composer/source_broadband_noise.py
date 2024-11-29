@@ -82,10 +82,11 @@ class SourceBroadbandNoise(SourceParent):
                 str_name = ""
 
             # Spectrum type.
-            if spectrum_type == "NARROWBAND":
-                str_type = f"{spectrum_type} (DeltaF: {delta_f:.1f} Hz)"
-            else:
-                str_type = spectrum_type
+            # if spectrum_type == "NARROWBAND":
+            #     str_type = f"{spectrum_type} (DeltaF: {delta_f:.1f} Hz)"
+            # else:
+            #     str_type = spectrum_type
+            str_type = spectrum_type
 
             # Spectrum control values.
             if len(control_values) > 30:
