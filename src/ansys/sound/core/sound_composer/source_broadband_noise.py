@@ -51,7 +51,7 @@ class SourceBroadbandNoise(SourceParent):
         ----------
         file : str, default ""
             Path to the broadband noise file. Supported files are text files with the header
-            ``AnsysSound_BBN``.
+            `AnsysSound_BBN`.
         source_control : SourceControlTime, default None
             Source control, consisting of the control parameter values over time, to use when
             generating the sound from this source.
@@ -63,7 +63,6 @@ class SourceBroadbandNoise(SourceParent):
         self.__operator_load = Operator(ID_COMPUTE_LOAD_SOURCE_BBN)
         self.__operator_generate = Operator(ID_COMPUTE_GENERATE_SOUND_BBN)
 
-        # load_source_spectrum can only be called after __operator_load is defined.
         if len(file) > 0:
             self.load_source_bbn(file)
         else:
@@ -71,6 +70,7 @@ class SourceBroadbandNoise(SourceParent):
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
+        # Source info.
         if self.source_bbn is not None:
             spectrum_type, delta_f, control_name, control_unit, control_values = (
                 self.__extract_bbn_info()
@@ -103,6 +103,7 @@ class SourceBroadbandNoise(SourceParent):
         else:
             str_source = "Not set"
 
+        # Source control info.
         if self.is_source_control_valid():
             str_source_control = (
                 f"{self.source_control.control.name}\n"
@@ -137,7 +138,7 @@ class SourceBroadbandNoise(SourceParent):
     def source_bbn(self) -> FieldsContainer:
         """Broadband noise source data, as a DPF fields container.
 
-        The broadband noise source data consists of a series of spectra corresponding each to a
+        The broadband noise source data consists of a series of spectra, each corresponding to a
         control parameter value. Spectra can be narrowband, PSD, octave-band levels, or
         1/3-octave-band levels.
         """
@@ -194,7 +195,7 @@ class SourceBroadbandNoise(SourceParent):
         ----------
         file : str
             Path to the broadband noise file. Supported files have the same text format (with the
-            AnsysSound_BBN header) as that which is supported by Ansys Sound SAS.
+            `AnsysSound_BBN` header) as that which is supported by Ansys Sound SAS.
         """
         # Set operator inputs.
         self.__operator_load.connect(0, file)
@@ -265,7 +266,7 @@ class SourceBroadbandNoise(SourceParent):
         Returns
         -------
         numpy.ndarray
-            Generated sound as a NumPy array.
+            Generated sound (signal samples in Pa) as a NumPy array.
         """
         output = self.get_output()
 
@@ -294,11 +295,11 @@ class SourceBroadbandNoise(SourceParent):
         Returns
         -------
         tuple[str, float, str, str, list[float]]
-            Broadband noise source information, containing:
+            Broadband noise source information, consisting of the following elements:
                 First element is the spectrum type ('NARROWBAND', 'OCTAVE1:1', or 'OCTAVE1:3').
 
                 Second element is the spectrum frequency resolution in Hz (only if spectrum type is
-                'NARROWBAND' only, 0.0 otherwise).
+                'NARROWBAND', 0.0 otherwise).
 
                 Third element is the control parameter name.
 
@@ -310,13 +311,15 @@ class SourceBroadbandNoise(SourceParent):
             return ("", 0.0, "", "", [])
 
         # Spectrum info.
+        # TODO: for now quantity_type can't be accessed in python. When it is, the line below
+        # should be uncommented, and replace the one after.
         # spectrum_type = self.source_bbn[0].field_definition.quantity_type
         spectrum_type = "Not available"
         frequencies = self.source_bbn[0].time_freq_support.time_frequencies.data
         if len(frequencies) > 1:
-            spectrum_resolution = frequencies[1] - frequencies[0]
+            delta_f = frequencies[1] - frequencies[0]
         else:
-            spectrum_resolution = 0.0
+            delta_f = 0.0
 
         # Control parameter info.
         control_data = self.source_bbn.get_support("control_parameter_1")
@@ -325,4 +328,4 @@ class SourceBroadbandNoise(SourceParent):
         control_unit = control_data.field_support_by_property(parameter_ids[0]).unit
         control_values = list(control_data.field_support_by_property(parameter_ids[0]).data)
 
-        return spectrum_type, spectrum_resolution, control_name, control_unit, control_values
+        return spectrum_type, delta_f, control_name, control_unit, control_values

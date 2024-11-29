@@ -36,8 +36,6 @@ import pytest
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.sound_composer import SourceBroadbandNoise, SourceControlTime
 
-REF_ACOUSTIC_POWER = 4e-10
-
 EXP_SPECTRUM_DATA03 = 1.9452798369457014e-05
 EXP_STR_NOT_SET = "Broadband noise source: Not set\nSource control: Not set"
 EXP_STR_ALL_SET = (
@@ -67,100 +65,103 @@ EXP_STR_ALL_SET_40_VALUES = (
 
 def test_source_broadband_noise_instantiation_no_arg(dpf_sound_test_server):
     """Test SourceBroadbandNoise instantiation without arguments."""
-    # Test instantiation.
-    source_bbn = SourceBroadbandNoise()
-    assert isinstance(source_bbn, SourceBroadbandNoise)
-    assert source_bbn.source_bbn is None
+    source_bbn_obj = SourceBroadbandNoise()
+    assert isinstance(source_bbn_obj, SourceBroadbandNoise)
+    assert source_bbn_obj.source_bbn is None
 
 
 def test_source_broadband_noise_instantiation_file_arg(dpf_sound_test_server):
     """Test SourceBroadbandNoise instantiation with file argument."""
-    # Test instantiation.
-    source_bbn = SourceBroadbandNoise(file=pytest.data_path_sound_composer_bbn_source_in_container)
-    assert isinstance(source_bbn, SourceBroadbandNoise)
-    assert source_bbn.source_bbn is not None
+    source_bbn_obj = SourceBroadbandNoise(
+        file=pytest.data_path_sound_composer_bbn_source_in_container
+    )
+    assert isinstance(source_bbn_obj, SourceBroadbandNoise)
+    assert source_bbn_obj.source_bbn is not None
 
 
 def test_source_broadband_noise___str___not_set(dpf_sound_test_server):
     """Test SourceBroadbandNoise __str__ method when nothing is set."""
-    source_bbn = SourceBroadbandNoise()
-    assert str(source_bbn) == EXP_STR_NOT_SET
+    source_bbn_obj = SourceBroadbandNoise()
+    assert str(source_bbn_obj) == EXP_STR_NOT_SET
 
 
 def test_source_broadband_noise___str___all_set(dpf_sound_test_server):
     """Test SourceBroadbandNoise __str__ method when all data are set."""
     # Create a field to use in a SourceControlTime object.
-    source_control_field = fields_factory.create_scalar_field(
+    f_source_control = fields_factory.create_scalar_field(
         num_entities=1, location=locations.time_freq
     )
-    source_control_field.append([1, 3, 6, 10], 1)
+    f_source_control.append([1, 3, 6, 10], 1)
     support = TimeFreqSupport()
-    time_field = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
-    time_field.append([0, 1, 2, 3], 1)
-    support.time_frequencies = time_field
-    source_control_field.time_freq_support = support
+    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_time.append([0, 1, 2, 3], 1)
+    support.time_frequencies = f_time
+    f_source_control.time_freq_support = support
 
     # Create a SourceControlTime object.
     source_control = SourceControlTime()
-    source_control.control = source_control_field
+    source_control.control = f_source_control
 
     # Create a SourceBroadbandNoise object using source file with less than 30 values and created
     # source control.
-    source_bbn = SourceBroadbandNoise(
+    source_bbn_obj = SourceBroadbandNoise(
         pytest.data_path_sound_composer_bbn_source_in_container,
         source_control,
     )
-    assert str(source_bbn) == EXP_STR_ALL_SET
+    assert str(source_bbn_obj) == EXP_STR_ALL_SET
 
     # Replace source file with one with more than 30 values.
-    source_bbn.load_source_bbn(pytest.data_path_sound_composer_bbn_source_40_values_in_container)
-    assert str(source_bbn) == EXP_STR_ALL_SET_40_VALUES
+    source_bbn_obj.load_source_bbn(
+        pytest.data_path_sound_composer_bbn_source_40_values_in_container
+    )
+    assert str(source_bbn_obj) == EXP_STR_ALL_SET_40_VALUES
 
 
 def test_source_broadband_noise_properties(dpf_sound_test_server):
     """Test SourceBroadbandNoise properties."""
-    source_bbn = SourceBroadbandNoise()
+    source_bbn_obj = SourceBroadbandNoise()
 
     # Test source_control property.
-    source_bbn.source_control = SourceControlTime()
-    assert isinstance(source_bbn.source_control, SourceControlTime)
+    source_bbn_obj.source_control = SourceControlTime()
+    assert isinstance(source_bbn_obj.source_control, SourceControlTime)
 
     # Test source_bbn property.
-    source_bbn_tmp = SourceBroadbandNoise()
-    source_bbn_tmp.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
-    bbn_fieldscontainer = source_bbn_tmp.source_bbn
-    source_bbn.source_bbn = bbn_fieldscontainer
-    assert isinstance(source_bbn.source_bbn, FieldsContainer)
+    # Create a second object and then reuse its source_bbn property.
+    source_bbn_obj_tmp = SourceBroadbandNoise()
+    source_bbn_obj_tmp.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
+    bbn_fieldscontainer = source_bbn_obj_tmp.source_bbn
+    source_bbn_obj.source_bbn = bbn_fieldscontainer
+    assert isinstance(source_bbn_obj.source_bbn, FieldsContainer)
 
 
 def test_source_broadband_noise_properties_exceptions(dpf_sound_test_server):
     """Test SourceBroadbandNoise properties' exceptions."""
-    source_bbn = SourceBroadbandNoise()
+    source_bbn_obj = SourceBroadbandNoise()
 
     # Test source_control setter exception (str instead of SourceControlTime).
     with pytest.raises(
         PyAnsysSoundException,
         match="Specified source control object must be of type ``SourceControlTime``.",
     ):
-        source_bbn.source_control = "InvalidType"
+        source_bbn_obj.source_control = "InvalidType"
 
     # Test source_bbn setter exception 1 (str instead a Field).
     with pytest.raises(
         PyAnsysSoundException,
         match="Specified spectrum source must be provided as a DPF fields container.",
     ):
-        source_bbn.source_bbn = "InvalidType"
+        source_bbn_obj.source_bbn = "InvalidType"
 
     # Test source_bbn setter exception 2 (less than 1 spectrum).
-    bbn_fieldscontainer = FieldsContainer()
+    fc_source_bbn = FieldsContainer()
     with pytest.raises(
         PyAnsysSoundException,
         match="Specified broadband noise source must contain at least one spectrum.",
     ):
-        source_bbn.source_bbn = bbn_fieldscontainer
+        source_bbn_obj.source_bbn = fc_source_bbn
 
     # Test source_bbn setter exception 3 (empty spectrum).
-    bbn_fieldscontainer = fields_container_factory.over_time_freq_fields_container([Field()])
+    fc_source_bbn = fields_container_factory.over_time_freq_fields_container([Field()])
     with pytest.raises(
         PyAnsysSoundException,
         match=(
@@ -168,17 +169,17 @@ def test_source_broadband_noise_properties_exceptions(dpf_sound_test_server):
             "element."
         ),
     ):
-        source_bbn.source_bbn = bbn_fieldscontainer
+        source_bbn_obj.source_bbn = fc_source_bbn
 
     # Test source_bbn setter exception 4 (empty bbn source's control data).
     # For this, we use a valid dataset, and then remove the control data.
-    source_bbn = SourceBroadbandNoise()
-    source_bbn.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
-    support_data = source_bbn.source_bbn.get_support("control_parameter_1")
+    source_bbn_obj = SourceBroadbandNoise()
+    source_bbn_obj.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
+    support_data = source_bbn_obj.source_bbn.get_support("control_parameter_1")
     support_properties = support_data.available_field_supported_properties()
     support_values = support_data.field_support_by_property(support_properties[0])
     support_values.data = []
-    fc_source_bbn = source_bbn.source_bbn
+    fc_source_bbn = source_bbn_obj.source_bbn
     with pytest.raises(
         PyAnsysSoundException,
         match=(
@@ -186,66 +187,67 @@ def test_source_broadband_noise_properties_exceptions(dpf_sound_test_server):
             "element."
         ),
     ):
-        source_bbn.source_bbn = fc_source_bbn
+        source_bbn_obj.source_bbn = fc_source_bbn
 
 
 def test_source_broadband_noise_is_source_control_valid(dpf_sound_test_server):
     """Test SourceBroadbandNoise is_source_control_valid method."""
-    source_bbn = SourceBroadbandNoise()
+    source_bbn_obj = SourceBroadbandNoise()
 
     # Test is_source_control_valid method (attribute not set).
-    assert source_bbn.is_source_control_valid() is False
+    assert source_bbn_obj.is_source_control_valid() is False
 
     # Test is_source_control_valid method (attribute set, but attribute's field not set).
-    control = SourceControlTime()
-    source_bbn.source_control = control
-    assert source_bbn.is_source_control_valid() is False
+    source_control_obj = SourceControlTime()
+    source_bbn_obj.source_control = source_control_obj
+    assert source_bbn_obj.is_source_control_valid() is False
 
     # Test is_source_control_valid method (all set).
-    # source_bbn.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
-    field = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
-    field.append([1.0, 2.0, 3.0, 4.0, 5.0], 1)
-    source_bbn.source_control.control = field
-    assert source_bbn.is_source_control_valid() is True
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([1.0, 2.0, 3.0, 4.0, 5.0], 1)
+    source_bbn_obj.source_control.control = f_source_control
+    assert source_bbn_obj.is_source_control_valid() is True
 
 
 def test_source_specrum_load_source_bbn(dpf_sound_test_server):
     """Test SourceBroadbandNoise load_source_bbn method."""
-    source_bbn = SourceBroadbandNoise()
-    source_bbn.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
-    assert isinstance(source_bbn.source_bbn, FieldsContainer)
-    assert source_bbn.source_bbn[0].data[3] == pytest.approx(EXP_SPECTRUM_DATA03)
+    source_bbn_obj = SourceBroadbandNoise()
+    source_bbn_obj.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
+    assert isinstance(source_bbn_obj.source_bbn, FieldsContainer)
+    assert source_bbn_obj.source_bbn[0].data[3] == pytest.approx(EXP_SPECTRUM_DATA03)
 
 
 def test_source_broadband_noise_process(dpf_sound_test_server):
     """Test SourceBroadbandNoise process method."""
     # Create a field to use in a SourceControlTime object.
-    source_control_field = fields_factory.create_scalar_field(
+    f_source_control = fields_factory.create_scalar_field(
         num_entities=1, location=locations.time_freq
     )
-    source_control_field.append([1, 3, 6, 10], 1)
+    f_source_control.append([1, 3, 6, 10], 1)
     support = TimeFreqSupport()
-    time_field = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
-    time_field.append([0, 1, 2, 3], 1)
-    support.time_frequencies = time_field
-    source_control_field.time_freq_support = support
+    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_time.append([0, 1, 2, 3], 1)
+    support.time_frequencies = f_time
+    f_source_control.time_freq_support = support
 
     # Create a SourceControlTime object.
-    source_control = SourceControlTime()
-    source_control.control = source_control_field
+    source_control_obj = SourceControlTime()
+    source_control_obj.control = f_source_control
 
-    source_bbn = SourceBroadbandNoise(
+    source_bbn_obj = SourceBroadbandNoise(
         pytest.data_path_sound_composer_bbn_source_in_container,
-        source_control,
+        source_control_obj,
     )
-    source_bbn.process()
-    assert source_bbn._output is not None
+    source_bbn_obj.process()
+    assert source_bbn_obj._output is not None
 
 
 def test_source_broadband_noise_process_exceptions(dpf_sound_test_server):
     """Test SourceBroadbandNoise process method exceptions."""
     # Test process method exception1 (missing control).
-    source_bbn = SourceBroadbandNoise(pytest.data_path_sound_composer_bbn_source_in_container)
+    source_bbn_obj = SourceBroadbandNoise(pytest.data_path_sound_composer_bbn_source_in_container)
     with pytest.raises(
         PyAnsysSoundException,
         match=(
@@ -253,15 +255,17 @@ def test_source_broadband_noise_process_exceptions(dpf_sound_test_server):
             "Use ``SourceBroadbandNoise.source_control``."
         ),
     ):
-        source_bbn.process()
+        source_bbn_obj.process()
 
     # Test process method exception2 (missing bbn source data).
-    source_bbn.source_bbn = None
-    field = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
-    field.append([1.0, 2.0, 3.0, 4.0, 5.0], 1)
-    source_control = SourceControlTime()
-    source_control.control = field
-    source_bbn.source_control = source_control
+    source_bbn_obj.source_bbn = None
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([1.0, 2.0, 3.0, 4.0, 5.0], 1)
+    source_control_obj = SourceControlTime()
+    source_control_obj.control = f_source_control
+    source_bbn_obj.source_control = source_control_obj
     with pytest.raises(
         PyAnsysSoundException,
         match=(
@@ -269,135 +273,135 @@ def test_source_broadband_noise_process_exceptions(dpf_sound_test_server):
             "or method ``SourceBroadbandNoise.load_source_bbn\\(\\)``."
         ),
     ):
-        source_bbn.process()
+        source_bbn_obj.process()
 
     # Test process method exception3 (invalid sampling frequency value).
-    source_bbn.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
+    source_bbn_obj.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
     with pytest.raises(
         PyAnsysSoundException, match="Sampling frequency must be strictly positive."
     ):
-        source_bbn.process(sampling_frequency=0.0)
+        source_bbn_obj.process(sampling_frequency=0.0)
 
 
 def test_source_broadband_noise_get_output(dpf_sound_test_server):
     """Test SourceBroadbandNoise get_output method."""
     # Create a field to use in a SourceControlTime object.
-    source_control_field = fields_factory.create_scalar_field(
+    f_source_control = fields_factory.create_scalar_field(
         num_entities=1, location=locations.time_freq
     )
-    source_control_field.append([1, 3, 6, 10], 1)
+    f_source_control.append([1, 3, 6, 10], 1)
     support = TimeFreqSupport()
-    time_field = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
-    time_field.append([0, 1, 2, 3], 1)
-    support.time_frequencies = time_field
-    source_control_field.time_freq_support = support
+    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_time.append([0, 1, 2, 3], 1)
+    support.time_frequencies = f_time
+    f_source_control.time_freq_support = support
 
     # Create a SourceControlTime object.
-    source_control = SourceControlTime()
-    source_control.control = source_control_field
+    source_control_obj = SourceControlTime()
+    source_control_obj.control = f_source_control
 
-    source_bbn = SourceBroadbandNoise(
+    source_bbn_obj = SourceBroadbandNoise(
         pytest.data_path_sound_composer_bbn_source_in_container,
-        source_control,
+        source_control_obj,
     )
-    source_bbn.process(sampling_frequency=44100.0)
-    output = source_bbn.get_output()
-    assert isinstance(output, Field)
-    assert len(output.data) / 44100.0 == pytest.approx(3.0)
+    source_bbn_obj.process(sampling_frequency=44100.0)
+    f_output = source_bbn_obj.get_output()
+    assert isinstance(f_output, Field)
+    assert len(f_output.data) / 44100.0 == pytest.approx(3.0)
 
 
 def test_source_broadband_noise_get_output_unprocessed(dpf_sound_test_server):
     """Test SourceBroadbandNoise get_output method's exception."""
-    source_bbn = SourceBroadbandNoise()
+    source_bbn_obj = SourceBroadbandNoise()
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. Use the ``SourceBroadbandNoise.process\\(\\)`` method.",
     ):
-        output = source_bbn.get_output()
-    assert output is None
+        f_output = source_bbn_obj.get_output()
+    assert f_output is None
 
 
 def test_source_broadband_noise_get_output_as_nparray(dpf_sound_test_server):
     """Test SourceBroadbandNoise get_output_as_nparray method."""
     # Create a field to use in a SourceControlTime object.
-    source_control_field = fields_factory.create_scalar_field(
+    f_source_control = fields_factory.create_scalar_field(
         num_entities=1, location=locations.time_freq
     )
-    source_control_field.append([1, 3, 6, 10], 1)
+    f_source_control.append([1, 3, 6, 10], 1)
     support = TimeFreqSupport()
-    time_field = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
-    time_field.append([0, 1, 2, 3], 1)
-    support.time_frequencies = time_field
-    source_control_field.time_freq_support = support
+    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_time.append([0, 1, 2, 3], 1)
+    support.time_frequencies = f_time
+    f_source_control.time_freq_support = support
 
     # Create a SourceControlTime object.
-    source_control = SourceControlTime()
-    source_control.control = source_control_field
+    source_control_obj = SourceControlTime()
+    source_control_obj.control = f_source_control
 
-    source_bbn = SourceBroadbandNoise(
+    source_bbn_obj = SourceBroadbandNoise(
         pytest.data_path_sound_composer_bbn_source_in_container,
-        source_control,
+        source_control_obj,
     )
-    source_bbn.process(sampling_frequency=44100.0)
-    output = source_bbn.get_output_as_nparray()
-    assert isinstance(output, np.ndarray)
-    assert len(output) / 44100.0 == pytest.approx(3.0)
+    source_bbn_obj.process(sampling_frequency=44100.0)
+    output_nparray = source_bbn_obj.get_output_as_nparray()
+    assert isinstance(output_nparray, np.ndarray)
+    assert len(output_nparray) / 44100.0 == pytest.approx(3.0)
 
 
 def test_source_broadband_noise_get_output_as_nparray_unprocessed(dpf_sound_test_server):
     """Test SourceBroadbandNoise get_output_as_nparray method's exception."""
-    source_bbn = SourceBroadbandNoise()
+    source_bbn_obj = SourceBroadbandNoise()
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. Use the ``SourceBroadbandNoise.process\\(\\)`` method.",
     ):
-        output = source_bbn.get_output_as_nparray()
-    assert len(output) == 0
+        output_nparray = source_bbn_obj.get_output_as_nparray()
+    assert len(output_nparray) == 0
 
 
 @patch("matplotlib.pyplot.show")
 def test_source_broadband_noise_plot(dpf_sound_test_server):
     """Test SourceBroadbandNoise plot method."""
     # Create a field to use in a SourceControlTime object.
-    source_control_field = fields_factory.create_scalar_field(
+    f_source_control = fields_factory.create_scalar_field(
         num_entities=1, location=locations.time_freq
     )
-    source_control_field.append([1, 3, 6, 10], 1)
+    f_source_control.append([1, 3, 6, 10], 1)
     support = TimeFreqSupport()
-    time_field = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
-    time_field.append([0, 1, 2, 3], 1)
-    support.time_frequencies = time_field
-    source_control_field.time_freq_support = support
+    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_time.append([0, 1, 2, 3], 1)
+    support.time_frequencies = f_time
+    f_source_control.time_freq_support = support
 
     # Create a SourceControlTime object.
-    source_control = SourceControlTime()
-    source_control.control = source_control_field
+    source_control_obj = SourceControlTime()
+    source_control_obj.control = f_source_control
 
-    source_bbn = SourceBroadbandNoise(
+    source_bbn_obj = SourceBroadbandNoise(
         pytest.data_path_sound_composer_bbn_source_in_container,
-        source_control,
+        source_control_obj,
     )
-    source_bbn.process()
-    source_bbn.plot()
+    source_bbn_obj.process()
+    source_bbn_obj.plot()
 
 
 def test_source_broadband_noise_plot_exceptions(dpf_sound_test_server):
     """Test SourceBroadbandNoise plot method's exception."""
-    source_bbn = SourceBroadbandNoise()
+    source_bbn_obj = SourceBroadbandNoise()
     with pytest.raises(
         PyAnsysSoundException,
         match="Output is not processed yet. Use the 'SourceBroadbandNoise.process\\(\\)' method.",
     ):
-        source_bbn.plot()
+        source_bbn_obj.plot()
 
 
 def test_source_broadband_noise___extract_bbn_info(dpf_sound_test_server):
     """Test SourceBroadbandNoise __extract_bbn_info method."""
-    source_bbn = SourceBroadbandNoise()
-    assert source_bbn._SourceBroadbandNoise__extract_bbn_info() == ("", 0.0, "", "", [])
+    source_bbn_obj = SourceBroadbandNoise()
+    assert source_bbn_obj._SourceBroadbandNoise__extract_bbn_info() == ("", 0.0, "", "", [])
 
-    source_bbn.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
-    assert source_bbn._SourceBroadbandNoise__extract_bbn_info() == (
+    source_bbn_obj.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
+    assert source_bbn_obj._SourceBroadbandNoise__extract_bbn_info() == (
         "Not available",
         10.0,
         "Speed of wind",
@@ -405,8 +409,9 @@ def test_source_broadband_noise___extract_bbn_info(dpf_sound_test_server):
         [1.0, 2.0, 5.300000190734863, 10.5, 27.777999877929688],
     )
 
-    source_bbn.source_bbn[0].time_freq_support.time_frequencies.data = []
-    assert source_bbn._SourceBroadbandNoise__extract_bbn_info() == (
+    # Test with empty control support (delta_f not applicable).
+    source_bbn_obj.source_bbn[0].time_freq_support.time_frequencies.data = []
+    assert source_bbn_obj._SourceBroadbandNoise__extract_bbn_info() == (
         "Not available",
         0.0,
         "Speed of wind",
