@@ -81,7 +81,7 @@ class SourceBroadbandNoise(SourceParent):
             if str_name is None:
                 str_name = ""
 
-            # Spectrum type.
+            # Spectrum type. TODO: reactivate if/else when quantity_type is available in python.
             # if spectrum_type == "NARROWBAND":
             #     str_type = f"{spectrum_type} (DeltaF: {delta_f:.1f} Hz)"
             # else:
