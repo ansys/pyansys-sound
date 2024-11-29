@@ -23,7 +23,7 @@
 """Sound Composer's broadband noise source."""
 import warnings
 
-from ansys.dpf.core import Field, Operator, FieldsContainer
+from ansys.dpf.core import Field, FieldsContainer, Operator
 from matplotlib import pyplot as plt
 import numpy as np
 from numpy import typing as npt
@@ -40,7 +40,7 @@ class SourceBroadbandNoise(SourceParent):
     """Sound Composer's broadband noise source class.
 
     This class creates a broadband noise source for the Sound Composer. A broadband noise source is
-    used to generate a sound signal from a given broadband noise and its source control. The 
+    used to generate a sound signal from a given broadband noise and its source control. The
     broadband noise consists of a series of noise spectra corresponding each to a control parameter
     value. The source control contains the control parameter values over time.
     """
@@ -73,7 +73,8 @@ class SourceBroadbandNoise(SourceParent):
     def __str__(self) -> str:
         """Return the string representation of the object."""
         if self.source_bbn is not None:
-            # source_name, spectrum_type, spectrum_resolution, spectrum_count, control_name, control_unit, control_values = self.__extract_bbn_info()
+            # source_name, spectrum_type, spectrum_resolution, spectrum_count,
+            # control_name, control_unit, control_values = (self.__extract_bbn_info()
 
             # Source name.
             str_name = self.source_bbn.name
@@ -82,23 +83,21 @@ class SourceBroadbandNoise(SourceParent):
 
             # Spectrum info.
             # spectrum_type = self.source_bbn[0].field_definition.quantity_type
-            spectrum_type = ""
-            match spectrum_type:
-                case "NARROWBAND":
-                    frequencies = self.source_bbn[0].time_freq_support.time_frequencies.data
-                    if len(frequencies) > 1:
-                        str_type = f"Narrow (resolution: {frequencies[1] - frequencies[0]:.1f} Hz)"
-                    else:
-                        str_type = "Narrow (resolution: N/A)"
-                case "OCTAVE1:1":
-                    str_type = "Octave"
-                case "OCTAVE1:3":
-                    str_type = "1/3 octave"
-                case _:
-                    str_type = "Not available"
+            # match spectrum_type:
+            #     case "NARROWBAND":
+            #         frequencies = self.source_bbn[0].time_freq_support.time_frequencies.data
+            #         if len(frequencies) > 1:
+            #             str_type = f"Narrow (resolution: {frequencies[1]-frequencies[0]:.1f} Hz)"
+            #         else:
+            #             str_type = "Narrow (resolution: N/A)"
+            #     case "OCTAVE1:1":
+            #         str_type = "Octave"
+            #     case _:
+            #         str_type = "1/3 octave"
+            str_type = "Not available yet"
 
             # Spectrum control info.
-            control_data = self.source_bbn.get_support('control_parameter_1')
+            control_data = self.source_bbn.get_support("control_parameter_1")
             parameter_ids = control_data.available_field_supported_properties()
             control_name = control_data.field_support_by_property(parameter_ids[0]).name
             control_unit = control_data.field_support_by_property(parameter_ids[0]).unit
@@ -123,7 +122,8 @@ class SourceBroadbandNoise(SourceParent):
                 f"{self.source_control.control.name}\n"
                 f"\tMin: {self.source_control.control.data.min()}\n"
                 f"\tMax: {self.source_control.control.data.max()}\n"
-                f"\tDuration: {self.source_control.control.time_freq_support.time_frequencies.data[-1]} s"
+                f"\tDuration: "
+                f"{self.source_control.control.time_freq_support.time_frequencies.data[-1]} s"
             )
         else:
             str_source_control = "Not set"
@@ -151,8 +151,9 @@ class SourceBroadbandNoise(SourceParent):
     def source_bbn(self) -> FieldsContainer:
         """Broadband noise source data, as a DPF fields container.
 
-        The broadband noise source data consists of a series of spectra corresponding each to a control
-        parameter value. Spectra can be narrowband, PSD, octave-band levels, or 1/3-octave-band levels.
+        The broadband noise source data consists of a series of spectra corresponding each to a
+        control parameter value. Spectra can be narrowband, PSD, octave-band levels, or
+        1/3-octave-band levels.
         """
         return self.__source_bbn
 
@@ -169,15 +170,15 @@ class SourceBroadbandNoise(SourceParent):
                 raise PyAnsysSoundException(
                     "Specified broadband noise source must contain at least one spectrum."
                 )
-            
+
             for spectrum in source_bbn:
                 if len(spectrum.data) < 1:
                     raise PyAnsysSoundException(
                         "Each spectrum in the specified broadband noise source must contain at "
                         "least one element."
                     )
-                
-            support_data = source_bbn.get_support('control_parameter_1')
+
+            support_data = source_bbn.get_support("control_parameter_1")
             support_properties = support_data.available_field_supported_properties()
             support_values = support_data.field_support_by_property(support_properties[0])
             if len(support_values) < 1:
@@ -198,7 +199,7 @@ class SourceBroadbandNoise(SourceParent):
         bool
             True if the source control is set.
         """
-        return self.source_control is not None
+        return self.source_control is not None and self.source_control.control is not None
 
     def load_source_bbn(self, file: str):
         """Load the broadband noise source data from a file.
@@ -344,4 +345,12 @@ class SourceBroadbandNoise(SourceParent):
     #     control_unit = control_data.field_support_by_property(parameter_ids[0]).unit
     #     control_values = list(control_data.field_support_by_property(parameter_ids[0]).data)
 
-    #     return source_name, spectrum_type, spectrum_resolution, spectrum_count, control_name, control_unit, control_values
+    #     return (
+    #       source_name,
+    # spectrum_type,
+    # spectrum_resolution,
+    # spectrum_count,
+    # control_name,
+    # control_unit,
+    # control_values,
+    #   )
