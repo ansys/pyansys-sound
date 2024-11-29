@@ -29,10 +29,10 @@ from ._sound_composer_parent import SoundComposerParent
 from ._source_control_parent import SourceControlParent, SpectrumSynthesisMethods
 from ._source_parent import SourceParent
 from .source_audio import SourceAudio
+from .source_broadband_noise import SourceBroadbandNoise
 from .source_control_spectrum import SourceControlSpectrum
 from .source_control_time import SourceControlTime
 from .source_spectrum import SourceSpectrum
-from .source_broadband_noise import SourceBroadbandNoise
 
 __all__ = (
     "SoundComposerParent",

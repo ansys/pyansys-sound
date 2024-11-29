@@ -26,7 +26,6 @@ import warnings
 from ansys.dpf.core import Field, FieldsContainer, Operator
 from matplotlib import pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._source_parent import SourceParent
@@ -235,7 +234,8 @@ class SourceBroadbandNoise(SourceParent):
 
         if not self.is_source_control_valid():
             raise PyAnsysSoundException(
-                f"Spectrum source control is not set. Use ``{__class__.__name__}.source_control``."
+                "Broadband noise source control is not set. "
+                f"Use ``{__class__.__name__}.source_control``."
             )
 
         if self.source_bbn is None:
@@ -272,17 +272,17 @@ class SourceBroadbandNoise(SourceParent):
             )
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
-        """Get the generated sound as a numpy array.
+    def get_output_as_nparray(self) -> np.ndarray:
+        """Get the generated sound as a NumPy array.
 
         Returns
         -------
         numpy.ndarray
-            Generated sound as a numpy array.
+            Generated sound as a NumPy array.
         """
         output = self.get_output()
 
-        return np.array(output if output is not None else [])
+        return np.array(output.data if output is not None else [])
 
     def plot(self):
         """Plot the resulting signal in a figure."""
