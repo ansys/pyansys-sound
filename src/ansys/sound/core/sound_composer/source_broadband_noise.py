@@ -40,8 +40,8 @@ class SourceBroadbandNoise(SourceParent):
 
     This class creates a broadband noise source for the Sound Composer. A broadband noise source is
     used to generate a sound signal from a given broadband noise and its source control. The
-    broadband noise consists of a series of noise spectra corresponding each to a control parameter
-    value. The source control contains the control parameter values over time.
+    broadband noise consists of a series of noise spectra, each corresponding to a control
+    parameter value. The source control contains the control parameter values over time.
     """
 
     def __init__(self, file: str = "", source_control: SourceControlTime = None):
@@ -49,10 +49,10 @@ class SourceBroadbandNoise(SourceParent):
 
         Parameters
         ----------
-        file : str, default ""
+        file : str, default: ""
             Path to the broadband noise file. Supported files are text files with the header
             `AnsysSound_BBN`.
-        source_control : SourceControlTime, default None
+        source_control : SourceControlTime, default: None
             Source control, consisting of the control parameter values over time, to use when
             generating the sound from this source.
         """
@@ -119,7 +119,7 @@ class SourceBroadbandNoise(SourceParent):
 
     @property
     def source_control(self) -> SourceControlTime:
-        """Source control.
+        """Broadband noise source control.
 
         Contains the control parameter values over time.
         """
@@ -214,7 +214,7 @@ class SourceBroadbandNoise(SourceParent):
 
         Parameters
         ----------
-        sampling_frequency : float, default 44100.0
+        sampling_frequency : float, default: 44100.0
             Sampling frequency of the generated sound in Hz.
         """
         if sampling_frequency <= 0.0:
