@@ -72,35 +72,22 @@ class SourceBroadbandNoise(SourceParent):
     def __str__(self) -> str:
         """Return the string representation of the object."""
         if self.source_bbn is not None:
-            # source_name, spectrum_type, spectrum_resolution, spectrum_count,
-            # control_name, control_unit, control_values = (self.__extract_bbn_info()
+            spectrum_type, delta_f, control_name, control_unit, control_values = (
+                self.__extract_bbn_info()
+            )
 
             # Source name.
             str_name = self.source_bbn.name
             if str_name is None:
                 str_name = ""
 
-            # Spectrum info.
-            # spectrum_type = self.source_bbn[0].field_definition.quantity_type
-            # match spectrum_type:
-            #     case "NARROWBAND":
-            #         frequencies = self.source_bbn[0].time_freq_support.time_frequencies.data
-            #         if len(frequencies) > 1:
-            #             str_type = f"Narrow (resolution: {frequencies[1]-frequencies[0]:.1f} Hz)"
-            #         else:
-            #             str_type = "Narrow (resolution: N/A)"
-            #     case "OCTAVE1:1":
-            #         str_type = "Octave"
-            #     case _:
-            #         str_type = "1/3 octave"
-            str_type = "Not available yet"
+            # Spectrum type.
+            if spectrum_type == "NARROWBAND":
+                str_type = f"{spectrum_type} (DeltaF: {delta_f:.1f} Hz)"
+            else:
+                str_type = spectrum_type
 
-            # Spectrum control info.
-            control_data = self.source_bbn.get_support("control_parameter_1")
-            parameter_ids = control_data.available_field_supported_properties()
-            control_name = control_data.field_support_by_property(parameter_ids[0]).name
-            control_unit = control_data.field_support_by_property(parameter_ids[0]).unit
-            control_values = list(control_data.field_support_by_property(parameter_ids[0]).data)
+            # Spectrum control values.
             if len(control_values) > 30:
                 str_values = f"{str(control_values[:15])[:-1]}, ... {str(control_values[-15:])[1:]}"
             else:
@@ -182,7 +169,7 @@ class SourceBroadbandNoise(SourceParent):
             support_values = support_data.field_support_by_property(support_properties[0])
             if len(support_values) < 1:
                 raise PyAnsysSoundException(
-                    "Control data of the specified broadband noise source must contain at least "
+                    "Control data in the specified broadband noise source must contain at least "
                     "one element."
                 )
 
@@ -301,56 +288,41 @@ class SourceBroadbandNoise(SourceParent):
         plt.grid(True)
         plt.show()
 
-    # def __extract_bbn_info(self) -> tuple[str, str, float, int, str, str, list[float]]:
-    #     """Extract the broadband noise source information.
+    def __extract_bbn_info(self) -> tuple[str, float, str, str, list[float]]:
+        """Extract the broadband noise source information.
 
-    #     Returns
-    #     -------
-    #     tuple[str, str, float, int, str, str, list[float]]
-    #         Broadband noise source information, containing:
-    #             First element is the source name.
+        Returns
+        -------
+        tuple[str, float, str, str, list[float]]
+            Broadband noise source information, containing:
+                First element is the spectrum type ('NARROWBAND', 'OCTAVE1:1', or 'OCTAVE1:3').
 
-    #             Second element is the spectrum type ('NARROWBAND', 'OCTAVE1:1', or 'OCTAVE1:3').
+                Second element is the spectrum frequency resolution in Hz (only if spectrum type is
+                'NARROWBAND' only, 0.0 otherwise).
 
-    #             Third element is the spectrum frequency resolution in Hz (type 'NAROWBAND' only).
+                Third element is the control parameter name.
 
-    #             Fourth element is the number of spectra.
+                Sixth element is the control parameter unit.
 
-    #             Fifth element is the control parameter name.
+                Seventh element is the control parameter values.
+        """
+        if self.source_bbn is None:
+            return ("", 0.0, "", "", [])
 
-    #             Sixth element is the control parameter unit.
+        # Spectrum info.
+        # spectrum_type = self.source_bbn[0].field_definition.quantity_type
+        spectrum_type = "Not available"
+        frequencies = self.source_bbn[0].time_freq_support.time_frequencies.data
+        if len(frequencies) > 1:
+            spectrum_resolution = frequencies[1] - frequencies[0]
+        else:
+            spectrum_resolution = 0.0
 
-    #             Seventh element is the control parameter values.
-    #     """
-    #     if self.source_bbn is None:
-    #         return ("", "", np.nan, 0, "", "", [])
+        # Control parameter info.
+        control_data = self.source_bbn.get_support("control_parameter_1")
+        parameter_ids = control_data.available_field_supported_properties()
+        control_name = control_data.field_support_by_property(parameter_ids[0]).name
+        control_unit = control_data.field_support_by_property(parameter_ids[0]).unit
+        control_values = list(control_data.field_support_by_property(parameter_ids[0]).data)
 
-    #     # Source name.
-    #     name = self.source_bbn.name
-    #     source_name = name if name is not None else ""
-
-    #     # Spectrum info.
-    #     spectrum_type = ""
-    #     frequencies = self.source_bbn[0].time_freq_support.time_frequencies.data
-    #     if len(frequencies) > 1:
-    #         spectrum_resolution = frequencies[1] - frequencies[0]
-    #     else:
-    #         spectrum_resolution = np.nan
-    #     spectrum_count = len(self.source_bbn)
-
-    #     # Control parameter info.
-    #     control_data = self.source_bbn.get_support('control_parameter_1')
-    #     parameter_ids = control_data.available_field_supported_properties()
-    #     control_name = control_data.field_support_by_property(parameter_ids[0]).name
-    #     control_unit = control_data.field_support_by_property(parameter_ids[0]).unit
-    #     control_values = list(control_data.field_support_by_property(parameter_ids[0]).data)
-
-    #     return (
-    #       source_name,
-    # spectrum_type,
-    # spectrum_resolution,
-    # spectrum_count,
-    # control_name,
-    # control_unit,
-    # control_values,
-    #   )
+        return spectrum_type, spectrum_resolution, control_name, control_unit, control_values

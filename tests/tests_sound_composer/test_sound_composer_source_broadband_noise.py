@@ -42,7 +42,7 @@ EXP_SPECTRUM_DATA03 = 1.9452798369457014e-05
 EXP_STR_NOT_SET = "Broadband noise source: Not set\nSource control: Not set"
 EXP_STR_ALL_SET = (
     "Broadband noise source: ''\n"
-    "\tSpectrum type: Not available yet\n"
+    "\tSpectrum type: Not available\n"
     "\tSpectrum count: 5\n"
     "\tControl parameter: Speed of wind, m/s\n"
     "\t\t[1.0, 2.0, 5.300000190734863, 10.5, 27.777999877929688]"
@@ -53,7 +53,7 @@ EXP_STR_ALL_SET = (
 )
 EXP_STR_ALL_SET_40_VALUES = (
     "Broadband noise source: ''\n"
-    "\tSpectrum type: Not available yet\n"
+    "\tSpectrum type: Not available\n"
     "\tSpectrum count: 40\n"
     "\tControl parameter: Speed of wind, m/s\n"
     "\t\t[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, ... "
@@ -169,6 +169,24 @@ def test_source_broadband_noise_properties_exceptions(dpf_sound_test_server):
         ),
     ):
         source_bbn.source_bbn = bbn_fieldscontainer
+
+    # Test source_bbn setter exception 4 (empty bbn source's control data).
+    # For this, we use a valid dataset, and then remove the control data.
+    source_bbn = SourceBroadbandNoise()
+    source_bbn.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
+    support_data = source_bbn.source_bbn.get_support("control_parameter_1")
+    support_properties = support_data.available_field_supported_properties()
+    support_values = support_data.field_support_by_property(support_properties[0])
+    support_values.data = []
+    fc_source_bbn = source_bbn.source_bbn
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=(
+            "Control data in the specified broadband noise source must contain at least one "
+            "element."
+        ),
+    ):
+        source_bbn.source_bbn = fc_source_bbn
 
 
 def test_source_broadband_noise_is_source_control_valid(dpf_sound_test_server):
@@ -371,3 +389,27 @@ def test_source_broadband_noise_plot_exceptions(dpf_sound_test_server):
         match="Output is not processed yet. Use the 'SourceBroadbandNoise.process\\(\\)' method.",
     ):
         source_bbn.plot()
+
+
+def test_source_broadband_noise___extract_bbn_info(dpf_sound_test_server):
+    """Test SourceBroadbandNoise __extract_bbn_info method."""
+    source_bbn = SourceBroadbandNoise()
+    assert source_bbn._SourceBroadbandNoise__extract_bbn_info() == ("", 0.0, "", "", [])
+
+    source_bbn.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
+    assert source_bbn._SourceBroadbandNoise__extract_bbn_info() == (
+        "Not available",
+        10.0,
+        "Speed of wind",
+        "m/s",
+        [1.0, 2.0, 5.300000190734863, 10.5, 27.777999877929688],
+    )
+
+    source_bbn.source_bbn[0].time_freq_support.time_frequencies.data = []
+    assert source_bbn._SourceBroadbandNoise__extract_bbn_info() == (
+        "Not available",
+        0.0,
+        "Speed of wind",
+        "m/s",
+        [1.0, 2.0, 5.300000190734863, 10.5, 27.777999877929688],
+    )
