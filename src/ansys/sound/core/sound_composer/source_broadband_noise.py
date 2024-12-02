@@ -330,4 +330,5 @@ class SourceBroadbandNoise(SourceParent):
         control_name = control_data.field_support_by_property(control_unit).name
         control_values = list(control_data.field_support_by_property(control_unit).data)
 
+
         return spectrum_type, delta_f, control_name, control_unit, control_values
