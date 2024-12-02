@@ -35,8 +35,12 @@ import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.sound_composer import SourceBroadbandNoise, SourceControlTime
+from ansys.sound.core.spectral_processing import PowerSpectralDensity
 
-EXP_SPECTRUM_DATA03 = 1.9452798369457014e-05
+REF_ACOUSTIC_POWER = 4e-10
+
+EXP_LEVEL_OCTAVE_BAND = 41.0
+EXP_SPECTRUM_DATA03 = 5.0357002692180686e-06
 EXP_STR_NOT_SET = "Broadband noise source: Not set\nSource control: Not set"
 EXP_STR_ALL_SET = (
     "Broadband noise source: ''\n"
@@ -309,6 +313,38 @@ def test_source_broadband_noise_get_output(dpf_sound_test_server):
     assert isinstance(f_output, Field)
     assert len(f_output.data) / 44100.0 == pytest.approx(3.0)
 
+    # Compute the power spectral density over the output signal.
+    psd = PowerSpectralDensity(
+        input_signal=f_output,
+        fft_size=8192,
+        window_type="HANN",
+        window_length=8192,
+        overlap=0.75,
+    )
+    psd.process()
+    psd_squared, psd_freq = psd.get_PSD_squared_linear_as_nparray()
+    delat_f = psd_freq[1] - psd_freq[0]
+
+    # Check the sound power level in the octave bands centered at 250, 1000 and 4000 Hz.
+    # Due to the non-deterministic nature of the produced signal, tolerance is set to 1 dB.
+    psd_squared_band = psd_squared[
+        (psd_freq >= 250 * 2 ** (-1 / 2)) & (psd_freq < 250 * 2 ** (1 / 2))
+    ]
+    level = 10 * np.log10(psd_squared_band.sum() * delat_f / REF_ACOUSTIC_POWER)
+    assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND, abs=1.0)
+
+    psd_squared_band = psd_squared[
+        (psd_freq >= 1000 * 2 ** (-1 / 2)) & (psd_freq < 1000 * 2 ** (1 / 2))
+    ]
+    level = 10 * np.log10(psd_squared_band.sum() * delat_f / REF_ACOUSTIC_POWER)
+    assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND, abs=1.0)
+
+    psd_squared_band = psd_squared[
+        (psd_freq >= 4000 * 2 ** (-1 / 2)) & (psd_freq < 4000 * 2 ** (1 / 2))
+    ]
+    level = 10 * np.log10(psd_squared_band.sum() * delat_f / REF_ACOUSTIC_POWER)
+    assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND, abs=1.0)
+
 
 def test_source_broadband_noise_get_output_unprocessed(dpf_sound_test_server):
     """Test SourceBroadbandNoise get_output method's exception."""
@@ -403,7 +439,7 @@ def test_source_broadband_noise___extract_bbn_info(dpf_sound_test_server):
     source_bbn_obj.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
     assert source_bbn_obj._SourceBroadbandNoise__extract_bbn_info() == (
         "Not available",
-        10.0,
+        31.0,
         "Speed of wind",
         "m/s",
         [1.0, 2.0, 5.300000190734863, 10.5, 27.777999877929688],
