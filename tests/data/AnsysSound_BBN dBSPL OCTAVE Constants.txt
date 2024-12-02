@@ -1,6 +1,6 @@
-AnsysSound_BBN	2				
+AnsysSound_BBN	2
 dBSPL	OCTAVE1:1
-"Speed of wind"				
+"Speed of wind"
 "m/s"	1	2	5.3	10.5	27.778
 32	41	41	41	41	41
 63	41	41	41	41	41
