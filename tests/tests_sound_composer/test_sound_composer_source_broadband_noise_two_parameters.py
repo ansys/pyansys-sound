@@ -403,8 +403,8 @@ def test_source_broadband_noise_two_parameters_get_output(dpf_sound_test_server)
     source_control2 = SourceControlTime()
     source_control2.control = f_source_control
 
-    # Create a SourceBroadbandNoiseTwoParameters object test source file with less and created
-    # source controls.
+    # Create a SourceBroadbandNoiseTwoParameters object test source file and created source 
+    # controls.
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters(
         file=pytest.data_path_sound_composer_bbn_source_2p_in_container,
         control1=source_control1,
