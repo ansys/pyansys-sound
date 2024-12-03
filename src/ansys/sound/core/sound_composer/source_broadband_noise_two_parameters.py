@@ -347,7 +347,11 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         time_data = output.time_freq_support.time_frequencies.data
 
         plt.plot(time_data, output.data)
-        plt.title(output.name if len(output.name) > 0 else "Signal from spectrum source")
+        plt.title(
+            output.name
+            if len(output.name) > 0
+            else "Signal from broadband noise source with two parameters"
+        )
         plt.xlabel("Time (s)")
         plt.ylabel("Amplitude (Pa)")
         plt.grid(True)
