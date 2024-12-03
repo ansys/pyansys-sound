@@ -62,6 +62,9 @@ def pytest_configure():
     )
     pytest.data_path_rpm_profile_as_wav_in_container = "C:\\data\\RPM_profile_2024R2_20241126.wav"
     pytest.data_path_rpm_profile_as_txt_in_container = "C:\\data\\RPM_profile_2024R2_20241126.txt"
+    pytest.data_path_sound_composer_bbn_source_2p_in_container = (
+        "C:\\data\\AnsysSound_BBN_MultipleParameters Pa2PerHz Narrowband v2_2024R2_20240418.txt"
+    )
 
 
 @pytest.fixture(scope="session")
