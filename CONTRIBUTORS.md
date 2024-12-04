@@ -5,7 +5,6 @@
 * [Alexandre Bouthéon](https://github.com/a-bouth)
 * [Stéphane Molla](https://github.com/anssmolla)
 
-
 ## Individual Contributors
 
 * [Antoine Minard](https://github.com/ansaminard)
