@@ -31,6 +31,7 @@ from ._source_parent import SourceParent
 from .source_audio import SourceAudio
 from .source_control_spectrum import SourceControlSpectrum
 from .source_control_time import SourceControlTime
+from .source_harmonics import SourceHarmonics
 from .source_spectrum import SourceSpectrum
 
 __all__ = (
@@ -40,6 +41,7 @@ __all__ = (
     "SpectrumSynthesisMethods",
     "SourceSpectrum",
     "SourceControlSpectrum",
+    "SourceHarmonics",
     "SourceAudio",
     "SourceControlTime",
 )

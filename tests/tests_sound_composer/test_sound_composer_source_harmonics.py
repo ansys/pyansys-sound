@@ -1,0 +1,487 @@
+# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+from unittest.mock import patch
+
+from ansys.dpf.core import (
+    Field,
+    FieldsContainer,
+    TimeFreqSupport,
+    fields_container_factory,
+    fields_factory,
+    locations,
+)
+import numpy as np
+import pytest
+
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.sound_composer import SourceControlTime, SourceHarmonics
+from ansys.sound.core.spectral_processing import PowerSpectralDensity
+
+REF_ACOUSTIC_POWER = 4e-10
+
+EXP_LEVEL_OCTAVE_BAND = [58.2, 74.5280270133186, 60.3]
+EXP_ORDERS = [12.0, 36.0, 60.0]
+EXP_RPMS = [
+    500.0,
+    570.0,
+    600.0,
+]
+EXP_ORDER_LEVEL03_REF = 3.041734453290701e-05
+EXP_ORDER_LEVEL03_PA = 3.041734453290701e-05
+EXP_ORDER_LEVEL03_XML = 5.632353957971172e-19
+EXP_STR_NOT_SET = "Harmonics source: Not set\nSource control: Not set"
+EXP_STR_ALL_SET = (
+    "Harmonics source: ''\n"
+    "\tNumber of orders: 5\n"
+    "\t\t[12. 24. 36. 48. 60.]\n"
+    "\tControl parameter: RPM, 500.0 - 3500.0 rpm\n"
+    "\t\t[500. 510. 520. 530. 540. ... 3460. 3470. 3480. 3490. 3500.]"
+    "\nSource control: \n"
+    "\tMin: 750.0\n"
+    "\tMax: 3500.0\n"
+    "\tDuration: 3.0 s"
+)
+EXP_STR_ALL_SET_10_40_VALUES = (
+    "Harmonics source: ''\n"
+    "\tNumber of orders: 40\n"
+    "\t\t[ 1.  2.  3.  4.  5.  6.  7.  8.  9. 10. 11. 12. 13. 14. 15. ... "
+    "26. 27. 28. 29. 30. 31. 32. 33. 34. 35. 36. 37. 38. 39. 40.]\n"
+    "\tControl parameter: RPM, 500.0 - 590.0 rpm\n"
+    "\t\t[500. 510. 520. 530. 540. 550. 560. 570. 580. 590.]"
+    "\nSource control: \n"
+    "\tMin: 750.0\n"
+    "\tMax: 3500.0\n"
+    "\tDuration: 3.0 s"
+)
+
+
+def test_source_harmonics_instantiation_no_arg(dpf_sound_test_server):
+    """Test SourceHarmonics instantiation without arguments."""
+    source_harmonics_obj = SourceHarmonics()
+    assert isinstance(source_harmonics_obj, SourceHarmonics)
+    assert source_harmonics_obj.source_harmonics is None
+
+
+def test_source_harmonics_instantiation_file_arg(dpf_sound_test_server):
+    """Test SourceHarmonics instantiation with file argument."""
+    source_harmonics_obj = SourceHarmonics(
+        file=pytest.data_path_sound_composer_harmonics_source_in_container
+    )
+    assert isinstance(source_harmonics_obj, SourceHarmonics)
+    assert source_harmonics_obj.source_harmonics is not None
+
+
+def test_source_harmonics___str___not_set(dpf_sound_test_server):
+    """Test SourceHarmonics __str__ method when nothing is set."""
+    source_harmonics_obj = SourceHarmonics()
+    assert str(source_harmonics_obj) == EXP_STR_NOT_SET
+
+
+def test_source_harmonics___str___all_set(dpf_sound_test_server):
+    """Test SourceHarmonics __str__ method when all data are set."""
+    # Create a field to use in a SourceControlTime object.
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([750, 1250, 3000, 3500], 1)
+    support = TimeFreqSupport()
+    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_time.append([0, 1, 2, 3], 1)
+    support.time_frequencies = f_time
+    f_source_control.time_freq_support = support
+
+    # Create a SourceControlTime object.
+    source_control = SourceControlTime()
+    source_control.control = f_source_control
+
+    # Create a SourceHarmonics object.
+    source_harmonics_obj = SourceHarmonics(
+        pytest.data_path_sound_composer_harmonics_source_in_container,
+        source_control,
+    )
+    assert str(source_harmonics_obj) == EXP_STR_ALL_SET
+
+    # Replace source file with one with more less than 30 rpm values and more than 30 orders.
+    source_harmonics_obj.load_source_harmonics(
+        pytest.data_path_sound_composer_harmonics_source_10rpm_40orders_in_container
+    )
+    assert str(source_harmonics_obj) == EXP_STR_ALL_SET_10_40_VALUES
+
+
+def test_source_harmonics_properties(dpf_sound_test_server):
+    """Test SourceHarmonics properties."""
+    source_harmonics_obj = SourceHarmonics()
+
+    # Test source_control property.
+    source_harmonics_obj.source_control = SourceControlTime()
+    assert isinstance(source_harmonics_obj.source_control, SourceControlTime)
+
+    # Test source_harmonics property.
+    # Create a second object and then reuse its source_harmonics property.
+    source_harmonics_obj_tmp = SourceHarmonics()
+    source_harmonics_obj_tmp.load_source_harmonics(
+        pytest.data_path_sound_composer_harmonics_source_in_container
+    )
+    harmonics_fieldscontainer = source_harmonics_obj_tmp.source_harmonics
+    source_harmonics_obj.source_harmonics = harmonics_fieldscontainer
+    assert isinstance(source_harmonics_obj.source_harmonics, FieldsContainer)
+
+
+def test_source_harmonics_properties_exceptions(dpf_sound_test_server):
+    """Test SourceHarmonics properties' exceptions."""
+    source_harmonics_obj = SourceHarmonics()
+
+    # Test source_control setter exception (str instead of SourceControlTime).
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Specified source control object must be of type ``SourceControlTime``.",
+    ):
+        source_harmonics_obj.source_control = "InvalidType"
+
+    # Test source_harmonics setter exception 1 (str instead a Field).
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Specified harmonics source must be provided as a DPF fields container.",
+    ):
+        source_harmonics_obj.source_harmonics = "InvalidType"
+
+    # Test source_harmonics setter exception 2 (less than 1 spectrum).
+    fc_source_harmonics = FieldsContainer()
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Specified harmonics source must contain at least one order.",
+    ):
+        source_harmonics_obj.source_harmonics = fc_source_harmonics
+
+    # Test source_harmonics setter exception 3 (empty spectrum).
+    fc_source_harmonics = fields_container_factory.over_time_freq_fields_container([Field()])
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Each order in the specified harmonics source must contain at least one element.",
+    ):
+        source_harmonics_obj.source_harmonics = fc_source_harmonics
+
+    # Test source_harmonics setter exception 4 (empty harmonics source's control data).
+    # For this, we use a valid dataset, and then remove the control data.
+    source_harmonics_obj = SourceHarmonics()
+    source_harmonics_obj.load_source_harmonics(
+        pytest.data_path_sound_composer_harmonics_source_in_container
+    )
+    support_data = source_harmonics_obj.source_harmonics.get_support("control_parameter_1")
+    support_properties = support_data.available_field_supported_properties()
+    support_values = support_data.field_support_by_property(support_properties[0])
+    support_values.data = []
+    fc_source_harmonics = source_harmonics_obj.source_harmonics
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Control data in the specified harmonics source must contain at least one element.",
+    ):
+        source_harmonics_obj.source_harmonics = fc_source_harmonics
+
+
+def test_source_harmonics_is_source_control_valid(dpf_sound_test_server):
+    """Test SourceHarmonics is_source_control_valid method."""
+    source_harmonics_obj = SourceHarmonics()
+
+    # Test is_source_control_valid method (attribute not set).
+    assert source_harmonics_obj.is_source_control_valid() is False
+
+    # Test is_source_control_valid method (attribute set, but attribute's field not set).
+    source_control_obj = SourceControlTime()
+    source_harmonics_obj.source_control = source_control_obj
+    assert source_harmonics_obj.is_source_control_valid() is False
+
+    # Test is_source_control_valid method (attribute and attribute's field set, but empty).
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([1.0, 2.0, 3.0, 4.0, 5.0], 1)
+    source_harmonics_obj.source_control.control = f_source_control
+    # Control data must be emptied out after assignment, otherwise it triggers an exception from
+    # SourceControlTime's setter.
+    source_harmonics_obj.source_control.control.data = []
+    assert source_harmonics_obj.is_source_control_valid() is False
+
+    # Test is_source_control_valid method (all set).
+    f_source_control.append([1.0, 2.0, 3.0, 4.0, 5.0], 1)
+    source_harmonics_obj.source_control.control = f_source_control
+    assert source_harmonics_obj.is_source_control_valid() is True
+
+
+def test_source_specrum_load_source_harmonics(dpf_sound_test_server):
+    """Test SourceHarmonics load_source_harmonics method."""
+    source_harmonics_obj = SourceHarmonics()
+
+    # Load reference source file (dBSPL).
+    source_harmonics_obj.load_source_harmonics(
+        pytest.data_path_sound_composer_harmonics_source_in_container
+    )
+    assert isinstance(source_harmonics_obj.source_harmonics, FieldsContainer)
+    assert source_harmonics_obj.source_harmonics[0].data[3] == pytest.approx(EXP_ORDER_LEVEL03_REF)
+
+    # Load source file in Pa.
+    source_harmonics_obj.load_source_harmonics(
+        pytest.data_path_sound_composer_harmonics_source_Pa_in_container
+    )
+    assert isinstance(source_harmonics_obj.source_harmonics, FieldsContainer)
+    assert source_harmonics_obj.source_harmonics[0].data[3] == pytest.approx(EXP_ORDER_LEVEL03_PA)
+
+    # Load wrong-header file (DPF error).
+    with pytest.raises(Exception):
+        source_harmonics_obj.load_source_harmonics(
+            pytest.data_path_sound_composer_harmonics_source_wrong_type_in_container
+        )
+
+    # Load xml file.
+    source_harmonics_obj.load_source_harmonics(
+        pytest.data_path_sound_composer_harmonics_source_xml_in_container
+    )
+    assert isinstance(source_harmonics_obj.source_harmonics, FieldsContainer)
+    assert source_harmonics_obj.source_harmonics[0].data[3] == pytest.approx(EXP_ORDER_LEVEL03_XML)
+
+
+def test_source_harmonics_process(dpf_sound_test_server):
+    """Test SourceHarmonics process method."""
+    # Create a field to use in a SourceControlTime object.
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([500, 2000, 3000, 3500], 1)
+    support = TimeFreqSupport()
+    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_time.append([0, 1, 2, 3], 1)
+    support.time_frequencies = f_time
+    f_source_control.time_freq_support = support
+
+    # Create a SourceControlTime object.
+    source_control_obj = SourceControlTime()
+    source_control_obj.control = f_source_control
+
+    source_harmonics_obj = SourceHarmonics(
+        pytest.data_path_sound_composer_harmonics_source_in_container,
+        source_control_obj,
+    )
+    source_harmonics_obj.process()
+    assert source_harmonics_obj._output is not None
+
+
+def test_source_harmonics_process_exceptions(dpf_sound_test_server):
+    """Test SourceHarmonics process method exceptions."""
+    # Test process method exception1 (missing control).
+    source_harmonics_obj = SourceHarmonics(
+        pytest.data_path_sound_composer_harmonics_source_in_container
+    )
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Harmonics source control is not set. Use ``SourceHarmonics.source_control``.",
+    ):
+        source_harmonics_obj.process()
+
+    # Test process method exception2 (missing harmonics source data).
+    source_harmonics_obj.source_harmonics = None
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([500, 2000, 3000, 3500], 1)
+    source_control_obj = SourceControlTime()
+    source_control_obj.control = f_source_control
+    source_harmonics_obj.source_control = source_control_obj
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=(
+            "Harmonics source data is not set. Use ``SourceHarmonics.source_harmonics`` "
+            "or method ``SourceHarmonics.load_source_harmonics\\(\\)``."
+        ),
+    ):
+        source_harmonics_obj.process()
+
+    # Test process method exception3 (invalid sampling frequency value).
+    source_harmonics_obj.load_source_harmonics(
+        pytest.data_path_sound_composer_harmonics_source_in_container
+    )
+    with pytest.raises(
+        PyAnsysSoundException, match="Sampling frequency must be strictly positive."
+    ):
+        source_harmonics_obj.process(sampling_frequency=0.0)
+
+
+def test_source_harmonics_get_output(dpf_sound_test_server):
+    """Test SourceHarmonics get_output method."""
+    # Create a field to use in a SourceControlTime object.
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([500, 2000, 3000, 3500], 1)
+    support = TimeFreqSupport()
+    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_time.append([0, 1, 2, 3], 1)
+    support.time_frequencies = f_time
+    f_source_control.time_freq_support = support
+
+    # Create a SourceControlTime object.
+    source_control_obj = SourceControlTime()
+    source_control_obj.control = f_source_control
+
+    source_harmonics_obj = SourceHarmonics(
+        pytest.data_path_sound_composer_harmonics_source_in_container,
+        source_control_obj,
+    )
+    source_harmonics_obj.process(sampling_frequency=44100.0)
+    f_output = source_harmonics_obj.get_output()
+    assert isinstance(f_output, Field)
+    assert len(f_output.data) / 44100.0 == pytest.approx(3.0, abs=1e-2)
+
+    # Compute the power spectral density over the output signal.
+    psd = PowerSpectralDensity(
+        input_signal=f_output,
+        fft_size=8192,
+        window_type="HANN",
+        window_length=8192,
+        overlap=0.75,
+    )
+    psd.process()
+    psd_squared, psd_freq = psd.get_PSD_squared_linear_as_nparray()
+    delat_f = psd_freq[1] - psd_freq[0]
+
+    # Check the sound power level in the octave bands centered at 250, 1000 and 4000 Hz.
+    # Due to the non-deterministic nature of the produced signal, tolerance is set to 1 dB.
+    psd_squared_band = psd_squared[
+        (psd_freq >= 250 * 2 ** (-1 / 2)) & (psd_freq < 250 * 2 ** (1 / 2))
+    ]
+    level = 10 * np.log10(psd_squared_band.sum() * delat_f / REF_ACOUSTIC_POWER)
+    assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND[0], abs=1.0)
+
+    psd_squared_band = psd_squared[
+        (psd_freq >= 1000 * 2 ** (-1 / 2)) & (psd_freq < 1000 * 2 ** (1 / 2))
+    ]
+    level = 10 * np.log10(psd_squared_band.sum() * delat_f / REF_ACOUSTIC_POWER)
+    assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND[1], abs=1.0)
+
+    psd_squared_band = psd_squared[
+        (psd_freq >= 4000 * 2 ** (-1 / 2)) & (psd_freq < 4000 * 2 ** (1 / 2))
+    ]
+    level = 10 * np.log10(psd_squared_band.sum() * delat_f / REF_ACOUSTIC_POWER)
+    assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND[2], abs=1.0)
+
+
+def test_source_harmonics_get_output_unprocessed(dpf_sound_test_server):
+    """Test SourceHarmonics get_output method's exception."""
+    source_harmonics_obj = SourceHarmonics()
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. Use the ``SourceHarmonics.process\\(\\)`` method.",
+    ):
+        f_output = source_harmonics_obj.get_output()
+    assert f_output is None
+
+
+def test_source_harmonics_get_output_as_nparray(dpf_sound_test_server):
+    """Test SourceHarmonics get_output_as_nparray method."""
+    # Create a field to use in a SourceControlTime object.
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([500, 2000, 3000, 3500], 1)
+    support = TimeFreqSupport()
+    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_time.append([0, 1, 2, 3], 1)
+    support.time_frequencies = f_time
+    f_source_control.time_freq_support = support
+
+    # Create a SourceControlTime object.
+    source_control_obj = SourceControlTime()
+    source_control_obj.control = f_source_control
+
+    source_harmonics_obj = SourceHarmonics(
+        pytest.data_path_sound_composer_harmonics_source_in_container,
+        source_control_obj,
+    )
+    source_harmonics_obj.process(sampling_frequency=44100.0)
+    output_nparray = source_harmonics_obj.get_output_as_nparray()
+    assert isinstance(output_nparray, np.ndarray)
+    assert len(output_nparray) / 44100.0 == pytest.approx(3.0, abs=1e-2)
+
+
+def test_source_harmonics_get_output_as_nparray_unprocessed(dpf_sound_test_server):
+    """Test SourceHarmonics get_output_as_nparray method's exception."""
+    source_harmonics_obj = SourceHarmonics()
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. Use the ``SourceHarmonics.process\\(\\)`` method.",
+    ):
+        output_nparray = source_harmonics_obj.get_output_as_nparray()
+    assert len(output_nparray) == 0
+
+
+@patch("matplotlib.pyplot.show")
+def test_source_harmonics_plot(dpf_sound_test_server):
+    """Test SourceHarmonics plot method."""
+    # Create a field to use in a SourceControlTime object.
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([500, 2000, 3000, 3500], 1)
+    support = TimeFreqSupport()
+    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_time.append([0, 1, 2, 3], 1)
+    support.time_frequencies = f_time
+    f_source_control.time_freq_support = support
+
+    # Create a SourceControlTime object.
+    source_control_obj = SourceControlTime()
+    source_control_obj.control = f_source_control
+
+    source_harmonics_obj = SourceHarmonics(
+        pytest.data_path_sound_composer_harmonics_source_in_container,
+        source_control_obj,
+    )
+    source_harmonics_obj.process()
+    source_harmonics_obj.plot()
+
+
+def test_source_harmonics_plot_exceptions(dpf_sound_test_server):
+    """Test SourceHarmonics plot method's exception."""
+    source_harmonics_obj = SourceHarmonics()
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Output is not processed yet. Use the 'SourceHarmonics.process\\(\\)' method.",
+    ):
+        source_harmonics_obj.plot()
+
+
+def test_source_harmonics___extract_harmonics_info(dpf_sound_test_server):
+    """Test SourceHarmonics __extract_harmonics_info method."""
+    source_harmonics_obj = SourceHarmonics()
+    assert source_harmonics_obj._SourceHarmonics__extract_harmonics_info() == ([], "", [])
+
+    source_harmonics_obj.load_source_harmonics(
+        pytest.data_path_sound_composer_harmonics_source_in_container
+    )
+    orders, name, rpms = source_harmonics_obj._SourceHarmonics__extract_harmonics_info()
+    assert orders[0] == pytest.approx(EXP_ORDERS[0])
+    assert orders[2] == pytest.approx(EXP_ORDERS[1])
+    assert orders[4] == pytest.approx(EXP_ORDERS[2])
+    assert name == "RPM"
+    assert rpms[0] == pytest.approx(EXP_RPMS[0])
+    assert rpms[7] == pytest.approx(EXP_RPMS[1])
+    assert rpms[10] == pytest.approx(EXP_RPMS[2])
