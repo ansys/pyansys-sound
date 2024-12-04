@@ -181,7 +181,8 @@ class SourceHarmonics(SourceParent):
     def is_source_control_valid(self) -> bool:
         """Source control verification function.
 
-        Check if the source control is valid.
+        Check if the source control is valid, that is, if the source control is set and contains at
+        least one control value.
 
         Returns
         -------
