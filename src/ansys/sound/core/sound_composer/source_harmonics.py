@@ -39,9 +39,9 @@ class SourceHarmonics(SourceParent):
     """Sound Composer's harmonics source class.
 
     This class creates a harmonics source for the Sound Composer. A harmonics source is used to
-    generate a sound signal from given harmonics data and its source control. The harmonics data
-    consists of a series of orders whose levels depend on RPM. The source control contains the RPM
-    values over time.
+    generate a sound signal from a given harmonics source data and its source control. The
+    harmonics source data consists of a series of orders whose levels depend on RPM. The source
+    control contains the RPM values over time.
     """
 
     def __init__(self, file: str = "", source_control: SourceControlTime = None):
@@ -201,8 +201,8 @@ class SourceHarmonics(SourceParent):
         Parameters
         ----------
         file : str
-            Path to the harmonics file. Supported files have the same text format (with the
-            `AnsysSound_Orders` header) as that which is supported by Ansys Sound SAS.
+            Path to the harmonics source data file. Supported files have the same text format (with
+            the `AnsysSound_Orders` header) as that which is supported by Ansys Sound SAS.
         """
         # Set operator inputs.
         self.__operator_load.connect(0, file)
