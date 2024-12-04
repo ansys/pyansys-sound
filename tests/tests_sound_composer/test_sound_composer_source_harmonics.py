@@ -121,7 +121,7 @@ def test_source_harmonics___str___all_set(dpf_sound_test_server):
     )
     assert str(source_harmonics_obj) == EXP_STR_ALL_SET
 
-    # Replace source file with one with more less than 30 rpm values and more than 30 orders.
+    # Replace the source file with another that has 10 rpm values and 40 orders.
     source_harmonics_obj.load_source_harmonics(
         pytest.data_path_sound_composer_harmonics_source_10rpm_40orders_in_container
     )
