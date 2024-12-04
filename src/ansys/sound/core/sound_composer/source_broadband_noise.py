@@ -51,7 +51,7 @@ class SourceBroadbandNoise(SourceParent):
         ----------
         file : str, default: ""
             Path to the broadband noise file. Supported files are text files with the header
-            `AnsysSound_BBN`.
+            `AnsysSound_BBN`. If left empty, the broadband noise source is not loaded.
         source_control : SourceControlTime, default: None
             Source control, consisting of the control parameter values over time, to use when
             generating the sound from this source.
