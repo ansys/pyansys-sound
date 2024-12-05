@@ -81,8 +81,8 @@ class SourceHarmonics(SourceParent):
 
             # Spectrum control values.
             orders = np.round(orders, 1)
-            if len(orders) > 30:
-                str_order_values = f"{str(orders[:15])[:-1]} ... {str(orders[-15:])[1:]}"
+            if len(orders) > 10:
+                str_order_values = f"{str(orders[:5])[:-1]} ... {str(orders[-5:])[1:]}"
             else:
                 str_order_values = str(orders)
 
