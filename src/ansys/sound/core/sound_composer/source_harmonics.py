@@ -79,14 +79,14 @@ class SourceHarmonics(SourceParent):
             if str_name is None:
                 str_name = ""
 
-            # Spectrum control values.
+            # Orders.
             orders = np.round(orders, 1)
             if len(orders) > 10:
                 str_order_values = f"{str(orders[:5])[:-1]} ... {str(orders[-5:])[1:]}"
             else:
                 str_order_values = str(orders)
 
-            # Spectrum control values.
+            # Order control values.
             control_values = np.round(control_values, 1)
             if len(control_values) > 10:
                 str_control_values = (
