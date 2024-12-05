@@ -234,12 +234,12 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
     def is_source_control_valid(self) -> bool:
         """Source control verification function.
 
-        Check if the two source controls are set.
+        Checks if both source controls are set.
 
         Returns
         -------
         bool
-            True if the source control is set.
+            True if both source controls are set.
         """
         return (
             self.source_control1 is not None
