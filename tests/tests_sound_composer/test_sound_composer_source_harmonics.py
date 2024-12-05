@@ -64,7 +64,7 @@ EXP_STR_ALL_SET = (
 EXP_STR_ALL_SET_10_40_VALUES = (
     "Harmonics source: ''\n"
     "\tNumber of orders: 40\n"
-    "\t\t[ 1.  2.  3.  4.  5. ... 36. 37. 38. 39. 40.]\n"
+    "\t\t[1. 2. 3. 4. 5. ... 36. 37. 38. 39. 40.]\n"
     "\tControl parameter: RPM, 500.0 - 590.0 rpm\n"
     "\t\t[500. 510. 520. 530. 540. 550. 560. 570. 580. 590.]"
     "\nSource control: \n"
