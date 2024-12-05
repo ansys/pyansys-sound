@@ -62,6 +62,18 @@ def pytest_configure():
     )
     pytest.data_path_rpm_profile_as_wav_in_container = "C:\\data\\RPM_profile_2024R2_20241126.wav"
     pytest.data_path_rpm_profile_as_txt_in_container = "C:\\data\\RPM_profile_2024R2_20241126.txt"
+    pytest.data_path_sound_composer_harmonics_source_2p_in_container = (
+        "C:\\data\\AnsysSound_Orders_MultipleParameters dBSPL_2024R2_20241205.txt"
+    )
+    pytest.data_path_sound_composer_harmonics_source_2p_many_values_in_container = (
+        "C:\\data\\AnsysSound_Orders_MultipleParameters dBSPL_many_values_2024R2_20241205.txt"
+    )
+    pytest.data_path_sound_composer_harmonics_source_2p_inverted_controls_in_container = (
+        "C:\\data\\AnsysSound_Orders_MultipleParameters dBSPL - InvertedContols_2024R2_20241205.txt"
+    )
+    pytest.data_path_sound_composer_harmonics_source_2p_from_accel_in_container = (
+        "C:\\data\\AnsysSound_Orders_MultipleParameters_FromAccelWithTacho_2024R2_20241205.txt"
+    )
 
 
 @pytest.fixture(scope="session")
