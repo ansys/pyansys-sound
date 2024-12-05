@@ -89,9 +89,9 @@ class SourceBroadbandNoise(SourceParent):
             str_type = spectrum_type
 
             # Spectrum control values.
-            control_values = list(map(float, control_values))
-            if len(control_values) > 30:
-                str_values = f"{str(control_values[:15])[:-1]}, ... {str(control_values[-15:])[1:]}"
+            control_values = np.round(control_values, 1)
+            if len(control_values) > 10:
+                str_values = f"{str(control_values[:5])[:-1]} ... {str(control_values[-5:])[1:]}"
             else:
                 str_values = str(control_values)
 

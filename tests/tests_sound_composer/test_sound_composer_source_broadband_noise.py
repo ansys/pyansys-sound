@@ -47,7 +47,7 @@ EXP_STR_ALL_SET = (
     "\tSpectrum type: Not available\n"
     "\tSpectrum count: 5\n"
     "\tControl parameter: Speed of wind, m/s\n"
-    "\t\t[1.0, 2.0, 5.300000190734863, 10.5, 27.777999877929688]"
+    "\t\t[ 1.   2.   5.3 10.5 27.8]"
     "\nSource control: \n"
     "\tMin: 1.0\n"
     "\tMax: 10.0\n"
@@ -58,8 +58,7 @@ EXP_STR_ALL_SET_40_VALUES = (
     "\tSpectrum type: Not available\n"
     "\tSpectrum count: 40\n"
     "\tControl parameter: Speed of wind, m/s\n"
-    "\t\t[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, ... "
-    "26.0, 27.0, 28.0, 29.0, 30.0, 31.0, 32.0, 33.0, 34.0, 35.0, 36.0, 37.0, 38.0, 39.0, 40.0]"
+    "\t\t[1. 2. 3. 4. 5. ... 36. 37. 38. 39. 40.]"
     "\nSource control: \n"
     "\tMin: 1.0\n"
     "\tMax: 10.0\n"
@@ -114,7 +113,7 @@ def test_source_broadband_noise___str___all_set(dpf_sound_test_server):
     )
     assert str(source_bbn_obj) == EXP_STR_ALL_SET
 
-    # Replace source file with one with more than 30 values.
+    # Replace source file with one with more than 10 values.
     source_bbn_obj.load_source_bbn(
         pytest.data_path_sound_composer_bbn_source_40_values_in_container
     )
