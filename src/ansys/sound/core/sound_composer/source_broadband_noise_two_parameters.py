@@ -163,7 +163,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
 
     @property
     def source_control2(self) -> SourceControlTime:
-        """First source control for broadband noise source with two parameters.
+        """Second source control for broadband noise source with two parameters.
 
         Contains the second control parameter values over time.
         """
