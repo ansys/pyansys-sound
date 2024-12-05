@@ -31,8 +31,8 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._source_parent import SourceParent
 from .source_control_time import SourceControlTime
 
-ID_COMPUTE_LOAD_SOURCE_BBN = "sound_composer_load_source_harmonics"
-ID_COMPUTE_GENERATE_SOUND_BBN = "sound_composer_generate_sound_harmonics"
+ID_COMPUTE_LOAD_SOURCE_HARMONICS = "sound_composer_load_source_harmonics"
+ID_COMPUTE_GENERATE_SOUND_HARMONICS = "sound_composer_generate_sound_harmonics"
 
 
 class SourceHarmonics(SourceParent):
@@ -50,8 +50,8 @@ class SourceHarmonics(SourceParent):
         Parameters
         ----------
         file : str, default: ""
-            Path to the harmonics data file. Supported files are text files with the header
-            `AnsysSound_Orders`.
+            Path to the harmonics source data file. Supported files are the same XML and text (with
+            the header `AnsysSound_Orders`) formats as supported by Ansys Sound SAS.
         source_control : SourceControlTime, default: None
             Source control, consisting of the control parameter values over time, to use when
             generating the sound from this source.
@@ -60,8 +60,8 @@ class SourceHarmonics(SourceParent):
         self.source_control = source_control
 
         # Define DPF Sound operators.
-        self.__operator_load = Operator(ID_COMPUTE_LOAD_SOURCE_BBN)
-        self.__operator_generate = Operator(ID_COMPUTE_GENERATE_SOUND_BBN)
+        self.__operator_load = Operator(ID_COMPUTE_LOAD_SOURCE_HARMONICS)
+        self.__operator_generate = Operator(ID_COMPUTE_GENERATE_SOUND_HARMONICS)
 
         if len(file) > 0:
             self.load_source_harmonics(file)
@@ -201,8 +201,8 @@ class SourceHarmonics(SourceParent):
         Parameters
         ----------
         file : str
-            Path to the harmonics source data file. Supported files have the same text format (with
-            the `AnsysSound_Orders` header) as that which is supported by Ansys Sound SAS.
+            Path to the harmonics source data file. Supported files are the same XML and text (with
+            the header `AnsysSound_Orders`) formats as supported by Ansys Sound SAS.
         """
         # Set operator inputs.
         self.__operator_load.connect(0, file)
