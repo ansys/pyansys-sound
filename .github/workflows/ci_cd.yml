@@ -125,7 +125,7 @@ jobs:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
       - name: Set up headless display
-        uses: pyvista/setup-headless-display-action@v2
+        uses: pyvista/setup-headless-display-action@v3
         with:
           pyvista: false
 
@@ -170,7 +170,7 @@ jobs:
           retention-days: 7
 
       - name: "Upload coverage reports to Codecov"
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: .cov/xml
