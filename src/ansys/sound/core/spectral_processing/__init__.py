@@ -26,6 +26,7 @@ Helper functions related to Power Spectral Density (PSD) calculations.
 """
 
 from ._spectral_processing_parent import SpectralProcessingParent
+from .filter import Filter
 from .power_spectral_density import PowerSpectralDensity
 
-__all__ = ("SpectralProcessingParent", "PowerSpectralDensity")
+__all__ = ("SpectralProcessingParent", "PowerSpectralDensity", "Filter")
