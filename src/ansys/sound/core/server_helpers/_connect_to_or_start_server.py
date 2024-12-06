@@ -27,8 +27,10 @@ from typing import Any, Optional, Union
 
 from ansys.dpf.core import (
     LicenseContextManager,
+    ServerConfig,
     connect_to_server,
     load_library,
+    server_factory,
     start_local_server,
 )
 
@@ -86,7 +88,10 @@ def connect_to_or_start_server(
             **connect_kwargs,
         )
     else:  # pragma: no cover
-        server = start_local_server(ansys_path=ansys_path)
+        grpc_config = ServerConfig(
+            protocol=server_factory.CommunicationProtocols.gRPC, legacy=False
+        )
+        server = start_local_server(config=grpc_config, ansys_path=ansys_path, as_global=True)
         full_path_dll = os.path.join(server.ansys_path, "Acoustics\\SAS\\ads\\")
 
     required_version = "8.0"

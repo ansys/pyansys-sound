@@ -32,12 +32,12 @@ from ansys.sound.core.xtract.xtract_transient import XtractTransient
 from ansys.sound.core.xtract.xtract_transient_parameters import XtractTransientParameters
 
 
-def test_xtract_transient_instantiation(dpf_sound_test_server):
+def test_xtract_transient_instantiation():
     xtract_transient = XtractTransient()
     assert xtract_transient != None
 
 
-def test_xtract_transient_initialization_FieldsContainer(dpf_sound_test_server):
+def test_xtract_transient_initialization_FieldsContainer():
     # Test initialization with default values
     xtract_transient = XtractTransient()
     assert xtract_transient.input_signal is None
@@ -79,21 +79,21 @@ def test_xtract_transient_initialization_Field():
     assert xtract_transient.output_non_transient_signals is None
 
 
-def test_xtract_transient_except1(dpf_sound_test_server):
+def test_xtract_transient_except1():
     xtract_transient = XtractTransient(None, XtractTransientParameters())
     with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_transient.process()
     assert str(excinfo.value) == "Input signal is not set."
 
 
-def test_xtract_transient_except2(dpf_sound_test_server):
+def test_xtract_transient_except2():
     xtract_transient = XtractTransient(Field(), None)
     with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_transient.process()
     assert str(excinfo.value) == "Input parameters are not set."
 
 
-def test_xtract_transient_process(dpf_sound_test_server):
+def test_xtract_transient_process():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -129,21 +129,21 @@ def test_xtract_transient_process(dpf_sound_test_server):
     assert np.max(xtract_transient.get_output()[1].data) == pytest.approx(1.78813934e-07)
 
 
-def test_xtract_transient_get_output_warns(dpf_sound_test_server):
+def test_xtract_transient_get_output_warns():
     xtract_transient = XtractTransient()
     with pytest.warns(PyAnsysSoundWarning) as record:
         xtract_transient.get_output()
     assert "Output is not processed yet." in record[0].message.args[0]
 
 
-def test_xtract_transient_get_output_as_np_array_warns(dpf_sound_test_server):
+def test_xtract_transient_get_output_as_np_array_warns():
     xtract_transient = XtractTransient()
     with pytest.warns(PyAnsysSoundWarning) as record:
         xtract_transient.get_output_as_nparray()
     assert "Output is not processed yet." in record[0].message.args[0]
 
 
-def test_xtract_transient_get_output(dpf_sound_test_server):
+def test_xtract_transient_get_output():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -173,7 +173,7 @@ def test_xtract_transient_get_output(dpf_sound_test_server):
     assert np.max(xtract_transient.get_output()[1].data) == pytest.approx(1.78813934e-07)
 
 
-def test_xtract_transient_get_output_noprocess(dpf_sound_test_server):
+def test_xtract_transient_get_output_noprocess():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -192,7 +192,7 @@ def test_xtract_transient_get_output_noprocess(dpf_sound_test_server):
     assert output_non_transient_signals is None
 
 
-def test_xtract_transient_get_output_fc(dpf_sound_test_server):
+def test_xtract_transient_get_output_fc():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -223,7 +223,7 @@ def test_xtract_transient_get_output_fc(dpf_sound_test_server):
     assert xtract_transient.get_output()[1][0].data[99] == pytest.approx(0.0)
 
 
-def test_xtract_transient_get_output_as_nparray(dpf_sound_test_server):
+def test_xtract_transient_get_output_as_nparray():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -246,7 +246,7 @@ def test_xtract_transient_get_output_as_nparray(dpf_sound_test_server):
     assert xtract_transient.get_output_as_nparray()[0].shape == (156048,)
 
 
-def test_xtract_transient_get_output_as_nparray(dpf_sound_test_server):
+def test_xtract_transient_get_output_as_nparray():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -272,7 +272,7 @@ def test_xtract_transient_get_output_as_nparray(dpf_sound_test_server):
     np.max(xtract_transient.get_output_as_nparray()[1]) == pytest.approx(-1.7881393432617188e-07)
 
 
-def test_xtract_transient_get_output_fc_as_nparray(dpf_sound_test_server):
+def test_xtract_transient_get_output_fc_as_nparray():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -295,7 +295,7 @@ def test_xtract_transient_get_output_fc_as_nparray(dpf_sound_test_server):
     assert type(xtract_transient.get_output_as_nparray()[1]) == np.ndarray
 
 
-def test_xtract_transient_setters(dpf_sound_test_server):
+def test_xtract_transient_setters():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -318,7 +318,7 @@ def test_xtract_transient_setters(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_xtract_transient_plot_output(mock_show, dpf_sound_test_server):
+def test_xtract_transient_plot_output(mock_show):
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -336,7 +336,7 @@ def test_xtract_transient_plot_output(mock_show, dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_xtract_transient_plot_output_fc(mock_show, dpf_sound_test_server):
+def test_xtract_transient_plot_output_fc(mock_show):
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
