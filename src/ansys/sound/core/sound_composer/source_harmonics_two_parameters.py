@@ -59,7 +59,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
         ----------
         file : str, default: ""
             Path to the harmonics source with two parameters file. Supported files are text files
-            with the header `AnsysSound_BBN_MultipleParameters`.
+            with the header `AnsysSound_Orders_MultipleParameters`.
         source_control_rpm : SourceControlTime, default: None
             First Source control, consisting of the RPM values over time, to use when generating
             the sound from this source.
@@ -253,9 +253,9 @@ class SourceHarmonicsTwoParameters(SourceParent):
         Parameters
         ----------
         file : str
-            Path to the harmonics source with two parameters file. Supported files have the
-            same text format (with the `AnsysSound_Orders_MultipleParameters` header) as that which
-            is supported by Ansys Sound SAS.
+            Path to the harmonics source with two parameters file. Supported files have the same
+            text format (with the `AnsysSound_Orders_MultipleParameters` header) as that which is
+            supported by Ansys Sound SAS.
         """
         # Set operator inputs.
         self.__operator_load.connect(0, file)
@@ -271,8 +271,8 @@ class SourceHarmonicsTwoParameters(SourceParent):
     def process(self, sampling_frequency: float = 44100.0):
         """Generate the sound of the harmonics source with two parameters.
 
-        This method generates the sound of the harmonics source with two parameters, using
-        the current harmonics source data and source controls.
+        This method generates the sound of the harmonics source with two parameters, using the
+        current harmonics source data and source controls.
 
         Parameters
         ----------
@@ -366,8 +366,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
         Returns
         -------
         tuple[list[float], str, tuple[float], str, str, tuple[float]]
-            Harmonics source with two parameters information, consisting of the following
-            elements:
+            Harmonics source with two parameters information, consisting of the following elements:
                 First element is the list of order values.
 
                 Second element is the RPM control name.

@@ -530,8 +530,8 @@ def test_source_harmonics_two_parameters_get_output_as_nparray(dpf_sound_test_se
     source_control2 = SourceControlTime()
     source_control2.control = f_source_control
 
-    # Create a SourceHarmonicsTwoParameters object test source file with less and created
-    # source controls.
+    # Create a SourceHarmonicsTwoParameters object test source file with less and created source
+    # controls.
     source_obj = SourceHarmonicsTwoParameters(
         file=pytest.data_path_sound_composer_harmonics_source_2p_in_container,
         source_control_rpm=source_control_rpm,
@@ -593,8 +593,8 @@ def test_source_harmonics_two_parameters_plot(dpf_sound_test_server):
     source_control2 = SourceControlTime()
     source_control2.control = f_source_control
 
-    # Create a SourceHarmonicsTwoParameters object test source file with less and created
-    # source controls.
+    # Create a SourceHarmonicsTwoParameters object test source file with less and created source
+    # controls.
     source_obj = SourceHarmonicsTwoParameters(
         file=pytest.data_path_sound_composer_harmonics_source_2p_in_container,
         source_control_rpm=source_control_rpm,
@@ -611,8 +611,8 @@ def test_source_harmonics_two_parameters_plot_exceptions(dpf_sound_test_server):
     with pytest.raises(
         PyAnsysSoundException,
         match=(
-            "Output is not processed yet. Use the "
-            "'SourceHarmonicsTwoParameters.process\\(\\)' method."
+            "Output is not processed yet. Use the 'SourceHarmonicsTwoParameters.process\\(\\)' "
+            "method."
         ),
     ):
         source_obj.plot()
