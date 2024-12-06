@@ -27,12 +27,12 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.signal_utilities import CreateSoundField
 
 
-def test_create_sound_field_instantiation(dpf_sound_test_server):
+def test_create_sound_field_instantiation():
     sound_field_creator = CreateSoundField()
     assert sound_field_creator != None
 
 
-def test_create_sound_field_process(dpf_sound_test_server):
+def test_create_sound_field_process():
     sound_field_creator = CreateSoundField()
 
     # Error 1
@@ -46,7 +46,7 @@ def test_create_sound_field_process(dpf_sound_test_server):
     sound_field_creator.process()
 
 
-def test_create_sound_field_get_output(dpf_sound_test_server):
+def test_create_sound_field_get_output():
     sound_field_creator = CreateSoundField(data=np.ones(100))
 
     with pytest.warns(
@@ -64,7 +64,7 @@ def test_create_sound_field_get_output(dpf_sound_test_server):
     assert f_out.data[99] == 1.0
 
 
-def test_create_sound_field_get_output_as_np_array(dpf_sound_test_server):
+def test_create_sound_field_get_output_as_np_array():
     sound_field_creator = CreateSoundField(data=np.ones(100))
     sound_field_creator.process()
     out_arr = sound_field_creator.get_output_as_nparray()
@@ -75,7 +75,7 @@ def test_create_sound_field_get_output_as_np_array(dpf_sound_test_server):
     assert out_arr[99] == 1.0
 
 
-def test_create_sound_field_set_get_data(dpf_sound_test_server):
+def test_create_sound_field_set_get_data():
     sound_field_creator = CreateSoundField()
     sound_field_creator.data = np.ones(100)
     data = sound_field_creator.data
@@ -85,7 +85,7 @@ def test_create_sound_field_set_get_data(dpf_sound_test_server):
     assert data[99] == 1.0
 
 
-def test_create_sound_field_set_get_sampling_frequency(dpf_sound_test_server):
+def test_create_sound_field_set_get_sampling_frequency():
     sound_field_creator = CreateSoundField()
 
     # Error 1
@@ -97,7 +97,7 @@ def test_create_sound_field_set_get_sampling_frequency(dpf_sound_test_server):
     assert sound_field_creator.sampling_frequency == 1234.0
 
 
-def test_create_sound_field_set_get_unit(dpf_sound_test_server):
+def test_create_sound_field_set_get_unit():
     sound_field_creator = CreateSoundField()
 
     sound_field_creator.unit = "MyUnit"

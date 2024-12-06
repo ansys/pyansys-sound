@@ -32,7 +32,7 @@ from ansys.sound.core.xtract.xtract_denoiser import XtractDenoiser
 from ansys.sound.core.xtract.xtract_denoiser_parameters import XtractDenoiserParameters
 
 
-def test_xtract_denoiser_instantiation(dpf_sound_test_server):
+def test_xtract_denoiser_instantiation():
     xtract_denoiser = XtractDenoiser()
     assert xtract_denoiser != None
 
@@ -75,7 +75,7 @@ def test_xtract_denoiser_initialization_Field():
     assert xtract.output_noise_signals is None
 
 
-def test_xtract_denoiser_process_except1(dpf_sound_test_server):
+def test_xtract_denoiser_process_except1():
     """
     Test no signal.
     """
@@ -85,7 +85,7 @@ def test_xtract_denoiser_process_except1(dpf_sound_test_server):
     assert excinfo.value.args[0] == "Input signal is not set."
 
 
-def test_xtract_denoiser_process_except2(dpf_sound_test_server):
+def test_xtract_denoiser_process_except2():
     """
     Test no parameters.
     """
@@ -95,7 +95,7 @@ def test_xtract_denoiser_process_except2(dpf_sound_test_server):
     assert excinfo.value.args[0] == "Input parameters are not set."
 
 
-def test_xtract_process(dpf_sound_test_server):
+def test_xtract_process():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -133,7 +133,7 @@ def test_xtract_process(dpf_sound_test_server):
     assert xtract_denoiser.get_output_as_nparray()[1][99] == pytest.approx(-3.329021806551297e-15)
 
 
-def test_xtract_denoiser_get_output_warns(dpf_sound_test_server):
+def test_xtract_denoiser_get_output_warns():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -151,7 +151,7 @@ def test_xtract_denoiser_get_output_warns(dpf_sound_test_server):
     assert record[0].message.args[0] == "Output is not processed yet."
 
 
-def test_xtract_denoiser_get_output_np_array_warns(dpf_sound_test_server):
+def test_xtract_denoiser_get_output_np_array_warns():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -169,7 +169,7 @@ def test_xtract_denoiser_get_output_np_array_warns(dpf_sound_test_server):
     assert record[0].message.args[0] == "Output is not processed yet."
 
 
-def test_xtract_denoiser_get_output(dpf_sound_test_server):
+def test_xtract_denoiser_get_output():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -201,7 +201,7 @@ def test_xtract_denoiser_get_output(dpf_sound_test_server):
     assert xtract_denoiser.get_output()[1].data[99] == pytest.approx(-3.329021806551297e-15)
 
 
-def test_xtract_denoiser_get_output_noprocess(dpf_sound_test_server):
+def test_xtract_denoiser_get_output_noprocess():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -222,7 +222,7 @@ def test_xtract_denoiser_get_output_noprocess(dpf_sound_test_server):
     assert output2 is None
 
 
-def test_xtract_denoiser_get_output_fc(dpf_sound_test_server):
+def test_xtract_denoiser_get_output_fc():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -267,7 +267,7 @@ def test_xtract_denoiser_get_output_fc(dpf_sound_test_server):
     assert xtract_denoiser.get_output()[1][0].data[99] == pytest.approx(-3.329021806551297e-15)
 
 
-def test_xtract_denoiser_get_output_as_nparray(dpf_sound_test_server):
+def test_xtract_denoiser_get_output_as_nparray():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -302,7 +302,7 @@ def test_xtract_denoiser_get_output_as_nparray(dpf_sound_test_server):
     assert xtract_denoiser.get_output_as_nparray()[1][99] == pytest.approx(-3.329021806551297e-15)
 
 
-def test_xtract_denoiser_get_output_fc_as_nparray(dpf_sound_test_server):
+def test_xtract_denoiser_get_output_fc_as_nparray():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -330,7 +330,7 @@ def test_xtract_denoiser_get_output_fc_as_nparray(dpf_sound_test_server):
     assert type(xtract_denoiser.get_output_as_nparray()[1]) == np.ndarray
 
 
-def test_xtract_denoiser_setters(dpf_sound_test_server):
+def test_xtract_denoiser_setters():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -356,7 +356,7 @@ def test_xtract_denoiser_setters(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_xtract_denoiser_plot_output(mock_show, dpf_sound_test_server):
+def test_xtract_denoiser_plot_output(mock_show):
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -377,7 +377,7 @@ def test_xtract_denoiser_plot_output(mock_show, dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_xtract_denoiser_plot_output_fc(mock_show, dpf_sound_test_server):
+def test_xtract_denoiser_plot_output_fc(mock_show):
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 

@@ -28,12 +28,12 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.signal_utilities import CropSignal, LoadWav
 
 
-def test_crop_signal_instantiation(dpf_sound_test_server):
+def test_crop_signal_instantiation():
     signal_cropper = CropSignal()
     assert signal_cropper != None
 
 
-def test_crop_signal_process(dpf_sound_test_server):
+def test_crop_signal_process():
     signal_cropper = CropSignal(start_time=0.0, end_time=1.0)
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
 
@@ -58,7 +58,7 @@ def test_crop_signal_process(dpf_sound_test_server):
     signal_cropper.process()
 
 
-def test_crop_signal_get_output(dpf_sound_test_server):
+def test_crop_signal_get_output():
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -88,7 +88,7 @@ def test_crop_signal_get_output(dpf_sound_test_server):
     assert data[44000] == 0.47772216796875
 
 
-def test_crop_signal_get_output_as_np_array(dpf_sound_test_server):
+def test_crop_signal_get_output_as_np_array():
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -121,7 +121,7 @@ def test_crop_signal_get_output_as_np_array(dpf_sound_test_server):
     assert data[44000] == 0.47772216796875
 
 
-def test_crop_signal_set_get_signal(dpf_sound_test_server):
+def test_crop_signal_set_get_signal():
     signal_cropper = CropSignal()
     fc = FieldsContainer()
     fc.labels = ["channel"]
@@ -137,7 +137,7 @@ def test_crop_signal_set_get_signal(dpf_sound_test_server):
     assert fc_from_get[0].data[0, 2] == 42
 
 
-def test_crop_signal_set_get_start_end_times(dpf_sound_test_server):
+def test_crop_signal_set_get_start_end_times():
     signal_cropper = CropSignal()
 
     # Error

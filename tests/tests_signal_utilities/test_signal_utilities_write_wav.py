@@ -28,12 +28,12 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.signal_utilities import LoadWav, WriteWav
 
 
-def test_write_wav_instantiation(dpf_sound_test_server):
+def test_write_wav_instantiation():
     wav_writer = WriteWav()
     assert wav_writer != None
 
 
-def test_write_wav_process(dpf_sound_test_server):
+def test_write_wav_process():
     wav_writer = WriteWav()
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
 
@@ -44,7 +44,7 @@ def test_write_wav_process(dpf_sound_test_server):
         str(excinfo.value) == "Path for writing WAV file is not specified. Use 'WriteWav.set_path'."
     )
 
-    wav_writer.path_to_write = r"C:\data\flute_modified.wav"
+    wav_writer.path_to_write = pytest.temporary_folder + r"\flute_modified.wav"
 
     # Error 2
     with pytest.raises(PyAnsysSoundException) as excinfo:
@@ -62,7 +62,7 @@ def test_write_wav_process(dpf_sound_test_server):
     wav_writer.process()
 
 
-def test_write_wav_set_get_path(dpf_sound_test_server):
+def test_write_wav_set_get_path():
     wav_writer = WriteWav()
 
     wav_writer.path_to_write = r"C:\test\path"
@@ -71,7 +71,7 @@ def test_write_wav_set_get_path(dpf_sound_test_server):
     assert p == r"C:\test\path"
 
 
-def test_write_wav_set_get_bit_depth(dpf_sound_test_server):
+def test_write_wav_set_get_bit_depth():
     wav_writer = WriteWav()
 
     # Error
@@ -88,7 +88,7 @@ def test_write_wav_set_get_bit_depth(dpf_sound_test_server):
     assert b == "int8"
 
 
-def test_write_wav_set_get_signal(dpf_sound_test_server):
+def test_write_wav_set_get_signal():
     wav_writer = WriteWav()
     fc = FieldsContainer()
     fc.labels = ["channel"]
@@ -104,7 +104,7 @@ def test_write_wav_set_get_signal(dpf_sound_test_server):
     assert fc_from_get[0].data[0, 2] == 42
 
 
-def test_write_wav_plot(dpf_sound_test_server):
+def test_write_wav_plot():
     wav_writer = WriteWav()
 
     with pytest.warns(PyAnsysSoundWarning, match="Nothing to plot."):
