@@ -1,7 +1,7 @@
 AnsysSound_Orders_MultipleParameters 1
 dBSPL
 RPM
-tr/min
+rpm
 charge
 %
 1
