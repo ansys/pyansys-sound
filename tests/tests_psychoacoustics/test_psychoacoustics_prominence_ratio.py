@@ -32,7 +32,7 @@ from ansys.sound.core.psychoacoustics import ProminenceRatio
 
 @pytest.fixture
 def create_psd_from_txt_data():
-    path_flute_psd = pytest.data_path_flute_psd_in_container
+    path_flute_psd = pytest.data_path_flute_psd_locally
 
     # Open a txt file for reading
     fid = open(path_flute_psd)
