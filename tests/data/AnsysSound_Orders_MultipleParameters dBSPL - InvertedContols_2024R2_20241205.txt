@@ -3,7 +3,7 @@ dBSPL
 charge
 %
 RPM
-tr/min
+rpm
 2
 ####
 c:/data/data_charge0.dat
