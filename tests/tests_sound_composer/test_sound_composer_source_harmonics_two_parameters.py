@@ -39,12 +39,12 @@ from ansys.sound.core.spectral_processing import PowerSpectralDensity
 
 REF_ACOUSTIC_POWER = 4e-10
 
-EXP_LEVEL_OCTAVE_BAND_250 = 26.1
+EXP_LEVEL_OCTAVE_BAND_500 = 44.2
 EXP_LEVEL_OCTAVE_BAND_1000 = 46.7
-EXP_LEVEL_OCTAVE_BAND_4000 = -72.6
-EXP_ORDER_LEVEL03 = 3.9810663099437704e-10
-EXP_ORDER_LEVEL03_INVERTED = 3.000000238418579
-EXP_ORDER_LEVEL03_FROM_ACCEL = 5.794280610871283e-09
+EXP_LEVEL_OCTAVE_BAND_2000 = 50.7
+EXP_ORDER_LEVEL62 = 3.9810717055349695e-05
+EXP_ORDER_LEVEL33_INVERTED = 0.00039810717055349735
+EXP_ORDER_LEVEL22_FROM_ACCEL = 0.0016218100973589282
 EXP_STR_NOT_SET = (
     "Harmonics source with two parameters: Not set\n"
     "Source control:\n"
@@ -91,24 +91,24 @@ EXP_STR_ALL_SET_MANY_VALUES = (
 
 def test_source_harmonics_two_parameters_instantiation_no_arg(dpf_sound_test_server):
     """Test SourceHarmonicsTwoParameters instantiation without arguments."""
-    source_harmonics_two_parameters_obj = SourceHarmonicsTwoParameters()
-    assert isinstance(source_harmonics_two_parameters_obj, SourceHarmonicsTwoParameters)
-    assert source_harmonics_two_parameters_obj.source_harmonics_two_parameters is None
+    source_obj = SourceHarmonicsTwoParameters()
+    assert isinstance(source_obj, SourceHarmonicsTwoParameters)
+    assert source_obj.source_harmonics_two_parameters is None
 
 
 def test_source_harmonics_two_parameters_instantiation_file_arg(dpf_sound_test_server):
     """Test SourceHarmonicsTwoParameters instantiation with file argument."""
-    source_harmonics_two_parameters_obj = SourceHarmonicsTwoParameters(
+    source_obj = SourceHarmonicsTwoParameters(
         file=pytest.data_path_sound_composer_harmonics_source_2p_in_container
     )
-    assert isinstance(source_harmonics_two_parameters_obj, SourceHarmonicsTwoParameters)
-    assert source_harmonics_two_parameters_obj.source_harmonics_two_parameters is not None
+    assert isinstance(source_obj, SourceHarmonicsTwoParameters)
+    assert source_obj.source_harmonics_two_parameters is not None
 
 
 def test_source_harmonics_two_parameters___str___not_set(dpf_sound_test_server):
     """Test SourceHarmonicsTwoParameters __str__ method when nothing is set."""
-    source_harmonics_two_parameters_obj = SourceHarmonicsTwoParameters()
-    assert str(source_harmonics_two_parameters_obj) == EXP_STR_NOT_SET
+    source_obj = SourceHarmonicsTwoParameters()
+    assert str(source_obj) == EXP_STR_NOT_SET
 
 
 def test_source_harmonics_two_parameters___str___all_set(dpf_sound_test_server):
@@ -134,63 +134,61 @@ def test_source_harmonics_two_parameters___str___all_set(dpf_sound_test_server):
 
     # Create a SourceHarmonicsTwoParameters object test source file with less and created
     # source controls.
-    source_harmonics_two_parameters_obj = SourceHarmonicsTwoParameters(
+    source_obj = SourceHarmonicsTwoParameters(
         file=pytest.data_path_sound_composer_harmonics_source_2p_in_container,
         source_control_rpm=source_control_rpm,
         source_control2=source_control2,
     )
 
-    assert str(source_harmonics_two_parameters_obj) == EXP_STR_ALL_SET
+    assert str(source_obj) == EXP_STR_ALL_SET
 
     # Replace source file with one with more than 10 values for each parameter.
-    source_harmonics_two_parameters_obj.load_source_harmonics_two_parameters(
+    source_obj.load_source_harmonics_two_parameters(
         pytest.data_path_sound_composer_harmonics_source_2p_many_values_in_container
     )
-    assert str(source_harmonics_two_parameters_obj) == EXP_STR_ALL_SET_MANY_VALUES
+    assert str(source_obj) == EXP_STR_ALL_SET_MANY_VALUES
 
 
 def test_source_harmonics_two_parameters_properties(dpf_sound_test_server):
     """Test SourceHarmonicsTwoParameters properties."""
-    source_harmonics_two_parameters_obj = SourceHarmonicsTwoParameters()
+    source_obj = SourceHarmonicsTwoParameters()
 
     # Test source_control_rpm property.
-    source_harmonics_two_parameters_obj.source_control_rpm = SourceControlTime()
-    assert isinstance(source_harmonics_two_parameters_obj.source_control_rpm, SourceControlTime)
+    source_obj.source_control_rpm = SourceControlTime()
+    assert isinstance(source_obj.source_control_rpm, SourceControlTime)
 
     # Test source_control2 property.
-    source_harmonics_two_parameters_obj.source_control2 = SourceControlTime()
-    assert isinstance(source_harmonics_two_parameters_obj.source_control2, SourceControlTime)
+    source_obj.source_control2 = SourceControlTime()
+    assert isinstance(source_obj.source_control2, SourceControlTime)
 
     # Test source_harmonics_two_parameters property.
     # Create a second object and then reuse its source_harmonics_two_parameters property.
-    source_harmonics_two_parameters_obj_tmp = SourceHarmonicsTwoParameters()
-    source_harmonics_two_parameters_obj_tmp.load_source_harmonics_two_parameters(
+    source_obj_tmp = SourceHarmonicsTwoParameters()
+    source_obj_tmp.load_source_harmonics_two_parameters(
         pytest.data_path_sound_composer_harmonics_source_2p_in_container
     )
-    fc_source = source_harmonics_two_parameters_obj_tmp.source_harmonics_two_parameters
-    source_harmonics_two_parameters_obj.source_harmonics_two_parameters = fc_source
-    assert isinstance(
-        source_harmonics_two_parameters_obj.source_harmonics_two_parameters, FieldsContainer
-    )
+    fc_source = source_obj_tmp.source_harmonics_two_parameters
+    source_obj.source_harmonics_two_parameters = fc_source
+    assert isinstance(source_obj.source_harmonics_two_parameters, FieldsContainer)
 
 
 def test_source_harmonics_two_parameters_properties_exceptions(dpf_sound_test_server):
     """Test SourceHarmonicsTwoParameters properties' exceptions."""
-    source_harmonics_two_parameters_obj = SourceHarmonicsTwoParameters()
+    source_obj = SourceHarmonicsTwoParameters()
 
     # Test source_control_rpm setter exception (str instead of SourceControlTime).
     with pytest.raises(
         PyAnsysSoundException,
         match="Specified RPM source control object must be of type ``SourceControlTime``.",
     ):
-        source_harmonics_two_parameters_obj.source_control_rpm = "InvalidType"
+        source_obj.source_control_rpm = "InvalidType"
 
     # Test source_control2 setter exception (str instead of SourceControlTime).
     with pytest.raises(
         PyAnsysSoundException,
         match="Specified second source control object must be of type ``SourceControlTime``.",
     ):
-        source_harmonics_two_parameters_obj.source_control2 = "InvalidType"
+        source_obj.source_control2 = "InvalidType"
 
     # Test source_harmonics_two_parameters setter exception 1 (str instead a Field).
     with pytest.raises(
@@ -200,7 +198,7 @@ def test_source_harmonics_two_parameters_properties_exceptions(dpf_sound_test_se
             "container."
         ),
     ):
-        source_harmonics_two_parameters_obj.source_harmonics_two_parameters = "InvalidType"
+        source_obj.source_harmonics_two_parameters = "InvalidType"
 
     # Test source_harmonics_two_parameters setter exception 2 (less than 1 order).
     fc_source_harmonics = FieldsContainer()
@@ -208,7 +206,7 @@ def test_source_harmonics_two_parameters_properties_exceptions(dpf_sound_test_se
         PyAnsysSoundException,
         match="Specified harmonics source with two parameters must contain at least one order.",
     ):
-        source_harmonics_two_parameters_obj.source_harmonics_two_parameters = fc_source_harmonics
+        source_obj.source_harmonics_two_parameters = fc_source_harmonics
 
     # Test source_harmonics_two_parameters setter exception 3 (empty spectrum).
     fc_source_harmonics = fields_container_factory.over_time_freq_fields_container([Field()])
@@ -219,21 +217,19 @@ def test_source_harmonics_two_parameters_properties_exceptions(dpf_sound_test_se
             "least one element."
         ),
     ):
-        source_harmonics_two_parameters_obj.source_harmonics_two_parameters = fc_source_harmonics
+        source_obj.source_harmonics_two_parameters = fc_source_harmonics
 
     # Test source_harmonics_two_parameters setter exception 4 (empty harmonics source's first
     # control data). For this, we use a valid dataset, and then remove the control data.
-    source_harmonics_two_parameters_obj = SourceHarmonicsTwoParameters()
-    source_harmonics_two_parameters_obj.load_source_harmonics_two_parameters(
+    source_obj = SourceHarmonicsTwoParameters()
+    source_obj.load_source_harmonics_two_parameters(
         pytest.data_path_sound_composer_harmonics_source_2p_in_container
     )
-    support_data = source_harmonics_two_parameters_obj.source_harmonics_two_parameters.get_support(
-        "control_parameter_1"
-    )
+    support_data = source_obj.source_harmonics_two_parameters.get_support("control_parameter_1")
     support_properties = support_data.available_field_supported_properties()
     support_values = support_data.field_support_by_property(support_properties[0])
     support_values.data = []
-    fc_source_harmonics = source_harmonics_two_parameters_obj.source_harmonics_two_parameters
+    fc_source_harmonics = source_obj.source_harmonics_two_parameters
     with pytest.raises(
         PyAnsysSoundException,
         match=(
@@ -241,21 +237,19 @@ def test_source_harmonics_two_parameters_properties_exceptions(dpf_sound_test_se
             "at least one element."
         ),
     ):
-        source_harmonics_two_parameters_obj.source_harmonics_two_parameters = fc_source_harmonics
+        source_obj.source_harmonics_two_parameters = fc_source_harmonics
 
     # Test source_harmonics_two_parameters setter exception 5 (empty harmonics source's second
     # control data). For this, we use a valid dataset, and then remove the control data.
-    source_harmonics_two_parameters_obj = SourceHarmonicsTwoParameters()
-    source_harmonics_two_parameters_obj.load_source_harmonics_two_parameters(
+    source_obj = SourceHarmonicsTwoParameters()
+    source_obj.load_source_harmonics_two_parameters(
         pytest.data_path_sound_composer_harmonics_source_2p_in_container
     )
-    support_data = source_harmonics_two_parameters_obj.source_harmonics_two_parameters.get_support(
-        "control_parameter_2"
-    )
+    support_data = source_obj.source_harmonics_two_parameters.get_support("control_parameter_2")
     support_properties = support_data.available_field_supported_properties()
     support_values = support_data.field_support_by_property(support_properties[0])
     support_values.data = []
-    fc_source_harmonics = source_harmonics_two_parameters_obj.source_harmonics_two_parameters
+    fc_source_harmonics = source_obj.source_harmonics_two_parameters
     with pytest.raises(
         PyAnsysSoundException,
         match=(
@@ -263,71 +257,63 @@ def test_source_harmonics_two_parameters_properties_exceptions(dpf_sound_test_se
             "contain at least one element."
         ),
     ):
-        source_harmonics_two_parameters_obj.source_harmonics_two_parameters = fc_source_harmonics
+        source_obj.source_harmonics_two_parameters = fc_source_harmonics
 
 
 def test_source_harmonics_two_parameters_is_source_control_valid(dpf_sound_test_server):
     """Test SourceHarmonicsTwoParameters is_source_control_valid method."""
-    source_harmonics_two_parameters_obj = SourceHarmonicsTwoParameters()
+    source_obj = SourceHarmonicsTwoParameters()
 
     # Test is_source_control_valid method (attribute not set).
-    assert source_harmonics_two_parameters_obj.is_source_control_valid() is False
+    assert source_obj.is_source_control_valid() is False
 
     # Test is_source_control_valid method (first attribute set, but not the second).
     source_control_obj = SourceControlTime()
-    source_harmonics_two_parameters_obj.source_control_rpm = source_control_obj
-    assert source_harmonics_two_parameters_obj.is_source_control_valid() is False
+    source_obj.source_control_rpm = source_control_obj
+    assert source_obj.is_source_control_valid() is False
 
     # Test is_source_control_valid method (both attributes set, but attributes' fields not set).
     source_control_obj = SourceControlTime()
-    source_harmonics_two_parameters_obj.source_control2 = source_control_obj
-    assert source_harmonics_two_parameters_obj.is_source_control_valid() is False
+    source_obj.source_control2 = source_control_obj
+    assert source_obj.is_source_control_valid() is False
 
     # Test is_source_control_valid method (only one attribute's field set).
     f_source_control = fields_factory.create_scalar_field(
         num_entities=1, location=locations.time_freq
     )
     f_source_control.append([1.0, 2.0, 3.0, 4.0, 5.0], 1)
-    source_harmonics_two_parameters_obj.source_control_rpm.control = f_source_control
-    assert source_harmonics_two_parameters_obj.is_source_control_valid() is False
+    source_obj.source_control_rpm.control = f_source_control
+    assert source_obj.is_source_control_valid() is False
 
     # Test is_source_control_valid method (all set).
-    source_harmonics_two_parameters_obj.source_control2.control = f_source_control
-    assert source_harmonics_two_parameters_obj.is_source_control_valid() is True
+    source_obj.source_control2.control = f_source_control
+    assert source_obj.is_source_control_valid() is True
 
 
 def test_source_specrum_load_source_harmonics_two_parameters(dpf_sound_test_server):
     """Test SourceHarmonicsTwoParameters load_source_harmonics method."""
-    source_harmonics_two_parameters_obj = SourceHarmonicsTwoParameters()
-    source_harmonics_two_parameters_obj.load_source_harmonics_two_parameters(
+    source_obj = SourceHarmonicsTwoParameters()
+    source_obj.load_source_harmonics_two_parameters(
         pytest.data_path_sound_composer_harmonics_source_2p_in_container
     )
-    assert isinstance(
-        source_harmonics_two_parameters_obj.source_harmonics_two_parameters, FieldsContainer
+    assert isinstance(source_obj.source_harmonics_two_parameters, FieldsContainer)
+    assert source_obj.source_harmonics_two_parameters[6].data[2] == pytest.approx(EXP_ORDER_LEVEL62)
+
+    source_obj.load_source_harmonics_two_parameters(
+        pytest.data_path_sound_composer_harmonics_source_2p_inverted_controls_in_container
     )
-    assert source_harmonics_two_parameters_obj.source_harmonics_two_parameters[0].data[
-        3
-    ] == pytest.approx(EXP_ORDER_LEVEL03)
+    assert isinstance(source_obj.source_harmonics_two_parameters, FieldsContainer)
+    assert source_obj.source_harmonics_two_parameters[3].data[3] == pytest.approx(
+        EXP_ORDER_LEVEL33_INVERTED
+    )
 
-    # source_harmonics_two_parameters_obj.load_source_harmonics_two_parameters(
-    #     pytest.data_path_sound_composer_harmonics_source_2p_inverted_controls_in_container
-    # )
-    # assert isinstance(
-    #     source_harmonics_two_parameters_obj.source_harmonics_two_parameters, FieldsContainer
-    # )
-    # assert source_harmonics_two_parameters_obj.source_harmonics_two_parameters[0].data[
-    #     3
-    # ] == pytest.approx(EXP_ORDER_LEVEL03_INVERTED)
-
-    source_harmonics_two_parameters_obj.load_source_harmonics_two_parameters(
+    source_obj.load_source_harmonics_two_parameters(
         pytest.data_path_sound_composer_harmonics_source_2p_from_accel_in_container
     )
-    assert isinstance(
-        source_harmonics_two_parameters_obj.source_harmonics_two_parameters, FieldsContainer
+    assert isinstance(source_obj.source_harmonics_two_parameters, FieldsContainer)
+    assert source_obj.source_harmonics_two_parameters[2].data[2] == pytest.approx(
+        EXP_ORDER_LEVEL22_FROM_ACCEL
     )
-    assert source_harmonics_two_parameters_obj.source_harmonics_two_parameters[0].data[
-        3
-    ] == pytest.approx(EXP_ORDER_LEVEL03_FROM_ACCEL)
 
 
 def test_source_harmonics_two_parameters_process(dpf_sound_test_server):
@@ -364,20 +350,20 @@ def test_source_harmonics_two_parameters_process(dpf_sound_test_server):
 
     # Create a SourceHarmonicsTwoParameters object test source file with less and created
     # source controls.
-    source_harmonics_two_parameters_obj = SourceHarmonicsTwoParameters(
+    source_obj = SourceHarmonicsTwoParameters(
         file=pytest.data_path_sound_composer_harmonics_source_2p_in_container,
         source_control_rpm=source_control_rpm,
         source_control2=source_control2,
     )
 
-    source_harmonics_two_parameters_obj.process()
-    assert source_harmonics_two_parameters_obj._output is not None
+    source_obj.process()
+    assert source_obj._output is not None
 
 
 def test_source_harmonics_two_parameters_process_exceptions(dpf_sound_test_server):
     """Test SourceHarmonicsTwoParameters process method exceptions."""
     # Test process method exception1 (missing controls).
-    source_harmonics_two_parameters_obj = SourceHarmonicsTwoParameters(
+    source_obj = SourceHarmonicsTwoParameters(
         pytest.data_path_sound_composer_harmonics_source_2p_in_container
     )
     with pytest.raises(
@@ -388,18 +374,18 @@ def test_source_harmonics_two_parameters_process_exceptions(dpf_sound_test_serve
             "``SourceHarmonicsTwoParameters.source_control2``."
         ),
     ):
-        source_harmonics_two_parameters_obj.process()
+        source_obj.process()
 
     # Test process method exception2 (missing harmonics source data).
-    source_harmonics_two_parameters_obj.source_harmonics_two_parameters = None
+    source_obj.source_harmonics_two_parameters = None
     f_source_control = fields_factory.create_scalar_field(
         num_entities=1, location=locations.time_freq
     )
     f_source_control.append([1.0, 2.0, 3.0, 4.0, 5.0], 1)
     source_control_obj = SourceControlTime()
     source_control_obj.control = f_source_control
-    source_harmonics_two_parameters_obj.source_control_rpm = source_control_obj
-    source_harmonics_two_parameters_obj.source_control2 = source_control_obj
+    source_obj.source_control_rpm = source_control_obj
+    source_obj.source_control2 = source_control_obj
     with pytest.raises(
         PyAnsysSoundException,
         match=(
@@ -408,16 +394,16 @@ def test_source_harmonics_two_parameters_process_exceptions(dpf_sound_test_serve
             "``SourceHarmonicsTwoParameters.load_source_harmonics_two_parameters\\(\\)``."
         ),
     ):
-        source_harmonics_two_parameters_obj.process()
+        source_obj.process()
 
     # Test process method exception3 (invalid sampling frequency value).
-    source_harmonics_two_parameters_obj.load_source_harmonics_two_parameters(
+    source_obj.load_source_harmonics_two_parameters(
         pytest.data_path_sound_composer_harmonics_source_2p_in_container
     )
     with pytest.raises(
         PyAnsysSoundException, match="Sampling frequency must be strictly positive."
     ):
-        source_harmonics_two_parameters_obj.process(sampling_frequency=0.0)
+        source_obj.process(sampling_frequency=0.0)
 
 
 def test_source_harmonics_two_parameters_get_output(dpf_sound_test_server):
@@ -454,14 +440,14 @@ def test_source_harmonics_two_parameters_get_output(dpf_sound_test_server):
 
     # Create a SourceHarmonicsTwoParameters object test source file and created source
     # controls.
-    source_harmonics_two_parameters_obj = SourceHarmonicsTwoParameters(
+    source_obj = SourceHarmonicsTwoParameters(
         file=pytest.data_path_sound_composer_harmonics_source_2p_in_container,
         source_control_rpm=source_control_rpm,
         source_control2=source_control2,
     )
 
-    source_harmonics_two_parameters_obj.process(sampling_frequency=44100.0)
-    f_output = source_harmonics_two_parameters_obj.get_output()
+    source_obj.process(sampling_frequency=44100.0)
+    f_output = source_obj.get_output()
     assert isinstance(f_output, Field)
     assert len(f_output.data) / 44100.0 == pytest.approx(3.0)
 
@@ -477,13 +463,13 @@ def test_source_harmonics_two_parameters_get_output(dpf_sound_test_server):
     psd_squared, psd_freq = psd.get_PSD_squared_linear_as_nparray()
     delat_f = psd_freq[1] - psd_freq[0]
 
-    # Check the sound power level in the octave bands centered at 250, 1000 and 4000 Hz.
+    # Check the sound power level in the octave bands centered at 500, 1000 and 2000 Hz.
     # Due to the non-deterministic nature of the produced signal, tolerance is set to 3 dB.
     psd_squared_band = psd_squared[
-        (psd_freq >= 250 * 2 ** (-1 / 2)) & (psd_freq < 250 * 2 ** (1 / 2))
+        (psd_freq >= 500 * 2 ** (-1 / 2)) & (psd_freq < 500 * 2 ** (1 / 2))
     ]
     level = 10 * np.log10(psd_squared_band.sum() * delat_f / REF_ACOUSTIC_POWER)
-    assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND_250, abs=3.0)
+    assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND_500, abs=3.0)
 
     psd_squared_band = psd_squared[
         (psd_freq >= 1000 * 2 ** (-1 / 2)) & (psd_freq < 1000 * 2 ** (1 / 2))
@@ -492,15 +478,15 @@ def test_source_harmonics_two_parameters_get_output(dpf_sound_test_server):
     assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND_1000, abs=3.0)
 
     psd_squared_band = psd_squared[
-        (psd_freq >= 4000 * 2 ** (-1 / 2)) & (psd_freq < 4000 * 2 ** (1 / 2))
+        (psd_freq >= 2000 * 2 ** (-1 / 2)) & (psd_freq < 2000 * 2 ** (1 / 2))
     ]
     level = 10 * np.log10(psd_squared_band.sum() * delat_f / REF_ACOUSTIC_POWER)
-    assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND_4000, abs=3.0)
+    assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND_2000, abs=3.0)
 
 
 def test_source_harmonics_two_parameters_get_output_unprocessed(dpf_sound_test_server):
     """Test SourceHarmonicsTwoParameters get_output method's exception."""
-    source_harmonics_two_parameters_obj = SourceHarmonicsTwoParameters()
+    source_obj = SourceHarmonicsTwoParameters()
     with pytest.warns(
         PyAnsysSoundWarning,
         match=(
@@ -508,7 +494,7 @@ def test_source_harmonics_two_parameters_get_output_unprocessed(dpf_sound_test_s
             "``SourceHarmonicsTwoParameters.process\\(\\)`` method."
         ),
     ):
-        f_output = source_harmonics_two_parameters_obj.get_output()
+        f_output = source_obj.get_output()
     assert f_output is None
 
 
@@ -546,14 +532,14 @@ def test_source_harmonics_two_parameters_get_output_as_nparray(dpf_sound_test_se
 
     # Create a SourceHarmonicsTwoParameters object test source file with less and created
     # source controls.
-    source_harmonics_two_parameters_obj = SourceHarmonicsTwoParameters(
+    source_obj = SourceHarmonicsTwoParameters(
         file=pytest.data_path_sound_composer_harmonics_source_2p_in_container,
         source_control_rpm=source_control_rpm,
         source_control2=source_control2,
     )
 
-    source_harmonics_two_parameters_obj.process(sampling_frequency=44100.0)
-    output_nparray = source_harmonics_two_parameters_obj.get_output_as_nparray()
+    source_obj.process(sampling_frequency=44100.0)
+    output_nparray = source_obj.get_output_as_nparray()
     assert isinstance(output_nparray, np.ndarray)
     assert len(output_nparray) / 44100.0 == pytest.approx(3.0)
 
@@ -562,7 +548,7 @@ def test_source_harmonics_two_parameters_get_output_as_nparray_unprocessed(
     dpf_sound_test_server,
 ):
     """Test SourceHarmonicsTwoParameters get_output_as_nparray method's exception."""
-    source_harmonics_two_parameters_obj = SourceHarmonicsTwoParameters()
+    source_obj = SourceHarmonicsTwoParameters()
     with pytest.warns(
         PyAnsysSoundWarning,
         match=(
@@ -570,7 +556,7 @@ def test_source_harmonics_two_parameters_get_output_as_nparray_unprocessed(
             "method."
         ),
     ):
-        output_nparray = source_harmonics_two_parameters_obj.get_output_as_nparray()
+        output_nparray = source_obj.get_output_as_nparray()
     assert len(output_nparray) == 0
 
 
@@ -609,19 +595,19 @@ def test_source_harmonics_two_parameters_plot(dpf_sound_test_server):
 
     # Create a SourceHarmonicsTwoParameters object test source file with less and created
     # source controls.
-    source_harmonics_two_parameters_obj = SourceHarmonicsTwoParameters(
+    source_obj = SourceHarmonicsTwoParameters(
         file=pytest.data_path_sound_composer_harmonics_source_2p_in_container,
         source_control_rpm=source_control_rpm,
         source_control2=source_control2,
     )
 
-    source_harmonics_two_parameters_obj.process()
-    source_harmonics_two_parameters_obj.plot()
+    source_obj.process()
+    source_obj.plot()
 
 
 def test_source_harmonics_two_parameters_plot_exceptions(dpf_sound_test_server):
     """Test SourceHarmonicsTwoParameters plot method's exception."""
-    source_harmonics_two_parameters_obj = SourceHarmonicsTwoParameters()
+    source_obj = SourceHarmonicsTwoParameters()
     with pytest.raises(
         PyAnsysSoundException,
         match=(
@@ -629,7 +615,7 @@ def test_source_harmonics_two_parameters_plot_exceptions(dpf_sound_test_server):
             "'SourceHarmonicsTwoParameters.process\\(\\)' method."
         ),
     ):
-        source_harmonics_two_parameters_obj.plot()
+        source_obj.plot()
 
 
 def test_source_harmonics_two_parameters___extract_harmonics_two_parameters_info(
