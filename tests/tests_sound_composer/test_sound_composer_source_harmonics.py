@@ -437,7 +437,7 @@ def test_source_harmonics_get_output_as_nparray_unprocessed(dpf_sound_test_serve
 
 
 @patch("matplotlib.pyplot.show")
-def test_source_harmonics_plot(dpf_sound_test_server):
+def test_source_harmonics_plot(mock_show, dpf_sound_test_server):
     """Test SourceHarmonics plot method."""
     # Create a field to use in a SourceControlTime object.
     f_source_control = fields_factory.create_scalar_field(
