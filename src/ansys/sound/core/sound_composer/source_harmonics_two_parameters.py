@@ -188,47 +188,43 @@ class SourceHarmonicsTwoParameters(SourceParent):
         return self.__source_harmonics_two_parameters
 
     @source_harmonics_two_parameters.setter
-    def source_harmonics_two_parameters(self, source_harmonics_two_parameters: FieldsContainer):
+    def source_harmonics_two_parameters(self, source: FieldsContainer):
         """Set the harmonics source with two parameters data, from a DPF fields container."""
-        if source_harmonics_two_parameters is not None:
-            if not isinstance(source_harmonics_two_parameters, FieldsContainer):
+        if source is not None:
+            if not isinstance(source, FieldsContainer):
                 raise PyAnsysSoundException(
                     "Specified harmonics source with two parameters must be provided as a DPF "
                     "fields container."
                 )
 
-            if len(source_harmonics_two_parameters) < 1:
+            if len(source) < 1:
                 raise PyAnsysSoundException(
                     "Specified harmonics source with two parameters must contain at least one "
                     "order."
                 )
 
-            for spectrum in source_harmonics_two_parameters:
+            for spectrum in source:
                 if len(spectrum.data) < 1:
                     raise PyAnsysSoundException(
                         "Each order in the specified harmonics source with two parameters must "
                         "contain at least one element."
                     )
 
-            support_data = source_harmonics_two_parameters.get_support("control_parameter_1")
+            support_data = source.get_support("control_parameter_1")
             support_properties = support_data.available_field_supported_properties()
-            support_values = support_data.field_support_by_property(support_properties[0])
-            if len(support_values) < 1:
+            support1_values = support_data.field_support_by_property(support_properties[0])
+            support_data = source.get_support("control_parameter_2")
+            support_properties = support_data.available_field_supported_properties()
+            support2_values = support_data.field_support_by_property(support_properties[0])
+            if len(support1_values) != len(source) or len(support2_values) != len(source):
                 raise PyAnsysSoundException(
-                    "RPM control data in the specified harmonics source with two parameters must "
-                    "contain at least one element."
+                    "Harmonics source with two parameters must contain as many order levels as "
+                    "the number of values in both associated control parameters (in the provided "
+                    "DPF fields container, the number of fields should be the same as the number "
+                    "of values in both fields container supports)."
                 )
 
-            support_data = source_harmonics_two_parameters.get_support("control_parameter_2")
-            support_properties = support_data.available_field_supported_properties()
-            support_values = support_data.field_support_by_property(support_properties[0])
-            if len(support_values) < 1:
-                raise PyAnsysSoundException(
-                    "Second control data in the specified harmonics source with two parameters "
-                    "must contain at least one element."
-                )
-
-        self.__source_harmonics_two_parameters = source_harmonics_two_parameters
+        self.__source_harmonics_two_parameters = source
 
     def is_source_control_valid(self) -> bool:
         """Source control verification function.

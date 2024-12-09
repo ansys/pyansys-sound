@@ -233,28 +233,10 @@ def test_source_harmonics_two_parameters_properties_exceptions(dpf_sound_test_se
     with pytest.raises(
         PyAnsysSoundException,
         match=(
-            "RPM control data in the specified harmonics source with two parameters must contain "
-            "at least one element."
-        ),
-    ):
-        source_obj.source_harmonics_two_parameters = fc_source_harmonics
-
-    # Test source_harmonics_two_parameters setter exception 5 (empty harmonics source's second
-    # control data). For this, we use a valid dataset, and then remove the control data.
-    source_obj = SourceHarmonicsTwoParameters()
-    source_obj.load_source_harmonics_two_parameters(
-        pytest.data_path_sound_composer_harmonics_source_2p_in_container
-    )
-    support_data = source_obj.source_harmonics_two_parameters.get_support("control_parameter_2")
-    support_properties = support_data.available_field_supported_properties()
-    support_values = support_data.field_support_by_property(support_properties[0])
-    support_values.data = []
-    fc_source_harmonics = source_obj.source_harmonics_two_parameters
-    with pytest.raises(
-        PyAnsysSoundException,
-        match=(
-            "Second control data in the specified harmonics source with two parameters must "
-            "contain at least one element."
+            "Harmonics source with two parameters must contain as many order levels as the number "
+            "of values in both associated control parameters \\(in the provided DPF fields "
+            "container, the number of fields should be the same as the number of values in both "
+            "fields container supports\\)."
         ),
     ):
         source_obj.source_harmonics_two_parameters = fc_source_harmonics
