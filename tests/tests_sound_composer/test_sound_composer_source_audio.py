@@ -200,7 +200,7 @@ def test_source_audio_get_output_as_nparray_unprocessed(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_source_audio_plot(dpf_sound_test_server):
+def test_source_audio_plot(mock_show, dpf_sound_test_server):
     """Test SourceAudio plot method."""
     source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
     source_audio.process()
@@ -208,7 +208,7 @@ def test_source_audio_plot(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_source_audio_plot_no_name(dpf_sound_test_server):
+def test_source_audio_plot_no_name(mock_show, dpf_sound_test_server):
     """Test SourceAudio plot method."""
     source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
     source_audio.source_audio_data.name = ""
