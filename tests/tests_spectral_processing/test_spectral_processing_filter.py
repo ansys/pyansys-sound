@@ -299,7 +299,7 @@ def test_filter_get_output_as_nparray(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_filter_plot(dpf_sound_test_server):
+def test_filter_plot(mock_show, dpf_sound_test_server):
     """Test SourceAudio plot method."""
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
     wav_loader.process()
@@ -310,7 +310,6 @@ def test_filter_plot(dpf_sound_test_server):
     filter.plot()
 
 
-@patch("matplotlib.pyplot.show")
 def test_filter_plot_exception(dpf_sound_test_server):
     """Test SourceAudio plot method's exception."""
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)

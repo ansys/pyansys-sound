@@ -351,7 +351,7 @@ def test_source_spectrum_get_output_as_nparray_unprocessed(dpf_sound_test_server
 
 
 @patch("matplotlib.pyplot.show")
-def test_source_spectrum_plot(dpf_sound_test_server):
+def test_source_spectrum_plot(mock_show, dpf_sound_test_server):
     """Test SourceSpectrum plot method."""
     source_spectrum = SourceSpectrum(
         pytest.data_path_sound_composer_spectrum_source_in_container,
