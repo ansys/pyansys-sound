@@ -26,12 +26,12 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.xtract.xtract_transient_parameters import XtractTransientParameters
 
 
-def test_xtract_transient_parameters_instantiation(dpf_sound_test_server):
+def test_xtract_transient_parameters_instantiation():
     xtract_transient_parameters = XtractTransientParameters()
     assert xtract_transient_parameters != None
 
 
-def test_xtract_transient_parameters_getter_setter_upper_threshold(dpf_sound_test_server):
+def test_xtract_transient_parameters_getter_setter_upper_threshold():
     xtract_transient_parameters = XtractTransientParameters()
 
     # Invalid value
@@ -44,7 +44,7 @@ def test_xtract_transient_parameters_getter_setter_upper_threshold(dpf_sound_tes
     assert xtract_transient_parameters.upper_threshold == 92.0
 
 
-def test_xtract_transient_parameters_getter_setter_lower_threshold(dpf_sound_test_server):
+def test_xtract_transient_parameters_getter_setter_lower_threshold():
     xtract_transient_parameters = XtractTransientParameters()
 
     # Invalid value
@@ -57,7 +57,7 @@ def test_xtract_transient_parameters_getter_setter_lower_threshold(dpf_sound_tes
     assert xtract_transient_parameters.lower_threshold == 92.0
 
 
-def test_xtract_transient_parameters_getter_generic_data_container(dpf_sound_test_server):
+def test_xtract_transient_parameters_getter_generic_data_container():
     xtract_transient_parameters = XtractTransientParameters()
 
     gdc = xtract_transient_parameters.get_parameters_as_generic_data_container()

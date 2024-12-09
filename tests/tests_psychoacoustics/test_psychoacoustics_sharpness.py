@@ -32,12 +32,12 @@ EXP_SHARPNESS_1 = 1.6609569787979126
 EXP_SHARPNESS_2 = 2.4972000122070312
 
 
-def test_sharpness_instantiation(dpf_sound_test_server):
+def test_sharpness_instantiation():
     sharpness_computer = Sharpness()
     assert sharpness_computer != None
 
 
-def test_sharpness_process(dpf_sound_test_server):
+def test_sharpness_process():
     sharpness_computer = Sharpness()
 
     # No signal -> error
@@ -65,7 +65,7 @@ def test_sharpness_process(dpf_sound_test_server):
     sharpness_computer.process()
 
 
-def test_sharpness_get_output(dpf_sound_test_server):
+def test_sharpness_get_output():
     sharpness_computer = Sharpness()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
@@ -83,7 +83,7 @@ def test_sharpness_get_output(dpf_sound_test_server):
     assert type(sharpness) == FieldsContainer
 
 
-def test_sharpness_get_sharpness(dpf_sound_test_server):
+def test_sharpness_get_sharpness():
     sharpness_computer = Sharpness()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
@@ -138,9 +138,7 @@ def test_sharpness_get_sharpness(dpf_sound_test_server):
     assert sharpness == pytest.approx(EXP_SHARPNESS_2)
 
 
-def test_sharpness_get_output_as_nparray_from_fields_container(
-    dpf_sound_test_server,
-):
+def test_sharpness_get_output_as_nparray_from_fields_container():
     sharpness_computer = Sharpness()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
@@ -168,7 +166,7 @@ def test_sharpness_get_output_as_nparray_from_fields_container(
     assert sharpness[0] == pytest.approx(EXP_SHARPNESS_1)
 
 
-def test_sharpness_get_output_as_nparray_from_field(dpf_sound_test_server):
+def test_sharpness_get_output_as_nparray_from_field():
     sharpness_computer = Sharpness()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
@@ -187,7 +185,7 @@ def test_sharpness_get_output_as_nparray_from_field(dpf_sound_test_server):
     assert sharpness[0] == pytest.approx(EXP_SHARPNESS_1)
 
 
-def test_sharpness_set_get_signal(dpf_sound_test_server):
+def test_sharpness_set_get_signal():
     sharpness_computer = Sharpness()
     fc = FieldsContainer()
     fc.labels = ["channel"]

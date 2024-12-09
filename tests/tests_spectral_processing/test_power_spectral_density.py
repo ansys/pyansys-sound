@@ -31,7 +31,7 @@ from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectral_processing import PowerSpectralDensity
 
 
-def test_power_spectral_density_instantiation(dpf_sound_test_server):
+def test_power_spectral_density_instantiation():
     """Test PowerSpectralDensity instantiation."""
     # Test instantiation.
     psd = PowerSpectralDensity(Field())
@@ -42,7 +42,7 @@ def test_power_spectral_density_instantiation(dpf_sound_test_server):
     assert psd.overlap == 0.25
 
 
-def test_power_spectral_density_setters(dpf_sound_test_server):
+def test_power_spectral_density_setters():
     """Test PowerSpectralDensity setters."""
     # Test setters.
     psd = PowerSpectralDensity(Field())
@@ -64,7 +64,7 @@ def test_power_spectral_density_setters(dpf_sound_test_server):
     assert psd.overlap == 0.5
 
 
-def test_warning(dpf_sound_test_server):
+def test_warning():
     """Test PowerSpectralDensity warning."""
     with pytest.warns(PyAnsysSoundWarning) as record:
         psd = PowerSpectralDensity(Field())
@@ -72,7 +72,7 @@ def test_warning(dpf_sound_test_server):
     assert record[0].message.args[0] == "No output is available."
 
 
-def test_exception(dpf_sound_test_server):
+def test_exception():
     """Test PowerSpectralDensity exception."""
     with pytest.raises(PyAnsysSoundException) as record:
         psd = PowerSpectralDensity(Field())
@@ -107,7 +107,7 @@ def test_exception(dpf_sound_test_server):
     )
 
 
-def test_noprocess_get_output_as_nparray(dpf_sound_test_server):
+def test_noprocess_get_output_as_nparray():
     """Test PowerSpectralDensity get_output_as_nparray without process."""
     psd = PowerSpectralDensity(Field())
     psd_values, psd_frequencies = psd.get_output_as_nparray()
@@ -119,7 +119,7 @@ def test_noprocess_get_output_as_nparray(dpf_sound_test_server):
     assert len(psd_frequencies) == 0
 
 
-def test_power_spectral_density_noprocess(dpf_sound_test_server):
+def test_power_spectral_density_noprocess():
     """Test PowerSpectralDensity without process."""
     # Test without process.
     psd = PowerSpectralDensity(Field())
@@ -128,7 +128,7 @@ def test_power_spectral_density_noprocess(dpf_sound_test_server):
     assert record[0].message.args[0] == "No output is available."
 
 
-def test_power_spectral_density_process(dpf_sound_test_server):
+def test_power_spectral_density_process():
     # Test process with input signal.
     op_load_wav = LoadWav(pytest.data_path_flute_in_container)
     op_load_wav.process()
@@ -140,7 +140,7 @@ def test_power_spectral_density_process(dpf_sound_test_server):
     assert psd.get_output() is not None
 
 
-def test_power_spectral_density_get_output(dpf_sound_test_server):
+def test_power_spectral_density_get_output():
     """Test PowerSpectralDensity get_output."""
     # Test get_output.
     op_load_wav = LoadWav(pytest.data_path_flute_in_container)
@@ -170,7 +170,7 @@ def test_power_spectral_density_get_output(dpf_sound_test_server):
     assert output.time_freq_support.time_frequencies.data[1024] == pytest.approx(22050.000000000000)
 
 
-def test_power_spectral_density_get_output_as_nparray(dpf_sound_test_server):
+def test_power_spectral_density_get_output_as_nparray():
     """Test PowerSpectralDensity get_output_as_nparray."""
     op_load_wav = LoadWav(pytest.data_path_flute_in_container)
     op_load_wav.process()
@@ -185,7 +185,7 @@ def test_power_spectral_density_get_output_as_nparray(dpf_sound_test_server):
     assert psd_frequencies[1] == pytest.approx(21.533203125000000)
 
 
-def test_get_PSD_squared_linear(dpf_sound_test_server):
+def test_get_PSD_squared_linear():
     """Test PowerSpectralDensity get_PSD_squared_linear."""
     # Test get_PSD_as_square_linear.
     op_load_wav = LoadWav(pytest.data_path_flute_in_container)
@@ -215,7 +215,7 @@ def test_get_PSD_squared_linear(dpf_sound_test_server):
     assert output.time_freq_support.time_frequencies.data[1024] == pytest.approx(22050.000000000000)
 
 
-def test_get_PSD_squared_linear_as_nparray(dpf_sound_test_server):
+def test_get_PSD_squared_linear_as_nparray():
     """Test PowerSpectralDensity get_PSD_squared_linear_as_nparray."""
     op_load_wav = LoadWav(pytest.data_path_flute_in_container)
     op_load_wav.process()
@@ -230,7 +230,7 @@ def test_get_PSD_squared_linear_as_nparray(dpf_sound_test_server):
     assert psd_frequencies[1] == pytest.approx(21.533203125000000)
 
 
-def test_get_PSD_dB(dpf_sound_test_server):
+def test_get_PSD_dB():
     op_load_wav = LoadWav(pytest.data_path_flute_in_container)
     op_load_wav.process()
     input_signal = op_load_wav.get_output()[0]
@@ -255,7 +255,7 @@ def test_get_PSD_dB(dpf_sound_test_server):
     assert output.time_freq_support.time_frequencies.data[1024] == pytest.approx(22050.000000000000)
 
 
-def test_get_PSD_dB_as_nparray(dpf_sound_test_server):
+def test_get_PSD_dB_as_nparray():
     op_load_wav = LoadWav(pytest.data_path_flute_in_container)
     op_load_wav.process()
     input_signal = op_load_wav.get_output()[0]
@@ -273,7 +273,7 @@ def test_get_PSD_dB_as_nparray(dpf_sound_test_server):
     assert psd_values[26] == pytest.approx(44.40524786793658)
 
 
-def test_get_frequencies(dpf_sound_test_server):
+def test_get_frequencies():
     op_load_wav = LoadWav(pytest.data_path_flute_in_container)
     op_load_wav.process()
     input_signal = op_load_wav.get_output()[0]
@@ -290,7 +290,7 @@ def test_get_frequencies(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_power_spectral_density_plot(mock_show, dpf_sound_test_server):
+def test_power_spectral_density_plot(mock_show):
     """Test PowerSpectralDensity plot."""
     op_load_wav = LoadWav(pytest.data_path_flute_in_container)
     op_load_wav.process()

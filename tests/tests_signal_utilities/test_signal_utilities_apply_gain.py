@@ -28,12 +28,12 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.signal_utilities import ApplyGain, LoadWav
 
 
-def test_apply_gain_instantiation(dpf_sound_test_server):
+def test_apply_gain_instantiation():
     gain_applier = ApplyGain()
     assert gain_applier != None
 
 
-def test_apply_gain_process(dpf_sound_test_server):
+def test_apply_gain_process():
     gain_applier = ApplyGain()
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
 
@@ -56,7 +56,7 @@ def test_apply_gain_process(dpf_sound_test_server):
     gain_applier.process()
 
 
-def test_apply_gain_get_output(dpf_sound_test_server):
+def test_apply_gain_get_output():
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -84,7 +84,7 @@ def test_apply_gain_get_output(dpf_sound_test_server):
     assert f_out.data[60000] == -0.09051203727722168
 
 
-def test_apply_gain_get_output_as_np_array(dpf_sound_test_server):
+def test_apply_gain_get_output_as_np_array():
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -109,7 +109,7 @@ def test_apply_gain_get_output_as_np_array(dpf_sound_test_server):
     assert out_arr[60000] == -0.09051203727722168
 
 
-def test_apply_gain_set_get_signal(dpf_sound_test_server):
+def test_apply_gain_set_get_signal():
     gain_applier = ApplyGain()
     fc = FieldsContainer()
     fc.labels = ["channel"]
@@ -125,14 +125,14 @@ def test_apply_gain_set_get_signal(dpf_sound_test_server):
     assert fc_from_get[0].data[0, 2] == 42
 
 
-def test_apply_gain_set_get_gain(dpf_sound_test_server):
+def test_apply_gain_set_get_gain():
     gain_applier = ApplyGain()
 
     gain_applier.gain = 1234.0
     assert gain_applier.gain == 1234.0
 
 
-def test_apply_gain_set_get_gain_in_db(dpf_sound_test_server):
+def test_apply_gain_set_get_gain_in_db():
     gain_applier = ApplyGain()
 
     # Error 1
