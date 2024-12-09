@@ -62,6 +62,8 @@ def pytest_configure():
     )
     pytest.data_path_rpm_profile_as_wav_in_container = "C:\\data\\RPM_profile_2024R2_20241126.wav"
     pytest.data_path_rpm_profile_as_txt_in_container = "C:\\data\\RPM_profile_2024R2_20241126.txt"
+    pytest.data_path_filter_frf = "C:\\data\\AnsysSound_FRF_2024R2_20241206.txt"
+    pytest.data_path_filter_frf_wrong_header = "C:\\data\\AnsysSound_FRF_bad_2024R2_20241206.txt"
 
 
 @pytest.fixture(scope="session")

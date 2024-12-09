@@ -44,9 +44,6 @@ class Filter(SpectralProcessingParent):
     function (FRF). In this latter case, the filter is designed as a minimum-phase FIR filter, and
     the filter denominator is set to 1 as a consequence.
 
-    In any case, the filter coefficients are linked to the provided sampling frequency. The signal
-    to filter that is provided must have the same sampling frequency as a consequence.
-
     .. note::
 
         Whether they are derived from the provided FRF or specified directly, the filter
@@ -73,12 +70,12 @@ class Filter(SpectralProcessingParent):
         b_coefficients : list[float], default: []
             Numerator coefficients of the filter.
         sampling_frequency : float, default: 44100.0
-            Sampling frequency of the signal in Hz.
+            Sampling frequency associated with the filter coefficients, in Hz.
         file : str, default: ""
-            Path to the file containing frequency response function (FRF) to load. The text file
-            shall have the same text format (with the header `AnsysSound_FRF`), as supported by
-            Ansys Sound SAS. If file is specified, parameters a_coefficients and b_coefficients are
-            ignored.
+            Path to the file containing the frequency response function (FRF) to load. The text
+            file shall have the same text format (with the header `AnsysSound_FRF`), as supported
+            by Ansys Sound SAS. If ``file`` is specified, parameters ``a_coefficients`` and
+            ``b_coefficients`` are ignored.
         signal : Field
             Mono signal to filter, as a DPF field.
         """
@@ -157,7 +154,7 @@ class Filter(SpectralProcessingParent):
         Returns
         -------
         float
-            Sampling frequency, in Hz, associated with the ``Filter`` class coefficients.
+            Sampling frequency, in Hz, associated with the filter coefficients.
         """
         return self.__sampling_frequency
 
@@ -219,7 +216,7 @@ class Filter(SpectralProcessingParent):
         if self.a_coefficients == []:
             raise PyAnsysSoundException(
                 "Filter's denominator coefficients (a_coefficients) cannot be empty. Use "
-                f"{__class__.__name__}.a_coefficients(), or the methods "
+                f"{__class__.__name__}.a_coefficients, or the methods "
                 f"{__class__.__name__}.design_FIR_from_FRF() or "
                 f"{__class__.__name__}.design_FIR_from_FRF_file()."
             )
@@ -227,7 +224,7 @@ class Filter(SpectralProcessingParent):
         if self.b_coefficients == []:
             raise PyAnsysSoundException(
                 "Filter's numerator coefficients (b_coefficients) cannot be empty. Use "
-                f"{__class__.__name__}.b_coefficients(), or the methods "
+                f"{__class__.__name__}.b_coefficients, or the methods "
                 f"{__class__.__name__}.design_FIR_from_FRF() or "
                 f"{__class__.__name__}.design_FIR_from_FRF_file()."
             )
@@ -255,7 +252,7 @@ class Filter(SpectralProcessingParent):
             warnings.warn(
                 PyAnsysSoundWarning(
                     "Output is not processed yet. "
-                    f"Use the ``{__class__.__name__}.process()`` method."
+                    f"Use the {__class__.__name__}.process() method."
                 )
             )
         return self._output
@@ -279,19 +276,15 @@ class Filter(SpectralProcessingParent):
         """Plot the filtered sound in a figure."""
         if self._output == None:
             raise PyAnsysSoundException(
-                f"Output is not processed yet. Use the ``{__class__.__name__}.process()`` method."
+                f"Output is not processed yet. Use the {__class__.__name__}.process() method."
             )
         output = self.get_output()
 
         time_data = output.time_freq_support.time_frequencies.data
 
         plt.plot(time_data, output.data)
-        name = output.name
-        if len(name) > 0:
-            plt.title(name)
-        else:
-            plt.title("Sound generated from the audio source")
+        plt.title("Filtered signal")
         plt.xlabel("Time (s)")
-        plt.ylabel("Amplitude (Pa)")
+        plt.ylabel("Amplitude")
         plt.grid(True)
         plt.show()
