@@ -543,7 +543,7 @@ def test_source_harmonics_two_parameters_get_output_as_nparray_unprocessed(
 
 
 @patch("matplotlib.pyplot.show")
-def test_source_harmonics_two_parameters_plot(dpf_sound_test_server):
+def test_source_harmonics_two_parameters_plot(mock_show, dpf_sound_test_server):
     """Test SourceHarmonicsTwoParameters plot method."""
     # Create a field to use in a SourceControlTime object.
     f_source_control = fields_factory.create_scalar_field(
