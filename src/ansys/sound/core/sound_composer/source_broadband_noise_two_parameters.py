@@ -183,53 +183,49 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         """Source data for broadband noise source with two parameters.
 
         The broadband noise source with two parameters data consists of a series of spectra, each
-        corresponding to a pair of control parameter values. Spectra can be narrowband, PSD,
-        octave-band levels, or 1/3-octave-band levels.
+        corresponding to a pair of control parameter values. Spectra can be narrowband (in dB or
+        dB/Hz), octave-band levels, or 1/3-octave-band levels.
         """
         return self.__source_bbn_two_parameters
 
     @source_bbn_two_parameters.setter
-    def source_bbn_two_parameters(self, source_bbn_two_parameters: FieldsContainer):
+    def source_bbn_two_parameters(self, source: FieldsContainer):
         """Set the broadband noise source with two parameters data, from a DPF fields container."""
-        if source_bbn_two_parameters is not None:
-            if not isinstance(source_bbn_two_parameters, FieldsContainer):
+        if source is not None:
+            if not isinstance(source, FieldsContainer):
                 raise PyAnsysSoundException(
                     "Specified broadband noise source with two parameters must be provided as a "
                     "DPF fields container."
                 )
 
-            if len(source_bbn_two_parameters) < 1:
+            if len(source) < 1:
                 raise PyAnsysSoundException(
                     "Specified broadband noise source with two parameters must contain at least "
                     "one spectrum."
                 )
 
-            for spectrum in source_bbn_two_parameters:
+            for spectrum in source:
                 if len(spectrum.data) < 1:
                     raise PyAnsysSoundException(
                         "Each spectrum in the specified broadband noise source with two "
                         "parameters must contain at least one element."
                     )
 
-            support_data = source_bbn_two_parameters.get_support("control_parameter_1")
+            support_data = source.get_support("control_parameter_1")
             support_properties = support_data.available_field_supported_properties()
-            support_values = support_data.field_support_by_property(support_properties[0])
-            if len(support_values) < 1:
+            support1_values = support_data.field_support_by_property(support_properties[0])
+            support_data = source.get_support("control_parameter_2")
+            support_properties = support_data.available_field_supported_properties()
+            support2_values = support_data.field_support_by_property(support_properties[0])
+            if len(support1_values) != len(source) or len(support2_values) != len(source):
                 raise PyAnsysSoundException(
-                    "First control data in the specified broadband noise source with two "
-                    "parameters must contain at least one element."
+                    "Broadband noise source with two parameters must contain as many spectra as "
+                    "the number of values in both associated control parameters (in the provided "
+                    "DPF fields container, the number of fields should be the same as the number "
+                    "of values in both fields container supports)."
                 )
 
-            support_data = source_bbn_two_parameters.get_support("control_parameter_2")
-            support_properties = support_data.available_field_supported_properties()
-            support_values = support_data.field_support_by_property(support_properties[0])
-            if len(support_values) < 1:
-                raise PyAnsysSoundException(
-                    "Second control data in the specified broadband noise source with two "
-                    "parameters must contain at least one element."
-                )
-
-        self.__source_bbn_two_parameters = source_bbn_two_parameters
+        self.__source_bbn_two_parameters = source
 
     def is_source_control_valid(self) -> bool:
         """Source control verification function.
