@@ -396,7 +396,7 @@ def test_source_broadband_noise_get_output_as_nparray_unprocessed(dpf_sound_test
 
 
 @patch("matplotlib.pyplot.show")
-def test_source_broadband_noise_plot(dpf_sound_test_server):
+def test_source_broadband_noise_plot(mock_show, dpf_sound_test_server):
     """Test SourceBroadbandNoise plot method."""
     # Create a field to use in a SourceControlTime object.
     f_source_control = fields_factory.create_scalar_field(
