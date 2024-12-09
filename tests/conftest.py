@@ -38,76 +38,73 @@ def pytest_configure():
     server = connect_to_or_start_server(use_license_context=True)
 
     # # Get the current directory of the conftest.py file
-    base_dir = os.path.dirname(__file__)
+    base_dir = os.path.join(os.path.dirname(__file__), "data")
 
     # Construct the paths of the different test files after uploading them on the server
     pytest.data_path_flute_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "data", "flute.wav"), server=server
+        os.path.join(base_dir, "flute.wav"), server=server
     )
     pytest.data_path_flute2_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "data", "flute2.wav"), server=server
+        os.path.join(base_dir, "flute2.wav"), server=server
     )
     pytest.data_path_flute_nonUnitaryCalib_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "data", "flute_nonUnitaryCalib.wav"), server=server
+        os.path.join(base_dir, "flute_nonUnitaryCalib.wav"), server=server
     )
     pytest.data_path_sharp_noise_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "data", "sharp_noise.wav"), server=server
+        os.path.join(base_dir, "sharp_noise.wav"), server=server
     )
     pytest.data_path_sharper_noise_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "data", "sharper_noise.wav"), server=server
+        os.path.join(base_dir, "sharper_noise.wav"), server=server
     )
     pytest.data_path_rough_noise_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "data", "rough_noise.wav"), server=server
+        os.path.join(base_dir, "rough_noise.wav"), server=server
     )
     pytest.data_path_rough_tone_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "data", "rough_tone.wav"), server=server
+        os.path.join(base_dir, "rough_tone.wav"), server=server
     )
     pytest.data_path_fluctuating_noise_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "data", "fluctuating_noise.wav"), server=server
+        os.path.join(base_dir, "fluctuating_noise.wav"), server=server
     )
     pytest.data_path_fluctuating_tone_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "data", "fluctuating_tone.wav"), server=server
+        os.path.join(base_dir, "fluctuating_tone.wav"), server=server
     )
     pytest.data_path_white_noise_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "data", "white_noise.wav"), server=server
+        os.path.join(base_dir, "white_noise.wav"), server=server
     )
     pytest.data_path_accel_with_rpm_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "data", "accel_with_rpm.wav"), server=server
+        os.path.join(base_dir, "accel_with_rpm.wav"), server=server
     )
     pytest.data_path_swl_project_file_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "data", "SoundPowerLevelProject_hemisphere_2025R1_20243008.spw"),
+        os.path.join(base_dir, "SoundPowerLevelProject_hemisphere_2025R1_20243008.spw"),
         server=server,
     )
     pytest.data_path_swl_project_file_with_calibration_in_container = upload_file_in_tmp_folder(
         os.path.join(
             base_dir,
-            "data",
             "SoundPowerLevelProject_hemisphere_signalsWithCalibration_2025R1_20240919.spw",
         ),
         server=server,
     )
     pytest.data_path_sound_composer_spectrum_source_in_container = upload_file_in_tmp_folder(
-        os.path.join(
-            base_dir, "data", "AnsysSound_Spectrum_v3_-_nominal_-_dBSPLperHz_2024R2_20241121.txt"
-        ),
+        os.path.join(base_dir, "AnsysSound_Spectrum_v3_-_nominal_-_dBSPLperHz_2024R2_20241121.txt"),
         server=server,
     )
 
     pytest.data_path_flute_nonUnitaryCalib_as_txt_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "data", "flute_nonUnitaryCalib_as_text_2024R2_20241125.txt"),
+        os.path.join(base_dir, "flute_nonUnitaryCalib_as_text_2024R2_20241125.txt"),
         server=server,
     )
 
     pytest.data_path_rpm_profile_as_wav_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "data", "RPM_profile_2024R2_20241126.wav"), server=server
+        os.path.join(base_dir, "RPM_profile_2024R2_20241126.wav"), server=server
     )
     pytest.data_path_rpm_profile_as_txt_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "data", "RPM_profile_2024R2_20241126.txt"), server=server
+        os.path.join(base_dir, "RPM_profile_2024R2_20241126.txt"), server=server
     )
 
     # This path is different that the other, we need a local path
     # and not a server path because we will use a native python
     # `open()` to read this file and not a DPF operator
-    pytest.data_path_flute_psd_locally = os.path.join(base_dir, "data", "flute_psd.txt")
+    pytest.data_path_flute_psd_locally = os.path.join(base_dir, "flute_psd.txt")
 
-    pytest.temporary_folder = os.path.dirname(pytest.data_path_flute_in_container)
+    pytest.temporary_folder = base_dir
