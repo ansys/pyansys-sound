@@ -173,7 +173,8 @@ class SourceBroadbandNoise(SourceParent):
             if len(support_values) != len(source_bbn):
                 raise PyAnsysSoundException(
                     "Broadband noise source must contain the same number of spectra and "
-                    "associated control parameter values."
+                    "associated control parameter values (the number of fields should be the same "
+                    "as the number of support values, in the provided DPF fields container)."
                 )
 
         self.__source_bbn = source_bbn

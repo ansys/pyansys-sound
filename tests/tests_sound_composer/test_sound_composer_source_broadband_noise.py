@@ -187,7 +187,8 @@ def test_source_broadband_noise_properties_exceptions(dpf_sound_test_server):
         PyAnsysSoundException,
         match=(
             "Broadband noise source must contain the same number of spectra and associated "
-            "control parameter values."
+            "control parameter values (the number of fields should be the same as the number of "
+            "support values, in the provided DPF fields container)."
         ),
     ):
         source_bbn_obj.source_bbn = fc_source_bbn
