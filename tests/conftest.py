@@ -30,17 +30,16 @@ from ansys.sound.core.server_helpers import connect_to_or_start_server
 
 def pytest_configure():
 
-    # We're using a PyAnsys Sound here to connect to the server based on whether
-    # we're in a docker or local configuration
-    # There are tests for the function connect_to_or_start_server
-    # that are independent from the configuration,
-    # that's why we authorize the use of this function here
+    # We're using here a PyAnsys Sound function to connect to the server based on whether we're in
+    # a docker or local configuration.
+    # There are tests for the function connect_to_or_start_server that are independent from the
+    # configuration. That's why we authorize the use of this function here.
     server = connect_to_or_start_server(use_license_context=True)
 
-    # # Get the current directory of the conftest.py file
+    # Get the current directory of the conftest.py file.
     base_dir = os.path.dirname(__file__)
 
-    # Construct the paths of the different test files after uploading them on the server
+    # Construct the paths of the different test files after uploading them on the server.
     pytest.data_path_flute_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "data", "flute.wav"), server=server
     )
@@ -105,9 +104,8 @@ def pytest_configure():
         os.path.join(base_dir, "data", "RPM_profile_2024R2_20241126.txt"), server=server
     )
 
-    # This path is different that the other, we need a local path
-    # and not a server path because we will use a native python
-    # `open()` to read this file and not a DPF operator
+    # This path is different than the other, we need a local path and not a server path because we
+    # will use a native python `open()` to read this file and not a DPF operator.
     pytest.data_path_flute_psd_locally = os.path.join(base_dir, "data", "flute_psd.txt")
 
     pytest.temporary_folder = os.path.dirname(pytest.data_path_flute_in_container)
