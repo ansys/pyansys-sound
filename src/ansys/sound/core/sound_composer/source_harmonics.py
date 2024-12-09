@@ -172,9 +172,10 @@ class SourceHarmonics(SourceParent):
             support_values = support_data.field_support_by_property(support_properties[0])
             if len(support_values) != len(source):
                 raise PyAnsysSoundException(
-                    "Harmonics source must contain the same number of order levels and associated "
-                    "control parameter values (the number of fields should be the same as the "
-                    "number of support values, in the provided DPF fields container)."
+                    "Harmonics source must contain as many order levels as the number of values "
+                    "in the associated control parameter (in the provided DPF fields container, "
+                    "the number of fields should be the same as the number of values in the "
+                    "fields container support)."
                 )
 
         self.__source_harmonics = source

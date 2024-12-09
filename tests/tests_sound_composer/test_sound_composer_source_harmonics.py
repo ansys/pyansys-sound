@@ -194,9 +194,9 @@ def test_source_harmonics_properties_exceptions(dpf_sound_test_server):
     with pytest.raises(
         PyAnsysSoundException,
         match=(
-            "Harmonics source must contain the same number of order levels and associated control "
-            "parameter values \\(the number of fields should be the same as the number of support "
-            "values, in the provided DPF fields container\\)."
+            "Harmonics source must contain as many order levels as the number of values in the "
+            "associated control parameter \\(in the provided DPF fields container, the number of "
+            "fields should be the same as the number of values in the fields container support\\)."
         ),
     ):
         source_harmonics_obj.source_harmonics = fc_source_harmonics
