@@ -117,7 +117,7 @@ class SourceHarmonics(SourceParent):
                 f"{self.source_control.control.time_freq_support.time_frequencies.data[-1]} s"
             )
         else:
-            str_source_control = "Not set"
+            str_source_control = "Not set/valid"
 
         return f"Harmonics source: {str_source}\nSource control: {str_source_control}"
 
@@ -170,10 +170,11 @@ class SourceHarmonics(SourceParent):
             support_data = source.get_support("control_parameter_1")
             support_properties = support_data.available_field_supported_properties()
             support_values = support_data.field_support_by_property(support_properties[0])
-            if len(support_values) < 1:
+            if len(support_values) != len(source):
                 raise PyAnsysSoundException(
-                    "Control data in the specified harmonics source must contain at least "
-                    "one element."
+                    "Harmonics source must contain the same number of order levels and associated "
+                    "control parameter values (the number of fields should be the same as the "
+                    "number of support values, in the provided DPF fields container)."
                 )
 
         self.__source_harmonics = source

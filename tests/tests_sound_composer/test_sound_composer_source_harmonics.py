@@ -49,7 +49,7 @@ EXP_RPMS = [
 EXP_ORDER_LEVEL03_REF = 3.041734453290701e-05
 EXP_ORDER_LEVEL03_PA = 3.041734453290701e-05
 EXP_ORDER_LEVEL03_XML = 5.632353957971172e-19
-EXP_STR_NOT_SET = "Harmonics source: Not set\nSource control: Not set"
+EXP_STR_NOT_SET = "Harmonics source: Not set\nSource control: Not set/valid"
 EXP_STR_ALL_SET = (
     "Harmonics source: ''\n"
     "\tNumber of orders: 5\n"
@@ -193,7 +193,11 @@ def test_source_harmonics_properties_exceptions(dpf_sound_test_server):
     fc_source_harmonics = source_harmonics_obj.source_harmonics
     with pytest.raises(
         PyAnsysSoundException,
-        match="Control data in the specified harmonics source must contain at least one element.",
+        match=(
+            "Harmonics source must contain the same number of order levels and associated control "
+            "parameter values \\(the number of fields should be the same as the number of support "
+            "values, in the provided DPF fields container\\)."
+        ),
     ):
         source_harmonics_obj.source_harmonics = fc_source_harmonics
 
@@ -227,7 +231,7 @@ def test_source_harmonics_is_source_control_valid(dpf_sound_test_server):
     assert source_harmonics_obj.is_source_control_valid() is True
 
 
-def test_source_specrum_load_source_harmonics(dpf_sound_test_server):
+def test_source_harmonics_load_source_harmonics(dpf_sound_test_server):
     """Test SourceHarmonics load_source_harmonics method."""
     source_harmonics_obj = SourceHarmonics()
 
