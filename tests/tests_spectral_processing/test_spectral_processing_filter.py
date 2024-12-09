@@ -29,6 +29,24 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectral_processing import Filter
 
+EXP_STR_NOT_SET = (
+    "Sampling frequency: 44100.0 Hz\n"
+    "Numerator coefficients (B): Not set\n"
+    "Denominator coefficients (A): Not set"
+)
+EXP_STR_ALL_SET = (
+    "Sampling frequency: 44100.0 Hz\n"
+    "Numerator coefficients (B): [4, 5, 6]\n"
+    "Denominator coefficients (A): [1, 2, 3]"
+)
+EXP_STR_ALL_SET_MORE_COEFFS = (
+    "Sampling frequency: 44100.0 Hz\n"
+    "Numerator coefficients (B): [106.19685363769531, -113.11087036132812, -77.88863372802734, "
+    "-45.08974075317383, -17.067110061645508, ... ]\n"
+    "Denominator coefficients (A): [106.19685363769531, -113.11087036132812, -77.88863372802734, "
+    "-45.08974075317383, -17.067110061645508, ... ]"
+)
+
 EXP_B0 = 106.19685364
 EXP_B2 = -77.88863373
 EXP_B13 = 2.69651508
@@ -85,6 +103,20 @@ def test_filter_instantiation_args(dpf_sound_test_server):
     assert filter.a_coefficients is not []
     assert filter.b_coefficients is not []
     assert filter.signal is not None
+
+
+def test_filter___str__(dpf_sound_test_server):
+    """Test Filter __str__ method."""
+    filter = Filter()
+    assert str(filter) == EXP_STR_NOT_SET
+
+    filter.a_coefficients = [1, 2, 3]
+    filter.b_coefficients = [4, 5, 6]
+    assert str(filter) == EXP_STR_ALL_SET
+
+    filter.design_FIR_from_FRF_file(file=pytest.data_path_filter_frf)
+    filter.a_coefficients = filter.b_coefficients
+    assert str(filter) == EXP_STR_ALL_SET_MORE_COEFFS
 
 
 def test_filter_properties(dpf_sound_test_server):

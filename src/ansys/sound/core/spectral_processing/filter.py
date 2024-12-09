@@ -102,6 +102,28 @@ class Filter(SpectralProcessingParent):
 
         self.signal = signal
 
+    def __str__(self) -> str:
+        """Return the string representation of the object."""
+        if len(self.a_coefficients) > 5:
+            str_a = str(self.a_coefficients[:5])[:-1] + ", ... ]"
+        elif len(self.a_coefficients) == 0:
+            str_a = "Not set"
+        else:
+            str_a = str(self.a_coefficients)
+
+        if len(self.b_coefficients) > 5:
+            str_b = str(self.b_coefficients[:5])[:-1] + ", ... ]"
+        elif len(self.b_coefficients) == 0:
+            str_b = "Not set"
+        else:
+            str_b = str(self.b_coefficients)
+
+        return (
+            f"Sampling frequency: {self.__sampling_frequency:.1f} Hz\n"
+            f"Numerator coefficients (B): {str_b}\n"
+            f"Denominator coefficients (A): {str_a}"
+        )
+
     @property
     def a_coefficients(self) -> list[float]:
         """Denominator coefficients of the filter's transfer function."""
