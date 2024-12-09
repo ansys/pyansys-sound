@@ -141,7 +141,7 @@ class SourceBroadbandNoise(SourceParent):
         """Broadband noise source data, as a DPF fields container.
 
         The broadband noise source data consists of a series of spectra, each corresponding to a
-        control parameter value. Spectra can be narrowband, PSD, octave-band levels, or
+        control parameter value. Spectra can be narrowband (in dB or dB/Hz), octave-band levels, or
         1/3-octave-band levels.
         """
         return self.__source_bbn
@@ -170,10 +170,10 @@ class SourceBroadbandNoise(SourceParent):
             support_data = source_bbn.get_support("control_parameter_1")
             support_properties = support_data.available_field_supported_properties()
             support_values = support_data.field_support_by_property(support_properties[0])
-            if len(support_values) < 1:
+            if len(support_values) != len(source_bbn):
                 raise PyAnsysSoundException(
-                    "Control data in the specified broadband noise source must contain at least "
-                    "one element."
+                    "Broadband noise source must contain the same number of spectra and "
+                    "associated control parameter values."
                 )
 
         self.__source_bbn = source_bbn
