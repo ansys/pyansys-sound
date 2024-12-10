@@ -49,12 +49,12 @@ TOTAL_FS_ID = "total"
 SPECIFIC_FS_ID = "specific"
 
 
-def test_fs_instantiation(dpf_sound_test_server):
+def test_fs_instantiation():
     fs_computer = FluctuationStrength()
     assert fs_computer != None
 
 
-def test_fs_process(dpf_sound_test_server):
+def test_fs_process():
     fs_computer = FluctuationStrength()
 
     # No signal -> error
@@ -81,7 +81,7 @@ def test_fs_process(dpf_sound_test_server):
     fs_computer.process()
 
 
-def test_fs_get_output(dpf_sound_test_server):
+def test_fs_get_output():
     fs_computer = FluctuationStrength()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
@@ -110,7 +110,7 @@ def test_fs_get_output(dpf_sound_test_server):
     assert type(specific_fs) == FieldsContainer
 
 
-def test_fs_get_fluctuation_strength(dpf_sound_test_server):
+def test_fs_get_fluctuation_strength():
     fs_computer = FluctuationStrength()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
@@ -172,7 +172,7 @@ def test_fs_get_fluctuation_strength(dpf_sound_test_server):
     assert fs == pytest.approx(EXP_FS_2)
 
 
-def test_fs_get_specific_fluctuation_strength(dpf_sound_test_server):
+def test_fs_get_specific_fluctuation_strength():
     fs_computer = FluctuationStrength()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
@@ -220,7 +220,7 @@ def test_fs_get_specific_fluctuation_strength(dpf_sound_test_server):
     assert specific_fs[40] == pytest.approx(EXP_SPECIFIC_FS_2_40)
 
 
-def test_fs__get_ouptut_parameter(dpf_sound_test_server):
+def test_fs__get_ouptut_parameter():
     fs_computer = FluctuationStrength()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
@@ -284,7 +284,7 @@ def test_fs__get_ouptut_parameter(dpf_sound_test_server):
     assert param[40] == pytest.approx(EXP_SPECIFIC_FS_2_40)
 
 
-def test_fs_get_bark_band_indexes(dpf_sound_test_server):
+def test_fs_get_bark_band_indexes():
     fs_computer = FluctuationStrength()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
@@ -327,7 +327,7 @@ def test_fs_get_bark_band_indexes(dpf_sound_test_server):
     assert bark_band_indexes[40] == pytest.approx(EXP_BARK_40)
 
 
-def test_fs_get_bark_band_frequencies(dpf_sound_test_server):
+def test_fs_get_bark_band_frequencies():
     fs_computer = FluctuationStrength()
     # Get a signal
     # assert pytest.data_path_flute_in_container == 'toto'
@@ -349,7 +349,7 @@ def test_fs_get_bark_band_frequencies(dpf_sound_test_server):
     assert bark_band_frequencies[40] == pytest.approx(EXP_FREQ_40)
 
 
-def test_fs_get_output_as_nparray_from_fields_container(dpf_sound_test_server):
+def test_fs_get_output_as_nparray_from_fields_container():
     fs_computer = FluctuationStrength()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
@@ -383,7 +383,7 @@ def test_fs_get_output_as_nparray_from_fields_container(dpf_sound_test_server):
     assert specific_fs[40] == pytest.approx(EXP_SPECIFIC_FS_1_40)
 
 
-def test_fs_get_output_as_nparray_from_field(dpf_sound_test_server):
+def test_fs_get_output_as_nparray_from_field():
     fs_computer = FluctuationStrength()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
@@ -409,7 +409,7 @@ def test_fs_get_output_as_nparray_from_field(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_fs_plot_from_fields_container(mock_show, dpf_sound_test_server):
+def test_fs_plot_from_fields_container(mock_show):
     fs_computer = FluctuationStrength()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
@@ -446,7 +446,7 @@ def test_fs_plot_from_fields_container(mock_show, dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_fs_plot_from_field(mock_show, dpf_sound_test_server):
+def test_fs_plot_from_field(mock_show):
     fs_computer = FluctuationStrength()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
@@ -463,7 +463,7 @@ def test_fs_plot_from_field(mock_show, dpf_sound_test_server):
     fs_computer.plot()
 
 
-def test_fs_set_get_signal(dpf_sound_test_server):
+def test_fs_set_get_signal():
     fs_computer = FluctuationStrength()
     fc = FieldsContainer()
     fc.labels = ["channel"]

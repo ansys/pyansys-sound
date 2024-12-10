@@ -31,12 +31,12 @@ from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectrogram_processing import Stft
 
 
-def test_stft_instantiation(dpf_sound_test_server):
+def test_stft_instantiation():
     stft = Stft()
     assert stft != None
 
 
-def test_stft_process(dpf_sound_test_server):
+def test_stft_process():
     stft = Stft()
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
 
@@ -57,7 +57,7 @@ def test_stft_process(dpf_sound_test_server):
         assert False
 
 
-def test_stft_get_output(dpf_sound_test_server):
+def test_stft_get_output():
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -80,7 +80,7 @@ def test_stft_get_output(dpf_sound_test_server):
     assert fc_out[300].data[0] == -0.019828863441944122
 
 
-def test_stft_get_output_as_np_array(dpf_sound_test_server):
+def test_stft_get_output_as_np_array():
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -97,7 +97,7 @@ def test_stft_get_output_as_np_array(dpf_sound_test_server):
     assert arr[300, 50] == (-0.03049434721469879 - 0.49174121022224426j)
 
 
-def test_stft_set_get_signal(dpf_sound_test_server):
+def test_stft_set_get_signal():
     stft = Stft()
     fc = FieldsContainer()
     fc.labels = ["channel"]
@@ -128,7 +128,7 @@ def test_stft_set_get_signal(dpf_sound_test_server):
     )
 
 
-def test_stft_set_get_fft_size(dpf_sound_test_server):
+def test_stft_set_get_fft_size():
     stft = Stft()
 
     # Error
@@ -140,7 +140,7 @@ def test_stft_set_get_fft_size(dpf_sound_test_server):
     assert stft.fft_size == 1234.0
 
 
-def test_stft_set_get_window_overlap(dpf_sound_test_server):
+def test_stft_set_get_window_overlap():
     stft = Stft()
 
     # Error
@@ -152,7 +152,7 @@ def test_stft_set_get_window_overlap(dpf_sound_test_server):
     assert stft.window_overlap == 0.5
 
 
-def test_stft_set_get_window_type(dpf_sound_test_server):
+def test_stft_set_get_window_type():
     stft = Stft()
 
     # Error
@@ -169,7 +169,7 @@ def test_stft_set_get_window_type(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_stft_plot(mock_show, dpf_sound_test_server):
+def test_stft_plot(mock_show):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()

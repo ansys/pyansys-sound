@@ -71,7 +71,7 @@ EXP_LW_OCT_5_CALIB = 137.08978271484375
 EXP_LW_3_10_CALIB = 89.90057373046875
 
 
-def test_sound_power_level_iso_3744_instantiation(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_instantiation():
     """Test SoundPowerLevelISO3744 instantiation."""
     # Test instantiation.
     swl = SoundPowerLevelISO3744()
@@ -83,7 +83,7 @@ def test_sound_power_level_iso_3744_instantiation(dpf_sound_test_server):
     assert swl.C2 == 0.0
 
 
-def test_sound_power_level_iso_3744_setters(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_setters():
     """Test SoundPowerLevelISO3744 setters."""
     # Test setters.
     swl = SoundPowerLevelISO3744()
@@ -106,7 +106,7 @@ def test_sound_power_level_iso_3744_setters(dpf_sound_test_server):
     assert swl.C2 == 1.5
 
 
-def test_sound_power_level_iso_3744_setters_exceptions(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_setters_exceptions():
     """Test SoundPowerLevelISO3744 setters' exceptions."""
     swl = SoundPowerLevelISO3744()
     with pytest.raises(
@@ -122,16 +122,14 @@ def test_sound_power_level_iso_3744_setters_exceptions(dpf_sound_test_server):
         swl.surface_radius = -2.0
 
 
-def test_sound_power_level_iso_3744_add_microphone_signal(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_add_microphone_signal():
     """Test add_microphone_signal method."""
     swl = SoundPowerLevelISO3744()
 
     swl.add_microphone_signal(Field())
 
 
-def test_sound_power_level_iso_3744_add_microphone_signal_exception_signal_type(
-    dpf_sound_test_server,
-):
+def test_sound_power_level_iso_3744_add_microphone_signal_exception_signal_type():
     """Test add_microphone_signal method's exception for invalid signal type."""
     swl = SoundPowerLevelISO3744()
 
@@ -141,7 +139,7 @@ def test_sound_power_level_iso_3744_add_microphone_signal_exception_signal_type(
         swl.add_microphone_signal([1, 2, 3])
 
 
-def test_sound_power_level_iso_3744_get_all_signal_names(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_get_all_signal_names():
     """Test get_all_signal_names method."""
     swl = SoundPowerLevelISO3744()
     swl.add_microphone_signal(Field())
@@ -151,7 +149,7 @@ def test_sound_power_level_iso_3744_get_all_signal_names(dpf_sound_test_server):
     assert names == [[0, ""], [1, ""]]
 
 
-def test_sound_power_level_iso_3744_get_microphone_signal(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_get_microphone_signal():
     """Test get_microphone_signal method."""
     swl = SoundPowerLevelISO3744()
     swl.add_microphone_signal(Field())
@@ -160,7 +158,7 @@ def test_sound_power_level_iso_3744_get_microphone_signal(dpf_sound_test_server)
     assert type(signal) is Field
 
 
-def test_sound_power_level_iso_3744_get_microphone_signal_exception(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_get_microphone_signal_exception():
     """Test get_microphone_signal method's exception."""
     swl = SoundPowerLevelISO3744()
     swl.add_microphone_signal(Field())
@@ -171,7 +169,7 @@ def test_sound_power_level_iso_3744_get_microphone_signal_exception(dpf_sound_te
         swl.get_microphone_signal(1)
 
 
-def test_sound_power_level_iso_3744_delete_microphone_signal(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_delete_microphone_signal():
     """Test delete_microphone_signal method."""
     swl = SoundPowerLevelISO3744()
     swl.add_microphone_signal(Field())
@@ -181,7 +179,7 @@ def test_sound_power_level_iso_3744_delete_microphone_signal(dpf_sound_test_serv
     assert swl.get_all_signal_names() == [[0, ""]]
 
 
-def test_sound_power_level_iso_3744_delete_microphone_signal_warning(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_delete_microphone_signal_warning():
     """Test delete_microphone_signal method's exception."""
     swl = SoundPowerLevelISO3744()
     swl.add_microphone_signal(Field())
@@ -192,7 +190,7 @@ def test_sound_power_level_iso_3744_delete_microphone_signal_warning(dpf_sound_t
         swl.delete_microphone_signal(1)
 
 
-def test_sound_power_level_iso_3744_set_C1_C2_from_meteo_parameters(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_set_C1_C2_from_meteo_parameters():
     """Test set_C1_C2_from_meteo_parameters method."""
     swl = SoundPowerLevelISO3744()
     swl.set_C1_C2_from_meteo_parameters(temperature=30, pressure=102.0)
@@ -201,7 +199,7 @@ def test_sound_power_level_iso_3744_set_C1_C2_from_meteo_parameters(dpf_sound_te
     assert swl.C2 == pytest.approx(EXP_C2)
 
 
-def test_sound_power_level_iso_3744_set_K2_from_room_properties(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_set_K2_from_room_properties():
     """Test set_K2_from_room_properties method."""
     swl = SoundPowerLevelISO3744()
     swl.set_K2_from_room_properties(length=8, width=6, height=4, alpha=0.4)
@@ -209,9 +207,7 @@ def test_sound_power_level_iso_3744_set_K2_from_room_properties(dpf_sound_test_s
     assert swl.K2 == pytest.approx(EXP_K2)
 
 
-def test_sound_power_level_iso_3744_set_K2_from_room_properties_exception_negative_dimension(
-    dpf_sound_test_server,
-):
+def test_sound_power_level_iso_3744_set_K2_from_room_properties_exception_negative_dimension():
     """Test set_K2_from_room_properties method's exception related to room dimensions."""
     swl = SoundPowerLevelISO3744()
 
@@ -234,9 +230,7 @@ def test_sound_power_level_iso_3744_set_K2_from_room_properties_exception_negati
         swl.set_K2_from_room_properties(height=-8, length=8, width=6, alpha=0.4)
 
 
-def test_sound_power_level_iso_3744_set_K2_from_room_properties_exception_alpha_range(
-    dpf_sound_test_server,
-):
+def test_sound_power_level_iso_3744_set_K2_from_room_properties_exception_alpha_range():
     """Test set_K2_from_room_properties method's exception related to alpha."""
     swl = SoundPowerLevelISO3744()
 
@@ -255,7 +249,7 @@ def test_sound_power_level_iso_3744_set_K2_from_room_properties_exception_alpha_
         swl.set_K2_from_room_properties(alpha=1.1, length=8, width=6, height=4)
 
 
-def test_sound_power_level_iso_3744_load_project(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_load_project():
     """Test load_project method."""
     swl = SoundPowerLevelISO3744()
     swl.load_project(pytest.data_path_swl_project_file_in_container)
@@ -272,14 +266,14 @@ def test_sound_power_level_iso_3744_load_project(dpf_sound_test_server):
     assert type(swl.get_microphone_signal(0)) == Field
 
 
-def test_sound_power_level_iso_3744_process(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_process():
     """Test process method."""
     swl = SoundPowerLevelISO3744()
     swl.load_project(pytest.data_path_swl_project_file_in_container)
     swl.process()
 
 
-def test_sound_power_level_iso_3744_process_exception(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_process_exception():
     """Test process method's exception."""
     swl = SoundPowerLevelISO3744()
 
@@ -291,7 +285,7 @@ def test_sound_power_level_iso_3744_process_exception(dpf_sound_test_server):
         swl.process()
 
 
-def test_sound_power_level_iso_3744_get_output(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_get_output():
     """Test get_output method."""
     swl = SoundPowerLevelISO3744()
     swl.load_project(pytest.data_path_swl_project_file_in_container)
@@ -301,7 +295,7 @@ def test_sound_power_level_iso_3744_get_output(dpf_sound_test_server):
     assert output is not None
 
 
-def test_sound_power_level_iso_3744_get_output_unprocessed(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_get_output_unprocessed():
     """Test get_output method's warning."""
     swl = SoundPowerLevelISO3744()
 
@@ -314,7 +308,7 @@ def test_sound_power_level_iso_3744_get_output_unprocessed(dpf_sound_test_server
     assert output is None
 
 
-def test_sound_power_level_iso_3744_get_output_as_nparray(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_get_output_as_nparray():
     """Test get_output_as_nparray method."""
     swl = SoundPowerLevelISO3744()
     swl.load_project(pytest.data_path_swl_project_file_in_container)
@@ -329,7 +323,7 @@ def test_sound_power_level_iso_3744_get_output_as_nparray(dpf_sound_test_server)
     assert fc_3[12] == pytest.approx(EXP_FC_3_12)
 
 
-def test_sound_power_level_iso_3744_get_output_as_nparray_unprocessed(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_get_output_as_nparray_unprocessed():
     """Test get_output_as_nparray method's warning."""
     swl = SoundPowerLevelISO3744()
 
@@ -347,7 +341,7 @@ def test_sound_power_level_iso_3744_get_output_as_nparray_unprocessed(dpf_sound_
     assert len(fc_3) == 0
 
 
-def test_sound_power_level_iso_3744_get_Lw(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_get_Lw():
     """Test get_Lw method."""
     swl = SoundPowerLevelISO3744()
     swl.load_project(pytest.data_path_swl_project_file_in_container)
@@ -357,7 +351,7 @@ def test_sound_power_level_iso_3744_get_Lw(dpf_sound_test_server):
     assert Lw == pytest.approx(EXP_LW)
 
 
-def test_sound_power_level_iso_3744_get_Lw_A(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_get_Lw_A():
     """Test get_Lw_A method."""
     swl = SoundPowerLevelISO3744()
     swl.load_project(pytest.data_path_swl_project_file_in_container)
@@ -367,7 +361,7 @@ def test_sound_power_level_iso_3744_get_Lw_A(dpf_sound_test_server):
     assert LwA == pytest.approx(EXP_LWA)
 
 
-def test_sound_power_level_iso_3744_get_Lw_octave(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_get_Lw_octave():
     """Test get_Lw_octave method."""
     swl = SoundPowerLevelISO3744()
     swl.load_project(pytest.data_path_swl_project_file_in_container)
@@ -377,7 +371,7 @@ def test_sound_power_level_iso_3744_get_Lw_octave(dpf_sound_test_server):
     assert Lw_oct[5] == pytest.approx(EXP_LW_OCT_5)
 
 
-def test_sound_power_level_iso_3744_get_octave_center_frequencies(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_get_octave_center_frequencies():
     """Test get_octave_center_frequencies method."""
     swl = SoundPowerLevelISO3744()
     swl.load_project(pytest.data_path_swl_project_file_in_container)
@@ -387,7 +381,7 @@ def test_sound_power_level_iso_3744_get_octave_center_frequencies(dpf_sound_test
     assert fc_oct[6] == pytest.approx(EXP_FC_OCT_6)
 
 
-def test_sound_power_level_iso_3744_get_Lw_thirdoctave(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_get_Lw_thirdoctave():
     """Test get_Lw_thirdoctave method."""
     swl = SoundPowerLevelISO3744()
     swl.load_project(pytest.data_path_swl_project_file_in_container)
@@ -397,7 +391,7 @@ def test_sound_power_level_iso_3744_get_Lw_thirdoctave(dpf_sound_test_server):
     assert Lw_3[10] == pytest.approx(EXP_LW_3_10)
 
 
-def test_sound_power_level_iso_3744_get_thirdoctave_center_frequencies(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_get_thirdoctave_center_frequencies():
     """Test get_thirdoctave_center_frequencies method."""
     swl = SoundPowerLevelISO3744()
     swl.load_project(pytest.data_path_swl_project_file_in_container)
@@ -407,7 +401,7 @@ def test_sound_power_level_iso_3744_get_thirdoctave_center_frequencies(dpf_sound
     assert fc_3[12] == pytest.approx(EXP_FC_3_12)
 
 
-def test_sound_power_level_iso_3744_load_project_with_calibrations(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_load_project_with_calibrations():
     """Test loading swl project created with signals with calibrations."""
     swl = SoundPowerLevelISO3744()
     swl.load_project(pytest.data_path_swl_project_file_with_calibration_in_container)
@@ -423,7 +417,7 @@ def test_sound_power_level_iso_3744_load_project_with_calibrations(dpf_sound_tes
 
 
 @patch("matplotlib.pyplot.show")
-def test_sound_power_level_iso_3744_plot(mock_show, dpf_sound_test_server):
+def test_sound_power_level_iso_3744_plot(mock_show):
     """Test plot method."""
     swl = SoundPowerLevelISO3744()
     swl.load_project(pytest.data_path_swl_project_file_in_container)
@@ -432,7 +426,7 @@ def test_sound_power_level_iso_3744_plot(mock_show, dpf_sound_test_server):
     swl.plot()
 
 
-def test_sound_power_level_iso_3744_plot_exception(dpf_sound_test_server):
+def test_sound_power_level_iso_3744_plot_exception():
     """Test plot method's exception."""
     swl = SoundPowerLevelISO3744()
     swl.load_project(pytest.data_path_swl_project_file_in_container)
@@ -444,7 +438,7 @@ def test_sound_power_level_iso_3744_plot_exception(dpf_sound_test_server):
         swl.plot()
 
 
-def test_sound_power_level_iso_3744___get_surface_area(dpf_sound_test_server):
+def test_sound_power_level_iso_3744___get_surface_area():
     """Test __get_surface_area method."""
     swl = SoundPowerLevelISO3744()
 
@@ -456,7 +450,7 @@ def test_sound_power_level_iso_3744___get_surface_area(dpf_sound_test_server):
     assert area == pytest.approx(EXP_AREA_HH)
 
 
-def test_sound_power_level_iso_3744___str__(dpf_sound_test_server):
+def test_sound_power_level_iso_3744___str__():
     """Test __str__ method."""
     swl = SoundPowerLevelISO3744()
     swl.load_project(pytest.data_path_swl_project_file_in_container)

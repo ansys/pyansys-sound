@@ -28,14 +28,14 @@ from ansys.sound.core.sound_composer import SourceControlSpectrum
 EXP_STR = "Duration: 0.0 s\nMethod: IFFT"
 
 
-def test_source_control_spectrum_instantiation(dpf_sound_test_server):
+def test_source_control_spectrum_instantiation():
     """Test SourceControlSpectrum instantiation."""
     # Test instantiation.
     control = SourceControlSpectrum()
     assert isinstance(control, SourceControlSpectrum)
 
 
-def test_source_control_spectrum_properties(dpf_sound_test_server):
+def test_source_control_spectrum_properties():
     """Test SourceControlSpectrum properties."""
     control = SourceControlSpectrum()
 
@@ -48,7 +48,7 @@ def test_source_control_spectrum_properties(dpf_sound_test_server):
     assert control.method == 1
 
 
-def test_source_control_spectrum_propertiess_exceptions(dpf_sound_test_server):
+def test_source_control_spectrum_propertiess_exceptions():
     """Test SourceControlSpectrum properties' exceptions."""
     control = SourceControlSpectrum()
 
@@ -64,7 +64,7 @@ def test_source_control_spectrum_propertiess_exceptions(dpf_sound_test_server):
         control.method = 3
 
 
-def test_source_control_spectrum___str__(dpf_sound_test_server):
+def test_source_control_spectrum___str__():
     """Test SourceControlSpectrum __str__ method."""
     control = SourceControlSpectrum()
     assert str(control) == EXP_STR
