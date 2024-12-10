@@ -50,17 +50,10 @@ EXP_STR_ALL_SET_MORE_COEFFS = (
 EXP_B0 = 106.19685364
 EXP_B2 = -77.88863373
 EXP_B13 = 2.69651508
-# These values are probably wrong, pending DPF Sound bug:
-# https://tfs.ansys.com:8443/tfs/ANSYS_Development/Portfolio/_queries/edit/1183224/?triage=true
-# In the meantime, wrong values are used to make sure tests fail.
-# EXP_OUTPUT4233 = 0.9114683270454407
-# EXP_OUTPUT6156 = -5.924870491027832
-# EXP_OUTPUT19846 = 10.320268630981445
-# EXP_OUTPUT36849 = 130.4471893310547
-EXP_OUTPUT4233 = 0.0
-EXP_OUTPUT6156 = 0.0
-EXP_OUTPUT19846 = 0.0
-EXP_OUTPUT36849 = 0.0
+EXP_OUTPUT8834 = 1.3717
+EXP_OUTPUT13536 = -20.8752
+EXP_OUTPUT24189 = 51.0042
+EXP_OUTPUT43544 = -17.2570
 
 
 def test_filter_instantiation_no_arg(dpf_sound_test_server):
@@ -300,10 +293,10 @@ def test_filter_get_output(dpf_sound_test_server):
     filter.process()
     output = filter.get_output()
 
-    assert output.data[4233] == pytest.approx(EXP_OUTPUT4233)
-    assert output.data[6156] == pytest.approx(EXP_OUTPUT6156)
-    assert output.data[19846] == pytest.approx(EXP_OUTPUT19846)
-    assert output.data[36849] == pytest.approx(EXP_OUTPUT36849)
+    assert output.data[8834] == pytest.approx(EXP_OUTPUT8834)
+    assert output.data[13536] == pytest.approx(EXP_OUTPUT13536)
+    assert output.data[24189] == pytest.approx(EXP_OUTPUT24189)
+    assert output.data[43544] == pytest.approx(EXP_OUTPUT43544)
 
 
 def test_filter_get_output_as_nparray(dpf_sound_test_server):
@@ -324,10 +317,10 @@ def test_filter_get_output_as_nparray(dpf_sound_test_server):
     filter.process()
     output_nparray = filter.get_output_as_nparray()
 
-    assert output_nparray[4233] == pytest.approx(EXP_OUTPUT4233)
-    assert output_nparray[6156] == pytest.approx(EXP_OUTPUT6156)
-    assert output_nparray[19846] == pytest.approx(EXP_OUTPUT19846)
-    assert output_nparray[36849] == pytest.approx(EXP_OUTPUT36849)
+    assert output_nparray[8834] == pytest.approx(EXP_OUTPUT8834)
+    assert output_nparray[13536] == pytest.approx(EXP_OUTPUT13536)
+    assert output_nparray[24189] == pytest.approx(EXP_OUTPUT24189)
+    assert output_nparray[43544] == pytest.approx(EXP_OUTPUT43544)
 
 
 @patch("matplotlib.pyplot.show")
