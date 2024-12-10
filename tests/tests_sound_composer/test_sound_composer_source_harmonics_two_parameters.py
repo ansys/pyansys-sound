@@ -42,6 +42,9 @@ REF_ACOUSTIC_POWER = 4e-10
 EXP_LEVEL_OCTAVE_BAND_500 = 44.2
 EXP_LEVEL_OCTAVE_BAND_1000 = 46.7
 EXP_LEVEL_OCTAVE_BAND_2000 = 50.7
+EXP_LEVEL_OCTAVE_BAND_500_INVCON = 51.2
+EXP_LEVEL_OCTAVE_BAND_1000_INVCON = 50.3
+EXP_LEVEL_OCTAVE_BAND_2000_INVCON = 35.5
 EXP_ORDER_LEVEL62 = 3.9810717055349695e-05
 EXP_ORDER_LEVEL33_INVERTED = 0.00039810717055349735
 EXP_ORDER_LEVEL22_FROM_ACCEL = 0.0016218100973589282
@@ -464,6 +467,48 @@ def test_source_harmonics_two_parameters_get_output(dpf_sound_test_server):
     ]
     level = 10 * np.log10(psd_squared_band.sum() * delat_f / REF_ACOUSTIC_POWER)
     assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND_2000, abs=3.0)
+
+    # Test output with another source file with inverted controls.
+    source_obj.load_source_harmonics_two_parameters(
+        pytest.data_path_sound_composer_harmonics_source_2p_inverted_controls_in_container,
+    )
+
+    source_obj.process(sampling_frequency=44100.0)
+    f_output = source_obj.get_output()
+    assert isinstance(f_output, Field)
+    assert len(f_output.data) / 44100.0 == pytest.approx(3.0)
+
+    # Compute the power spectral density over the output signal.
+    psd = PowerSpectralDensity(
+        input_signal=f_output,
+        fft_size=8192,
+        window_type="HANN",
+        window_length=8192,
+        overlap=0.75,
+    )
+    psd.process()
+    psd_squared, psd_freq = psd.get_PSD_squared_linear_as_nparray()
+    delat_f = psd_freq[1] - psd_freq[0]
+
+    # Check the sound power level in the octave bands centered at 500, 1000 and 2000 Hz.
+    # Due to the non-deterministic nature of the produced signal, tolerance is set to 3 dB.
+    psd_squared_band = psd_squared[
+        (psd_freq >= 500 * 2 ** (-1 / 2)) & (psd_freq < 500 * 2 ** (1 / 2))
+    ]
+    level = 10 * np.log10(psd_squared_band.sum() * delat_f / REF_ACOUSTIC_POWER)
+    assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND_500_INVCON, abs=3.0)
+
+    psd_squared_band = psd_squared[
+        (psd_freq >= 1000 * 2 ** (-1 / 2)) & (psd_freq < 1000 * 2 ** (1 / 2))
+    ]
+    level = 10 * np.log10(psd_squared_band.sum() * delat_f / REF_ACOUSTIC_POWER)
+    assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND_1000_INVCON, abs=3.0)
+
+    psd_squared_band = psd_squared[
+        (psd_freq >= 2000 * 2 ** (-1 / 2)) & (psd_freq < 2000 * 2 ** (1 / 2))
+    ]
+    level = 10 * np.log10(psd_squared_band.sum() * delat_f / REF_ACOUSTIC_POWER)
+    assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND_2000_INVCON, abs=3.0)
 
 
 def test_source_harmonics_two_parameters_get_output_unprocessed(dpf_sound_test_server):
