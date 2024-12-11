@@ -62,6 +62,12 @@ def pytest_configure():
     )
     pytest.data_path_rpm_profile_as_wav_in_container = "C:\\data\\RPM_profile_2024R2_20241126.wav"
     pytest.data_path_rpm_profile_as_txt_in_container = "C:\\data\\RPM_profile_2024R2_20241126.txt"
+    pytest.data_path_sound_composer_bbn_source_in_container = (
+        "C:\\data\\AnsysSound_BBN dBSPL OCTAVE Constants.txt"
+    )
+    pytest.data_path_sound_composer_bbn_source_40_values_in_container = (
+        "C:\\data\\AnsysSound_BBN dBSPLperHz NARROWBAND v2_40values_2024R2_20241128.txt"
+    )
     pytest.data_path_sound_composer_harmonics_source_2p_in_container = (
         "C:\\data\\AnsysSound_Orders_MultipleParameters dBSPL_2024R2_20241205.txt"
     )
