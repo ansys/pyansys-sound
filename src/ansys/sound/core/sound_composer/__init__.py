@@ -32,6 +32,7 @@ from .source_audio import SourceAudio
 from .source_broadband_noise import SourceBroadbandNoise
 from .source_control_spectrum import SourceControlSpectrum
 from .source_control_time import SourceControlTime
+from .source_harmonics_two_parameters import SourceHarmonicsTwoParameters
 from .source_spectrum import SourceSpectrum
 
 __all__ = (
@@ -41,6 +42,7 @@ __all__ = (
     "SpectrumSynthesisMethods",
     "SourceSpectrum",
     "SourceControlSpectrum",
+    "SourceHarmonicsTwoParameters",
     "SourceBroadbandNoise",
     "SourceControlTime",
     "SourceAudio",
