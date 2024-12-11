@@ -113,7 +113,7 @@ def test_source_control_time_load_from_text_file(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_source_audio_plot(dpf_sound_test_server):
+def test_source_audio_plot(mock_show, dpf_sound_test_server):
     """Test SourceAudio plot method."""
     source_audio = SourceControlTime(pytest.data_path_rpm_profile_as_txt_in_container)
     source_audio.plot()
