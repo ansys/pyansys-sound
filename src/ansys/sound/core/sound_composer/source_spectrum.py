@@ -240,14 +240,14 @@ class SourceSpectrum(SourceParent):
         """Plot the resulting signal in a figure."""
         if self._output == None:
             raise PyAnsysSoundException(
-                "Output is not processed yet. Use the 'SourceSpectrum.process()' method."
+                f"Output is not processed yet. Use the '{__class__.__name__}.process()' method."
             )
         output = self.get_output()
 
         time_data = output.time_freq_support.time_frequencies.data
 
         plt.plot(time_data, output.data)
-        plt.title("Signal from spectrum source")
+        plt.title(output.name if len(output.name) > 0 else "Signal from spectrum source")
         plt.xlabel("Time (s)")
         plt.ylabel("Amplitude (Pa)")
         plt.grid(True)
