@@ -8,6 +8,7 @@ Sound composer
 
     SourceSpectrum
     SourceBroadbandNoise
+    SourceHarmonics
     SourceAudio
     SourceControlSpectrum
     SourceControlTime
