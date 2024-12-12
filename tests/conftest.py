@@ -68,6 +68,9 @@ def pytest_configure():
     pytest.data_path_sound_composer_bbn_source_40_values_in_container = (
         "C:\\data\\AnsysSound_BBN dBSPLperHz NARROWBAND v2_40values_2024R2_20241128.txt"
     )
+    pytest.data_path_sound_composer_bbn_source_2p_in_container = (
+        "C:\\data\\AnsysSound_BBN_MultipleParameters Pa2PerHz Narrowband v2_2024R2_20240418.txt"
+    )
     pytest.data_path_filter_frf = "C:\\data\\AnsysSound_FRF_2024R2_20241206.txt"
     pytest.data_path_filter_frf_wrong_header = "C:\\data\\AnsysSound_FRF_bad_2024R2_20241206.txt"
 
