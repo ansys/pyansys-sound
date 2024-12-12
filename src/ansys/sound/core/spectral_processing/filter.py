@@ -132,7 +132,6 @@ class Filter(SpectralProcessingParent):
     @a_coefficients.setter
     def a_coefficients(self, coefficients: list[float]):
         """Set filter's denominator coefficients."""
-        # if coefficients != [] and coefficients[0] != 1.0:
         self.__a_coefficients = coefficients
 
     @property
