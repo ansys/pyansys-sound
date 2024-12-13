@@ -233,7 +233,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
             support2_values = support_data.field_support_by_property(support_properties[0])
             if len(support1_values) != len(source) or len(support2_values) != len(source):
                 raise PyAnsysSoundException(
-                    "Specified harmonics source with two parameters must contain as many sets of"
+                    "Specified harmonics source with two parameters must contain as many sets of "
                     "order levels as the number of values in both associated control parameters "
                     "(in the provided DPF fields container, the number of fields should be the "
                     "same as the number of values in both fields container supports)."
