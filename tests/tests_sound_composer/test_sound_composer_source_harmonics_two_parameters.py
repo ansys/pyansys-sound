@@ -179,21 +179,21 @@ def test_source_harmonics_two_parameters_properties_exceptions(dpf_sound_test_se
     """Test SourceHarmonicsTwoParameters properties' exceptions."""
     source_obj = SourceHarmonicsTwoParameters()
 
-    # Test control_rpm setter exception (str instead of SourceControlTime).
+    # Test source_control_rpm setter exception (str instead of SourceControlTime).
     with pytest.raises(
         PyAnsysSoundException,
-        match="Specified RPM source control object must be of type ``SourceControlTime``.",
+        match="Specified RPM source control object must be of type SourceControlTime.",
     ):
         source_obj.source_control_rpm = "InvalidType"
 
-    # Test control2 setter exception (str instead of SourceControlTime).
+    # Test source_control2 setter exception (str instead of SourceControlTime).
     with pytest.raises(
         PyAnsysSoundException,
-        match="Specified second source control object must be of type ``SourceControlTime``.",
+        match="Specified second source control object must be of type SourceControlTime.",
     ):
         source_obj.source_control2 = "InvalidType"
 
-    # Test source_harmonics_two_parameters setter exception 1 (str instead a Field).
+    # Test source_harmonics_two_parameters setter exception 1 (str instead of FieldsContainer).
     with pytest.raises(
         PyAnsysSoundException,
         match=(
@@ -204,25 +204,54 @@ def test_source_harmonics_two_parameters_properties_exceptions(dpf_sound_test_se
         source_obj.source_harmonics_two_parameters = "InvalidType"
 
     # Test source_harmonics_two_parameters setter exception 2 (less than 1 order).
-    fc_source_harmonics = FieldsContainer()
-    with pytest.raises(
-        PyAnsysSoundException,
-        match="Specified harmonics source with two parameters must contain at least one order.",
-    ):
-        source_obj.source_harmonics_two_parameters = fc_source_harmonics
-
-    # Test source_harmonics_two_parameters setter exception 3 (empty spectrum).
-    fc_source_harmonics = fields_container_factory.over_time_freq_fields_container([Field()])
+    fc_source = FieldsContainer()
     with pytest.raises(
         PyAnsysSoundException,
         match=(
-            "Each order in the specified harmonics source with two parameters must contain at "
-            "least one element."
+            "Specified harmonics source with two parameters must contain at least one order level "
+            "\\(the provided DPF fields container must contain at least one field with at least "
+            "one data point\\)."
         ),
     ):
-        source_obj.source_harmonics_two_parameters = fc_source_harmonics
+        source_obj.source_harmonics_two_parameters = fc_source
 
-    # Test source_harmonics_two_parameters setter exception 4 (empty harmonics source's first
+    # Test source_harmonics_two_parameters setter exception 3 (within-field order number mismatch).
+    field = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    field.append([1.0, 2.0, 3.0, 4.0, 5.0], 1)
+    support = TimeFreqSupport()
+    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_time.append([1.0, 2.0], 1)
+    support.time_frequencies = f_time
+    field.time_freq_support = support
+    fc_source = fields_container_factory.over_time_freq_fields_container([field])
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=(
+            "Each set of order levels in the specified harmonics source with two parameters must "
+            "contain as many level values as the number of orders \\(in the provided DPF fields "
+            "container, each field must contain the same number of data points and support "
+            "values\\)."
+        ),
+    ):
+        source_obj.source_harmonics_two_parameters = fc_source
+
+    # Test source_harmonics_two_parameters setter exception 4(between-field order number mismatch).
+    field2 = field.deep_copy()
+    field.data = [1.0, 2.0]
+    field2.data = [1.0, 2.0, 3.0, 4.0, 5.0]
+    field2.time_freq_support.time_frequencies.data = [1.0, 2.0, 3.0, 4.0, 5.0]
+    fc_source = fields_container_factory.over_time_freq_fields_container([field, field2])
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=(
+            "Each set of order levels in the specified harmonics source with two parameters must "
+            "contain the same number of level values \\(in the provided DPF fields container, "
+            "each field must contain the same number of data points\\)."
+        ),
+    ):
+        source_obj.source_harmonics_two_parameters = fc_source
+
+    # Test source_harmonics_two_parameters setter exception 5 (empty harmonics source's first
     # control data). For this, we use a valid dataset, and then remove the control data.
     source_obj = SourceHarmonicsTwoParameters()
     source_obj.load_source_harmonics_two_parameters(
@@ -232,17 +261,17 @@ def test_source_harmonics_two_parameters_properties_exceptions(dpf_sound_test_se
     support_properties = support_data.available_field_supported_properties()
     support_values = support_data.field_support_by_property(support_properties[0])
     support_values.data = []
-    fc_source_harmonics = source_obj.source_harmonics_two_parameters
+    fc_source = source_obj.source_harmonics_two_parameters
     with pytest.raises(
         PyAnsysSoundException,
         match=(
-            "Harmonics source with two parameters must contain as many order levels as the number "
-            "of values in both associated control parameters \\(in the provided DPF fields "
-            "container, the number of fields should be the same as the number of values in both "
-            "fields container supports\\)."
+            "Specified harmonics source with two parameters must contain as many sets of order "
+            "levels as the number of values in both associated control parameters \\(in the "
+            "provided DPF fields container, the number of fields should be the same as the number "
+            "of values in both fields container supports\\)."
         ),
     ):
-        source_obj.source_harmonics_two_parameters = fc_source_harmonics
+        source_obj.source_harmonics_two_parameters = fc_source
 
 
 def test_source_harmonics_two_parameters_is_source_control_valid(dpf_sound_test_server):
