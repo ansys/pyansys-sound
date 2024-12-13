@@ -489,9 +489,7 @@ def test_source_broadband_noise_two_parameters_get_output_as_nparray():
     assert len(output_nparray) / 44100.0 == pytest.approx(3.0)
 
 
-def test_source_broadband_noise_two_parameters_get_output_as_nparray_unprocessed(
-    ,
-):
+def test_source_broadband_noise_two_parameters_get_output_as_nparray_unprocessed():
     """Test SourceBroadbandNoiseTwoParameters get_output_as_nparray method's exception."""
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters()
     with pytest.warns(
