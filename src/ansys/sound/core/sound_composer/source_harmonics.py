@@ -134,7 +134,7 @@ class SourceHarmonics(SourceParent):
         """Set the source control."""
         if not (isinstance(source_control, SourceControlTime) or source_control is None):
             raise PyAnsysSoundException(
-                "Specified source control object must be of type ``SourceControlTime``."
+                "Specified source control object must be of type SourceControlTime."
             )
         self.__source_control = source_control
 
@@ -155,16 +155,31 @@ class SourceHarmonics(SourceParent):
                     "Specified harmonics source must be provided as a DPF fields container."
                 )
 
-            if len(source) < 1:
+            if (
+                len(source) < 1
+                or len(source[0].data) < 1
+                or len(source[0].time_freq_support.time_frequencies.data) < 1
+            ):
                 raise PyAnsysSoundException(
-                    "Specified harmonics source must contain at least one order."
+                    "Specified harmonics source must contain at least one order level (the "
+                    "provided DPF fields container must contain at least one field with at least "
+                    "one data point)."
                 )
 
-            for f_order in source:
-                if len(f_order.data) < 1:
+            for field in source:
+                if len(field.data) != len(field.time_freq_support.time_frequencies.data):
                     raise PyAnsysSoundException(
-                        "Each order in the specified harmonics source must contain at "
-                        "least one element."
+                        "Each set of order levels in the specified harmonics source must contain "
+                        "as many level values as the number of orders (in the provided DPF fields "
+                        "container, each field must contain the same number of data points and "
+                        "support values)."
+                    )
+
+                if len(field.data) != len(source[0].data):
+                    raise PyAnsysSoundException(
+                        "Each set of order levels in the specified harmonics source must contain "
+                        "the same number of level values (in the provided DPF fields container, "
+                        "each field must contain the same number of data points)."
                     )
 
             support_data = source.get_support("control_parameter_1")
@@ -172,10 +187,10 @@ class SourceHarmonics(SourceParent):
             support_values = support_data.field_support_by_property(support_properties[0])
             if len(support_values) != len(source):
                 raise PyAnsysSoundException(
-                    "Harmonics source must contain as many order levels as the number of values "
-                    "in the associated control parameter (in the provided DPF fields container, "
-                    "the number of fields should be the same as the number of values in the "
-                    "fields container support)."
+                    "The specified harmonics source must contain as many sets of order levels as "
+                    "the number of values in the associated control parameter (in the provided "
+                    "DPF fields container, the number of fields should be the same as the number "
+                    "of values in the fields container support)."
                 )
 
         self.__source_harmonics = source

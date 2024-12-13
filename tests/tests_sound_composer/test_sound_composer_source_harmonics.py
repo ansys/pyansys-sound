@@ -153,7 +153,7 @@ def test_source_harmonics_properties_exceptions(dpf_sound_test_server):
     # Test source_control setter exception (str instead of SourceControlTime).
     with pytest.raises(
         PyAnsysSoundException,
-        match="Specified source control object must be of type ``SourceControlTime``.",
+        match="Specified source control object must be of type SourceControlTime.",
     ):
         source_harmonics_obj.source_control = "InvalidType"
 
@@ -168,19 +168,49 @@ def test_source_harmonics_properties_exceptions(dpf_sound_test_server):
     fc_source_harmonics = FieldsContainer()
     with pytest.raises(
         PyAnsysSoundException,
-        match="Specified harmonics source must contain at least one order.",
+        match=(
+            "Specified harmonics source must contain at least one order level \\(the provided DPF "
+            "fields container must contain at least one field with at least one data point\\)."
+        ),
     ):
         source_harmonics_obj.source_harmonics = fc_source_harmonics
 
-    # Test source_harmonics setter exception 3 (empty spectrum).
-    fc_source_harmonics = fields_container_factory.over_time_freq_fields_container([Field()])
+    # Test source_harmonics setter exception 3 (within-field order number mismatch).
+    field = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    field.append([1.0, 2.0, 3.0, 4.0, 5.0], 1)
+    support = TimeFreqSupport()
+    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_time.append([1.0, 2.0], 1)
+    support.time_frequencies = f_time
+    field.time_freq_support = support
+    fc_source_harmonics = fields_container_factory.over_time_freq_fields_container([field])
     with pytest.raises(
         PyAnsysSoundException,
-        match="Each order in the specified harmonics source must contain at least one element.",
+        match=(
+            "Each set of order levels in the specified harmonics source must contain as many "
+            "level values as the number of orders \\(in the provided DPF fields container, each "
+            "field must contain the same number of data points and support values\\)."
+        ),
     ):
         source_harmonics_obj.source_harmonics = fc_source_harmonics
 
-    # Test source_harmonics setter exception 4 (empty harmonics source's control data).
+    # Test source_harmonics setter exception 4 (between-field order number mismatch).
+    field2 = field.deep_copy()
+    field.data = [1.0, 2.0]
+    field2.data = [1.0, 2.0, 3.0, 4.0, 5.0]
+    field2.time_freq_support.time_frequencies.data = [1.0, 2.0, 3.0, 4.0, 5.0]
+    fc_source_harmonics = fields_container_factory.over_time_freq_fields_container([field, field2])
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=(
+            "Each set of order levels in the specified harmonics source must contain the same "
+            "number of level values \\(in the provided DPF fields container, each field must "
+            "contain the same number of data points\\)."
+        ),
+    ):
+        source_harmonics_obj.source_harmonics = fc_source_harmonics
+
+    # Test source_harmonics setter exception 5 (empty harmonics source's control data).
     # For this, we use a valid dataset, and then remove the control data.
     source_harmonics_obj = SourceHarmonics()
     source_harmonics_obj.load_source_harmonics(
@@ -194,9 +224,10 @@ def test_source_harmonics_properties_exceptions(dpf_sound_test_server):
     with pytest.raises(
         PyAnsysSoundException,
         match=(
-            "Harmonics source must contain as many order levels as the number of values in the "
-            "associated control parameter \\(in the provided DPF fields container, the number of "
-            "fields should be the same as the number of values in the fields container support\\)."
+            "The specified harmonics source must contain as many sets of order levels as the "
+            "number of values in the associated control parameter \\(in the provided DPF fields "
+            "container, the number of fields should be the same as the number of values in the "
+            "fields container support\\)."
         ),
     ):
         source_harmonics_obj.source_harmonics = fc_source_harmonics
