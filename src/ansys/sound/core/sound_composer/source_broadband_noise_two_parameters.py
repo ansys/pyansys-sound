@@ -48,8 +48,8 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
     def __init__(
         self,
         file: str = "",
-        control1: SourceControlTime = None,
-        control2: SourceControlTime = None,
+        source_control1: SourceControlTime = None,
+        source_control2: SourceControlTime = None,
     ):
         """Class instantiation takes the following parameters.
 
@@ -58,16 +58,16 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         file : str, default: ""
             Path to the broadband noise with two parameters file. Supported files are text files
             with the header `AnsysSound_BBN_MultipleParameters`.
-        control1 : SourceControlTime, default: None
+        source_control1 : SourceControlTime, default: None
             First Source control, consisting of the control parameter values over time, to use when
             generating the sound from this source.
-        control2 : SourceControlTime, default: None
+        source_control2 : SourceControlTime, default: None
             Second source control, consisting of the control parameter values over time, to use
             when generating the sound from this source.
         """
         super().__init__()
-        self.source_control1 = control1
-        self.source_control2 = control2
+        self.source_control1 = source_control1
+        self.source_control2 = source_control2
 
         # Define DPF Sound operators.
         self.__operator_load = Operator(ID_COMPUTE_LOAD_SOURCE_BBN_2PARAMS)

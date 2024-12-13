@@ -114,8 +114,8 @@ def test_source_broadband_noise_two_parameters___str___all_set(dpf_sound_test_se
     # source controls.
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters(
         file=pytest.data_path_sound_composer_bbn_source_2p_in_container,
-        control1=source_control1,
-        control2=source_control2,
+        source_control1=source_control1,
+        source_control2=source_control2,
     )
 
     assert str(source_bbn_two_parameters_obj) == EXP_STR_ALL_SET
@@ -297,8 +297,8 @@ def test_source_broadband_noise_two_parameters_process(dpf_sound_test_server):
     # source controls.
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters(
         file=pytest.data_path_sound_composer_bbn_source_2p_in_container,
-        control1=source_control1,
-        control2=source_control2,
+        source_control1=source_control1,
+        source_control2=source_control2,
     )
 
     source_bbn_two_parameters_obj.process()
@@ -387,8 +387,8 @@ def test_source_broadband_noise_two_parameters_get_output(dpf_sound_test_server)
     # controls.
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters(
         file=pytest.data_path_sound_composer_bbn_source_2p_in_container,
-        control1=source_control1,
-        control2=source_control2,
+        source_control1=source_control1,
+        source_control2=source_control2,
     )
 
     source_bbn_two_parameters_obj.process(sampling_frequency=44100.0)
@@ -479,8 +479,8 @@ def test_source_broadband_noise_two_parameters_get_output_as_nparray(dpf_sound_t
     # source controls.
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters(
         file=pytest.data_path_sound_composer_bbn_source_2p_in_container,
-        control1=source_control1,
-        control2=source_control2,
+        source_control1=source_control1,
+        source_control2=source_control2,
     )
 
     source_bbn_two_parameters_obj.process(sampling_frequency=44100.0)
@@ -542,8 +542,8 @@ def test_source_broadband_noise_two_parameters_plot(mock_show, dpf_sound_test_se
     # source controls.
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters(
         file=pytest.data_path_sound_composer_bbn_source_2p_in_container,
-        control1=source_control1,
-        control2=source_control2,
+        source_control1=source_control1,
+        source_control2=source_control2,
     )
 
     source_bbn_two_parameters_obj.process()
