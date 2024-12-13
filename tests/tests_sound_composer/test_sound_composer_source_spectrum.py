@@ -232,7 +232,7 @@ def test_source_spectrum_get_output():
     )
     source_spectrum.process(sampling_frequency=44100.0)
 
-    # Checkout output type and sampling frequency.
+    # Check output type and sampling frequency.
     output_signal = source_spectrum.get_output()
     time = output_signal.time_freq_support.time_frequencies.data
     fs = 1.0 / (time[1] - time[0])

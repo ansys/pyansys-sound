@@ -7,6 +7,8 @@ Sound composer
     :toctree: _autosummary
 
     SourceSpectrum
+    SourceBroadbandNoise
+    SourceBroadbandNoiseTwoParameters
     SourceAudio
     SourceControlSpectrum
     SourceControlTime
