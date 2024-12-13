@@ -105,11 +105,17 @@ def pytest_configure():
     )
 
     pytest.data_path_sound_composer_bbn_source_40_values_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "AnsysSound_BBN dBSPLperHz NARROWBAND v2_40values_2024R2_20241128.txt"), server=server
+        os.path.join(
+            base_dir, "AnsysSound_BBN dBSPLperHz NARROWBAND v2_40values_2024R2_20241128.txt"
+        ),
+        server=server,
     )
 
     pytest.data_path_sound_composer_bbn_source_2p_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "AnsysSound_BBN_MultipleParameters Pa2PerHz Narrowband v2_2024R2_20240418.txt"), server=server
+        os.path.join(
+            base_dir, "AnsysSound_BBN_MultipleParameters Pa2PerHz Narrowband v2_2024R2_20240418.txt"
+        ),
+        server=server,
     )
 
     # This path is different that the other, we need a local path
