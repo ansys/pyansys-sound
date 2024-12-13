@@ -346,7 +346,7 @@ def test_source_broadband_noise_get_output():
     assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND, abs=1.0)
 
 
-def test_source_broadband_noise_get_output_unprocessed(dpf_sound_test_server):
+def test_source_broadband_noise_get_output_unprocessed():
     """Test SourceBroadbandNoise get_output method's exception."""
     source_bbn_obj = SourceBroadbandNoise()
     with pytest.warns(
