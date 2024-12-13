@@ -561,9 +561,7 @@ def test_source_broadband_noise_two_parameters_plot_exceptions():
         source_bbn_two_parameters_obj.plot()
 
 
-def test_source_broadband_noise_two_parameters___extract_bbn_two_parameters_info(
-    ,
-):
+def test_source_broadband_noise_two_parameters___extract_bbn_two_parameters_info():
     """Test SourceBroadbandNoiseTwoParameters __extract_bbn_two_parameters_info method."""
     source = SourceBroadbandNoiseTwoParameters()
     assert source._SourceBroadbandNoiseTwoParameters__extract_bbn_two_parameters_info() == (
