@@ -55,8 +55,8 @@ class Filter(SpectralProcessingParent):
 
     def __init__(
         self,
-        a_coefficients: list[float] = [],
         b_coefficients: list[float] = [],
+        a_coefficients: list[float] = [],
         sampling_frequency: float = 44100.0,
         file: str = "",
         signal: Field = None,
@@ -164,7 +164,7 @@ class Filter(SpectralProcessingParent):
             if np.round(signal_fs, 1) != np.round(self.__sampling_frequency, 1):
                 raise PyAnsysSoundException(
                     f"Specified signal's sampling frequency ({signal_fs:.1f} Hz) must match the "
-                    f"filter's sampling frequency ({self.__sampling_frequency:.1f} Hz) thas was "
+                    f"filter's sampling frequency ({self.__sampling_frequency:.1f} Hz) that was "
                     f"specified as an instantiation argument of the class {__class__.__name__}."
                 )
         self.__signal = signal
@@ -279,12 +279,12 @@ class Filter(SpectralProcessingParent):
         return self._output
 
     def get_output_as_nparray(self) -> np.ndarray:
-        """Get the filtered sound as a NumPy array.
+        """Get the filtered signal as a NumPy array.
 
         Returns
         -------
         numpy.ndarray
-            Filtered sound as a NumPy array.
+            Filtered signal as a NumPy array.
         """
         output = self.get_output()
 
@@ -294,7 +294,7 @@ class Filter(SpectralProcessingParent):
         return np.array(output.data)
 
     def plot(self):
-        """Plot the filtered sound in a figure."""
+        """Plot the filtered signal in a figure."""
         if self._output == None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the {__class__.__name__}.process() method."

@@ -170,7 +170,7 @@ def test_filter_properties_exceptions(dpf_sound_test_server):
         PyAnsysSoundException,
         match=(
             "Specified signal's sampling frequency \\(1.0 Hz\\) must match the filter's sampling "
-            "frequency \\(44100.0 Hz\\) thas was specified as an instantiation argument of the "
+            "frequency \\(44100.0 Hz\\) that was specified as an instantiation argument of the "
             "class Filter."
         ),
     ):
