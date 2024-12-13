@@ -50,8 +50,8 @@ class SourceHarmonicsTwoParameters(SourceParent):
     def __init__(
         self,
         file: str = "",
-        control_rpm: SourceControlTime = None,
-        control2: SourceControlTime = None,
+        source_control_rpm: SourceControlTime = None,
+        source_control2: SourceControlTime = None,
     ):
         """Class instantiation takes the following parameters.
 
@@ -60,16 +60,16 @@ class SourceHarmonicsTwoParameters(SourceParent):
         file : str, default: ""
             Path to the harmonics source with two parameters file. Supported files are text files
             with the header `AnsysSound_Orders_MultipleParameters`.
-        control_rpm : SourceControlTime, default: None
+        source_control_rpm : SourceControlTime, default: None
             First Source control, consisting of the RPM values over time, to use when generating
             the sound from this source.
-        control2 : SourceControlTime, default: None
+        source_control2 : SourceControlTime, default: None
             Second source control, consisting of the control parameter values over time, to use
             when generating the sound from this source.
         """
         super().__init__()
-        self.control_rpm = control_rpm
-        self.control2 = control2
+        self.source_control_rpm = source_control_rpm
+        self.source_control2 = source_control2
 
         # Define DPF Sound operators.
         self.__operator_load = Operator(ID_COMPUTE_LOAD_SOURCE_HARMONICS_2PARAMS)
@@ -120,18 +120,18 @@ class SourceHarmonicsTwoParameters(SourceParent):
         # Source control info.
         if self.is_source_control_valid():
             str_control_rpm = (
-                f"{self.control_rpm.control.name}\n"
-                f"\t\tMin: {self.control_rpm.control.data.min()}\n"
-                f"\t\tMax: {self.control_rpm.control.data.max()}\n"
+                f"{self.source_control_rpm.control.name}\n"
+                f"\t\tMin: {self.source_control_rpm.control.data.min()}\n"
+                f"\t\tMax: {self.source_control_rpm.control.data.max()}\n"
                 f"\t\tDuration: "
-                f"{self.control_rpm.control.time_freq_support.time_frequencies.data[-1]} s"
+                f"{self.source_control_rpm.control.time_freq_support.time_frequencies.data[-1]} s"
             )
             str_control2 = (
-                f"{self.control2.control.name}\n"
-                f"\t\tMin: {self.control2.control.data.min()}\n"
-                f"\t\tMax: {self.control2.control.data.max()}\n"
+                f"{self.source_control2.control.name}\n"
+                f"\t\tMin: {self.source_control2.control.data.min()}\n"
+                f"\t\tMax: {self.source_control2.control.data.max()}\n"
                 f"\t\tDuration: "
-                f"{self.control2.control.time_freq_support.time_frequencies.data[-1]} s"
+                f"{self.source_control2.control.time_freq_support.time_frequencies.data[-1]} s"
             )
         else:
             str_control_rpm = "Not set"
@@ -145,15 +145,15 @@ class SourceHarmonicsTwoParameters(SourceParent):
         )
 
     @property
-    def control_rpm(self) -> SourceControlTime:
+    def source_control_rpm(self) -> SourceControlTime:
         """First source control, that is, RPM, for harmonics source with two parameters.
 
         Contains the RPM values over time.
         """
         return self.__control_rpm
 
-    @control_rpm.setter
-    def control_rpm(self, control: SourceControlTime):
+    @source_control_rpm.setter
+    def source_control_rpm(self, control: SourceControlTime):
         """Set the source control."""
         if not (isinstance(control, SourceControlTime) or control is None):
             raise PyAnsysSoundException(
@@ -162,15 +162,15 @@ class SourceHarmonicsTwoParameters(SourceParent):
         self.__control_rpm = control
 
     @property
-    def control2(self) -> SourceControlTime:
+    def source_control2(self) -> SourceControlTime:
         """Second source control for harmonics source with two parameters.
 
         Contains the second control parameter values over time.
         """
         return self.__control2
 
-    @control2.setter
-    def control2(self, control: SourceControlTime):
+    @source_control2.setter
+    def source_control2(self, control: SourceControlTime):
         """Set the source control."""
         if not (isinstance(control, SourceControlTime) or control is None):
             raise PyAnsysSoundException(
@@ -237,10 +237,10 @@ class SourceHarmonicsTwoParameters(SourceParent):
             True if both source controls are set.
         """
         return (
-            self.control_rpm is not None
-            and self.control_rpm.control is not None
-            and self.control2 is not None
-            and self.control2.control is not None
+            self.source_control_rpm is not None
+            and self.source_control_rpm.control is not None
+            and self.source_control2 is not None
+            and self.source_control2.control is not None
         )
 
     def load_source_harmonics_two_parameters(self, file: str):
@@ -294,8 +294,8 @@ class SourceHarmonicsTwoParameters(SourceParent):
 
         # Set operator inputs.
         self.__operator_generate.connect(0, self.source_harmonics_two_parameters)
-        self.__operator_generate.connect(1, self.control_rpm.control)
-        self.__operator_generate.connect(2, self.control2.control)
+        self.__operator_generate.connect(1, self.source_control_rpm.control)
+        self.__operator_generate.connect(2, self.source_control2.control)
         self.__operator_generate.connect(3, sampling_frequency)
 
         # Run the operator.
