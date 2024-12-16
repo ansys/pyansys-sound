@@ -74,14 +74,14 @@ EXP_STR_ALL_SET_10_40_VALUES = (
 )
 
 
-def test_source_harmonics_instantiation_no_arg(dpf_sound_test_server):
+def test_source_harmonics_instantiation_no_arg():
     """Test SourceHarmonics instantiation without arguments."""
     source_harmonics_obj = SourceHarmonics()
     assert isinstance(source_harmonics_obj, SourceHarmonics)
     assert source_harmonics_obj.source_harmonics is None
 
 
-def test_source_harmonics_instantiation_file_arg(dpf_sound_test_server):
+def test_source_harmonics_instantiation_file_arg():
     """Test SourceHarmonics instantiation with file argument."""
     source_harmonics_obj = SourceHarmonics(
         file=pytest.data_path_sound_composer_harmonics_source_in_container
@@ -90,13 +90,13 @@ def test_source_harmonics_instantiation_file_arg(dpf_sound_test_server):
     assert source_harmonics_obj.source_harmonics is not None
 
 
-def test_source_harmonics___str___not_set(dpf_sound_test_server):
+def test_source_harmonics___str___not_set():
     """Test SourceHarmonics __str__ method when nothing is set."""
     source_harmonics_obj = SourceHarmonics()
     assert str(source_harmonics_obj) == EXP_STR_NOT_SET
 
 
-def test_source_harmonics___str___all_set(dpf_sound_test_server):
+def test_source_harmonics___str___all_set():
     """Test SourceHarmonics __str__ method when all data are set."""
     # Create a field to use in a SourceControlTime object.
     f_source_control = fields_factory.create_scalar_field(
@@ -127,7 +127,7 @@ def test_source_harmonics___str___all_set(dpf_sound_test_server):
     assert str(source_harmonics_obj) == EXP_STR_ALL_SET_10_40_VALUES
 
 
-def test_source_harmonics_properties(dpf_sound_test_server):
+def test_source_harmonics_properties():
     """Test SourceHarmonics properties."""
     source_harmonics_obj = SourceHarmonics()
 
@@ -146,7 +146,7 @@ def test_source_harmonics_properties(dpf_sound_test_server):
     assert isinstance(source_harmonics_obj.source_harmonics, FieldsContainer)
 
 
-def test_source_harmonics_properties_exceptions(dpf_sound_test_server):
+def test_source_harmonics_properties_exceptions():
     """Test SourceHarmonics properties' exceptions."""
     source_harmonics_obj = SourceHarmonics()
 
@@ -233,7 +233,7 @@ def test_source_harmonics_properties_exceptions(dpf_sound_test_server):
         source_harmonics_obj.source_harmonics = fc_source_harmonics
 
 
-def test_source_harmonics_is_source_control_valid(dpf_sound_test_server):
+def test_source_harmonics_is_source_control_valid():
     """Test SourceHarmonics is_source_control_valid method."""
     source_harmonics_obj = SourceHarmonics()
 
@@ -262,7 +262,7 @@ def test_source_harmonics_is_source_control_valid(dpf_sound_test_server):
     assert source_harmonics_obj.is_source_control_valid() is True
 
 
-def test_source_harmonics_load_source_harmonics(dpf_sound_test_server):
+def test_source_harmonics_load_source_harmonics():
     """Test SourceHarmonics load_source_harmonics method."""
     source_harmonics_obj = SourceHarmonics()
 
@@ -294,7 +294,7 @@ def test_source_harmonics_load_source_harmonics(dpf_sound_test_server):
     assert source_harmonics_obj.source_harmonics[0].data[3] == pytest.approx(EXP_ORDER_LEVEL03_XML)
 
 
-def test_source_harmonics_process(dpf_sound_test_server):
+def test_source_harmonics_process():
     """Test SourceHarmonics process method."""
     # Create a field to use in a SourceControlTime object.
     f_source_control = fields_factory.create_scalar_field(
@@ -319,7 +319,7 @@ def test_source_harmonics_process(dpf_sound_test_server):
     assert source_harmonics_obj._output is not None
 
 
-def test_source_harmonics_process_exceptions(dpf_sound_test_server):
+def test_source_harmonics_process_exceptions():
     """Test SourceHarmonics process method exceptions."""
     # Test process method exception1 (missing control).
     source_harmonics_obj = SourceHarmonics(
@@ -359,7 +359,7 @@ def test_source_harmonics_process_exceptions(dpf_sound_test_server):
         source_harmonics_obj.process(sampling_frequency=0.0)
 
 
-def test_source_harmonics_get_output(dpf_sound_test_server):
+def test_source_harmonics_get_output():
     """Test SourceHarmonics get_output method."""
     # Create a field to use in a SourceControlTime object.
     f_source_control = fields_factory.create_scalar_field(
@@ -418,7 +418,7 @@ def test_source_harmonics_get_output(dpf_sound_test_server):
     assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND[2], abs=1.0)
 
 
-def test_source_harmonics_get_output_unprocessed(dpf_sound_test_server):
+def test_source_harmonics_get_output_unprocessed():
     """Test SourceHarmonics get_output method's exception."""
     source_harmonics_obj = SourceHarmonics()
     with pytest.warns(
@@ -429,7 +429,7 @@ def test_source_harmonics_get_output_unprocessed(dpf_sound_test_server):
     assert f_output is None
 
 
-def test_source_harmonics_get_output_as_nparray(dpf_sound_test_server):
+def test_source_harmonics_get_output_as_nparray():
     """Test SourceHarmonics get_output_as_nparray method."""
     # Create a field to use in a SourceControlTime object.
     f_source_control = fields_factory.create_scalar_field(
@@ -456,7 +456,7 @@ def test_source_harmonics_get_output_as_nparray(dpf_sound_test_server):
     assert len(output_nparray) / 44100.0 == pytest.approx(3.0, abs=1e-2)
 
 
-def test_source_harmonics_get_output_as_nparray_unprocessed(dpf_sound_test_server):
+def test_source_harmonics_get_output_as_nparray_unprocessed():
     """Test SourceHarmonics get_output_as_nparray method's exception."""
     source_harmonics_obj = SourceHarmonics()
     with pytest.warns(
@@ -468,7 +468,7 @@ def test_source_harmonics_get_output_as_nparray_unprocessed(dpf_sound_test_serve
 
 
 @patch("matplotlib.pyplot.show")
-def test_source_harmonics_plot(mock_show, dpf_sound_test_server):
+def test_source_harmonics_plot(mock_show):
     """Test SourceHarmonics plot method."""
     # Create a field to use in a SourceControlTime object.
     f_source_control = fields_factory.create_scalar_field(
@@ -493,7 +493,7 @@ def test_source_harmonics_plot(mock_show, dpf_sound_test_server):
     source_harmonics_obj.plot()
 
 
-def test_source_harmonics_plot_exceptions(dpf_sound_test_server):
+def test_source_harmonics_plot_exceptions():
     """Test SourceHarmonics plot method's exception."""
     source_harmonics_obj = SourceHarmonics()
     with pytest.raises(
@@ -503,7 +503,7 @@ def test_source_harmonics_plot_exceptions(dpf_sound_test_server):
         source_harmonics_obj.plot()
 
 
-def test_source_harmonics___extract_harmonics_info(dpf_sound_test_server):
+def test_source_harmonics___extract_harmonics_info():
     """Test SourceHarmonics __extract_harmonics_info method."""
     source_harmonics_obj = SourceHarmonics()
     assert source_harmonics_obj._SourceHarmonics__extract_harmonics_info() == ([], "", [])
