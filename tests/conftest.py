@@ -101,6 +101,17 @@ def pytest_configure():
             server=server,
         )
     )
+    pytest.data_path_sound_composer_harmonics_source_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "AnsysSound_Orders dBSPL v1_2024R2_20241203.txt"), server=server
+    )
+    pytest.data_path_sound_composer_harmonics_source_10rpm_40orders_in_container = (
+        upload_file_in_tmp_folder(
+            os.path.join(
+                base_dir, "AnsysSound_Orders dBSPL v1_10_rpm_values_40_orders_2024R2_20241203.txt"
+            ),
+            server=server,
+        )
+    )
     pytest.data_path_sound_composer_harmonics_source_2p_inverted_controls_in_container = (
         upload_file_in_tmp_folder(
             os.path.join(
@@ -118,6 +129,17 @@ def pytest_configure():
             ),
             server=server,
         )
+    )
+    pytest.data_path_sound_composer_harmonics_source_Pa_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "AnsysSound_Orders Pa v1_2024R2_20241203.txt"), server=server
+    )
+    pytest.data_path_sound_composer_harmonics_source_wrong_type_in_container = (
+        upload_file_in_tmp_folder(
+            os.path.join(base_dir, "AnsysSound_Orders V2_2024R2_20241203.txt"), server=server
+        )
+    )
+    pytest.data_path_sound_composer_harmonics_source_xml_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "VRX_Waterfall_2024R2_20241203.xml"), server=server
     )
     pytest.data_path_flute_nonUnitaryCalib_as_txt_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "flute_nonUnitaryCalib_as_text_2024R2_20241125.txt"),
