@@ -88,24 +88,41 @@ def pytest_configure():
         os.path.join(base_dir, "AnsysSound_Spectrum_v3_-_nominal_-_dBSPLperHz_2024R2_20241121.txt"),
         server=server,
     )
-    pytest.data_path_sound_composer_harmonics_source_2p_in_container = (
-        "C:\\data\\AnsysSound_Orders_MultipleParameters dBSPL_2024R2_20241205.txt"
+    pytest.data_path_sound_composer_harmonics_source_2p_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "AnsysSound_Orders_MultipleParameters dBSPL_2024R2_20241205.txt"),
+        server=server,
     )
     pytest.data_path_sound_composer_harmonics_source_2p_many_values_in_container = (
-        "C:\\data\\AnsysSound_Orders_MultipleParameters dBSPL_many_values_2024R2_20241205.txt"
+        upload_file_in_tmp_folder(
+            os.path.join(
+                base_dir,
+                "AnsysSound_Orders_MultipleParameters dBSPL_many_values_2024R2_20241205.txt",
+            ),
+            server=server,
+        )
     )
     pytest.data_path_sound_composer_harmonics_source_2p_inverted_controls_in_container = (
-        "C:\\data\\AnsysSound_Orders_MultipleParameters dBSPL - InvertedContols_2024R2_20241205.txt"
+        upload_file_in_tmp_folder(
+            os.path.join(
+                base_dir,
+                "AnsysSound_Orders_MultipleParameters dBSPL - InvertedContols_2024R2_20241205.txt",
+            ),
+            server=server,
+        )
     )
     pytest.data_path_sound_composer_harmonics_source_2p_from_accel_in_container = (
-        "C:\\data\\AnsysSound_Orders_MultipleParameters_FromAccelWithTacho_2024R2_20241205.txt"
+        upload_file_in_tmp_folder(
+            os.path.join(
+                base_dir,
+                "AnsysSound_Orders_MultipleParameters_FromAccelWithTacho_2024R2_20241205.txt",
+            ),
+            server=server,
+        )
     )
-
     pytest.data_path_flute_nonUnitaryCalib_as_txt_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "flute_nonUnitaryCalib_as_text_2024R2_20241125.txt"),
         server=server,
     )
-
     pytest.data_path_rpm_profile_as_wav_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "RPM_profile_2024R2_20241126.wav"), server=server
     )
@@ -115,14 +132,12 @@ def pytest_configure():
     pytest.data_path_sound_composer_bbn_source_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "AnsysSound_BBN dBSPL OCTAVE Constants.txt"), server=server
     )
-
     pytest.data_path_sound_composer_bbn_source_40_values_in_container = upload_file_in_tmp_folder(
         os.path.join(
             base_dir, "AnsysSound_BBN dBSPLperHz NARROWBAND v2_40values_2024R2_20241128.txt"
         ),
         server=server,
     )
-
     pytest.data_path_sound_composer_bbn_source_2p_in_container = upload_file_in_tmp_folder(
         os.path.join(
             base_dir, "AnsysSound_BBN_MultipleParameters Pa2PerHz Narrowband v2_2024R2_20240418.txt"
