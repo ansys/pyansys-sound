@@ -50,7 +50,7 @@ AnySourceType = Union[tuple(SourceParent.__subclasses__())]
 class Track(SoundComposerParent):
     """Sound Composer's track class.
 
-    This class creates a track for the Sound Composer. A track is made of source (including its
+    This class creates a track for the Sound Composer. A track is made of a source (including its
     source control) and a filter. A tracks allows the synthesis of the source's sound, filtered
     with its associated filter.
     """
