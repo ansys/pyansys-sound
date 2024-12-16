@@ -31,12 +31,12 @@ from ansys.sound.core.signal_utilities import LoadWav
 EXP_SPECTRAL_CENTROID = 816.00695
 
 
-def test_spectral_centroid_instantiation(dpf_sound_test_server):
+def test_spectral_centroid_instantiation():
     spectral_centroid_computer = SpectralCentroid()
     assert spectral_centroid_computer != None
 
 
-def test_spectral_centroid_process(dpf_sound_test_server):
+def test_spectral_centroid_process():
     spectral_centroid_computer = SpectralCentroid()
 
     # No signal -> error
@@ -58,7 +58,7 @@ def test_spectral_centroid_process(dpf_sound_test_server):
     spectral_centroid_computer.process()
 
 
-def test_spectral_centroid_get_output(dpf_sound_test_server):
+def test_spectral_centroid_get_output():
     spectral_centroid_computer = SpectralCentroid()
 
     # Get a signal
@@ -86,7 +86,7 @@ def test_spectral_centroid_get_output(dpf_sound_test_server):
     assert spectral_centroid == pytest.approx(EXP_SPECTRAL_CENTROID)
 
 
-def test_spectral_centroid_get_spectral_centroid(dpf_sound_test_server):
+def test_spectral_centroid_get_spectral_centroid():
     spectral_centroid_computer = SpectralCentroid()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
@@ -104,7 +104,7 @@ def test_spectral_centroid_get_spectral_centroid(dpf_sound_test_server):
     assert spectral_centroid == pytest.approx(EXP_SPECTRAL_CENTROID)
 
 
-def test_spectral_centroid_get_output_as_nparray(dpf_sound_test_server):
+def test_spectral_centroid_get_output_as_nparray():
     spectral_centroid_computer = SpectralCentroid()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
@@ -127,7 +127,7 @@ def test_spectral_centroid_get_output_as_nparray(dpf_sound_test_server):
     assert spectral_centroid[0] == pytest.approx(EXP_SPECTRAL_CENTROID)
 
 
-def test_spectral_centroid_set_get_signal(dpf_sound_test_server):
+def test_spectral_centroid_set_get_signal():
     spectral_centroid_computer = SpectralCentroid()
     field = Field()
     field.data = 42 * np.ones(3)
@@ -137,7 +137,7 @@ def test_spectral_centroid_set_get_signal(dpf_sound_test_server):
     assert field_from_get.data[0, 2] == 42
 
 
-def test_spectral_centroid_print(dpf_sound_test_server):
+def test_spectral_centroid_print():
     spectral_centroid_computer = SpectralCentroid()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
