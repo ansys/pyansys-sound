@@ -56,7 +56,7 @@ EXP_OUTPUT24189 = 51.0042
 EXP_OUTPUT43544 = -17.2570
 
 
-def test_filter_instantiation_no_arg(dpf_sound_test_server):
+def test_filter_instantiation_no_arg():
     """Test Filter instantiation without arguments."""
     filter = Filter()
     assert isinstance(filter, Filter)
@@ -65,7 +65,7 @@ def test_filter_instantiation_no_arg(dpf_sound_test_server):
     assert filter.signal is None
 
 
-def test_filter_instantiation_args(dpf_sound_test_server):
+def test_filter_instantiation_args():
     """Test Filter instantiation without arguments."""
     # Create a field to use in a suitable Field object (signal).
     fs = 44100.0
@@ -98,7 +98,7 @@ def test_filter_instantiation_args(dpf_sound_test_server):
     assert filter.signal is not None
 
 
-def test_filter___str__(dpf_sound_test_server):
+def test_filter___str__():
     """Test Filter __str__ method."""
     filter = Filter()
     assert str(filter) == EXP_STR_NOT_SET
@@ -112,7 +112,7 @@ def test_filter___str__(dpf_sound_test_server):
     assert str(filter) == EXP_STR_ALL_SET_MORE_COEFFS
 
 
-def test_filter_properties(dpf_sound_test_server):
+def test_filter_properties():
     """Test Filter properties."""
     fs = 44100.0
 
@@ -138,7 +138,7 @@ def test_filter_properties(dpf_sound_test_server):
     assert isinstance(filter.signal, Field)
 
 
-def test_filter_properties_exceptions(dpf_sound_test_server):
+def test_filter_properties_exceptions():
     """Test Filter properties' exceptions."""
     filter = Filter()
 
@@ -177,7 +177,7 @@ def test_filter_properties_exceptions(dpf_sound_test_server):
         filter.signal = f_signal
 
 
-def test_filter_get_sampling_frequency(dpf_sound_test_server):
+def test_filter_get_sampling_frequency():
     """Test Filter get_sampling_frequency method."""
     fs = 48000.0
 
@@ -185,7 +185,7 @@ def test_filter_get_sampling_frequency(dpf_sound_test_server):
     assert filter.get_sampling_frequency() == fs
 
 
-def test_filter_design_FIR_from_FRF_file(dpf_sound_test_server):
+def test_filter_design_FIR_from_FRF_file():
     """Test Filter design_FIR_from_FRF method."""
     filter = Filter()
     filter.design_FIR_from_FRF_file(file=pytest.data_path_filter_frf)
@@ -200,7 +200,7 @@ def test_filter_design_FIR_from_FRF_file(dpf_sound_test_server):
         filter.design_FIR_from_FRF_file(file=pytest.data_path_filter_frf_wrong_header)
 
 
-def test_filter_design_FIR_from_FRF(dpf_sound_test_server):
+def test_filter_design_FIR_from_FRF():
     """Test Filter design_FIR_from_FRF method."""
     op = Operator("load_FRF_from_txt")
     op.connect(0, pytest.data_path_filter_frf)
@@ -216,7 +216,7 @@ def test_filter_design_FIR_from_FRF(dpf_sound_test_server):
     assert filter.b_coefficients[13] == pytest.approx(EXP_B13)
 
 
-def test_filter_process(dpf_sound_test_server):
+def test_filter_process():
     """Test Filter process method."""
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
     wav_loader.process()
@@ -230,7 +230,7 @@ def test_filter_process(dpf_sound_test_server):
     assert filter._output is not None
 
 
-def test_filter_process_exceptions(dpf_sound_test_server):
+def test_filter_process_exceptions():
     """Test Filter process method's exceptions."""
     fs = 44100.0
 
@@ -275,7 +275,7 @@ def test_filter_process_exceptions(dpf_sound_test_server):
         filter.process()
 
 
-def test_filter_get_output(dpf_sound_test_server):
+def test_filter_get_output():
     """Test Filter get_output method."""
     filter = Filter(file=pytest.data_path_filter_frf)
     with pytest.warns(
@@ -299,7 +299,7 @@ def test_filter_get_output(dpf_sound_test_server):
     assert output.data[43544] == pytest.approx(EXP_OUTPUT43544)
 
 
-def test_filter_get_output_as_nparray(dpf_sound_test_server):
+def test_filter_get_output_as_nparray():
     """Test Filter get_output_asnparray method."""
     filter = Filter(file=pytest.data_path_filter_frf)
     with pytest.warns(
@@ -324,7 +324,7 @@ def test_filter_get_output_as_nparray(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_filter_plot(mock_show, dpf_sound_test_server):
+def test_filter_plot(mock_show):
     """Test SourceAudio plot method."""
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
     wav_loader.process()
@@ -335,7 +335,7 @@ def test_filter_plot(mock_show, dpf_sound_test_server):
     filter.plot()
 
 
-def test_filter_plot_exception(dpf_sound_test_server):
+def test_filter_plot_exception():
     """Test SourceAudio plot method's exception."""
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
     wav_loader.process()
