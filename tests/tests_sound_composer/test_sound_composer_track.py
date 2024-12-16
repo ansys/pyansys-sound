@@ -52,7 +52,7 @@ EXP_LEVEL_BAND_3RD_500_Hz = 73.08566
 EXP_LEVEL_BAND_3RD_1000_Hz = 69.42302
 
 
-def test_track_instantiation_no_arg(dpf_sound_test_server):
+def test_track_instantiation_no_arg():
     """Test Track instantiation without arguments."""
     # Test instantiation.
     track = Track()
@@ -63,7 +63,7 @@ def test_track_instantiation_no_arg(dpf_sound_test_server):
     assert track.filter is None
 
 
-def test_track_instantiation_all_args(dpf_sound_test_server):
+def test_track_instantiation_all_args():
     """Test Track instantiation with all arguments."""
     # Test instantiation.
     track = Track(name="track", gain=3.0, source=SourceAudio(), filter=Filter())
@@ -74,13 +74,13 @@ def test_track_instantiation_all_args(dpf_sound_test_server):
     assert isinstance(track.filter, Filter)
 
 
-def test_track___str___not_set(dpf_sound_test_server):
+def test_track___str___not_set():
     """Test Track __str__ method when nothing is set."""
     track = Track()
     assert str(track) == EXP_STR_NOT_SET
 
 
-def test_track___str___all_set(dpf_sound_test_server):
+def test_track___str___all_set():
     """Test Track __str__ method when all data are set."""
     track = Track(name="MyTrack", source=SourceSpectrum(), filter=Filter())
     assert str(track) == (
@@ -124,7 +124,7 @@ def test_track___str___all_set(dpf_sound_test_server):
     assert str(track) == f"{EXP_STR_SOURCE_PART}SourceAudio{EXP_STR_FILTER_PART}"
 
 
-def test_track_properties(dpf_sound_test_server):
+def test_track_properties():
     """Test Track properties."""
     track = Track()
 
@@ -145,7 +145,7 @@ def test_track_properties(dpf_sound_test_server):
     assert isinstance(track.filter, Filter)
 
 
-def test_track_properties_exceptions(dpf_sound_test_server):
+def test_track_properties_exceptions():
     """Test Track properties' exceptions."""
     track = Track()
 
@@ -165,7 +165,7 @@ def test_track_properties_exceptions(dpf_sound_test_server):
         track.filter = "InvalidType"
 
 
-def test_track_process(dpf_sound_test_server):
+def test_track_process():
     """Test Track process method (no resample needed)."""
     track = Track(
         gain=3.0,
@@ -179,7 +179,7 @@ def test_track_process(dpf_sound_test_server):
     assert track._output is not None
 
 
-def test_track_process_exceptions(dpf_sound_test_server):
+def test_track_process_exceptions():
     """Test Track process method exceptions."""
     # Test process method exception1 (source not set).
     track = Track()
@@ -197,7 +197,7 @@ def test_track_process_exceptions(dpf_sound_test_server):
         track.process(sampling_frequency=0.0)
 
 
-def test_track_get_output(dpf_sound_test_server):
+def test_track_get_output():
     """Test Track get_output method."""
     track = Track(
         gain=3.0,
@@ -249,7 +249,7 @@ def test_track_get_output(dpf_sound_test_server):
     assert level_1000 == pytest.approx(EXP_LEVEL_BAND_3RD_1000_Hz, abs=3.0)
 
 
-def test_track_get_output_unprocessed(dpf_sound_test_server):
+def test_track_get_output_unprocessed():
     """Test Track get_output method's exception."""
     track = Track()
     with pytest.warns(
@@ -260,7 +260,7 @@ def test_track_get_output_unprocessed(dpf_sound_test_server):
     assert output_signal is None
 
 
-def test_track_get_output_as_nparray(dpf_sound_test_server):
+def test_track_get_output_as_nparray():
     """Test Track get_output_as_nparray method."""
     track = Track(
         gain=3.0,
@@ -277,7 +277,7 @@ def test_track_get_output_as_nparray(dpf_sound_test_server):
     assert len(output_signal) == pytest.approx(44100.0 * 3.0)
 
 
-def test_track_get_output_as_nparray_unprocessed(dpf_sound_test_server):
+def test_track_get_output_as_nparray_unprocessed():
     """Test Track get_output_as_nparray method's exception."""
     track = Track()
     with pytest.warns(
@@ -290,7 +290,7 @@ def test_track_get_output_as_nparray_unprocessed(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_track_plot_source_spectrum(mock_show, dpf_sound_test_server):
+def test_track_plot_source_spectrum(mock_show):
     """Test Track plot method for a SourceSpectrum source."""
     track = Track(
         gain=3.0,
@@ -305,7 +305,7 @@ def test_track_plot_source_spectrum(mock_show, dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_track_plot_source_bbn(mock_show, dpf_sound_test_server):
+def test_track_plot_source_bbn(mock_show):
     """Test Track plot method for a SourceBroadbandNoise source."""
     # We need create a suitable source control first.
     f_control = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
@@ -333,7 +333,7 @@ def test_track_plot_source_bbn(mock_show, dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_track_plot_source_bbn_2p(mock_show, dpf_sound_test_server):
+def test_track_plot_source_bbn_2p(mock_show):
     """Test Track plot method for a SourceBroadbandNoiseTwoParameters source."""
     # We need create suitable source controls first.
     f_source_control = fields_factory.create_scalar_field(
@@ -379,7 +379,7 @@ def test_track_plot_source_bbn_2p(mock_show, dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_track_plot_source_harmonics_2p(mock_show, dpf_sound_test_server):
+def test_track_plot_source_harmonics_2p(mock_show):
     """Test Track plot method for a SourceHarmonicsTwoParameters source."""
     # We need create suitable source controls first.
     f_source_control = fields_factory.create_scalar_field(
@@ -424,7 +424,7 @@ def test_track_plot_source_harmonics_2p(mock_show, dpf_sound_test_server):
     track.plot()
 
 
-def test_track_plot_exceptions(dpf_sound_test_server):
+def test_track_plot_exceptions():
     """Test Track plot method's exception."""
     track = Track()
     with pytest.raises(
