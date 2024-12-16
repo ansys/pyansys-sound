@@ -31,12 +31,12 @@ from ansys.sound.core.psychoacoustics.loudness_iso_532_1_stationary import (
 from ansys.sound.core.signal_utilities.load_wav import LoadWav
 
 
-def test_psychoacoustics_parent_instantiation(dpf_sound_test_server):
+def test_psychoacoustics_parent_instantiation():
     psychoacoustics_parent = PsychoacousticsParent()
     assert psychoacoustics_parent != None
 
 
-def test_psychoacoustics_convert_bark_to_hertz(dpf_sound_test_server):
+def test_psychoacoustics_convert_bark_to_hertz():
     psychoacoustics_parent = PsychoacousticsParent()
 
     # Invalid Bark band index -> error
@@ -61,7 +61,7 @@ def test_psychoacoustics_convert_bark_to_hertz(dpf_sound_test_server):
     assert bark_band_frequencies[6] == pytest.approx(15334.573030003306)
 
 
-def test_psychoacoustics_parent_check_channel_index(dpf_sound_test_server):
+def test_psychoacoustics_parent_check_channel_index():
     # We need to instantiate either of the child classes (loudness here), otherwise we cannot
     # achieve complete test coverage of the method.
     loudness = LoudnessISO532_1_Stationary()
