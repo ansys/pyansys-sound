@@ -23,7 +23,7 @@
 from ansys.sound.core.sound_composer import SourceParent
 
 
-def test__source_parent_is_source_control_valid(dpf_sound_test_server):
+def test__source_parent_is_source_control_valid():
     """Test SourceParent's is_source_control_valid method."""
     control = SourceParent()
 

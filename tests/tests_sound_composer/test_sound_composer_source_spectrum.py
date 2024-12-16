@@ -46,7 +46,7 @@ EXP_STR_ALL_SET_DF_NA = (
 )
 
 
-def test_source_spectrum_instantiation_no_arg(dpf_sound_test_server):
+def test_source_spectrum_instantiation_no_arg():
     """Test SourceSpectrum instantiation without arguments."""
     # Test instantiation.
     source_spectrum = SourceSpectrum()
@@ -54,7 +54,7 @@ def test_source_spectrum_instantiation_no_arg(dpf_sound_test_server):
     assert source_spectrum.source_spectrum_data is None
 
 
-def test_source_spectrum_instantiation_file_arg(dpf_sound_test_server):
+def test_source_spectrum_instantiation_file_arg():
     """Test SourceSpectrum instantiation with file argument."""
     # Test instantiation.
     source_spectrum = SourceSpectrum(pytest.data_path_sound_composer_spectrum_source_in_container)
@@ -62,13 +62,13 @@ def test_source_spectrum_instantiation_file_arg(dpf_sound_test_server):
     assert source_spectrum.source_spectrum_data is not None
 
 
-def test_source_spectrum___str___not_set(dpf_sound_test_server):
+def test_source_spectrum___str___not_set():
     """Test SourceSpectrum __str__ method when nothing is set."""
     source_spectrum = SourceSpectrum()
     assert str(source_spectrum) == EXP_STR_NOT_SET
 
 
-def test_source_spectrum___str___all_set(dpf_sound_test_server):
+def test_source_spectrum___str___all_set():
     """Test SourceSpectrum __str__ method when all data are set."""
     source_spectrum = SourceSpectrum(
         pytest.data_path_sound_composer_spectrum_source_in_container,
@@ -77,7 +77,7 @@ def test_source_spectrum___str___all_set(dpf_sound_test_server):
     assert str(source_spectrum) == EXP_STR_ALL_SET
 
 
-def test_source_spectrum___str___all_set_deltaf_not_applicable(dpf_sound_test_server):
+def test_source_spectrum___str___all_set_deltaf_not_applicable():
     """Test SourceSpectrum __str__ method when all data are set."""
     source_spectrum = SourceSpectrum(
         pytest.data_path_sound_composer_spectrum_source_in_container,
@@ -89,7 +89,7 @@ def test_source_spectrum___str___all_set_deltaf_not_applicable(dpf_sound_test_se
     assert str(source_spectrum) == EXP_STR_ALL_SET_DF_NA
 
 
-def test_source_spectrum_properties(dpf_sound_test_server):
+def test_source_spectrum_properties():
     """Test SourceSpectrum properties."""
     source_spectrum = SourceSpectrum()
 
@@ -114,7 +114,7 @@ def test_source_spectrum_properties(dpf_sound_test_server):
     assert isinstance(source_spectrum.source_spectrum_data, Field)
 
 
-def test_source_spectrum_properties_exceptions(dpf_sound_test_server):
+def test_source_spectrum_properties_exceptions():
     """Test SourceSpectrum properties' exceptions."""
     source_spectrum = SourceSpectrum()
 
@@ -154,7 +154,7 @@ def test_source_spectrum_properties_exceptions(dpf_sound_test_server):
         source_spectrum.source_spectrum_data = field
 
 
-def test_source_spectrum_is_source_control_valid(dpf_sound_test_server):
+def test_source_spectrum_is_source_control_valid():
     """Test SourceSpectrum is_source_control_valid method."""
     source_spectrum = SourceSpectrum()
 
@@ -170,7 +170,7 @@ def test_source_spectrum_is_source_control_valid(dpf_sound_test_server):
     assert source_spectrum.is_source_control_valid() is True
 
 
-def test_source_specrum_load_source(dpf_sound_test_server):
+def test_source_specrum_load_source():
     """Test SourceSpectrum load_source method."""
     source_spectrum = SourceSpectrum()
     source_spectrum.load_source_spectrum(
@@ -180,7 +180,7 @@ def test_source_specrum_load_source(dpf_sound_test_server):
     assert source_spectrum.source_spectrum_data.data[3] == pytest.approx(EXP_SPECTRUM_DATA3)
 
 
-def test_source_spectrum_process(dpf_sound_test_server):
+def test_source_spectrum_process():
     """Test SourceSpectrum process method."""
     source_spectrum = SourceSpectrum(
         pytest.data_path_sound_composer_spectrum_source_in_container,
@@ -190,7 +190,7 @@ def test_source_spectrum_process(dpf_sound_test_server):
     assert source_spectrum._output is not None
 
 
-def test_source_spectrum_process_exceptions(dpf_sound_test_server):
+def test_source_spectrum_process_exceptions():
     """Test SourceSpectrum process method exceptions."""
     # Test process method exception1 (missing control).
     source_spectrum = SourceSpectrum(pytest.data_path_sound_composer_spectrum_source_in_container)
@@ -224,7 +224,7 @@ def test_source_spectrum_process_exceptions(dpf_sound_test_server):
         source_spectrum.process(sampling_frequency=0.0)
 
 
-def test_source_spectrum_get_output(dpf_sound_test_server):
+def test_source_spectrum_get_output():
     """Test SourceSpectrum get_output method."""
     source_spectrum = SourceSpectrum(
         pytest.data_path_sound_composer_spectrum_source_in_container,
@@ -273,7 +273,7 @@ def test_source_spectrum_get_output(dpf_sound_test_server):
     assert level_1000 == pytest.approx(EXP_LEVEL_BAND_3RD_1000_Hz, abs=3.0)
 
 
-def test_source_spectrum_get_output_unprocessed(dpf_sound_test_server):
+def test_source_spectrum_get_output_unprocessed():
     """Test SourceSpectrum get_output method's exception."""
     source_spectrum = SourceSpectrum()
     with pytest.warns(
@@ -284,7 +284,7 @@ def test_source_spectrum_get_output_unprocessed(dpf_sound_test_server):
     assert output is None
 
 
-def test_source_spectrum_get_output_as_nparray(dpf_sound_test_server):
+def test_source_spectrum_get_output_as_nparray():
     """Test SourceSpectrum get_output_as_nparray method."""
     source_spectrum = SourceSpectrum(
         pytest.data_path_sound_composer_spectrum_source_in_container,
@@ -339,7 +339,7 @@ def test_source_spectrum_get_output_as_nparray(dpf_sound_test_server):
     assert level_1000 == pytest.approx(EXP_LEVEL_BAND_3RD_1000_Hz, abs=3.0)
 
 
-def test_source_spectrum_get_output_as_nparray_unprocessed(dpf_sound_test_server):
+def test_source_spectrum_get_output_as_nparray_unprocessed():
     """Test SourceSpectrum get_output_as_nparray method's exception."""
     source_spectrum = SourceSpectrum()
     with pytest.warns(
@@ -351,7 +351,7 @@ def test_source_spectrum_get_output_as_nparray_unprocessed(dpf_sound_test_server
 
 
 @patch("matplotlib.pyplot.show")
-def test_source_spectrum_plot(mock_show, dpf_sound_test_server):
+def test_source_spectrum_plot(mock_show):
     """Test SourceSpectrum plot method."""
     source_spectrum = SourceSpectrum(
         pytest.data_path_sound_composer_spectrum_source_in_container,
@@ -361,7 +361,7 @@ def test_source_spectrum_plot(mock_show, dpf_sound_test_server):
     source_spectrum.plot()
 
 
-def test_source_spectrum_plot_exceptions(dpf_sound_test_server):
+def test_source_spectrum_plot_exceptions():
     """Test SourceSpectrum plot method's exception."""
     source_spectrum = SourceSpectrum()
     with pytest.raises(

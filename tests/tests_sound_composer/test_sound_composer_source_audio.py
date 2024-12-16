@@ -35,7 +35,7 @@ EXP_STR_ALL_SET = "Audio source: 'flute'\n\tDuration: 3.5 s\n\tSampling frequenc
 EXP_STR_EMPTY_AUDIO = "Audio source: 'flute'\n\tDuration: N/A\n\tSampling frequency: N/A"
 
 
-def test_source_audio_instantiation_no_arg(dpf_sound_test_server):
+def test_source_audio_instantiation_no_arg():
     """Test SourceAudio instantiation without arguments."""
     # Test instantiation.
     source_audio = SourceAudio()
@@ -43,7 +43,7 @@ def test_source_audio_instantiation_no_arg(dpf_sound_test_server):
     assert source_audio.source_audio_data is None
 
 
-def test_source_audio_instantiation_wav_file(dpf_sound_test_server):
+def test_source_audio_instantiation_wav_file():
     """Test SourceAudio instantiation with file argument."""
     # Test instantiation.
     source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
@@ -51,7 +51,7 @@ def test_source_audio_instantiation_wav_file(dpf_sound_test_server):
     assert source_audio.source_audio_data is not None
 
 
-def test_source_audio_instantiation_txt_file(dpf_sound_test_server):
+def test_source_audio_instantiation_txt_file():
     """Test SourceAudio instantiation with file argument."""
     # Test instantiation.
     source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_as_txt_in_container)
@@ -59,19 +59,19 @@ def test_source_audio_instantiation_txt_file(dpf_sound_test_server):
     assert source_audio.source_audio_data is not None
 
 
-def test_source_audio___str___not_set(dpf_sound_test_server):
+def test_source_audio___str___not_set():
     """Test SourceAudio __str__ method when nothing is set."""
     source_audio = SourceAudio()
     assert str(source_audio) == EXP_STR_NOT_SET
 
 
-def test_source_audio___str___all_set(dpf_sound_test_server):
+def test_source_audio___str___all_set():
     """Test SourceAudio __str__ method when all data are set."""
     source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
     assert str(source_audio) == EXP_STR_ALL_SET
 
 
-def test_source_audio___str___empty_audio(dpf_sound_test_server):
+def test_source_audio___str___empty_audio():
     """Test SourceAudio __str__ method when all data are set."""
     source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
     source_audio.source_audio_data.data = []
@@ -79,7 +79,7 @@ def test_source_audio___str___empty_audio(dpf_sound_test_server):
     assert str(source_audio) == EXP_STR_EMPTY_AUDIO
 
 
-def test_source_audio_properties(dpf_sound_test_server):
+def test_source_audio_properties():
     """Test SourceAudio properties."""
     source_audio = SourceAudio()
 
@@ -88,7 +88,7 @@ def test_source_audio_properties(dpf_sound_test_server):
     assert isinstance(source_audio.source_audio_data, Field)
 
 
-def test_source_audio_propertiess_exceptions(dpf_sound_test_server):
+def test_source_audio_propertiess_exceptions():
     """Test SourceAudio properties' exceptions."""
     source_audio = SourceAudio()
 
@@ -99,7 +99,7 @@ def test_source_audio_propertiess_exceptions(dpf_sound_test_server):
         source_audio.source_audio_data = "InvalidType"
 
 
-def test_source_audio_load_from_wave_file(dpf_sound_test_server):
+def test_source_audio_load_from_wave_file():
     """Test SourceAudio load_source_audio_from_text method."""
     source_audio = SourceAudio()
     source_audio.load_from_wave_file(pytest.data_path_flute_nonUnitaryCalib_in_container)
@@ -109,7 +109,7 @@ def test_source_audio_load_from_wave_file(dpf_sound_test_server):
     )
 
 
-def test_source_audio_load_from_text_file(dpf_sound_test_server):
+def test_source_audio_load_from_text_file():
     """Test SourceAudio load_source_audio_from_text method."""
     source_audio = SourceAudio()
     source_audio.load_from_text_file(pytest.data_path_flute_nonUnitaryCalib_as_txt_in_container)
@@ -119,21 +119,21 @@ def test_source_audio_load_from_text_file(dpf_sound_test_server):
     )
 
 
-def test_source_audio_process_no_resample(dpf_sound_test_server):
+def test_source_audio_process_no_resample():
     """Test SourceAudio process method (no resample needed)."""
     source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
     source_audio.process()
     assert source_audio._output is not None
 
 
-def test_source_audio_process_resample(dpf_sound_test_server):
+def test_source_audio_process_resample():
     """Test SourceAudio process method (resample)."""
     source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
     source_audio.process(48000)
     assert source_audio._output is not None
 
 
-def test_source_audio_process_exceptions(dpf_sound_test_server):
+def test_source_audio_process_exceptions():
     """Test SourceAudio process method exceptions."""
     # Test process method exception1 (missing audio).
     source_audio = SourceAudio()
@@ -154,7 +154,7 @@ def test_source_audio_process_exceptions(dpf_sound_test_server):
         source_audio.process(sampling_frequency=0.0)
 
 
-def test_source_audio_get_output(dpf_sound_test_server):
+def test_source_audio_get_output():
     """Test SourceAudio get_output method."""
     source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
     source_audio.process(sampling_frequency=44100.0)
@@ -167,7 +167,7 @@ def test_source_audio_get_output(dpf_sound_test_server):
     assert output_signal.data[17640] == pytest.approx(EXP_AUDIO_DATA17640)
 
 
-def test_source_audio_get_output_unprocessed(dpf_sound_test_server):
+def test_source_audio_get_output_unprocessed():
     """Test SourceAudio get_output method's exception."""
     source_audio = SourceAudio()
     with pytest.warns(
@@ -178,7 +178,7 @@ def test_source_audio_get_output_unprocessed(dpf_sound_test_server):
     assert output is None
 
 
-def test_source_audio_get_output_as_nparray(dpf_sound_test_server):
+def test_source_audio_get_output_as_nparray():
     """Test SourceAudio get_output_as_nparray method."""
     source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
     source_audio.process(sampling_frequency=44100.0)
@@ -188,7 +188,7 @@ def test_source_audio_get_output_as_nparray(dpf_sound_test_server):
     assert output_signal[17640] == pytest.approx(EXP_AUDIO_DATA17640)
 
 
-def test_source_audio_get_output_as_nparray_unprocessed(dpf_sound_test_server):
+def test_source_audio_get_output_as_nparray_unprocessed():
     """Test SourceAudio get_output_as_nparray method's exception."""
     source_audio = SourceAudio()
     with pytest.warns(
@@ -200,7 +200,7 @@ def test_source_audio_get_output_as_nparray_unprocessed(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_source_audio_plot(mock_show, dpf_sound_test_server):
+def test_source_audio_plot(mock_show):
     """Test SourceAudio plot method."""
     source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
     source_audio.process()
@@ -208,7 +208,7 @@ def test_source_audio_plot(mock_show, dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_source_audio_plot_no_name(mock_show, dpf_sound_test_server):
+def test_source_audio_plot_no_name(mock_show):
     """Test SourceAudio plot method."""
     source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
     source_audio.source_audio_data.name = ""
@@ -216,7 +216,7 @@ def test_source_audio_plot_no_name(mock_show, dpf_sound_test_server):
     source_audio.plot()
 
 
-def test_source_audio_plot_exceptions(dpf_sound_test_server):
+def test_source_audio_plot_exceptions():
     """Test SourceAudio plot method's exception."""
     source_audio = SourceAudio()
     with pytest.raises(

@@ -28,12 +28,12 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.signal_utilities import LoadWav, SumSignals
 
 
-def test_sum_signals_instantiation(dpf_sound_test_server):
+def test_sum_signals_instantiation():
     sum_gain = SumSignals()
     assert sum_gain != None
 
 
-def test_sum_signals_process(dpf_sound_test_server):
+def test_sum_signals_process():
     sum_gain = SumSignals()
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
 
@@ -53,7 +53,7 @@ def test_sum_signals_process(dpf_sound_test_server):
     sum_gain.process()
 
 
-def test_sum_signals_get_output(dpf_sound_test_server):
+def test_sum_signals_get_output():
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -76,7 +76,7 @@ def test_sum_signals_get_output(dpf_sound_test_server):
     assert f_out.data[60000] == -0.13690185546875
 
 
-def test_sum_signals_get_output_as_np_array(dpf_sound_test_server):
+def test_sum_signals_get_output_as_np_array():
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -99,7 +99,7 @@ def test_sum_signals_get_output_as_np_array(dpf_sound_test_server):
     assert out[60000] == -0.13690185546875
 
 
-def test_sum_signals_set_get_signals(dpf_sound_test_server):
+def test_sum_signals_set_get_signals():
     sum_gain = SumSignals()
 
     fc = FieldsContainer()
