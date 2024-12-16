@@ -22,54 +22,71 @@
 
 import os
 
-from ansys.dpf.core import (
-    AvailableServerContexts,
-    LicenseContextManager,
-    connect_to_server,
-    load_library,
-)
+from ansys.dpf.core import upload_file_in_tmp_folder
 import pytest
 
-CONTAINER_SERVER_PORT = 6780
-STR_DPF_SOUND = "dpf_sound.dll"
-STR_DPF_SOUND_DLL = "dpf_sound.dll"
+from ansys.sound.core.server_helpers import connect_to_or_start_server
 
 
 def pytest_configure():
-    pytest.data_path_flute_in_container = "C:\\data\\flute.wav"
-    pytest.data_path_flute2_in_container = "C:\\data\\flute2.wav"
-    pytest.data_path_flute_nonUnitaryCalib_in_container = "C:\\data\\flute_nonUnitaryCalib.wav"
-    pytest.data_path_sharp_noise_in_container = "C:\\data\\sharp_noise.wav"
-    pytest.data_path_sharper_noise_in_container = "C:\\data\\sharper_noise.wav"
-    pytest.data_path_rough_noise_in_container = "C:\\data\\rough_noise.wav"
-    pytest.data_path_rough_tone_in_container = "C:\\data\\rough_tone.wav"
-    pytest.data_path_fluctuating_noise_in_container = "C:\\data\\fluctuating_noise.wav"
-    pytest.data_path_fluctuating_tone_in_container = "C:\\data\\fluctuating_tone.wav"
-    pytest.data_path_white_noise_in_container = "C:\\data\\white_noise.wav"
-    pytest.data_path_accel_with_rpm_in_container = "C:\\data\\accel_with_rpm.wav"
-    pytest.data_path_flute_psd_in_container = "C:\\data\\flute_psd.txt"
-    pytest.data_path_swl_project_file_in_container = (
-        "C:\\data\\SoundPowerLevelProject_hemisphere_2025R1_20243008.spw"
+
+    # We're using here a PyAnsys Sound function to connect to the server based on whether we're in
+    # a docker or local configuration.
+    # There are tests for the function connect_to_or_start_server that are independent from the
+    # configuration. That's why we authorize the use of this function here.
+    server = connect_to_or_start_server(use_license_context=True)
+
+    # # Get the current directory of the conftest.py file
+    base_dir = os.path.join(os.path.dirname(__file__), "data")
+
+    # Construct the paths of the different test files after uploading them on the server.
+    pytest.data_path_flute_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "flute.wav"), server=server
     )
-    pytest.data_path_swl_project_file_with_calibration_in_container = (
-        "C:\\data\\SoundPowerLevelProject_hemisphere_signalsWithCalibration_2025R1_20240919.spw"
+    pytest.data_path_flute2_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "flute2.wav"), server=server
     )
-    pytest.data_path_sound_composer_spectrum_source_in_container = (
-        "C:\\data\\AnsysSound_Spectrum_v3_-_nominal_-_dBSPLperHz_2024R2_20241121.txt"
+    pytest.data_path_flute_nonUnitaryCalib_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "flute_nonUnitaryCalib.wav"), server=server
     )
-    pytest.data_path_flute_nonUnitaryCalib_as_txt_in_container = (
-        "C:\\data\\flute_nonUnitaryCalib_as_text_2024R2_20241125.txt"
+    pytest.data_path_sharp_noise_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "sharp_noise.wav"), server=server
     )
-    pytest.data_path_rpm_profile_as_wav_in_container = "C:\\data\\RPM_profile_2024R2_20241126.wav"
-    pytest.data_path_rpm_profile_as_txt_in_container = "C:\\data\\RPM_profile_2024R2_20241126.txt"
-    pytest.data_path_sound_composer_bbn_source_in_container = (
-        "C:\\data\\AnsysSound_BBN dBSPL OCTAVE Constants.txt"
+    pytest.data_path_sharper_noise_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "sharper_noise.wav"), server=server
     )
-    pytest.data_path_sound_composer_bbn_source_40_values_in_container = (
-        "C:\\data\\AnsysSound_BBN dBSPLperHz NARROWBAND v2_40values_2024R2_20241128.txt"
+    pytest.data_path_rough_noise_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "rough_noise.wav"), server=server
     )
-    pytest.data_path_sound_composer_bbn_source_2p_in_container = (
-        "C:\\data\\AnsysSound_BBN_MultipleParameters Pa2PerHz Narrowband v2_2024R2_20240418.txt"
+    pytest.data_path_rough_tone_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "rough_tone.wav"), server=server
+    )
+    pytest.data_path_fluctuating_noise_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "fluctuating_noise.wav"), server=server
+    )
+    pytest.data_path_fluctuating_tone_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "fluctuating_tone.wav"), server=server
+    )
+    pytest.data_path_white_noise_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "white_noise.wav"), server=server
+    )
+    pytest.data_path_accel_with_rpm_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "accel_with_rpm.wav"), server=server
+    )
+    pytest.data_path_swl_project_file_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "SoundPowerLevelProject_hemisphere_2025R1_20243008.spw"),
+        server=server,
+    )
+    pytest.data_path_swl_project_file_with_calibration_in_container = upload_file_in_tmp_folder(
+        os.path.join(
+            base_dir,
+            "SoundPowerLevelProject_hemisphere_signalsWithCalibration_2025R1_20240919.spw",
+        ),
+        server=server,
+    )
+    pytest.data_path_sound_composer_spectrum_source_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "AnsysSound_Spectrum_v3_-_nominal_-_dBSPLperHz_2024R2_20241121.txt"),
+        server=server,
     )
     pytest.data_path_sound_composer_harmonics_source_2p_in_container = (
         "C:\\data\\AnsysSound_Orders_MultipleParameters dBSPL_2024R2_20241205.txt"
@@ -84,21 +101,39 @@ def pytest_configure():
         "C:\\data\\AnsysSound_Orders_MultipleParameters_FromAccelWithTacho_2024R2_20241205.txt"
     )
 
+    pytest.data_path_flute_nonUnitaryCalib_as_txt_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "flute_nonUnitaryCalib_as_text_2024R2_20241125.txt"),
+        server=server,
+    )
 
-@pytest.fixture(scope="session")
-def dpf_sound_test_server():
-    port_in_env = os.environ.get("ANSRV_DPF_SOUND_PORT")
-    if port_in_env is not None:
-        port = int(port_in_env)
-    else:
-        port = CONTAINER_SERVER_PORT
+    pytest.data_path_rpm_profile_as_wav_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "RPM_profile_2024R2_20241126.wav"), server=server
+    )
+    pytest.data_path_rpm_profile_as_txt_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "RPM_profile_2024R2_20241126.txt"), server=server
+    )
+    pytest.data_path_sound_composer_bbn_source_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "AnsysSound_BBN dBSPL OCTAVE Constants.txt"), server=server
+    )
 
-    # Connecting to server
-    server = connect_to_server(port=port, context=AvailableServerContexts.premium)
+    pytest.data_path_sound_composer_bbn_source_40_values_in_container = upload_file_in_tmp_folder(
+        os.path.join(
+            base_dir, "AnsysSound_BBN dBSPLperHz NARROWBAND v2_40values_2024R2_20241128.txt"
+        ),
+        server=server,
+    )
 
-    # Initializing licence context manager, will make tests faster by avoiding licenses checkouts
-    licence_context_manager = LicenseContextManager(increment_name="avrxp_snd_level1")
+    pytest.data_path_sound_composer_bbn_source_2p_in_container = upload_file_in_tmp_folder(
+        os.path.join(
+            base_dir, "AnsysSound_BBN_MultipleParameters Pa2PerHz Narrowband v2_2024R2_20240418.txt"
+        ),
+        server=server,
+    )
 
-    # Loading DPF Sound
-    load_library(STR_DPF_SOUND_DLL, STR_DPF_SOUND)
-    yield server
+    # This path is different that the other, we need a local path
+    # and not a server path because we will use a native python
+    # `open()` to read this file and not a DPF operator
+    pytest.data_path_flute_psd_locally = os.path.join(base_dir, "flute_psd.txt")
+
+    # The temporary folder is the folder in the server where are stored the files
+    pytest.temporary_folder = os.path.dirname(pytest.data_path_flute_in_container)

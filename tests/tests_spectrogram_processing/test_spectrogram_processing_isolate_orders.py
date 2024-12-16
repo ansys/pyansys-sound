@@ -31,12 +31,12 @@ from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectrogram_processing import IsolateOrders
 
 
-def test_isolate_orders_instantiation(dpf_sound_test_server):
+def test_isolate_orders_instantiation():
     isolate_orders = IsolateOrders()
     assert isolate_orders != None
 
 
-def test_isolate_orders_process(dpf_sound_test_server):
+def test_isolate_orders_process():
     isolate_orders = IsolateOrders()
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
@@ -78,7 +78,7 @@ def test_isolate_orders_process(dpf_sound_test_server):
         assert False
 
 
-def test_isolate_orders_get_output(dpf_sound_test_server):
+def test_isolate_orders_get_output():
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
@@ -111,7 +111,7 @@ def test_isolate_orders_get_output(dpf_sound_test_server):
     assert len(fc_out[0].data) == 909956
 
 
-def test_isolate_orders_get_output_as_np_array(dpf_sound_test_server):
+def test_isolate_orders_get_output_as_np_array():
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
@@ -140,7 +140,7 @@ def test_isolate_orders_get_output_as_np_array(dpf_sound_test_server):
     assert arr[10000] == -0.04283715412020683
 
 
-def test_isolate_orders_set_get_signal(dpf_sound_test_server):
+def test_isolate_orders_set_get_signal():
     isolate_orders = IsolateOrders()
     fc = FieldsContainer()
     fc.labels = ["channel"]
@@ -155,7 +155,7 @@ def test_isolate_orders_set_get_signal(dpf_sound_test_server):
     assert f[0].data[0, 2] == 42
 
 
-def test_isolate_orders_set_get_fft_size(dpf_sound_test_server):
+def test_isolate_orders_set_get_fft_size():
     isolate_orders = IsolateOrders()
 
     # Error
@@ -167,7 +167,7 @@ def test_isolate_orders_set_get_fft_size(dpf_sound_test_server):
     assert isolate_orders.fft_size == 1234.0
 
 
-def test_isolate_orders_set_get_window_overlap(dpf_sound_test_server):
+def test_isolate_orders_set_get_window_overlap():
     isolate_orders = IsolateOrders()
 
     # Error
@@ -179,7 +179,7 @@ def test_isolate_orders_set_get_window_overlap(dpf_sound_test_server):
     assert isolate_orders.window_overlap == 0.5
 
 
-def test_isolate_orders_set_get_window_type(dpf_sound_test_server):
+def test_isolate_orders_set_get_window_type():
     isolate_orders = IsolateOrders()
 
     # Error
@@ -194,7 +194,7 @@ def test_isolate_orders_set_get_window_type(dpf_sound_test_server):
     assert isolate_orders.window_type == "KAISER"
 
 
-def test_isolate_orders_set_get_rpm_profile(dpf_sound_test_server):
+def test_isolate_orders_set_get_rpm_profile():
     isolate_orders = IsolateOrders()
 
     rpm = Field()
@@ -204,7 +204,7 @@ def test_isolate_orders_set_get_rpm_profile(dpf_sound_test_server):
     assert isolate_orders.rpm_profile.data[0, 2] == 45
 
 
-def test_isolate_orders_set_get_orders(dpf_sound_test_server):
+def test_isolate_orders_set_get_orders():
     isolate_orders = IsolateOrders()
     orders = Field()
     orders.append([1, 2, 45], 1)
@@ -216,7 +216,7 @@ def test_isolate_orders_set_get_orders(dpf_sound_test_server):
     assert isolate_orders.orders.data[0, 2] == 45
 
 
-def test_isolate_orders_set_get_width_selection(dpf_sound_test_server):
+def test_isolate_orders_set_get_width_selection():
     isolate_orders = IsolateOrders()
 
     # Error
@@ -229,7 +229,7 @@ def test_isolate_orders_set_get_width_selection(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_isolate_orders_plot(mock_show, dpf_sound_test_server):
+def test_isolate_orders_plot(mock_show):
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
