@@ -92,14 +92,14 @@ EXP_STR_ALL_SET_MANY_VALUES = (
 )
 
 
-def test_source_harmonics_two_parameters_instantiation_no_arg(dpf_sound_test_server):
+def test_source_harmonics_two_parameters_instantiation_no_arg():
     """Test SourceHarmonicsTwoParameters instantiation without arguments."""
     source_obj = SourceHarmonicsTwoParameters()
     assert isinstance(source_obj, SourceHarmonicsTwoParameters)
     assert source_obj.source_harmonics_two_parameters is None
 
 
-def test_source_harmonics_two_parameters_instantiation_file_arg(dpf_sound_test_server):
+def test_source_harmonics_two_parameters_instantiation_file_arg():
     """Test SourceHarmonicsTwoParameters instantiation with file argument."""
     source_obj = SourceHarmonicsTwoParameters(
         file=pytest.data_path_sound_composer_harmonics_source_2p_in_container
@@ -108,13 +108,13 @@ def test_source_harmonics_two_parameters_instantiation_file_arg(dpf_sound_test_s
     assert source_obj.source_harmonics_two_parameters is not None
 
 
-def test_source_harmonics_two_parameters___str___not_set(dpf_sound_test_server):
+def test_source_harmonics_two_parameters___str___not_set():
     """Test SourceHarmonicsTwoParameters __str__ method when nothing is set."""
     source_obj = SourceHarmonicsTwoParameters()
     assert str(source_obj) == EXP_STR_NOT_SET
 
 
-def test_source_harmonics_two_parameters___str___all_set(dpf_sound_test_server):
+def test_source_harmonics_two_parameters___str___all_set():
     """Test SourceHarmonicsTwoParameters __str__ method when all data are set."""
     # Create a field to use in a SourceControlTime object.
     f_source_control = fields_factory.create_scalar_field(
@@ -152,7 +152,7 @@ def test_source_harmonics_two_parameters___str___all_set(dpf_sound_test_server):
     assert str(source_obj) == EXP_STR_ALL_SET_MANY_VALUES
 
 
-def test_source_harmonics_two_parameters_properties(dpf_sound_test_server):
+def test_source_harmonics_two_parameters_properties():
     """Test SourceHarmonicsTwoParameters properties."""
     source_obj = SourceHarmonicsTwoParameters()
 
@@ -175,7 +175,7 @@ def test_source_harmonics_two_parameters_properties(dpf_sound_test_server):
     assert isinstance(source_obj.source_harmonics_two_parameters, FieldsContainer)
 
 
-def test_source_harmonics_two_parameters_properties_exceptions(dpf_sound_test_server):
+def test_source_harmonics_two_parameters_properties_exceptions():
     """Test SourceHarmonicsTwoParameters properties' exceptions."""
     source_obj = SourceHarmonicsTwoParameters()
 
@@ -274,7 +274,7 @@ def test_source_harmonics_two_parameters_properties_exceptions(dpf_sound_test_se
         source_obj.source_harmonics_two_parameters = fc_source
 
 
-def test_source_harmonics_two_parameters_is_source_control_valid(dpf_sound_test_server):
+def test_source_harmonics_two_parameters_is_source_control_valid():
     """Test SourceHarmonicsTwoParameters is_source_control_valid method."""
     source_obj = SourceHarmonicsTwoParameters()
 
@@ -304,7 +304,7 @@ def test_source_harmonics_two_parameters_is_source_control_valid(dpf_sound_test_
     assert source_obj.is_source_control_valid() is True
 
 
-def test_source_specrum_load_source_harmonics_two_parameters(dpf_sound_test_server):
+def test_source_specrum_load_source_harmonics_two_parameters():
     """Test SourceHarmonicsTwoParameters load_source_harmonics method."""
     source_obj = SourceHarmonicsTwoParameters()
     source_obj.load_source_harmonics_two_parameters(
@@ -330,7 +330,7 @@ def test_source_specrum_load_source_harmonics_two_parameters(dpf_sound_test_serv
     )
 
 
-def test_source_harmonics_two_parameters_process(dpf_sound_test_server):
+def test_source_harmonics_two_parameters_process():
     """Test SourceHarmonicsTwoParameters process method."""
     # Create a field to use in a SourceControlTime object.
     f_source_control = fields_factory.create_scalar_field(
@@ -374,7 +374,7 @@ def test_source_harmonics_two_parameters_process(dpf_sound_test_server):
     assert source_obj._output is not None
 
 
-def test_source_harmonics_two_parameters_process_exceptions(dpf_sound_test_server):
+def test_source_harmonics_two_parameters_process_exceptions():
     """Test SourceHarmonicsTwoParameters process method exceptions."""
     # Test process method exception1 (missing controls).
     source_obj = SourceHarmonicsTwoParameters(
@@ -420,7 +420,7 @@ def test_source_harmonics_two_parameters_process_exceptions(dpf_sound_test_serve
         source_obj.process(sampling_frequency=0.0)
 
 
-def test_source_harmonics_two_parameters_get_output(dpf_sound_test_server):
+def test_source_harmonics_two_parameters_get_output():
     """Test SourceHarmonicsTwoParameters get_output method."""
     # Create a field to use in a SourceControlTime object.
     f_source_control = fields_factory.create_scalar_field(
@@ -540,7 +540,7 @@ def test_source_harmonics_two_parameters_get_output(dpf_sound_test_server):
     assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND_2000_INVCON, abs=1.0)
 
 
-def test_source_harmonics_two_parameters_get_output_unprocessed(dpf_sound_test_server):
+def test_source_harmonics_two_parameters_get_output_unprocessed():
     """Test SourceHarmonicsTwoParameters get_output method's exception."""
     source_obj = SourceHarmonicsTwoParameters()
     with pytest.warns(
@@ -554,7 +554,7 @@ def test_source_harmonics_two_parameters_get_output_unprocessed(dpf_sound_test_s
     assert f_output is None
 
 
-def test_source_harmonics_two_parameters_get_output_as_nparray(dpf_sound_test_server):
+def test_source_harmonics_two_parameters_get_output_as_nparray():
     """Test SourceHarmonicsTwoParameters get_output_as_nparray method."""
     # Create a field to use in a SourceControlTime object.
     f_source_control = fields_factory.create_scalar_field(
@@ -600,9 +600,7 @@ def test_source_harmonics_two_parameters_get_output_as_nparray(dpf_sound_test_se
     assert len(output_nparray) / 44100.0 == pytest.approx(3.0)
 
 
-def test_source_harmonics_two_parameters_get_output_as_nparray_unprocessed(
-    dpf_sound_test_server,
-):
+def test_source_harmonics_two_parameters_get_output_as_nparray_unprocessed():
     """Test SourceHarmonicsTwoParameters get_output_as_nparray method's exception."""
     source_obj = SourceHarmonicsTwoParameters()
     with pytest.warns(
@@ -617,7 +615,7 @@ def test_source_harmonics_two_parameters_get_output_as_nparray_unprocessed(
 
 
 @patch("matplotlib.pyplot.show")
-def test_source_harmonics_two_parameters_plot(mock_show, dpf_sound_test_server):
+def test_source_harmonics_two_parameters_plot(mock_show):
     """Test SourceHarmonicsTwoParameters plot method."""
     # Create a field to use in a SourceControlTime object.
     f_source_control = fields_factory.create_scalar_field(
@@ -661,7 +659,7 @@ def test_source_harmonics_two_parameters_plot(mock_show, dpf_sound_test_server):
     source_obj.plot()
 
 
-def test_source_harmonics_two_parameters_plot_exceptions(dpf_sound_test_server):
+def test_source_harmonics_two_parameters_plot_exceptions():
     """Test SourceHarmonicsTwoParameters plot method's exception."""
     source_obj = SourceHarmonicsTwoParameters()
     with pytest.raises(
@@ -674,9 +672,7 @@ def test_source_harmonics_two_parameters_plot_exceptions(dpf_sound_test_server):
         source_obj.plot()
 
 
-def test_source_harmonics_two_parameters___extract_harmonics_two_parameters_info(
-    dpf_sound_test_server,
-):
+def test_source_harmonics_two_parameters___extract_harmonics_two_parameters_info():
     """Test SourceHarmonicsTwoParameters __extract_harmonics_two_parameters_info method."""
     source = SourceHarmonicsTwoParameters()
     assert source._SourceHarmonicsTwoParameters__extract_harmonics_two_parameters_info() == (
