@@ -28,15 +28,15 @@ from ansys.dpf.core import Field, Operator
 import matplotlib.pyplot as plt
 import numpy as np
 
-from . import SpectralProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ..signal_processing import SignalProcessingParent
 
 ID_OPERATOR_DESIGN = "filter_design_minimum_phase_FIR_filter_from_FRF"
 ID_OPERATOR_LOAD = "load_FRF_from_txt"
 ID_OPERATOR_FILTER = "filter_signal"
 
 
-class Filter(SpectralProcessingParent):
+class Filter(SignalProcessingParent):
     """Filter class.
 
     This class allows designing, loading, and applying a digital filter to a signal. The filter

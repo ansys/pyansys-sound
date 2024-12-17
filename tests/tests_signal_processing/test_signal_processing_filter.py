@@ -26,8 +26,8 @@ from ansys.dpf.core import Field, Operator, TimeFreqSupport, fields_factory, loc
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.signal_processing import Filter
 from ansys.sound.core.signal_utilities import LoadWav
-from ansys.sound.core.spectral_processing import Filter
 
 EXP_STR_NOT_SET = (
     "Sampling frequency: 44100.0 Hz\n"

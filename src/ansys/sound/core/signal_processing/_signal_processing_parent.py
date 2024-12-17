@@ -20,12 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Spectral processing classes.
+"""SignalProcessingParent."""
+from .._pyansys_sound import PyAnsysSound
 
-Helper functions related to spectral processing.
-"""
 
-from ._spectral_processing_parent import SpectralProcessingParent
-from .power_spectral_density import PowerSpectralDensity
+class SignalProcessingParent(PyAnsysSound):
+    """
+    Provides the base class for signal processing classes.
 
-__all__ = ("SpectralProcessingParent", "PowerSpectralDensity")
+    This is the base class of all signal processing classes and should not be used directly.
+    """
