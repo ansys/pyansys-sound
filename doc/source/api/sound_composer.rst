@@ -10,6 +10,7 @@ Sound composer
     SourceBroadbandNoise
     SourceBroadbandNoiseTwoParameters
     SourceHarmonics
+    SourceHarmonicsTwoParameters
     SourceAudio
     SourceControlSpectrum
     SourceControlTime
