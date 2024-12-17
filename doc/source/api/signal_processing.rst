@@ -1,5 +1,5 @@
 Signal processing
--------------------
+-----------------
 
 .. module:: ansys.sound.core.signal_processing
 
