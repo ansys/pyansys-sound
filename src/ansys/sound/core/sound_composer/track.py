@@ -28,6 +28,7 @@ from ansys.dpf.core import Field
 from matplotlib import pyplot as plt
 import numpy as np
 
+from ansys.sound.core.signal_processing import Filter
 from ansys.sound.core.signal_utilities.apply_gain import ApplyGain
 from ansys.sound.core.sound_composer import (
     SoundComposerParent,
@@ -39,7 +40,6 @@ from ansys.sound.core.sound_composer import (
     SourceParent,
     SourceSpectrum,
 )
-from ansys.sound.core.spectral_processing import Filter
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
