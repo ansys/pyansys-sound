@@ -46,6 +46,7 @@ __all__ = (
     "SpectrumSynthesisMethods",
     "SourceSpectrum",
     "SourceControlSpectrum",
+    "SourceHarmonicsTwoParameters",
     "SourceBroadbandNoise",
     "SourceBroadbandNoiseTwoParameters",
     "SourceHarmonics",

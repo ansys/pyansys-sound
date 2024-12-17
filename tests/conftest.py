@@ -88,6 +88,19 @@ def pytest_configure():
         os.path.join(base_dir, "AnsysSound_Spectrum_v3_-_nominal_-_dBSPLperHz_2024R2_20241121.txt"),
         server=server,
     )
+    pytest.data_path_sound_composer_harmonics_source_2p_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "AnsysSound_Orders_MultipleParameters dBSPL_2024R2_20241205.txt"),
+        server=server,
+    )
+    pytest.data_path_sound_composer_harmonics_source_2p_many_values_in_container = (
+        upload_file_in_tmp_folder(
+            os.path.join(
+                base_dir,
+                "AnsysSound_Orders_MultipleParameters dBSPL_many_values_2024R2_20241205.txt",
+            ),
+            server=server,
+        )
+    )
     pytest.data_path_sound_composer_harmonics_source_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "AnsysSound_Orders dBSPL v1_2024R2_20241203.txt"), server=server
     )
@@ -95,6 +108,24 @@ def pytest_configure():
         upload_file_in_tmp_folder(
             os.path.join(
                 base_dir, "AnsysSound_Orders dBSPL v1_10_rpm_values_40_orders_2024R2_20241203.txt"
+            ),
+            server=server,
+        )
+    )
+    pytest.data_path_sound_composer_harmonics_source_2p_inverted_controls_in_container = (
+        upload_file_in_tmp_folder(
+            os.path.join(
+                base_dir,
+                "AnsysSound_Orders_MultipleParameters dBSPL - InvertedContols_2024R2_20241205.txt",
+            ),
+            server=server,
+        )
+    )
+    pytest.data_path_sound_composer_harmonics_source_2p_from_accel_in_container = (
+        upload_file_in_tmp_folder(
+            os.path.join(
+                base_dir,
+                "AnsysSound_Orders_MultipleParameters_FromAccelWithTacho_2024R2_20241205.txt",
             ),
             server=server,
         )
