@@ -42,15 +42,15 @@ class Filter(SignalProcessingParent):
     This class allows designing, loading, and applying a digital filter to a signal. The filter
     coefficients can be provided directly, or computed from a specific frequency response function
     (FRF). In this latter case, the filter is designed as a minimum-phase FIR filter, and the
-    filter denominator is set to 1 as a consequence.
+    filter denominator (:attr:`a_coefficients`) is set to 1 as a consequence.
 
     .. note::
 
         Whether they are derived from the provided FRF or specified directly, the filter
         coefficients are linked to the sampling frequency value that is given in the argument
         ``sampling_frequency`` of the ``Filter`` class. As a consequence, the signal to filter
-        ``signal`` must have the same sampling frequency. If necessary, use the :class:`.Resample`
-        class to resample the signal prior to using the ``Filter`` class.
+        :attr:`signal` must have the same sampling frequency. If necessary, use the
+        :class:`.Resample` class to resample the signal prior to using the ``Filter`` class.
     """
 
     def __init__(
