@@ -7,4 +7,3 @@ Spectral processing
     :toctree: _autosummary
 
     PowerSpectralDensity
-    Filter
