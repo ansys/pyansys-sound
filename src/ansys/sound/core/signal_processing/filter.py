@@ -45,7 +45,6 @@ class Filter(SignalProcessingParent):
     filter denominator (:attr:`a_coefficients`) is set to 1 as a consequence.
 
     .. note::
-
         Whether they are derived from the provided FRF or specified directly, the filter
         coefficients are linked to the sampling frequency value that is given in the argument
         ``sampling_frequency`` of the ``Filter`` class. As a consequence, the signal to filter
@@ -185,6 +184,12 @@ class Filter(SignalProcessingParent):
         Computes the filter coefficients according to the filter sampling frequency and the FRF
         data that is loaded from the specified file.
 
+        .. note::
+            If the maximum frequency specified in the FRF file extends beyond half the filter
+            sampling frequency, the FRF data is truncated to this frequency. If, on the contrary,
+            the FRF file's maximum frequency is lower than half the filter sampling frequency, the
+            FRF is zero-padded between the two.
+
         Parameters
         ----------
         file : str
@@ -209,6 +214,12 @@ class Filter(SignalProcessingParent):
 
         Computes the filter coefficients according to the filter sampling frequency and the
         provided FRF data.
+
+        .. note::
+            If the maximum frequency specified in the FRF extends beyond half the filter sampling
+            frequency, the FRF data is truncated to this frequency. If, on the contrary, the FRF
+            maximum frequency is lower than half the filter sampling frequency, the FRF is
+            zero-padded between the two.
 
         Parameters
         ----------
