@@ -26,7 +26,7 @@ from .._pyansys_sound import PyAnsysSound
 
 class SpectralProcessingParent(PyAnsysSound):
     """
-    Provides the base class for PowerSpectralDensity classes.
+    Provides the base class for spectral processing classes.
 
-    This is the base class of all PowerSpectralDensity classes and should not be used directly.
+    This is the base class of all spectral processing classes and should not be used directly.
     """

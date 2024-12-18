@@ -141,6 +141,12 @@ def pytest_configure():
     pytest.data_path_sound_composer_harmonics_source_xml_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "VRX_Waterfall_2024R2_20241203.xml"), server=server
     )
+    pytest.data_path_filter_frf = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "AnsysSound_FRF_2024R2_20241206.txt"), server=server
+    )
+    pytest.data_path_filter_frf_wrong_header = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "AnsysSound_FRF_bad_2024R2_20241206.txt"), server=server
+    )
     pytest.data_path_flute_nonUnitaryCalib_as_txt_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "flute_nonUnitaryCalib_as_text_2024R2_20241125.txt"),
         server=server,

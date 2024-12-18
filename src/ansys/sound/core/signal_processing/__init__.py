@@ -20,12 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Spectral processing classes.
+"""Signal processing classes.
 
-Helper functions related to spectral processing.
+Helper functions related to signal processing.
 """
+from ._signal_processing_parent import SignalProcessingParent
+from .filter import Filter
 
-from ._spectral_processing_parent import SpectralProcessingParent
-from .power_spectral_density import PowerSpectralDensity
-
-__all__ = ("SpectralProcessingParent", "PowerSpectralDensity")
+__all__ = ("SignalProcessingParent", "Filter")
