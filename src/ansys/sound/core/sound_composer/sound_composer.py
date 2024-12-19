@@ -74,7 +74,7 @@ class SoundComposer(SoundComposerParent):
                 f"gain = {np.round(track.gain, 1):+} dB"
             )
 
-        return f"Sound Composer object ({len(self.tracks)} track(s))" f"{str_tracks}"
+        return f"Sound Composer object ({len(self.tracks)} track(s)){str_tracks}"
 
     @property
     def tracks(self) -> list[Track]:
@@ -157,6 +157,7 @@ class SoundComposer(SoundComposerParent):
                     f"{__class__.__name__}.load()."
                 )
             )
+            self._output = None
         else:
             self._output = Field()
             for track in self.tracks:

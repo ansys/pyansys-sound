@@ -172,6 +172,10 @@ def pytest_configure():
         ),
         server=server,
     )
+    pytest.data_path_sound_composer_project_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "20241031_SoundComposerProjectForDpfSoundTesting.scn"),
+        server=server,
+    )
 
     # This path is different that the other, we need a local path
     # and not a server path because we will use a native python
