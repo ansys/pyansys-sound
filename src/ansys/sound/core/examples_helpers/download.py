@@ -25,6 +25,7 @@ from functools import wraps
 import os
 import shutil
 
+from ansys.dpf.core import upload_file_in_tmp_folder
 import platformdirs
 import requests
 
@@ -93,17 +94,18 @@ def _retrieve_file(url, filename, _test=False):  # pragma no cover
     return local_path
 
 
-def _download_file(filename, directory=None, _test=False):  # pragma no cover
+def _get_file_path_in_dpf_server(
+    filename, directory=None, _test=False, server=None
+):  # pragma no cover
+    # get file url in git repo
     url = _get_file_url(filename, directory)
     try:
+        # download file locally
         local_path = _retrieve_file(url, filename, _test)
-
-        # In case of CI/CD pipelines
-        port_in_env = os.environ.get("ANSRV_DPF_SOUND_PORT")
-        if port_in_env is not None:
-            return "C:\\data\\" + filename
-        else:
-            return local_path
+        # upload file to DPF server,
+        # so that we are independent on the local configuration (docker or not)
+        server_path = upload_file_in_tmp_folder(file_path=local_path, server=server)
+        return server_path
 
     except Exception as e:  # Generate exception
         raise RuntimeError(
@@ -116,7 +118,7 @@ def _download_file(filename, directory=None, _test=False):  # pragma no cover
         )
 
 
-def download_flute_psd():
+def download_flute_psd(server=None):
     """Download the PSD of the ``flute.wav`` file.
 
     Examples
@@ -132,14 +134,10 @@ def download_flute_psd():
         Path on the Docker container for the ``flute_psd.txt`` file.
 
     """
-    filename = "flute_psd.txt"
-    directory = "pyansys-sound"
-    url = _get_file_url(filename, directory)
-    local_path = _retrieve_file(url, filename, False)
-    return local_path
+    return _get_file_path_in_dpf_server("flute_psd.txt", "pyansys-sound", server=server)
 
 
-def download_flute_wav():
+def download_flute_wav(server=None):
     """Download the ``flute.wav`` file.
 
     Returns
@@ -147,10 +145,10 @@ def download_flute_wav():
     str
         Path for the ``flute.wav`` file.
     """
-    return _download_file("flute.wav", "pyansys-sound")
+    return _get_file_path_in_dpf_server("flute.wav", "pyansys-sound", server=server)
 
 
-def download_flute_2_wav():
+def download_flute_2_wav(server=None):
     """Download the ``flute2.wav`` file.
 
     Returns
@@ -158,10 +156,10 @@ def download_flute_2_wav():
     str
         Path for the ``flute2.wav`` file.
     """
-    return _download_file("flute2.wav", "pyansys-sound")
+    return _get_file_path_in_dpf_server("flute2.wav", "pyansys-sound", server=server)
 
 
-def download_accel_with_rpm_wav():
+def download_accel_with_rpm_wav(server=None):
     """Download the ``accel_with_rpm.wav`` file.
 
     Returns
@@ -169,10 +167,10 @@ def download_accel_with_rpm_wav():
     str
         Path for the ``accel_with_rpm.wav`` file.
     """
-    return _download_file("accel_with_rpm.wav", "pyansys-sound")
+    return _get_file_path_in_dpf_server("accel_with_rpm.wav", "pyansys-sound", server=server)
 
 
-def download_accel_with_rpm_2_wav():
+def download_accel_with_rpm_2_wav(server=None):
     """Download the ``accel_with_rpm_2.wav`` file.
 
     Returns
@@ -180,10 +178,10 @@ def download_accel_with_rpm_2_wav():
     str
         Path for the ``accel_with_rpm_2.wav`` file.
     """
-    return _download_file("accel_with_rpm_2.wav", "pyansys-sound")
+    return _get_file_path_in_dpf_server("accel_with_rpm_2.wav", "pyansys-sound", server=server)
 
 
-def download_accel_with_rpm_3_wav():
+def download_accel_with_rpm_3_wav(server=None):
     """Download the ``accel_with_rpm_3.wav`` file.
 
     Returns
@@ -191,10 +189,10 @@ def download_accel_with_rpm_3_wav():
     str
         Path for the ``accel_with_rpm_3.wav`` file.
     """
-    return _download_file("accel_with_rpm_3.wav", "pyansys-sound")
+    return _get_file_path_in_dpf_server("accel_with_rpm_3.wav", "pyansys-sound", server=server)
 
 
-def download_xtract_demo_signal_1_wav():
+def download_xtract_demo_signal_1_wav(server=None):
     """Download the ``xtract_demo_signal_1.wav`` file.
 
     Returns
@@ -202,10 +200,10 @@ def download_xtract_demo_signal_1_wav():
     str
         Path for the ``xtract_demo_signal_1.wav`` file.
     """
-    return _download_file("xtract_demo_signal_1.wav", "pyansys-sound")
+    return _get_file_path_in_dpf_server("xtract_demo_signal_1.wav", "pyansys-sound", server=server)
 
 
-def download_xtract_demo_signal_2_wav():
+def download_xtract_demo_signal_2_wav(server=None):
     """Download the ``xtract_demo_signal_2.wav`` file.
 
     Returns
@@ -213,4 +211,4 @@ def download_xtract_demo_signal_2_wav():
     str
         Path for the ``xtract_demo_signal_2.wav`` file.
     """
-    return _download_file("xtract_demo_signal_2.wav", "pyansys-sound")
+    return _get_file_path_in_dpf_server("xtract_demo_signal_2.wav", "pyansys-sound", server=server)

@@ -97,7 +97,7 @@ print(f"Server information: {my_server.info}")
 # Execute the PyAnsys Sound ``LoadWav`` operator several times in a row
 # and measure the execution time.
 
-path_flute_wav = download_flute_wav()
+path_flute_wav = download_flute_wav(server=my_server)
 
 for i in range(5):
     now = datetime.datetime.now()
