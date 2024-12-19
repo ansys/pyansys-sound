@@ -122,6 +122,12 @@ def test_track_properties_exceptions():
         track.filter = "InvalidType"
 
 
+def test_track_set_from_generic_data_container():
+    """Test Track set_from_generic_data_container method."""
+    # TODO. Also do test for this method in each source type class.
+    pass
+
+
 def test_track_process():
     """Test Track process method (no resample needed)."""
     track = Track(
@@ -152,6 +158,18 @@ def test_track_process_exceptions():
         PyAnsysSoundException, match="Sampling frequency must be strictly positive."
     ):
         track.process(sampling_frequency=0.0)
+
+    # Test process method exception3 (sampling frequency value mismatch).
+    track = Track()
+    track.filter = Filter(sampling_frequency=48000.0)
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=(
+            "Specified sampling frequency must be equal to that which is stored in the track's "
+            "filter."
+        ),
+    ):
+        track.process(sampling_frequency=44100.0)
 
 
 def test_track_get_output():
