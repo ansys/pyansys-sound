@@ -37,12 +37,11 @@ from .source_control_time import SourceControlTime
 from .source_harmonics import SourceHarmonics
 from .source_harmonics_two_parameters import SourceHarmonicsTwoParameters
 from .source_spectrum import SourceSpectrum
-from .track import DICT_SOURCE_TYPE, Track
+from .track import Track
 
 __all__ = (
     "SoundComposer",
     "Track",
-    "DICT_SOURCE_TYPE",
     "SoundComposerParent",
     "SourceParent",
     "SourceControlParent",

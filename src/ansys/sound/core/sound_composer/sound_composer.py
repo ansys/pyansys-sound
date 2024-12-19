@@ -23,14 +23,12 @@
 """Sound Composer's sound_composer."""
 import warnings
 
-from ansys.dpf.core import Field, GenericDataContainer, GenericDataContainersCollection, Operator
-from ansys.dpf.core.collection import Collection
+from ansys.dpf.core import Field, GenericDataContainersCollection, Operator
 from matplotlib import pyplot as plt
 import numpy as np
 
-from ansys.sound.core.signal_processing import Filter
 from ansys.sound.core.sound_composer._sound_composer_parent import SoundComposerParent
-from ansys.sound.core.sound_composer.track import DICT_SOURCE_TYPE, Track
+from ansys.sound.core.sound_composer.track import Track
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
@@ -48,7 +46,6 @@ class SoundComposer(SoundComposerParent):
     def __init__(
         self,
         project_path: str = "",
-        sampling_frequency: float = 44100.0,
     ):
         """Class instantiation takes the following parameters.
 
@@ -56,12 +53,8 @@ class SoundComposer(SoundComposerParent):
         ----------
         project_path : str, default: ""
             Path to the Sound Composer project file to load (.scn).
-        sampling_frequency : float, default: 44100.0
-            Project sampling frequency in Hz.
         """
         super().__init__()
-        self.__sampling_frequency = sampling_frequency
-
         self.__operator_load = Operator(ID_OPERATOR_LOAD)
         self.__operator_save = Operator(ID_OPERATOR_SAVE)
 
@@ -81,11 +74,7 @@ class SoundComposer(SoundComposerParent):
                 f"gain = {np.round(track.gain, 1):+} dB"
             )
 
-        return (
-            f"Sound Composer object ({len(self.tracks)} track(s), "
-            f"sampling frequency: {self.__sampling_frequency} Hz)"
-            f"{str_tracks}"
-        )
+        return f"Sound Composer object ({len(self.tracks)} track(s))" f"{str_tracks}"
 
     @property
     def tracks(self) -> list[Track]:
@@ -112,16 +101,6 @@ class SoundComposer(SoundComposerParent):
         if not isinstance(track, Track):
             raise PyAnsysSoundException("Input track object must be of type Track.")
 
-        if (
-            track.filter is not None
-            and track.filter.get_sampling_frequency() != self.__sampling_frequency
-        ):
-            raise PyAnsysSoundException(
-                f"Track's filter sampling frequency ({track.filter.get_sampling_frequency()} Hz) "
-                "must be equal to the Sound Composer's sampling frequency "
-                f"({self.__sampling_frequency} Hz)."
-            )
-
         self.__tracks.append(track)
 
     def load(self, project_path: str):
@@ -136,73 +115,41 @@ class SoundComposer(SoundComposerParent):
 
         self.__operator_load.run()
 
-        gdcc_project: Collection = self.__operator_load.get_output(
-            0, GenericDataContainersCollection
-        )
+        gdcc_project = self.__operator_load.get_output(0, GenericDataContainersCollection)
 
         for i in range(len(gdcc_project)):
-            gdc_track: GenericDataContainer = gdcc_project.get_entry({"track_index": i})
+            track = Track()
+            track.set_from_generic_data_container(gdcc_project.get_entry({"track_index": i}))
+            self.add_track(track)
 
-            # Create source attribute.
-            gdc_source: GenericDataContainer = gdc_track.get_property("track_source")
-            gdc_source_control: GenericDataContainer = gdc_track.get_property(
-                "track_source_control"
-            )
-            source = DICT_SOURCE_TYPE[gdc_track.get_property("track_type")]()
-            source.set_from_generic_data_containers(gdc_source, gdc_source_control)
+    # TODO: Save cannot work for now because the FRF is not stored in the Filter class.
+    # def save(self, project_path: str):
+    #     """Save the Sound Composer project.
 
-            # Create filter attribute.
-            if gdc_track.get_property("track_is_filter") == 1:
-                frf = gdc_track.get_property("track_filter")
-                filter = Filter(sampling_frequency=self.__sampling_frequency)
-                filter.design_FIR_from_FRF(frf)
-            else:
-                filter = None
+    #     Parameters
+    #     ----------
+    #     project_path : str
+    #         Path and file (.scn) name where the Sound Composer project shall be saved.
+    #     """
+    #     gdcc_project = GenericDataContainersCollection()
 
-            # Add track to the Sound Composer with created source and filter.
-            self.add_track(
-                Track(
-                    name=gdc_track.get_property("track_name"),
-                    gain=gdc_track.get_property("track_gain"),
-                    source=source,
-                    filter=filter,
-                )
-            )
+    #     for i, track in enumerate(self.tracks):
+    #         gdcc_project.add_entry({"track_index": i}, track.get_as_generic_data_container())
 
-    def save(self, project_path: str):
-        """Save the Sound Composer project.
+    #     # Save the Sound Composer project.
+    #     self.__operator_save.connect(0, project_path)
+    #     self.__operator_save.connect(1, gdcc_project)
+
+    #     self.__operator_save.run()
+
+    def process(self, sampling_frequency: float = 44100.0):
+        """Generate the signal of the Sound Composer, using the current tracks.
 
         Parameters
         ----------
-        project_path : str
-            Path and file (.scn) name where the Sound Composer project shall be saved.
+        sampling_frequency : float, default: 44100.0
+            Sampling frequency of the generated sound in Hz.
         """
-        gdcc_project = GenericDataContainersCollection()
-
-        for i, track in enumerate(self.tracks):
-            # Get source and source control as generic data containers.
-            gdc_source, gdc_source_control = track.source.get_as_generic_data_containers()
-
-            # Create a generic data container for the track.
-            gdc_track = GenericDataContainer()
-
-            # Set track generic data container properties.
-            gdc_track.set_property(
-                "track_type",
-                [i for i in DICT_SOURCE_TYPE if isinstance(track.source, DICT_SOURCE_TYPE[i])][0],
-            )
-            gdc_track.set_property("track_source", gdc_source)
-            gdc_track.set_property("track_source_control", gdc_source_control)
-            gdcc_project.add_entry({"track_index": i}, gdc_track)
-
-        # Save the Sound Composer project.
-        self.__operator_save.connect(0, project_path)
-        self.__operator_save.connect(1, gdcc_project)
-
-        self.__operator_save.run()
-
-    def process(self):
-        """Generate the signal of the Sound Composer, using the current tracks."""
         if len(self.tracks) == 0:
             warnings.warn(
                 PyAnsysSoundWarning(
@@ -213,7 +160,7 @@ class SoundComposer(SoundComposerParent):
         else:
             self._output = Field()
             for track in self.tracks:
-                track.process(self.__sampling_frequency)
+                track.process(sampling_frequency)
                 self._output += track.get_output()
 
     def get_output(self) -> Field:
