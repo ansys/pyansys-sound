@@ -296,8 +296,8 @@ class SourceHarmonicsTwoParameters(SourceParent):
         if not self.is_source_control_valid():
             raise PyAnsysSoundException(
                 "At least one source control for harmonics source with two parameters is not set. "
-                f"Use ``{__class__.__name__}.control_rpm`` and/or "
-                f"``{__class__.__name__}.control2``."
+                f"Use ``{__class__.__name__}.source_control_rpm`` and/or "
+                f"``{__class__.__name__}.source_control2``."
             )
 
         if self.source_harmonics_two_parameters is None:
@@ -367,6 +367,43 @@ class SourceHarmonicsTwoParameters(SourceParent):
         plt.xlabel("Time (s)")
         plt.ylabel("Amplitude (Pa)")
         plt.grid(True)
+        plt.show()
+
+    def plot_control(self):
+        """Plot the source control(s) in a figure."""
+        if not self.is_source_control_valid():
+            raise PyAnsysSoundException(
+                "At least one source control for harmonics source with two parameters is not set. "
+                f"Use ``{__class__.__name__}.source_control_rpm`` and/or "
+                f"``{__class__.__name__}.source_control2``."
+            )
+
+        _, axes = plt.subplots(2, 1, sharex=True)
+
+        data = self.source_control_rpm.control.data
+        time = self.source_control_rpm.control.time_freq_support.time_frequencies.data
+        unit = self.source_control_rpm.control.unit
+        name = self.source_control_rpm.control.name
+        unit_str = f" ({unit})" if len(unit) > 0 else ""
+        name_str = name if len(name) > 0 else "Amplitude"
+        axes[0].plot(time, data)
+        axes[0].set_title("Control profile 1")
+        axes[0].set_ylabel(f"{name_str}{unit_str}")
+        axes[0].grid(True)
+
+        data = self.source_control2.control.data
+        time = self.source_control2.control.time_freq_support.time_frequencies.data
+        unit = self.source_control2.control.unit
+        name = self.source_control2.control.name
+        unit_str = f" ({unit})" if len(unit) > 0 else ""
+        name_str = name if len(name) > 0 else "Amplitude"
+        axes[1].plot(time, data)
+        axes[1].set_title("Control profile 2")
+        axes[1].set_ylabel(f"{name_str}{unit_str}")
+        axes[1].set_xlabel("Time (s)")
+        axes[1].grid(True)
+
+        plt.tight_layout()
         plt.show()
 
     def __extract_harmonics_two_parameters_info(

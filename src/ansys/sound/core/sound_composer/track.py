@@ -30,16 +30,7 @@ import numpy as np
 
 from ansys.sound.core.signal_processing import Filter
 from ansys.sound.core.signal_utilities.apply_gain import ApplyGain
-from ansys.sound.core.sound_composer import (
-    SoundComposerParent,
-    SourceAudio,
-    SourceBroadbandNoise,
-    SourceBroadbandNoiseTwoParameters,
-    SourceHarmonics,
-    SourceHarmonicsTwoParameters,
-    SourceParent,
-    SourceSpectrum,
-)
+from ansys.sound.core.sound_composer import SoundComposerParent, SourceParent
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
@@ -84,50 +75,9 @@ class Track(SoundComposerParent):
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
-        if self.source is not None:
-            if isinstance(self.source, SourceAudio):
-                # SourceAudio is different, as it has no control attribute. The corresponding line
-                # is thus not displayed.
-                data = self.source.source_audio_data
-                str_source = (
-                    f"{"Data not set" if data is None else data.name}\n\t\tType: SourceAudio"
-                )
-
-            else:
-                match self.source:
-                    case SourceSpectrum():
-                        data = self.source.source_spectrum_data
-                        type_str = "SourceSpectrum"
-
-                    case SourceBroadbandNoise():
-                        data = self.source.source_bbn
-                        type_str = "SourceBroadbandNoise"
-
-                    case SourceBroadbandNoiseTwoParameters():
-                        data = self.source.source_bbn_two_parameters
-                        type_str = "SourceBroadbandNoiseTwoParameters"
-
-                    case SourceHarmonics():
-                        data = self.source.source_harmonics
-                        type_str = "SourceHarmonics"
-
-                    case SourceHarmonicsTwoParameters():
-                        data = self.source.source_harmonics_two_parameters
-                        type_str = "SourceHarmonicsTwoParameters"
-
-                str_source = (
-                    f"{"Data not set" if data is None else data.name}\n"
-                    f"\t\tType: {type_str}\n"
-                    f"\tSource control: "
-                    f"{"Set" if self.source.is_source_control_valid() else "Not set"}"
-                )
-
-        else:
-            str_source = "Not set"
-
         return (
-            f"{self.name}\n"
-            f"\tSource: {str_source}\n"
+            f"{self.name if len(self.name) > 0 else "Unnamed track" }\n"
+            f"\tSource:{f"\n{self.source.__str__()}" if self.source is not None else " Not set"}\n"
             f"\tFilter: {"Set" if self.filter is not None else "Not set"}"
         )
 
@@ -161,7 +111,7 @@ class Track(SoundComposerParent):
         The source of the track is used to synthesize the corresponding signal. Its type can be
         either :class:`SourceSpectrum`, :class:`SourceBroadbandNoise`,
         :class:`SourceBroadbandNoiseTwoParameters`, :class:`SourceHarmonics`,
-        :class:`SourceHarmoncisTwoParameters`, or :class:`SourceAudio`.
+        :class:`SourceHarmonicsTwoParameters`, or :class:`SourceAudio`.
         """
         return self.__source
 
@@ -259,79 +209,15 @@ class Track(SoundComposerParent):
 
         output_time = output.time_freq_support.time_frequencies.data
 
-        if isinstance(self.source, SourceSpectrum | SourceAudio):
-            additional_info_str = ""
-            if isinstance(self.source, SourceSpectrum):
-                additional_info_str = f" - {self.source.source_control.get_method_name()}"
-            plt.plot(output_time, output.data)
-            plt.title(
-                f"{self.name if len(self.name) > 0 else "Generated signal"} "
-                f"({type(self.source).__name__}{additional_info_str})"
-            )
-            plt.xlabel("Time (s)")
-            plt.ylabel(f"Amplitude{f" ({output.unit})" if len(output.unit) > 0 else ""}")
-            plt.grid(True)
-        elif isinstance(self.source, SourceBroadbandNoise | SourceHarmonics):
-            _, axes = plt.subplots(2, 1, sharex=True)
-            axes[0].plot(output_time, output.data)
-            axes[0].set_title(
-                f"{self.name if len(self.name) > 0 else "Generated signal"} "
-                f"({type(self.source).__name__})"
-            )
-            axes[0].set_ylabel(f"Amplitude{f" ({output.unit})" if len(output.unit) > 0 else ""}")
-            axes[0].grid(True)
-
-            time = self.source.source_control.control.time_freq_support.time_frequencies.data
-            unit = self.source.source_control.control.unit
-            unit_str = f" ({unit})" if len(unit) > 0 else ""
-            name = self.source.source_control.control.name
-            name_str = name if len(name) > 0 else "Amplitude"
-            axes[1].plot(time, self.source.source_control.control.data)
-            axes[1].set_title("Control profile")
-            axes[1].set_ylabel(f"{name_str}{unit_str}")
-            axes[1].set_xlabel("Time (s)")
-            axes[1].grid(True)
-        else:
-            _, axes = plt.subplots(3, 1, sharex=True)
-            axes[0].plot(output_time, output.data)
-            axes[0].set_title(
-                f"{self.name if len(self.name) > 0 else "Generated signal"} "
-                f"({type(self.source).__name__})"
-            )
-            axes[0].set_ylabel(f"Amplitude{f" ({output.unit})" if len(output.unit) > 0 else ""}")
-            axes[0].grid(True)
-
-            if isinstance(self.source, SourceBroadbandNoiseTwoParameters):
-                data = self.source.source_control1.control.data
-                time = self.source.source_control1.control.time_freq_support.time_frequencies.data
-                unit = self.source.source_control1.control.unit
-                name = self.source.source_control1.control.name
-            else:
-                # SourceHarmonicsTwoParameters case: Control 1 is always RPM.
-                data = self.source.source_control_rpm.control.data
-                time = (
-                    self.source.source_control_rpm.control.time_freq_support.time_frequencies.data
-                )
-                unit = self.source.source_control_rpm.control.unit
-                name = self.source.source_control_rpm.control.name
-            unit_str = f" ({unit})" if len(unit) > 0 else ""
-            name_str = name if len(name) > 0 else "Amplitude"
-            axes[1].plot(time, data)
-            axes[1].set_title("Control profile 1")
-            axes[1].set_ylabel(f"{name_str}{unit_str}")
-            axes[1].grid(True)
-
-            data = self.source.source_control2.control.data
-            time = self.source.source_control2.control.time_freq_support.time_frequencies.data
-            unit = self.source.source_control2.control.unit
-            name = self.source.source_control2.control.name
-            unit_str = f" ({unit})" if len(unit) > 0 else ""
-            name_str = name if len(name) > 0 else "Amplitude"
-            axes[2].plot(time, data)
-            axes[2].set_title("Control profile 2")
-            axes[2].set_ylabel(f"{name_str}{unit_str}")
-            axes[2].set_xlabel("Time (s)")
-            axes[2].grid(True)
-
+        plt.plot(output_time, output.data)
+        plt.title(
+            f"{self.name if len(self.name) > 0 else "Generated signal"} "
+            f"({type(self.source).__name__})"
+        )
+        plt.xlabel("Time (s)")
+        plt.ylabel(f"Amplitude{f" ({output.unit})" if len(output.unit) > 0 else ""}")
+        plt.grid(True)
         plt.tight_layout()
         plt.show()
+
+        self.source.plot_control()

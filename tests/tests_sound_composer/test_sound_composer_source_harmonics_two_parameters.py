@@ -384,8 +384,8 @@ def test_source_harmonics_two_parameters_process_exceptions():
         PyAnsysSoundException,
         match=(
             "At least one source control for harmonics source with two parameters is not set. Use "
-            "``SourceHarmonicsTwoParameters.control_rpm`` and/or "
-            "``SourceHarmonicsTwoParameters.control2``."
+            "``SourceHarmonicsTwoParameters.source_control_rpm`` and/or "
+            "``SourceHarmonicsTwoParameters.source_control2``."
         ),
     ):
         source_obj.process()
@@ -670,6 +670,62 @@ def test_source_harmonics_two_parameters_plot_exceptions():
         ),
     ):
         source_obj.plot()
+
+
+@patch("matplotlib.pyplot.show")
+def test_source_harmonics_two_parameters_plot_control(mock_show):
+    """Test SourceHarmonicsTwoParameters plot_control method."""
+    # Create a field to use in a SourceControlTime object.
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([500, 1250, 2000, 3000], 1)
+    support = TimeFreqSupport()
+    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_time.append([0, 1, 2, 3], 1)
+    support.time_frequencies = f_time
+    f_source_control.time_freq_support = support
+
+    # Create a first SourceControlTime object.
+    source_control_rpm = SourceControlTime()
+    source_control_rpm.control = f_source_control
+
+    # Create another field to use in a SourceControlTime object.
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([9.5, 9, 1, 0.5], 1)
+    support = TimeFreqSupport()
+    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_time.append([0, 1, 2, 3], 1)
+    support.time_frequencies = f_time
+    f_source_control.time_freq_support = support
+
+    # Create a second SourceControlTime object.
+    source_control2 = SourceControlTime()
+    source_control2.control = f_source_control
+
+    # Create a SourceHarmonicsTwoParameters object with created source controls.
+    source_obj = SourceHarmonicsTwoParameters(
+        source_control_rpm=source_control_rpm,
+        source_control2=source_control2,
+    )
+
+    source_obj.plot_control()
+
+
+def test_source_harmonics_two_parameters_plot_control_exceptions():
+    """Test SourceHarmonicsTwoParameters plot_control method's exception."""
+    source_obj = SourceHarmonicsTwoParameters()
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=(
+            "At least one source control for harmonics source with two parameters is not set. "
+            "Use ``SourceHarmonicsTwoParameters.source_control_rpm`` and/or "
+            "``SourceHarmonicsTwoParameters.source_control2``."
+        ),
+    ):
+        source_obj.plot_control()
 
 
 def test_source_harmonics_two_parameters___extract_harmonics_two_parameters_info():

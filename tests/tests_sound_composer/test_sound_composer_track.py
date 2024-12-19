@@ -27,26 +27,21 @@ import numpy as np
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.signal_processing.filter import Filter
 from ansys.sound.core.sound_composer import (
     SourceAudio,
     SourceBroadbandNoise,
-    SourceBroadbandNoiseTwoParameters,
     SourceControlSpectrum,
     SourceControlTime,
-    SourceHarmonics,
-    SourceHarmonicsTwoParameters,
     SourceSpectrum,
     Track,
 )
-from ansys.sound.core.spectral_processing.filter import Filter
 from ansys.sound.core.spectral_processing.power_spectral_density import PowerSpectralDensity
 
 REF_ACOUSTIC_POWER = 4e-10
 
-EXP_STR_NOT_SET = "\n\tSource: Not set\n\tFilter: Not set"
-EXP_STR_SOURCE_PART = "MyTrack\n\tSource: Data not set\n\t\tType: "
-EXP_STR_CONTROL_PART = "\n\tSource control: Not set"
-EXP_STR_FILTER_PART = "\n\tFilter: Set"
+EXP_STR_NOT_SET = "Unnamed track\n\tSource: Not set\n\tFilter: Not set"
+EXP_STR_ALL_SET = "MyTrack\n\tSource:\nAudio source: Not set\n\tFilter: Set"
 EXP_LEVEL_BAND_3RD_250_Hz = 76.05368
 EXP_LEVEL_BAND_3RD_500_Hz = 73.08566
 EXP_LEVEL_BAND_3RD_1000_Hz = 69.42302
@@ -82,46 +77,8 @@ def test_track___str___not_set():
 
 def test_track___str___all_set():
     """Test Track __str__ method when all data are set."""
-    track = Track(name="MyTrack", source=SourceSpectrum(), filter=Filter())
-    assert str(track) == (
-        f"{EXP_STR_SOURCE_PART}SourceSpectrum{EXP_STR_CONTROL_PART}{EXP_STR_FILTER_PART}"
-    )
-
-    track.source = SourceBroadbandNoise()
-    assert str(track) == (
-        f"{EXP_STR_SOURCE_PART}"
-        "SourceBroadbandNoise"
-        f"{EXP_STR_CONTROL_PART}"
-        f"{EXP_STR_FILTER_PART}"
-    )
-
-    track.source = SourceBroadbandNoiseTwoParameters()
-    assert str(track) == (
-        f"{EXP_STR_SOURCE_PART}"
-        "SourceBroadbandNoiseTwoParameters"
-        f"{EXP_STR_CONTROL_PART}"
-        f"{EXP_STR_FILTER_PART}"
-    )
-
-    track.source = SourceHarmonics()
-    assert str(track) == (
-        f"{EXP_STR_SOURCE_PART}"
-        "SourceHarmonics"
-        f"{EXP_STR_CONTROL_PART}"
-        f"{EXP_STR_FILTER_PART}"
-    )
-
-    track.source = SourceHarmonicsTwoParameters()
-    assert str(track) == (
-        f"{EXP_STR_SOURCE_PART}"
-        "SourceHarmonicsTwoParameters"
-        f"{EXP_STR_CONTROL_PART}"
-        f"{EXP_STR_FILTER_PART}"
-    )
-
-    track.source = SourceAudio()
-    # No source control part in str for SourceAudio.
-    assert str(track) == f"{EXP_STR_SOURCE_PART}SourceAudio{EXP_STR_FILTER_PART}"
+    track = Track(name="MyTrack", source=SourceAudio(), filter=Filter())
+    assert str(track) == EXP_STR_ALL_SET
 
 
 def test_track_properties():
@@ -290,23 +247,8 @@ def test_track_get_output_as_nparray_unprocessed():
 
 
 @patch("matplotlib.pyplot.show")
-def test_track_plot_source_spectrum(mock_show):
-    """Test Track plot method for a SourceSpectrum source."""
-    track = Track(
-        gain=3.0,
-        source=SourceSpectrum(
-            file_source=pytest.data_path_sound_composer_spectrum_source_in_container,
-            source_control=SourceControlSpectrum(duration=3.0, method=1),
-        ),
-        filter=Filter(a_coefficients=[1.0], b_coefficients=[1.0, 0.5]),
-    )
-    track.process(sampling_frequency=44100.0)
-    track.plot()
-
-
-@patch("matplotlib.pyplot.show")
-def test_track_plot_source_bbn(mock_show):
-    """Test Track plot method for a SourceBroadbandNoise source."""
+def test_track_plot(mock_show):
+    """Test Track plot method."""
     # We need create a suitable source control first.
     f_control = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
     f_control.append([1, 3, 6, 10], 1)
@@ -325,98 +267,6 @@ def test_track_plot_source_bbn(mock_show):
         source=SourceBroadbandNoise(
             file=pytest.data_path_sound_composer_bbn_source_in_container,
             source_control=source_control,
-        ),
-        filter=Filter(a_coefficients=[1.0], b_coefficients=[1.0, 0.5]),
-    )
-    track.process(sampling_frequency=44100.0)
-    track.plot()
-
-
-@patch("matplotlib.pyplot.show")
-def test_track_plot_source_bbn_2p(mock_show):
-    """Test Track plot method for a SourceBroadbandNoiseTwoParameters source."""
-    # We need create suitable source controls first.
-    f_source_control = fields_factory.create_scalar_field(
-        num_entities=1, location=locations.time_freq
-    )
-    f_source_control.append([3, 4, 35, 38], 1)
-    support = TimeFreqSupport()
-    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
-    f_time.append([0, 1, 2, 3], 1)
-    support.time_frequencies = f_time
-    f_source_control.time_freq_support = support
-
-    # Create a first SourceControlTime object.
-    source_control1 = SourceControlTime()
-    source_control1.control = f_source_control
-
-    # Create another field to use in a SourceControlTime object.
-    f_source_control = fields_factory.create_scalar_field(
-        num_entities=1, location=locations.time_freq
-    )
-    f_source_control.append([9.5, 9, 1, 0.5], 1)
-    support = TimeFreqSupport()
-    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
-    f_time.append([0, 1, 2, 3], 1)
-    support.time_frequencies = f_time
-    f_source_control.time_freq_support = support
-
-    # Create a second SourceControlTime object.
-    source_control2 = SourceControlTime()
-    source_control2.control = f_source_control
-
-    track = Track(
-        gain=3.0,
-        source=SourceBroadbandNoiseTwoParameters(
-            file=pytest.data_path_sound_composer_bbn_source_2p_in_container,
-            source_control1=source_control1,
-            source_control2=source_control2,
-        ),
-        filter=Filter(a_coefficients=[1.0], b_coefficients=[1.0, 0.5]),
-    )
-    track.process(sampling_frequency=44100.0)
-    track.plot()
-
-
-@patch("matplotlib.pyplot.show")
-def test_track_plot_source_harmonics_2p(mock_show):
-    """Test Track plot method for a SourceHarmonicsTwoParameters source."""
-    # We need create suitable source controls first.
-    f_source_control = fields_factory.create_scalar_field(
-        num_entities=1, location=locations.time_freq
-    )
-    f_source_control.append([500, 1250, 2000, 3000], 1)
-    support = TimeFreqSupport()
-    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
-    f_time.append([0, 1, 2, 3], 1)
-    support.time_frequencies = f_time
-    f_source_control.time_freq_support = support
-
-    # Create a first SourceControlTime object.
-    source_control_rpm = SourceControlTime()
-    source_control_rpm.control = f_source_control
-
-    # Create another field to use in a SourceControlTime object.
-    f_source_control = fields_factory.create_scalar_field(
-        num_entities=1, location=locations.time_freq
-    )
-    f_source_control.append([9.5, 9, 1, 0.5], 1)
-    support = TimeFreqSupport()
-    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
-    f_time.append([0, 1, 2, 3], 1)
-    support.time_frequencies = f_time
-    f_source_control.time_freq_support = support
-
-    # Create a second SourceControlTime object.
-    source_control2 = SourceControlTime()
-    source_control2.control = f_source_control
-
-    track = Track(
-        gain=3.0,
-        source=SourceHarmonicsTwoParameters(
-            file=pytest.data_path_sound_composer_harmonics_source_2p_in_container,
-            source_control_rpm=source_control_rpm,
-            source_control2=source_control2,
         ),
         filter=Filter(a_coefficients=[1.0], b_coefficients=[1.0, 0.5]),
     )
