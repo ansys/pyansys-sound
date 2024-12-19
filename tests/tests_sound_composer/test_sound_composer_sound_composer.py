@@ -120,7 +120,8 @@ def test_sound_composer_process_warning():
     with pytest.warns(
         PyAnsysSoundWarning,
         match=(
-            "There are no track to process. Use SoundComposer.add_track() or SoundComposer.load()."
+            "There are no track to process. Use SoundComposer.add_track\\(\\) or "
+            "SoundComposer.load\\(\\)."
         ),
     ):
         sound_composer.process()
@@ -143,10 +144,10 @@ def test_sound_composer_get_output_warning():
     sound_composer = SoundComposer()
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the SoundComposer.process() method.",
+        match="Output is not processed yet. Use the SoundComposer.process\\(\\) method.",
     ):
-        sound_composer.get_output()
-    assert sound_composer._output is None
+        output = sound_composer.get_output()
+    assert output is None
 
 
 def test_sound_composer_get_output_as_nparray():
@@ -164,10 +165,10 @@ def test_sound_composer_get_output_as_nparray_warning():
     sound_composer = SoundComposer()
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the SoundComposer.process() method.",
+        match="Output is not processed yet. Use the SoundComposer.process\\(\\) method.",
     ):
-        sound_composer.get_output_as_nparray()
-    assert len(sound_composer._output) == 0
+        output = sound_composer.get_output_as_nparray()
+    assert len(output) == 0
 
 
 @patch("matplotlib.pyplot.show")
@@ -185,6 +186,6 @@ def test_sound_composer_plot_exception():
     sound_composer = SoundComposer()
     with pytest.raises(
         PyAnsysSoundException,
-        match="Output is not processed yet. Use the SoundComposer.process() method.",
+        match="Output is not processed yet. Use the SoundComposer.process\\(\\) method.",
     ):
         sound_composer.plot()
