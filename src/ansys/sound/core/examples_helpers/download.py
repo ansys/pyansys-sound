@@ -101,7 +101,8 @@ def _get_file_path_in_dpf_server(filename, directory=None, _test=False, server=N
     try:
         # download file locally
         local_path = _retrieve_file(url, filename, _test)
-        # upload file to DPF server, so that we are independant on the local configuration (docker or not)
+        # upload file to DPF server, 
+        # so that we are independent on the local configuration (docker or not)
         server_path = upload_file_in_tmp_folder(file_path=local_path, server=server)
         return server_path
 
