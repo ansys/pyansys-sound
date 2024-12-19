@@ -25,7 +25,13 @@ from ansys.sound.core.sound_composer import SourceParent
 
 def test__source_parent_is_source_control_valid():
     """Test SourceParent's is_source_control_valid method."""
-    control = SourceParent()
+    source = SourceParent()
 
-    result = control.is_source_control_valid()
+    result = source.is_source_control_valid()
     assert result is False
+
+
+def test__source_parent_plot_control():
+    """Test SourceParent's plot_control method."""
+    source = SourceParent()
+    source.plot_control()

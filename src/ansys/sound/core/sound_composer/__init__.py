@@ -36,8 +36,10 @@ from .source_control_time import SourceControlTime
 from .source_harmonics import SourceHarmonics
 from .source_harmonics_two_parameters import SourceHarmonicsTwoParameters
 from .source_spectrum import SourceSpectrum
+from .track import Track
 
 __all__ = (
+    "Track",
     "SoundComposerParent",
     "SourceParent",
     "SourceControlParent",
@@ -48,6 +50,7 @@ __all__ = (
     "SourceBroadbandNoise",
     "SourceBroadbandNoiseTwoParameters",
     "SourceHarmonics",
+    "SourceHarmonicsTwoParameters",
     "SourceControlTime",
     "SourceAudio",
 )

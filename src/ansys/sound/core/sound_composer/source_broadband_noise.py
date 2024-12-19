@@ -293,6 +293,29 @@ class SourceBroadbandNoise(SourceParent):
         plt.grid(True)
         plt.show()
 
+    def plot_control(self):
+        """Plot the source control(s) in a figure."""
+        if not self.is_source_control_valid():
+            raise PyAnsysSoundException(
+                "Broadband noise source control is not set. "
+                f"Use ``{__class__.__name__}.source_control``."
+            )
+
+        data = self.source_control.control.data
+        time = self.source_control.control.time_freq_support.time_frequencies.data
+        unit = self.source_control.control.unit
+        name = self.source_control.control.name
+        unit_str = f" ({unit})" if len(unit) > 0 else ""
+        name_str = name if len(name) > 0 else "Amplitude"
+        plt.plot(time, data)
+        plt.title("Control profile 1")
+        plt.ylabel(f"{name_str}{unit_str}")
+        plt.xlabel("Time (s)")
+        plt.grid(True)
+
+        plt.tight_layout()
+        plt.show()
+
     def __extract_bbn_info(self) -> tuple[str, float, str, str, list[float]]:
         """Extract the broadband noise source information.
 

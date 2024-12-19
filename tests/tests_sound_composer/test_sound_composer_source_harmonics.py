@@ -503,6 +503,42 @@ def test_source_harmonics_plot_exceptions():
         source_harmonics_obj.plot()
 
 
+@patch("matplotlib.pyplot.show")
+def test_source_harmonics_plot_control(mock_show):
+    """Test SourceHarmonics plot_control method."""
+    # Create a field to use in a SourceControlTime object.
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([500, 2000, 3000, 3500], 1)
+    support = TimeFreqSupport()
+    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_time.append([0, 1, 2, 3], 1)
+    support.time_frequencies = f_time
+    f_source_control.time_freq_support = support
+
+    # Create a SourceControlTime object.
+    source_control = SourceControlTime()
+    source_control.control = f_source_control
+
+    # Create a SourceHarmonics object with the created source control.
+    source_obj = SourceHarmonics(
+        source_control=source_control,
+    )
+
+    source_obj.plot_control()
+
+
+def test_source_harmonics_plot_control_exceptions():
+    """Test SourceHarmonics plot_control method's exception."""
+    source_obj = SourceHarmonics()
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Harmonics source control is not set. Use ``SourceHarmonics.source_control``.",
+    ):
+        source_obj.plot_control()
+
+
 def test_source_harmonics___extract_harmonics_info():
     """Test SourceHarmonics __extract_harmonics_info method."""
     source_harmonics_obj = SourceHarmonics()

@@ -114,8 +114,8 @@ def test_source_broadband_noise_two_parameters___str___all_set():
     # source controls.
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters(
         file=pytest.data_path_sound_composer_bbn_source_2p_in_container,
-        control1=source_control1,
-        control2=source_control2,
+        source_control1=source_control1,
+        source_control2=source_control2,
     )
 
     assert str(source_bbn_two_parameters_obj) == EXP_STR_ALL_SET
@@ -249,7 +249,7 @@ def test_source_broadband_noise_two_parameters_is_source_control_valid():
     assert source_bbn_two_parameters_obj.is_source_control_valid() is True
 
 
-def test_source_specrum_load_source_bbn_two_parameters():
+def test_source_broadband_noise_two_parameters_load_source_bbn_two_parameters():
     """Test SourceBroadbandNoiseTwoParameters load_source_bbn method."""
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters()
     source_bbn_two_parameters_obj.load_source_bbn_two_parameters(
@@ -297,8 +297,8 @@ def test_source_broadband_noise_two_parameters_process():
     # source controls.
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters(
         file=pytest.data_path_sound_composer_bbn_source_2p_in_container,
-        control1=source_control1,
-        control2=source_control2,
+        source_control1=source_control1,
+        source_control2=source_control2,
     )
 
     source_bbn_two_parameters_obj.process()
@@ -314,8 +314,8 @@ def test_source_broadband_noise_two_parameters_process_exceptions():
     with pytest.raises(
         PyAnsysSoundException,
         match=(
-            "At least one source control for broadband noise with two parameters is not set. "
-            "Use ``SourceBroadbandNoiseTwoParameters.source_control1`` and/or "
+            "At least one source control for broadband noise source with two parameters is not "
+            "set. Use ``SourceBroadbandNoiseTwoParameters.source_control1`` and/or "
             "``SourceBroadbandNoiseTwoParameters.source_control2``."
         ),
     ):
@@ -387,8 +387,8 @@ def test_source_broadband_noise_two_parameters_get_output():
     # controls.
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters(
         file=pytest.data_path_sound_composer_bbn_source_2p_in_container,
-        control1=source_control1,
-        control2=source_control2,
+        source_control1=source_control1,
+        source_control2=source_control2,
     )
 
     source_bbn_two_parameters_obj.process(sampling_frequency=44100.0)
@@ -479,8 +479,8 @@ def test_source_broadband_noise_two_parameters_get_output_as_nparray():
     # source controls.
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters(
         file=pytest.data_path_sound_composer_bbn_source_2p_in_container,
-        control1=source_control1,
-        control2=source_control2,
+        source_control1=source_control1,
+        source_control2=source_control2,
     )
 
     source_bbn_two_parameters_obj.process(sampling_frequency=44100.0)
@@ -536,12 +536,12 @@ def test_source_broadband_noise_two_parameters_plot(mock_show):
     source_control2 = SourceControlTime()
     source_control2.control = f_source_control
 
-    # Create a SourceBroadbandNoiseTwoParameters object test source file with less and created
-    # source controls.
+    # Create a SourceBroadbandNoiseTwoParameters object with test source file and created source
+    # controls.
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters(
         file=pytest.data_path_sound_composer_bbn_source_2p_in_container,
-        control1=source_control1,
-        control2=source_control2,
+        source_control1=source_control1,
+        source_control2=source_control2,
     )
 
     source_bbn_two_parameters_obj.process()
@@ -559,6 +559,62 @@ def test_source_broadband_noise_two_parameters_plot_exceptions():
         ),
     ):
         source_bbn_two_parameters_obj.plot()
+
+
+@patch("matplotlib.pyplot.show")
+def test_source_broadband_noise_two_parameters_plot_control(mock_show):
+    """Test SourceBroadbandNoiseTwoParameters plot_control method."""
+    # Create a field to use in a SourceControlTime object.
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([3, 4, 35, 38], 1)
+    support = TimeFreqSupport()
+    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_time.append([0, 1, 2, 3], 1)
+    support.time_frequencies = f_time
+    f_source_control.time_freq_support = support
+
+    # Create a first SourceControlTime object.
+    source_control1 = SourceControlTime()
+    source_control1.control = f_source_control
+
+    # Create another field to use in a SourceControlTime object.
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([9.5, 9, 1, 0.5], 1)
+    support = TimeFreqSupport()
+    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_time.append([0, 1, 2, 3], 1)
+    support.time_frequencies = f_time
+    f_source_control.time_freq_support = support
+
+    # Create a second SourceControlTime object.
+    source_control2 = SourceControlTime()
+    source_control2.control = f_source_control
+
+    # Create a SourceBroadbandNoiseTwoParameters object with created source controls.
+    source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters(
+        source_control1=source_control1,
+        source_control2=source_control2,
+    )
+
+    source_bbn_two_parameters_obj.plot_control()
+
+
+def test_source_broadband_noise_two_parameters_plot_control_exceptions():
+    """Test SourceBroadbandNoiseTwoParameters plot_control method's exception."""
+    source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters()
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=(
+            "At least one source control for broadband noise source with two parameters is not "
+            "set. Use ``SourceBroadbandNoiseTwoParameters.source_control1`` and/or "
+            "``SourceBroadbandNoiseTwoParameters.source_control2``."
+        ),
+    ):
+        source_bbn_two_parameters_obj.plot_control()
 
 
 def test_source_broadband_noise_two_parameters___extract_bbn_two_parameters_info():

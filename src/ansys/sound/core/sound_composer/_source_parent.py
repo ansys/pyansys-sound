@@ -34,3 +34,7 @@ class SourceParent(SoundComposerParent):
     def is_source_control_valid(self) -> bool:
         """Check if the source control is valid."""
         return False
+
+    def plot_control(self):
+        """Plot the source control(s) in a figure."""
+        pass
