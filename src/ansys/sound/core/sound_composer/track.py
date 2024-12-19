@@ -250,10 +250,10 @@ class Track(SoundComposerParent):
 
         if (
             self.filter is not None
-            and np.round(sampling_frequency, 1) != self.filter.sampling_frequency
+            and np.round(sampling_frequency, 1) != self.filter.get_sampling_frequency()
         ):
             raise PyAnsysSoundException(
-                "Sampling frequency value must be the same as that which is stored in the track's "
+                "Specified sampling frequency must be equal to that which is stored in the track's "
                 "filter."
             )
 
