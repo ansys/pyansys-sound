@@ -53,6 +53,7 @@ def test_sound_composer_instantiation_all_args():
     )
     assert isinstance(sound_composer, SoundComposer)
     assert len(sound_composer.tracks) == 7
+    # TODO: added tests for each track's source type, and other attributes.
 
 
 def test_sound_composer___str___not_set():
@@ -67,6 +68,7 @@ def test_sound_composer___str___all_set():
         project_path=pytest.data_path_sound_composer_project_in_container
     )
     assert str(sound_composer) == EXP_STR_ALL_SET
+    # TODO: fix the expected string.
 
 
 def test_sound_composer_properties():
@@ -100,6 +102,7 @@ def test_sound_composer_load():
     sound_composer.load(project_path=pytest.data_path_sound_composer_project_in_container)
     assert len(sound_composer.tracks) == 7
     assert isinstance(sound_composer.tracks[0], Track)
+    # TODO: add same tests as in instantiation
 
 
 def test_sound_composer_process():
@@ -132,6 +135,7 @@ def test_sound_composer_get_output():
     sound_composer.process()
     output = sound_composer.get_output()
     assert isinstance(output, Field)
+    # TODO: add test on output's PSD (cf. source test classes).
 
 
 def test_sound_composer_get_output_warning():
