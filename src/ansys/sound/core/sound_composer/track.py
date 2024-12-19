@@ -29,13 +29,36 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 from ansys.sound.core.signal_processing import Filter
-from ansys.sound.core.signal_utilities.apply_gain import ApplyGain
-from ansys.sound.core.sound_composer import SoundComposerParent, SourceParent
+from ansys.sound.core.signal_utilities import ApplyGain
+from ansys.sound.core.sound_composer._sound_composer_parent import SoundComposerParent
+from ansys.sound.core.sound_composer.source_audio import SourceAudio
+from ansys.sound.core.sound_composer.source_broadband_noise import SourceBroadbandNoise
+from ansys.sound.core.sound_composer.source_broadband_noise_two_parameters import (
+    SourceBroadbandNoiseTwoParameters,
+)
+from ansys.sound.core.sound_composer.source_harmonics import SourceHarmonics
+from ansys.sound.core.sound_composer.source_harmonics_two_parameters import (
+    SourceHarmonicsTwoParameters,
+)
+from ansys.sound.core.sound_composer.source_spectrum import SourceSpectrum
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
+# Here is defined the list of available source types (class names), as a dictionary where the key
+# is the source type ID used in DPF Sound. Whenever a new source type (and corresponding class
+# under superclass SourceParent) is added, it must be added to this dictionary to make it available
+# to the Sound Composer package.
+DICT_SOURCE_TYPE = {
+    1: SourceBroadbandNoise,
+    2: SourceBroadbandNoiseTwoParameters,
+    3: SourceHarmonics,
+    4: SourceHarmonicsTwoParameters,
+    5: SourceSpectrum,
+    6: SourceAudio,
+}
+
 # Define the typing Union of all possible source types, as a global variable (for typing only).
-AnySourceType = Union[tuple(SourceParent.__subclasses__())]
+AnySourceType = Union[tuple(DICT_SOURCE_TYPE.values())]
 
 
 class Track(SoundComposerParent):
@@ -178,8 +201,7 @@ class Track(SoundComposerParent):
         if self._output == None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. "
-                    f"Use the {__class__.__name__}.process() method."
+                    f"Output is not processed yet. Use the {__class__.__name__}.process() method."
                 )
             )
         return self._output

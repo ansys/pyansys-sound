@@ -23,7 +23,7 @@
 """Sound Composer's harmonics source with two parameters."""
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
+from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operator
 from matplotlib import pyplot as plt
 import numpy as np
 
@@ -278,6 +278,72 @@ class SourceHarmonicsTwoParameters(SourceParent):
         self.source_harmonics_two_parameters = self.__operator_load.get_output(
             0, "fields_container"
         )
+
+    def set_from_generic_data_containers(
+        self,
+        gdc_source: GenericDataContainer,
+        gdc_source_control: GenericDataContainer,
+    ):
+        """Set the source and source control data from generic data containers.
+
+        This method is meant to set the source data from generic data containers obtained when
+        loading a Sound Composer project file (.scn).
+
+        Parameters
+        ----------
+        gdc_source : GenericDataContainer
+            Source data as a DPF generic data container.
+        gdc_source_control : GenericDataContainer
+            Source control data as a DPF generic data container.
+        """
+        self.source_harmonics_two_parameters = gdc_source.get_property("sound_composer_source")
+        control = gdc_source_control.get_property("sound_composer_source_control_parameter_1")
+        self.source_control_rpm = SourceControlTime()
+        self.source_control_rpm.control = control
+        control = gdc_source_control.get_property("sound_composer_source_control_parameter_2")
+        self.source_control2 = SourceControlTime()
+        self.source_control2.control = control
+
+    def get_as_generic_data_containers(self) -> tuple[GenericDataContainer]:
+        """Get the source and source control data as generic data containers.
+
+        This method is meant to return the source data as generic data containers needed to save a
+        Sound Composer project file (.scn).
+
+        Returns
+        -------
+        tuple[GenericDataContainer]
+            Source as two generic data containers, respectively for source and source control data.
+        """
+        if self.source_harmonics_two_parameters is None:
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    "Cannot create source generic data container because there is no source data."
+                )
+            )
+            gdc_source = None
+        else:
+            gdc_source = GenericDataContainer()
+            gdc_source.set_property("sound_composer_source", self.source_harmonics_two_parameters)
+
+        if not self.is_source_control_valid():
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    "Cannot create source control generic data container because there is no "
+                    "source control data."
+                )
+            )
+            gdc_source_control = None
+        else:
+            gdc_source_control = GenericDataContainer()
+            gdc_source_control.set_property(
+                "sound_composer_source_control_parameter_1", self.source_control_rpm.control
+            )
+            gdc_source_control.set_property(
+                "sound_composer_source_control_parameter_2", self.source_control2.control
+            )
+
+        return (gdc_source, gdc_source_control)
 
     def process(self, sampling_frequency: float = 44100.0):
         """Generate the sound of the harmonics source with two parameters.
