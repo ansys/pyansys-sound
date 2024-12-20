@@ -59,7 +59,7 @@ my_server = connect_to_or_start_server(use_license_context=True)
 # Load the PSD contained in an ASCII file. This file has two columns: 'Frequency (Hz)'
 # and 'PSD amplitude (dB SPL/Hz)'. The data is located in
 # "C:\Users\username\AppData\Local\Ansys\ansys_sound_core\examples\".
-path_flute_psd = download_flute_psd(server=my_server)
+path_flute_psd = download_flute_psd()
 fid = open(path_flute_psd)
 fid.readline()  # Skip the first line (header)
 all_lines = fid.readlines()
