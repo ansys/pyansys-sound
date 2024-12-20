@@ -20,18 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.sound.core.sound_composer import SourceParent
+"""SignalProcessingParent."""
+from .._pyansys_sound import PyAnsysSound
 
 
-def test__source_parent_is_source_control_valid():
-    """Test SourceParent's is_source_control_valid method."""
-    source = SourceParent()
+class SignalProcessingParent(PyAnsysSound):
+    """
+    Provides the base class for signal processing classes.
 
-    result = source.is_source_control_valid()
-    assert result is False
-
-
-def test__source_parent_plot_control():
-    """Test SourceParent's plot_control method."""
-    source = SourceParent()
-    source.plot_control()
+    This is the base class of all signal processing classes and should not be used directly.
+    """

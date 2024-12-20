@@ -20,9 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""PowerSpectralDensity classes.
+"""Spectral processing classes.
 
-Helper functions related to Power Spectral Density (PSD) calculations.
+Helper functions related to spectral processing.
 """
 
 from ._spectral_processing_parent import SpectralProcessingParent

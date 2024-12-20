@@ -9,6 +9,7 @@ This section describes how to use Python to interact programmatically with PyAns
     :maxdepth: 2
 
     signal_utilities
+    signal_processing
     spectral_processing
     spectrogram_processing
     sound_composer

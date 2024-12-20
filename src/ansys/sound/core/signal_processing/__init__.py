@@ -20,18 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.sound.core.sound_composer import SourceParent
+"""Signal processing classes.
 
+Helper functions related to signal processing.
+"""
+from ._signal_processing_parent import SignalProcessingParent
+from .filter import Filter
 
-def test__source_parent_is_source_control_valid():
-    """Test SourceParent's is_source_control_valid method."""
-    source = SourceParent()
-
-    result = source.is_source_control_valid()
-    assert result is False
-
-
-def test__source_parent_plot_control():
-    """Test SourceParent's plot_control method."""
-    source = SourceParent()
-    source.plot_control()
+__all__ = ("SignalProcessingParent", "Filter")

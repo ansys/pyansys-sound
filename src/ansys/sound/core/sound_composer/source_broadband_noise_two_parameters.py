@@ -48,8 +48,8 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
     def __init__(
         self,
         file: str = "",
-        control1: SourceControlTime = None,
-        control2: SourceControlTime = None,
+        source_control1: SourceControlTime = None,
+        source_control2: SourceControlTime = None,
     ):
         """Class instantiation takes the following parameters.
 
@@ -58,16 +58,16 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         file : str, default: ""
             Path to the broadband noise with two parameters file. Supported files are text files
             with the header `AnsysSound_BBN_MultipleParameters`.
-        control1 : SourceControlTime, default: None
+        source_control1 : SourceControlTime, default: None
             First Source control, consisting of the control parameter values over time, to use when
             generating the sound from this source.
-        control2 : SourceControlTime, default: None
+        source_control2 : SourceControlTime, default: None
             Second source control, consisting of the control parameter values over time, to use
             when generating the sound from this source.
         """
         super().__init__()
-        self.source_control1 = control1
-        self.source_control2 = control2
+        self.source_control1 = source_control1
+        self.source_control2 = source_control2
 
         # Define DPF Sound operators.
         self.__operator_load = Operator(ID_COMPUTE_LOAD_SOURCE_BBN_2PARAMS)
@@ -279,8 +279,8 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
 
         if not self.is_source_control_valid():
             raise PyAnsysSoundException(
-                "At least one source control for broadband noise with two parameters is not set. "
-                f"Use ``{__class__.__name__}.source_control1`` and/or "
+                "At least one source control for broadband noise source with two parameters is "
+                f"not set. Use ``{__class__.__name__}.source_control1`` and/or "
                 f"``{__class__.__name__}.source_control2``."
             )
 
@@ -351,6 +351,43 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         plt.xlabel("Time (s)")
         plt.ylabel("Amplitude (Pa)")
         plt.grid(True)
+        plt.show()
+
+    def plot_control(self):
+        """Plot the source control(s) in a figure."""
+        if not self.is_source_control_valid():
+            raise PyAnsysSoundException(
+                "At least one source control for broadband noise source with two parameters is "
+                f"not set. Use ``{__class__.__name__}.source_control1`` and/or "
+                f"``{__class__.__name__}.source_control2``."
+            )
+
+        _, axes = plt.subplots(2, 1, sharex=True)
+
+        data = self.source_control1.control.data
+        time = self.source_control1.control.time_freq_support.time_frequencies.data
+        unit = self.source_control1.control.unit
+        name = self.source_control1.control.name
+        unit_str = f" ({unit})" if len(unit) > 0 else ""
+        name_str = name if len(name) > 0 else "Amplitude"
+        axes[0].plot(time, data)
+        axes[0].set_title("Control profile 1")
+        axes[0].set_ylabel(f"{name_str}{unit_str}")
+        axes[0].grid(True)
+
+        data = self.source_control2.control.data
+        time = self.source_control2.control.time_freq_support.time_frequencies.data
+        unit = self.source_control2.control.unit
+        name = self.source_control2.control.name
+        unit_str = f" ({unit})" if len(unit) > 0 else ""
+        name_str = name if len(name) > 0 else "Amplitude"
+        axes[1].plot(time, data)
+        axes[1].set_title("Control profile 2")
+        axes[1].set_ylabel(f"{name_str}{unit_str}")
+        axes[1].set_xlabel("Time (s)")
+        axes[1].grid(True)
+
+        plt.tight_layout()
         plt.show()
 
     def __extract_bbn_two_parameters_info(
