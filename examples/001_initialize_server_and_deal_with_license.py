@@ -131,6 +131,8 @@ print("Connecting to the server using a LicenseContextManager")
 my_server = connect_to_or_start_server(use_license_context=True)
 
 # Execute the same and measure the execution time
+path_flute_wav = download_flute_wav(server=my_server)
+
 for i in range(5):
     now = datetime.datetime.now()
     wav_loader = LoadWav(path_flute_wav)
