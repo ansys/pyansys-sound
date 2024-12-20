@@ -414,8 +414,8 @@ def test_source_broadband_noise_plot(mock_show):
     source_control_obj.control = f_source_control
 
     source_bbn_obj = SourceBroadbandNoise(
-        pytest.data_path_sound_composer_bbn_source_in_container,
-        source_control_obj,
+        file=pytest.data_path_sound_composer_bbn_source_in_container,
+        source_control=source_control_obj,
     )
     source_bbn_obj.process()
     source_bbn_obj.plot()
@@ -429,6 +429,44 @@ def test_source_broadband_noise_plot_exceptions():
         match="Output is not processed yet. Use the 'SourceBroadbandNoise.process\\(\\)' method.",
     ):
         source_bbn_obj.plot()
+
+
+@patch("matplotlib.pyplot.show")
+def test_source_broadband_noise_plot_control(mock_show):
+    """Test SourceBroadbandNoise plot_control method."""
+    # Create a field to use in a SourceControlTime object.
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([1, 3, 6, 10], 1)
+    support = TimeFreqSupport()
+    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_time.append([0, 1, 2, 3], 1)
+    support.time_frequencies = f_time
+    f_source_control.time_freq_support = support
+
+    # Create a SourceControlTime object.
+    source_control_obj = SourceControlTime()
+    source_control_obj.control = f_source_control
+
+    source_bbn_obj = SourceBroadbandNoise(
+        source_control=source_control_obj,
+    )
+
+    source_bbn_obj.plot_control()
+
+
+def test_source_broadband_noise_plot_control_exceptions():
+    """Test SourceBroadbandNoise plot method's exception."""
+    source_bbn_obj = SourceBroadbandNoise()
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=(
+            "Broadband noise source control is not set. "
+            "Use ``SourceBroadbandNoise.source_control``."
+        ),
+    ):
+        source_bbn_obj.plot_control()
 
 
 def test_source_broadband_noise___extract_bbn_info():

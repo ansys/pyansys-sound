@@ -1,0 +1,24 @@
+AnsysSound_Orders_MultipleParameters 1
+dBSPL
+charge
+%
+RPM
+rpm
+2
+####
+c:/data/data_charge0.dat
+10
+charge	12	24	36	48
+0.05		0	0	0	0
+0.1	0	20	40	60
+0.2	20	20	50	40
+10.0	50	30	50	60
+####
+c:/data/data_charge10.dat
+5000
+charge	12	24	36	48
+0.05	20	30	40	50
+0.1	10	30	50	-60
+0.2	30	40	50	-30
+10.0	30	40	70	0
+####

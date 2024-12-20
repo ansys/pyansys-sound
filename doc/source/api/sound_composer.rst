@@ -6,9 +6,12 @@ Sound composer
 .. autosummary::
     :toctree: _autosummary
 
+    Track
     SourceSpectrum
     SourceBroadbandNoise
     SourceBroadbandNoiseTwoParameters
+    SourceHarmonics
+    SourceHarmonicsTwoParameters
     SourceAudio
     SourceControlSpectrum
     SourceControlTime
