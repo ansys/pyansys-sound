@@ -176,7 +176,7 @@ def download_flute_psd():
     try:
         # download file locally
         local_path = _download_file_in_local_tmp_folder(url, "flute_psd.txt")
-    except Exception as e:  # Generate exception
+    except Exception as e:  # Generate exception # pragma no cover
         raise RuntimeError(
             "For the reason that follows, retrieving the file failed.\n"
             "You can download this file from:\n"
