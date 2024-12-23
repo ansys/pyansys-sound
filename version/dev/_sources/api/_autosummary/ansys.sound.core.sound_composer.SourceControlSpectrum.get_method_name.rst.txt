@@ -1,0 +1,6 @@
+get\_method\_name
+=================
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. automethod:: SourceControlSpectrum.get_method_name
