@@ -161,7 +161,7 @@ class Track(SoundComposerParent):
             raise PyAnsysSoundException("Specified filter must be of type Filter.")
         self.__filter = obj
 
-    def set_from_generic_data_container(
+    def set_from_generic_data_containers(
         self, gdc_track: GenericDataContainer, sampling_frequency: float = 44100.0
     ):
         """Set the track data from a generic data container.
@@ -195,7 +195,7 @@ class Track(SoundComposerParent):
             self.filter = None
 
     # TODO: Save cannot work for now because the FRF is not stored in the Filter class.
-    # def get_as_generic_data_container(self) -> GenericDataContainer:
+    # def get_as_generic_data_containers(self) -> GenericDataContainer:
     #     """Get the track data as a generic data container.
 
     #     This method is meant to return the track data as a generic data container needed to save a

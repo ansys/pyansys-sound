@@ -22,7 +22,14 @@
 
 from unittest.mock import patch
 
-from ansys.dpf.core import Field, TimeFreqSupport, fields_factory, locations
+from ansys.dpf.core import (
+    Field,
+    GenericDataContainer,
+    Operator,
+    TimeFreqSupport,
+    fields_factory,
+    locations,
+)
 import numpy as np
 import pytest
 
@@ -122,10 +129,49 @@ def test_track_properties_exceptions():
         track.filter = "InvalidType"
 
 
-def test_track_set_from_generic_data_container():
-    """Test Track set_from_generic_data_container method."""
-    # TODO. Also do test for this method in each source type class.
-    pass
+def test_track_set_from_generic_data_containers():
+    """Test Track set_from_generic_data_containers method."""
+    # Create generic data containers for the source and source control.
+    source_control = SourceControlSpectrum(duration=3.0, method=1)
+    source = SourceSpectrum(
+        file_source=pytest.data_path_sound_composer_spectrum_source_in_container,
+        source_control=source_control,
+    )
+    gdc_source, gdc_source_control = source.get_as_generic_data_containers()
+
+    # Create a generic data container for the track.
+    gdc_track = GenericDataContainer()
+    gdc_track.set_property("track_name", "My track")
+    gdc_track.set_property("track_gain", 15.6)
+    gdc_track.set_property("track_type", 5)
+    gdc_track.set_property("track_source", gdc_source)
+    gdc_track.set_property("track_source_control", gdc_source_control)
+    gdc_track.set_property("track_is_filter", 0)
+
+    # Create a track and test method set_from_generic_data_container.
+    track = Track()
+    track.set_from_generic_data_container(gdc_track)
+    assert track.name == "My track"
+    assert track.gain == 15.6
+    assert isinstance(track.source, SourceSpectrum)
+    assert isinstance(track.source.source_control, SourceControlSpectrum)
+    assert track.filter is None
+
+    # Add a filter to the generic data container.
+    op_frf = Operator("load_FRF_from_txt")
+    op_frf.connect(0, pytest.data_path_filter_frf)
+    op_frf.run()
+    filter_frf = op_frf.get_output(0, "field")
+
+    gdc_track.set_property("track_is_filter", 1)
+    gdc_track.set_property("track_filter", filter_frf)
+
+    track.set_from_generic_data_containers(gdc_track)
+    assert track.name == "My track"
+    assert track.gain == 15.6
+    assert isinstance(track.source, SourceSpectrum)
+    assert isinstance(track.source.source_control, SourceControlSpectrum)
+    assert isinstance(track.filter, Filter)
 
 
 def test_track_process():
