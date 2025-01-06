@@ -229,8 +229,8 @@ class SourceBroadbandNoise(SourceParent):
         """
         self.source_bbn = gdc_source.get_property("sound_composer_source")
         self.source_control1 = SourceControlTime()
-        self.source_control1.control = control
         control = gdc_source_control.get_property("sound_composer_source_control_one_parameter")
+        self.source_control1.control = control
 
     def get_as_generic_data_containers(self) -> tuple[GenericDataContainer]:
         """Get the source and source control data as generic data containers.
