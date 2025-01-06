@@ -203,6 +203,10 @@ def test_source_spectrum_set_from_generic_data_containers():
 
     source_spectrum = SourceSpectrum()
     source_spectrum.set_from_generic_data_containers(gdc_source, gdc_source_control)
+    assert isinstance(source_spectrum.source_spectrum_data, Field)
+    assert source_spectrum.source_spectrum_data.data[3] == pytest.approx(EXP_SPECTRUM_DATA3)
+    assert source_spectrum.source_control.duration == 1.0
+    assert source_spectrum.source_control.method == 1
 
 
 def test_source_spectrum_get_as_generic_data_containers():
