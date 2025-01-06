@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -146,7 +146,7 @@ print(
 # Use the PowerSpectralDensity class to calculate a PSD, and compute Prominence Ratio (PR).
 
 # Load example data from WAV file.
-path_flute_wav = download_flute_wav()
+path_flute_wav = download_flute_wav(server=my_server)
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
 flute_signal = wav_loader.get_output()[0]

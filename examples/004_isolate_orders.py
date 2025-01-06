@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -129,7 +129,7 @@ def plot_stft(stft_class, vmax):
 # - The associated RPM profile
 
 # Return the input data of the example file
-path_accel_wav = download_accel_with_rpm_wav()
+path_accel_wav = download_accel_with_rpm_wav(server=my_server)
 
 # Load the WAV file.
 wav_loader = LoadWav(path_accel_wav)
@@ -249,8 +249,8 @@ print(f"Loudness of the isolated signal is {loudness_isolated_signal: .1f} phons
 # Obtain parent folder of the 'accel_with_rpm.wav' file
 parent_folder = pathlib.Path(path_accel_wav).parent.absolute()
 
-path_accel_wav_2 = download_accel_with_rpm_2_wav()
-path_accel_wav_3 = download_accel_with_rpm_3_wav()
+path_accel_wav_2 = download_accel_with_rpm_2_wav(server=my_server)
+path_accel_wav_3 = download_accel_with_rpm_3_wav(server=my_server)
 paths = (path_accel_wav, path_accel_wav_2, path_accel_wav_3)
 
 fft_sizes = [256, 2048, 4096]

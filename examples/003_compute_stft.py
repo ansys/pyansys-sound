@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -59,7 +59,7 @@ my_server = connect_to_or_start_server(use_license_context=True)
 # in the DPF-Core API documentation.
 
 # Return the input data of the example file
-path_flute_wav = download_flute_wav()
+path_flute_wav = download_flute_wav(server=my_server)
 
 # Load the WAV file
 wav_loader = LoadWav(path_flute_wav)

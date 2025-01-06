@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -87,7 +87,7 @@ my_server = connect_to_or_start_server(use_license_context=True)
 # in the DPF-Core API documentation.
 
 # Load example data from WAV file
-path_flute_wav = download_flute_wav()
+path_flute_wav = download_flute_wav(server=my_server)
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
 fc_signal = wav_loader.get_output()
@@ -117,7 +117,7 @@ loudness_stationary.plot()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load another WAV file and store it along with the first one.
 
-path_flute2_wav = download_flute_2_wav()
+path_flute2_wav = download_flute_2_wav(server=my_server)
 wav_loader = LoadWav(path_flute2_wav)
 wav_loader.process()
 
@@ -151,7 +151,7 @@ loudness_stationary.plot()
 # Calculate ISO 532-1 loudness for a non-stationary sound
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load a new signal (non-stationary) from a WAV file.
-path_accel_wav = download_accel_with_rpm_wav()
+path_accel_wav = download_accel_with_rpm_wav(server=my_server)
 wav_loader = LoadWav(path_accel_wav)
 wav_loader.process()
 f_signal = wav_loader.get_output()[0]  # Field 0 only, because the RPM profile is useless here.
