@@ -184,7 +184,7 @@ class SourceSpectrum(SourceParent):
         gdc_source_control : GenericDataContainer
             Source control data as a DPF generic data container.
         """
-        self.source_harmonics = gdc_source.get_property("sound_composer_source")
+        self.source_spectrum_data = gdc_source.get_property("sound_composer_source")
         duration = gdc_source_control.get_property(
             "sound_composer_source_control_spectrum_duration"
         )
