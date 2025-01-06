@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -27,13 +27,31 @@ import numpy as np
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-from ansys.sound.core.sound_composer import SoundComposer, Track
+from ansys.sound.core.sound_composer import (
+    SoundComposer,
+    SourceAudio,
+    SourceBroadbandNoise,
+    SourceBroadbandNoiseTwoParameters,
+    SourceHarmonics,
+    SourceHarmonicsTwoParameters,
+    SourceSpectrum,
+    Track,
+)
+from ansys.sound.core.spectral_processing.power_spectral_density import PowerSpectralDensity
 
 REF_ACOUSTIC_POWER = 4e-10
 
+EXP_LEVEL_OCTAVE_BAND = [58.2, 74.5, 60.3]
 EXP_STR_NOT_SET = "Sound Composer object (0 track(s))"
 EXP_STR_ALL_SET = (
-    "Sound Composer object (7 track(s))\n\tTrack 1: SourceAudio, Audio, gain = +0.0 dB"
+    "Sound Composer object (7 track(s))\n"
+    '\tTrack 1: SourceBroadbandNoise, "BBN", gain = +0.0 dB\n'
+    '\tTrack 2: SourceSpectrum, "Spectrum", gain = +0.0 dB\n'
+    '\tTrack 3: SourceAudio, "Audio", gain = +10.0 dB\n'
+    '\tTrack 4: SourceBroadbandNoiseTwoParameters, "BBN2Params", gain = +0.0 dB\n'
+    '\tTrack 5: SourceHarmonics, "Harmo", gain = +0.0 dB\n'
+    '\tTrack 6: SourceHarmonicsTwoParameters, "Harmo2Params", gain = +0.0 dB\n'
+    '\tTrack 7: SourceHarmonicsTwoParameters, "Harmo2ParamsRpmAsSecondParam", gain = +0.0 dB\n'
 )
 
 
@@ -51,9 +69,37 @@ def test_sound_composer_instantiation_all_args():
     sound_composer = SoundComposer(
         project_path=pytest.data_path_sound_composer_project_in_container
     )
+
     assert isinstance(sound_composer, SoundComposer)
     assert len(sound_composer.tracks) == 7
-    # TODO: added tests for each track's source type, and other attributes.
+    assert isinstance(sound_composer.tracks[0].source, SourceBroadbandNoise)
+    assert sound_composer.tracks[0].name == "BBN"
+    assert sound_composer.tracks[0].gain == 0.0
+    assert sound_composer.tracks[0].filter is None
+    assert isinstance(sound_composer.tracks[1].source, SourceSpectrum)
+    assert sound_composer.tracks[1].name == "Spectrum"
+    assert sound_composer.tracks[1].gain == 0.0
+    assert sound_composer.tracks[1].filter is None
+    assert isinstance(sound_composer.tracks[2].source, SourceAudio)
+    assert sound_composer.tracks[2].name == "Audio"
+    assert sound_composer.tracks[2].gain == 10.0
+    assert sound_composer.tracks[2].filter is not None
+    assert isinstance(sound_composer.tracks[3].source, SourceBroadbandNoiseTwoParameters)
+    assert sound_composer.tracks[3].name == "BBN2Params"
+    assert sound_composer.tracks[3].gain == 0.0
+    assert sound_composer.tracks[3].filter is None
+    assert isinstance(sound_composer.tracks[4].source, SourceHarmonics)
+    assert sound_composer.tracks[4].name == "Harmo"
+    assert sound_composer.tracks[4].gain == 0.0
+    assert sound_composer.tracks[4].filter is None
+    assert isinstance(sound_composer.tracks[5].source, SourceHarmonicsTwoParameters)
+    assert sound_composer.tracks[5].name == "Harmo2Params"
+    assert sound_composer.tracks[5].gain == 0.0
+    assert sound_composer.tracks[5].filter is None
+    assert isinstance(sound_composer.tracks[6].source, SourceHarmonicsTwoParameters)
+    assert sound_composer.tracks[6].name == "Harmo2ParamsRpmAsSecondParam"
+    assert sound_composer.tracks[6].gain == 0.0
+    assert sound_composer.tracks[6].filter is None
 
 
 def test_sound_composer___str___not_set():
@@ -68,7 +114,6 @@ def test_sound_composer___str___all_set():
         project_path=pytest.data_path_sound_composer_project_in_container
     )
     assert str(sound_composer) == EXP_STR_ALL_SET
-    # TODO: fix the expected string.
 
 
 def test_sound_composer_properties():
@@ -100,9 +145,37 @@ def test_sound_composer_load():
     """Test SoundComposer load method."""
     sound_composer = SoundComposer()
     sound_composer.load(project_path=pytest.data_path_sound_composer_project_in_container)
+
+    assert isinstance(sound_composer, SoundComposer)
     assert len(sound_composer.tracks) == 7
-    assert isinstance(sound_composer.tracks[0], Track)
-    # TODO: add same tests as in instantiation
+    assert isinstance(sound_composer.tracks[0].source, SourceBroadbandNoise)
+    assert sound_composer.tracks[0].name == "BBN"
+    assert sound_composer.tracks[0].gain == 0.0
+    assert sound_composer.tracks[0].filter is None
+    assert isinstance(sound_composer.tracks[1].source, SourceSpectrum)
+    assert sound_composer.tracks[1].name == "Spectrum"
+    assert sound_composer.tracks[1].gain == 0.0
+    assert sound_composer.tracks[1].filter is None
+    assert isinstance(sound_composer.tracks[2].source, SourceAudio)
+    assert sound_composer.tracks[2].name == "Audio"
+    assert sound_composer.tracks[2].gain == 10.0
+    assert sound_composer.tracks[2].filter is not None
+    assert isinstance(sound_composer.tracks[3].source, SourceBroadbandNoiseTwoParameters)
+    assert sound_composer.tracks[3].name == "BBN2Params"
+    assert sound_composer.tracks[3].gain == 0.0
+    assert sound_composer.tracks[3].filter is None
+    assert isinstance(sound_composer.tracks[4].source, SourceHarmonics)
+    assert sound_composer.tracks[4].name == "Harmo"
+    assert sound_composer.tracks[4].gain == 0.0
+    assert sound_composer.tracks[4].filter is None
+    assert isinstance(sound_composer.tracks[5].source, SourceHarmonicsTwoParameters)
+    assert sound_composer.tracks[5].name == "Harmo2Params"
+    assert sound_composer.tracks[5].gain == 0.0
+    assert sound_composer.tracks[5].filter is None
+    assert isinstance(sound_composer.tracks[6].source, SourceHarmonicsTwoParameters)
+    assert sound_composer.tracks[6].name == "Harmo2ParamsRpmAsSecondParam"
+    assert sound_composer.tracks[6].gain == 0.0
+    assert sound_composer.tracks[6].filter is None
 
 
 def test_sound_composer_process():
@@ -136,7 +209,38 @@ def test_sound_composer_get_output():
     sound_composer.process()
     output = sound_composer.get_output()
     assert isinstance(output, Field)
-    # TODO: add test on output's PSD (cf. source test classes).
+
+    # Compute the power spectral density over the output signal.
+    psd = PowerSpectralDensity(
+        input_signal=output,
+        fft_size=8192,
+        window_type="HANN",
+        window_length=8192,
+        overlap=0.75,
+    )
+    psd.process()
+    psd_squared, psd_freq = psd.get_PSD_squared_linear_as_nparray()
+    delat_f = psd_freq[1] - psd_freq[0]
+
+    # Check the sound power level in the octave bands centered at 250, 1000 and 4000 Hz.
+    # Due to the non-deterministic nature of the produced signal, tolerance is set to 3 dB.
+    psd_squared_band = psd_squared[
+        (psd_freq >= 250 * 2 ** (-1 / 2)) & (psd_freq < 250 * 2 ** (1 / 2))
+    ]
+    level = 10 * np.log10(psd_squared_band.sum() * delat_f / REF_ACOUSTIC_POWER)
+    assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND[0], abs=3.0)
+
+    psd_squared_band = psd_squared[
+        (psd_freq >= 1000 * 2 ** (-1 / 2)) & (psd_freq < 1000 * 2 ** (1 / 2))
+    ]
+    level = 10 * np.log10(psd_squared_band.sum() * delat_f / REF_ACOUSTIC_POWER)
+    assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND[1], abs=3.0)
+
+    psd_squared_band = psd_squared[
+        (psd_freq >= 4000 * 2 ** (-1 / 2)) & (psd_freq < 4000 * 2 ** (1 / 2))
+    ]
+    level = 10 * np.log10(psd_squared_band.sum() * delat_f / REF_ACOUSTIC_POWER)
+    assert level == pytest.approx(EXP_LEVEL_OCTAVE_BAND[2], abs=3.0)
 
 
 def test_sound_composer_get_output_warning():

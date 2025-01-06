@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -70,7 +70,7 @@ class SoundComposer(SoundComposerParent):
             str_tracks += (
                 f"\n\tTrack {i+1}: "
                 f"{"Source not set" if track.source is None else track.source.__class__.__name__}, "
-                f"{track.name if len(track.name) > 0 else "Unnamed"}, "
+                f'"{track.name if len(track.name) > 0 else "Unnamed"}", '
                 f"gain = {np.round(track.gain, 1):+} dB"
             )
 
