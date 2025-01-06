@@ -89,11 +89,6 @@ class SourceControlTime(SourceControlParent):
                     "Specified control profile must be provided as a DPF field."
                 )
 
-            if len(control.data) == 0:
-                raise PyAnsysSoundException(
-                    "Specified control profile must have at least one element."
-                )
-
         self.__control = control
 
     def load_from_wave_file(self, file_str: str):
