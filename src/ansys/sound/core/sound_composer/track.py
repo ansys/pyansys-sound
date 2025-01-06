@@ -177,8 +177,8 @@ class Track(SoundComposerParent):
             Sampling frequency in Hz to use in the track's filter to create.
         """
         # Assign name and gain.
-        self.name = (gdc_track.get_property("track_name"),)
-        self.gain = (gdc_track.get_property("track_gain"),)
+        self.name = gdc_track.get_property("track_name")
+        self.gain = gdc_track.get_property("track_gain")
 
         # Create source attribute.
         gdc_source: GenericDataContainer = gdc_track.get_property("track_source")
@@ -190,9 +190,9 @@ class Track(SoundComposerParent):
         if gdc_track.get_property("track_is_filter") == 1:
             frf = gdc_track.get_property("track_filter")
             self.filter = Filter(sampling_frequency=sampling_frequency)
-            filter.design_FIR_from_FRF(frf)
+            self.filter.design_FIR_from_FRF(frf)
         else:
-            filter = None
+            self.filter = None
 
     # TODO: Save cannot work for now because the FRF is not stored in the Filter class.
     # def get_as_generic_data_container(self) -> GenericDataContainer:
