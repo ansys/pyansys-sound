@@ -22,7 +22,14 @@
 
 from unittest.mock import patch
 
-from ansys.dpf.core import Field, TimeFreqSupport, fields_factory, locations
+from ansys.dpf.core import (
+    Field,
+    GenericDataContainer,
+    Operator,
+    TimeFreqSupport,
+    fields_factory,
+    locations,
+)
 import numpy as np
 import pytest
 
@@ -178,6 +185,64 @@ def test_source_specrum_load_source():
     )
     assert isinstance(source_spectrum.source_spectrum_data, Field)
     assert source_spectrum.source_spectrum_data.data[3] == pytest.approx(EXP_SPECTRUM_DATA3)
+
+
+def test_source_spectrum_set_from_generic_data_containers():
+    """Test SourceSpectrum set_from_generic_data_containers method."""
+    op = Operator("sound_composer_load_source_spectrum")
+    op.connect(0, pytest.data_path_sound_composer_spectrum_source_in_container)
+    op.run()
+    data = op.get_output(0, "field")
+
+    gdc_source = GenericDataContainer()
+    gdc_source.set_property("sound_composer_source", data)
+
+    gdc_source_control = GenericDataContainer()
+    gdc_source_control.set_property("sound_composer_source_control_spectrum_duration", 1.0)
+    gdc_source_control.set_property("sound_composer_source_control_spectrum_method", 1)
+
+    source_spectrum = SourceSpectrum()
+    source_spectrum.set_from_generic_data_containers(gdc_source, gdc_source_control)
+
+
+def test_source_spectrum_get_as_generic_data_containers():
+    """Test SourceSpectrum get_as_generic_data_containers method."""
+    # Source control undefined => warning.
+    source_spectrum = SourceSpectrum(
+        file_source=pytest.data_path_sound_composer_spectrum_source_in_container
+    )
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match=(
+            "Cannot create source control generic data container because there is no source "
+            "control data."
+        ),
+    ):
+        _, gdc_source_control = source_spectrum.get_as_generic_data_containers()
+    assert gdc_source_control is None
+
+    # Source data undefined => warning.
+    source_spectrum.source_spectrum_data = None
+    source_spectrum.source_control = SourceControlSpectrum(duration=1.0)
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Cannot create source generic data container because there is no source data.",
+    ):
+        gdc_source, _ = source_spectrum.get_as_generic_data_containers()
+    assert gdc_source is None
+
+    # Both source and source control are defined.
+    source_spectrum.load_source_spectrum(
+        pytest.data_path_sound_composer_spectrum_source_in_container,
+    )
+    source_spectrum.source_control = SourceControlSpectrum(duration=1.0)
+    gdc_source, gdc_source_control = source_spectrum.get_as_generic_data_containers()
+
+    assert isinstance(gdc_source, GenericDataContainer)
+    assert isinstance(gdc_source.get_property("sound_composer_source"), Field)
+    assert isinstance(gdc_source_control, GenericDataContainer)
+    assert gdc_source_control.get_property("sound_composer_source_control_spectrum_duration") == 1.0
+    assert gdc_source_control.get_property("sound_composer_source_control_spectrum_method") == 1
 
 
 def test_source_spectrum_process():
