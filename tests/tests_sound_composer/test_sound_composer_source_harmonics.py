@@ -327,7 +327,7 @@ def test_source_harmonics_process_exceptions():
     )
     with pytest.raises(
         PyAnsysSoundException,
-        match="Harmonics source control is not set. Use ``SourceHarmonics.source_control``.",
+        match="Harmonics source control is not set/valid. Use ``SourceHarmonics.source_control``.",
     ):
         source_harmonics_obj.process()
 
@@ -534,7 +534,7 @@ def test_source_harmonics_plot_control_exceptions():
     source_obj = SourceHarmonics()
     with pytest.raises(
         PyAnsysSoundException,
-        match="Harmonics source control is not set. Use ``SourceHarmonics.source_control``.",
+        match="Harmonics source control is not set/valid. Use ``SourceHarmonics.source_control``.",
     ):
         source_obj.plot_control()
 

@@ -248,7 +248,7 @@ class SourceHarmonics(SourceParent):
             Source control data as a DPF generic data container.
         """
         self.source_harmonics = gdc_source.get_property("sound_composer_source")
-        control = gdc_source_control.get_property("sound_composer_source_control_parameter_1")
+        control = gdc_source_control.get_property("sound_composer_source_control_one_parameter")
         self.source_control = SourceControlTime()
         self.source_control.control = control
 
@@ -277,8 +277,8 @@ class SourceHarmonics(SourceParent):
         if not self.is_source_control_valid():
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Cannot create source control generic data container because there is no "
-                    "source control data."
+                    "Cannot create source control generic data container, either because there is "
+                    "no source control data, or because the source control data is invalid."
                 )
             )
             gdc_source_control = None
@@ -306,7 +306,7 @@ class SourceHarmonics(SourceParent):
 
         if not self.is_source_control_valid():
             raise PyAnsysSoundException(
-                "Harmonics source control is not set. "
+                "Harmonics source control is not set/valid. "
                 f"Use ``{__class__.__name__}.source_control``."
             )
 
@@ -377,7 +377,7 @@ class SourceHarmonics(SourceParent):
         """Plot the source control(s) in a figure."""
         if not self.is_source_control_valid():
             raise PyAnsysSoundException(
-                "Harmonics source control is not set. "
+                "Harmonics source control is not set/valid. "
                 f"Use ``{__class__.__name__}.source_control``."
             )
 
