@@ -25,6 +25,8 @@ from unittest.mock import patch
 from ansys.dpf.core import (
     Field,
     FieldsContainer,
+    GenericDataContainer,
+    Operator,
     TimeFreqSupport,
     fields_container_factory,
     fields_factory,
@@ -258,6 +260,84 @@ def test_source_broadband_noise_two_parameters_load_source_bbn_two_parameters():
     assert isinstance(source_bbn_two_parameters_obj.source_bbn_two_parameters, FieldsContainer)
     assert source_bbn_two_parameters_obj.source_bbn_two_parameters[0].data[3] == pytest.approx(
         EXP_SPECTRUM_DATA03
+    )
+
+
+def test_source_broadband_noise_two_parameters_set_from_generic_data_containers():
+    """Test SourceBroadbandNoiseTwoParameters set_from_generic_data_containers method."""
+    op = Operator("sound_composer_load_source_bbn_two_parameters")
+    op.connect(0, pytest.data_path_sound_composer_bbn_source_2p_in_container)
+    op.run()
+    data = op.get_output(0, "fields_container")
+
+    gdc_source = GenericDataContainer()
+    gdc_source.set_property("sound_composer_source", data)
+
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([1.0, 2.0, 3.0, 4.0, 5.0], 1)
+    gdc_source_control = GenericDataContainer()
+    gdc_source_control.set_property("sound_composer_source_control_parameter_1", f_source_control)
+    gdc_source_control.set_property("sound_composer_source_control_parameter_2", f_source_control)
+
+    source_bbn_2p_obj = SourceBroadbandNoiseTwoParameters()
+    source_bbn_2p_obj.set_from_generic_data_containers(gdc_source, gdc_source_control)
+    assert isinstance(source_bbn_2p_obj.source_bbn_two_parameters, FieldsContainer)
+    assert len(source_bbn_2p_obj.source_bbn_two_parameters) == len(data)
+    assert isinstance(source_bbn_2p_obj.source_control1, SourceControlTime)
+    assert len(source_bbn_2p_obj.source_control1.control.data) == 5
+    assert isinstance(source_bbn_2p_obj.source_control2, SourceControlTime)
+    assert len(source_bbn_2p_obj.source_control2.control.data) == 5
+
+
+def test_source_broadband_noise_two_parameters_get_as_generic_data_containers():
+    """Test SourceBroadbandNoiseTwoParameters get_as_generic_data_containers method."""
+    # Source controls undefined => warning.
+    source_bbn_2p_obj = SourceBroadbandNoiseTwoParameters(
+        file=pytest.data_path_sound_composer_bbn_source_2p_in_container
+    )
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match=(
+            "Cannot create source control generic data container because at least one source "
+            "control data is missing."
+        ),
+    ):
+        _, gdc_source_control = source_bbn_2p_obj.get_as_generic_data_containers()
+    assert gdc_source_control is None
+
+    # Source data undefined => warning.
+    source_bbn_2p_obj.source_bbn_two_parameters = None
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([1.0, 2.0, 3.0, 4.0, 5.0], 1)
+    source_control_obj = SourceControlTime()
+    source_control_obj.control = f_source_control
+    source_bbn_2p_obj.source_control1 = source_control_obj
+    source_bbn_2p_obj.source_control2 = source_control_obj
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Cannot create source generic data container because there is no source data.",
+    ):
+        gdc_source, _ = source_bbn_2p_obj.get_as_generic_data_containers()
+    assert gdc_source is None
+
+    # Both source and source control are defined.
+    source_bbn_2p_obj.load_source_bbn_two_parameters(
+        pytest.data_path_sound_composer_bbn_source_2p_in_container,
+    )
+    gdc_source, gdc_source_control = source_bbn_2p_obj.get_as_generic_data_containers()
+
+    assert isinstance(gdc_source, GenericDataContainer)
+    assert isinstance(gdc_source.get_property("sound_composer_source"), FieldsContainer)
+    assert isinstance(gdc_source_control, GenericDataContainer)
+    assert isinstance(
+        gdc_source_control.get_property("sound_composer_source_control_parameter_1"), Field
+    )
+    assert isinstance(
+        gdc_source_control.get_property("sound_composer_source_control_parameter_2"), Field
     )
 
 

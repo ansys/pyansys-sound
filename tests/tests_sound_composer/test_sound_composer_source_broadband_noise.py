@@ -245,7 +245,9 @@ def test_source_broadband_noise_set_from_generic_data_containers():
     source_bbn_obj = SourceBroadbandNoise()
     source_bbn_obj.set_from_generic_data_containers(gdc_source, gdc_source_control)
     assert isinstance(source_bbn_obj.source_bbn, FieldsContainer)
+    assert len(source_bbn_obj.source_bbn) == len(data)
     assert isinstance(source_bbn_obj.source_control, SourceControlTime)
+    assert len(source_bbn_obj.source_control.control.data) == 5
 
 
 def test_source_broadband_noise_get_as_generic_data_containers():

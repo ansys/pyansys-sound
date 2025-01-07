@@ -150,27 +150,33 @@ def test_track_set_from_generic_data_containers():
 
     # Create a track and test method set_from_generic_data_container.
     track = Track()
-    track.set_from_generic_data_container(gdc_track)
+    track.set_from_generic_data_containers(gdc_track)
     assert track.name == "My track"
     assert track.gain == 15.6
     assert isinstance(track.source, SourceSpectrum)
+    assert len(track.source.source_spectrum_data.data) == len(source.source_spectrum_data.data)
     assert isinstance(track.source.source_control, SourceControlSpectrum)
+    assert track.source.source_control.duration == 3.0
+    assert track.source.source_control.method == 1
     assert track.filter is None
 
     # Add a filter to the generic data container.
     op_frf = Operator("load_FRF_from_txt")
     op_frf.connect(0, pytest.data_path_filter_frf)
     op_frf.run()
-    filter_frf = op_frf.get_output(0, "field")
+    f_filter_frf = op_frf.get_output(0, "field")
 
     gdc_track.set_property("track_is_filter", 1)
-    gdc_track.set_property("track_filter", filter_frf)
+    gdc_track.set_property("track_filter", f_filter_frf)
 
     track.set_from_generic_data_containers(gdc_track)
     assert track.name == "My track"
     assert track.gain == 15.6
     assert isinstance(track.source, SourceSpectrum)
+    assert len(track.source.source_spectrum_data.data) == len(source.source_spectrum_data.data)
     assert isinstance(track.source.source_control, SourceControlSpectrum)
+    assert track.source.source_control.duration == 3.0
+    assert track.source.source_control.method == 1
     assert isinstance(track.filter, Filter)
 
 
