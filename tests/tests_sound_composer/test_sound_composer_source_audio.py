@@ -124,14 +124,15 @@ def test_source_audio_set_from_generic_data_containers():
     """Test SourceAudio set_from_generic_data_containers method."""
     loader = LoadWav(path_to_wav=pytest.data_path_flute_nonUnitaryCalib_in_container)
     loader.process()
-    data = loader.get_output()[0]
+    f_data: Field = loader.get_output()[0]
 
     gdc_source = GenericDataContainer()
-    gdc_source.set_property("sound_composer_source", data)
+    gdc_source.set_property("sound_composer_source", f_data)
 
     source_audio = SourceAudio()
     source_audio.set_from_generic_data_containers(gdc_source, None)
     assert isinstance(source_audio.source_audio_data, Field)
+    assert len(source_audio.source_audio_data.data) == len(f_data.data)
     assert source_audio.source_audio_data.data[17640] == pytest.approx(EXP_AUDIO_DATA17640)
 
 

@@ -329,8 +329,8 @@ class SourceHarmonicsTwoParameters(SourceParent):
         if not self.is_source_control_valid():
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Cannot create source control generic data container because there is no "
-                    "source control data."
+                    "Cannot create source control generic data container because at least one "
+                    "source control data is missing."
                 )
             )
             gdc_source_control = None

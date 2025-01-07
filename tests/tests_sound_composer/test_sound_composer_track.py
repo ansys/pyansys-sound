@@ -164,7 +164,7 @@ def test_track_set_from_generic_data_containers():
     op_frf = Operator("load_FRF_from_txt")
     op_frf.connect(0, pytest.data_path_filter_frf)
     op_frf.run()
-    f_filter_frf = op_frf.get_output(0, "field")
+    f_filter_frf: Field = op_frf.get_output(0, "field")
 
     gdc_track.set_property("track_is_filter", 1)
     gdc_track.set_property("track_filter", f_filter_frf)

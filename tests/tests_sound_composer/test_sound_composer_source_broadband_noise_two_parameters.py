@@ -268,10 +268,10 @@ def test_source_broadband_noise_two_parameters_set_from_generic_data_containers(
     op = Operator("sound_composer_load_source_bbn_two_parameters")
     op.connect(0, pytest.data_path_sound_composer_bbn_source_2p_in_container)
     op.run()
-    data = op.get_output(0, "fields_container")
+    fc_data: FieldsContainer = op.get_output(0, "fields_container")
 
     gdc_source = GenericDataContainer()
-    gdc_source.set_property("sound_composer_source", data)
+    gdc_source.set_property("sound_composer_source", fc_data)
 
     f_source_control = fields_factory.create_scalar_field(
         num_entities=1, location=locations.time_freq
@@ -284,7 +284,7 @@ def test_source_broadband_noise_two_parameters_set_from_generic_data_containers(
     source_bbn_2p_obj = SourceBroadbandNoiseTwoParameters()
     source_bbn_2p_obj.set_from_generic_data_containers(gdc_source, gdc_source_control)
     assert isinstance(source_bbn_2p_obj.source_bbn_two_parameters, FieldsContainer)
-    assert len(source_bbn_2p_obj.source_bbn_two_parameters) == len(data)
+    assert len(source_bbn_2p_obj.source_bbn_two_parameters) == len(fc_data)
     assert isinstance(source_bbn_2p_obj.source_control1, SourceControlTime)
     assert len(source_bbn_2p_obj.source_control1.control.data) == 5
     assert isinstance(source_bbn_2p_obj.source_control2, SourceControlTime)
