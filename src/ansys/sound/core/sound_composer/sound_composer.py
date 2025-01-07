@@ -119,7 +119,7 @@ class SoundComposer(SoundComposerParent):
 
         for i in range(len(gdcc_project)):
             track = Track()
-            track.set_from_generic_data_container(gdcc_project.get_entry({"track_index": i}))
+            track.set_from_generic_data_containers(gdcc_project.get_entry({"track_index": i}))
             self.add_track(track)
 
     # TODO: Save cannot work for now because the FRF is not stored in the Filter class.
