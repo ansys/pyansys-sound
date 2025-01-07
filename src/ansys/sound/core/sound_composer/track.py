@@ -87,7 +87,7 @@ class Track(SoundComposerParent):
         source : SourceSpectrum, SourceBroadbandNoise, SourceBroadbandNoiseTwoParameters, \
             SourceHarmonics, SourceHarmonicsTwoParameters or SourceAudio, default: None
             Source of the track.
-        filter : Filter, default: None,
+        filter : Filter, default: None
             Filter of the track.
         """
         super().__init__()
