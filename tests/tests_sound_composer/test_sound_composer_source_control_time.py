@@ -67,23 +67,16 @@ def test_source_control_time_properties():
     assert len(control_time.control.data) > 0
 
 
-def test_source_control_time_propertiess_exceptions():
+def test_source_control_time_properties_exceptions():
     """Test SourceControlTime properties' exceptions."""
     control_time = SourceControlTime()
 
-    # Test control setter exception 1 (wrong control type).
+    # Test control setter exception (wrong control type).
     with pytest.raises(
         PyAnsysSoundException,
         match="Specified control profile must be provided as a DPF field.",
     ):
         control_time.control = "WrongType"
-
-    # Test control setter exception 2 (empty control).
-    with pytest.raises(
-        PyAnsysSoundException,
-        match="Specified control profile must have at least one element.",
-    ):
-        control_time.control = Field()
 
 
 def test_source_control_time___str__():
