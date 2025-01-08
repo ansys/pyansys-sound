@@ -29,9 +29,10 @@ import numpy as np
 from . import StandardLevelsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
-ID_COMPUTE_OVERALL_LEVEL = "compute_overall_level"
 DICT_SCALE = {"dB": 0, "RMS": 1}
 DICT_FREQUENCY_WEIGHTING = {"": 0, "A": 1, "B": 2, "C": 3}
+
+ID_COMPUTE_OVERALL_LEVEL = "compute_overall_level"
 
 
 class OverallLevel(StandardLevelsParent):
@@ -76,7 +77,7 @@ class OverallLevel(StandardLevelsParent):
         return (
             f"{__class__.__name__} object.\n"
             "Data\n"
-            f"\tSignal: {f'"{self.signal.name}"' if self.signal is not None else "Unset"}\n"
+            f"\tSignal: {f'"{self.signal.name}"' if self.signal is not None else "Not set"}\n"
             f"\tScale type: {self.scale}\n"
             f"\tReference value: {self.reference_value}\n"
             f"\tFrequency weighting: "
@@ -172,7 +173,7 @@ class OverallLevel(StandardLevelsParent):
             warnings.warn(
                 PyAnsysSoundWarning(
                     f"Output is not processed yet. "
-                    f"Use the ``{__class__.__name__}.process()`` method."
+                    f"Use the {__class__.__name__}.process() method."
                 )
             )
 
