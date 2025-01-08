@@ -34,12 +34,12 @@ DICT_SCALE = {"dB": 0, "RMS": 1}
 DICT_FREQUENCY_WEIGHTING = {"": 0, "A": 1, "B": 2, "C": 3}
 DICT_TIME_WEIGHTING = {"Fast": 0, "Slow": 1, "Impulse": 2, "Custom": 3}
 DICT_ANALYSIS_WINDOW = {
-    "Rectangular": 0,
-    "Hann": 1,
-    "Hamming": 2,
-    "Blackman": 3,
-    "Blackman-Harris": 4,
-    "Bartlett": 5,
+    "RECTANGULAR": 0,
+    "HANN": 1,
+    "HAMMING": 2,
+    "BLACKMAN": 3,
+    "BLACKMAN-HARRIS": 4,
+    "BARTLETT": 5,
 }
 
 ID_COMPUTE_LEVEL_OVER_TIME = "compute_level_over_time"
@@ -88,7 +88,7 @@ class LevelOverTime(StandardLevelsParent):
         self.time_weighting = time_weighting
         self.__time_step = 25.0
         self.__window_size = 1000.0
-        self.__analysis_window = "Rectangular"
+        self.__analysis_window = "RECTANGULAR"
         self.__operator = Operator(ID_COMPUTE_LEVEL_OVER_TIME)
 
     def __str__(self) -> str:
@@ -101,7 +101,7 @@ class LevelOverTime(StandardLevelsParent):
                 f"\tAnalysis window: {self.__analysis_window}\n"
             )
 
-        output = self.get_output()
+        max_level = self.get_level_max()
 
         return (
             f"{__class__.__name__} object.\n"
@@ -112,7 +112,7 @@ class LevelOverTime(StandardLevelsParent):
             f"\tFrequency weighting: "
             f"{self.frequency_weighting if len(self.frequency_weighting) > 0 else "None"}\n"
             f"\tTime weighting: {self.time_weighting}\n{str_custom_param}"
-            f"Output level value: {f"{output:.1f}" if output is not None else 'Not processed'}"
+            f"Maximum level: {f"{max_level:.1f}" if max_level is not None else 'Not processed'}"
         )
 
     @property
@@ -200,7 +200,7 @@ class LevelOverTime(StandardLevelsParent):
         self,
         time_step: float = 25.0,
         window_size: float = 1000.0,
-        analysis_window: str = "Rectangular",
+        analysis_window: str = "RECTANGULAR",
     ):
         """Set the custom parameters for the time weighting.
 
@@ -213,9 +213,9 @@ class LevelOverTime(StandardLevelsParent):
             The time step in ms.
         window_size : float, default: 1000.0
             The window size in ms.
-        analysis_window : str, default: "Rectangular"
-            The analysis window to use. Available options are `"Rectangular"`, `"Hann"`,
-            `"Hamming"`, `"Blackman"`, `"Blackman-Harris"`, and `"Bartlett"`.
+        analysis_window : str, default: "RECTANGULAR"
+            The analysis window to use. Available options are `"RECTANGULAR"`, `"HANN"`,
+            `"HAMMING"`, `"BLACKMAN"`, `"BLACKMAN-HARRIS"`, and `"BARTLETT"`.
         """
         # Automatically switch to custom time weighting.
         self.time_weighting = "Custom"
@@ -228,11 +228,11 @@ class LevelOverTime(StandardLevelsParent):
             raise PyAnsysSoundException("The window size must be strictly positive.")
         self.__window_size = window_size
 
-        if analysis_window not in DICT_ANALYSIS_WINDOW:
+        if analysis_window.upper() not in DICT_ANALYSIS_WINDOW:
             raise PyAnsysSoundException(
                 f"The analysis window must be one of {list(DICT_ANALYSIS_WINDOW.keys())}."
             )
-        self.__analysis_window = analysis_window
+        self.__analysis_window = analysis_window.upper()
 
     def process(self):
         """Compute the overall level."""
@@ -246,7 +246,7 @@ class LevelOverTime(StandardLevelsParent):
         self.__operator.connect(4, DICT_TIME_WEIGHTING[self.time_weighting])
         self.__operator.connect(5, self.__time_step)
         self.__operator.connect(6, self.__window_size)
-        self.__operator.connect(7, DICT_ANALYSIS_WINDOW[self.__analysis_window])
+        self.__operator.connect(7, self.__analysis_window)
 
         self.__operator.run()
 
@@ -256,14 +256,14 @@ class LevelOverTime(StandardLevelsParent):
         )
 
     def get_output(self) -> tuple:
-        """Return the level over time and maximum level.
+        """Return the maximum level and level over time.
 
         Returns
         -------
         tuple
-            First element (:class:`Field <ansys.dpf.core.field.Field>`) is the level over time.
+            First element (:class:`float`) is the maximum level.
 
-            Second element (:class:`float`) is the maximum level.
+            Second element (:class:`Field <ansys.dpf.core.field.Field>`) is the level over time.
         """
         if self._output is None:
             warnings.warn(
@@ -276,26 +276,26 @@ class LevelOverTime(StandardLevelsParent):
         return self._output
 
     def get_output_as_nparray(self) -> tuple[np.ndarray]:
-        """Return the level over time, time scale, and maximum level.
+        """Return the maximum level, level over time, and time scale.
 
         Returns
         -------
         numpy.ndarray
-            First element is the level over time.
+            First element is the maximum level.
 
-            Second element is the time scale in s.
+            Second element is the level over time.
 
-            Third element is the maximum level.
+            Third element is the time scale in s.
         """
         output = self.get_output()
 
         if output is None:
-            return (np.array([]), np.array([]), np.nan)
+            return (np.nan, np.array([]), np.array([]))
 
         return (
-            np.array(output[0].data),
-            np.array(output[0].time_freq_support.time_frequencies.data),
-            np.array(output[1]),
+            np.array(output[0]),
+            np.array(output[1].data),
+            np.array(output[1].time_freq_support.time_frequencies.data),
         )
 
     def get_level_max(self) -> float:
@@ -306,7 +306,8 @@ class LevelOverTime(StandardLevelsParent):
         float
             The maximum level value over time.
         """
-        return self.get_output()[1]
+        output = self.get_output()
+        return output[0] if output is not None else None
 
     def get_level_over_time(self) -> np.ndarray:
         """Return the level over time.
@@ -316,7 +317,7 @@ class LevelOverTime(StandardLevelsParent):
         numpy.ndarray
             The level over time.
         """
-        return self.get_output_as_nparray()[0]
+        return self.get_output_as_nparray()[1]
 
     def get_time_scale(self) -> np.ndarray:
         """Return the time scale.
@@ -326,10 +327,15 @@ class LevelOverTime(StandardLevelsParent):
         numpy.ndarray
             The time scale in s.
         """
-        return self.get_output_as_nparray()[1]
+        return self.get_output_as_nparray()[2]
 
     def plot(self):
         """Plot the level over time."""
+        if self._output is None:
+            raise PyAnsysSoundException(
+                f"Output is not processed yet. Use the {__class__.__name__}.process() method."
+            )
+
         level_over_time = self.get_level_over_time()
         time_scale = self.get_time_scale()
         if self.scale == "RMS":
