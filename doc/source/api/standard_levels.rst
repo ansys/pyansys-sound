@@ -7,3 +7,4 @@ Standard levels
     :toctree: _autosummary
 
     OverallLevel
+    LevelOverTime

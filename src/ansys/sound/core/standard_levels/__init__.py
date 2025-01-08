@@ -26,9 +26,11 @@ Helper classes related to the computation of standard levels.
 """
 
 from ._standard_levels_parent import StandardLevelsParent
+from .level_over_time import LevelOverTime
 from .overall_level import OverallLevel
 
 __all__ = (
     "StandardLevelsParent",
     "OverallLevel",
+    "LevelOverTime",
 )
