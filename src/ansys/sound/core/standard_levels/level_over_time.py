@@ -189,7 +189,7 @@ class LevelOverTime(StandardLevelsParent):
     @time_weighting.setter
     def time_weighting(self, weighting: str):
         """Set the time weighting."""
-        if weighting not in ["Fast", "Slow", "Impulse", "Custom"]:
+        if weighting not in list(DICT_TIME_WEIGHTING.keys()):
             raise PyAnsysSoundException(
                 f"The time weighting must be one of {list(DICT_TIME_WEIGHTING.keys())}."
             )
@@ -240,7 +240,7 @@ class LevelOverTime(StandardLevelsParent):
 
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, DICT_SCALE[self.scale])
-        self.__operator.connect(2, self.reference_value)
+        self.__operator.connect(2, float(self.reference_value))
         self.__operator.connect(3, DICT_FREQUENCY_WEIGHTING[self.frequency_weighting])
         self.__operator.connect(4, DICT_TIME_WEIGHTING[self.time_weighting])
         self.__operator.connect(5, self.__time_step / 1000.0)

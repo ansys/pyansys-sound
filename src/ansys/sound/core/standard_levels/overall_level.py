@@ -153,7 +153,7 @@ class OverallLevel(StandardLevelsParent):
 
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, DICT_SCALE[self.scale])
-        self.__operator.connect(2, self.reference_value)
+        self.__operator.connect(2, float(self.reference_value))
         self.__operator.connect(3, DICT_FREQUENCY_WEIGHTING[self.frequency_weighting])
 
         self.__operator.run()
