@@ -88,7 +88,8 @@ def test_overall_level_properties_exceptions():
         level_obj.reference_value = -1
 
     with pytest.raises(
-        PyAnsysSoundException, match="The frequency weighting must be either '', 'A', 'B', or 'C'."
+        PyAnsysSoundException,
+        match="The frequency weighting must be one of \\['', 'A', 'B', 'C'\\].",
     ):
         level_obj.frequency_weighting = "Invalid"
 

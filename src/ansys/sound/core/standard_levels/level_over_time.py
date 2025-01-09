@@ -129,7 +129,7 @@ class LevelOverTime(StandardLevelsParent):
     def scale(self) -> str:
         """Scale type of the output level.
 
-        Specified whether the output level shall be provided on a decibel (`"dB"`) or linear
+        Specifies whether the output level shall be provided on a decibel (`"dB"`) or linear
         (`"RMS"`) scale.
         """
         return self.__scale
