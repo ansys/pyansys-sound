@@ -26,11 +26,8 @@ import warnings
 from ansys.dpf.core import Field, Operator
 import numpy as np
 
-from . import StandardLevelsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-
-DICT_SCALE = {"dB": 0, "RMS": 1}
-DICT_FREQUENCY_WEIGHTING = {"": 0, "A": 1, "B": 2, "C": 3}
+from ._standard_levels_parent import DICT_FREQUENCY_WEIGHTING, DICT_SCALE, StandardLevelsParent
 
 ID_COMPUTE_OVERALL_LEVEL = "compute_overall_level"
 
@@ -110,7 +107,7 @@ class OverallLevel(StandardLevelsParent):
     @scale.setter
     def scale(self, scale: str):
         """Set the scale type."""
-        if scale not in ["dB", "RMS"]:
+        if scale not in list(DICT_SCALE.keys()):
             raise PyAnsysSoundException("The scale type must be either 'dB' or 'RMS'.")
         self.__scale = scale
 
@@ -118,7 +115,8 @@ class OverallLevel(StandardLevelsParent):
     def reference_value(self) -> float:
         """Reference value for the level computation.
 
-        If the overall level is computed with a signal in Pa, the reference value should be 2e-5.
+        If the overall level is computed with a sound pressure signal in Pa, the reference value
+        should be 2e-5.
         """
         return self.__reference_value
 
@@ -133,17 +131,18 @@ class OverallLevel(StandardLevelsParent):
     def frequency_weighting(self) -> str:
         """Frequency weighting of the computed level.
 
-        Available options are `""`, `"A"`, `"B"`, and `"C"`, respectively to get level in dBSPL,
-        dB(A), dB(B), and dB(C).
+        Available options are `""`, `"A"`, `"B"`, and `"C"`. If attribute :attr:`reference_value`
+        is 2e-5 Pa, these options allow level calculation in dBSPL, dB(A), dB(B), and dB(C),
+        respectively.
         """
         return self.__frequency_weighting
 
     @frequency_weighting.setter
     def frequency_weighting(self, weighting: str):
         """Set the frequency weighting."""
-        if weighting not in ["", "A", "B", "C"]:
+        if weighting not in list(DICT_FREQUENCY_WEIGHTING.keys()):
             raise PyAnsysSoundException(
-                "The frequency weighting must be either '', 'A', 'B', or 'C'."
+                f"The frequency weighting must be one of {list(DICT_FREQUENCY_WEIGHTING.keys())}."
             )
         self.__frequency_weighting = weighting
 

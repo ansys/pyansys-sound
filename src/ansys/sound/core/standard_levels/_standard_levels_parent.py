@@ -23,6 +23,9 @@
 """Standard levels parent class."""
 from .._pyansys_sound import PyAnsysSound
 
+DICT_SCALE = {"dB": 0, "RMS": 1}
+DICT_FREQUENCY_WEIGHTING = {"": 0, "A": 1, "B": 2, "C": 3}
+
 
 class StandardLevelsParent(PyAnsysSound):
     """

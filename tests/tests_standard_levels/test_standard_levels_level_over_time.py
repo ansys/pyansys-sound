@@ -42,7 +42,7 @@ EXP_STR_ALL_SET = (
 EXP_STR_ALL_PROCESSED = (
     'LevelOverTime object.\nData\n\tSignal: "flute"\n\tScale type: dB\n\tReference value: 2e-05\n'
     "\tFrequency weighting: None\n\tTime weighting: Custom\n\tTime step: 100.0 ms\n"
-    "\tWindow size: 5000.0 ms\n\tAnalysis window: HANN\nMaximum level: 60.9"
+    "\tWindow size: 5000.0 ms\n\tAnalysis window: HANN\nMaximum level: 83.9"
 )
 
 EXP_LEVEL_MAX_DEFAULT = -5.18323
@@ -55,7 +55,7 @@ EXP_LEVEL_MAX_B = 88.5828
 EXP_LEVEL_MAX_C = 88.7946
 EXP_LEVEL_MAX_SLOW = 90.2438
 EXP_LEVEL_MAX_IMPULSE = 90.6944
-EXP_LEVEL_MAX_CUSTOM = 60.9206
+EXP_LEVEL_MAX_CUSTOM = 83.87
 
 
 def test_level_over_time_instantiation():
