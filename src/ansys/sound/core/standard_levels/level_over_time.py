@@ -137,7 +137,7 @@ class LevelOverTime(StandardLevelsParent):
     @scale.setter
     def scale(self, scale: str):
         """Set the scale type."""
-        if scale not in list(DICT_SCALE.keys()):
+        if scale not in DICT_SCALE.keys():
             raise PyAnsysSoundException("The scale type must be either 'dB' or 'RMS'.")
         self.__scale = scale
 
@@ -170,7 +170,7 @@ class LevelOverTime(StandardLevelsParent):
     @frequency_weighting.setter
     def frequency_weighting(self, weighting: str):
         """Set the frequency weighting."""
-        if weighting not in list(DICT_FREQUENCY_WEIGHTING.keys()):
+        if weighting not in DICT_FREQUENCY_WEIGHTING.keys():
             raise PyAnsysSoundException(
                 f"The frequency weighting must be one of {list(DICT_FREQUENCY_WEIGHTING.keys())}."
             )
@@ -189,7 +189,7 @@ class LevelOverTime(StandardLevelsParent):
     @time_weighting.setter
     def time_weighting(self, weighting: str):
         """Set the time weighting."""
-        if weighting not in list(DICT_TIME_WEIGHTING.keys()):
+        if weighting not in DICT_TIME_WEIGHTING.keys():
             raise PyAnsysSoundException(
                 f"The time weighting must be one of {list(DICT_TIME_WEIGHTING.keys())}."
             )
@@ -227,7 +227,7 @@ class LevelOverTime(StandardLevelsParent):
             raise PyAnsysSoundException("The window size must be strictly positive.")
         self.__window_size = window_size
 
-        if analysis_window.upper() not in DICT_ANALYSIS_WINDOW:
+        if analysis_window.upper() not in DICT_ANALYSIS_WINDOW.keys():
             raise PyAnsysSoundException(
                 f"The analysis window must be one of {list(DICT_ANALYSIS_WINDOW.keys())}."
             )

@@ -107,7 +107,7 @@ class OverallLevel(StandardLevelsParent):
     @scale.setter
     def scale(self, scale: str):
         """Set the scale type."""
-        if scale not in list(DICT_SCALE.keys()):
+        if scale not in DICT_SCALE.keys():
             raise PyAnsysSoundException("The scale type must be either 'dB' or 'RMS'.")
         self.__scale = scale
 
@@ -140,7 +140,7 @@ class OverallLevel(StandardLevelsParent):
     @frequency_weighting.setter
     def frequency_weighting(self, weighting: str):
         """Set the frequency weighting."""
-        if weighting not in list(DICT_FREQUENCY_WEIGHTING.keys()):
+        if weighting not in DICT_FREQUENCY_WEIGHTING.keys():
             raise PyAnsysSoundException(
                 f"The frequency weighting must be one of {list(DICT_FREQUENCY_WEIGHTING.keys())}."
             )
