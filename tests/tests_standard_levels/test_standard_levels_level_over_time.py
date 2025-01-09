@@ -42,20 +42,20 @@ EXP_STR_ALL_SET = (
 EXP_STR_ALL_PROCESSED = (
     'LevelOverTime object.\nData\n\tSignal: "flute"\n\tScale type: dB\n\tReference value: 2e-05\n'
     "\tFrequency weighting: None\n\tTime weighting: Custom\n\tTime step: 100.0 ms\n"
-    "\tWindow size: 5000.0 ms\n\tAnalysis window: HANN\nMaximum level: 83.9"
+    "\tWindow size: 5000.0 ms\n\tAnalysis window: HANN\nMaximum level: 89.2"
 )
 
-EXP_LEVEL_MAX_DEFAULT = -5.18323
-EXP_LEVEL_12 = -6.83708
-EXP_TIME_12 = 1.200006
-EXP_LEVEL_MAX_RMS = 0.550603
-EXP_LEVEL_MAX_SPL = 88.7962
-EXP_LEVEL_MAX_A = 87.3156
-EXP_LEVEL_MAX_B = 88.5828
-EXP_LEVEL_MAX_C = 88.7946
-EXP_LEVEL_MAX_SLOW = 90.2438
+EXP_LEVEL_MAX_DEFAULT = -3.72917
+EXP_LEVEL_12 = -16.7062
+EXP_TIME_12 = 0.300003
+EXP_LEVEL_MAX_RMS = 0.650941
+EXP_LEVEL_MAX_SPL = 90.2502
+EXP_LEVEL_MAX_A = 89.0532
+EXP_LEVEL_MAX_B = 90.0780
+EXP_LEVEL_MAX_C = 90.2438
+EXP_LEVEL_MAX_SLOW = 88.7946
 EXP_LEVEL_MAX_IMPULSE = 90.6944
-EXP_LEVEL_MAX_CUSTOM = 83.87
+EXP_LEVEL_MAX_CUSTOM = 89.1737
 
 
 def test_level_over_time_instantiation():
@@ -285,6 +285,7 @@ def test_level_over_time_get_level_max():
     level_obj.process()
     assert level_obj.get_level_max() == pytest.approx(EXP_LEVEL_MAX_IMPULSE)
 
+    level_obj.frequency_weighting = ""
     level_obj.set_custom_parameters(time_step=100.0, window_size=5000.0, analysis_window="HANN")
     level_obj.process()
     assert level_obj.get_level_max() == pytest.approx(EXP_LEVEL_MAX_CUSTOM)

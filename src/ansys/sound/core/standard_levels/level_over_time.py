@@ -30,7 +30,7 @@ import numpy as np
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._standard_levels_parent import DICT_FREQUENCY_WEIGHTING, DICT_SCALE, StandardLevelsParent
 
-DICT_TIME_WEIGHTING = {"Fast": 0, "Slow": 1, "Impulse": 2, "Custom": 3}
+DICT_TIME_WEIGHTING = {"Fast": 1, "Slow": 0, "Impulse": 2, "Custom": 3}
 DICT_ANALYSIS_WINDOW = {
     "RECTANGULAR": 0,
     "HANN": 1,
@@ -243,8 +243,8 @@ class LevelOverTime(StandardLevelsParent):
         self.__operator.connect(2, self.reference_value)
         self.__operator.connect(3, DICT_FREQUENCY_WEIGHTING[self.frequency_weighting])
         self.__operator.connect(4, DICT_TIME_WEIGHTING[self.time_weighting])
-        self.__operator.connect(5, self.__time_step)
-        self.__operator.connect(6, self.__window_size)
+        self.__operator.connect(5, self.__time_step / 1000.0)
+        self.__operator.connect(6, self.__window_size / 1000.0)
         self.__operator.connect(7, self.__analysis_window)
 
         self.__operator.run()
