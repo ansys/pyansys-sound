@@ -173,9 +173,7 @@ def pytest_configure():
         server=server,
     )
     pytest.data_path_Acceleration_with_Tacho_nonUnitaryCalib = upload_file_in_tmp_folder(
-        os.path.join(
-            base_dir, "Acceleration_with_Tacho_nonUnitaryCalib.wav"
-        ),
+        os.path.join(base_dir, "Acceleration_with_Tacho_nonUnitaryCalib.wav"),
         server=server,
     )
 

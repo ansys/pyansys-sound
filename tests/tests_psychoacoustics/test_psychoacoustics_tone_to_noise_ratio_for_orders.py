@@ -37,7 +37,6 @@ EXP_TIME = 20.596745485679634
 EXP_RPM = 4810.3193359375
 
 
-
 EXP_STR = (
     "ToneToNoiseRatioForOrders object.\n"
     + "Data\n"
@@ -147,8 +146,6 @@ def test_tone_to_noise_ratio_for_orders_process_exception():
         tnr_orders.process()
 
 
-
-
 def test_tone_to_noise_ratio_for_orders_get_output():
     """Test get_output method."""
     wav_loader = LoadWav(pytest.data_path_Acceleration_with_Tacho_nonUnitaryCalib)
@@ -168,8 +165,11 @@ def test_tone_to_noise_ratio_for_orders_get_output_unprocessed():
     """Test get_output method's warning."""
     tnr_orders = ToneToNoiseRatioForOrders()
 
-    with pytest.warns(PyAnsysSoundWarning, match="Output is not processed yet. Use the 'ToneToNoiseRatioForOrders.process\(\)' method."):
-       output = tnr_orders.get_output()
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. Use the 'ToneToNoiseRatioForOrders.process\(\)' method.",
+    ):
+        output = tnr_orders.get_output()
     assert output is None
 
 
@@ -189,7 +189,7 @@ def test_tone_to_noise_ratio_for_orders_get_output_as_nparray():
     assert pytest.approx(TNRs[0][538]) == EXP_TNR_1
     assert pytest.approx(TNRs[1][538]) == EXP_TNR_2
     assert pytest.approx(TNRs[2][330]) == EXP_TNR_3
-    assert len(RPM_resampled) == len (TNRs[0])
+    assert len(RPM_resampled) == len(TNRs[0])
 
 
 def test_tone_to_noise_ratio_for_orders_get_output_as_nparray_unprocessed():
@@ -203,11 +203,15 @@ def test_tone_to_noise_ratio_for_orders_get_output_as_nparray_unprocessed():
 
     tnr_orders = ToneToNoiseRatioForOrders(signal=sig, profile=rpm, order_list=ords)
 
-    with pytest.warns(PyAnsysSoundWarning, match="Output is not processed yet. Use the 'ToneToNoiseRatioForOrders.process\(\)' method."):
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. Use the 'ToneToNoiseRatioForOrders.process\(\)' method.",
+    ):
         TNRs, RPM_resampled = tnr_orders.get_output_as_nparray()
 
     assert len(TNRs) == 0
     assert len(RPM_resampled) == 0
+
 
 def test_tone_to_noise_ratio_for_orders_get_time_scale():
     """Test get_time_scale method."""
@@ -225,6 +229,7 @@ def test_tone_to_noise_ratio_for_orders_get_time_scale():
     assert len(time_scale) == 555
     assert len(time_scale) == 555
     assert pytest.approx(time_scale[-1]) == EXP_TIME
+
 
 def test_tone_to_noise_ratio_for_orders_get_time_scale_unprocessed():
     """Test get_time_scale method's exception."""
@@ -249,11 +254,13 @@ def test_tone_to_noise_ratio_for_orders_get_rpm_scale():
     assert len(rpm_scale) == 555
     assert pytest.approx(rpm_scale[-1]) == EXP_RPM
 
+
 def test_tone_to_noise_ratio_for_orders_get_rpm_scale_unprocessed():
     """Test get_rpm_scale method's exception."""
     tnr_orders = ToneToNoiseRatioForOrders()
     rpm_scale = tnr_orders.get_rpm_scale()
     assert len(rpm_scale) == 0
+
 
 def test_tone_to_noise_ratio_for_orders_get_order_tone_to_noise_ratio_over_time():
     """Test get_order_tone_to_noise_ratio_over_time method."""
@@ -275,11 +282,13 @@ def test_tone_to_noise_ratio_for_orders_get_order_tone_to_noise_ratio_over_time(
     assert pytest.approx(TNR_4[538]) == EXP_TNR_2
     assert pytest.approx(TNR_8[330]) == EXP_TNR_3
 
+
 def test_tone_to_noise_ratio_for_orders_get_order_tone_to_noise_ratio_over_time_unprocessed():
     """Test get_order_tone_to_noise_ratio_over_time method's exception."""
     tnr_orders = ToneToNoiseRatioForOrders()
     TNR = tnr_orders.get_order_tone_to_noise_ratio_over_time(order_index=0)
     assert len(TNR) == 0
+
 
 @patch("matplotlib.pyplot.show")
 def test_tone_to_noise_ratio_for_orders_plot(mock_show):
@@ -295,6 +304,7 @@ def test_tone_to_noise_ratio_for_orders_plot(mock_show):
     tnr_orders.process()
 
     tnr_orders.plot()
+
 
 @patch("matplotlib.pyplot.show")
 def test_tone_to_noise_ratio_for_orders_plot_with_rpm_axis(mock_show):

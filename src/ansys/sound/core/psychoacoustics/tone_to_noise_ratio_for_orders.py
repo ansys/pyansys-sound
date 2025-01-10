@@ -127,19 +127,21 @@ class ToneToNoiseRatioForOrders(PsychoacousticsParent):
         self.__operator.run()
 
         # Stores outputs in the tuple variable
-        self._output = self.__operator.get_output(0, types.fields_container) , self.__operator.get_output(1, types.field)
+        self._output = self.__operator.get_output(
+            0, types.fields_container
+        ), self.__operator.get_output(1, types.field)
 
     def get_output(self) -> tuple[FieldsContainer] | tuple[Field]:
         """Get TNR data as a fields container and the associated resampled RPM profile as a Field.
 
         Returns
-        -------        
+        -------
         tuple(FieldsContainer) | tuple(Field)
             First element is the Tone-to-noise ratio data in a fields container.
             Each fields of the fields container correspond to an order.
 
             Second element is the resampled RPM profile as a Field.
-            
+
         """
         if self._output == None:
             warnings.warn(
@@ -162,14 +164,9 @@ class ToneToNoiseRatioForOrders(PsychoacousticsParent):
         """
         tnr_container = self.get_output()
         if tnr_container == None:
-            return (
-                np.array([]),
-                np.array([]))
+            return (np.array([]), np.array([]))
 
-        return (
-           self.convert_fields_container_to_np_array(tnr_container[0]),
-           tnr_container[1].data
-        )
+        return (self.convert_fields_container_to_np_array(tnr_container[0]), tnr_container[1].data)
 
     def get_order_tone_to_noise_ratio_over_time(self, order_index) -> np.ndarray | None:
         """Get the tone-to-noise ratio for a specific order.
@@ -189,7 +186,7 @@ class ToneToNoiseRatioForOrders(PsychoacousticsParent):
             return np.array([])
 
         return tnr_container[0][order_index].data
-    
+
     def get_time_scale(self) -> np.ndarray | None:
         """Get the time scale.
 
@@ -203,7 +200,7 @@ class ToneToNoiseRatioForOrders(PsychoacousticsParent):
             return np.array([])
 
         return tnr_container[0][0].time_freq_support.time_frequencies.data
-    
+
     def get_rpm_scale(self) -> np.ndarray | None:
         """Get the RPM scale.
 
@@ -230,7 +227,7 @@ class ToneToNoiseRatioForOrders(PsychoacousticsParent):
 
     def plot(self, use_rpm_scale: bool = False):
         """Plots all orders’ TNR vs time or vs RPM (according to arg) in the same plot
-        
+
         Parameters
         ----------
         use_rpm_scale : bool
@@ -243,11 +240,11 @@ class ToneToNoiseRatioForOrders(PsychoacousticsParent):
             )
 
         if use_rpm_scale:
-            x_scale_label= "RPM (rpm)" 
+            x_scale_label = "RPM (rpm)"
             x_scale_data = self.get_rpm_scale()
             title = "Orders’ tone-to-noise ratio ratio over RPM"
         else:
-            x_scale_label= "Time (s)" 
+            x_scale_label = "Time (s)"
             x_scale_data = self.get_time_scale()
             title = "Orders’ tone-to-noise ratio over time"
 
@@ -264,4 +261,3 @@ class ToneToNoiseRatioForOrders(PsychoacousticsParent):
 
         ax.legend()
         plt.show()
-        
