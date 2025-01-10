@@ -40,7 +40,7 @@ EXP_STR = (
     "ToneToNoiseRatioForOrders object.\n"
     + "Data\n"
     + f'Signal name: "Acceleration_with_Tacho"\n'
-    + f"RPM profile signal name: Acceleration_with_Tacho_RPM\n"
+    + f'RPM profile signal name: "Acceleration_with_Tacho_RPM"\n'
     + f"Order list: [2.0, 4.0, 8.0]\n"
 )
 
