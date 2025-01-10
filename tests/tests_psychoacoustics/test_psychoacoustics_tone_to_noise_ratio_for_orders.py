@@ -23,7 +23,6 @@
 from unittest.mock import patch
 
 from ansys.dpf.core import Field
-import numpy as np
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -127,21 +126,30 @@ def test_tone_to_noise_ratio_for_orders_process_exception():
     tnr_orders = ToneToNoiseRatioForOrders()
     with pytest.raises(
         PyAnsysSoundException,
-        match="No signal found for tone-to-noise ratio computation. Use 'ToneToNoiseRatioForOrders.signal'.",
+        match=(
+            "No signal found for tone-to-noise ratio computation. "
+            "Use 'ToneToNoiseRatioForOrders.signal'."
+        ),
     ):
         tnr_orders.process()
 
     tnr_orders.signal = sig
     with pytest.raises(
         PyAnsysSoundException,
-        match="No profile found for tone-to-noise ratio computation. Use 'ToneToNoiseRatioForOrders.profile'.",
+        match=(
+            "No profile found for tone-to-noise ratio computation. "
+            "Use 'ToneToNoiseRatioForOrders.profile'."
+        ),
     ):
         tnr_orders.process()
 
     tnr_orders.profile = rpm
     with pytest.raises(
         PyAnsysSoundException,
-        match="No order list found for tone-to-noise ratio computation. Use 'ToneToNoiseRatioForOrders.order_list'.",
+        match=(
+            "No order list found for tone-to-noise ratio computation. "
+            "Use 'ToneToNoiseRatioForOrders.order_list'."
+        ),
     ):
         tnr_orders.process()
 
@@ -167,7 +175,9 @@ def test_tone_to_noise_ratio_for_orders_get_output_unprocessed():
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the 'ToneToNoiseRatioForOrders.process\(\)' method.",
+        match=(
+            "Output is not processed yet. Use the 'ToneToNoiseRatioForOrders.process\(\)' method."
+        ),
     ):
         output = tnr_orders.get_output()
     assert output is None
@@ -205,7 +215,9 @@ def test_tone_to_noise_ratio_for_orders_get_output_as_nparray_unprocessed():
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the 'ToneToNoiseRatioForOrders.process\(\)' method.",
+        match=(
+            "Output is not processed yet. Use the 'ToneToNoiseRatioForOrders.process\(\)' method."
+        ),
     ):
         TNRs, RPM_resampled = tnr_orders.get_output_as_nparray()
 
@@ -334,6 +346,9 @@ def test_tone_to_noise_ratio_for_orders_plot_exception():
 
     with pytest.raises(
         PyAnsysSoundException,
-        match="Output is not processed yet. Use the ``ToneToNoiseRatioForOrders.process\\(\\)`` method.",
+        match=(
+            "Output is not processed yet. "
+            "Use the ``ToneToNoiseRatioForOrders.process\\(\\)`` method."
+        ),
     ):
         tnr_orders.plot()
