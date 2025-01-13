@@ -31,7 +31,7 @@ from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
-class ToneToNoiseRatioForOrders(PsychoacousticsParent):
+class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
     """Computes the ECMA 418-1/ISO 7779 tone-to-noise ratio (TNR) for specific orders over time.
 
     This class computes the TNR, as defined in ECMA 418-1 and ISO 7779 standards, following
@@ -106,19 +106,19 @@ class ToneToNoiseRatioForOrders(PsychoacousticsParent):
         if self.__signal == None:
             raise PyAnsysSoundException(
                 "No signal found for tone-to-noise ratio computation. "
-                "Use 'ToneToNoiseRatioForOrders.signal'."
+                "Use 'ToneToNoiseRatioForOrdersOverTime.signal'."
             )
 
         if self.__profile == None:
             raise PyAnsysSoundException(
                 "No profile found for tone-to-noise ratio computation. "
-                "Use 'ToneToNoiseRatioForOrders.profile'."
+                "Use 'ToneToNoiseRatioForOrdersOverTime.profile'."
             )
 
         if self.__order_list == None:
             raise PyAnsysSoundException(
                 "No order list found for tone-to-noise ratio computation. "
-                "Use 'ToneToNoiseRatioForOrders.order_list'."
+                "Use 'ToneToNoiseRatioForOrdersOverTime.order_list'."
             )
 
         self.__operator.connect(0, self.signal)
@@ -151,7 +151,7 @@ class ToneToNoiseRatioForOrders(PsychoacousticsParent):
             warnings.warn(
                 PyAnsysSoundWarning(
                     "Output is not processed yet. "
-                    "Use the 'ToneToNoiseRatioForOrders.process()' method."
+                    "Use the 'ToneToNoiseRatioForOrdersOverTime.process()' method."
                 )
             )
 

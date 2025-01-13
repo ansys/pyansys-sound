@@ -14,5 +14,5 @@ Psychoacoustics
     FluctuationStrength
     ProminenceRatio
     ToneToNoiseRatio
-    ToneToNoiseRatioForOrders
+    ToneToNoiseRatioForOrdersOverTime
     TonalityDIN45681
