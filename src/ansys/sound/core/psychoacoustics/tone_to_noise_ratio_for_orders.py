@@ -248,7 +248,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
             )
 
         if use_rpm_scale:
-            x_scale_label = "RPM (rpm)"
+            x_scale_label = "RPM"
             x_scale_data = self.get_rpm_scale()
             title = "Orders’ tone-to-noise ratio ratio over RPM"
         else:
