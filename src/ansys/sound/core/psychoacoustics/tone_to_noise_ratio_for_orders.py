@@ -133,7 +133,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
             0, types.fields_container
         ), self.__operator.get_output(1, types.field)
 
-    def get_output(self) -> tuple[FieldsContainer] | tuple[Field]:
+    def get_output(self) -> tuple[FieldsContainer, Field]:
         """Get TNR data as a fields container and the associated resampled RPM profile as a Field.
 
         Returns
@@ -173,7 +173,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
 
         return (self.convert_fields_container_to_np_array(tnr_container[0]), tnr_container[1].data)
 
-    def get_order_tone_to_noise_ratio_over_time(self, order_index) -> np.ndarray | None:
+    def get_order_tone_to_noise_ratio_over_time(self, order_index: int) -> np.ndarray | None:
         """Get the tone-to-noise ratio over time for a specific order.
 
         Parameters
