@@ -58,6 +58,16 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         self.order_list = order_list  # uses the setter
         self.__operator = Operator("compute_tone_to_noise_ratio_for_orders_over_time")
 
+    def __str__(self):
+        """Return the string representation of the object."""
+        return (
+            f"{__class__.__name__} object.\n"
+            "Data\n"
+            f'Signal name: "{self.signal.name}"\n'
+            f'RPM profile signal name: "{self.profile.name}"\n'
+            f"Order list: {self.order_list}\n"
+        )
+
     @property
     def signal(self) -> Field:
         """Input signal as a DPF field."""
@@ -222,16 +232,6 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
             return np.array([])
 
         return tnr_container[1].data
-
-    def __str__(self):
-        """Return the string representation of the object."""
-        return (
-            f"{__class__.__name__} object.\n"
-            "Data\n"
-            f'Signal name: "{self.signal.name}"\n'
-            f'RPM profile signal name: "{self.profile.name}"\n'
-            f"Order list: {self.order_list}\n"
-        )
 
     def plot(self, use_rpm_scale: bool = False):
         """Plot all orders’ TNR as functions of time or RPM.
