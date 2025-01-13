@@ -301,6 +301,13 @@ def test_tone_to_noise_ratio_for_orders_get_order_tone_to_noise_ratio_over_time(
     assert pytest.approx(TNR_8[330]) == EXP_TNR_3
 
 
+def test_tone_to_noise_ratio_for_orders_get_order_tone_to_noise_ratio_over_time_unprocessed():
+    """Test get_order_tone_to_noise_ratio_over_time method's exception."""
+    tnr_orders = ToneToNoiseRatioForOrdersOverTime()
+    TNR = tnr_orders.get_order_tone_to_noise_ratio_over_time(order_index=0)
+    assert len(TNR) == 0
+
+
 def test_tone_to_noise_ratio_for_orders_get_order_tone_to_noise_ratio_over_time_exception():
     """Test get_order_tone_to_noise_ratio_over_time method's exception."""
     wav_loader = LoadWav(pytest.data_path_Acceleration_with_Tacho_nonUnitaryCalib)
