@@ -186,11 +186,14 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         numpy.ndarray
             Tone-to-noise ratio over time, in dB, for the specified order.
         """
-        tnr_container = self.get_output()
-        if tnr_container == None:
-            return np.array([])
+        if order_index >= len(self.order_list) or order_index < 0:
+            raise PyAnsysSoundException(
+                f"Order index {order_index} is out of range. "
+                f"Order list has {len(self.order_list)} elements."
+            )
 
-        return tnr_container[0][order_index].data
+        tnr_container = self.get_output_as_nparray()
+        return tnr_container[0][order_index]
 
     def get_time_scale(self) -> np.ndarray | None:
         """Get the TNR calculation time scale.

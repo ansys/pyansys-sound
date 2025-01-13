@@ -176,7 +176,7 @@ def test_tone_to_noise_ratio_for_orders_get_output_unprocessed():
     with pytest.warns(
         PyAnsysSoundWarning,
         match=(
-            "Output is not processed yet. Use the 'ToneToNoiseRatioForOrdersOverTime.process\(\)' method."
+            "Output is not processed yet. Use the 'ToneToNoiseRatioForOrdersOverTime.process\(\)' method."  # noqa: E501
         ),
     ):
         output = tnr_orders.get_output()
@@ -216,7 +216,7 @@ def test_tone_to_noise_ratio_for_orders_get_output_as_nparray_unprocessed():
     with pytest.warns(
         PyAnsysSoundWarning,
         match=(
-            "Output is not processed yet. Use the 'ToneToNoiseRatioForOrdersOverTime.process\(\)' method."
+            "Output is not processed yet. Use the 'ToneToNoiseRatioForOrdersOverTime.process\(\)' method."  # noqa: E501
         ),
     ):
         TNRs, RPM_resampled = tnr_orders.get_output_as_nparray()
@@ -293,6 +293,25 @@ def test_tone_to_noise_ratio_for_orders_get_order_tone_to_noise_ratio_over_time(
     assert pytest.approx(TNR_2[538]) == EXP_TNR_1
     assert pytest.approx(TNR_4[538]) == EXP_TNR_2
     assert pytest.approx(TNR_8[330]) == EXP_TNR_3
+
+
+def test_tone_to_noise_ratio_for_orders_get_order_tone_to_noise_ratio_over_time_exception():
+    """Test get_order_tone_to_noise_ratio_over_time method's exception."""
+    wav_loader = LoadWav(pytest.data_path_Acceleration_with_Tacho_nonUnitaryCalib)
+    wav_loader.process()
+    fc = wav_loader.get_output()
+    sig = fc[0]
+    rpm = fc[1]
+    ords = [2.0, 4.0, 8.0]
+
+    tnr_orders = ToneToNoiseRatioForOrdersOverTime(signal=sig, profile=rpm, order_list=ords)
+    tnr_orders.process()
+
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Order index 3 is out of range. Order list has 3 elements.",
+    ):
+        tnr_orders.get_order_tone_to_noise_ratio_over_time(order_index=3)
 
 
 def test_tone_to_noise_ratio_for_orders_get_order_tone_to_noise_ratio_over_time_unprocessed():
