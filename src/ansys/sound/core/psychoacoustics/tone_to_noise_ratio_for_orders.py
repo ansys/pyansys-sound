@@ -93,7 +93,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
     @order_list.setter
     def order_list(self, order_list: list):
         """Set the order list."""
-        if len(order_list) <= 0:
+        if len(order_list) == 0:
             raise PyAnsysSoundException("Order list must contain at least one order.")
         self.__order_list = order_list
 
@@ -103,19 +103,19 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         This method calls the appropriate DPF Sound operator to compute the tone-to-noise ratio
         on the orders of the input signal.
         """
-        if self.__signal == None:
+        if self.signal == None:
             raise PyAnsysSoundException(
                 "No signal found for tone-to-noise ratio computation. "
                 "Use 'ToneToNoiseRatioForOrdersOverTime.signal'."
             )
 
-        if self.__profile == None:
+        if self.profile == None:
             raise PyAnsysSoundException(
                 "No profile found for tone-to-noise ratio computation. "
                 "Use 'ToneToNoiseRatioForOrdersOverTime.profile'."
             )
 
-        if self.__order_list == None:
+        if self.order_list == None:
             raise PyAnsysSoundException(
                 "No order list found for tone-to-noise ratio computation. "
                 "Use 'ToneToNoiseRatioForOrdersOverTime.order_list'."
