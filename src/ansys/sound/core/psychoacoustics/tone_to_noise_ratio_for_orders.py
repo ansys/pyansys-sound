@@ -53,9 +53,9 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
             List of the order numbers, as floats, on which to compute the tone-to-noise ratio.
         """
         super().__init__()
-        self.__signal = signal  # uses the setter
-        self.__profile = profile  # uses the setter
-        self.__order_list = order_list  # uses the setter
+        self.signal = signal  # uses the setter
+        self.profile = profile  # uses the setter
+        self.order_list = order_list  # uses the setter
         self.__operator = Operator("compute_tone_to_noise_ratio_for_orders_over_time")
 
     @property
