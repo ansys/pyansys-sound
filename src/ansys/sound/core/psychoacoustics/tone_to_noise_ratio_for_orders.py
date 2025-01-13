@@ -105,6 +105,10 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         """Set the order list."""
         if len(order_list) == 0:
             raise PyAnsysSoundException("Order list must contain at least one order.")
+
+        if min(order_list) <= 0:
+            raise PyAnsysSoundException("Order list must contain strictly positive numbers.")
+
         self.__order_list = order_list
 
     def process(self):
@@ -181,7 +185,10 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         if tnr_container == None:
             return (np.array([]), np.array([]))
 
-        return (self.convert_fields_container_to_np_array(tnr_container[0]), tnr_container[1].data)
+        return (
+            self.convert_fields_container_to_np_array(tnr_container[0]),
+            np.array(tnr_container[1].data),
+        )
 
     def get_order_tone_to_noise_ratio_over_time(self, order_index: int) -> np.ndarray | None:
         """Get the tone-to-noise ratio over time for a specific order.
@@ -217,7 +224,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         if tnr_container == None:
             return np.array([])
 
-        return tnr_container[0][0].time_freq_support.time_frequencies.data
+        return np.array(tnr_container[0][0].time_freq_support.time_frequencies.data)
 
     def get_rpm_scale(self) -> np.ndarray | None:
         """Get the resampled RPM scale.
@@ -231,7 +238,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         if tnr_container == None:
             return np.array([])
 
-        return tnr_container[1].data
+        return np.array(tnr_container[1].data)
 
     def plot(self, use_rpm_scale: bool = False):
         """Plot all orders’ TNR as functions of time or RPM.

@@ -101,6 +101,12 @@ def test_tone_to_noise_ratio_for_orders_setters_exceptions():
     ):
         tnr_orders.order_list = []
 
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Order list must contain strictly positive numbers.",
+    ):
+        tnr_orders.order_list = [-1.0]
+
 
 def test_tone_to_noise_ratio_for_orders_process():
     """Test process method."""
