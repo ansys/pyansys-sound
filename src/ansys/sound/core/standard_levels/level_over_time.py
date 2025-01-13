@@ -23,11 +23,11 @@
 """Compute the level over time."""
 import warnings
 
-from ansys.dpf.core import Field, Operator
+from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import REFERENCE_ACOUSTIC_PRESSURE, PyAnsysSoundException, PyAnsysSoundWarning
 from ._standard_levels_parent import DICT_FREQUENCY_WEIGHTING, DICT_SCALE, StandardLevelsParent
 
 DICT_TIME_WEIGHTING = {"Fast": 1, "Slow": 0, "Impulse": 2, "Custom": 3}
@@ -71,7 +71,8 @@ class LevelOverTime(StandardLevelsParent):
         frequency_weighting : str, default: ""
             The frequency weighting to apply to the signal before computing the level. Available
             options are `""`, `"A"`, `"B"`,  and `"C"`, respectively to get level in dBSPL, dB(A),
-            dB(B), and dB(C).
+            dB(B), and dB(C). Note that the frequency weighting is only applied if the attribute
+            :attr:`scale` is set to `"dB"`.
         time_weighting : str, default: "Fast"
             The time weighting to use when computing the level over time. Available options are
             `"Fast"`, `"Slow"`, `"Impulse"`, and `"Custom"`. When `"Custom"` is selected, the user
@@ -163,7 +164,8 @@ class LevelOverTime(StandardLevelsParent):
 
         Available options are `""`, `"A"`, `"B"`, and `"C"`. If attribute :attr:`reference_value`
         is 2e-5 Pa, these options allow level calculation in dBSPL, dB(A), dB(B), and dB(C),
-        respectively.
+        respectively. Note that the frequency weighting is only applied if the attribute
+        :attr:`scale` is set to `"dB"`.
         """
         return self.__frequency_weighting
 
@@ -216,21 +218,22 @@ class LevelOverTime(StandardLevelsParent):
             The analysis window to use. Available options are `"RECTANGULAR"`, `"HANN"`,
             `"HAMMING"`, `"BLACKMAN"`, `"BLACKMAN-HARRIS"`, and `"BARTLETT"`.
         """
-        # Automatically switch to custom time weighting.
-        self.time_weighting = "Custom"
-
         if time_step <= 0:
             raise PyAnsysSoundException("The time step must be strictly positive.")
-        self.__time_step = time_step
 
         if window_size <= 0:
             raise PyAnsysSoundException("The window size must be strictly positive.")
-        self.__window_size = window_size
 
         if analysis_window.upper() not in DICT_ANALYSIS_WINDOW.keys():
             raise PyAnsysSoundException(
                 f"The analysis window must be one of {list(DICT_ANALYSIS_WINDOW.keys())}."
             )
+
+        # Automatically switch to custom time weighting.
+        self.time_weighting = "Custom"
+
+        self.__time_step = time_step
+        self.__window_size = window_size
         self.__analysis_window = analysis_window.upper()
 
     def process(self):
@@ -250,8 +253,8 @@ class LevelOverTime(StandardLevelsParent):
         self.__operator.run()
 
         self._output = (
-            self.__operator.get_output(0, "double"),
-            self.__operator.get_output(1, "field"),
+            self.__operator.get_output(0, types.double),
+            self.__operator.get_output(1, types.field),
         )
 
     def get_output(self) -> tuple:
@@ -339,7 +342,7 @@ class LevelOverTime(StandardLevelsParent):
         time_scale = self.get_time_scale()
         if self.scale == "RMS":
             str_unit = ""
-        elif self.reference_value == 2e-5:
+        elif self.reference_value == REFERENCE_ACOUSTIC_PRESSURE:
             if self.frequency_weighting == "":
                 str_unit = " (dBSPL)"
             else:

@@ -23,7 +23,7 @@
 """Compute the overall level."""
 import warnings
 
-from ansys.dpf.core import Field, Operator
+from ansys.dpf.core import Field, Operator, types
 import numpy as np
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -59,7 +59,8 @@ class OverallLevel(StandardLevelsParent):
         frequency_weighting : str, default: ""
             The frequency weighting to apply to the signal before computing the level. Available
             options are `""`, `"A"`, `"B"`,  and `"C"`, respectively to get level in dBSPL, dB(A),
-            dB(B), and dB(C).
+            dB(B), and dB(C). Note that the frequency weighting is only applied if the attribute
+            :attr:`scale` is set to `"dB"`.
         """
         super().__init__()
         self.signal = signal
@@ -133,7 +134,8 @@ class OverallLevel(StandardLevelsParent):
 
         Available options are `""`, `"A"`, `"B"`, and `"C"`. If attribute :attr:`reference_value`
         is 2e-5 Pa, these options allow level calculation in dBSPL, dB(A), dB(B), and dB(C),
-        respectively.
+        respectively. Note that the frequency weighting is only applied if the attribute
+        :attr:`scale` is set to `"dB"`.
         """
         return self.__frequency_weighting
 
@@ -158,7 +160,7 @@ class OverallLevel(StandardLevelsParent):
 
         self.__operator.run()
 
-        self._output = self.__operator.get_output(0, "double")
+        self._output = self.__operator.get_output(0, types.double)
 
     def get_output(self) -> float:
         """Return the overall level.
