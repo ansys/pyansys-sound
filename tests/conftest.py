@@ -73,6 +73,9 @@ def pytest_configure():
     pytest.data_path_accel_with_rpm_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "accel_with_rpm.wav"), server=server
     )
+    pytest.data_path_aircraft_nonUnitaryCalib_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "Aircraft-App2_nonUnitaryCalib.wav"), server=server
+    )
     pytest.data_path_swl_project_file_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "SoundPowerLevelProject_hemisphere_2025R1_20243008.spw"),
         server=server,

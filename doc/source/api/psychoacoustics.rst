@@ -15,3 +15,4 @@ Psychoacoustics
     ProminenceRatio
     ToneToNoiseRatio
     TonalityDIN45681
+    TonalityAures
