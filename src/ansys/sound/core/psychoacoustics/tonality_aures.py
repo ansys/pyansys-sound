@@ -34,14 +34,15 @@ ID_COMPUTE_TONALITY_AURES = "compute_tonality_aures"
 
 
 class TonalityAures(PsychoacousticsParent):
-    """Computes the tonality of the signal accordingt to Aures model.
+    r"""Computes the tonality of the signal accordingt to Aures model.
 
-    References:
-    - W. Aures, "Procedure for calculating the sensory pleasantness of various sounds",
-    Acustica 59(2), pp. 130-141, December 1985.
+    References
+    ----------
+    -   W. Aures, "Procedure for calculating the sensory pleasantness of various sounds", Acustica
+        **59**\ (2), pp. 130-141, December 1985.
 
-    - E. Terhardt, G. Stoll, M. Seewann, "Algorithm for extraction of pitch and pitch salience from
-    complex tonal signals", J. Acoust. Soc. Am. 71(3), pp. 679-688, March 1982.
+    -   E. Terhardt, G. Stoll, M. Seewann, "Algorithm for extraction of pitch and pitch salience
+        from complex tonal signals", J. Acoust. Soc. Am. **71**\ (3), pp. 679-688, March 1982.
     """
 
     def __init__(
