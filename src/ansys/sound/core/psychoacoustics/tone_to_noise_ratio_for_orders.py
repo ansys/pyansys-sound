@@ -103,11 +103,12 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
     @order_list.setter
     def order_list(self, order_list: list):
         """Set the order list."""
-        if len(order_list) == 0:
-            raise PyAnsysSoundException("Order list must contain at least one order.")
+        if order_list != None:
+            if len(order_list) == 0:
+                raise PyAnsysSoundException("Order list must contain at least one order.")
 
-        if min(order_list) <= 0:
-            raise PyAnsysSoundException("Order list must contain strictly positive numbers.")
+            if min(order_list) <= 0:
+                raise PyAnsysSoundException("Order list must contain strictly positive numbers.")
 
         self.__order_list = order_list
 
@@ -185,7 +186,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         """
         tnr_container = self.get_output()
         if tnr_container == None:
-            return (np.array([]), np.array([]))
+            return (np.array([]), np.array([]), np.array([]))
 
         return (
             self.convert_fields_container_to_np_array(tnr_container[0]),
@@ -206,15 +207,16 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         numpy.ndarray
             Tone-to-noise ratio over time, in dB, for the specified order.
         """
-        if order_index >= len(self.order_list) or order_index < 0:
-            raise PyAnsysSoundException(
-                f"Order index {order_index} is out of range. "
-                f"Order list has {len(self.order_list)} elements."
-            )
+        if self.order_list != None:
+            if order_index >= len(self.order_list) or order_index < 0:
+                raise PyAnsysSoundException(
+                    f"Order index {order_index} is out of range. "
+                    f"Order list has {len(self.order_list)} elements."
+                )
 
         tnr_container = self.get_output_as_nparray()
 
-        if len(tnr_container) == 0:
+        if len(tnr_container[0]) == 0:
             # Handling the case where the output is not processed yet
             return np.array([])
 
@@ -229,8 +231,6 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
             Time scale of the TNR calculation, in s.
         """
         return self.get_output_as_nparray()[1]
-
-        return np.array(tnr_container[0][0].time_freq_support.time_frequencies.data)
 
     def get_rpm_scale(self) -> np.ndarray:
         """Get the resampled RPM scale.

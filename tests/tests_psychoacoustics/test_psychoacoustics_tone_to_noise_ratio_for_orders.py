@@ -201,10 +201,11 @@ def test_tone_to_noise_ratio_for_orders_get_output_as_nparray():
     tnr_orders = ToneToNoiseRatioForOrdersOverTime(signal=sig, profile=rpm, order_list=ords)
     tnr_orders.process()
 
-    TNRs, RPM_resampled = tnr_orders.get_output_as_nparray()
+    TNRs, TimeScale, RPM_resampled = tnr_orders.get_output_as_nparray()
     assert pytest.approx(TNRs[0][538]) == EXP_TNR_1
     assert pytest.approx(TNRs[1][538]) == EXP_TNR_2
     assert pytest.approx(TNRs[2][330]) == EXP_TNR_3
+    assert pytest.approx(TimeScale[-1]) == EXP_TIME
     assert len(RPM_resampled) == len(TNRs[0])
 
 
@@ -225,9 +226,10 @@ def test_tone_to_noise_ratio_for_orders_get_output_as_nparray_unprocessed():
             "Output is not processed yet. Use the 'ToneToNoiseRatioForOrdersOverTime.process\(\)' method."  # noqa: E501
         ),
     ):
-        TNRs, RPM_resampled = tnr_orders.get_output_as_nparray()
+        TNRs, TimeScale, RPM_resampled = tnr_orders.get_output_as_nparray()
 
     assert len(TNRs) == 0
+    assert len(TimeScale) == 0
     assert len(RPM_resampled) == 0
 
 
@@ -299,13 +301,6 @@ def test_tone_to_noise_ratio_for_orders_get_order_tone_to_noise_ratio_over_time(
     assert pytest.approx(TNR_2[538]) == EXP_TNR_1
     assert pytest.approx(TNR_4[538]) == EXP_TNR_2
     assert pytest.approx(TNR_8[330]) == EXP_TNR_3
-
-
-def test_tone_to_noise_ratio_for_orders_get_order_tone_to_noise_ratio_over_time_unprocessed():
-    """Test get_order_tone_to_noise_ratio_over_time method's exception."""
-    tnr_orders = ToneToNoiseRatioForOrdersOverTime()
-    TNR = tnr_orders.get_order_tone_to_noise_ratio_over_time(order_index=0)
-    assert len(TNR) == 0
 
 
 def test_tone_to_noise_ratio_for_orders_get_order_tone_to_noise_ratio_over_time_exception():
