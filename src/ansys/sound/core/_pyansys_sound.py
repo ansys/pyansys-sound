@@ -26,6 +26,8 @@ import warnings
 from ansys.dpf.core import FieldsContainer
 import numpy as np
 
+REFERENCE_ACOUSTIC_PRESSURE = 2e-5
+
 
 class PyAnsysSound:
     """
