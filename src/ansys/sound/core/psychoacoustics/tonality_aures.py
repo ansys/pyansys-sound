@@ -126,7 +126,7 @@ class TonalityAures(PsychoacousticsParent):
 
         Given the rather high line spacing (12.5 Hz), as specified in the reference paper of
         Terhardt et al, the bandwidth weighting w1 is disabled by default. If the value is set to
-        True, then the tone bandwidth taken into account to calculate the weighting w1 is defined
+        `True`, then the tone bandwidth taken into account to calculate the weighting w1 is defined
         as an X-dB bandwidth around the tone frequency, where X is the value set in the
         :attr:`w1_threshold` attribute.
         """
@@ -141,8 +141,8 @@ class TonalityAures(PsychoacousticsParent):
     def w1_threshold(self) -> float:
         """Threshold in dB for the bandwidth weighting w1.
 
-        Defines the threshold value in dB to define the tone bandwidth in the calculation of the"
-        bandwidth weighting w1, if attribute :attr:`account_for_w1` is set to True. In this case,
+        Defines the threshold value in dB for the tone bandwidth in the calculation of the
+        bandwidth weighting w1, if attribute :attr:`account_for_w1` is set to `True`. In this case,
         the bandwidth is defined as an X-dB bandwidth around the tone frequency, where X is the
         value set in this attribute.
         """
