@@ -63,7 +63,7 @@ class TonalityAures(PsychoacousticsParent):
         account_for_w1 : bool, default: False
             Specifies whether bandwidth weighting w1 should be taken into account or not.
         w1_threshold : float, default: 3.0
-            Threshold for bandwidth weighting :attr:`w1`.
+            Threshold for bandwidth weighting, when :attr:`account_for_w1` is set to `True`.
         """
         super().__init__()
         self.signal = signal
