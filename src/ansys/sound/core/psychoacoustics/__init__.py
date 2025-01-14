@@ -34,6 +34,7 @@ from .roughness import Roughness
 from .sharpness import Sharpness
 from .spectral_centroid import SpectralCentroid
 from .tonality_din_45681 import TonalityDIN45681
+from .tonality_ecma_418_2 import TonalityECMA418_2
 from .tone_to_noise_ratio import ToneToNoiseRatio
 
 __all__ = (
@@ -47,4 +48,5 @@ __all__ = (
     "FluctuationStrength",
     "TonalityDIN45681",
     "SpectralCentroid",
+    "TonalityECMA418_2",
 )
