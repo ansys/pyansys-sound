@@ -36,6 +36,7 @@ from .spectral_centroid import SpectralCentroid
 from .tonality_aures import TonalityAures
 from .tonality_din_45681 import TonalityDIN45681
 from .tone_to_noise_ratio import ToneToNoiseRatio
+from .tone_to_noise_ratio_for_orders import ToneToNoiseRatioForOrdersOverTime
 
 __all__ = (
     "PsychoacousticsParent",
@@ -49,4 +50,5 @@ __all__ = (
     "TonalityDIN45681",
     "TonalityAures",
     "SpectralCentroid",
+    "ToneToNoiseRatioForOrdersOverTime",
 )
