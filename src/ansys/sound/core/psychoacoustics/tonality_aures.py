@@ -57,13 +57,14 @@ class TonalityAures(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Signal on which to compute spectral centroid as a DPF field.
+            Signal on which to compute Aures tonality, as a DPF field.
         overlap : float, default: 90.0
             Overlap in %.
         account_for_w1 : bool, default: False
             Specifies whether bandwidth weighting w1 should be taken into account or not.
         w1_threshold : float, default: 3.0
-            Threshold for bandwidth weighting, when :attr:`account_for_w1` is set to `True`.
+            Threshold for bandwidth weighting. Ignored when :attr:`account_for_w1` is set to
+            `False`.
         """
         super().__init__()
         self.signal = signal
