@@ -57,7 +57,7 @@ EXP_STR_PROCESSED = (
 
 
 def test_tonality_aures_instantiation():
-    """Test TonalityDIN45681 instantiation."""
+    """Test TonalityAures instantiation."""
     tonality = TonalityAures()
     assert tonality.signal is None
     assert tonality.overlap == 90.0
@@ -66,7 +66,7 @@ def test_tonality_aures_instantiation():
 
 
 def test_tonality_aures___str__():
-    """Test TonalityDIN45681 __str__ method."""
+    """Test TonalityAures __str__ method."""
     tonality = TonalityAures()
     assert str(tonality) == EXP_STR_DEFAULT
 
@@ -83,7 +83,7 @@ def test_tonality_aures___str__():
 
 
 def test_tonality_aures_properties():
-    """Test TonalityDIN45681 properties."""
+    """Test TonalityAures properties."""
     tonality = TonalityAures()
 
     tonality.signal = Field()
@@ -100,7 +100,7 @@ def test_tonality_aures_properties():
 
 
 def test_tonality_aures_properties_exceptions():
-    """Test TonalityDIN45681 properties exceptions."""
+    """Test TonalityAures properties exceptions."""
     tonality = TonalityAures()
 
     with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
@@ -120,7 +120,7 @@ def test_tonality_aures_properties_exceptions():
 
 
 def test_tonality_aures_process():
-    """Test TonalityDIN45681 process method."""
+    """Test TonalityAures process method."""
     tonality = TonalityAures()
 
     wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
@@ -133,7 +133,7 @@ def test_tonality_aures_process():
 
 
 def test_tonality_aures_process_exception():
-    """Test TonalityDIN45681 process method's exception."""
+    """Test TonalityAures process method's exception."""
     tonality = TonalityAures()
 
     with pytest.raises(
@@ -144,6 +144,7 @@ def test_tonality_aures_process_exception():
 
 
 def test_tonality_aures_get_output():
+    """Test TonalityAures get_output method."""
     tonality = TonalityAures()
 
     wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
@@ -162,6 +163,7 @@ def test_tonality_aures_get_output():
 
 
 def test_tonality_aures_get_output_warning():
+    """Test TonalityAures get_output method's warning."""
     tonality = TonalityAures()
 
     with pytest.warns(
@@ -173,6 +175,7 @@ def test_tonality_aures_get_output_warning():
 
 
 def test_tonality_aures_get_output_as_nparray():
+    """Test TonalityAures get_output_as_nparray method."""
     tonality = TonalityAures()
 
     with pytest.warns(
@@ -213,7 +216,7 @@ def test_tonality_aures_get_output_as_nparray():
 
 
 def test_tonality_aures_get_tonality():
-    """Test TonalityDIN45681 get_tonality method."""
+    """Test TonalityAures get_tonality method."""
     tonality = TonalityAures()
 
     with pytest.warns(
@@ -235,7 +238,7 @@ def test_tonality_aures_get_tonality():
 
 
 def test_tonality_aures_get_tonality_over_time():
-    """Test TonalityDIN45681 get_tonality_over_time method."""
+    """Test TonalityAures get_tonality_over_time method."""
     tonality = TonalityAures()
 
     wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
@@ -251,7 +254,7 @@ def test_tonality_aures_get_tonality_over_time():
 
 
 def test_tonality_aures_get_tonal_weighting_over_time():
-    """Test TonalityDIN45681 get_tonal_weighting_over_time method."""
+    """Test TonalityAures get_tonal_weighting_over_time method."""
     tonality = TonalityAures()
 
     wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
@@ -267,7 +270,7 @@ def test_tonality_aures_get_tonal_weighting_over_time():
 
 
 def test_tonality_aures_get_loudness_weighting_over_time():
-    """Test TonalityDIN45681 get_loudness_weighting_over_time method."""
+    """Test TonalityAures get_loudness_weighting_over_time method."""
     tonality = TonalityAures()
 
     wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
@@ -283,7 +286,7 @@ def test_tonality_aures_get_loudness_weighting_over_time():
 
 
 def test_tonality_aures_get_time_scale():
-    """Test TonalityDIN45681 get_time_scale method."""
+    """Test TonalityAures get_time_scale method."""
     tonality = TonalityAures()
 
     wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
@@ -300,7 +303,7 @@ def test_tonality_aures_get_time_scale():
 
 @patch("matplotlib.pyplot.show")
 def test_tonality_aures_plot(mock_show):
-    """Test TonalityDIN45681 plot method."""
+    """Test TonalityAures plot method."""
     tonality = TonalityAures()
 
     wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
@@ -313,7 +316,7 @@ def test_tonality_aures_plot(mock_show):
 
 
 def test_tonality_aures_plot_exception():
-    """Test TonalityDIN45681 plot method's exception."""
+    """Test TonalityAures plot method's exception."""
     tonality = TonalityAures()
 
     with pytest.raises(

@@ -34,7 +34,7 @@ ID_COMPUTE_TONALITY_AURES = "compute_tonality_aures"
 
 
 class TonalityAures(PsychoacousticsParent):
-    r"""Computes the tonality of the signal accordingt to Aures model.
+    r"""Computes the tonality of the signal according to Aures model.
 
     References
     ----------
@@ -205,7 +205,7 @@ class TonalityAures(PsychoacousticsParent):
         return self._output
 
     def get_output_as_nparray(self) -> tuple[np.ndarray]:
-        """Get the spectral centroid as a NumPy arrays.
+        """Get the Aures tonality data as NumPy arrays.
 
         Returns
         -------
