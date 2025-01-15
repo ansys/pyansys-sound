@@ -16,3 +16,4 @@ Psychoacoustics
     ToneToNoiseRatio
     ToneToNoiseRatioForOrdersOverTime
     TonalityDIN45681
+    TonalityISO1996_2_OverTime
