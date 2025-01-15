@@ -30,6 +30,7 @@ import numpy as np
 from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
+# Name of the DPF Sound operator used in this module.
 ID_COMPUTE_TONALITY_AURES = "compute_tonality_aures"
 
 
