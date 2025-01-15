@@ -1,0 +1,308 @@
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+"""Computes ISO1996-2 tonality."""
+import warnings
+
+from ansys.dpf.core import DataTree, Field, Operator, types
+import numpy as np
+
+from . import PsychoacousticsParent
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+
+# Operator's name
+ID_COMPUTE_TONALITY_ISO1996_2 = "compute_tonality_iso1996_2"
+
+# Data tree keys
+KEY_DATA_TREE_CB_LOWER_LIMITS = "Critical Band (Low)"
+KEY_DATA_TREE_CB_UPPER_LIMITS = "Critical Band (High)"
+KEY_DATA_TREE_TOTAL_NOISE_LEVEL = "Total Noise level (dBA)"
+KEY_DATA_TREE_TOTAL_TONAL_LEVEL = "Total tonal level (dBA)"
+
+
+class TonalityISO1996_2(PsychoacousticsParent):
+    """Computes ISO1996-2 tonality.
+
+    This class is used to compute the tonal audibility and tonal adjustment of
+    a signal following the ISO1996-2 standard.
+    """
+
+    def __init__(
+        self,
+        signal: Field = None,
+        noise_pause_threshold: float = 1.0,
+        effective_analysis_bandwidth: float = 5.0,
+        noise_critical_bandwidth_ratio: float = 0.75,
+    ):
+        """Create a ``TonalityISO1996_2`` object.
+
+        Parameters
+        ----------
+        signal: Field, default: None
+            Signal in Pa on which to calculate the tonality, as a DPF field.
+        noise_pause_threshold: float, default: 1.0
+            TODO Complete
+            TODO Complete
+            TODO Complete
+            TODO Complete
+        effective_analysis_bandwidth: float, default: 5.0
+            TODO Complete
+            TODO Complete
+            TODO Complete
+            TODO Complete
+        noise_critical_bandwidth_ratio: float, default: 0.75
+            TODO Complete
+            TODO Complete
+            TODO Complete
+            TODO Complete
+
+        For more information about the parameters, please refer to Ansys Sound SAS' user guide.
+        """
+        super().__init__()
+        self.signal = signal
+        self.noise_pause_threshold = noise_pause_threshold
+        self.effective_analysis_bandwidth = effective_analysis_bandwidth
+        self.noise_critical_bandwidth_ratio = noise_critical_bandwidth_ratio
+        self.__operator = Operator("compute_tonality_din45681")
+
+    def __str__(self):
+        """Overloads the __str__ method."""
+        return (
+            f"{__class__.__name__} object.\n"
+            "Data\n"
+            f'Noise pause detection threshold: "{self.noise_pause_threshold} dB"\n'
+            f"Effective analysis bandwidth: {self.effective_analysis_bandwidth} Hz\n"
+            f"Noise bandwidth in proportion to CBW: {self.noise_critical_bandwidth_ratio}\n"
+            f"Tonal audibility: {self.get_tonal_audibility():.2f} dB\n"
+            f"Tonal adjustment Kt: {self.get_tonal_adjustment():.2f} dB\n"
+        )
+
+    @property
+    def signal(self) -> Field:
+        """Signal in Pa, as a DPF field. Default is None."""
+        return self.__signal
+
+    @signal.setter
+    def signal(self, signal: Field):
+        """Set signal."""
+        if not (isinstance(signal, Field) or signal is None):
+            raise PyAnsysSoundException("Signal must be specified as a DPF field.")
+        self.__signal = signal
+
+    @property
+    def noise_pause_threshold(self) -> float:
+        """TODO TODO TODO TODO.
+
+        Default is 1.0 dB.
+        """
+        return self.__noise_pause_threshold
+
+    @noise_pause_threshold.setter
+    def noise_pause_threshold(self, noise_pause_threshold: float):
+        """Set noise pause threshold."""
+        if not isinstance(noise_pause_threshold, float):
+            raise PyAnsysSoundException("Noise pause threshold must be provided as a float value.")
+        self.__noise_pause_threshold = noise_pause_threshold
+
+    @property
+    def effective_analysis_bandwidth(self) -> float:
+        """TODO TODO TODO TODO.
+
+        Default is 5.0 Hz.
+        """
+        return self.__effective_analysis_bandwidth
+
+    @effective_analysis_bandwidth.setter
+    def effective_analysis_bandwidth(self, effective_analysis_bandwidth: float):
+        """Set effective analysis bandwidth."""
+        if not (0.0 < effective_analysis_bandwidth <= 5.0):
+            raise PyAnsysSoundException(
+                "Effective analysis bandwidth must be in the range [0.0; 5.0] Hz."
+            )
+        self.__effective_analysis_bandwidth = effective_analysis_bandwidth
+
+    @property
+    def noise_critical_bandwidth_ratio(self) -> float:
+        """TODO TODO TODO TODO."""
+        return self.__noise_critical_bandwidth_ratio
+
+    @noise_critical_bandwidth_ratio.setter
+    def noise_critical_bandwidth_ratio(self, noise_critical_bandwidth_ratio: float):
+        """Set noise critical bandwidth ratio property."""
+        if not (0.0 <= noise_critical_bandwidth_ratio < 1.0) or not isinstance(
+            noise_critical_bandwidth_ratio, float
+        ):
+            raise PyAnsysSoundException(
+                "Noise critical bandwidth ratio must be provided as a float value,"
+                "positive and strictly smaller than 1.0."
+            )
+        self.__noise_critical_bandwidth_ratio = noise_critical_bandwidth_ratio
+
+    def process(self):
+        """Compute the ISO1996-2 tonality.
+
+        This method calls the appropriate DPF Sound operator.
+        """
+        if self.signal == None:
+            raise PyAnsysSoundException(
+                f"No input signal defined. Use ``{__class__.__name__}.signal``."
+            )
+
+        # Connect the operator input(s).
+        self.__operator.connect(0, self.signal)
+        self.__operator.connect(1, self.noise_pause_threshold)
+        self.__operator.connect(2, self.effective_analysis_bandwidth)
+        self.__operator.connect(3, self.noise_critical_bandwidth_ratio)
+
+        # Run the operator.
+        self.__operator.run()
+        a = self.__operator.get_output(0, types.double)
+        b = self.__operator.get_output(2)
+        # Store the operator outputs in a tuple.
+        self._output = (
+            self.__operator.get_output(0, types.double),
+            self.__operator.get_output(1, types.double),
+            self.__operator.get_output(2, types.data_tree),
+        )
+
+    def get_output(self) -> tuple[float, float, DataTree]:
+        """Get the ISO1996-2 tonality data, in a tuple containing data of various types.
+
+        Returns
+        -------
+        tuple
+            First element (float) is the ISO1996-2 tonal audibility, in dB.
+
+            Second element (float) is the ISO1996-2 tonal adjustment, in dB.
+
+            Third element (DataTree) are the ISO1996-2 calculation details.
+            Containing the following entries:
+            TODO Complete
+            TODO Complete
+            TODO Complete
+            TODO Complete
+            - CB Upper Limits (float)
+            - CB Lower Limits (float)
+            - Ltones (float)
+            - Lnoise (float)
+        """
+        if self._output == None:
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    f"Output is not processed yet. "
+                    f"Use the ``{__class__.__name__}.process()`` method."
+                )
+            )
+
+        return self._output
+
+    def get_output_as_nparray(self) -> tuple[np.ndarray]:
+        """Get the ISO1996-2 tonality data, in a tuple of NumPy arrays.
+
+        Returns
+        -------
+        tuple
+            First element (float) is the ISO1996-2 tonal audibility, in dB.
+
+            Second element (float) is the ISO1996-2 tonal adjustment, in dB.
+
+            Third element (DataTree) are the ISO1996-2 calculation details.
+            Containing the following entries:
+            TODO Complete
+            TODO Complete
+            TODO Complete
+            TODO Complete
+            - CB Upper Limits (float)
+            - CB Lower Limits (float)
+            - Ltones (float)
+            - Lnoise (float)
+        """
+        output = self.get_output()
+
+        if output == None:
+            return (
+                np.nan,
+                np.nan,
+                np.array([]),
+            )
+
+        # Extracting data from the data tree
+        data_tree = output[2]
+
+        arr = np.array(
+            data_tree.get_as(KEY_DATA_TREE_CB_LOWER_LIMITS, types.double),
+            data_tree.get_as(KEY_DATA_TREE_CB_UPPER_LIMITS, types.double),
+            data_tree.get_as(KEY_DATA_TREE_TOTAL_NOISE_LEVEL, types.double),
+            data_tree.get_as(KEY_DATA_TREE_TOTAL_TONAL_LEVEL, types.double),
+        )
+
+        return (np.array(output[0]), np.array(output[1]), arr)
+
+    def get_tonal_audibility(self) -> float:
+        """Get the ISO1996-2 tonal audibility, in dB.
+
+        Returns
+        -------
+        float
+            ISO1996-2 tonal audibility, in dB.
+        """
+        return float(self.get_output_as_nparray()[0])
+
+    def get_tonal_adjustment(self) -> float:
+        """Get the ISO1996-2 tonal adjustment, in dB.
+
+        Returns
+        -------
+        float
+            ISO1996-2 tonal adjustment, in dB.
+        """
+        return float(self.get_output_as_nparray()[1])
+
+    def get_computation_details(self) -> dict:
+        """Get the ISO1996-2 computation details.
+
+        Returns
+        -------
+        np.ndarray
+            ISO1996-2 computation details.
+            TODO Complete
+            TODO Complete
+            TODO Complete
+            TODO Complete
+            - CB Upper Limits (float)
+            - CB Lower Limits (float)
+            - Ltones (float)
+            - Lnoise (float)
+
+        """
+        arr = self.get_output_as_nparray()[2]
+        return {
+            KEY_DATA_TREE_CB_LOWER_LIMITS: arr[0],
+            KEY_DATA_TREE_CB_UPPER_LIMITS: arr[1],
+            KEY_DATA_TREE_TOTAL_NOISE_LEVEL: arr[2],
+            KEY_DATA_TREE_TOTAL_TONAL_LEVEL: arr[3],
+        }
+
+    def plot(self):
+        """Plot disabled."""
+        warnings.warn(PyAnsysSoundWarning("There is nothing to plot."))
+        return None
