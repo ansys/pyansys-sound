@@ -30,6 +30,7 @@ import numpy as np
 from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
+# Name of the DPF Sound operator used in this module.
 ID_COMPUTE_TONALITY_ECMA_418_2 = "compute_tonality_ecma418_2"
 
 
@@ -37,18 +38,16 @@ class TonalityECMA418_2(PsychoacousticsParent):
     """Computes ECMA 418-2 tonality.
 
     This class is used to compute the tonality according to the ECMA 418-2 standard (Hearing Model
-      of Sottek). The standard is also know as ECMA74_G.
+    of Sottek), formerly known as ECMA 74, annex G.
     """
 
     def __init__(self, signal: Field = None):
-        """Create a ``TonalityECMA418_2`` object.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
         signal: Field, default: None
             Signal in Pa on which to calculate the tonality, as a DPF field.
-
-        For more information about the parameters, please refer to Ansys Sound SAS' user guide.
         """
         super().__init__()
         self.signal = signal
@@ -98,7 +97,7 @@ class TonalityECMA418_2(PsychoacousticsParent):
             self.__operator.get_output(2, types.field),
         )
 
-    def get_output(self) -> tuple[float, Field, Field, Field]:
+    def get_output(self) -> tuple[float, Field, Field]:
         """Get the ECMA 418-2 tonality data, in a tuple containing data of various types.
 
         Returns
@@ -193,10 +192,10 @@ class TonalityECMA418_2(PsychoacousticsParent):
         return self.get_output_as_nparray()[3]
 
     def plot(self):
-        """Plot the ECMA 418-2's toanlity and tone frequency over time.
+        """Plot the ECMA 418-2's tonality and tone frequency over time.
 
         This method creates a figure window that displays the tonality in dB
-        and the tone frequencies in Hz over time.
+        and the tone frequency in Hz over time.
         """
         if self._output == None:
             raise PyAnsysSoundException(
