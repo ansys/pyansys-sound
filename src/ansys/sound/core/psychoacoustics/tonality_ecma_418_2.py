@@ -210,16 +210,17 @@ class TonalityECMA418_2(PsychoacousticsParent):
         time_scale_ft = self.get_output()[2].time_freq_support.time_frequencies.data
 
         # Plot DIN 45681 parameters over time.
-        _, axes = plt.subplots(2, 1, sharex=True)
+        _, axes = plt.subplots(2, 1, sharex=False)
         axes[0].plot(time_scale_tonality, tonality_over_time)
         axes[0].set_title("ECMA418-2 psychoacoustic tonality")
-        axes[0].set_ylabel(r"T $\mathregular{tu_HMS}$")
+        axes[0].set_ylabel(r"T $\mathregular{tu_{HMS}}$")
         axes[0].grid(True)
 
         axes[1].plot(time_scale_ft, ft_over_time)
         axes[1].set_title("DIN45681 decisive frequency")
-        axes[1].set_ylabel(r"$\mathregular{f_ton}$ (Hz)")
+        axes[1].set_ylabel(r"$\mathregular{f_{ton}}$ (Hz)")
         axes[1].grid(True)
+        axes[1].set_xlabel("Time (s)")
 
         plt.tight_layout()
         plt.show()
