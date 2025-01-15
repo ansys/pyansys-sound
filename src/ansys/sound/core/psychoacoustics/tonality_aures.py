@@ -322,7 +322,7 @@ class TonalityAures(PsychoacousticsParent):
         axes[2].plot(time_scale, wGr)
         axes[2].set_title("Relative loudness weighting over time")
         axes[2].set_xlabel("Time (s)")
-        axes[2].set_ylabel(r"$\mathregular{w_Gr}$")
+        axes[2].set_ylabel(r"$\mathregular{w_{Gr}}$")
         axes[2].grid(True)
 
         plt.tight_layout()
