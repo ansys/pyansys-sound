@@ -165,7 +165,7 @@ class TonalityAures(PsychoacousticsParent):
 
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, float(self.overlap))
-        self.__operator.connect(2, bool(self.account_for_w1))
+        self.__operator.connect(2, self.account_for_w1)
         self.__operator.connect(3, float(self.w1_threshold))
 
         # Run the operator
