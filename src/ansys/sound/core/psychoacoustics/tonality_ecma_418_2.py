@@ -186,8 +186,7 @@ class TonalityECMA418_2(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Array of the computation times, in seconds, of the ECMA 418-2 parameters over time
-            (tonality and tonal frequencies).
+            Array of the computation times, in seconds, of the ECMA 418-2 tonality over time.
         """
         return self.get_output_as_nparray()[3]
 
@@ -195,7 +194,7 @@ class TonalityECMA418_2(PsychoacousticsParent):
         """Plot the ECMA 418-2's tonality and tone frequency over time.
 
         This method creates a figure window that displays the tonality in dB
-        and the tone frequency in Hz over time.
+        and the tone frequency in Hz, over time.
         """
         if self._output == None:
             raise PyAnsysSoundException(
@@ -212,11 +211,11 @@ class TonalityECMA418_2(PsychoacousticsParent):
         _, axes = plt.subplots(2, 1, sharex=False)
         axes[0].plot(time_scale_tonality, tonality_over_time)
         axes[0].set_title("ECMA418-2 psychoacoustic tonality")
-        axes[0].set_ylabel(r"T $\mathregular{tu_{HMS}}$")
+        axes[0].set_ylabel(r"T ($\mathregular{tu_{HMS}})$")
         axes[0].grid(True)
 
         axes[1].plot(time_scale_ft, ft_over_time)
-        axes[1].set_title("DIN45681 decisive frequency")
+        axes[1].set_title("ECMA418-2 tone frequency")
         axes[1].set_ylabel(r"$\mathregular{f_{ton}}$ (Hz)")
         axes[1].grid(True)
         axes[1].set_xlabel("Time (s)")
