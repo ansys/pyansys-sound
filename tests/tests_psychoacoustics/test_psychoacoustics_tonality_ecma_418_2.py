@@ -34,11 +34,14 @@ EXP_TONALITY = 4.9181241989135742
 EXP_TONALITY_OVER_TIME = 5.7180857658386230
 EXP_FT_OVER_TIME = 795.41015625000000
 EXP_TIME = 3.5360000133514404
-EXP_STR = (
+EXP_STR_1 = (
     "TonalityECMA418_2 object.\n"
     + "Data\n"
     + f'Signal name: "flute"\n'
-    + f"Tonality: 4.918124198913574 tuHMS\n"
+    + f"Tonality: Not processed\n"
+)
+EXP_STR_2 = (
+    "TonalityECMA418_2 object.\n" + "Data\n" + f'Signal name: "flute"\n' + f"Tonality: 4.92 tuHMS\n"
 )
 
 
@@ -62,9 +65,10 @@ def test_tonality_ecma_418_2___str__():
     fc = wav_loader.get_output()
 
     tonality = TonalityECMA418_2(signal=fc[0])
+    assert tonality.__str__() == EXP_STR_1
     tonality.process()
 
-    assert tonality.__str__() == EXP_STR
+    assert tonality.__str__() == EXP_STR_2
 
 
 def test_tonality_ecma_418_2_setters_exceptions():

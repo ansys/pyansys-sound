@@ -55,11 +55,16 @@ class TonalityECMA418_2(PsychoacousticsParent):
 
     def __str__(self):
         """Return the string representation of the object."""
+        if self._output is None:
+            str_tonality = "Not processed\n"
+        else:
+            str_tonality = f"{self.get_tonality():.2f} tuHMS\n"
+
         return (
             f"{__class__.__name__} object.\n"
             "Data\n"
             f'Signal name: "{self.signal.name}"\n'
-            f"Tonality: {self.get_tonality()} tuHMS\n"
+            f"Tonality: {str_tonality}"
         )
 
     @property
