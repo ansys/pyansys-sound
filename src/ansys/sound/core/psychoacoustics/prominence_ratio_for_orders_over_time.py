@@ -30,6 +30,7 @@ import numpy as np
 from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
+# Name of the DPF Sound operator used in this module.
 ID_COMPUTE_PR_FOR_ORDERS_OVER_TIME = "compute_prominence_ratio_for_orders_over_time"
 
 
@@ -250,7 +251,7 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
         Parameters
         ----------
         use_rpm_scale : bool
-            Indicate whether to plot the PR as a function of time or RPM.
+            Indicates whether to plot the PR as a function of time or RPM.
         """
         pr_container = self.get_output()
         if pr_container == None:
@@ -261,7 +262,7 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
         if use_rpm_scale:
             x_scale_label = "RPM"
             x_scale_data = self.get_rpm_scale()
-            title = "Orders’ prominence ratio ratio over RPM"
+            title = "Orders’ prominence ratio over RPM"
         else:
             x_scale_label = "Time (s)"
             x_scale_data = self.get_time_scale()
