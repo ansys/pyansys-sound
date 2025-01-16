@@ -207,7 +207,7 @@ class TonalityECMA418_2(PsychoacousticsParent):
         time_scale_tonality = self.get_time_scale()
         time_scale_ft = self.get_output()[2].time_freq_support.time_frequencies.data
 
-        # Plot DIN 45681 parameters over time.
+        # Plot ECMA 418-2 parameters over time.
         _, axes = plt.subplots(2, 1, sharex=False)
         axes[0].plot(time_scale_tonality, tonality_over_time)
         axes[0].set_title("ECMA418-2 psychoacoustic tonality")
