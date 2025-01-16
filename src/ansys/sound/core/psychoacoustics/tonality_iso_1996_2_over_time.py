@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Computes the tonality of the signal accordingt to the standard ISO 1996-2:2007, annex C."""
+"""Computes the tonality over time according to the standard ISO 1996-2:2007, annex C."""
 import warnings
 
 from ansys.dpf.core import DataTree, Field, Operator, types
@@ -36,7 +36,7 @@ ID_COMPUTE_TONALITY_ISO_1996_2 = "compute_tonality_iso1996_2_over_time"
 
 
 class TonalityISO1996_2_OverTime(PsychoacousticsParent):
-    """Computes the tonality of the signal according to the standard ISO 1996-2:2007, annex C."""
+    """Computes the tonality over time according to the standard ISO 1996-2:2007, annex C."""
 
     def __init__(
         self,
@@ -54,18 +54,18 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         signal : Field, default: None
             Input signal, as a DPF field.
         window_length : float, default: 1000.0
-            Length of the spectral analysis window in ms.
+            Integration window length in ms.
         overlap : float, default: 75.0
-            Overlap between spectral analysis windows in %.
+            Overlap between successive windows in %.
         noise_pause_threshold : float, default: 1.0
-            Level excess for detecting noise pauses in dB.
+            Noise pause detection threshold ("level excess") in dB.
         effective_analysis_bandwidth : float, default: 5.0
             Effective analysis bandwidth in Hz.
         noise_critical_bandwidth_ratio : float, default: 0.75
             Noise bandwidth, in proportion to the critical bandwidth, that is taken into account
-            for the calculation of the masking noise level (the default value 0.75 means that the
+            for the calculation of the masking noise level (the default value `0.75` means that the
             masking noise level is estimated in a band delimited by 75 % of the critical bandwidth
-            on each side of the tone). Value must be between 0.75 and 2.
+            on each side of the tone). Value must be between `0.75` and `2`.
         """
         super().__init__()
         self.signal = signal
@@ -117,19 +117,19 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
 
     @property
     def window_length(self) -> float:
-        """Length of the spectral analysis window in ms."""
+        """Length of the integration window in ms."""
         return self.__window_length
 
     @window_length.setter
     def window_length(self, window_length: float):
-        """Set the window_length."""
+        """Set the integration window length."""
         if window_length <= 0.0:
-            raise PyAnsysSoundException("Window length must be greater than 0 ms.")
+            raise PyAnsysSoundException("Integration window length must be greater than 0 ms.")
         self.__window_length = window_length
 
     @property
     def overlap(self) -> float:
-        """Overlap between spectral analysis windows in %."""
+        """Overlap between successive windows in %."""
         return self.__overlap
 
     @overlap.setter
@@ -143,14 +143,16 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
 
     @property
     def noise_pause_threshold(self) -> float:
-        """Level excess for detecting noise pauses in dB."""
+        """Noise pause detection threshold (level excess) in dB."""
         return self.__noise_pause_threshold
 
     @noise_pause_threshold.setter
     def noise_pause_threshold(self, noise_pause_threshold: float):
-        """Set the level excess for detecting noise pauses."""
+        """Set the noise pause detection threshold."""
         if noise_pause_threshold <= 0.0:
-            raise PyAnsysSoundException("Noise pause threshold must be greater than 0 dB.")
+            raise PyAnsysSoundException(
+                "Noise pause detection threshold must be greater than 0 dB."
+            )
         self.__noise_pause_threshold = noise_pause_threshold
 
     @property
@@ -167,21 +169,18 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
 
     @property
     def noise_critical_bandwidth_ratio(self) -> float:
-        """Noise bandwidth in proportion of the critical bandwidth.
+        """Noise bandwidth in proportion to the critical bandwidth.
 
         Noise bandwidth, in proportion to the critical bandwidth, that is taken into account for
-        the calculation of the masking noise level (the default value 0.75 means that the masking
+        the calculation of the masking noise level (the default value `0.75` means that the masking
         noise level is estimated in a band delimited by 75 % of the critical bandwidth on each side
-        of the tone). Value must be between 0.75 and 2.
+        of the tone). Value must be between `0.75` and `2`.
         """
         return self.__noise_critical_bandwidth_ratio
 
     @noise_critical_bandwidth_ratio.setter
     def noise_critical_bandwidth_ratio(self, noise_critical_bandwidth_ratio: float):
-        """Set the noise bandwidth in proportion of the critical bandwidth.
-
-        Provided value must be between 0.75 and 2.
-        """
+        """Set the noise bandwidth in proportion of the critical bandwidth."""
         if noise_critical_bandwidth_ratio < 0.75 or noise_critical_bandwidth_ratio > 2.0:
             raise PyAnsysSoundException("Noise bandwidth ratio must be between 0.75 and 2.")
         self.__noise_critical_bandwidth_ratio = noise_critical_bandwidth_ratio
@@ -323,7 +322,7 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         return len(self.get_output_as_nparray()[0])
 
     def get_segment_details(self, segment_index: int) -> dict[str, float]:
-        """Get the ISO 1996-2 tonality details in a segment of the input signal.
+        """Get the ISO 1996-2 tonality details in the specified segment of the input signal.
 
         Parameters
         ----------
