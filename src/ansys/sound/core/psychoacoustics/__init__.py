@@ -30,13 +30,14 @@ from .fluctuation_strength import FluctuationStrength
 from .loudness_iso_532_1_stationary import LoudnessISO532_1_Stationary
 from .loudness_iso_532_1_time_varying import LoudnessISO532_1_TimeVarying
 from .prominence_ratio import ProminenceRatio
+from .prominence_ratio_for_orders_over_time import ProminenceRatioForOrdersOverTime
 from .roughness import Roughness
 from .sharpness import Sharpness
 from .spectral_centroid import SpectralCentroid
 from .tonality_din_45681 import TonalityDIN45681
 from .tonality_ecma_418_2 import TonalityECMA418_2
 from .tone_to_noise_ratio import ToneToNoiseRatio
-from .tone_to_noise_ratio_for_orders import ToneToNoiseRatioForOrdersOverTime
+from .tone_to_noise_ratio_for_orders_over_time import ToneToNoiseRatioForOrdersOverTime
 
 __all__ = (
     "PsychoacousticsParent",
@@ -51,4 +52,5 @@ __all__ = (
     "SpectralCentroid",
     "TonalityECMA418_2",
     "ToneToNoiseRatioForOrdersOverTime",
+    "ProminenceRatioForOrdersOverTime",
 )
