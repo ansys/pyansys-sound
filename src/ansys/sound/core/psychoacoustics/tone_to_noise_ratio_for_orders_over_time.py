@@ -248,7 +248,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         Parameters
         ----------
         use_rpm_scale : bool
-            Indicate whether to plot the TNR as a function of time or RPM.
+            Indicates whether to plot the TNR as a function of time or RPM.
         """
         tnr_container = self.get_output()
         if tnr_container == None:
@@ -259,7 +259,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         if use_rpm_scale:
             x_scale_label = "RPM"
             x_scale_data = self.get_rpm_scale()
-            title = "Orders’ tone-to-noise ratio ratio over RPM"
+            title = "Orders’ tone-to-noise ratio over RPM"
         else:
             x_scale_label = "Time (s)"
             x_scale_data = self.get_time_scale()
