@@ -33,9 +33,9 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 ID_COMPUTE_TONALITY_ISO1996_2 = "compute_tonality_iso1996_2"
 
 # Data tree keys
-KEY_DATA_TREE_CB_LOWER_LIMITS = "Critical Band (Low)"
-KEY_DATA_TREE_CB_UPPER_LIMITS = "Critical Band (High)"
-KEY_DATA_TREE_TOTAL_NOISE_LEVEL = "Total Noise level (dBA)"
+KEY_DATA_TREE_CB_LOWER_LIMITS = "Lower critical band limit (Hz)"
+KEY_DATA_TREE_CB_UPPER_LIMITS = "Higher critical band limit (Hz)"
+KEY_DATA_TREE_TOTAL_NOISE_LEVEL = "Total noise level (dBA)"
 KEY_DATA_TREE_TOTAL_TONAL_LEVEL = "Total tonal level (dBA)"
 
 
@@ -82,14 +82,15 @@ class TonalityISO1996_2(PsychoacousticsParent):
         self.noise_pause_threshold = noise_pause_threshold
         self.effective_analysis_bandwidth = effective_analysis_bandwidth
         self.noise_critical_bandwidth_ratio = noise_critical_bandwidth_ratio
-        self.__operator = Operator("compute_tonality_din45681")
+        self.__operator = Operator(ID_COMPUTE_TONALITY_ISO1996_2)
 
     def __str__(self):
         """Overloads the __str__ method."""
         return (
             f"{__class__.__name__} object.\n"
             "Data\n"
-            f'Noise pause detection threshold: "{self.noise_pause_threshold} dB"\n'
+            f'Signal name: "{self.signal.name}"\n'
+            f"Noise pause detection threshold: {self.noise_pause_threshold} dB\n"
             f"Effective analysis bandwidth: {self.effective_analysis_bandwidth} Hz\n"
             f"Noise bandwidth in proportion to CBW: {self.noise_critical_bandwidth_ratio}\n"
             f"Tonal audibility: {self.get_tonal_audibility():.2f} dB\n"
@@ -176,7 +177,8 @@ class TonalityISO1996_2(PsychoacousticsParent):
         # Run the operator.
         self.__operator.run()
         a = self.__operator.get_output(0, types.double)
-        b = self.__operator.get_output(2)
+        aa = self.__operator.get_output(1, types.double)
+        b = self.__operator.get_output(2, types.data_tree)
         # Store the operator outputs in a tuple.
         self._output = (
             self.__operator.get_output(0, types.double),
@@ -248,11 +250,16 @@ class TonalityISO1996_2(PsychoacousticsParent):
         # Extracting data from the data tree
         data_tree = output[2]
 
+        dbg = data_tree.get_as(KEY_DATA_TREE_CB_LOWER_LIMITS, types.double)
+        dbg2 = data_tree.get_as(KEY_DATA_TREE_CB_LOWER_LIMITS)
+
         arr = np.array(
-            data_tree.get_as(KEY_DATA_TREE_CB_LOWER_LIMITS, types.double),
-            data_tree.get_as(KEY_DATA_TREE_CB_UPPER_LIMITS, types.double),
-            data_tree.get_as(KEY_DATA_TREE_TOTAL_NOISE_LEVEL, types.double),
-            data_tree.get_as(KEY_DATA_TREE_TOTAL_TONAL_LEVEL, types.double),
+            [
+                data_tree.get_as(KEY_DATA_TREE_CB_LOWER_LIMITS, types.double),
+                data_tree.get_as(KEY_DATA_TREE_CB_UPPER_LIMITS, types.double),
+                data_tree.get_as(KEY_DATA_TREE_TOTAL_NOISE_LEVEL, types.double),
+                data_tree.get_as(KEY_DATA_TREE_TOTAL_TONAL_LEVEL, types.double),
+            ]
         )
 
         return (np.array(output[0]), np.array(output[1]), arr)
