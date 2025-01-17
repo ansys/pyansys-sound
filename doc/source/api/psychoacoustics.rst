@@ -17,3 +17,4 @@ Psychoacoustics
     ToneToNoiseRatio
     ToneToNoiseRatioForOrdersOverTime
     TonalityDIN45681
+    TonalityAures
