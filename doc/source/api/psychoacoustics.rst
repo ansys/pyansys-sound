@@ -13,7 +13,9 @@ Psychoacoustics
     Roughness
     FluctuationStrength
     ProminenceRatio
+    ProminenceRatioForOrdersOverTime
     ToneToNoiseRatio
     ToneToNoiseRatioForOrdersOverTime
     TonalityDIN45681
     TonalityISO1996_2
+    TonalityAures
