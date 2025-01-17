@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Computes the tonality over time according to the standard ISO 1996-2:2007, annex C."""
+"""Computes the tonality according to the standard ISO 1996-2:2007, annex C, over time."""
 import warnings
 
 from ansys.dpf.core import (
