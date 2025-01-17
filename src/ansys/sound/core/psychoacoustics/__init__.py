@@ -34,7 +34,7 @@ from .roughness import Roughness
 from .sharpness import Sharpness
 from .spectral_centroid import SpectralCentroid
 from .tonality_din_45681 import TonalityDIN45681
-from .tonality_iso1996_2 import TonalityISO1996_2
+from .tonality_iso_1996_2 import TonalityISO1996_2
 from .tone_to_noise_ratio import ToneToNoiseRatio
 from .tone_to_noise_ratio_for_orders import ToneToNoiseRatioForOrdersOverTime
 
