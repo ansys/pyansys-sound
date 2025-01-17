@@ -38,7 +38,7 @@ from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 # Name of the DPF Sound operator used in this module.
-ID_COMPUTE_TONALITY_ISO_1996_2 = "compute_tonality_iso1996_2_over_time"
+ID_COMPUTE_TONALITY_ISO_1996_2_OVER_TIME = "compute_tonality_iso1996_2_over_time"
 
 # List of segment details identifiers.
 LIST_SEGMENT_DETAILS_KEYS = [
@@ -97,7 +97,7 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         self.noise_pause_threshold = noise_pause_threshold
         self.effective_analysis_bandwidth = effective_analysis_bandwidth
         self.noise_bandwidth_ratio = noise_bandwidth_ratio
-        self.__operator = Operator(ID_COMPUTE_TONALITY_ISO_1996_2)
+        self.__operator = Operator(ID_COMPUTE_TONALITY_ISO_1996_2_OVER_TIME)
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
