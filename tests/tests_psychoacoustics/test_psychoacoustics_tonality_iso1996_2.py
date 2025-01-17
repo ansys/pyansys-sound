@@ -43,8 +43,8 @@ EXP_STR = (
     + f"Noise pause detection threshold: 2.0 dB\n"
     + f"Effective analysis bandwidth: 4.0 Hz\n"
     + f"Noise bandwidth in proportion to CBW: 0.8\n"
-    + f"Tonal audibility: 43.12 dB\n"
-    + f"Tonal adjustment Kt: 6.00 dB\n"
+    + f"Tonal audibility: 43.1 dB\n"
+    + f"Tonal adjustment Kt: 6.0 dB\n"
 )
 
 
@@ -54,7 +54,7 @@ def test_tonality_iso_1996_2_instantiation():
     assert tonality.signal == None
     assert tonality.noise_pause_threshold == 1.0
     assert tonality.effective_analysis_bandwidth == 5.0
-    assert tonality.noise_critical_bandwidth_ratio == 0.75
+    assert tonality.noise_bandwidth_ratio == 0.75
 
 
 def test_tonality_iso_1996_2_properties():
@@ -81,7 +81,7 @@ def test_tonality_iso_1996_2___str__():
         signal=sig,
         noise_pause_threshold=2.0,
         effective_analysis_bandwidth=4.0,
-        noise_critical_bandwidth_ratio=0.8,
+        noise_bandwidth_ratio=0.8,
     )
     tonality.process()
     assert tonality.__str__() == EXP_STR
@@ -114,7 +114,7 @@ def test_tonality_iso_1996_2_setters_exceptions():
         match="Noise critical bandwidth ratio must be provided as a float value,"
         "positive and strictly smaller than 1.0.",
     ):
-        tonality.noise_critical_bandwidth_ratio = 2.0
+        tonality.noise_bandwidth_ratio = 2.0
 
 
 def test_tonality_iso_1996_2_process():
@@ -128,7 +128,7 @@ def test_tonality_iso_1996_2_process():
         signal=sig,
         noise_pause_threshold=2.0,
         effective_analysis_bandwidth=4.0,
-        noise_critical_bandwidth_ratio=0.8,
+        noise_bandwidth_ratio=0.8,
     )
     tonality.process()
     assert tonality._output is not None
@@ -155,7 +155,7 @@ def test_tonality_iso_1996_2_get_output():
         signal=sig,
         noise_pause_threshold=2.0,
         effective_analysis_bandwidth=4.0,
-        noise_critical_bandwidth_ratio=0.8,
+        noise_bandwidth_ratio=0.8,
     )
     tonality.process()
     output = tonality.get_output()
@@ -186,7 +186,7 @@ def test_tonality_iso_1996_2_get_output_as_nparray():
         signal=sig,
         noise_pause_threshold=2.0,
         effective_analysis_bandwidth=4.0,
-        noise_critical_bandwidth_ratio=0.8,
+        noise_bandwidth_ratio=0.8,
     )
     tonality.process()
 
@@ -210,7 +210,7 @@ def test_tonality_iso_1996_2_get_output_as_nparray_unprocessed():
         signal=sig,
         noise_pause_threshold=2.0,
         effective_analysis_bandwidth=4.0,
-        noise_critical_bandwidth_ratio=0.8,
+        noise_bandwidth_ratio=0.8,
     )
 
     with pytest.warns(
@@ -236,7 +236,7 @@ def test_tonality_iso_1996_2_get_tonal_audibility():
         signal=sig,
         noise_pause_threshold=2.0,
         effective_analysis_bandwidth=4.0,
-        noise_critical_bandwidth_ratio=0.8,
+        noise_bandwidth_ratio=0.8,
     )
     tonality.process()
     assert tonality.get_tonal_audibility() == pytest.approx(EXP_TONALITY)
@@ -252,7 +252,7 @@ def test_tonality_iso_1996_2_get_tonal_adjustment():
         signal=sig,
         noise_pause_threshold=2.0,
         effective_analysis_bandwidth=4.0,
-        noise_critical_bandwidth_ratio=0.8,
+        noise_bandwidth_ratio=0.8,
     )
 
     tonality.process()
@@ -269,7 +269,7 @@ def test_tonality_iso_1996_2_get_computation_details():
         signal=sig,
         noise_pause_threshold=2.0,
         effective_analysis_bandwidth=4.0,
-        noise_critical_bandwidth_ratio=0.8,
+        noise_bandwidth_ratio=0.8,
     )
     tonality.process()
 

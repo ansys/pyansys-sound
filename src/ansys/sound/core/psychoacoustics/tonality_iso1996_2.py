@@ -40,10 +40,10 @@ KEY_DATA_TREE_TOTAL_TONAL_LEVEL = "Total tonal level (dBA)"
 
 
 class TonalityISO1996_2(PsychoacousticsParent):
-    """Computes ISO1996-2 tonality.
+    """Computes the tonality according to the standard ISO 1996-2:2007, annex C.
 
     This class is used to compute the tonal audibility and tonal adjustment of
-    a signal following the ISO1996-2 standard.
+    a signal following the annex C of the ISO 1996-2:2007 standard.
     """
 
     def __init__(
@@ -51,29 +51,23 @@ class TonalityISO1996_2(PsychoacousticsParent):
         signal: Field = None,
         noise_pause_threshold: float = 1.0,
         effective_analysis_bandwidth: float = 5.0,
-        noise_critical_bandwidth_ratio: float = 0.75,
+        noise_bandwidth_ratio: float = 0.75,
     ):
-        """Create a ``TonalityISO1996_2`` object.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
         signal: Field, default: None
-            Signal in Pa on which to calculate the tonality, as a DPF field.
+            Signal on which to calculate the tonality, as a DPF field.
         noise_pause_threshold: float, default: 1.0
-            TODO Complete
-            TODO Complete
-            TODO Complete
-            TODO Complete
+            Noise pause detection threshold ("level excess") in dB.
         effective_analysis_bandwidth: float, default: 5.0
-            TODO Complete
-            TODO Complete
-            TODO Complete
-            TODO Complete
-        noise_critical_bandwidth_ratio: float, default: 0.75
-            TODO Complete
-            TODO Complete
-            TODO Complete
-            TODO Complete
+            Effective analysis bandwidth in Hz.
+        noise_bandwidth_ratio: float, default: 0.75
+            Noise bandwidth, in proportion to the critical bandwidth, that is taken into account
+            for the calculation of the masking noise level (the default value `0.75` means that the
+            masking noise level is estimated in a band delimited by 75 % of the critical bandwidth
+            on each side of the tone). Value must be between `0.75` and `2`.
 
         For more information about the parameters, please refer to Ansys Sound SAS' user guide.
         """
@@ -81,7 +75,7 @@ class TonalityISO1996_2(PsychoacousticsParent):
         self.signal = signal
         self.noise_pause_threshold = noise_pause_threshold
         self.effective_analysis_bandwidth = effective_analysis_bandwidth
-        self.noise_critical_bandwidth_ratio = noise_critical_bandwidth_ratio
+        self.noise_bandwidth_ratio = noise_bandwidth_ratio
         self.__operator = Operator(ID_COMPUTE_TONALITY_ISO1996_2)
 
     def __str__(self):
@@ -92,9 +86,9 @@ class TonalityISO1996_2(PsychoacousticsParent):
             f'Signal name: "{self.signal.name}"\n'
             f"Noise pause detection threshold: {self.noise_pause_threshold} dB\n"
             f"Effective analysis bandwidth: {self.effective_analysis_bandwidth} Hz\n"
-            f"Noise bandwidth in proportion to CBW: {self.noise_critical_bandwidth_ratio}\n"
-            f"Tonal audibility: {self.get_tonal_audibility():.2f} dB\n"
-            f"Tonal adjustment Kt: {self.get_tonal_adjustment():.2f} dB\n"
+            f"Noise bandwidth in proportion to CBW: {self.noise_bandwidth_ratio}\n"
+            f"Tonal audibility: {self.get_tonal_audibility():.1f} dB\n"
+            f"Tonal adjustment Kt: {self.get_tonal_adjustment():.1f} dB\n"
         )
 
     @property
@@ -142,21 +136,19 @@ class TonalityISO1996_2(PsychoacousticsParent):
         self.__effective_analysis_bandwidth = effective_analysis_bandwidth
 
     @property
-    def noise_critical_bandwidth_ratio(self) -> float:
+    def noise_bandwidth_ratio(self) -> float:
         """TODO TODO TODO TODO."""
-        return self.__noise_critical_bandwidth_ratio
+        return self.__noise_bandwidth_ratio
 
-    @noise_critical_bandwidth_ratio.setter
-    def noise_critical_bandwidth_ratio(self, noise_critical_bandwidth_ratio: float):
+    @noise_bandwidth_ratio.setter
+    def noise_bandwidth_ratio(self, ratio: float):
         """Set noise critical bandwidth ratio property."""
-        if not (0.0 <= noise_critical_bandwidth_ratio < 1.0) or not isinstance(
-            noise_critical_bandwidth_ratio, float
-        ):
+        if not (0.0 <= ratio < 1.0) or not isinstance(ratio, float):
             raise PyAnsysSoundException(
                 "Noise critical bandwidth ratio must be provided as a float value,"
                 "positive and strictly smaller than 1.0."
             )
-        self.__noise_critical_bandwidth_ratio = noise_critical_bandwidth_ratio
+        self.__noise_bandwidth_ratio = ratio
 
     def process(self):
         """Compute the ISO1996-2 tonality.
@@ -172,7 +164,7 @@ class TonalityISO1996_2(PsychoacousticsParent):
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, self.noise_pause_threshold)
         self.__operator.connect(2, self.effective_analysis_bandwidth)
-        self.__operator.connect(3, self.noise_critical_bandwidth_ratio)
+        self.__operator.connect(3, self.noise_bandwidth_ratio)
 
         # Run the operator.
         self.__operator.run()
