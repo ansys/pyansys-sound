@@ -23,7 +23,13 @@
 """Computes the tonality over time according to the standard ISO 1996-2:2007, annex C."""
 import warnings
 
-from ansys.dpf.core import DataTree, Field, Operator, types
+from ansys.dpf.core import (
+    Field,
+    GenericDataContainer,
+    GenericDataContainersCollection,
+    Operator,
+    types,
+)
 from ansys.dpf.core.collection import Collection
 import matplotlib.pyplot as plt
 import numpy as np
@@ -34,20 +40,26 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_TONALITY_ISO_1996_2 = "compute_tonality_iso1996_2_over_time"
 
-# List of segment details identifiers, in the order they are returned in the methods
-# get_output_as_nparray().
+# List of segment details identifiers.
 LIST_SEGMENT_DETAILS_KEYS = [
-    "Segment start time (s)",
-    "Segment end time (s)",
-    "Lower critical band limit (Hz)",
-    "Upper critical band limit (Hz)",
-    "Total tonal level (dBA)",
-    "Total noise level (dBA)",
+    "segment_start_time_s",
+    "segment_end_time_s",
+    "lower_critical_band_limit_Hz",
+    "higher_critical_band_limit_Hz",
+    "total_tonal_level_dBA",
+    "total_noise_level_dBA",
 ]
 
 
 class TonalityISO1996_2_OverTime(PsychoacousticsParent):
-    """Computes the tonality over time according to the standard ISO 1996-2:2007, annex C."""
+    """Computes the tonality according to the standard ISO 1996-2:2007, annex C, over time.
+
+    .. note::
+        The standard ISO 1996-2:2007, annex C, does not include a method for non-stationary sounds.
+        The computation of the present indicator is thus not entirely covered by the standard. The
+        method used here splits the input signal into overlapping windows (segments), and then
+        computes the tonality, for each segment, following the standard.
+    """
 
     def __init__(
         self,
@@ -98,8 +110,8 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         else:
             str_tonality = (
                 f"Number of segments: {self.get_segment_count()}\n"
-                f"Maximum tonal audibility: {max(self.get_tonal_audibility_over_time()):.2f} dB\n"
-                f"Maximum tonal adjustment: {max(self.get_tonal_adjustment_over_time()):.2f} dB"
+                f"Maximum tonal audibility: {max(self.get_tonal_audibility_over_time()):.1f} dB\n"
+                f"Maximum tonal adjustment: {max(self.get_tonal_adjustment_over_time()):.1f} dB"
             )
 
         return (
@@ -218,25 +230,23 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         self._output = (
             self.__operator.get_output(0, types.field),
             self.__operator.get_output(1, types.field),
-            self.__operator.get_output(2, types.generic_data_container).get_property(
-                "calculation_details"
-            ),
+            self.__operator.get_output(2, GenericDataContainersCollection),
         )
 
-    def get_output(self) -> tuple[Field, Field, Collection[DataTree]]:
+    def get_output(self) -> tuple[Field, Field, Collection[GenericDataContainer]]:
         """Get the ISO 1996-2 tonality data.
 
         Returns
         -------
-        tuple[Field, Field, Collection[DataTree]]
+        tuple[Field, Field, Collection[GenericDataContainer]]
 
             -   First element is the tonal audibility over time, in dB.
 
             -   Second element is the tonal adjustment over time, in dB.
 
-            -   Third element contains the computation details, that is, the main tone's critical
-                band boundary frequencies, and the total tone and noise levels in dBA, for each
-                successive window in the input signal.
+            -   Third element contains the computation details, that is, the segment start and end
+                times, the main tone's critical band boundary frequencies, and the total tone and
+                noise levels in dBA, for each successive window (segment) in the input signal.
         """
         if self._output == None:
             warnings.warn(
@@ -260,36 +270,17 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
             -   Second element is the tonal adjustment over time, in dB.
 
             -   Third element is the time sale in s.
-
-            -   Fourth element is the segment start time in s.
-
-            -   Fifth element is the segment end time in s.
-
-            -   Sixth element is the main tone's critical band lower boundary frequencies over time
-                in Hz.
-
-            -   Seventh element is the main tone's critical band upper boundary frequencies over
-                time in Hz.
-
-            -   Eighth element is the total tone level over time in dBA.
-
-            -   Ninth element is the total noise level over time in dBA.
-
         """
         output = self.get_output()
 
         if output == None:
-            return (
-                np.array([]),
-                np.array([]),
-                np.array([]),
-            ) + tuple(np.array([]) for _ in LIST_SEGMENT_DETAILS_KEYS)
+            return np.array([]), np.array([]), np.array([])
 
         return (
             np.array(output[0].data),
             np.array(output[1].data),
             np.array(output[0].time_freq_support.time_frequencies.data),
-        ) + tuple(np.array(output[2].get_property(key)) for key in LIST_SEGMENT_DETAILS_KEYS)
+        )
 
     def get_tonal_audibility_over_time(self) -> np.ndarray:
         """Get the ISO 1996-2 tonal audibility over time.
@@ -319,7 +310,7 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         numpy.ndarray
             Time scale in s.
         """
-        return self.get_output_as_nparray()[6]
+        return self.get_output_as_nparray()[2]
 
     def get_segment_count(self) -> int:
         """Get the number of segments.
@@ -347,32 +338,30 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         dict[str, float]
             Dictionary containing the ISO 1996-2 tonality details for the specified segment, namely:
 
-            -   Segment start time in s
+            -   Segment start time in s,
 
-            -   Segment end time in s
+            -   Segment end time in s,
 
-            -   Main tone's critical band lower frequency in Hz
+            -   Main tone's critical band lower frequency in Hz,
 
-            -   Main tone's critical band upper frequency in Hz
+            -   Main tone's critical band higher frequency in Hz,
 
-            -   Total tone level in dBA
+            -   Total tone level in dBA,
 
-            -   Total noise level in dBA
+            -   Total noise level in dBA.
         """
         segment_count = self.get_segment_count()
         if segment_count == 0:
             return {key: np.nan for key in LIST_SEGMENT_DETAILS_KEYS}
 
-        if segment_index < 0 or segment_index >= segment_count - 1:
+        if segment_index < 0 or segment_index >= segment_count:
             raise PyAnsysSoundException(
                 f"Segment index {segment_index} is out of range. It must be between 0 and "
                 f"{segment_count - 1}."
             )
 
-        return {
-            key: self.get_output_as_nparray()[i][segment_index]
-            for i, key in enumerate(LIST_SEGMENT_DETAILS_KEYS)
-        }
+        segment_details = self.get_output()[2].get_entry({"spectrum_number": segment_index})
+        return {key: segment_details.get_property(key) for key in LIST_SEGMENT_DETAILS_KEYS}
 
     def plot(self):
         """Plot the ISO 1996-2 tonal audibility and tonal adjustment over time."""
@@ -389,7 +378,7 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
 
         axes[0].plot(time_scale, tonal_audibility)
         axes[0].set_title("ISO 1996-2 tonal audibility over time")
-        axes[0].set_ylabel(r"$\mathregular{\Delta L_ta}$ (dB)")
+        axes[0].set_ylabel(r"$\mathregular{\Delta L_{ta}}$ (dB)")
         axes[0].grid()
 
         axes[1].plot(time_scale, tonal_adjustment)
