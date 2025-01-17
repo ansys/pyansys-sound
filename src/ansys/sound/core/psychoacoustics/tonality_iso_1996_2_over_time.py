@@ -338,17 +338,18 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         dict[str, float]
             Dictionary containing the ISO 1996-2 tonality details for the specified segment, namely:
 
-            -   Segment start time in s,
+            -   Segment start time in s (`"segment_start_time_s"`),
 
-            -   Segment end time in s,
+            -   Segment end time in s (`"segment_end_time_s"`),
 
-            -   Main tone's critical band lower frequency in Hz,
+            -   Main tone's critical band lower frequency in Hz (`"lower_critical_band_limit_Hz"`),
 
-            -   Main tone's critical band higher frequency in Hz,
+            -   Main tone's critical band higher frequency in Hz
+                (`"higher_critical_band_limit_Hz"`),
 
-            -   Total tone level in dBA,
+            -   Total tone level in dBA (`"total_tonal_level_dBA"`),
 
-            -   Total noise level in dBA.
+            -   Total noise level in dBA (`"total_noise_level_dBA"`).
         """
         segment_count = self.get_segment_count()
         if segment_count == 0:
