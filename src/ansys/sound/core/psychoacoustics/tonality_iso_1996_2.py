@@ -29,10 +29,10 @@ import numpy as np
 from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
-# Operator's name
+# Name of the DPF Sound operator used in this module.
 ID_COMPUTE_TONALITY_ISO1996_2 = "compute_tonality_iso1996_2"
 
-# Data tree keys
+# Keys identifying computation details.
 KEY_DATA_TREE_CB_LOWER_LIMITS = "Lower critical band limit (Hz)"
 KEY_DATA_TREE_CB_UPPER_LIMITS = "Higher critical band limit (Hz)"
 KEY_DATA_TREE_TOTAL_NOISE_LEVEL = "Total noise level (dBA)"
