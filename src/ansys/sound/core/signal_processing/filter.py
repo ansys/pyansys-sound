@@ -272,8 +272,8 @@ class Filter(SignalProcessingParent):
 
         # Set operator inputs.
         self.__operator_filter.connect(0, self.signal)
-        self.__operator_filter.connect(1, list(self.b_coefficients))
-        self.__operator_filter.connect(2, list(self.a_coefficients))
+        self.__operator_filter.connect(1, self.b_coefficients)
+        self.__operator_filter.connect(2, self.a_coefficients)
 
         # Run the operator.
         self.__operator_filter.run()
