@@ -36,7 +36,18 @@ EXP_CB_HIGH = 311.32544
 EXP_TOTAL_NOISE = 27.298639
 EXP_TOTAL_TONAL = 68.343742
 
-EXP_STR = (
+EXP_STR_1 = (
+    "TonalityISO1996_2 object.\n"
+    + "Data\n"
+    + f'Signal name: "flute"\n'
+    + f"Noise pause detection threshold: 2.0 dB\n"
+    + f"Effective analysis bandwidth: 4.0 Hz\n"
+    + f"Noise bandwidth in proportion to CBW: 0.8\n"
+    + f"Tonal audibility: Not processed\n"
+    + f"Tonal adjustment Kt: Not processed\n"
+)
+
+EXP_STR_2 = (
     "TonalityISO1996_2 object.\n"
     + "Data\n"
     + f'Signal name: "flute"\n'
@@ -66,6 +77,9 @@ def test_tonality_iso_1996_2_properties():
     tonality.noise_pause_threshold = 2.0
     assert tonality.noise_pause_threshold == 2.0
 
+    tonality.noise_pause_threshold = 4
+    assert tonality.noise_pause_threshold == 4.0
+
     tonality.effective_analysis_bandwidth = 3.0
     assert tonality.effective_analysis_bandwidth == 3.0
 
@@ -83,8 +97,9 @@ def test_tonality_iso_1996_2___str__():
         effective_analysis_bandwidth=4.0,
         noise_bandwidth_ratio=0.8,
     )
+    assert tonality.__str__() == EXP_STR_1
     tonality.process()
-    assert tonality.__str__() == EXP_STR
+    assert tonality.__str__() == EXP_STR_2
 
 
 def test_tonality_iso_1996_2_setters_exceptions():
@@ -111,10 +126,12 @@ def test_tonality_iso_1996_2_setters_exceptions():
 
     with pytest.raises(
         PyAnsysSoundException,
-        match="Noise critical bandwidth ratio must be provided as a float value,"
-        "positive and strictly smaller than 1.0.",
+        match=re.escape(
+            "Noise critical bandwidth ratio must be provided as a float value,"
+            "in the range [0.75; 2.0]."
+        ),
     ):
-        tonality.noise_bandwidth_ratio = 2.0
+        tonality.noise_bandwidth_ratio = 3.0
 
 
 def test_tonality_iso_1996_2_process():
@@ -278,6 +295,22 @@ def test_tonality_iso_1996_2_get_computation_details():
     assert details["Higher critical band limit (Hz)"] == pytest.approx(EXP_CB_HIGH)
     assert details["Total noise level (dBA)"] == pytest.approx(EXP_TOTAL_NOISE)
     assert details["Total tonal level (dBA)"] == pytest.approx(EXP_TOTAL_TONAL)
+
+
+def test_tonality_iso_1996_2_get_computation_details_unprocessed():
+    """Test get_computation_details method's warning."""
+    tonality = TonalityISO1996_2()
+
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match=(
+            "Output is not processed yet. Use the ``TonalityISO1996_2.process\(\)`` method."  # noqa: E501
+        ),
+    ):
+        details = tonality.get_computation_details()
+
+    assert type(details) == dict
+    assert len(details) == 0
 
 
 def test_tonality_iso_1996_2_plot():

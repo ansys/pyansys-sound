@@ -80,6 +80,13 @@ class TonalityISO1996_2(PsychoacousticsParent):
 
     def __str__(self):
         """Overloads the __str__ method."""
+        if self.get_output() is None:
+            str_tonality = "Not processed\n"
+            str_adjustement = "Not processed\n"
+        else:
+            str_tonality = f"{self.get_tonal_audibility():.1f} dB\n"
+            str_adjustement = f"{self.get_tonal_adjustment():.1f} dB\n"
+
         return (
             f"{__class__.__name__} object.\n"
             "Data\n"
@@ -87,8 +94,8 @@ class TonalityISO1996_2(PsychoacousticsParent):
             f"Noise pause detection threshold: {self.noise_pause_threshold} dB\n"
             f"Effective analysis bandwidth: {self.effective_analysis_bandwidth} Hz\n"
             f"Noise bandwidth in proportion to CBW: {self.noise_bandwidth_ratio}\n"
-            f"Tonal audibility: {self.get_tonal_audibility():.1f} dB\n"
-            f"Tonal adjustment Kt: {self.get_tonal_adjustment():.1f} dB\n"
+            f"Tonal audibility: {str_tonality}"
+            f"Tonal adjustment Kt: {str_adjustement}"
         )
 
     @property
@@ -112,7 +119,12 @@ class TonalityISO1996_2(PsychoacousticsParent):
     def noise_pause_threshold(self, noise_pause_threshold: float):
         """Set noise pause threshold."""
         if not isinstance(noise_pause_threshold, float):
-            raise PyAnsysSoundException("Noise pause threshold must be provided as a float value.")
+            if isinstance(noise_pause_threshold, int):
+                noise_pause_threshold = float(noise_pause_threshold)
+            else:
+                raise PyAnsysSoundException(
+                    "Noise pause threshold must be provided as a float value."
+                )
         self.__noise_pause_threshold = noise_pause_threshold
 
     @property
@@ -143,10 +155,10 @@ class TonalityISO1996_2(PsychoacousticsParent):
     @noise_bandwidth_ratio.setter
     def noise_bandwidth_ratio(self, ratio: float):
         """Set noise critical bandwidth ratio property."""
-        if not (0.0 <= ratio < 1.0) or not isinstance(ratio, float):
+        if not (0.75 <= ratio < 2.0) or not isinstance(ratio, float):
             raise PyAnsysSoundException(
                 "Noise critical bandwidth ratio must be provided as a float value,"
-                "positive and strictly smaller than 1.0."
+                "in the range [0.75; 2.0]."
             )
         self.__noise_bandwidth_ratio = ratio
 
@@ -275,6 +287,9 @@ class TonalityISO1996_2(PsychoacousticsParent):
 
             -   Total noise level in dBA (`"total_noise_level_dBA"`).
         """
+        if self.get_output() is None:
+            return {}
+
         details_array = self.get_output_as_nparray()[2]
         return {
             KEY_DATA_TREE_CB_LOWER_LIMITS: details_array[0],
