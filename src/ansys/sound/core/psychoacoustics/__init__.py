@@ -38,6 +38,7 @@ from .tonality_aures import TonalityAures
 from .tonality_din_45681 import TonalityDIN45681
 from .tonality_ecma_418_2 import TonalityECMA418_2
 from .tonality_iso_1996_2 import TonalityISO1996_2
+from .tonality_iso_1996_2_over_time import TonalityISO1996_2_OverTime
 from .tone_to_noise_ratio import ToneToNoiseRatio
 from .tone_to_noise_ratio_for_orders_over_time import ToneToNoiseRatioForOrdersOverTime
 
@@ -51,6 +52,7 @@ __all__ = (
     "Roughness",
     "FluctuationStrength",
     "TonalityDIN45681",
+    "TonalityISO1996_2_OverTime",
     "TonalityAures",
     "SpectralCentroid",
     "TonalityECMA418_2",
