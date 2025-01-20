@@ -1,0 +1,6 @@
+get\_output
+===========
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. automethod:: ZeroPad.get_output
