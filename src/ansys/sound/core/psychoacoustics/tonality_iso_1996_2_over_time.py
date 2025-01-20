@@ -89,6 +89,8 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
             for the calculation of the masking noise level (the default value `0.75` means that the
             masking noise level is estimated in a band delimited by 75 % of the critical bandwidth
             on each side of the tone). Value must be between `0.75` and `2`.
+
+        For more information about the parameters, please refer to Ansys Sound SAS' user guide.
         """
         super().__init__()
         self.signal = signal
@@ -129,7 +131,7 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Input sound signal as a DPF field."""
+        """Input signal, as a DPF field."""
         return self.__signal
 
     @signal.setter
@@ -140,24 +142,24 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         self.__signal = signal
 
     @property
-    def window_length(self) -> float:
+    def window_length(self) -> int | float:
         """Length of the integration window in ms."""
         return self.__window_length
 
     @window_length.setter
-    def window_length(self, window_length: float):
+    def window_length(self, window_length: int | float):
         """Set the integration window length."""
         if window_length <= 0.0:
             raise PyAnsysSoundException("Integration window length must be greater than 0 ms.")
         self.__window_length = window_length
 
     @property
-    def overlap(self) -> float:
+    def overlap(self) -> int | float:
         """Overlap between successive windows in %."""
         return self.__overlap
 
     @overlap.setter
-    def overlap(self, overlap: float):
+    def overlap(self, overlap: int | float):
         """Set the overlap."""
         if overlap < 0.0 or overlap >= 100.0:
             raise PyAnsysSoundException(
@@ -166,12 +168,12 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         self.__overlap = overlap
 
     @property
-    def noise_pause_threshold(self) -> float:
+    def noise_pause_threshold(self) -> int | float:
         """Noise pause detection threshold (level excess) in dB."""
         return self.__noise_pause_threshold
 
     @noise_pause_threshold.setter
-    def noise_pause_threshold(self, noise_pause_threshold: float):
+    def noise_pause_threshold(self, noise_pause_threshold: int | float):
         """Set the noise pause detection threshold."""
         if noise_pause_threshold <= 0.0:
             raise PyAnsysSoundException(
@@ -180,19 +182,19 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         self.__noise_pause_threshold = noise_pause_threshold
 
     @property
-    def effective_analysis_bandwidth(self) -> float:
+    def effective_analysis_bandwidth(self) -> int | float:
         """Effective analysis bandwidth in Hz."""
         return self.__effective_analysis_bandwidth
 
     @effective_analysis_bandwidth.setter
-    def effective_analysis_bandwidth(self, effective_analysis_bandwidth: float):
+    def effective_analysis_bandwidth(self, effective_analysis_bandwidth: int | float):
         """Set the effective analysis bandwidth."""
         if effective_analysis_bandwidth <= 0.0:
             raise PyAnsysSoundException("Effective analysis bandwidth must be greater than 0 Hz.")
         self.__effective_analysis_bandwidth = effective_analysis_bandwidth
 
     @property
-    def noise_bandwidth_ratio(self) -> float:
+    def noise_bandwidth_ratio(self) -> int | float:
         """Noise bandwidth in proportion to the critical bandwidth.
 
         Noise bandwidth, in proportion to the critical bandwidth, that is taken into account for
@@ -203,7 +205,7 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         return self.__noise_bandwidth_ratio
 
     @noise_bandwidth_ratio.setter
-    def noise_bandwidth_ratio(self, ratio: float):
+    def noise_bandwidth_ratio(self, ratio: int | float):
         """Set the noise bandwidth in proportion of the critical bandwidth."""
         if ratio < 0.75 or ratio > 2.0:
             raise PyAnsysSoundException("Noise bandwidth ratio must be between 0.75 and 2.")
@@ -269,7 +271,7 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
 
             -   Second element is the tonal adjustment over time, in dB.
 
-            -   Third element is the time sale in s.
+            -   Third element is the time scale in s.
         """
         output = self.get_output()
 
