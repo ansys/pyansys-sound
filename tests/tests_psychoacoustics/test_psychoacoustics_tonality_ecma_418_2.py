@@ -33,7 +33,8 @@ from ansys.sound.core.signal_utilities import LoadWav
 EXP_TONALITY = 4.9181241989135742
 EXP_TONALITY_OVER_TIME = 5.7180857658386230
 EXP_FT_OVER_TIME = 795.41015625000000
-EXP_TIME = 3.5360000133514404
+EXP_TIME_TONALITY = 3.5360000133514404
+EXP_TIME_TONE_FREQUENCY = 3.237333297729492
 EXP_STR_1 = (
     "TonalityECMA418_2 object.\n"
     + "Data\n"
@@ -136,12 +137,15 @@ def test_tonality_ecma_418_2_get_output_as_nparray():
     tonality = TonalityECMA418_2(signal=fc[0])
     tonality.process()
 
-    tonality_float, tonality_over_time, ft_over_time, time = tonality.get_output_as_nparray()
+    tonality_float, tonality_over_time, ft_over_time, time_tonality, time_tone = (
+        tonality.get_output_as_nparray()
+    )
 
     assert tonality_float == pytest.approx(EXP_TONALITY)
     assert tonality_over_time[225] == pytest.approx(EXP_TONALITY_OVER_TIME)
     assert ft_over_time[225] == pytest.approx(EXP_FT_OVER_TIME)
-    assert time[-1] == pytest.approx(EXP_TIME)
+    assert time_tonality[-1] == pytest.approx(EXP_TIME_TONALITY)
+    assert time_tone[-1] == pytest.approx(EXP_TIME_TONE_FREQUENCY)
 
 
 def test_tonality_ecma_418_2_get_output_as_nparray_unprocessed():
@@ -152,11 +156,14 @@ def test_tonality_ecma_418_2_get_output_as_nparray_unprocessed():
         PyAnsysSoundWarning,
         match="Output is not processed yet. Use the ``TonalityECMA418_2.process\\(\\)`` method.",
     ):
-        tonality_float, tonality_over_time, ft_over_time, time = tonality.get_output_as_nparray()
+        tonality_float, tonality_over_time, ft_over_time, time_tonality, time_tones = (
+            tonality.get_output_as_nparray()
+        )
     assert np.isnan(tonality_float)
     assert len(tonality_over_time) == 0
     assert len(ft_over_time) == 0
-    assert len(time) == 0
+    assert len(time_tonality) == 0
+    assert len(time_tones) == 0
 
 
 def test_tonality_ecma_418_2_get_tonality():
@@ -198,8 +205,8 @@ def test_tonality_ecma_418_2_get_tone_frequency_over_time():
     assert ft_over_time[225] == pytest.approx(EXP_FT_OVER_TIME)
 
 
-def test_tonality_ecma_418_2_get_time_scale():
-    """Test get_time_scale method."""
+def test_tonality_ecma_418_2_get_tonality_time_scale():
+    """Test get_tonality_time_scale method."""
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
@@ -207,8 +214,21 @@ def test_tonality_ecma_418_2_get_time_scale():
     tonality = TonalityECMA418_2(signal=fc[0])
     tonality.process()
 
-    time = tonality.get_time_scale()
-    assert time[-1] == pytest.approx(EXP_TIME)
+    time = tonality.get_tonality_time_scale()
+    assert time[-1] == pytest.approx(EXP_TIME_TONALITY)
+
+
+def test_tonality_ecma_418_2_get_tone_frequency_time_scale():
+    """Test get_tone_frequency_time_scale method."""
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader.process()
+    fc = wav_loader.get_output()
+
+    tonality = TonalityECMA418_2(signal=fc[0])
+    tonality.process()
+
+    time = tonality.get_tone_frequency_time_scale()
+    assert time[-1] == pytest.approx(EXP_TIME_TONE_FREQUENCY)
 
 
 @patch("matplotlib.pyplot.show")

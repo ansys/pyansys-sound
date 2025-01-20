@@ -136,13 +136,16 @@ class TonalityECMA418_2(PsychoacousticsParent):
 
             Third element is the ECMA 418-2 tone frequency over time, in Hz.
 
-            Fourth element is the associated time scale, in s.
+            Fourth element is the associated time scale for tonality, in s.
+
+            Fifth element is the associated time scale for tone frequency, in s.
         """
         output = self.get_output()
 
         if output == None:
             return (
                 np.nan,
+                np.array([]),
                 np.array([]),
                 np.array([]),
                 np.array([]),
@@ -153,6 +156,7 @@ class TonalityECMA418_2(PsychoacousticsParent):
             np.array(output[1].data),
             np.array(output[2].data),
             np.array(output[1].time_freq_support.time_frequencies.data),
+            np.array(output[2].time_freq_support.time_frequencies.data),
         )
 
     def get_tonality(self) -> float:
@@ -185,8 +189,8 @@ class TonalityECMA418_2(PsychoacousticsParent):
         """
         return self.get_output_as_nparray()[2]
 
-    def get_time_scale(self) -> np.ndarray:
-        """Get the ECMA 418-2 time scale, in s.
+    def get_tonality_time_scale(self) -> np.ndarray:
+        """Get the ECMA 418-2 tonality time scale, in s.
 
         Returns
         -------
@@ -194,6 +198,16 @@ class TonalityECMA418_2(PsychoacousticsParent):
             Array of the computation times, in seconds, of the ECMA 418-2 tonality over time.
         """
         return self.get_output_as_nparray()[3]
+
+    def get_tone_frequency_time_scale(self) -> np.ndarray:
+        """Get the ECMA 418-2 tone frequency time scale, in s.
+
+        Returns
+        -------
+        numpy.ndarray
+            Array of the computation times, in seconds, of the ECMA 418-2 tone frequency over time.
+        """
+        return self.get_output_as_nparray()[4]
 
     def plot(self):
         """Plot the ECMA 418-2's tonality and tone frequency over time.
@@ -209,11 +223,11 @@ class TonalityECMA418_2(PsychoacousticsParent):
         # Get data to plot
         tonality_over_time = self.get_tonality_over_time()
         ft_over_time = self.get_tone_frequency_over_time()
-        time_scale_tonality = self.get_time_scale()
-        time_scale_ft = self.get_output()[2].time_freq_support.time_frequencies.data
+        time_scale_tonality = self.get_tonality_time_scale()
+        time_scale_ft = self.get_tone_frequency_time_scale()
 
         # Plot ECMA 418-2 parameters over time.
-        _, axes = plt.subplots(2, 1, sharex=False)
+        _, axes = plt.subplots(2, 1, sharex=True)
         axes[0].plot(time_scale_tonality, tonality_over_time)
         axes[0].set_title("ECMA418-2 psychoacoustic tonality")
         axes[0].set_ylabel(r"T ($\mathregular{tu_{HMS}})$")
