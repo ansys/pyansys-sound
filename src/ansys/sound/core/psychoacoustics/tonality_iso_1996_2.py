@@ -79,7 +79,7 @@ class TonalityISO1996_2(PsychoacousticsParent):
         self.__operator = Operator(ID_COMPUTE_TONALITY_ISO1996_2)
 
     def __str__(self):
-        """Overloads the __str__ method."""
+        """Return the string representation of the object."""
         if self.get_output() is None:
             str_tonality = "Not processed\n"
             str_adjustement = "Not processed\n"
@@ -100,24 +100,24 @@ class TonalityISO1996_2(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Signal, as a DPF field. Default is None."""
+        """Input signal, as a DPF field."""
         return self.__signal
 
     @signal.setter
     def signal(self, signal: Field):
-        """Set signal."""
+        """Set the signal."""
         if not (isinstance(signal, Field) or signal is None):
             raise PyAnsysSoundException("Signal must be specified as a DPF field.")
         self.__signal = signal
 
     @property
     def noise_pause_threshold(self) -> float:
-        """Noise pause detection threshold (level excess) in dB. Default is 1.0 dB."""
+        """Noise pause detection threshold (level excess) in dB."""
         return self.__noise_pause_threshold
 
     @noise_pause_threshold.setter
     def noise_pause_threshold(self, noise_pause_threshold: float):
-        """Set noise pause threshold."""
+        """Set the noise pause detection threshold."""
         if not isinstance(noise_pause_threshold, float):
             if isinstance(noise_pause_threshold, int):
                 noise_pause_threshold = float(noise_pause_threshold)
@@ -129,12 +129,12 @@ class TonalityISO1996_2(PsychoacousticsParent):
 
     @property
     def effective_analysis_bandwidth(self) -> float:
-        """Effective analysis bandwidth in Hz. Default is 5.0 Hz."""
+        """Effective analysis bandwidth in Hz."""
         return self.__effective_analysis_bandwidth
 
     @effective_analysis_bandwidth.setter
     def effective_analysis_bandwidth(self, effective_analysis_bandwidth: float):
-        """Set effective analysis bandwidth."""
+        """Set the effective analysis bandwidth."""
         if not (0.0 < effective_analysis_bandwidth <= 5.0):
             raise PyAnsysSoundException(
                 "Effective analysis bandwidth must be in the range [0.0; 5.0] Hz."
@@ -278,14 +278,15 @@ class TonalityISO1996_2(PsychoacousticsParent):
         dict[str, float]
             Dictionary containing the ISO 1996-2 tonality details, namely:
 
-            -   Main tone's critical band lower frequency in Hz (`"lower_critical_band_limit_Hz"`),
+            -   Main tone's critical band lower frequency in Hz
+                (`"Lower critical band limit (Hz)"`),
 
             -   Main tone's critical band higher frequency in Hz
-                (`"higher_critical_band_limit_Hz"`),
+                (`"Higher critical band limit (Hz)"`),
 
-            -   Total tone level in dBA (`"total_tonal_level_dBA"`),
+            -   Total tone level in dBA (`"Total noise level (dBA)"`),
 
-            -   Total noise level in dBA (`"total_noise_level_dBA"`).
+            -   Total noise level in dBA (`"Total tonal level (dBA)"`).
         """
         if self.get_output() is None:
             return {}
