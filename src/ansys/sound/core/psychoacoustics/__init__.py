@@ -36,6 +36,7 @@ from .sharpness import Sharpness
 from .spectral_centroid import SpectralCentroid
 from .tonality_aures import TonalityAures
 from .tonality_din_45681 import TonalityDIN45681
+from .tonality_ecma_418_2 import TonalityECMA418_2
 from .tone_to_noise_ratio import ToneToNoiseRatio
 from .tone_to_noise_ratio_for_orders_over_time import ToneToNoiseRatioForOrdersOverTime
 
@@ -51,6 +52,7 @@ __all__ = (
     "TonalityDIN45681",
     "TonalityAures",
     "SpectralCentroid",
+    "TonalityECMA418_2",
     "ToneToNoiseRatioForOrdersOverTime",
     "ProminenceRatioForOrdersOverTime",
 )
