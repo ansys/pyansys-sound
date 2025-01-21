@@ -194,9 +194,12 @@ sharpness_values = (sharpness.get_sharpness(0), sharpness.get_sharpness(1))
 
 # %%
 # Calculate the roughness.
-roughness = Roughness(signal=fc_two_signals)
+roughness = Roughness(signal=fc_two_signals[0])
 roughness.process()
-roughness_values = (roughness.get_roughness(0), roughness.get_roughness(1))
+roughness_value_0 = roughness.get_roughness()
+roughness.signal = fc_two_signals[1]
+roughness.process()
+roughness_value_1 = roughness.get_roughness()
 
 # %%
 # Calculate the fluctuation strength.
@@ -212,10 +215,10 @@ fluctuation_strength_values = (
 print(
     f"\nThe sharpness of sound file {file_name} "
     f"is{sharpness_values[0]: .2f} acum, "
-    f"its roughness is{roughness_values[0]: .2f} asper, "
+    f"its roughness is{roughness_value_0: .2f} asper, "
     f"and its fluctuation strength is{fluctuation_strength_values[0]: .2f} vacil.\n"
     f"For sound file {file_name2}, these indicators' values are, respectively, "
     f"{sharpness_values[1]: .2f} acum, "
-    f"{roughness_values[1]: .2f} asper, "
+    f"{roughness_value_1: .2f} asper, "
     f"and{fluctuation_strength_values[1]: .2f} vacil.\n"
 )
