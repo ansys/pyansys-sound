@@ -55,8 +55,8 @@ class Filter(SignalProcessingParent):
 
     .. note::
         Whether they are derived from the provided FRF or specified directly, the filter
-        coefficients are linked to the sampling frequency value that is given in the argument
-        ``sampling_frequency`` of the ``Filter`` class. As a consequence, the signal to filter
+        coefficients are linked to the sampling frequency value that is given in the attribute
+        :attr:`sampling_frequency` of the ``Filter`` class. As a consequence, the signal to filter
         :attr:`signal` must have the same sampling frequency. If necessary, use the
         :class:`.Resample` class to resample the signal prior to using the ``Filter`` class.
     """
