@@ -31,31 +31,52 @@ from ansys.sound.core.psychoacoustics import Roughness
 from ansys.sound.core.signal_utilities import LoadWav
 
 EXP_ROUGHNESS = 0.5495809316635132
+EXP_BARK_COUNT = 47
 EXP_SPECIFIC_ROUGHNESS_0 = 0.0018477396806702018
 EXP_SPECIFIC_ROUGHNESS_9 = 0.0060088788159191618
 EXP_SPECIFIC_ROUGHNESS_40 = 0.062388259917497635
-EXP_ROUGHNESS_OVER_TIME_5 = 0.0018477396806702018
-EXP_ROUGHNESS_OVER_TIME_12 = 0.0018477396806702018
-EXP_ROUGHNESS_OVER_TIME_20 = 0.0018477396806702018
+EXP_TIME_COUNT = 33
+EXP_ROUGHNESS_OVER_TIME_5 = 0.4840297
+EXP_ROUGHNESS_OVER_TIME_12 = 0.5560241
+EXP_ROUGHNESS_OVER_TIME_20 = 0.5688730
 EXP_BARK_0 = 0.5
 EXP_BARK_9 = 5.0
 EXP_BARK_40 = 20.5
 EXP_FREQ_0 = 56.417020507724274
 EXP_FREQ_9 = 498.9473684210526
 EXP_FREQ_40 = 6875.975124656844
-EXP_TIME_5 = 0.0
-EXP_TIME_12 = 0.0
-EXP_TIME_20 = 0.0
+EXP_TIME_5 = 0.4644792
+EXP_TIME_12 = 1.114750
+EXP_TIME_20 = 1.857917
 EXP_STR_DEFAULT = (
     "Roughness object\nData:\n\tSignal name: Not set\nOverall roughness: Not processed"
 )
-EXP_STR = 'Roughness object\nData:\n\tSignal name: "rough_noise"\nOverall roughness: 0.00 aspers'
+EXP_STR = 'Roughness object\nData:\n\tSignal name: ""\nOverall roughness: 0.55 aspers'
 
 
 def test_roughness_instantiation():
     """Test the instantiation of the Roughness class."""
     roughness_computer = Roughness()
     assert roughness_computer != None
+
+
+def test_roughness___str__():
+    """Test the __str__ method of the Roughness class."""
+    roughness_computer = Roughness()
+    assert str(roughness_computer) == EXP_STR_DEFAULT
+
+    # Get a signal
+    wav_loader = LoadWav(pytest.data_path_rough_noise_in_container)
+    wav_loader.process()
+    fc = wav_loader.get_output()
+
+    # Set signal
+    roughness_computer.signal = fc[0]
+
+    # Compute
+    roughness_computer.process()
+
+    assert str(roughness_computer) == EXP_STR
 
 
 def test_roughness_process():
@@ -107,8 +128,8 @@ def test_roughness_get_output():
     assert roughness == pytest.approx(EXP_ROUGHNESS)
     assert isinstance(specific_roughness, Field)
     assert specific_roughness.data[0] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_0)
-    assert specific_roughness.data[9] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_0)
-    assert specific_roughness.data[40] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_0)
+    assert specific_roughness.data[9] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_9)
+    assert specific_roughness.data[40] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_40)
     assert isinstance(roughness_over_time, Field)
     assert roughness_over_time.data[5] == pytest.approx(EXP_ROUGHNESS_OVER_TIME_5)
     assert roughness_over_time.data[12] == pytest.approx(EXP_ROUGHNESS_OVER_TIME_12)
@@ -166,7 +187,7 @@ def test_roughness_get_specific_roughness():
 
     specific_roughness = roughness_computer.get_specific_roughness()
     assert type(specific_roughness) == np.ndarray
-    assert len(specific_roughness) == 47
+    assert len(specific_roughness) == EXP_BARK_COUNT
     assert specific_roughness[0] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_0)
     assert specific_roughness[9] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_9)
     assert specific_roughness[40] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_40)
@@ -196,7 +217,7 @@ def test_roughness_get_bark_band_indexes():
 
     bark_band_indexes = roughness_computer.get_bark_band_indexes()
     assert type(bark_band_indexes) == np.ndarray
-    assert len(bark_band_indexes) == 47
+    assert len(bark_band_indexes) == EXP_BARK_COUNT
     assert bark_band_indexes[0] == pytest.approx(EXP_BARK_0)
     assert bark_band_indexes[9] == pytest.approx(EXP_BARK_9)
     assert bark_band_indexes[40] == pytest.approx(EXP_BARK_40)
@@ -218,7 +239,7 @@ def test_roughness_get_bark_band_frequencies():
 
     bark_band_frequencies = roughness_computer.get_bark_band_frequencies()
     assert type(bark_band_frequencies) == np.ndarray
-    assert len(bark_band_frequencies) == 47
+    assert len(bark_band_frequencies) == EXP_BARK_COUNT
     assert bark_band_frequencies[0] == pytest.approx(EXP_FREQ_0)
     assert bark_band_frequencies[9] == pytest.approx(EXP_FREQ_9)
     assert bark_band_frequencies[40] == pytest.approx(EXP_FREQ_40)
@@ -248,7 +269,7 @@ def test_roughness_get_roughness_over_time():
 
     roughness_over_time = roughness_computer.get_roughness_over_time()
     assert type(roughness_over_time) == np.ndarray
-    assert len(roughness_over_time) == 47
+    assert len(roughness_over_time) == EXP_TIME_COUNT
     assert roughness_over_time[5] == pytest.approx(EXP_ROUGHNESS_OVER_TIME_5)
     assert roughness_over_time[12] == pytest.approx(EXP_ROUGHNESS_OVER_TIME_12)
     assert roughness_over_time[20] == pytest.approx(EXP_ROUGHNESS_OVER_TIME_20)
@@ -270,8 +291,8 @@ def test_roughness_get_time_scale():
 
     time_scale = roughness_computer.get_time_scale()
     assert type(time_scale) == np.ndarray
-    assert len(time_scale) == 47
-    assert time_scale[0] == pytest.approx(EXP_TIME_5)
+    assert len(time_scale) == EXP_TIME_COUNT
+    assert time_scale[5] == pytest.approx(EXP_TIME_5)
     assert time_scale[12] == pytest.approx(EXP_TIME_12)
     assert time_scale[20] == pytest.approx(EXP_TIME_20)
 
@@ -310,8 +331,8 @@ def test_roughness_get_output_as_nparray():
     assert roughness == pytest.approx(EXP_ROUGHNESS)
     assert isinstance(specific_roughness, np.ndarray)
     assert specific_roughness[0] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_0)
-    assert specific_roughness[9] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_0)
-    assert specific_roughness[40] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_0)
+    assert specific_roughness[9] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_9)
+    assert specific_roughness[40] == pytest.approx(EXP_SPECIFIC_ROUGHNESS_40)
     assert isinstance(bark_scale, np.ndarray)
     assert bark_scale[0] == pytest.approx(EXP_BARK_0)
     assert bark_scale[9] == pytest.approx(EXP_BARK_9)
@@ -360,5 +381,5 @@ def test_roughness_set_get_signal():
 
     roughness_computer.signal = f_signal
     assert isinstance(roughness_computer.signal, Field)
-    assert len(roughness_computer.signal.data) == 3
-    assert roughness_computer.signal.data[0] == 42
+    assert len(roughness_computer.signal.data[0]) == 3
+    assert roughness_computer.signal.data[0][0] == 42
