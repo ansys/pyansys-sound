@@ -82,7 +82,7 @@ class Roughness(PsychoacousticsParent):
 
         This method calls the appropriate DPF Sound operator to compute the roughness of the signal.
         """
-        if self.__signal == None:
+        if self.signal == None:
             raise PyAnsysSoundException(
                 "No signal found for roughness computation. Use `Roughness.signal`."
             )
