@@ -89,7 +89,7 @@ class Sharpness(PsychoacousticsParent):
     @field_type.setter
     def field_type(self, field_type: str):
         """Set the sound field type."""
-        if field_type not in [FIELD_FREE, FIELD_DIFFUSE]:
+        if field_type.lower() not in [FIELD_FREE.lower(), FIELD_DIFFUSE.lower()]:
             raise PyAnsysSoundException(
                 f'Invalid field type "{field_type}". Available options are "{FIELD_FREE}" and '
                 f'"{FIELD_DIFFUSE}".'

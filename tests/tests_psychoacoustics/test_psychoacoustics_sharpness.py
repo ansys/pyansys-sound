@@ -214,6 +214,13 @@ def test_sharpness_set_get_field_type():
     sharpness_computer.field_type = "Diffuse"
     assert sharpness_computer.field_type == "Diffuse"
 
+    # Check case insensitivity
+    sharpness_computer.field_type = "diffuse"
+    assert sharpness_computer.field_type == "diffuse"
+
+    sharpness_computer.field_type = "DIFFUSE"
+    assert sharpness_computer.field_type == "DIFFUSE"
+
     # Set invalid value
     with pytest.raises(
         PyAnsysSoundException,
