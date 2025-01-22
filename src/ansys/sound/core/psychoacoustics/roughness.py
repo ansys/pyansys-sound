@@ -46,7 +46,7 @@ class Roughness(PsychoacousticsParent):
 
         Parameters
         ----------
-        signal : Field
+        signal : Field, default: None
             Signal in Pa to compute roughness on as a DPF field.
         """
         super().__init__()
