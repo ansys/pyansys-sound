@@ -143,7 +143,7 @@ class Sharpness(PsychoacousticsParent):
         output = self.get_output()
 
         if output == None:
-            return np.array([])
+            return np.nan
 
         return np.array([output])
 

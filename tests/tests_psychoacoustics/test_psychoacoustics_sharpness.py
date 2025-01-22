@@ -177,14 +177,13 @@ def test_sharpness_get_output_as_nparray():
     # Set signal
     sharpness_computer.signal = fc[0]
 
-    # Sharpness not calculated yet -> warning and empty array
+    # Sharpness not calculated yet -> warning and NaN value
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. Use the `Sharpness.process\\(\\)` method.",
     ):
         sharpness = sharpness_computer.get_output_as_nparray()
-    assert type(sharpness) == np.ndarray
-    assert len(sharpness) == 0
+    assert np.isnan(sharpness)
 
     # Compute
     sharpness_computer.process()
