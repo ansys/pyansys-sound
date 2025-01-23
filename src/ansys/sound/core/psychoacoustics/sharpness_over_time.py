@@ -74,7 +74,7 @@ class SharpnessOverTime(PsychoacousticsParent):
     @signal.setter
     def signal(self, signal: Field):
         """Set the signal."""
-        if not isinstance(signal, (Field, None)):
+        if not (isinstance(signal, Field) or signal is None):
             raise PyAnsysSoundException("Signal must be specified as a DPF field.")
         self.__signal = signal
 
