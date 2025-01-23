@@ -23,15 +23,15 @@
 """Computes roughness for stationary sounds."""
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
+from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
 from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
-TOTAL_ROUGHNESS_ID = "total"
-SPECIFIC_ROUGHNESS_ID = "specific"
+# Name of the DPF Sound operator used in this module.
+ID_COMPUTE_ROUGHNESS = "compute_roughness"
 
 
 class Roughness(PsychoacousticsParent):
@@ -41,25 +41,39 @@ class Roughness(PsychoacousticsParent):
     optimized model." Acta Acustica united with Acustica, 83, pp. 113-123 (1997).
     """
 
-    def __init__(self, signal: Field | FieldsContainer = None):
+    def __init__(self, signal: Field = None):
         """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        signal : Field | FieldsContainer
-            Signal in Pa to compute roughness on as a DPF field or fields container.
+        signal : Field, default: None
+            Signal in Pa to compute roughness on as a DPF field.
         """
         super().__init__()
         self.signal = signal
-        self.__operator = Operator("compute_roughness")
+        self.__operator = Operator(ID_COMPUTE_ROUGHNESS)
+
+    def __str__(self):
+        """Return the string representation of the object."""
+        if self._output is None:
+            str_roughness = "Not processed"
+        else:
+            str_roughness = f"{self.get_roughness():.2f} aspers"
+
+        return (
+            f"{__class__.__name__} object\n"
+            "Data:\n"
+            f'\tSignal name: {f'"{self.signal.name}"' if self.signal is not None else "Not set"}\n'
+            f"Overall roughness: {str_roughness}"
+        )
 
     @property
-    def signal(self) -> Field | FieldsContainer:
-        """Input sound signal in Pa as a DPF field or fields container."""
+    def signal(self) -> Field:
+        """Input sound signal in Pa as a DPF field."""
         return self.__signal
 
     @signal.setter
-    def signal(self, signal: Field | FieldsContainer):
+    def signal(self, signal: Field):
         """Set the signal."""
         self.__signal = signal
 
@@ -68,9 +82,9 @@ class Roughness(PsychoacousticsParent):
 
         This method calls the appropriate DPF Sound operator to compute the roughness of the signal.
         """
-        if self.__signal == None:
+        if self.signal == None:
             raise PyAnsysSoundException(
-                "No signal found for roughness computation. Use 'Roughness.signal'."
+                "No signal found for roughness computation. Use `Roughness.signal`."
             )
 
         self.__operator.connect(0, self.signal)
@@ -79,93 +93,84 @@ class Roughness(PsychoacousticsParent):
         self.__operator.run()
 
         # Stores outputs in the tuple variable
-        if type(self.signal) == FieldsContainer:
-            self._output = (
-                self.__operator.get_output(0, "fields_container"),
-                self.__operator.get_output(1, "fields_container"),
-            )
-        elif type(self.signal) == Field:
-            self._output = (
-                self.__operator.get_output(0, "field"),
-                self.__operator.get_output(1, "field"),
-            )
+        self._output = (
+            self.__operator.get_output(0, types.double),
+            self.__operator.get_output(1, types.field),
+            self.__operator.get_output(2, types.field),
+        )
 
-    def get_output(self) -> tuple[FieldsContainer] | tuple[Field]:
-        """Get roughness data in a tuple as a PDF fields container or field.
+    def get_output(self) -> tuple:
+        """Get roughness data.
 
         Returns
         -------
-        tuple(FieldsContainer) | tuple(Field)
+        tuple
+            -   First element (float) is the overall roughness in asper.
 
-            - First element is the roughness in asper.
-            - Second element is the specific roughness in asper/Bark.
+            -   Second element (Field) is the specific roughness, that is, the roughness in each
+                Bark band, in asper.
+
+            -   Third element (Field) is the roughness over time, in asper.
         """
         if self._output == None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. \
-                        Use the 'Roughness.process()' method."
+                    "Output is not processed yet. Use the `Roughness.process()` method."
                 )
             )
 
         return self._output
 
     def get_output_as_nparray(self) -> tuple[np.ndarray]:
-        """Get roughness data in a tuple as a NumPy array.
+        """Get roughness data in a tuple of NumPy arrays.
 
         Returns
         -------
         tuple[numpy.ndarray]
-            First element is the roughness in asper.
+            -   First element is the overall roughness in asper.
 
-            Second element is the specific roughness in asper/Bark.
+            -   Second element is the specific roughness, that is, the roughness in each Bark band,
+                in asper.
+
+            -   Third element is the Bark band indexes at which the specific roughness is defined,
+                in Bark.
+
+            -   Fourth element is the roughness over time, in asper.
+
+            -   Fifth element is the time scale of the roughness over time, in s.
         """
         output = self.get_output()
 
         if output == None:
-            return None
-
-        if type(output[0]) == Field:
-            return (np.array(output[0].data), np.array(output[1].data))
+            return np.nan, np.array([]), np.array([]), np.array([]), np.array([])
 
         return (
-            self.convert_fields_container_to_np_array(output[0]),
-            self.convert_fields_container_to_np_array(output[1]),
+            np.array(output[0]),
+            np.array(output[1].data),
+            np.array(output[1].time_freq_support.time_frequencies.data),
+            np.array(output[2].data),
+            np.array(output[2].time_freq_support.time_frequencies.data),
         )
 
-    def get_roughness(self, channel_index: int = 0) -> np.float64:
-        """Get the roughness in asper for a signal.
-
-           This method gets the roughness in asper as a float for the specified channel index.
-
-        Parameters
-        ----------
-        channel_index : int, default: 0
-            Index of the signal channel to get the specified output for.
+    def get_roughness(self) -> float:
+        """Get the overall roughness in asper.
 
         Returns
         -------
-        numpy.float64
+        float
             Roughness value in asper.
         """
-        return self._get_output_parameter(channel_index, TOTAL_ROUGHNESS_ID)
+        return float(self.get_output_as_nparray()[0])
 
-    def get_specific_roughness(self, channel_index: int = 0) -> np.ndarray:
-        """Get the specific roughness for a signal.
-
-        This method gets the specific roughness in asper/Bark for the specified channel index.
-
-        Parameters
-        ----------
-        channel_index : int, default: 0
-            Index of the signal channel to get the specified output for.
+    def get_specific_roughness(self) -> np.ndarray:
+        """Get the specific roughness in asper.
 
         Returns
         -------
         numpy.ndarray
-            Specific roughness array in asper/Bark.
+            Specific roughness, that is, the roughness in each Bark band, in asper.
         """
-        return self._get_output_parameter(channel_index, SPECIFIC_ROUGHNESS_ID)
+        return self.get_output_as_nparray()[1]
 
     def get_bark_band_indexes(self) -> np.ndarray:
         """Get Bark band indexes.
@@ -175,19 +180,9 @@ class Roughness(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Array of Bark band idexes.
+            Array of Bark band indexes.
         """
-        output = self.get_output()
-
-        if output == None:
-            return None
-
-        specific_roughness = output[1]
-
-        if type(specific_roughness) == Field:
-            return np.copy(specific_roughness.time_freq_support.time_frequencies.data)
-        else:
-            return np.copy(specific_roughness[0].time_freq_support.time_frequencies.data)
+        return self.get_output_as_nparray()[2]
 
     def get_bark_band_frequencies(self) -> np.ndarray:
         """Get Bark band frequencies.
@@ -205,83 +200,55 @@ class Roughness(PsychoacousticsParent):
         """
         return self._convert_bark_to_hertz(self.get_bark_band_indexes())
 
-    def plot(self):
-        """Plot the specific roughness.
-
-        This method creates a figure window that displays the specific roughness in asper/Bark as a
-        function of the Bark band index.
-        """
-        if self._output == None:
-            raise PyAnsysSoundException(
-                "Output is not processed yet. \
-                    Use the 'Roughness.process()' method."
-            )
-
-        bark_band_indexes = self.get_bark_band_indexes()
-        specific_roughness_as_nparray = self.get_output_as_nparray()[1]
-
-        if type(self._output[1]) == Field:
-            num_channels = 1
-            plt.plot(bark_band_indexes, specific_roughness_as_nparray)
-        else:
-            num_channels = len(self._output[1])
-            if num_channels == 1:
-                plt.plot(bark_band_indexes, specific_roughness_as_nparray)
-            else:
-                for ichannel in range(num_channels):
-                    plt.plot(
-                        bark_band_indexes,
-                        specific_roughness_as_nparray[ichannel],
-                        label="Channel {}".format(ichannel),
-                    )
-
-        plt.title("Specific roughness")
-        plt.xlabel("Bark band index")
-        plt.ylabel("Roughness (asper/Bark)")
-        plt.grid(True)
-        if num_channels > 1:
-            plt.legend()
-        plt.show()
-
-    def _get_output_parameter(self, channel_index: int, output_id: str) -> np.float64 | np.ndarray:
-        """Get the individual roughness result for the signal channel.
-
-        This method returns the roughness as a float or the specific roughness as a
-        NumPy array, according to specified output ID.
-
-        Parameters
-        ----------
-        channel_index : int
-            Index of the signal channel to get the specified output for.
-        output_id: str
-            ID of the specific output parameter to return. Options are:
-
-            - ``"total"``: For overall roughness value in asper
-            - ``"specific"``: for specific roughness array in asper/Bark
+    def get_roughness_over_time(self) -> np.ndarray:
+        """Get the roughness over time in asper.
 
         Returns
         -------
-        numpy.float64 | numpy.ndarray
-            Roughness (float) in asper or specific roughness (NumPy array) in asper/Bark.
+        numpy.ndarray
+            Roughness over time in asper.
         """
-        if self.get_output() == None or not (self._check_channel_index(channel_index)):
-            return None
+        return self.get_output_as_nparray()[3]
 
-        roughness_data = self.get_output_as_nparray()
+    def get_time_scale(self) -> np.ndarray:
+        """Get the time scale of the roughness over time, in s.
 
-        # Get last channel index.
-        channel_max = len(roughness_data[0]) - 1
+        Returns
+        -------
+        numpy.ndarray
+            Time scale of the roughness over time, in s.
+        """
+        return self.get_output_as_nparray()[4]
 
-        # Return output parameter (roughness or specific roughness) for the specified channel.
-        if output_id == SPECIFIC_ROUGHNESS_ID:
-            if channel_max > 0:
-                return roughness_data[1][channel_index]
-            else:
-                return roughness_data[1]
-        elif output_id == TOTAL_ROUGHNESS_ID:
-            if channel_max > 0:
-                return roughness_data[0][channel_index][0]
-            else:
-                return roughness_data[0][0]
-        else:
-            raise PyAnsysSoundException("Identifier of output parameter is invalid.")
+    def plot(self):
+        """Plot the specific roughness and the roughness over time.
+
+        This method creates a figure window that displays the specific roughness and the roughness
+        over time.
+        """
+        if self._output == None:
+            raise PyAnsysSoundException(
+                "Output is not processed yet. Use the `Roughness.process()` method."
+            )
+
+        bark_band_indexes = self.get_bark_band_indexes()
+        specific_roughness = self.get_specific_roughness()
+        roughness_over_time = self.get_roughness_over_time()
+        time_scale = self.get_time_scale()
+
+        _, axes = plt.subplots(2, 1, sharex=False)
+
+        axes[0].plot(bark_band_indexes, specific_roughness)
+        axes[0].set_title("Specific roughness")
+        axes[0].set_xlabel("z (Bark)")
+        axes[0].set_ylabel("R' (asper)")
+        axes[0].grid(True)
+
+        axes[1].plot(time_scale, roughness_over_time)
+        axes[1].set_title("Roughness over time")
+        axes[1].set_xlabel("Time (s)")
+        axes[1].set_ylabel("R (asper)")
+        axes[1].grid(True)
+
+        plt.tight_layout()
+        plt.show()
