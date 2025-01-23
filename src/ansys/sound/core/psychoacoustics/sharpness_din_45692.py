@@ -20,11 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Computes the sharpness according to the DIN 45692 standard, over time."""
+"""Computes the sharpness according to the DIN 45692 standard."""
 import warnings
 
 from ansys.dpf.core import Field, Operator, types
-import matplotlib.pyplot as plt
 import numpy as np
 
 from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
@@ -34,13 +33,13 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 ID_COMPUTE_SHARPNESS_DIN = "compute_sharpness_din_45692"
 
 
-class SharpnessDIN45692_OverTime(PsychoacousticsParent):
-    """Computes the sharpness of a signal according to the DIN 45692 standard, over time.
+class SharpnessDIN45692(PsychoacousticsParent):
+    """Computes the sharpness of a signal according to the DIN 45692 standard.
 
     .. note::
-        The calculation of this indicator uses the loudness model for time-varying sounds in the
+        The calculation of this indicator uses the loudness model for stationary sounds in the
         standard ISO 532-1. It is the same loudness model as that which is used in class
-        :class:`LoudnessISO532_1_TimeVarying`.
+        :class:`LoudnessISO532_1_Stationary`.
     """
 
     def __init__(self, signal: Field = None, field_type: str = FIELD_FREE):
@@ -63,13 +62,13 @@ class SharpnessDIN45692_OverTime(PsychoacousticsParent):
         if self._output is None:
             str_sharpness = "Not processed"
         else:
-            str_sharpness = f"{self.get_max_sharpness():.2f} acums"
+            str_sharpness = f"{self.get_sharpness():.2f} acums"
 
         return (
             f"{__class__.__name__} object\n"
             "Data:\n"
             f'\tSignal name: {f'"{self.signal.name}"' if self.signal is not None else "Not set"}\n'
-            f"Max sharpness: {str_sharpness}"
+            f"Sharpness: {str_sharpness}"
         )
 
     @property
@@ -103,7 +102,7 @@ class SharpnessDIN45692_OverTime(PsychoacousticsParent):
         self.__field_type = field_type
 
     def process(self):
-        """Compute the DIN 45692 sharpness, over time.
+        """Compute the DIN 45692 sharpness.
 
         This method calls the appropriate DPF Sound operator.
         """
@@ -119,21 +118,17 @@ class SharpnessDIN45692_OverTime(PsychoacousticsParent):
         # Runs the operator
         self.__operator.run()
 
-        # We skip pin 0, as it contains the overall sharpness. See class `SharpnessDIN45692``.
-        self._output = (
-            self.__operator.get_output(1, types.double),
-            self.__operator.get_output(2, types.field),
-        )
+        # We skip pin 1 & 2, as they relate to sharpness over time. See class
+        # `SharpnessDIN45692OverTime`.
+        self._output = self.__operator.get_output(0, types.double)
 
-    def get_output(self) -> tuple:
-        """Get the DIN 45692 sharpness over time data in a tuple.
+    def get_output(self) -> float:
+        """Get the DIN 45692 sharpness.
 
         Returns
         -------
-        tuple
-            First element is the maximum sharpness over time, in acum.
-
-            Second element is the sharpness over time, in acum.
+        float
+            Sharpness value in acum.
         """
         if self._output == None:
             warnings.warn(
@@ -144,73 +139,27 @@ class SharpnessDIN45692_OverTime(PsychoacousticsParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> tuple[np.ndarray]:
-        """Get the DIN 45692 sharpness over time data in a tuple of NumPy arrays.
+    def get_output_as_nparray(self) -> np.ndarray:
+        """Get the DIN 45692 sharpness as a NumPy array.
 
         Returns
         -------
-        tuple[numpy.ndarray]
-            First element is the maximum sharpness over time, in acum.
-
-            Second element is the sharpness over time, in acum.
-
-            Third element is the time scale, in s.
+        numpy.ndarray
+            Singleton array containing the sharpness value in acum
         """
         output = self.get_output()
 
         if output == None:
-            return (np.nan, np.array([]), np.array([]))
+            return np.nan
 
-        return (
-            np.array(output[0].data),
-            np.array(output[1].data),
-            np.array(output[1].time_freq_support.time_frequencies.data),
-        )
+        return np.array([output])
 
-    def get_max_sharpness(self) -> float:
-        """Get the maximum DIN 45692 sharpness over time.
+    def get_sharpness(self) -> float:
+        """Get the DIN 45692 sharpness.
 
         Returns
         -------
         float
-            Maximum sharpness over time, in acum.
+            Sharpness value in acum.
         """
-        return float(self.get_output_as_nparray()[0])
-
-    def get_sharpness_over_time(self) -> np.ndarray:
-        """Get the DIN 45692 sharpness, over time.
-
-        Returns
-        -------
-        numpy.ndarray
-            Sharpness over time, in acum.
-        """
-        return self.get_output_as_nparray()[1]
-
-    def get_time_scale(self) -> np.ndarray:
-        """Get the time scale.
-
-        Returns
-        -------
-        numpy.ndarray
-            Time scale in s.
-        """
-        return self.get_output_as_nparray()[2]
-
-    def plot(self):
-        """Plot the DIN 45692 sharpness over time."""
-        if self._output == None:
-            raise PyAnsysSoundException(
-                f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
-            )
-
-        sharpness_over_time = self.get_sharpness_over_time()
-        time_scale = self.get_time_scale()
-
-        plt.figure()
-        plt.plot(time_scale, sharpness_over_time)
-        plt.xlabel("Time (s)")
-        plt.ylabel("S (acum)")
-        plt.title("Sharpness DIN 45692")
-        plt.grid()
-        plt.show()
+        return self.get_output()
