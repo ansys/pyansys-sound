@@ -205,6 +205,10 @@ def test_sharpness_set_get_signal():
     assert len(sharpness_computer.signal.data[0]) == 3
     assert sharpness_computer.signal.data[0][0] == 42
 
+    # Set invalid value
+    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
+        sharpness_computer.signal = "WrongType"
+
 
 def test_sharpness_set_get_field_type():
     """Test the field_type property of the Sharpness class."""

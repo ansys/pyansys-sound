@@ -383,3 +383,7 @@ def test_roughness_set_get_signal():
     assert isinstance(roughness_computer.signal, Field)
     assert len(roughness_computer.signal.data[0]) == 3
     assert roughness_computer.signal.data[0][0] == 42
+
+    # Set invalid value
+    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
+        roughness_computer.signal = "WrongType"
