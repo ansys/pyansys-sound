@@ -131,9 +131,9 @@ class SharpnessDIN45692OverTime(PsychoacousticsParent):
         Returns
         -------
         tuple
-            First element is the maximum sharpness over time, in acum.
+            First element (Field) is the maximum sharpness over time, in acum.
 
-            Second element is the sharpness over time, in acum.
+            Second element (float) is the sharpness over time, in acum.
         """
         if self._output == None:
             warnings.warn(
