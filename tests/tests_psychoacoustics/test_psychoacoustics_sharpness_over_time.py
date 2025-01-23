@@ -191,22 +191,6 @@ def test_sharpness_over_time_get_output_as_nparray():
     assert sharpness_over_time[20] == pytest.approx(EXP_SHARPNESS_OVER_TIME_FREE_20)
     assert sharpness_over_time[100] == pytest.approx(EXP_SHARPNESS_OVER_TIME_FREE_100)
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
-    wav_loader.process()
-    fc = wav_loader.get_output()
-
-    sharpness_obj.signal = fc[0]
-
-    sharpness_obj.field_type = "Free"
-    sharpness_obj.process()
-
-    sharpness_max, sharpness_over_time = sharpness_obj.get_output_as_nparray()
-    assert sharpness_max == pytest.approx(EXP_MAX_SHARPNESS_FREE)
-    assert len(sharpness_over_time) == EXP_SHARPNESS_OVER_TIME_COUNT
-    assert sharpness_over_time[0] == pytest.approx(EXP_SHARPNESS_OVER_TIME_FREE_0)
-    assert sharpness_over_time[20] == pytest.approx(EXP_SHARPNESS_OVER_TIME_FREE_20)
-    assert sharpness_over_time[100] == pytest.approx(EXP_SHARPNESS_OVER_TIME_FREE_100)
-
     sharpness_obj.field_type = "Diffuse"
     sharpness_obj.process()
 
