@@ -184,13 +184,10 @@ class SharpnessOverTime(PsychoacousticsParent):
     def get_time_scale(self) -> np.ndarray:
         """Get the time scale.
 
-        This method gets an array of the timestamps in seconds where time-varying
-        loudness and loudness level are defined.
-
         Returns
         -------
         numpy.ndarray
-            Timestamps in seconds.
+            Time scale in s.
         """
         return self.get_output_as_nparray()[2]
 
