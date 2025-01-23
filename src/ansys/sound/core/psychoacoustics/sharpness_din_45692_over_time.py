@@ -34,7 +34,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 ID_COMPUTE_SHARPNESS_DIN = "compute_sharpness_din_45692"
 
 
-class SharpnessDIN45692_OverTime(PsychoacousticsParent):
+class SharpnessDIN45692OverTime(PsychoacousticsParent):
     """Computes the sharpness of a signal according to the DIN 45692 standard, over time.
 
     .. note::
