@@ -205,6 +205,6 @@ class SharpnessOverTime(PsychoacousticsParent):
         plt.plot(time_scale, sharpness_over_time)
         plt.xlabel("Time (s)")
         plt.ylabel("S (acum)")
-        plt.title("Sharpness over time (Zwicker & Fastl)")
+        plt.title("Sharpness (Zwicker & Fastl)")
         plt.grid()
         plt.show()
