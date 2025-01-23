@@ -33,6 +33,8 @@ from .prominence_ratio import ProminenceRatio
 from .prominence_ratio_for_orders_over_time import ProminenceRatioForOrdersOverTime
 from .roughness import Roughness
 from .sharpness import Sharpness
+from .sharpness_din_45692 import SharpnessDIN45692
+from .sharpness_din_45692_over_time import SharpnessDIN45692_OverTime
 from .spectral_centroid import SpectralCentroid
 from .tonality_aures import TonalityAures
 from .tonality_din_45681 import TonalityDIN45681
@@ -49,6 +51,8 @@ __all__ = (
     "ProminenceRatio",
     "ToneToNoiseRatio",
     "Sharpness",
+    "SharpnessDIN45692",
+    "SharpnessDIN45692_OverTime",
     "Roughness",
     "FluctuationStrength",
     "TonalityDIN45681",
