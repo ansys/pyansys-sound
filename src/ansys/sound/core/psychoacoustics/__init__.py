@@ -25,7 +25,7 @@
 Helper functions related to the computation of psychoacoustics indicators.
 """
 
-from ._psychoacoustics_parent import PsychoacousticsParent
+from ._psychoacoustics_parent import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 from .fluctuation_strength import FluctuationStrength
 from .loudness_iso_532_1_stationary import LoudnessISO532_1_Stationary
 from .loudness_iso_532_1_time_varying import LoudnessISO532_1_TimeVarying
@@ -61,4 +61,6 @@ __all__ = (
     "ToneToNoiseRatioForOrdersOverTime",
     "TonalityISO1996_2",
     "ProminenceRatioForOrdersOverTime",
+    "FIELD_FREE",
+    "FIELD_DIFFUSE",
 )
