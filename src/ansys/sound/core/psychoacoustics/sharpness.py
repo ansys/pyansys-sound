@@ -26,14 +26,11 @@ import warnings
 from ansys.dpf.core import Field, Operator, types
 import numpy as np
 
-from . import PsychoacousticsParent
+from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_SHARPNESS = "compute_sharpness"
-
-FIELD_FREE = "Free"
-FIELD_DIFFUSE = "Diffuse"
 
 
 class Sharpness(PsychoacousticsParent):
