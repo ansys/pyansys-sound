@@ -57,6 +57,24 @@ class LoudnessANSI_S3_4(PsychoacousticsParent):
         self.field_type = field_type
         self.__operator = Operator(ID_COMPUTE_LOUDNESS_ANSI_S3_4)
 
+    def __str__(self):
+        """Return the string representation of the object."""
+        if self._output is None:
+            str_loudness = "Not processed"
+            str_loudness_level = "Not processed"
+        else:
+            str_loudness = f"{self.get_loudness_sone():.2f} sones"
+            str_loudness_level = f"{self.get_loudness_level_phon():.1f} phons"
+
+        return (
+            f"{__class__.__name__} object\n"
+            "Data:\n"
+            f'\tSignal name: {f'"{self.signal.name}"' if self.signal is not None else "Not set"}\n'
+            f"\tField type: {self.field_type}\n"
+            f"Loudness: {str_loudness}\n"
+            f"Loudness level: {str_loudness_level}"
+        )
+
     @property
     def signal(self) -> Field:
         """Input sound signal in Pa as a DPF field or fields container."""
