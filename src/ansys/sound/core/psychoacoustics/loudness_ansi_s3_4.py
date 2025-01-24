@@ -138,7 +138,7 @@ class LoudnessANSI_S3_4(PsychoacousticsParent):
             warnings.warn(
                 PyAnsysSoundWarning(
                     "Output is not processed yet. Use the "
-                    "'LoudnessISO532_1_Stationary.process()' method."
+                    f"`{__class__.__name__}.process()` method."
                 )
             )
 
