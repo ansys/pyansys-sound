@@ -125,9 +125,9 @@ class SharpnessOverTime(PsychoacousticsParent):
         Returns
         -------
         tuple
-            First element is the maximum sharpness over time, in acum.
+            -   First element is the maximum sharpness over time, in acum.
 
-            Second element is the sharpness over time, in acum.
+            -   Second element is the sharpness over time, in acum.
         """
         if self._output == None:
             warnings.warn(
@@ -144,11 +144,11 @@ class SharpnessOverTime(PsychoacousticsParent):
         Returns
         -------
         tuple[numpy.ndarray]
-            First element is the maximum sharpness over time, in acum.
+            -   First element is the maximum sharpness over time, in acum.
 
-            Second element is the sharpness over time, in acum.
+            -   Second element is the sharpness over time, in acum.
 
-            Third element is the time scale, in s.
+            -   Third element is the time scale, in s.
         """
         output = self.get_output()
 
@@ -156,7 +156,7 @@ class SharpnessOverTime(PsychoacousticsParent):
             return (np.nan, np.array([]), np.array([]))
 
         return (
-            np.array(output[0].data),
+            np.array(output[0]),
             np.array(output[1].data),
             np.array(output[1].time_freq_support.time_frequencies.data),
         )
