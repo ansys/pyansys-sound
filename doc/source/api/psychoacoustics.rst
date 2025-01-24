@@ -8,6 +8,7 @@ Psychoacoustics
 
     LoudnessISO532_1_Stationary
     LoudnessISO532_1_TimeVarying
+    LoudnessANSI_S3_4
     SpectralCentroid
     Sharpness
     Roughness
