@@ -25,7 +25,7 @@
 Helper functions related to the computation of psychoacoustics indicators.
 """
 
-from ._psychoacoustics_parent import PsychoacousticsParent
+from ._psychoacoustics_parent import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 from .fluctuation_strength import FluctuationStrength
 from .loudness_iso_532_1_stationary import LoudnessISO532_1_Stationary
 from .loudness_iso_532_1_time_varying import LoudnessISO532_1_TimeVarying
@@ -36,6 +36,7 @@ from .sharpness import Sharpness
 from .spectral_centroid import SpectralCentroid
 from .tonality_aures import TonalityAures
 from .tonality_din_45681 import TonalityDIN45681
+from .tonality_ecma_418_2 import TonalityECMA418_2
 from .tonality_iso_1996_2 import TonalityISO1996_2
 from .tonality_iso_1996_2_over_time import TonalityISO1996_2_OverTime
 from .tone_to_noise_ratio import ToneToNoiseRatio
@@ -54,7 +55,10 @@ __all__ = (
     "TonalityISO1996_2_OverTime",
     "TonalityAures",
     "SpectralCentroid",
+    "TonalityECMA418_2",
     "ToneToNoiseRatioForOrdersOverTime",
     "TonalityISO1996_2",
     "ProminenceRatioForOrdersOverTime",
+    "FIELD_FREE",
+    "FIELD_DIFFUSE",
 )
