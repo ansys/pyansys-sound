@@ -30,22 +30,25 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.psychoacoustics import SharpnessDIN45692OverTime
 from ansys.sound.core.signal_utilities import LoadWav
 
-EXP_MAX_SHARPNESS_FREE = 1.897903
-EXP_MAX_SHARPNESS_DIFFUSE = 2.019433
-EXP_SHARPNESS_OVER_TIME_COUNT = 5001
+EXP_MAX_SHARPNESS_FREE = 1.379897
+EXP_MAX_SHARPNESS_DIFFUSE = 1.446925
+EXP_SHARPNESS_OVER_TIME_COUNT = 13034
 EXP_SHARPNESS_OVER_TIME_FREE_0 = 0.0
-EXP_SHARPNESS_OVER_TIME_FREE_20 = 0.8829548
-EXP_SHARPNESS_OVER_TIME_FREE_100 = 1.721334
+EXP_SHARPNESS_OVER_TIME_FREE_20 = 0.6866303
+EXP_SHARPNESS_OVER_TIME_FREE_100 = 1.295199
 EXP_SHARPNESS_OVER_TIME_DIFFUSE_0 = 0.0
-EXP_SHARPNESS_OVER_TIME_DIFFUSE_20 = 0.9365876
-EXP_SHARPNESS_OVER_TIME_DIFFUSE_100 = 1.831538
+EXP_SHARPNESS_OVER_TIME_DIFFUSE_20 = 0.7252110
+EXP_SHARPNESS_OVER_TIME_DIFFUSE_100 = 1.375550
 EXP_TIME_0 = 0.0
 EXP_TIME_20 = 0.040
 EXP_TIME_100 = 0.200
 EXP_STR_DEFAULT = (
     "SharpnessDIN45692OverTime object\nData:\n\tSignal name: Not set\nMax sharpness: Not processed"
 )
-EXP_STR = 'SharpnessDIN45692OverTime object\nData:\n\tSignal name: ""\nMax sharpness: 1.90 acums'
+EXP_STR = (
+    'SharpnessDIN45692OverTime object\nData:\n\tSignal name: "Aircraft-App2"\n'
+    "Max sharpness: 1.38 acums"
+)
 
 
 def test_sharpness_din_45692_over_time_instantiation():
@@ -60,7 +63,7 @@ def test_sharpness_din_45692_over_time___str__():
     sharpness_obj = SharpnessDIN45692OverTime()
     assert str(sharpness_obj) == EXP_STR_DEFAULT
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -73,7 +76,7 @@ def test_sharpness_din_45692_over_time_properties():
     """Test the properties of the SharpnessDIN45692OverTime class."""
     sharpness_obj = SharpnessDIN45692OverTime()
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -106,7 +109,7 @@ def test_sharpness_din_45692_over_time_process():
     """Test the process method of the SharpnessDIN45692OverTime class."""
     sharpness_obj = SharpnessDIN45692OverTime()
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -134,7 +137,7 @@ def test_sharpness_din_45692_over_time_get_output():
     """Test the get_output method of the SharpnessDIN45692OverTime class."""
     sharpness_obj = SharpnessDIN45692OverTime()
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -190,7 +193,7 @@ def test_sharpness_din_45692_over_time_get_output_as_nparray():
     assert len(sharpness_over_time) == 0
     assert len(time_scale) == 0
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -222,7 +225,7 @@ def test_sharpness_din_45692_over_time_get_max_sharpness():
     """Test the get_max_sharpness method of the SharpnessDIN45692OverTime class."""
     sharpness_obj = SharpnessDIN45692OverTime()
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -245,7 +248,7 @@ def test_sharpness_din_45692_over_time_get_sharpness_over_time():
     """Test the get_sharpness_over_time method of the SharpnessDIN45692OverTime class."""
     sharpness_obj = SharpnessDIN45692OverTime()
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -274,7 +277,7 @@ def test_sharpness_din_45692_over_time_get_time_scale():
     """Test the get_time_scale method of the SharpnessDIN45692OverTime class."""
     sharpness_obj = SharpnessDIN45692OverTime()
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -293,7 +296,7 @@ def test_sharpness_din_45692_over_time_plot(mock_show):
     """Test the plot method of the SharpnessDIN45692OverTime class."""
     sharpness_obj = SharpnessDIN45692OverTime()
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 

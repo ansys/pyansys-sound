@@ -28,13 +28,13 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.psychoacoustics import SharpnessDIN45692
 from ansys.sound.core.signal_utilities import LoadWav
 
-EXP_MAX_SHARPNESS_FREE = 1.730914
-EXP_MAX_SHARPNESS_DIFFUSE = 1.841096
+EXP_MAX_SHARPNESS_FREE = 1.216734
+EXP_MAX_SHARPNESS_DIFFUSE = 1.225831
 
 EXP_STR_DEFAULT = (
     "SharpnessDIN45692 object\nData:\n\tSignal name: Not set\nSharpness: Not processed"
 )
-EXP_STR = 'SharpnessDIN45692 object\nData:\n\tSignal name: ""\nSharpness: 1.73 acums'
+EXP_STR = 'SharpnessDIN45692 object\nData:\n\tSignal name: "flute"\nSharpness: 1.22 acums'
 
 
 def test_sharpness_din_45692_instantiation():
@@ -49,7 +49,7 @@ def test_sharpness_din_45692___str__():
     sharpness_obj = SharpnessDIN45692()
     assert str(sharpness_obj) == EXP_STR_DEFAULT
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -62,7 +62,7 @@ def test_sharpness_din_45692_properties():
     """Test the properties of the SharpnessDIN45692 class."""
     sharpness_obj = SharpnessDIN45692()
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -95,7 +95,7 @@ def test_sharpness_din_45692_process():
     """Test the process method of the SharpnessDIN45692 class."""
     sharpness_obj = SharpnessDIN45692()
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -122,7 +122,7 @@ def test_sharpness_din_45692_get_output():
     """Test the get_output method of the SharpnessDIN45692 class."""
     sharpness_obj = SharpnessDIN45692()
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -164,7 +164,7 @@ def test_sharpness_din_45692_get_output_as_nparray():
         sharpness = sharpness_obj.get_output_as_nparray()
     assert np.isnan(sharpness)
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -187,7 +187,7 @@ def test_sharpness_din_45692_get_sharpness():
     """Test the get_sharpness method of the SharpnessDIN45692 class."""
     sharpness_obj = SharpnessDIN45692()
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
