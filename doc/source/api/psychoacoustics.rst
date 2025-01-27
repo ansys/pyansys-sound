@@ -11,6 +11,7 @@ Psychoacoustics
     LoudnessANSI_S3_4
     SpectralCentroid
     Sharpness
+    SharpnessOverTime
     Roughness
     FluctuationStrength
     ProminenceRatio
