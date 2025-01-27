@@ -10,6 +10,7 @@ Psychoacoustics
     LoudnessISO532_1_TimeVarying
     SpectralCentroid
     Sharpness
+    SharpnessOverTime
     SharpnessDIN45692
     SharpnessDIN45692OverTime
     Roughness

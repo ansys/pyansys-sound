@@ -35,6 +35,7 @@ from .roughness import Roughness
 from .sharpness import Sharpness
 from .sharpness_din_45692 import SharpnessDIN45692
 from .sharpness_din_45692_over_time import SharpnessDIN45692OverTime
+from .sharpness_over_time import SharpnessOverTime
 from .spectral_centroid import SpectralCentroid
 from .tonality_aures import TonalityAures
 from .tonality_din_45681 import TonalityDIN45681
@@ -53,6 +54,7 @@ __all__ = (
     "Sharpness",
     "SharpnessDIN45692",
     "SharpnessDIN45692OverTime",
+    "SharpnessOverTime",
     "Roughness",
     "FluctuationStrength",
     "TonalityDIN45681",
