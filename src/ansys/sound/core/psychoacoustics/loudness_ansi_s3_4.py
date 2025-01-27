@@ -31,10 +31,6 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 ID_COMPUTE_LOUDNESS_ANSI_S3_4 = "compute_loudness_ansi_s3_4"
 
-LOUDNESS_SONE_ID = "sone"
-LOUDNESS_LEVEL_PHON_ID = "phon"
-SPECIFIC_LOUDNESS_ID = "specific"
-
 
 class LoudnessANSI_S3_4(PsychoacousticsParent):
     """Computes ANSI S3.4-2007 loudness.
