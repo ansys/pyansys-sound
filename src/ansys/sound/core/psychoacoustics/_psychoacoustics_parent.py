@@ -26,7 +26,7 @@ import numpy as np
 
 from .._pyansys_sound import PyAnsysSound, PyAnsysSoundException
 
-# Sound filed types.
+# Sound field types.
 FIELD_FREE = "Free"
 FIELD_DIFFUSE = "Diffuse"
 
