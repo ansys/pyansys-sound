@@ -31,7 +31,7 @@ from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 # Name of the DPF Sound operator used in this module.
-ID_COMPUTE_SHARPNESS_DIN = "compute_sharpness_din_45692"
+ID_COMPUTE_SHARPNESS_DIN = "compute_sharpness_din45692"
 
 
 class SharpnessDIN45692OverTime(PsychoacousticsParent):
@@ -131,9 +131,9 @@ class SharpnessDIN45692OverTime(PsychoacousticsParent):
         Returns
         -------
         tuple
-            First element (Field) is the maximum sharpness over time, in acum.
+            -   First element (Field) is the maximum sharpness over time, in acum.
 
-            Second element (float) is the sharpness over time, in acum.
+            -   Second element (float) is the sharpness over time, in acum.
         """
         if self._output == None:
             warnings.warn(
@@ -150,19 +150,19 @@ class SharpnessDIN45692OverTime(PsychoacousticsParent):
         Returns
         -------
         tuple[numpy.ndarray]
-            First element is the maximum sharpness over time, in acum.
+            -   First element is the maximum sharpness over time, in acum.
 
-            Second element is the sharpness over time, in acum.
+            -   Second element is the sharpness over time, in acum.
 
-            Third element is the time scale, in s.
+            -   Third element is the time scale, in s.
         """
         output = self.get_output()
 
         if output == None:
-            return (np.nan, np.array([]), np.array([]))
+            return np.nan, np.array([]), np.array([])
 
         return (
-            np.array(output[0].data),
+            np.array(output[0]),
             np.array(output[1].data),
             np.array(output[1].time_freq_support.time_frequencies.data),
         )

@@ -30,7 +30,7 @@ from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 # Name of the DPF Sound operator used in this module.
-ID_COMPUTE_SHARPNESS_DIN = "compute_sharpness_din_45692"
+ID_COMPUTE_SHARPNESS_DIN = "compute_sharpness_din45692"
 
 
 class SharpnessDIN45692(PsychoacousticsParent):

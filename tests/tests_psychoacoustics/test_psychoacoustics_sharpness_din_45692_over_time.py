@@ -30,22 +30,22 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.psychoacoustics import SharpnessDIN45692OverTime
 from ansys.sound.core.signal_utilities import LoadWav
 
-EXP_MAX_SHARPNESS_FREE = 1.660957
-EXP_MAX_SHARPNESS_DIFFUSE = 1.747762
-EXP_SHARPNESS_OVER_TIME_COUNT = 100
-EXP_SHARPNESS_OVER_TIME_FREE_0 = 1.660957
-EXP_SHARPNESS_OVER_TIME_FREE_20 = 1.660957
-EXP_SHARPNESS_OVER_TIME_FREE_100 = 1.660957
-EXP_SHARPNESS_OVER_TIME_DIFFUSE_0 = 1.660957
-EXP_SHARPNESS_OVER_TIME_DIFFUSE_20 = 1.660957
-EXP_SHARPNESS_OVER_TIME_DIFFUSE_100 = 1.660957
+EXP_MAX_SHARPNESS_FREE = 1.897903
+EXP_MAX_SHARPNESS_DIFFUSE = 2.019433
+EXP_SHARPNESS_OVER_TIME_COUNT = 5001
+EXP_SHARPNESS_OVER_TIME_FREE_0 = 0.0
+EXP_SHARPNESS_OVER_TIME_FREE_20 = 0.8829548
+EXP_SHARPNESS_OVER_TIME_FREE_100 = 1.721334
+EXP_SHARPNESS_OVER_TIME_DIFFUSE_0 = 0.0
+EXP_SHARPNESS_OVER_TIME_DIFFUSE_20 = 0.9365876
+EXP_SHARPNESS_OVER_TIME_DIFFUSE_100 = 1.831538
 EXP_TIME_0 = 0.0
 EXP_TIME_20 = 0.040
 EXP_TIME_100 = 0.200
 EXP_STR_DEFAULT = (
     "SharpnessDIN45692OverTime object\nData:\n\tSignal name: Not set\nMax sharpness: Not processed"
 )
-EXP_STR = 'SharpnessDIN45692OverTime object\nData:\n\tSignal name: ""\nMax sharpness: 1.66 acums'
+EXP_STR = 'SharpnessDIN45692OverTime object\nData:\n\tSignal name: ""\nMax sharpness: 1.90 acums'
 
 
 def test_sharpness_din_45692_over_time_instantiation():
@@ -90,6 +90,16 @@ def test_sharpness_din_45692_over_time_properties_exceptions():
 
     with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
         sharpness_obj.signal = "WrongType"
+    assert sharpness_obj.signal is None
+
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=(
+            'Invalid field type "InvalidFieldType". Available options are "Free" and "Diffuse".'
+        ),
+    ):
+        sharpness_obj.field_type = "InvalidFieldType"
+    assert sharpness_obj.field_type == "Free"
 
 
 def test_sharpness_din_45692_over_time_process():
@@ -144,7 +154,7 @@ def test_sharpness_din_45692_over_time_get_output():
     sharpness_obj.process()
 
     sharpness_max, sharpness_over_time = sharpness_obj.get_output()
-    assert sharpness_max == pytest.approx(EXP_MAX_SHARPNESS_FREE)
+    assert sharpness_max == pytest.approx(EXP_MAX_SHARPNESS_DIFFUSE)
     assert len(sharpness_over_time.data) == EXP_SHARPNESS_OVER_TIME_COUNT
     assert sharpness_over_time.data[0] == pytest.approx(EXP_SHARPNESS_OVER_TIME_DIFFUSE_0)
     assert sharpness_over_time.data[20] == pytest.approx(EXP_SHARPNESS_OVER_TIME_DIFFUSE_20)
@@ -158,7 +168,7 @@ def test_sharpness_din_45692_over_time_get_output_warning():
     with pytest.warns(
         PyAnsysSoundWarning,
         match=(
-            "Output is not processed yet. Use the `SharpnessDIN45692OverTime.process\(\)` method."
+            "Output is not processed yet. Use the `SharpnessDIN45692OverTime.process\\(\\)` method."
         ),
     ):
         output = sharpness_obj.get_output()
@@ -172,7 +182,7 @@ def test_sharpness_din_45692_over_time_get_output_as_nparray():
     with pytest.warns(
         PyAnsysSoundWarning,
         match=(
-            "Output is not processed yet. Use the `SharpnessDIN45692OverTime.process\(\)` method."
+            "Output is not processed yet. Use the `SharpnessDIN45692OverTime.process\\(\\)` method."
         ),
     ):
         max_sharpness, sharpness_over_time, time_scale = sharpness_obj.get_output_as_nparray()
@@ -200,8 +210,8 @@ def test_sharpness_din_45692_over_time_get_output_as_nparray():
     sharpness_obj.field_type = "Diffuse"
     sharpness_obj.process()
 
-    sharpness_max, sharpness_over_time = sharpness_obj.get_output_as_nparray()
-    assert sharpness_max == pytest.approx(EXP_MAX_SHARPNESS_FREE)
+    sharpness_max, sharpness_over_time, _ = sharpness_obj.get_output_as_nparray()
+    assert sharpness_max == pytest.approx(EXP_MAX_SHARPNESS_DIFFUSE)
     assert len(sharpness_over_time) == EXP_SHARPNESS_OVER_TIME_COUNT
     assert sharpness_over_time[0] == pytest.approx(EXP_SHARPNESS_OVER_TIME_DIFFUSE_0)
     assert sharpness_over_time[20] == pytest.approx(EXP_SHARPNESS_OVER_TIME_DIFFUSE_20)
@@ -231,8 +241,8 @@ def test_sharpness_din_45692_over_time_get_max_sharpness():
     assert max_sharpness == pytest.approx(EXP_MAX_SHARPNESS_DIFFUSE)
 
 
-def test_sharpness_din_45692_over_time_get_sharpness_din_45692_over_time():
-    """Test the get_sharpness_din_45692_over_time method of the SharpnessDIN45692OverTime class."""
+def test_sharpness_din_45692_over_time_get_sharpness_over_time():
+    """Test the get_sharpness_over_time method of the SharpnessDIN45692OverTime class."""
     sharpness_obj = SharpnessDIN45692OverTime()
 
     wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
@@ -244,20 +254,20 @@ def test_sharpness_din_45692_over_time_get_sharpness_din_45692_over_time():
     sharpness_obj.field_type = "Free"
     sharpness_obj.process()
 
-    sharpness_over_time = sharpness_obj.get_sharpness_din_45692_over_time()
+    sharpness_over_time = sharpness_obj.get_sharpness_over_time()
     assert len(sharpness_over_time.data) == EXP_SHARPNESS_OVER_TIME_COUNT
-    assert sharpness_over_time.data[0] == pytest.approx(EXP_SHARPNESS_OVER_TIME_FREE_0)
-    assert sharpness_over_time.data[20] == pytest.approx(EXP_SHARPNESS_OVER_TIME_FREE_20)
-    assert sharpness_over_time.data[100] == pytest.approx(EXP_SHARPNESS_OVER_TIME_FREE_100)
+    assert sharpness_over_time[0] == pytest.approx(EXP_SHARPNESS_OVER_TIME_FREE_0)
+    assert sharpness_over_time[20] == pytest.approx(EXP_SHARPNESS_OVER_TIME_FREE_20)
+    assert sharpness_over_time[100] == pytest.approx(EXP_SHARPNESS_OVER_TIME_FREE_100)
 
     sharpness_obj.field_type = "Diffuse"
     sharpness_obj.process()
 
-    sharpness_over_time = sharpness_obj.get_sharpness_din_45692_over_time()
+    sharpness_over_time = sharpness_obj.get_sharpness_over_time()
     assert len(sharpness_over_time.data) == EXP_SHARPNESS_OVER_TIME_COUNT
-    assert sharpness_over_time.data[0] == pytest.approx(EXP_SHARPNESS_OVER_TIME_DIFFUSE_0)
-    assert sharpness_over_time.data[20] == pytest.approx(EXP_SHARPNESS_OVER_TIME_DIFFUSE_20)
-    assert sharpness_over_time.data[100] == pytest.approx(EXP_SHARPNESS_OVER_TIME_DIFFUSE_100)
+    assert sharpness_over_time[0] == pytest.approx(EXP_SHARPNESS_OVER_TIME_DIFFUSE_0)
+    assert sharpness_over_time[20] == pytest.approx(EXP_SHARPNESS_OVER_TIME_DIFFUSE_20)
+    assert sharpness_over_time[100] == pytest.approx(EXP_SHARPNESS_OVER_TIME_DIFFUSE_100)
 
 
 def test_sharpness_din_45692_over_time_get_time_scale():
@@ -299,7 +309,7 @@ def test_sharpness_din_45692_over_time_plot_exception():
     with pytest.raises(
         PyAnsysSoundException,
         match=(
-            "Output is not processed yet. Use the `SharpnessDIN45692OverTime.process\(\)` method."
+            "Output is not processed yet. Use the `SharpnessDIN45692OverTime.process\\(\\)` method."
         ),
     ):
         sharpness_obj.plot()

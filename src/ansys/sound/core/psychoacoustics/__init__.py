@@ -52,7 +52,7 @@ __all__ = (
     "ToneToNoiseRatio",
     "Sharpness",
     "SharpnessDIN45692",
-    "SharpnessDIN45692_OverTime",
+    "SharpnessDIN45692OverTime",
     "Roughness",
     "FluctuationStrength",
     "TonalityDIN45681",

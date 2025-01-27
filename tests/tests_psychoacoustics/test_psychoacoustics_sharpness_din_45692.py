@@ -28,13 +28,13 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.psychoacoustics import SharpnessDIN45692
 from ansys.sound.core.signal_utilities import LoadWav
 
-EXP_MAX_SHARPNESS_FREE = 1.660957
-EXP_MAX_SHARPNESS_DIFFUSE = 1.747762
+EXP_MAX_SHARPNESS_FREE = 1.730914
+EXP_MAX_SHARPNESS_DIFFUSE = 1.841096
 
 EXP_STR_DEFAULT = (
     "SharpnessDIN45692 object\nData:\n\tSignal name: Not set\nSharpness: Not processed"
 )
-EXP_STR = 'SharpnessDIN45692 object\nData:\n\tSignal name: ""\nSharpness: 1.66 acums'
+EXP_STR = 'SharpnessDIN45692 object\nData:\n\tSignal name: ""\nSharpness: 1.73 acums'
 
 
 def test_sharpness_din_45692_instantiation():
@@ -79,6 +79,16 @@ def test_sharpness_din_45692_properties_exceptions():
 
     with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
         sharpness_obj.signal = "WrongType"
+    assert sharpness_obj.signal is None
+
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=(
+            'Invalid field type "InvalidFieldType". Available options are "Free" and "Diffuse".'
+        ),
+    ):
+        sharpness_obj.field_type = "InvalidFieldType"
+    assert sharpness_obj.field_type == "Free"
 
 
 def test_sharpness_din_45692_process():
@@ -128,7 +138,7 @@ def test_sharpness_din_45692_get_output():
     sharpness_obj.process()
 
     sharpness = sharpness_obj.get_output()
-    assert sharpness == pytest.approx(EXP_MAX_SHARPNESS_FREE)
+    assert sharpness == pytest.approx(EXP_MAX_SHARPNESS_DIFFUSE)
 
 
 def test_sharpness_din_45692_get_output_warning():
@@ -137,7 +147,7 @@ def test_sharpness_din_45692_get_output_warning():
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the `SharpnessDIN45692.process\(\)` method.",
+        match="Output is not processed yet. Use the `SharpnessDIN45692.process\\(\\)` method.",
     ):
         output = sharpness_obj.get_output()
     assert output is None
@@ -149,7 +159,7 @@ def test_sharpness_din_45692_get_output_as_nparray():
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the `SharpnessDIN45692.process\(\)` method.",
+        match="Output is not processed yet. Use the `SharpnessDIN45692.process\\(\\)` method.",
     ):
         sharpness = sharpness_obj.get_output_as_nparray()
     assert np.isnan(sharpness)
@@ -170,7 +180,7 @@ def test_sharpness_din_45692_get_output_as_nparray():
     sharpness_obj.process()
 
     sharpness = sharpness_obj.get_output_as_nparray()
-    assert sharpness[0] == pytest.approx(EXP_MAX_SHARPNESS_FREE)
+    assert sharpness[0] == pytest.approx(EXP_MAX_SHARPNESS_DIFFUSE)
 
 
 def test_sharpness_din_45692_get_sharpness():
