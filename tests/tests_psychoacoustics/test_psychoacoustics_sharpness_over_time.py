@@ -276,7 +276,6 @@ def test_sharpness_over_time_get_time_scale():
 
     time_scale = sharpness_obj.get_time_scale()
     assert len(time_scale) == EXP_SHARPNESS_OVER_TIME_COUNT
-    assert time_scale[2000] == pytest.approx(EXP_TIME_2000)
     assert time_scale[20] == pytest.approx(EXP_TIME_20)
     assert time_scale[100] == pytest.approx(EXP_TIME_100)
     assert time_scale[2000] == pytest.approx(EXP_TIME_2000)
