@@ -63,7 +63,7 @@ class LoudnessANSI_S3_4(PsychoacousticsParent):
             str_loudness = "Not processed"
             str_loudness_level = "Not processed"
         else:
-            str_loudness = f"{self.get_loudness_sone():.2f} sones"
+            str_loudness = f"{self.get_loudness_sone():.3} sones"
             str_loudness_level = f"{self.get_loudness_level_phon():.1f} phons"
 
         return (
@@ -84,7 +84,7 @@ class LoudnessANSI_S3_4(PsychoacousticsParent):
     def signal(self, signal: Field):
         """Set the signal."""
         if not (isinstance(signal, Field) or signal is None):
-            raise PyAnsysSoundException("Signal must be specified a DPF field.")
+            raise PyAnsysSoundException("Signal must be specified as a DPF field.")
         self.__signal = signal
 
     @property

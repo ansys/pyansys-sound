@@ -27,17 +27,17 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.psychoacoustics import LoudnessANSI_S3_4
 from ansys.sound.core.signal_utilities import LoadWav
 
-EXP_LOUDNESS_FREE = 0.5
-EXP_LOUDNESS_LEVEL_FREE = 0.5
-EXP_LOUDNESS_DIFFUSE = 0.5
-EXP_LOUDNESS_LEVEL_DIFFUSE = 0.5
+EXP_LOUDNESS_FREE = 58.98927
+EXP_LOUDNESS_LEVEL_FREE = 97.42931
+EXP_LOUDNESS_DIFFUSE = 59.16265
+EXP_LOUDNESS_LEVEL_DIFFUSE = 97.46850
 EXP_STR_DEFAULT = (
     "LoudnessANSI_S3_4 object\nData:\n\tSignal name: Not set\n\tField type: Free\n"
     "Loudness: Not processed\nLoudness level: Not processed"
 )
 EXP_STR = (
-    'LoudnessANSI_S3_4 object\nData:\n\tSignal name: ""\n\tField type: Diffuse\n'
-    "Loudness: 0.00 sones\nLoudness level: 0.0 phons"
+    'LoudnessANSI_S3_4 object\nData:\n\tSignal name: "flute"\n\tField type: Diffuse\n'
+    "Loudness: 59.2 sones\nLoudness level: 97.5 phons"
 )
 
 
@@ -139,7 +139,7 @@ def test_loudness_ansi_s3_4_get_output_warning():
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the `LoudnessANSI_S3_4.process()` method.",
+        match="Output is not processed yet. Use the `LoudnessANSI_S3_4.process\\(\\)` method.",
     ):
         loudness_computer.get_output()
 
@@ -150,7 +150,7 @@ def test_loudness_ansi_s3_4_get_output_as_nparray():
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the `LoudnessANSI_S3_4.process()` method.",
+        match="Output is not processed yet. Use the `LoudnessANSI_S3_4.process\\(\\)` method.",
     ):
         loudness, loudness_level = loudness_computer.get_output_as_nparray()
     assert len(loudness) == 0
@@ -164,14 +164,14 @@ def test_loudness_ansi_s3_4_get_output_as_nparray():
     loudness_computer.field_type = "Free"
     loudness_computer.process()
     loudness, loudness_level = loudness_computer.get_output_as_nparray()
-    assert loudness[0] == pytest.approx(EXP_LOUDNESS_FREE)
-    assert loudness_level[0] == pytest.approx(EXP_LOUDNESS_LEVEL_FREE)
+    assert loudness == pytest.approx(EXP_LOUDNESS_FREE)
+    assert loudness_level == pytest.approx(EXP_LOUDNESS_LEVEL_FREE)
 
     loudness_computer.field_type = "Diffuse"
     loudness_computer.process()
     loudness, loudness_level = loudness_computer.get_output_as_nparray()
-    assert loudness[0] == pytest.approx(EXP_LOUDNESS_DIFFUSE)
-    assert loudness_level[0] == pytest.approx(EXP_LOUDNESS_LEVEL_DIFFUSE)
+    assert loudness == pytest.approx(EXP_LOUDNESS_DIFFUSE)
+    assert loudness_level == pytest.approx(EXP_LOUDNESS_LEVEL_DIFFUSE)
 
 
 def test_loudness_ansi_s3_4_get_loudness_sone():
