@@ -145,7 +145,7 @@ class SharpnessDIN45692(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Singleton array containing the sharpness value in acum
+            Singleton array containing the sharpness value in acum.
         """
         output = self.get_output()
 
