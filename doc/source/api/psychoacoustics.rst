@@ -11,6 +11,8 @@ Psychoacoustics
     SpectralCentroid
     Sharpness
     SharpnessOverTime
+    SharpnessDIN45692
+    SharpnessDIN45692OverTime
     Roughness
     FluctuationStrength
     ProminenceRatio
