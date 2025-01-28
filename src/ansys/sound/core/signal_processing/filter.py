@@ -37,25 +37,34 @@ ID_OPERATOR_FILTER = "filter_signal"
 
 
 class Filter(SignalProcessingParent):
-    """Filter class.
+    r"""Filter class.
 
     This class allows designing, loading, and applying a digital filter to a signal. The filter
-    coefficients can be provided directly, or computed from a specific frequency response function
-    (FRF). In this latter case, the filter is designed as a minimum-phase FIR filter, and the
-    filter denominator (:attr:`a_coefficients`) is set to 1 as a consequence.
+    coefficients can be provided directly, using the attributes :attr:`b_coefficients` and
+    :attr:`a_coefficients`, or computed from a specific frequency response function (FRF), using
+    the methods :meth:`design_FIR_from_FRF` or :meth:`design_FIR_from_FRF_file`. In this latter
+    case, the filter is designed as a minimum-phase FIR filter, and the filter denominator
+    (:attr:`a_coefficients`) is set to 1 as a consequence.
+
+    Filtering a signal consists in applying the filter coefficients :math:`b[k]` and :math:`a[k]`
+    in the following difference equation, with :math:`x[n]` the input signal, and :math:`y[n]` the
+    output signal:
+
+    .. math::
+        y[n] = \sum_{k=0}^{N} b[k] \cdot x[n-k] - \sum_{k=1}^{N} a[k] \cdot y[n-k]
 
     .. note::
         Whether they are derived from the provided FRF or specified directly, the filter
-        coefficients are linked to the sampling frequency value that is given in the argument
-        ``sampling_frequency`` of the ``Filter`` class. As a consequence, the signal to filter
+        coefficients are linked to the sampling frequency value that is given in the attribute
+        :attr:`sampling_frequency` of the ``Filter`` class. As a consequence, the signal to filter
         :attr:`signal` must have the same sampling frequency. If necessary, use the
         :class:`.Resample` class to resample the signal prior to using the ``Filter`` class.
     """
 
     def __init__(
         self,
-        b_coefficients: list[float] = [],
-        a_coefficients: list[float] = [],
+        b_coefficients: list[float] = None,
+        a_coefficients: list[float] = None,
         sampling_frequency: float = 44100.0,
         file: str = "",
         signal: Field = None,
@@ -64,9 +73,9 @@ class Filter(SignalProcessingParent):
 
         Parameters
         ----------
-        a_coefficients : list[float], default: []
+        a_coefficients : list[float], default: None
             Denominator coefficients of the filter.
-        b_coefficients : list[float], default: []
+        b_coefficients : list[float], default: None
             Numerator coefficients of the filter.
         sampling_frequency : float, default: 44100.0
             Sampling frequency associated with the filter coefficients, in Hz.
@@ -87,7 +96,7 @@ class Filter(SignalProcessingParent):
         self.__sampling_frequency = sampling_frequency
 
         if file != "":
-            if a_coefficients != [] or b_coefficients != []:
+            if a_coefficients is not None or b_coefficients is not None:
                 warnings.warn(
                     PyAnsysSoundWarning(
                         "Specified parameters a_coefficients and b_coefficients are ignored "
@@ -103,17 +112,17 @@ class Filter(SignalProcessingParent):
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
-        if len(self.a_coefficients) > 5:
-            str_a = str(self.a_coefficients[:5])[:-1] + ", ... ]"
-        elif len(self.a_coefficients) == 0:
+        if self.a_coefficients is None:
             str_a = "Not set"
+        elif len(self.a_coefficients) > 5:
+            str_a = str(self.a_coefficients[:5])[:-1] + ", ... ]"
         else:
             str_a = str(self.a_coefficients)
 
-        if len(self.b_coefficients) > 5:
-            str_b = str(self.b_coefficients[:5])[:-1] + ", ... ]"
-        elif len(self.b_coefficients) == 0:
+        if self.b_coefficients is None:
             str_b = "Not set"
+        elif len(self.b_coefficients) > 5:
+            str_b = str(self.b_coefficients[:5])[:-1] + ", ... ]"
         else:
             str_b = str(self.b_coefficients)
 
@@ -245,26 +254,26 @@ class Filter(SignalProcessingParent):
                 f"Input signal is not set. Use {__class__.__name__}.signal."
             )
 
-        if self.a_coefficients == []:
+        if self.a_coefficients is None or len(self.a_coefficients) == 0:
             raise PyAnsysSoundException(
-                "Filter's denominator coefficients (a_coefficients) cannot be empty. Use "
-                f"{__class__.__name__}.a_coefficients, or the methods "
+                "Filter's denominator coefficients (a_coefficients) must be defined and cannot be "
+                f"empty. Use {__class__.__name__}.a_coefficients, or the methods "
                 f"{__class__.__name__}.design_FIR_from_FRF() or "
                 f"{__class__.__name__}.design_FIR_from_FRF_file()."
             )
 
-        if self.b_coefficients == []:
+        if self.b_coefficients is None or len(self.b_coefficients) == 0:
             raise PyAnsysSoundException(
-                "Filter's numerator coefficients (b_coefficients) cannot be empty. Use "
-                f"{__class__.__name__}.b_coefficients, or the methods "
+                "Filter's numerator coefficients (b_coefficients) must be defined and cannot be "
+                f"empty. Use {__class__.__name__}.b_coefficients, or the methods "
                 f"{__class__.__name__}.design_FIR_from_FRF() or "
                 f"{__class__.__name__}.design_FIR_from_FRF_file()."
             )
 
         # Set operator inputs.
         self.__operator_filter.connect(0, self.signal)
-        self.__operator_filter.connect(1, self.b_coefficients)
-        self.__operator_filter.connect(2, self.a_coefficients)
+        self.__operator_filter.connect(1, list(self.b_coefficients))
+        self.__operator_filter.connect(2, list(self.a_coefficients))
 
         # Run the operator.
         self.__operator_filter.run()
