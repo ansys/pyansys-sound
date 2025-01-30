@@ -20,21 +20,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Computes the sharpness of the signal according to Zwicker & Fastl's model."""
+"""Computes the sharpness according to Zwicker & Fastl's model, over time."""
 import warnings
 
 from ansys.dpf.core import Field, Operator, types
+import matplotlib.pyplot as plt
 import numpy as np
 
 from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 # Name of the DPF Sound operator used in this module.
-ID_COMPUTE_SHARPNESS = "compute_sharpness"
+ID_COMPUTE_SHARPNESS_OVER_TIME = "compute_sharpness_over_time"
 
 
-class Sharpness(PsychoacousticsParent):
-    """Computes the sharpness of a signal according to Zwicker & Fastl's model."""
+class SharpnessOverTime(PsychoacousticsParent):
+    """Computes the sharpness of a signal according to Zwicker & Fastl's model, over time."""
 
     def __init__(self, signal: Field = None, field_type: str = FIELD_FREE):
         """Class instantiation takes the following parameters.
@@ -42,27 +43,27 @@ class Sharpness(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Signal in Pa on which to compute sharpness as a DPF field.
+            Signal in Pa on which to compute sharpness over time as a DPF field.
         field_type : str, default: "Free"
             Sound field type. Available options are `"Free"` and `"Diffuse"`.
         """
         super().__init__()
         self.signal = signal
         self.field_type = field_type
-        self.__operator = Operator(ID_COMPUTE_SHARPNESS)
+        self.__operator = Operator(ID_COMPUTE_SHARPNESS_OVER_TIME)
 
     def __str__(self):
         """Return the string representation of the object."""
         if self._output is None:
             str_sharpness = "Not processed"
         else:
-            str_sharpness = f"{self.get_sharpness():.2f} acums"
+            str_sharpness = f"{self.get_max_sharpness():.2f} acums"
 
         return (
             f"{__class__.__name__} object\n"
             "Data:\n"
             f'\tSignal name: {f'"{self.signal.name}"' if self.signal is not None else "Not set"}\n'
-            f"Sharpness: {str_sharpness}"
+            f"Max sharpness: {str_sharpness}"
         )
 
     @property
@@ -96,14 +97,15 @@ class Sharpness(PsychoacousticsParent):
         self.__field_type = field_type
 
     def process(self):
-        """Compute the sharpness.
+        """Compute the sharpness over time.
 
-        This method calls the appropriate DPF Sound operator to compute the sharpness
-        of the signal.
+        This method calls the appropriate DPF Sound operator to compute the sharpness over time of
+        the signal.
         """
         if self.signal == None:
             raise PyAnsysSoundException(
-                "No signal found for sharpness computation. Use `Sharpness.signal`."
+                "No signal found for sharpness over time computation. Use "
+                f"`{__class__.__name__}.signal`."
             )
 
         self.__operator.connect(0, self.signal)
@@ -112,46 +114,97 @@ class Sharpness(PsychoacousticsParent):
         # Runs the operator
         self.__operator.run()
 
-        self._output = float(self.__operator.get_output(0, types.double))
+        self._output = (
+            self.__operator.get_output(0, types.double),
+            self.__operator.get_output(1, types.field),
+        )
 
-    def get_output(self) -> float:
-        """Get the sharpness value.
+    def get_output(self) -> tuple:
+        """Get the sharpness over time data in a tuple.
 
         Returns
         -------
-        float
-            Sharpness value in acum.
+        tuple
+            -   First element is the maximum sharpness over time, in acum.
+
+            -   Second element is the sharpness over time, in acum.
         """
         if self._output == None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the `Sharpness.process()` method."
+                    f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
                 )
             )
 
         return self._output
 
-    def get_output_as_nparray(self) -> np.ndarray:
-        """Get the sharpness as a NumPy array.
+    def get_output_as_nparray(self) -> tuple[np.ndarray]:
+        """Get the sharpness over time data in a tuple of NumPy arrays.
 
         Returns
         -------
-        numpy.ndarray:
-            Singleton array containing the sharpness value in acum.
+        tuple[numpy.ndarray]
+            -   First element is the maximum sharpness over time, in acum.
+
+            -   Second element is the sharpness over time, in acum.
+
+            -   Third element is the time scale, in s.
         """
         output = self.get_output()
 
         if output == None:
-            return np.nan
+            return (np.nan, np.array([]), np.array([]))
 
-        return np.array([output])
+        return (
+            np.array(output[0]),
+            np.array(output[1].data),
+            np.array(output[1].time_freq_support.time_frequencies.data),
+        )
 
-    def get_sharpness(self) -> float:
-        """Get the sharpness value.
+    def get_max_sharpness(self) -> float:
+        """Get the maximum sharpness over time.
 
         Returns
         -------
         float
-            Sharpness value in acum.
+            Maximum sharpness over time, in acum.
         """
-        return self.get_output()
+        return float(self.get_output_as_nparray()[0])
+
+    def get_sharpness_over_time(self) -> np.ndarray:
+        """Get the sharpness over time.
+
+        Returns
+        -------
+        numpy.ndarray
+            Sharpness over time, in acum.
+        """
+        return self.get_output_as_nparray()[1]
+
+    def get_time_scale(self) -> np.ndarray:
+        """Get the time scale.
+
+        Returns
+        -------
+        numpy.ndarray
+            Time scale in s.
+        """
+        return self.get_output_as_nparray()[2]
+
+    def plot(self):
+        """Plot the sharpness over time."""
+        if self._output == None:
+            raise PyAnsysSoundException(
+                f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
+            )
+
+        sharpness_over_time = self.get_sharpness_over_time()
+        time_scale = self.get_time_scale()
+
+        plt.figure()
+        plt.plot(time_scale, sharpness_over_time)
+        plt.xlabel("Time (s)")
+        plt.ylabel("S (acum)")
+        plt.title("Sharpness (Zwicker & Fastl)")
+        plt.grid()
+        plt.show()

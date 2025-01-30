@@ -73,6 +73,9 @@ def pytest_configure():
     pytest.data_path_accel_with_rpm_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "accel_with_rpm.wav"), server=server
     )
+    pytest.data_path_aircraft_nonUnitaryCalib_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "Aircraft-App2_nonUnitaryCalib.wav"), server=server
+    )
     pytest.data_path_swl_project_file_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "SoundPowerLevelProject_hemisphere_2025R1_20243008.spw"),
         server=server,
@@ -170,6 +173,10 @@ def pytest_configure():
         os.path.join(
             base_dir, "AnsysSound_BBN_MultipleParameters Pa2PerHz Narrowband v2_2024R2_20240418.txt"
         ),
+        server=server,
+    )
+    pytest.data_path_Acceleration_with_Tacho_nonUnitaryCalib = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "Acceleration_with_Tacho_nonUnitaryCalib.wav"),
         server=server,
     )
     pytest.data_path_sound_composer_project_in_container = upload_file_in_tmp_folder(

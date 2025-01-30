@@ -60,8 +60,8 @@ def test_filter_instantiation_no_arg():
     """Test Filter instantiation without arguments."""
     filter = Filter()
     assert isinstance(filter, Filter)
-    assert len(filter.a_coefficients) == 0
-    assert len(filter.b_coefficients) == 0
+    assert filter.a_coefficients is None
+    assert filter.b_coefficients is None
     assert filter.signal is None
 
 
@@ -254,8 +254,8 @@ def test_filter_process_exceptions():
     with pytest.raises(
         PyAnsysSoundException,
         match=(
-            "Filter's denominator coefficients \\(a_coefficients\\) cannot be empty. Use "
-            "Filter.a_coefficients, or the methods Filter.design_FIR_from_FRF\\(\\) or "
+            "Filter's denominator coefficients \\(a_coefficients\\) must be defined and cannot be "
+            "empty. Use Filter.a_coefficients, or the methods Filter.design_FIR_from_FRF\\(\\) or "
             "Filter.design_FIR_from_FRF_file\\(\\)."
         ),
     ):
@@ -267,8 +267,8 @@ def test_filter_process_exceptions():
     with pytest.raises(
         PyAnsysSoundException,
         match=(
-            "Filter's numerator coefficients \\(b_coefficients\\) cannot be empty. Use "
-            "Filter.b_coefficients, or the methods Filter.design_FIR_from_FRF\\(\\) or "
+            "Filter's numerator coefficients \\(b_coefficients\\) must be defined and cannot be "
+            "empty. Use Filter.b_coefficients, or the methods Filter.design_FIR_from_FRF\\(\\) or "
             "Filter.design_FIR_from_FRF_file\\(\\)."
         ),
     ):

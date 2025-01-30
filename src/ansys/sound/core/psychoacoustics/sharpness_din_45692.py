@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Computes the sharpness of the signal according to Zwicker & Fastl's model."""
+"""Computes the sharpness according to the DIN 45692 standard."""
 import warnings
 
 from ansys.dpf.core import Field, Operator, types
@@ -30,11 +30,17 @@ from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 # Name of the DPF Sound operator used in this module.
-ID_COMPUTE_SHARPNESS = "compute_sharpness"
+ID_COMPUTE_SHARPNESS_DIN = "compute_sharpness_din45692"
 
 
-class Sharpness(PsychoacousticsParent):
-    """Computes the sharpness of a signal according to Zwicker & Fastl's model."""
+class SharpnessDIN45692(PsychoacousticsParent):
+    """Computes the sharpness of a signal according to the DIN 45692 standard.
+
+    .. note::
+        The calculation of this indicator uses the loudness model for stationary sounds in the
+        standard ISO 532-1. It is the same loudness model as that which is used in class
+        :class:`LoudnessISO532_1_Stationary`.
+    """
 
     def __init__(self, signal: Field = None, field_type: str = FIELD_FREE):
         """Class instantiation takes the following parameters.
@@ -42,14 +48,14 @@ class Sharpness(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Signal in Pa on which to compute sharpness as a DPF field.
+            Signal in Pa on which to compute sharpness over time as a DPF field.
         field_type : str, default: "Free"
             Sound field type. Available options are `"Free"` and `"Diffuse"`.
         """
         super().__init__()
         self.signal = signal
         self.field_type = field_type
-        self.__operator = Operator(ID_COMPUTE_SHARPNESS)
+        self.__operator = Operator(ID_COMPUTE_SHARPNESS_DIN)
 
     def __str__(self):
         """Return the string representation of the object."""
@@ -96,14 +102,14 @@ class Sharpness(PsychoacousticsParent):
         self.__field_type = field_type
 
     def process(self):
-        """Compute the sharpness.
+        """Compute the DIN 45692 sharpness.
 
-        This method calls the appropriate DPF Sound operator to compute the sharpness
-        of the signal.
+        This method calls the appropriate DPF Sound operator.
         """
         if self.signal == None:
             raise PyAnsysSoundException(
-                "No signal found for sharpness computation. Use `Sharpness.signal`."
+                "No signal found for sharpness over time computation. Use "
+                f"`{__class__.__name__}.signal`."
             )
 
         self.__operator.connect(0, self.signal)
@@ -112,10 +118,12 @@ class Sharpness(PsychoacousticsParent):
         # Runs the operator
         self.__operator.run()
 
-        self._output = float(self.__operator.get_output(0, types.double))
+        # We skip pin 1 & 2, as they relate to sharpness over time. See class
+        # `SharpnessDIN45692OverTime`.
+        self._output = self.__operator.get_output(0, types.double)
 
     def get_output(self) -> float:
-        """Get the sharpness value.
+        """Get the DIN 45692 sharpness.
 
         Returns
         -------
@@ -125,18 +133,18 @@ class Sharpness(PsychoacousticsParent):
         if self._output == None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the `Sharpness.process()` method."
+                    f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
                 )
             )
 
         return self._output
 
     def get_output_as_nparray(self) -> np.ndarray:
-        """Get the sharpness as a NumPy array.
+        """Get the DIN 45692 sharpness as a NumPy array.
 
         Returns
         -------
-        numpy.ndarray:
+        numpy.ndarray
             Singleton array containing the sharpness value in acum.
         """
         output = self.get_output()
@@ -147,7 +155,7 @@ class Sharpness(PsychoacousticsParent):
         return np.array([output])
 
     def get_sharpness(self) -> float:
-        """Get the sharpness value.
+        """Get the DIN 45692 sharpness.
 
         Returns
         -------
