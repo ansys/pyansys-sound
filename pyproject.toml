@@ -29,9 +29,7 @@ dependencies = [
 
 [project.optional-dependencies]
 tests = [
-    "ansys-dpf-core@git+https://github.com/ansys/pydpf-core#egg=master",
     "matplotlib==3.10.0",
-
     "pytest==8.3.4",
     "pytest-cov==6.0.0",
     "pytest-dependency==0.6.0",
