@@ -27,8 +27,11 @@ from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
 
-from . import PsychoacousticsParent
+from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+
+# Name of the DPF Sound operator used in this module.
+ID_COMPUTE_LOUDNESS_ISO_TIME_VARYING = "compute_loudness_iso532_1_vs_time"
 
 
 class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
@@ -38,7 +41,11 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
     sounds.
     """
 
-    def __init__(self, signal: Field | FieldsContainer = None):
+    def __init__(
+        self,
+        signal: Field | FieldsContainer = None,
+        field_type: str = FIELD_FREE,
+    ):
         """Class instantiation takes the following parameters.
 
         Parameters
@@ -46,10 +53,13 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         signal : Field | FieldsContainer
             Signal to compute time-varying ISO532-1 loudness on as a DPF field or fields
             container.
+        field_type : str, default: "Free"
+            Sound field type. Available options are `"Free"` and `"Diffuse"`.
         """
         super().__init__()
         self.signal = signal
-        self.__operator = Operator("compute_loudness_iso532_1_vs_time")
+        self.field_type = field_type
+        self.__operator = Operator(ID_COMPUTE_LOUDNESS_ISO_TIME_VARYING)
 
     @property
     def signal(self) -> Field | FieldsContainer:
@@ -60,6 +70,24 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
     def signal(self, signal: Field | FieldsContainer):
         """Set the signal."""
         self.__signal = signal
+
+    @property
+    def field_type(self) -> str:
+        """Sound field type.
+
+        Available options are `"Free"` and `"Diffuse"`.
+        """
+        return self.__field_type
+
+    @field_type.setter
+    def field_type(self, field_type: str):
+        """Set the sound field type."""
+        if field_type.lower() not in [FIELD_FREE.lower(), FIELD_DIFFUSE.lower()]:
+            raise PyAnsysSoundException(
+                f'Invalid field type "{field_type}". Available options are "{FIELD_FREE}" and '
+                f'"{FIELD_DIFFUSE}".'
+            )
+        self.__field_type = field_type
 
     def process(self):
         """Compute the time-varying ISO532-1 loudness.
@@ -73,6 +101,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             )
 
         self.__operator.connect(0, self.signal)
+        self.__operator.connect(1, self.field_type)
 
         # Runs the operator
         self.__operator.run()
