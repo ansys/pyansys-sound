@@ -228,9 +228,9 @@ class SourceBroadbandNoise(SourceParent):
             Source control data as a DPF generic data container.
         """
         self.source_bbn = gdc_source.get_property("sound_composer_source")
-        self.source_control1 = SourceControlTime()
+        self.source_control = SourceControlTime()
         control = gdc_source_control.get_property("sound_composer_source_control_one_parameter")
-        self.source_control1.control = control
+        self.source_control.control = control
 
     def get_as_generic_data_containers(self) -> tuple[GenericDataContainer]:
         """Get the source and source control data as generic data containers.

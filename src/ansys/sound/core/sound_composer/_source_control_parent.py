@@ -33,9 +33,9 @@ class SpectrumSynthesisMethods(Enum):
     in the DPF Sound operators.
     """
 
-    IFFT = 1
+    IFFT = 0
     """Synthesis method based on the Inverse Fast Fourier Transform of the input spectrum."""
-    Hybrid = 2
+    Hybrid = 1
     """Hybrid synthesis method (Harmonic/IFFT), which combines pure tones generation and IFFT.
     If peaks are detected in the spectrum, they are synthesized as pure tones (sine waves).
     The rest is synthesized using the Inverse Fast Fourier Transform method."""

@@ -23,10 +23,11 @@
 """Sound Composer's sound_composer."""
 import warnings
 
-from ansys.dpf.core import Field, GenericDataContainersCollection, Operator
+from ansys.dpf.core import Field, FieldsContainer, GenericDataContainersCollection, Operator
 from matplotlib import pyplot as plt
 import numpy as np
 
+from ansys.sound.core.signal_utilities import SumSignals
 from ansys.sound.core.sound_composer._sound_composer_parent import SoundComposerParent
 from ansys.sound.core.sound_composer.track import Track
 
@@ -56,12 +57,13 @@ class SoundComposer(SoundComposerParent):
         """
         super().__init__()
         self.__operator_load = Operator(ID_OPERATOR_LOAD)
-        self.__operator_save = Operator(ID_OPERATOR_SAVE)
+        # Save operator is not implemented yet, because the FRF is not stored in the Filter class.
+        # self.__operator_save = Operator(ID_OPERATOR_SAVE)
+
+        self.tracks = []
 
         if len(project_path) > 0:
             self.load(project_path)
-        else:
-            self.tracks = []
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
@@ -101,7 +103,7 @@ class SoundComposer(SoundComposerParent):
         if not isinstance(track, Track):
             raise PyAnsysSoundException("Input track object must be of type Track.")
 
-        self.__tracks.append(track)
+        self.tracks.append(track)
 
     def load(self, project_path: str):
         """Load a Sound Composer project.
@@ -159,10 +161,18 @@ class SoundComposer(SoundComposerParent):
             )
             self._output = None
         else:
-            self._output = Field()
-            for track in self.tracks:
+            track_signals = FieldsContainer()
+            track_signals.labels = ["index"]
+            for index, track in enumerate(self.tracks):
                 track.process(sampling_frequency)
-                self._output += track.get_output()
+                track_signal = track.get_output()
+                track_signal.unit = ""
+                track_signals.add_field({"index": index}, track_signal)
+
+            track_sum = SumSignals(signals=track_signals)
+            track_sum.process()
+
+            self._output = track_sum.get_output()
 
     def get_output(self) -> Field:
         """Get the generated signal as a DPF field.
@@ -201,11 +211,11 @@ class SoundComposer(SoundComposerParent):
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the {__class__.__name__}.process() method."
             )
-        output_time = self._output.time_freq_support.time_frequencies.data
+        output_signal = self.get_output()
 
-        plt.plot(output_time, self._output.data)
+        plt.plot(output_signal.time_freq_support.time_frequencies.data, output_signal.data)
         plt.title("Generated signal")
         plt.xlabel("Time (s)")
-        plt.ylabel(f"Amplitude{f' ({self._output.unit})' if len(self._output.unit) > 0 else ''}")
+        plt.ylabel(f"Amplitude")
         plt.grid(True)
         plt.show()

@@ -180,7 +180,7 @@ def pytest_configure():
         server=server,
     )
     pytest.data_path_sound_composer_project_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "20241031_SoundComposerProjectForDpfSoundTesting.scn"),
+        os.path.join(base_dir, "20250130_SoundComposerProjectForDpfSoundTesting_valid.scn"),
         server=server,
     )
 
