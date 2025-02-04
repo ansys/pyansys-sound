@@ -154,7 +154,7 @@ flute_signal = wav_loader.get_output()[0]
 # %%
 # Create a PowerSpectralDensity object, set its input signal and parameters, and compute the PSD.
 psd_object = PowerSpectralDensity(
-    flute_signal, fft_size=8192, window_type="HANN", window_length=8192, overlap=0.8
+    flute_signal, fft_size=32768, window_type="HANN", window_length=32768, overlap=0.5
 )
 psd_object.process()
 
