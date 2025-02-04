@@ -30,9 +30,11 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.psychoacoustics import LoudnessISO532_1_Stationary
 from ansys.sound.core.signal_utilities import LoadWav
 
-EXP_LOUDNESS_1 = 39.58000183105469
+EXP_LOUDNESS_FREE = 39.58000183105469
+EXP_LOUDNESS_DIFFUSE = 42.02
 EXP_LOUDNESS_2 = 16.18000030517578
-EXP_LOUDNESS_LEVEL_1 = 93.0669937133789
+EXP_LOUDNESS_LEVEL_FREE = 93.0669937133789
+EXP_LOUDNESS_LEVEL_DIFFUSE = 93.93004
 EXP_LOUDNESS_LEVEL_2 = 80.16139221191406
 EXP_SPECIFIC_LOUDNESS_1_0 = 0.0
 EXP_SPECIFIC_LOUDNESS_1_9 = 0.15664348006248474
@@ -53,11 +55,13 @@ SPECIFIC_LOUDNESS_ID = "specific"
 
 
 def test_loudness_iso_532_1_stationary_instantiation():
+    """Test the instantiation of the LoudnessISO532_1_Stationary class."""
     loudness_computer = LoudnessISO532_1_Stationary()
     assert loudness_computer != None
 
 
 def test_loudness_iso_532_1_stationary_process():
+    """Test the process method of the LoudnessISO532_1_Stationary class."""
     loudness_computer = LoudnessISO532_1_Stationary()
 
     # No signal -> error
@@ -85,6 +89,7 @@ def test_loudness_iso_532_1_stationary_process():
 
 
 def test_loudness_iso_532_1_stationary_get_output():
+    """Test the get_output method of the LoudnessISO532_1_Stationary class."""
     loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -116,6 +121,7 @@ def test_loudness_iso_532_1_stationary_get_output():
 
 
 def test_loudness_iso_532_1_stationary_get_loudness_sone():
+    """Test the get_loudness_sone method of the LoudnessISO532_1_Stationary class."""
     loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -145,7 +151,7 @@ def test_loudness_iso_532_1_stationary_get_loudness_sone():
 
     loudness_sone = loudness_computer.get_loudness_sone(0)
     assert type(loudness_sone) == np.float64
-    assert loudness_sone == pytest.approx(EXP_LOUDNESS_1)
+    assert loudness_sone == pytest.approx(EXP_LOUDNESS_FREE)
 
     # Set signal as a fields container
     loudness_computer.signal = fc
@@ -154,7 +160,7 @@ def test_loudness_iso_532_1_stationary_get_loudness_sone():
 
     loudness_sone = loudness_computer.get_loudness_sone(0)
     assert type(loudness_sone) == np.float64
-    assert loudness_sone == pytest.approx(EXP_LOUDNESS_1)
+    assert loudness_sone == pytest.approx(EXP_LOUDNESS_FREE)
 
     # Add a second signal in the fields container
     # Note: No need to re-assign the signal property, as fc is simply an alias for it
@@ -167,13 +173,14 @@ def test_loudness_iso_532_1_stationary_get_loudness_sone():
 
     loudness_sone = loudness_computer.get_loudness_sone(0)
     assert type(loudness_sone) == np.float64
-    assert loudness_sone == pytest.approx(EXP_LOUDNESS_1)
+    assert loudness_sone == pytest.approx(EXP_LOUDNESS_FREE)
     loudness_sone = loudness_computer.get_loudness_sone(1)
     assert type(loudness_sone) == np.float64
     assert loudness_sone == pytest.approx(EXP_LOUDNESS_2)
 
 
 def test_loudness_iso_532_1_stationary_get_loudness_level_phon():
+    """Test the get_loudness_level_phon method of the LoudnessISO532_1_Stationary class."""
     loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -197,10 +204,11 @@ def test_loudness_iso_532_1_stationary_get_loudness_level_phon():
 
     loudness_level_phon = loudness_computer.get_loudness_level_phon()
     assert type(loudness_level_phon) == np.float64
-    assert loudness_level_phon == pytest.approx(EXP_LOUDNESS_LEVEL_1)
+    assert loudness_level_phon == pytest.approx(EXP_LOUDNESS_LEVEL_FREE)
 
 
 def test_loudness_iso_532_1_stationary_get_specific_loudness():
+    """Test the get_specific_loudness method of the LoudnessISO532_1_Stationary class."""
     loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -247,6 +255,7 @@ def test_loudness_iso_532_1_stationary_get_specific_loudness():
 
 
 def test_loudness_iso_532_1_stationary__get_ouptut_parameter():
+    """Test the _get_output_parameter method of the LoudnessISO532_1_Stationary class."""
     loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -280,11 +289,11 @@ def test_loudness_iso_532_1_stationary__get_ouptut_parameter():
 
     param = loudness_computer._get_output_parameter(0, LOUDNESS_SONE_ID)
     assert type(param) == np.float64
-    assert param == pytest.approx(EXP_LOUDNESS_1)
+    assert param == pytest.approx(EXP_LOUDNESS_FREE)
 
     param = loudness_computer._get_output_parameter(0, LOUDNESS_LEVEL_PHON_ID)
     assert type(param) == np.float64
-    assert param == pytest.approx(EXP_LOUDNESS_LEVEL_1)
+    assert param == pytest.approx(EXP_LOUDNESS_LEVEL_FREE)
 
     param = loudness_computer._get_output_parameter(0, SPECIFIC_LOUDNESS_ID)
     assert type(param) == np.ndarray
@@ -319,6 +328,7 @@ def test_loudness_iso_532_1_stationary__get_ouptut_parameter():
 
 
 def test_loudness_iso_532_1_stationary_get_bark_band_indexes():
+    """Test the _get_bark_band_indexes method of the LoudnessISO532_1_Stationary class."""
     loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -361,6 +371,7 @@ def test_loudness_iso_532_1_stationary_get_bark_band_indexes():
 
 
 def test_loudness_iso_532_1_stationary_get_bark_band_frequencies():
+    """Test the get_bark_band_frequencies method of the LoudnessISO532_1_Stationary class."""
     loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -381,6 +392,7 @@ def test_loudness_iso_532_1_stationary_get_bark_band_frequencies():
 
 
 def test_loudness_iso_532_1_stationary_get_output_as_nparray_from_fields_container():
+    """Test the get_output_as_nparray method of the LoudnessISO532_1_Stationary class."""
     loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -409,10 +421,10 @@ def test_loudness_iso_532_1_stationary_get_output_as_nparray_from_fields_contain
     ) = loudness_computer.get_output_as_nparray()
     assert type(loudness_sone) == np.ndarray
     assert len(loudness_sone) == 1
-    assert loudness_sone[0] == pytest.approx(EXP_LOUDNESS_1)
+    assert loudness_sone[0] == pytest.approx(EXP_LOUDNESS_FREE)
     assert type(loudness_level_phon) == np.ndarray
     assert len(loudness_level_phon) == 1
-    assert loudness_level_phon[0] == pytest.approx(EXP_LOUDNESS_LEVEL_1)
+    assert loudness_level_phon[0] == pytest.approx(EXP_LOUDNESS_LEVEL_FREE)
     assert type(specific_loudness) == np.ndarray
     assert len(specific_loudness) == 240
     assert specific_loudness[0] == pytest.approx(0.0)
@@ -421,6 +433,7 @@ def test_loudness_iso_532_1_stationary_get_output_as_nparray_from_fields_contain
 
 
 def test_loudness_iso_532_1_stationary_get_output_as_nparray_from_field():
+    """Test the get_output_as_nparray method of the LoudnessISO532_1_Stationary class."""
     loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -429,6 +442,8 @@ def test_loudness_iso_532_1_stationary_get_output_as_nparray_from_field():
 
     # Set signal
     loudness_computer.signal = fc[0]
+    loudness_computer.field_type = "Free"
+
     # Compute
     loudness_computer.process()
 
@@ -439,19 +454,33 @@ def test_loudness_iso_532_1_stationary_get_output_as_nparray_from_field():
     ) = loudness_computer.get_output_as_nparray()
     assert type(loudness_sone) == np.ndarray
     assert len(loudness_sone) == 1
-    assert loudness_sone[0] == pytest.approx(EXP_LOUDNESS_1)
+    assert loudness_sone[0] == pytest.approx(EXP_LOUDNESS_FREE)
     assert type(loudness_level_phon) == np.ndarray
     assert len(loudness_level_phon) == 1
-    assert loudness_level_phon[0] == pytest.approx(EXP_LOUDNESS_LEVEL_1)
+    assert loudness_level_phon[0] == pytest.approx(EXP_LOUDNESS_LEVEL_FREE)
     assert type(specific_loudness) == np.ndarray
     assert len(specific_loudness) == 240
     assert specific_loudness[0] == pytest.approx(0.0)
     assert specific_loudness[9] == pytest.approx(EXP_SPECIFIC_LOUDNESS_1_9)
     assert specific_loudness[40] == pytest.approx(EXP_SPECIFIC_LOUDNESS_1_40)
 
+    loudness_computer.field_type = "Diffuse"
+
+    # Compute
+    loudness_computer.process()
+
+    (
+        loudness_sone,
+        loudness_level_phon,
+        specific_loudness,
+    ) = loudness_computer.get_output_as_nparray()
+    assert loudness_sone[0] == pytest.approx(EXP_LOUDNESS_DIFFUSE)
+    assert loudness_level_phon[0] == pytest.approx(EXP_LOUDNESS_LEVEL_DIFFUSE)
+
 
 @patch("matplotlib.pyplot.show")
 def test_loudness_iso_532_1_stationary_plot_from_fields_container(mock_show):
+    """Test the plot method of the LoudnessISO532_1_Stationary class."""
     loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -490,6 +519,7 @@ def test_loudness_iso_532_1_stationary_plot_from_fields_container(mock_show):
 
 @patch("matplotlib.pyplot.show")
 def test_loudness_iso_532_1_stationary_plot_from_field(mock_show):
+    """Test the plot method of the LoudnessISO532_1_Stationary class."""
     loudness_computer = LoudnessISO532_1_Stationary()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -506,6 +536,7 @@ def test_loudness_iso_532_1_stationary_plot_from_field(mock_show):
 
 
 def test_loudness_iso_532_1_stationary_set_get_signal():
+    """Test the signal property of the LoudnessISO532_1_Stationary class."""
     loudness_computer = LoudnessISO532_1_Stationary()
     fc = FieldsContainer()
     fc.labels = ["channel"]
@@ -519,3 +550,26 @@ def test_loudness_iso_532_1_stationary_set_get_signal():
     assert fc_from_get.name == "testField"
     assert len(fc_from_get) == 1
     assert fc_from_get[0].data[0, 2] == 42
+
+
+def test_loudness_iso_532_1_stationary_set_get_field_type():
+    """Test the field_type property of the LoudnessISO532_1_Stationary class."""
+    loudness_computer = LoudnessISO532_1_Stationary()
+
+    # Set value
+    loudness_computer.field_type = "Diffuse"
+    assert loudness_computer.field_type == "Diffuse"
+
+    # Check case insensitivity
+    loudness_computer.field_type = "diffuse"
+    assert loudness_computer.field_type == "diffuse"
+
+    loudness_computer.field_type = "DIFFUSE"
+    assert loudness_computer.field_type == "DIFFUSE"
+
+    # Set invalid value
+    with pytest.raises(
+        PyAnsysSoundException,
+        match='Invalid field type "Invalid". Available options are "Free" and "Diffuse".',
+    ):
+        loudness_computer.field_type = "Invalid"

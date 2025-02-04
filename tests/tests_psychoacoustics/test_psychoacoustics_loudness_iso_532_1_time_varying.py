@@ -32,11 +32,13 @@ from ansys.sound.core.signal_utilities import LoadWav
 
 
 def test_loudness_iso_532_1_time_varying_instantiation():
+    """Test the instantiation of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     assert time_varying_loudness_computer != None
 
 
 def test_loudness_iso_532_1_time_varying_process():
+    """Test the process method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
 
     # no signal -> error 1
@@ -65,6 +67,7 @@ def test_loudness_iso_532_1_time_varying_process():
 
 
 def test_loudness_iso_532_1_time_varying_get_output():
+    """Test the get_output method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -96,6 +99,7 @@ def test_loudness_iso_532_1_time_varying_get_output():
 
 
 def test_loudness_iso_532_1_time_varying_get_output_as_nparray_from_field_container():
+    """Test the get_output_as_nparray method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -144,6 +148,7 @@ def test_loudness_iso_532_1_time_varying_get_output_as_nparray_from_field_contai
 
 
 def test_loudness_iso_532_1_time_varying_get_output_as_nparray_from_field():
+    """Test the get_output_as_nparray method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -152,6 +157,8 @@ def test_loudness_iso_532_1_time_varying_get_output_as_nparray_from_field():
 
     # set signal
     time_varying_loudness_computer.signal = fc[0]
+    time_varying_loudness_computer.field_type = "Free"
+
     # compute
     time_varying_loudness_computer.process()
 
@@ -186,8 +193,20 @@ def test_loudness_iso_532_1_time_varying_get_output_as_nparray_from_field():
     assert len(L10) == 1
     assert L10[0] == pytest.approx(94.63481140136719)
 
+    time_varying_loudness_computer.field_type = "Diffuse"
+
+    # compute
+    time_varying_loudness_computer.process()
+
+    _, N5, N10, _, L5, L10 = time_varying_loudness_computer.get_output_as_nparray()
+    assert N5[0] == pytest.approx(47.87789)
+    assert N10[0] == pytest.approx(46.89662)
+    assert L5[0] == pytest.approx(95.81287)
+    assert L10[0] == pytest.approx(95.51412)
+
 
 def test_loudness_iso_532_1_time_varying_get_loudness_vs_time_sone():
+    """Test the get_loudness_sone_vs_time method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -211,6 +230,7 @@ def test_loudness_iso_532_1_time_varying_get_loudness_vs_time_sone():
 
 
 def test_loudness_iso_532_1_time_varying_get_loudness_vs_time_sone_from_multichannel_fc():
+    """Test the get_loudness_sone_vs_time method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
@@ -231,6 +251,7 @@ def test_loudness_iso_532_1_time_varying_get_loudness_vs_time_sone_from_multicha
 
 
 def test_loudness_iso_532_1_time_varying_get_loudness_vs_time_phon():
+    """Test the get_loudness_level_phon_vs_time method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -254,6 +275,7 @@ def test_loudness_iso_532_1_time_varying_get_loudness_vs_time_phon():
 
 
 def test_loudness_iso_532_1_time_varying_get_loudness_vs_time_from_multichannel_fc():
+    """Test the get_loudness_level_phon_vs_time method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
@@ -274,6 +296,7 @@ def test_loudness_iso_532_1_time_varying_get_loudness_vs_time_from_multichannel_
 
 
 def test_loudness_iso_532_1_time_varying_get_N5():
+    """Test the get_N5_sone method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -300,6 +323,7 @@ def test_loudness_iso_532_1_time_varying_get_N5():
 
 
 def test_loudness_iso_532_1_time_varying_get_N5_from_field():
+    """Test the get_N5_sone method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -324,6 +348,7 @@ def test_loudness_iso_532_1_time_varying_get_N5_from_field():
 
 
 def test_loudness_iso_532_1_time_varying_get_N10():
+    """Test the get_N10_sone method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -343,6 +368,7 @@ def test_loudness_iso_532_1_time_varying_get_N10():
 
 
 def test_loudness_iso_532_1_time_varying_get_N10_from_field():
+    """Test the get_N10_sone method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -359,6 +385,7 @@ def test_loudness_iso_532_1_time_varying_get_N10_from_field():
 
 
 def test_loudness_iso_532_1_time_varying_get_L5():
+    """Test the get_L5_phon method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -378,6 +405,7 @@ def test_loudness_iso_532_1_time_varying_get_L5():
 
 
 def test_loudness_iso_532_1_time_varying_get_L5_from_field():
+    """Test the get_L5_phon method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -394,6 +422,7 @@ def test_loudness_iso_532_1_time_varying_get_L5_from_field():
 
 
 def test_loudness_iso_532_1_time_varying_get_L10():
+    """Test the get_L10_phon method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -413,6 +442,7 @@ def test_loudness_iso_532_1_time_varying_get_L10():
 
 
 def test_loudness_iso_532_1_time_varying_get_L10_from_field():
+    """Test the get_L10_phon method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -429,6 +459,7 @@ def test_loudness_iso_532_1_time_varying_get_L10_from_field():
 
 
 def test_loudness_iso_532_1_time_varying_get_time_scale():
+    """Test the get_time_scale method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -453,6 +484,7 @@ def test_loudness_iso_532_1_time_varying_get_time_scale():
 
 @patch("matplotlib.pyplot.show")
 def test_loudness_iso_532_1_time_varying_plot_from_field_container(mock_show):
+    """Test the plot method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
 
     # Load a signal
@@ -492,6 +524,7 @@ def test_loudness_iso_532_1_time_varying_plot_from_field_container(mock_show):
 
 @patch("matplotlib.pyplot.show")
 def test_loudness_iso_532_1_time_varying_plot_from_field(mock_show):
+    """Test the plot method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     # get a signal
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -508,6 +541,7 @@ def test_loudness_iso_532_1_time_varying_plot_from_field(mock_show):
 
 
 def test_loudness_iso_532_1_time_varying_set_get_signal():
+    """Test the set and get signal methods of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
     fc = FieldsContainer()
     fc.labels = ["channel"]
@@ -521,3 +555,26 @@ def test_loudness_iso_532_1_time_varying_set_get_signal():
     assert fc_from_get.name == "testField"
     assert len(fc_from_get) == 1
     assert fc_from_get[0].data[0, 2] == 42
+
+
+def test_loudness_iso_532_1_time_varying_set_get_field_type():
+    """Test the field_type property of the LoudnessISO532_1_TimeVarying class."""
+    time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
+
+    # Set value
+    time_varying_loudness_computer.field_type = "Diffuse"
+    assert time_varying_loudness_computer.field_type == "Diffuse"
+
+    # Check case insensitivity
+    time_varying_loudness_computer.field_type = "diffuse"
+    assert time_varying_loudness_computer.field_type == "diffuse"
+
+    time_varying_loudness_computer.field_type = "DIFFUSE"
+    assert time_varying_loudness_computer.field_type == "DIFFUSE"
+
+    # Set invalid value
+    with pytest.raises(
+        PyAnsysSoundException,
+        match='Invalid field type "Invalid". Available options are "Free" and "Diffuse".',
+    ):
+        time_varying_loudness_computer.field_type = "Invalid"
