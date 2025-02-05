@@ -30,14 +30,10 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.psychoacoustics import FluctuationStrength
 from ansys.sound.core.signal_utilities import LoadWav
 
-EXP_FS_1 = 1.0416046380996704
-EXP_FS_2 = 0.9974160194396973
-EXP_SPECIFIC_FS_1_0 = 0.09723643958568573
-EXP_SPECIFIC_FS_1_9 = 0.15443961322307587
-EXP_SPECIFIC_FS_1_40 = 0.17233367264270782
-EXP_SPECIFIC_FS_2_15 = 0.26900193095207214
-EXP_SPECIFIC_FS_2_17 = 0.2570513188838959
-EXP_SPECIFIC_FS_2_40 = 0.11656410992145538
+EXP_FS = 1.0416046380996704
+EXP_SPECIFIC_FS_0 = 0.09723643958568573
+EXP_SPECIFIC_FS_9 = 0.15443961322307587
+EXP_SPECIFIC_FS_40 = 0.17233367264270782
 EXP_BARK_0 = 0.5
 EXP_BARK_9 = 5.0
 EXP_BARK_40 = 20.5
@@ -104,11 +100,11 @@ def test_fs_get_output():
 
     (fs, specific_fs) = fs_computer.get_output()
     assert isinstance(fs, float)
-    assert fs == pytest.approx(EXP_FS_1)
+    assert fs == pytest.approx(EXP_FS)
     assert isinstance(specific_fs, Field)
-    assert specific_fs.data[0] == pytest.approx(EXP_SPECIFIC_FS_1_0)
-    assert specific_fs.data[9] == pytest.approx(EXP_SPECIFIC_FS_1_9)
-    assert specific_fs.data[40] == pytest.approx(EXP_SPECIFIC_FS_1_40)
+    assert specific_fs.data[0] == pytest.approx(EXP_SPECIFIC_FS_0)
+    assert specific_fs.data[9] == pytest.approx(EXP_SPECIFIC_FS_9)
+    assert specific_fs.data[40] == pytest.approx(EXP_SPECIFIC_FS_40)
 
 
 def test_fs_get_fluctuation_strength():
@@ -127,7 +123,7 @@ def test_fs_get_fluctuation_strength():
 
     fs = fs_computer.get_fluctuation_strength()
     assert isinstance(fs, np.ndarray)
-    assert fs == pytest.approx(EXP_FS_1)
+    assert fs == pytest.approx(EXP_FS)
 
 
 def test_fs_get_specific_fluctuation_strength():
@@ -149,9 +145,9 @@ def test_fs_get_specific_fluctuation_strength():
 
     assert type(specific_fs) == np.ndarray
     assert len(specific_fs) == 47
-    assert specific_fs[0] == pytest.approx(EXP_SPECIFIC_FS_1_0)
-    assert specific_fs[9] == pytest.approx(EXP_SPECIFIC_FS_1_9)
-    assert specific_fs[40] == pytest.approx(EXP_SPECIFIC_FS_1_40)
+    assert specific_fs[0] == pytest.approx(EXP_SPECIFIC_FS_0)
+    assert specific_fs[9] == pytest.approx(EXP_SPECIFIC_FS_9)
+    assert specific_fs[40] == pytest.approx(EXP_SPECIFIC_FS_40)
 
 
 def test_fs_get_bark_band_indexes():
@@ -227,12 +223,12 @@ def test_fs_get_output_as_nparray():
     fs, specific_fs, bark_band_indexes = fs_computer.get_output_as_nparray()
 
     assert type(fs) == np.ndarray
-    assert fs == pytest.approx(EXP_FS_1)
+    assert fs == pytest.approx(EXP_FS)
     assert type(specific_fs) == np.ndarray
     assert len(specific_fs) == 47
-    assert specific_fs[0] == pytest.approx(EXP_SPECIFIC_FS_1_0)
-    assert specific_fs[9] == pytest.approx(EXP_SPECIFIC_FS_1_9)
-    assert specific_fs[40] == pytest.approx(EXP_SPECIFIC_FS_1_40)
+    assert specific_fs[0] == pytest.approx(EXP_SPECIFIC_FS_0)
+    assert specific_fs[9] == pytest.approx(EXP_SPECIFIC_FS_9)
+    assert specific_fs[40] == pytest.approx(EXP_SPECIFIC_FS_40)
     assert type(bark_band_indexes) == np.ndarray
     assert len(bark_band_indexes) == 47
     assert bark_band_indexes[0] == pytest.approx(EXP_BARK_0)
