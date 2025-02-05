@@ -90,6 +90,9 @@ class SoundComposer(SoundComposerParent):
     @tracks.setter
     def tracks(self, tracks: list[Track]):
         """Set the track list."""
+        for track in tracks:
+            if not isinstance(track, Track):
+                raise PyAnsysSoundException("Each item in the track list must be of type `Track`.")
         self.__tracks = tracks
 
     def add_track(self, track: Track):
@@ -101,7 +104,7 @@ class SoundComposer(SoundComposerParent):
             Track object to add.
         """
         if not isinstance(track, Track):
-            raise PyAnsysSoundException("Input track object must be of type Track.")
+            raise PyAnsysSoundException("Input track object must be of type `Track`.")
 
         self.tracks.append(track)
 
@@ -155,8 +158,8 @@ class SoundComposer(SoundComposerParent):
         if len(self.tracks) == 0:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    f"There are no track to process. Use {__class__.__name__}.add_track() or "
-                    f"{__class__.__name__}.load()."
+                    f"There are no track to process. Use `{__class__.__name__}.tracks`, "
+                    f"`{__class__.__name__}.add_track()` or `{__class__.__name__}.load()`."
                 )
             )
             self._output = None
@@ -185,7 +188,7 @@ class SoundComposer(SoundComposerParent):
         if self._output is None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    f"Output is not processed yet. Use the {__class__.__name__}.process() method."
+                    f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
                 )
             )
         return self._output
@@ -209,7 +212,7 @@ class SoundComposer(SoundComposerParent):
         """Plot the resulting signal in a figure."""
         if self._output is None:
             raise PyAnsysSoundException(
-                f"Output is not processed yet. Use the {__class__.__name__}.process() method."
+                f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
             )
         output_signal = self.get_output()
 

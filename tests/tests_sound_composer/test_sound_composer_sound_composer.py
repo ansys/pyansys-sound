@@ -41,7 +41,7 @@ from ansys.sound.core.spectral_processing.power_spectral_density import PowerSpe
 
 REF_ACOUSTIC_POWER = 4e-10
 
-EXP_LEVEL_OCTAVE_BAND = [58.2, 74.5, 60.3]
+EXP_LEVEL_OCTAVE_BAND = [71.9, 78.7, 66.2]
 EXP_STR_NOT_SET = "Sound Composer object (0 track(s))"
 EXP_STR_ALL_SET = (
     "Sound Composer object (7 track(s))\n"
@@ -51,7 +51,7 @@ EXP_STR_ALL_SET = (
     '\tTrack 4: SourceBroadbandNoiseTwoParameters, "BBN2Params", gain = +0.0 dB\n'
     '\tTrack 5: SourceHarmonics, "Harmo", gain = +0.0 dB\n'
     '\tTrack 6: SourceHarmonicsTwoParameters, "Harmo2Params", gain = +0.0 dB\n'
-    '\tTrack 7: SourceHarmonicsTwoParameters, "Harmo2ParamsRpmAsSecondParam", gain = +0.0 dB\n'
+    '\tTrack 7: SourceHarmonicsTwoParameters, "Harmo2ParamsRpmAsSecondParam", gain = +0.0 dB'
 )
 
 
@@ -126,6 +126,16 @@ def test_sound_composer_properties():
     assert isinstance(sound_composer.tracks[0], Track)
 
 
+def test_sound_composer_properties_exception():
+    """Test SoundComposer properties' exception."""
+    sound_composer = SoundComposer()
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Each item in the track list must be of type `Track`.",
+    ):
+        sound_composer.tracks = ["InvalidType"]
+
+
 def test_sound_composer_add_track():
     """Test SoundComposer add_track method."""
     sound_composer = SoundComposer()
@@ -137,7 +147,7 @@ def test_sound_composer_add_track():
 def test_sound_composer_add_track_exception():
     """Test SoundComposer add_track method's exception."""
     sound_composer = SoundComposer()
-    with pytest.raises(PyAnsysSoundException, match="Input track object must be of type Track."):
+    with pytest.raises(PyAnsysSoundException, match="Input track object must be of type `Track`."):
         sound_composer.add_track("InvalidType")
 
 
@@ -193,8 +203,8 @@ def test_sound_composer_process_warning():
     with pytest.warns(
         PyAnsysSoundWarning,
         match=(
-            "There are no track to process. Use SoundComposer.add_track\\(\\) or "
-            "SoundComposer.load\\(\\)."
+            "There are no track to process. Use `SoundComposer.tracks`, "
+            "`SoundComposer.add_track\\(\\)` or `SoundComposer.load\\(\\)`."
         ),
     ):
         sound_composer.process()
@@ -248,7 +258,7 @@ def test_sound_composer_get_output_warning():
     sound_composer = SoundComposer()
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the SoundComposer.process\\(\\) method.",
+        match="Output is not processed yet. Use the `SoundComposer.process\\(\\)` method.",
     ):
         output = sound_composer.get_output()
     assert output is None
@@ -269,7 +279,7 @@ def test_sound_composer_get_output_as_nparray_warning():
     sound_composer = SoundComposer()
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the SoundComposer.process\\(\\) method.",
+        match="Output is not processed yet. Use the `SoundComposer.process\\(\\)` method.",
     ):
         output = sound_composer.get_output_as_nparray()
     assert len(output) == 0
@@ -290,6 +300,6 @@ def test_sound_composer_plot_exception():
     sound_composer = SoundComposer()
     with pytest.raises(
         PyAnsysSoundException,
-        match="Output is not processed yet. Use the SoundComposer.process\\(\\) method.",
+        match="Output is not processed yet. Use the `SoundComposer.process\\(\\)` method.",
     ):
         sound_composer.plot()
