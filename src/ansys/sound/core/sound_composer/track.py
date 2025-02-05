@@ -175,7 +175,7 @@ class Track(SoundComposerParent):
         gdc_track : GenericDataContainer
             Track data as a DPF generic data container.
         sampling_frequency : float, default: 44100.0
-            Sampling frequency in Hz to use in the track's filter to create.
+            Sampling frequency in Hz to use in the creation of track's filter.
         """
         # Assign name and gain.
         self.name = gdc_track.get_property("track_name")

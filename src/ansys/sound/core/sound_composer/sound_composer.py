@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Sound Composer's sound_composer."""
+"""Sound Composer project class."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, GenericDataContainersCollection, Operator

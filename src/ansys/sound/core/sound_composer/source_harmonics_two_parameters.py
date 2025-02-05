@@ -313,7 +313,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
         Returns
         -------
         tuple[GenericDataContainer]
-            Source as two generic data containers, respectively for source and source control data.
+            Source as two generic data containers, for source and source control data, respectively.
         """
         if self.source_harmonics_two_parameters is None:
             warnings.warn(

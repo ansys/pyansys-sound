@@ -169,7 +169,7 @@ class SourceAudio(SourceParent):
         Returns
         -------
         tuple[GenericDataContainer]
-            Source as two generic data containers, respectively for source and source control data.
+            Source as two generic data containers, for source and source control data, respectively.
             In the case of :class:`SourceAudio`, there is no source control data, so ``None`` is
             always returned as the second element.
         """
