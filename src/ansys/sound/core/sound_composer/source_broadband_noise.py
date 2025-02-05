@@ -265,7 +265,7 @@ class SourceBroadbandNoise(SourceParent):
         else:
             gdc_source_control = GenericDataContainer()
             gdc_source_control.set_property(
-                "sound_composer_source_control_parameter_1", self.source_control.control
+                "sound_composer_source_control_one_parameter", self.source_control.control
             )
 
         return (gdc_source, gdc_source_control)
