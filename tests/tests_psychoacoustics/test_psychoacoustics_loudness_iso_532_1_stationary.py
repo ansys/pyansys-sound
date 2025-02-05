@@ -338,6 +338,10 @@ def test_loudness_iso_532_1_stationary_set_get_signal():
 
     assert f_signal_from_get.data[0, 2] == 42
 
+    # Set invalid value
+    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
+        loudness_computer.signal = "WrongType"
+
 
 def test_loudness_iso_532_1_stationary_set_get_field_type():
     """Test the field_type property of the LoudnessISO532_1_Stationary class."""
