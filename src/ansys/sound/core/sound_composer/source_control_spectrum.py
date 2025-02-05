@@ -32,15 +32,15 @@ class SourceControlSpectrum(SourceControlParent):
     namely its duration in seconds and the sound generation method to be used.
     """
 
-    def __init__(self, duration: float = 0.0, method: int = 1):
+    def __init__(self, duration: float = 0.0, method: int = 0):
         """Class instantiation takes the following parameters.
 
         Parameters
         ----------
         duration : float, default: 0.0
             Duration of the sound generated from the spectrum source, in seconds.
-        method : int, default: 1
-            Sound generation method to be used. 1 for IFFT, 2 for Hybrid.
+        method : int, default: 0
+            Sound generation method to be used. 0 for IFFT, 1 for Hybrid.
         """
         super().__init__()
         self.duration = duration
@@ -64,7 +64,7 @@ class SourceControlSpectrum(SourceControlParent):
 
     @property
     def method(self) -> int:
-        """Sound generation method to be used. 1 for IFFT, 2 for Hybrid."""
+        """Sound generation method to be used. 0 for IFFT, 1 for Hybrid."""
         return self.__method
 
     @method.setter

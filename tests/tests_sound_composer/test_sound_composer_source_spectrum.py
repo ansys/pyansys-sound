@@ -246,7 +246,7 @@ def test_source_spectrum_get_as_generic_data_containers():
     assert isinstance(gdc_source.get_property("sound_composer_source"), Field)
     assert isinstance(gdc_source_control, GenericDataContainer)
     assert gdc_source_control.get_property("sound_composer_source_control_spectrum_duration") == 1.0
-    assert gdc_source_control.get_property("sound_composer_source_control_spectrum_method") == 1
+    assert gdc_source_control.get_property("sound_composer_source_control_spectrum_method") == 0
 
 
 def test_source_spectrum_process():
