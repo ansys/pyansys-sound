@@ -28,8 +28,8 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.psychoacoustics import SharpnessDIN45692
 from ansys.sound.core.signal_utilities import LoadWav
 
-EXP_MAX_SHARPNESS_FREE = 1.216734
-EXP_MAX_SHARPNESS_DIFFUSE = 1.225831
+EXP_SHARPNESS_FREE = 1.216734
+EXP_SHARPNESS_DIFFUSE = 1.225831
 
 EXP_STR_DEFAULT = (
     "SharpnessDIN45692 object\nData:\n\tSignal name: Not set\nSharpness: Not processed"
@@ -71,6 +71,13 @@ def test_sharpness_din_45692_properties():
 
     sharpness_obj.field_type = "Diffuse"
     assert sharpness_obj.field_type == "Diffuse"
+
+    # Check case insensitivity
+    sharpness_obj.field_type = "diffuse"
+    assert sharpness_obj.field_type == "diffuse"
+
+    sharpness_obj.field_type = "DIFFUSE"
+    assert sharpness_obj.field_type == "DIFFUSE"
 
 
 def test_sharpness_din_45692_properties_exceptions():
@@ -132,13 +139,13 @@ def test_sharpness_din_45692_get_output():
     sharpness_obj.process()
 
     sharpness = sharpness_obj.get_output()
-    assert sharpness == pytest.approx(EXP_MAX_SHARPNESS_FREE)
+    assert sharpness == pytest.approx(EXP_SHARPNESS_FREE)
 
     sharpness_obj.field_type = "Diffuse"
     sharpness_obj.process()
 
     sharpness = sharpness_obj.get_output()
-    assert sharpness == pytest.approx(EXP_MAX_SHARPNESS_DIFFUSE)
+    assert sharpness == pytest.approx(EXP_SHARPNESS_DIFFUSE)
 
 
 def test_sharpness_din_45692_get_output_warning():
@@ -174,13 +181,13 @@ def test_sharpness_din_45692_get_output_as_nparray():
     sharpness_obj.process()
 
     sharpness = sharpness_obj.get_output_as_nparray()
-    assert sharpness[0] == pytest.approx(EXP_MAX_SHARPNESS_FREE)
+    assert sharpness[0] == pytest.approx(EXP_SHARPNESS_FREE)
 
     sharpness_obj.field_type = "Diffuse"
     sharpness_obj.process()
 
     sharpness = sharpness_obj.get_output_as_nparray()
-    assert sharpness[0] == pytest.approx(EXP_MAX_SHARPNESS_DIFFUSE)
+    assert sharpness[0] == pytest.approx(EXP_SHARPNESS_DIFFUSE)
 
 
 def test_sharpness_din_45692_get_sharpness():
@@ -197,10 +204,10 @@ def test_sharpness_din_45692_get_sharpness():
     sharpness_obj.process()
 
     sharpness = sharpness_obj.get_sharpness()
-    assert sharpness == pytest.approx(EXP_MAX_SHARPNESS_FREE)
+    assert sharpness == pytest.approx(EXP_SHARPNESS_FREE)
 
     sharpness_obj.field_type = "Diffuse"
     sharpness_obj.process()
 
     sharpness = sharpness_obj.get_sharpness()
-    assert sharpness == pytest.approx(EXP_MAX_SHARPNESS_DIFFUSE)
+    assert sharpness == pytest.approx(EXP_SHARPNESS_DIFFUSE)
