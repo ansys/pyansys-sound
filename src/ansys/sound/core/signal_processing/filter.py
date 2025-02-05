@@ -58,7 +58,7 @@ class Filter(SignalProcessingParent):
         coefficients are linked to the sampling frequency value that is given in the attribute
         :attr:`sampling_frequency` of the ``Filter`` class. As a consequence, the signal to filter
         :attr:`signal` must have the same sampling frequency. If necessary, use the
-        :class:`Resample` class to resample the signal prior to using the ``Filter`` class.
+        :class:`.Resample` class to resample the signal prior to using the ``Filter`` class.
     """
 
     def __init__(
