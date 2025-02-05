@@ -169,6 +169,9 @@ class SoundComposer(SoundComposerParent):
             for index, track in enumerate(self.tracks):
                 track.process(sampling_frequency)
                 track_signal = track.get_output()
+
+                # Make sure all tracks have the same unit, otherwise an error will be raied in
+                # SumSignals.
                 track_signal.unit = ""
                 track_signals.add_field({"index": index}, track_signal)
 
