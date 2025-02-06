@@ -113,9 +113,7 @@ loudness_stationary.plot()
 path_accel_wav = download_accel_with_rpm_wav(server=my_server)
 wav_loader = LoadWav(path_accel_wav)
 wav_loader.process()
-signal_field_2 = wav_loader.get_output()[
-    0
-]  # Field 0 only, because the RPM profile is useless here.
+signal_field_2 = wav_loader.get_output()[0]  # The second field (RPM profile) is useless here.
 
 # %%
 # Create a :class:`LoudnessISO532_1_TimeVarying` object, set its signal, and compute the loudness.
