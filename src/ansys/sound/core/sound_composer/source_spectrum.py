@@ -169,8 +169,8 @@ class SourceSpectrum(SourceParent):
 
     def set_from_generic_data_containers(
         self,
-        gdc_source: GenericDataContainer,
-        gdc_source_control: GenericDataContainer,
+        source_data: GenericDataContainer,
+        source_control_data: GenericDataContainer,
     ):
         """Set the source and source control data from generic data containers.
 
@@ -179,16 +179,16 @@ class SourceSpectrum(SourceParent):
 
         Parameters
         ----------
-        gdc_source : GenericDataContainer
+        source_data : GenericDataContainer
             Source data as a DPF generic data container.
-        gdc_source_control : GenericDataContainer
+        source_control_data : GenericDataContainer
             Source control data as a DPF generic data container.
         """
-        self.source_spectrum_data = gdc_source.get_property("sound_composer_source")
-        duration = gdc_source_control.get_property(
+        self.source_spectrum_data = source_data.get_property("sound_composer_source")
+        duration = source_control_data.get_property(
             "sound_composer_source_control_spectrum_duration"
         )
-        method = gdc_source_control.get_property("sound_composer_source_control_spectrum_method")
+        method = source_control_data.get_property("sound_composer_source_control_spectrum_method")
         self.source_control = SourceControlSpectrum(duration=duration, method=method)
 
     def get_as_generic_data_containers(self) -> tuple[GenericDataContainer]:
@@ -208,10 +208,10 @@ class SourceSpectrum(SourceParent):
                     "Cannot create source generic data container because there is no source data."
                 )
             )
-            gdc_source = None
+            source_data = None
         else:
-            gdc_source = GenericDataContainer()
-            gdc_source.set_property("sound_composer_source", self.source_spectrum_data)
+            source_data = GenericDataContainer()
+            source_data.set_property("sound_composer_source", self.source_spectrum_data)
 
         if not self.is_source_control_valid():
             warnings.warn(
@@ -220,17 +220,17 @@ class SourceSpectrum(SourceParent):
                     "source control data."
                 )
             )
-            gdc_source_control = None
+            source_control_data = None
         else:
-            gdc_source_control = GenericDataContainer()
-            gdc_source_control.set_property(
+            source_control_data = GenericDataContainer()
+            source_control_data.set_property(
                 "sound_composer_source_control_spectrum_duration", self.source_control.duration
             )
-            gdc_source_control.set_property(
+            source_control_data.set_property(
                 "sound_composer_source_control_spectrum_method", self.source_control.method
             )
 
-        return (gdc_source, gdc_source_control)
+        return (source_data, source_control_data)
 
     def process(self, sampling_frequency: float = 44100.0):
         """Generate the sound of the spectrum source, using the current spectrum and source control.

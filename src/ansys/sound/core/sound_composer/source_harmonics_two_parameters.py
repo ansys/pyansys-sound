@@ -281,8 +281,8 @@ class SourceHarmonicsTwoParameters(SourceParent):
 
     def set_from_generic_data_containers(
         self,
-        gdc_source: GenericDataContainer,
-        gdc_source_control: GenericDataContainer,
+        source_data: GenericDataContainer,
+        source_control_data: GenericDataContainer,
     ):
         """Set the source and source control data from generic data containers.
 
@@ -291,16 +291,16 @@ class SourceHarmonicsTwoParameters(SourceParent):
 
         Parameters
         ----------
-        gdc_source : GenericDataContainer
+        source_data : GenericDataContainer
             Source data as a DPF generic data container.
-        gdc_source_control : GenericDataContainer
+        source_control_data : GenericDataContainer
             Source control data as a DPF generic data container.
         """
-        self.source_harmonics_two_parameters = gdc_source.get_property("sound_composer_source")
-        control = gdc_source_control.get_property("sound_composer_source_control_parameter_1")
+        self.source_harmonics_two_parameters = source_data.get_property("sound_composer_source")
+        control = source_control_data.get_property("sound_composer_source_control_parameter_1")
         self.source_control_rpm = SourceControlTime()
         self.source_control_rpm.control = control
-        control = gdc_source_control.get_property("sound_composer_source_control_parameter_2")
+        control = source_control_data.get_property("sound_composer_source_control_parameter_2")
         self.source_control2 = SourceControlTime()
         self.source_control2.control = control
 
@@ -321,10 +321,10 @@ class SourceHarmonicsTwoParameters(SourceParent):
                     "Cannot create source generic data container because there is no source data."
                 )
             )
-            gdc_source = None
+            source_data = None
         else:
-            gdc_source = GenericDataContainer()
-            gdc_source.set_property("sound_composer_source", self.source_harmonics_two_parameters)
+            source_data = GenericDataContainer()
+            source_data.set_property("sound_composer_source", self.source_harmonics_two_parameters)
 
         if not self.is_source_control_valid():
             warnings.warn(
@@ -333,17 +333,17 @@ class SourceHarmonicsTwoParameters(SourceParent):
                     "source control data is missing."
                 )
             )
-            gdc_source_control = None
+            source_control_data = None
         else:
-            gdc_source_control = GenericDataContainer()
-            gdc_source_control.set_property(
+            source_control_data = GenericDataContainer()
+            source_control_data.set_property(
                 "sound_composer_source_control_parameter_1", self.source_control_rpm.control
             )
-            gdc_source_control.set_property(
+            source_control_data.set_property(
                 "sound_composer_source_control_parameter_2", self.source_control2.control
             )
 
-        return (gdc_source, gdc_source_control)
+        return (source_data, source_control_data)
 
     def process(self, sampling_frequency: float = 44100.0):
         """Generate the sound of the harmonics source with two parameters.

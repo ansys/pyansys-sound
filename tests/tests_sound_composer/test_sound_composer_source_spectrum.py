@@ -194,15 +194,15 @@ def test_source_spectrum_set_from_generic_data_containers():
     op.run()
     f_data: Field = op.get_output(0, "field")
 
-    gdc_source = GenericDataContainer()
-    gdc_source.set_property("sound_composer_source", f_data)
+    source_data = GenericDataContainer()
+    source_data.set_property("sound_composer_source", f_data)
 
-    gdc_source_control = GenericDataContainer()
-    gdc_source_control.set_property("sound_composer_source_control_spectrum_duration", 1.0)
-    gdc_source_control.set_property("sound_composer_source_control_spectrum_method", 1)
+    source_control_data = GenericDataContainer()
+    source_control_data.set_property("sound_composer_source_control_spectrum_duration", 1.0)
+    source_control_data.set_property("sound_composer_source_control_spectrum_method", 1)
 
     source_spectrum = SourceSpectrum()
-    source_spectrum.set_from_generic_data_containers(gdc_source, gdc_source_control)
+    source_spectrum.set_from_generic_data_containers(source_data, source_control_data)
     assert isinstance(source_spectrum.source_spectrum_data, Field)
     assert len(source_spectrum.source_spectrum_data.data) == len(f_data.data)
     assert source_spectrum.source_control.duration == 1.0
@@ -222,8 +222,8 @@ def test_source_spectrum_get_as_generic_data_containers():
             "control data."
         ),
     ):
-        _, gdc_source_control = source_spectrum.get_as_generic_data_containers()
-    assert gdc_source_control is None
+        _, source_control_data = source_spectrum.get_as_generic_data_containers()
+    assert source_control_data is None
 
     # Source data undefined => warning.
     source_spectrum.source_spectrum_data = None
@@ -232,21 +232,23 @@ def test_source_spectrum_get_as_generic_data_containers():
         PyAnsysSoundWarning,
         match="Cannot create source generic data container because there is no source data.",
     ):
-        gdc_source, _ = source_spectrum.get_as_generic_data_containers()
-    assert gdc_source is None
+        source_data, _ = source_spectrum.get_as_generic_data_containers()
+    assert source_data is None
 
     # Both source and source control are defined.
     source_spectrum.load_source_spectrum(
         pytest.data_path_sound_composer_spectrum_source_in_container,
     )
     source_spectrum.source_control = SourceControlSpectrum(duration=1.0)
-    gdc_source, gdc_source_control = source_spectrum.get_as_generic_data_containers()
+    source_data, source_control_data = source_spectrum.get_as_generic_data_containers()
 
-    assert isinstance(gdc_source, GenericDataContainer)
-    assert isinstance(gdc_source.get_property("sound_composer_source"), Field)
-    assert isinstance(gdc_source_control, GenericDataContainer)
-    assert gdc_source_control.get_property("sound_composer_source_control_spectrum_duration") == 1.0
-    assert gdc_source_control.get_property("sound_composer_source_control_spectrum_method") == 0
+    assert isinstance(source_data, GenericDataContainer)
+    assert isinstance(source_data.get_property("sound_composer_source"), Field)
+    assert isinstance(source_control_data, GenericDataContainer)
+    assert (
+        source_control_data.get_property("sound_composer_source_control_spectrum_duration") == 1.0
+    )
+    assert source_control_data.get_property("sound_composer_source_control_spectrum_method") == 0
 
 
 def test_source_spectrum_process():

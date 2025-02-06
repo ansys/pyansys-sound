@@ -126,11 +126,11 @@ def test_source_audio_set_from_generic_data_containers():
     loader.process()
     f_data: Field = loader.get_output()[0]
 
-    gdc_source = GenericDataContainer()
-    gdc_source.set_property("sound_composer_source", f_data)
+    source_data = GenericDataContainer()
+    source_data.set_property("sound_composer_source", f_data)
 
     source_audio = SourceAudio()
-    source_audio.set_from_generic_data_containers(gdc_source, None)
+    source_audio.set_from_generic_data_containers(source_data, None)
     assert isinstance(source_audio.source_audio_data, Field)
     assert len(source_audio.source_audio_data.data) == len(f_data.data)
     assert source_audio.source_audio_data.data[17640] == pytest.approx(EXP_AUDIO_DATA17640)
@@ -144,18 +144,18 @@ def test_source_audio_get_as_generic_data_containers():
         PyAnsysSoundWarning,
         match="Cannot create source generic data container because there is no source data.",
     ):
-        gdc_source, _ = source_audio.get_as_generic_data_containers()
-    assert gdc_source is None
+        source_data, _ = source_audio.get_as_generic_data_containers()
+    assert source_data is None
 
     # Source data is defined.
     source_audio.load_from_wave_file(
         pytest.data_path_flute_nonUnitaryCalib_in_container,
     )
-    gdc_source, gdc_source_control = source_audio.get_as_generic_data_containers()
+    source_data, source_control_data = source_audio.get_as_generic_data_containers()
 
-    assert isinstance(gdc_source, GenericDataContainer)
-    assert isinstance(gdc_source.get_property("sound_composer_source"), Field)
-    assert gdc_source_control is None
+    assert isinstance(source_data, GenericDataContainer)
+    assert isinstance(source_data.get_property("sound_composer_source"), Field)
+    assert source_control_data is None
 
 
 def test_source_audio_process_no_resample():

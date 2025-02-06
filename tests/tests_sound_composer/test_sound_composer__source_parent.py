@@ -57,6 +57,6 @@ def test__source_parent_get_as_generic_data_containers():
         PyAnsysSoundWarning,
         match="Cannot create generic data containers because there is no data.",
     ):
-        gdc_source, gdc_source_control = source.get_as_generic_data_containers()
-    assert gdc_source is None
-    assert gdc_source_control is None
+        source_data, source_control_data = source.get_as_generic_data_containers()
+    assert source_data is None
+    assert source_control_data is None

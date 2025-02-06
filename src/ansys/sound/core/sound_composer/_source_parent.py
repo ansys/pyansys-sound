@@ -42,7 +42,7 @@ class SourceParent(SoundComposerParent):
         """Plot the source control(s) in a figure."""
         pass
 
-    def set_from_generic_data_containers(self, gdc_source, gdc_source_control):
+    def set_from_generic_data_containers(self, source_data, source_control_data):
         """Set the source and source control data from generic data containers."""
         warnings.warn(
             PyAnsysSoundWarning(

@@ -120,11 +120,11 @@ class SoundComposer(SoundComposerParent):
 
         self.__operator_load.run()
 
-        gdcc_project = self.__operator_load.get_output(0, GenericDataContainersCollection)
+        track_collection = self.__operator_load.get_output(0, GenericDataContainersCollection)
 
-        for i in range(len(gdcc_project)):
+        for i in range(len(track_collection)):
             track = Track()
-            track.set_from_generic_data_containers(gdcc_project.get_entry({"track_index": i}))
+            track.set_from_generic_data_containers(track_collection.get_entry({"track_index": i}))
             self.add_track(track)
 
     # TODO: Save cannot work for now because the FRF is not stored in the Filter class.
@@ -136,14 +136,14 @@ class SoundComposer(SoundComposerParent):
     #     project_path : str
     #         Path and file (.scn) name where the Sound Composer project shall be saved.
     #     """
-    #     gdcc_project = GenericDataContainersCollection()
+    #     track_collection = GenericDataContainersCollection()
 
     #     for i, track in enumerate(self.tracks):
-    #         gdcc_project.add_entry({"track_index": i}, track.get_as_generic_data_container())
+    #         track_collection.add_entry({"track_index": i}, track.get_as_generic_data_container())
 
     #     # Save the Sound Composer project.
     #     self.__operator_save.connect(0, project_path)
-    #     self.__operator_save.connect(1, gdcc_project)
+    #     self.__operator_save.connect(1, track_collection)
 
     #     self.__operator_save.run()
 

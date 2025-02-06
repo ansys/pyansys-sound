@@ -232,18 +232,20 @@ def test_source_broadband_noise_set_from_generic_data_containers():
     op.run()
     fc_data: FieldsContainer = op.get_output(0, "fields_container")
 
-    gdc_source = GenericDataContainer()
-    gdc_source.set_property("sound_composer_source", fc_data)
+    source_data = GenericDataContainer()
+    source_data.set_property("sound_composer_source", fc_data)
 
     f_source_control = fields_factory.create_scalar_field(
         num_entities=1, location=locations.time_freq
     )
     f_source_control.append([1.0, 2.0, 3.0, 4.0, 5.0], 1)
-    gdc_source_control = GenericDataContainer()
-    gdc_source_control.set_property("sound_composer_source_control_one_parameter", f_source_control)
+    source_control_data = GenericDataContainer()
+    source_control_data.set_property(
+        "sound_composer_source_control_one_parameter", f_source_control
+    )
 
     source_bbn_obj = SourceBroadbandNoise()
-    source_bbn_obj.set_from_generic_data_containers(gdc_source, gdc_source_control)
+    source_bbn_obj.set_from_generic_data_containers(source_data, source_control_data)
     assert isinstance(source_bbn_obj.source_bbn, FieldsContainer)
     assert len(source_bbn_obj.source_bbn) == len(fc_data)
     assert isinstance(source_bbn_obj.source_control, SourceControlTime)
@@ -263,8 +265,8 @@ def test_source_broadband_noise_get_as_generic_data_containers():
             "control data."
         ),
     ):
-        _, gdc_source_control = source_bbn_obj.get_as_generic_data_containers()
-    assert gdc_source_control is None
+        _, source_control_data = source_bbn_obj.get_as_generic_data_containers()
+    assert source_control_data is None
 
     # Source data undefined => warning.
     source_bbn_obj.source_bbn = None
@@ -278,20 +280,20 @@ def test_source_broadband_noise_get_as_generic_data_containers():
         PyAnsysSoundWarning,
         match="Cannot create source generic data container because there is no source data.",
     ):
-        gdc_source, _ = source_bbn_obj.get_as_generic_data_containers()
-    assert gdc_source is None
+        source_data, _ = source_bbn_obj.get_as_generic_data_containers()
+    assert source_data is None
 
     # Both source and source control are defined.
     source_bbn_obj.load_source_bbn(
         pytest.data_path_sound_composer_bbn_source_in_container,
     )
-    gdc_source, gdc_source_control = source_bbn_obj.get_as_generic_data_containers()
+    source_data, source_control_data = source_bbn_obj.get_as_generic_data_containers()
 
-    assert isinstance(gdc_source, GenericDataContainer)
-    assert isinstance(gdc_source.get_property("sound_composer_source"), FieldsContainer)
-    assert isinstance(gdc_source_control, GenericDataContainer)
+    assert isinstance(source_data, GenericDataContainer)
+    assert isinstance(source_data.get_property("sound_composer_source"), FieldsContainer)
+    assert isinstance(source_control_data, GenericDataContainer)
     assert isinstance(
-        gdc_source_control.get_property("sound_composer_source_control_one_parameter"), Field
+        source_control_data.get_property("sound_composer_source_control_one_parameter"), Field
     )
 
 

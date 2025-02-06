@@ -163,7 +163,7 @@ class Track(SoundComposerParent):
         self.__filter = obj
 
     def set_from_generic_data_containers(
-        self, gdc_track: GenericDataContainer, sampling_frequency: float = 44100.0
+        self, track_data: GenericDataContainer, sampling_frequency: float = 44100.0
     ):
         """Set the track data from a generic data container.
 
@@ -172,26 +172,26 @@ class Track(SoundComposerParent):
 
         Parameters
         ----------
-        gdc_track : GenericDataContainer
+        track_data : GenericDataContainer
             Track data as a DPF generic data container.
         sampling_frequency : float, default: 44100.0
             Sampling frequency in Hz to use in the creation of track's filter.
         """
         # Assign name and gain.
-        self.name = gdc_track.get_property("track_name")
-        self.gain = gdc_track.get_property("track_gain")
+        self.name = track_data.get_property("track_name")
+        self.gain = track_data.get_property("track_gain")
 
         # Create source attribute.
-        gdc_source: GenericDataContainer = gdc_track.get_property("track_source")
-        gdc_source_control: GenericDataContainer = gdc_track.get_property("track_source_control")
-        self.source = DICT_SOURCE_TYPE[gdc_track.get_property("track_type")]()
-        self.source.set_from_generic_data_containers(gdc_source, gdc_source_control)
+        source_data: GenericDataContainer = track_data.get_property("track_source")
+        source_control_data: GenericDataContainer = track_data.get_property("track_source_control")
+        self.source = DICT_SOURCE_TYPE[track_data.get_property("track_type")]()
+        self.source.set_from_generic_data_containers(source_data, source_control_data)
 
         # Create filter attribute.
-        if gdc_track.get_property("track_is_filter") == 1:
-            frf = gdc_track.get_property("track_filter")
+        if track_data.get_property("track_is_filter") == 1:
+            frequency_response_function = track_data.get_property("track_filter")
             self.filter = Filter(sampling_frequency=sampling_frequency)
-            self.filter.design_FIR_from_FRF(frf)
+            self.filter.design_FIR_from_FRF(frequency_response_function)
         else:
             self.filter = None
 
@@ -213,30 +213,30 @@ class Track(SoundComposerParent):
     #                 "Cannot create track generic data container because there is no source."
     #             )
     #         )
-    #         gdc_track = None
+    #         return None
     #     else:
     #         # Get source and source control as generic data containers.
-    #         gdc_source, gdc_source_control = self.source.get_as_generic_data_containers()
+    #         source_data, source_control_data = self.source.get_as_generic_data_containers()
 
     #         # Create a generic data container for the track.
-    #         gdc_track = GenericDataContainer()
+    #         track_data = GenericDataContainer()
 
     #         # Set track generic data container properties.
-    #         gdc_track.set_property(
+    #         track_data.set_property(
     #             "track_type",
     #             [i for i in DICT_SOURCE_TYPE if isinstance(self.source, DICT_SOURCE_TYPE[i])][0],
     #         )
-    #         gdc_track.set_property("track_source", gdc_source)
-    #         gdc_track.set_property("track_source_control", gdc_source_control)
+    #         track_data.set_property("track_source", source_data)
+    #         track_data.set_property("track_source_control", source_control_data)
 
     #         if self.filter is not None:
-    #             gdc_track.set_property("track_is_filter", 1)
+    #             track_data.set_property("track_is_filter", 1)
     #             # TODO: sort out the fact that FRF is not stored in the filter object
-    #             gdc_track.set_property("track_filter", self.filter.FRF)
+    #             track_data.set_property("track_filter", self.filter.FRF)
     #         else:
-    #             gdc_track.set_property("track_is_filter", 0)
+    #             track_data.set_property("track_is_filter", 0)
 
-    #     return gdc_track
+    #         return track_data
 
     def process(self, sampling_frequency: float = 44100.0):
         """Generate the signal of the track, using the current source and filter.

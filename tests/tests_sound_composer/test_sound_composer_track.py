@@ -137,20 +137,20 @@ def test_track_set_from_generic_data_containers():
         file_source=pytest.data_path_sound_composer_spectrum_source_in_container,
         source_control=source_control,
     )
-    gdc_source, gdc_source_control = source.get_as_generic_data_containers()
+    source_data, source_control_data = source.get_as_generic_data_containers()
 
     # Create a generic data container for the track.
-    gdc_track = GenericDataContainer()
-    gdc_track.set_property("track_name", "My track")
-    gdc_track.set_property("track_gain", 15.6)
-    gdc_track.set_property("track_type", 5)
-    gdc_track.set_property("track_source", gdc_source)
-    gdc_track.set_property("track_source_control", gdc_source_control)
-    gdc_track.set_property("track_is_filter", 0)
+    track_data = GenericDataContainer()
+    track_data.set_property("track_name", "My track")
+    track_data.set_property("track_gain", 15.6)
+    track_data.set_property("track_type", 5)
+    track_data.set_property("track_source", source_data)
+    track_data.set_property("track_source_control", source_control_data)
+    track_data.set_property("track_is_filter", 0)
 
     # Create a track and test method set_from_generic_data_container.
     track = Track()
-    track.set_from_generic_data_containers(gdc_track)
+    track.set_from_generic_data_containers(track_data)
     assert track.name == "My track"
     assert track.gain == 15.6
     assert isinstance(track.source, SourceSpectrum)
@@ -166,10 +166,10 @@ def test_track_set_from_generic_data_containers():
     op_frf.run()
     f_filter_frf: Field = op_frf.get_output(0, "field")
 
-    gdc_track.set_property("track_is_filter", 1)
-    gdc_track.set_property("track_filter", f_filter_frf)
+    track_data.set_property("track_is_filter", 1)
+    track_data.set_property("track_filter", f_filter_frf)
 
-    track.set_from_generic_data_containers(gdc_track)
+    track.set_from_generic_data_containers(track_data)
     assert track.name == "My track"
     assert track.gain == 15.6
     assert isinstance(track.source, SourceSpectrum)
