@@ -27,7 +27,6 @@ from ansys.sound.core.examples_helpers import (
     download_accel_with_rpm_2_wav,
     download_accel_with_rpm_3_wav,
     download_accel_with_rpm_wav,
-    download_flute_2_wav,
     download_flute_psd,
     download_flute_wav,
     download_xtract_demo_signal_1_wav,
@@ -49,10 +48,6 @@ def test_download_flute_wav():
     p = str(EXAMPLES_PATH) + "/flute.wav"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 312297
-    p = str(EXAMPLES_PATH) + "/flute2.wav"
-    download_flute_2_wav()[0]
-    assert pathlib.Path(p).exists() == True
-    assert os.path.getsize(p) == 312281
 
 
 def test_download_accel_with_rpm_wav():
