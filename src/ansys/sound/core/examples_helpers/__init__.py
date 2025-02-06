@@ -28,7 +28,6 @@ from .download import (
     download_accel_with_rpm_2_wav,
     download_accel_with_rpm_3_wav,
     download_accel_with_rpm_wav,
-    download_flute_2_wav,
     download_flute_psd,
     download_flute_wav,
     download_xtract_demo_signal_1_wav,
@@ -38,7 +37,6 @@ from .download import (
 __all__ = (
     "download_flute_psd",
     "download_flute_wav",
-    "download_flute_2_wav",
     "download_accel_with_rpm_wav",
     "download_accel_with_rpm_2_wav",
     "download_accel_with_rpm_3_wav",

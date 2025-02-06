@@ -43,9 +43,6 @@ def pytest_configure():
     pytest.data_path_flute_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "flute.wav"), server=server
     )
-    pytest.data_path_flute2_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "flute2.wav"), server=server
-    )
     pytest.data_path_flute_nonUnitaryCalib_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "flute_nonUnitaryCalib.wav"), server=server
     )
@@ -63,9 +60,6 @@ def pytest_configure():
     )
     pytest.data_path_fluctuating_noise_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "fluctuating_noise.wav"), server=server
-    )
-    pytest.data_path_fluctuating_tone_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "fluctuating_tone.wav"), server=server
     )
     pytest.data_path_white_noise_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "white_noise.wav"), server=server
