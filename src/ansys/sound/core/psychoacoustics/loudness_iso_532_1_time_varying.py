@@ -289,7 +289,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         ax1.set_ylabel("N (sone)")
         ax1.grid(True)
 
-        # Plot loudness in phon
+        # Plot loudness level in phon
         ax2.plot(time, self.get_loudness_level_phon_vs_time())
         ax2.set_title("Instantaneous loudness level")
         ax2.set_xlabel("Time (s)")
