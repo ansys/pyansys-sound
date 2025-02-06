@@ -78,8 +78,8 @@ my_server = connect_to_or_start_server(use_license_context=True)
 # %%
 # Calculate ISO 532-1 loudness for a stationary sound
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load a signal from a WAV file using the :class:`LoadWav` class. It is returned as a DPF
-# field container :class:`FieldsContainer <ansys.dpf.core.fields_container.FieldsContainer>`.
+# Load a signal from a WAV file using the :class:`.LoadWav` class. It is returned as a
+# :class:`FieldsContainer <ansys.dpf.core.fields_container.FieldsContainer>` object.
 
 # Load example data from WAV file
 path_flute_wav = download_flute_wav(server=my_server)
@@ -88,7 +88,7 @@ wav_loader.process()
 signal_field_1 = wav_loader.get_output()[0]
 
 # %%
-# Create a :class:`LoudnessISO532_1_Stationary` object, set its signal, and compute the loudness.
+# Create a :class:`.LoudnessISO532_1_Stationary` object, set its signal, and compute the loudness.
 loudness_stationary = LoudnessISO532_1_Stationary(signal=signal_field_1)
 loudness_stationary.process()
 
@@ -103,7 +103,7 @@ print(
 )
 
 # %%
-# Plot the specific loudness, that is, the loundess at each Bark band index.
+# Plot the specific loudness, that is, the loudness at each Bark band index.
 loudness_stationary.plot()
 
 # %%
@@ -116,7 +116,7 @@ wav_loader.process()
 signal_field_2 = wav_loader.get_output()[0]  # The second field (RPM profile) is useless here.
 
 # %%
-# Create a :class:`LoudnessISO532_1_TimeVarying` object, set its signal, and compute the loudness.
+# Create a :class:`.LoudnessISO532_1_TimeVarying` object, set its signal, and compute the loudness.
 loudness_time_varying = LoudnessISO532_1_TimeVarying(signal=signal_field_2)
 loudness_time_varying.process()
 
