@@ -46,7 +46,7 @@ EXP_SPECTRUM_DATA03 = 5.0357002692180686e-06
 EXP_STR_NOT_SET = "Broadband noise source: Not set\nSource control: Not set"
 EXP_STR_ALL_SET = (
     "Broadband noise source: ''\n"
-    "\tSpectrum type: Not available\n"
+    "\tSpectrum type: Octave\n"
     "\tSpectrum count: 5\n"
     "\tControl parameter: Speed of wind, m/s\n"
     "\t\t[ 1.   2.   5.3 10.5 27.8]"
@@ -57,7 +57,7 @@ EXP_STR_ALL_SET = (
 )
 EXP_STR_ALL_SET_40_VALUES = (
     "Broadband noise source: ''\n"
-    "\tSpectrum type: Not available\n"
+    "\tSpectrum type: Narrow band (DeltaF: 10.0 Hz)\n"
     "\tSpectrum count: 40\n"
     "\tControl parameter: Speed of wind, m/s\n"
     "\t\t[1. 2. 3. 4. 5. ... 36. 37. 38. 39. 40.]"
@@ -550,7 +550,7 @@ def test_source_broadband_noise___extract_bbn_info():
 
     source_bbn_obj.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
     assert source_bbn_obj._SourceBroadbandNoise__extract_bbn_info() == (
-        "Not available",
+        "Octave",
         31.0,
         "Speed of wind",
         "m/s",
@@ -560,7 +560,7 @@ def test_source_broadband_noise___extract_bbn_info():
     # Test with empty control support (delta_f not applicable).
     source_bbn_obj.source_bbn[0].time_freq_support.time_frequencies.data = []
     assert source_bbn_obj._SourceBroadbandNoise__extract_bbn_info() == (
-        "Not available",
+        "Octave",
         0.0,
         "Speed of wind",
         "m/s",

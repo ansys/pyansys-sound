@@ -53,7 +53,23 @@ EXP_STR_NOT_SET = (
 )
 EXP_STR_ALL_SET = (
     "Broadband noise source with two parameters: ''\n"
-    "\tSpectrum type: Not available\n"
+    "\tSpectrum type: Narrow band (DeltaF: 1000.0 Hz)\n"
+    "\tSpectrum count: 8\n"
+    "\tControl parameter 1: temperature, 2.5-40.0 celsius\n"
+    "\tControl parameter 2: charge, 0.0-10.0 %\n"
+    "Source control:\n"
+    "\tControl 1: \n"
+    "\t\tMin: 3.0\n"
+    "\t\tMax: 38.0\n"
+    "\t\tDuration: 3.0 s\n"
+    "\tControl 2: \n"
+    "\t\tMin: 3.0\n"
+    "\t\tMax: 38.0\n"
+    "\t\tDuration: 3.0 s"
+)
+EXP_STR_ALL_SET_OCTAVE = (
+    "Broadband noise source with two parameters: ''\n"
+    "\tSpectrum type: Octave\n"
     "\tSpectrum count: 8\n"
     "\tControl parameter 1: temperature, 2.5-40.0 celsius\n"
     "\tControl parameter 2: charge, 0.0-10.0 %\n"
@@ -121,6 +137,13 @@ def test_source_broadband_noise_two_parameters___str___all_set():
     )
 
     assert str(source_bbn_two_parameters_obj) == EXP_STR_ALL_SET
+
+    # Test __str__ method with no DeltaF (octave-type spectrum).
+    source_bbn_two_parameters_obj.load_source_bbn_two_parameters(
+        pytest.data_path_sound_composer_bbn_source_2p_octave_in_container,
+    )
+
+    assert str(source_bbn_two_parameters_obj) == EXP_STR_ALL_SET_OCTAVE
 
 
 def test_source_broadband_noise_two_parameters_properties():
@@ -715,7 +738,7 @@ def test_source_broadband_noise_two_parameters___extract_bbn_two_parameters_info
         pytest.data_path_sound_composer_bbn_source_2p_in_container
     )
     assert source._SourceBroadbandNoiseTwoParameters__extract_bbn_two_parameters_info() == (
-        "Not available",
+        "Narrow band",
         1000.0,
         "temperature",
         "celsius",
@@ -728,7 +751,7 @@ def test_source_broadband_noise_two_parameters___extract_bbn_two_parameters_info
     # Test with empty control support (delta_f not applicable).
     source.source_bbn_two_parameters[0].time_freq_support.time_frequencies.data = []
     assert source._SourceBroadbandNoiseTwoParameters__extract_bbn_two_parameters_info() == (
-        "Not available",
+        "Narrow band",
         0.0,
         "temperature",
         "celsius",

@@ -81,12 +81,11 @@ class SourceBroadbandNoise(SourceParent):
             if str_name is None:
                 str_name = ""
 
-            # Spectrum type. TODO: reactivate if/else when quantity_type is available in python.
-            # if spectrum_type == "NARROWBAND":
-            #     str_type = f"{spectrum_type} (DeltaF: {delta_f:.1f} Hz)"
-            # else:
-            #     str_type = spectrum_type
-            str_type = spectrum_type
+            # Spectrum type.
+            if spectrum_type == "Narrow band":
+                str_type = f"{spectrum_type} (DeltaF: {delta_f:.1f} Hz)"
+            else:
+                str_type = spectrum_type
 
             # Spectrum control values.
             control_values = np.round(control_values, 1)
@@ -383,25 +382,24 @@ class SourceBroadbandNoise(SourceParent):
         -------
         tuple[str, float, str, str, list[float]]
             Broadband noise source information, consisting of the following elements:
-                First element is the spectrum type ('NARROWBAND', 'OCTAVE1:1', or 'OCTAVE1:3').
+                -   First element is the spectrum type ('Narrow band', 'Octave', or 'Third octave').
 
-                Second element is the spectrum frequency resolution in Hz (only if spectrum type is
-                'NARROWBAND', 0.0 otherwise).
+                -   Second element is the spectrum frequency resolution in Hz (only if spectrum
+                    type is 'Narrow band', 0.0 otherwise).
 
-                Third element is the control parameter name.
+                -   Third element is the control parameter name.
 
-                Sixth element is the control parameter unit.
+                -   Sixth element is the control parameter unit.
 
-                Seventh element is the control parameter values.
+                -   Seventh element is the control parameter values.
         """
         if self.source_bbn is None:
             return ("", 0.0, "", "", [])
 
         # Spectrum info.
-        # TODO: for now quantity_type can't be accessed in python. When it is, the line below
-        # should be uncommented, and replace the one after.
-        # spectrum_type = self.source_bbn[0].field_definition.quantity_type
-        spectrum_type = "Not available"
+        spectrum_support = self.source_bbn[0].time_freq_support
+        spectrum_type: str = spectrum_support.time_frequencies.field_definition.quantity_types[0]
+        spectrum_type = spectrum_type.replace("_", " ").capitalize()
         frequencies = self.source_bbn[0].time_freq_support.time_frequencies.data
         if len(frequencies) > 1:
             delta_f = frequencies[1] - frequencies[0]
