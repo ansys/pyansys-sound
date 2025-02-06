@@ -23,7 +23,7 @@
 """Computes ISO 532-1 loudness for time-varying sounds."""
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
+from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -43,16 +43,15 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
     def __init__(
         self,
-        signal: Field | FieldsContainer = None,
+        signal: Field = None,
         field_type: str = FIELD_FREE,
     ):
         """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        signal : Field | FieldsContainer
-            Signal to compute time-varying ISO532-1 loudness on as a DPF field or fields
-            container.
+        signal : Field, default: None
+            Signal in Pa on which to compute time-varying ISO532-1 loudness, as a DPF field.
         field_type : str, default: "Free"
             Sound field type. Available options are `"Free"` and `"Diffuse"`.
         """
@@ -62,13 +61,15 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         self.__operator = Operator(ID_COMPUTE_LOUDNESS_ISO_TIME_VARYING)
 
     @property
-    def signal(self) -> Field | FieldsContainer:
+    def signal(self) -> Field:
         """Input sound signal in Pa as a DPF field or fields container."""
         return self.__signal
 
     @signal.setter
-    def signal(self, signal: Field | FieldsContainer):
+    def signal(self, signal: Field):
         """Set the signal."""
+        if not (isinstance(signal, Field) or signal is None):
+            raise PyAnsysSoundException("Signal must be specified as a DPF field.")
         self.__signal = signal
 
     @property
@@ -96,8 +97,8 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         """
         if self.__signal == None:
             raise PyAnsysSoundException(
-                "No signal found for loudness versus time computation."
-                + " Use 'LoudnessISO532_1_TimeVarying.signal'."
+                "No signal found for loudness versus time computation. "
+                "Use `LoudnessISO532_1_TimeVarying.signal`."
             )
 
         self.__operator.connect(0, self.signal)
@@ -107,310 +108,190 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         self.__operator.run()
 
         # Stores outputs in the tuple variable
-        if type(self.signal) == FieldsContainer:
-            self._output = (
-                self.__operator.get_output(0, "fields_container"),
-                self.__operator.get_output(1, "fields_container"),
-                self.__operator.get_output(2, "fields_container"),
-                self.__operator.get_output(3, "fields_container"),
-                self.__operator.get_output(4, "fields_container"),
-                self.__operator.get_output(5, "fields_container"),
-            )
-        elif type(self.signal) == Field:
-            self._output = (
-                self.__operator.get_output(0, "field"),
-                self.__operator.get_output(1, "field"),
-                self.__operator.get_output(2, "field"),
-                self.__operator.get_output(3, "field"),
-                self.__operator.get_output(4, "field"),
-                self.__operator.get_output(5, "field"),
-            )
+        self._output = (
+            self.__operator.get_output(0, types.field),
+            self.__operator.get_output(1, types.double),
+            self.__operator.get_output(2, types.double),
+            self.__operator.get_output(3, types.field),
+            self.__operator.get_output(4, types.double),
+            self.__operator.get_output(5, types.double),
+        )
 
-    def get_output(self) -> tuple[FieldsContainer] | tuple[Field]:
-        """Get time-varying loudness data in a tuple as a DPF fields container or field.
+    def get_output(self) -> tuple:
+        """Get time-varying loudness data.
 
         Returns
         -------
-        tuple(FieldsContainer) | tuple(Field)
-            First element is the loudness versus the time in sone.
+        tuple
+            -   First element (field) is the instantaneous loudness in sone.
 
-            Second element is the N5 indicator in sone.
+            -   Second element (float) is the N5 indicator in sone. N5 is the loudness that is
+                exceeded during a cumulated 5 % of the signal duration.
 
-            Third element is the N10 indicator in sone.
+            -   Third element (float) is the N10 indicator in sone. N10 is the loudness that is
+                exceeded during a cumulated 10 % of the signal duration.
 
-            Fourth element is the loudness versus the time in phon.
+            -   Fourth element (field) is the instantaneous loudness level in phon.
 
-            Fifth element is the L5 indicator in phon.
+            -   Fifth element (float) is the L5 indicator in phon. L5 is the loudness level that
+                is exceeded during a cumulated 5 % of the signal duration.
 
-            Sixth element is the L10 indicator in phon.
+            -   Sixth element (float) is the L10 indicator in phon. L10 is the loudness level that
+                is exceeded during a cumulated 10 % of the signal duration.
         """
         if self._output == None:
             warnings.warn(
                 PyAnsysSoundWarning(
                     "Output is not processed yet. Use the "
-                    "'LoudnessISO532_1_TimeVarying.process()' method."
+                    "`LoudnessISO532_1_TimeVarying.process()` method."
                 )
             )
 
         return self._output
 
     def get_output_as_nparray(self) -> tuple[np.ndarray]:
-        """Get indicators for time-varying loudness in a tuple as a NumPy array.
+        """Get time-varying loudness data in a tuple of NumPy arrays.
 
         Returns
         -------
         tuple[numpy.ndarray]
-            First element is the loudness versus the time in sone.
+            -   First element is the instantaneous loudness in sone.
 
-            Second element is the N5 indicator in sone.
+            -   Second element is the N5 percentile loudness in sone. N5 is the loudness that is
+                exceeded during a cumulated 5 % of the signal duration.
 
-            Third element is the N10 indicator in sone.
+            -   Third element is the N10 percentile loudness in sone. N10 is the loudness that is
+                exceeded during a cumulated 10 % of the signal duration.
 
-            Fourth element is the loudness versus the time in phon.
+            -   Fourth element is the instantaneous loudness level in phon.
 
-            Fifth element is the L5 indicator in phon.
+            -   Fifth element is the L5 percentile loudness level in phon. L5 is the loudness level
+                that is exceeded during a cumulated 5 % of the signal duration.
 
-            Sixth element is the L10 indicator in phon.
+            -   Sixth element is the L10 percentile loudness level in phon. L10 is the loudness
+                level that is exceeded during a cumulated 10 % of the signal duration.
+
+            -   Seventh element is the time scale of the instantaneous loudness and loudness level,
+                in seconds.
         """
         output = self.get_output()
 
         if output == None:
-            return None
-
-        if type(output[0]) == Field:
-            return (
-                np.array(output[0].data),
-                np.array(output[1].data),
-                np.array(output[2].data),
-                np.array(output[3].data),
-                np.array(output[4].data),
-                np.array(output[5].data),
-            )
+            return np.array([]), np.nan, np.nan, np.array([]), np.nan, np.nan, np.array([])
 
         return (
-            self.convert_fields_container_to_np_array(output[0]),
-            self.convert_fields_container_to_np_array(output[1]),
-            self.convert_fields_container_to_np_array(output[2]),
-            self.convert_fields_container_to_np_array(output[3]),
-            self.convert_fields_container_to_np_array(output[4]),
-            self.convert_fields_container_to_np_array(output[5]),
+            np.array(output[0].data),
+            np.array(output[1]),
+            np.array(output[2]),
+            np.array(output[3].data),
+            np.array(output[4]),
+            np.array(output[5]),
+            np.array(output[0].time_freq_support.time_frequencies.data),
         )
 
-    def get_loudness_sone_vs_time(self, channel_index: int = 0) -> np.ndarray:
-        """Get the time-varying loudness in sone for a signal channel.
-
-        Parameters
-        ----------
-        channel_index : int, default: 0
-            Index of the signal channel to get time-varying loudness for.
+    def get_loudness_sone_vs_time(self) -> np.ndarray:
+        """Get the instantaneous loudness in sone.
 
         Returns
         -------
         numpy.ndarray
-            Time-varying loudness in sone.
+            Instantaneous loudness in sone.
         """
-        if self.get_output() == None or not (self._check_channel_index(channel_index)):
-            return None
+        return self.get_output_as_nparray()[0]
 
-        if type(self._output[0]) == Field:
-            return self.get_output_as_nparray()[0]
+    def get_N5_sone(self) -> float:
+        """Get the N5 percentile loudness.
 
-        else:
-            loudness_vs_time = self.get_output_as_nparray()[0]
-            if loudness_vs_time.ndim == 1:
-                # Only one field
-                return loudness_vs_time
-            else:
-                return loudness_vs_time[channel_index]
-
-    def get_N5_sone(self, channel_index: int = 0) -> float:
-        """Get the N5 indicator for a signal channel.
-
-        This method gets the N5 indicator, which is the loudness value in sone that is
-        exceeded 5% of the time.
-
-        Parameters
-        ----------
-        channel_index : int, default: 0
-            Index of the signal channel to get the N5 indicator for.
+        N5 is the loudness that is exceeded during a cumulated 5 % of the signal duration.
 
         Returns
         -------
-        numpy.float64
-            N5 indicator value in sone.
+        float
+            N5 percentile loudness in sone.
         """
-        if self.get_output() == None or not (self._check_channel_index(channel_index)):
-            return None
+        return self.get_output_as_nparray()[1]
 
-        if type(self._output[0]) == Field:
-            return self.get_output_as_nparray()[1][0]
+    def get_N10_sone(self) -> float:
+        """Get the N10 percentile loudness.
 
-        else:
-            N5 = self.get_output_as_nparray()[1]
-            return N5[channel_index]
-
-    def get_N10_sone(self, channel_index: int = 0) -> float:
-        """Get the N10 indicator for a signal channel.
-
-        This method gets the N10 channel, which is the loudness value in sone that is
-        exceeded 10% of the time.
-
-        Parameters
-        ----------
-        channel_index : int, default: 0
-            Index of the signal channel to get the N10 indicator for.
+        N10 is the loudness that is exceeded during a cumulated 10 % of the signal duration.
 
         Returns
         -------
-        numpy.float64
-            N10 indicator value in sone.
+        float
+            N10 percentile loudness in sone.
         """
-        if self.get_output() == None or not (self._check_channel_index(channel_index)):
-            return None
+        return self.get_output_as_nparray()[2]
 
-        if type(self._output[0]) == Field:
-            return self.get_output_as_nparray()[2][0]
-
-        else:
-            N10 = self.get_output_as_nparray()[2]
-            return N10[channel_index]
-
-    def get_loudness_level_phon_vs_time(self, channel_index: int = 0) -> np.ndarray:
-        """Get the time-varying loudness level in phon for a signal channel.
-
-        Parameters
-        ----------
-        channel_index : int, default: 0
-            Index of the signal channel to get the time-varying loudness level for.
+    def get_loudness_level_phon_vs_time(self) -> np.ndarray:
+        """Get the instantaneous loudness level in phon.
 
         Returns
         -------
         numpy.ndarray
-            Time-varying loudness level in phon.
+            Instantaneous loudness level in phon.
         """
-        if self.get_output() == None or not (self._check_channel_index(channel_index)):
-            return None
+        return self.get_output_as_nparray()[3]
 
-        if type(self._output[0]) == Field:
-            return self.get_output_as_nparray()[3]
+    def get_L5_phon(self) -> float:
+        """Get the L5 percentile loudness level.
 
-        else:
-            loudness_level_vs_time = self.get_output_as_nparray()[3]
-            if loudness_level_vs_time.ndim == 1:
-                # Only one field
-                return loudness_level_vs_time
-            else:
-                return loudness_level_vs_time[channel_index]
-
-    def get_L5_phon(self, channel_index: int = 0) -> float:
-        """Get the L5 indicator for a signal channel.
-
-        This method gets the L5 indicator, which is the loudness level in phon that is
-        exceeded 5% of the time.
-
-        Parameters
-        ----------
-        channel_index : int, default: 0
-            Index of the signal channel to get the L5 indicator for.
+        L5 is the loudness level that is exceeded during a cumulated 5 % of the signal duration.
 
         Returns
         -------
-        numpy.float64
-            L5 value in phon.
+        float
+            L5 percentile loudness level in phon.
         """
-        if self.get_output() == None or not (self._check_channel_index(channel_index)):
-            return None
+        return self.get_output_as_nparray()[4]
 
-        if type(self._output[0]) == Field:
-            return self.get_output_as_nparray()[4][0]
+    def get_L10_phon(self) -> float:
+        """Get the L10 percentile loudness level.
 
-        else:
-            L5 = self.get_output_as_nparray()[4]
-            return L5[channel_index]
-
-    def get_L10_phon(self, channel_index: int = 0) -> float:
-        """Get the L10 indicator for a signal channel.
-
-        This method gets the L10 indicator, which is the loudness level in phon that is
-        exceeded 10% of the time.
-
-        Parameters
-        ----------
-        channel_index : int, default: 0
-            Index of the signal channel to get the L10 indicator for.
+        L10 is the loudness level that is exceeded during a cumulated 10 % of the signal duration.
 
         Returns
         -------
-        numpy.float64
-            L10 value in phon.
+        float
+            L10 percentile loudness level in phon.
         """
-        if self.get_output() == None or not (self._check_channel_index(channel_index)):
-            return None
-
-        if type(self._output[0]) == Field:
-            return self.get_output_as_nparray()[5][0]
-
-        else:
-            L10 = self.get_output_as_nparray()[5]
-            return L10[channel_index]
+        return self.get_output_as_nparray()[5]
 
     def get_time_scale(self) -> np.ndarray:
-        """Get the time scale.
-
-        This method gets an array of the timestamps in seconds where time-varying
-        loudness and loudness level are defined.
+        """Get the time scale of the instantaneous loudness and loudness level.
 
         Returns
         -------
         numpy.ndarray
-            Timestamps in seconds.
+            Time scale of the instantaneous loudness and loudness level, in seconds.
         """
-        if self.get_output() == None:
-            return None
-
-        if type(self._output[0]) == Field:
-            return np.copy(self._output[0].time_freq_support.time_frequencies.data)
-        else:
-            return np.copy(self._output[0][0].time_freq_support.time_frequencies.data)
+        return self.get_output_as_nparray()[6]
 
     def plot(self):
-        """Plot the time-varying loudness in sone and loudness level in phon.
+        """Plot the instantaneous loudness, in sone, and loudness level, in phon.
 
-        This method creates a figure window that displays the time-varying loudness (N)
-        in sone and loudness level (L_N) in phon.
+        This method creates a figure window that displays the instantaneous loudness (N), in sone,
+        and instantaneous loudness level (L_N), in phon.
         """
         if self.get_output() == None:
             raise PyAnsysSoundException(
                 "Output is not processed yet. Use the "
-                "'LoudnessISO532_1_TimeVarying.process()' method."
+                "`LoudnessISO532_1_TimeVarying.process()` method."
             )
-
-        if type(self._output[0]) == Field:
-            num_channels = 1
-        else:
-            num_channels = len(self._output[0])
 
         time = self.get_time_scale()
 
-        # Plot loudness in sone
-        f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
-        for i in range(num_channels):
-            ax1.plot(time, self.get_loudness_sone_vs_time(i), label="Channel {}".format(i))
+        _, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
 
-        ax1.set_title("Time-varying loudness")
-        if num_channels > 1:
-            ax1.legend()
+        # Plot loudness in sone
+        ax1.plot(time, self.get_loudness_sone_vs_time())
+        ax1.set_title("Instantaneous loudness")
         ax1.set_ylabel("N (sone)")
         ax1.grid(True)
 
-        # Plot loudness in phon
-
-        for i in range(num_channels):
-            ax2.plot(time, self.get_loudness_level_phon_vs_time(i), label="Channel {}".format(i))
-
-        ax2.set_title("Time-varying loudness level")
-        if num_channels > 1:
-            ax2.legend()
+        # Plot loudness level in phon
+        ax2.plot(time, self.get_loudness_level_phon_vs_time())
+        ax2.set_title("Instantaneous loudness level")
         ax2.set_xlabel("Time (s)")
         ax2.set_ylabel(r"$\mathregular{L_N}$ (phon)")
         ax2.grid(True)

@@ -200,17 +200,6 @@ def download_flute_wav(server=None):
     return _download_example_file_to_server_tmp_folder("flute.wav", server=server)
 
 
-def download_flute_2_wav(server=None):
-    """Download the ``flute2.wav`` file.
-
-    Returns
-    -------
-    str
-        Path for the ``flute2.wav`` file.
-    """
-    return _download_example_file_to_server_tmp_folder("flute2.wav", server=server)
-
-
 def download_accel_with_rpm_wav(server=None):
     """Download the ``accel_with_rpm.wav`` file.
 

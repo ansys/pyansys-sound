@@ -38,7 +38,7 @@ class SpectralCentroid(PsychoacousticsParent):
 
         Parameters
         ----------
-        signal : Field
+        signal : Field, default: None
             Signal on which to compute spectral centroid as a DPF field.
         """
         super().__init__()
