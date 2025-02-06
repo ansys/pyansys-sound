@@ -51,7 +51,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Signal to compute time-varying ISO532-1 loudness on as a DPF field.
+            Signal in Pa on which to compute time-varying ISO532-1 loudness, as a DPF field.
         field_type : str, default: "Free"
             Sound field type. Available options are `"Free"` and `"Diffuse"`.
         """

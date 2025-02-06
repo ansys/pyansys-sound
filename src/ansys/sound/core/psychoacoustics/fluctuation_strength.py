@@ -53,8 +53,7 @@ class FluctuationStrength(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Signal in Pa to compute fluctuation strength on as a DPF field or fields
-            container.
+            Signal in Pa on which to compute fluctuation strength, as a DPF field.
         """
         super().__init__()
         self.signal = signal
