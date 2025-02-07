@@ -169,8 +169,18 @@ def pytest_configure():
         ),
         server=server,
     )
+    pytest.data_path_sound_composer_bbn_source_2p_octave_in_container = upload_file_in_tmp_folder(
+        os.path.join(
+            base_dir, "AnsysSound_BBN_MultipleParameters dBSPL Octave v2_2024R2_20240418.txt"
+        ),
+        server=server,
+    )
     pytest.data_path_Acceleration_with_Tacho_nonUnitaryCalib = upload_file_in_tmp_folder(
         os.path.join(base_dir, "Acceleration_with_Tacho_nonUnitaryCalib.wav"),
+        server=server,
+    )
+    pytest.data_path_sound_composer_project_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "20250130_SoundComposerProjectForDpfSoundTesting_valid.scn"),
         server=server,
     )
 

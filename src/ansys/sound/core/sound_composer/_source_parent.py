@@ -21,6 +21,9 @@
 # SOFTWARE.
 
 """Sound Composer's source."""
+import warnings
+
+from .._pyansys_sound import PyAnsysSoundWarning
 from ._sound_composer_parent import SoundComposerParent
 
 
@@ -38,3 +41,18 @@ class SourceParent(SoundComposerParent):
     def plot_control(self):
         """Plot the source control(s) in a figure."""
         pass
+
+    def set_from_generic_data_containers(self, source_data, source_control_data):
+        """Set the source and source control data from generic data containers."""
+        warnings.warn(
+            PyAnsysSoundWarning(
+                "Cannot set from generic data containers because there is nothing to set here."
+            )
+        )
+
+    def get_as_generic_data_containers(self) -> tuple:
+        """Get the object data as generic data containers."""
+        warnings.warn(
+            PyAnsysSoundWarning("Cannot create generic data containers because there is no data.")
+        )
+        return (None, None)

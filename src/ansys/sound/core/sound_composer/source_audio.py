@@ -23,7 +23,7 @@
 """Sound Composer's audio source."""
 import warnings
 
-from ansys.dpf.core import Field, Operator
+from ansys.dpf.core import Field, GenericDataContainer, Operator
 from matplotlib import pyplot as plt
 import numpy as np
 
@@ -139,6 +139,51 @@ class SourceAudio(SourceParent):
 
         # Get the loaded sound power level parameters.
         self.source_audio_data = self.__operator_load.get_output(0, "field")
+
+    def set_from_generic_data_containers(
+        self,
+        source_data: GenericDataContainer,
+        source_control_data: GenericDataContainer,
+    ):
+        """Set the source and source control data from generic data containers.
+
+        This method is meant to set the source data from generic data containers obtained when
+        loading a Sound Composer project file (.scn).
+
+        Parameters
+        ----------
+        source_data : GenericDataContainer
+            Source data as a DPF generic data container.
+        source_control_data : GenericDataContainer
+            Source control data as a DPF generic data container. In the case of
+            :class:`SourceAudio`, source control data is ignored.
+        """
+        self.source_audio_data = source_data.get_property("sound_composer_source")
+
+    def get_as_generic_data_containers(self) -> tuple[GenericDataContainer]:
+        """Get the source data as generic data containers.
+
+        This method is meant to return the source data as generic data containers needed to save a
+        Sound Composer project file (.scn).
+
+        Returns
+        -------
+        tuple[GenericDataContainer]
+            Source as two generic data containers, for source and source control data, respectively.
+            In the case of :class:`SourceAudio`, there is no source control data, so ``None`` is
+            always returned as the second element.
+        """
+        if self.source_audio_data is None:
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    "Cannot create source generic data container because there is no source data."
+                )
+            )
+            return (None, None)
+        else:
+            source_data = GenericDataContainer()
+            source_data.set_property("sound_composer_source", self.source_audio_data)
+            return (source_data, None)
 
     def process(self, sampling_frequency: float = 44100.0):
         """Generate the sound of the audio source.

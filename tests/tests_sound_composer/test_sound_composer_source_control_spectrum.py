@@ -59,7 +59,7 @@ def test_source_control_spectrum_propertiess_exceptions():
     # Test method setter exception.
     with pytest.raises(
         PyAnsysSoundException,
-        match="Method must be an integer. Available options are:\n1: IFFT\n2: Hybrid",
+        match="Method must be an integer. Available options are:\n0: IFFT\n1: Hybrid",
     ):
         control.method = 3
 

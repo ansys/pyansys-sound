@@ -84,7 +84,7 @@ class Filter(SignalProcessingParent):
             file shall have the same text format (with the header `AnsysSound_FRF`), as supported
             by Ansys Sound SAS. If ``file`` is specified, parameters ``a_coefficients`` and
             ``b_coefficients`` are ignored.
-        signal : Field
+        signal : Field, default: None
             Mono signal to filter, as a DPF field.
         """
         super().__init__()

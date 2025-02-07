@@ -22,7 +22,14 @@
 
 from unittest.mock import patch
 
-from ansys.dpf.core import Field, TimeFreqSupport, fields_factory, locations
+from ansys.dpf.core import (
+    Field,
+    GenericDataContainer,
+    Operator,
+    TimeFreqSupport,
+    fields_factory,
+    locations,
+)
 import numpy as np
 import pytest
 
@@ -122,6 +129,57 @@ def test_track_properties_exceptions():
         track.filter = "InvalidType"
 
 
+def test_track_set_from_generic_data_containers():
+    """Test Track set_from_generic_data_containers method."""
+    # Create generic data containers for the source and source control.
+    source_control = SourceControlSpectrum(duration=3.0, method=1)
+    source = SourceSpectrum(
+        file_source=pytest.data_path_sound_composer_spectrum_source_in_container,
+        source_control=source_control,
+    )
+    source_data, source_control_data = source.get_as_generic_data_containers()
+
+    # Create a generic data container for the track.
+    track_data = GenericDataContainer()
+    track_data.set_property("track_name", "My track")
+    track_data.set_property("track_gain", 15.6)
+    track_data.set_property("track_type", 5)
+    track_data.set_property("track_source", source_data)
+    track_data.set_property("track_source_control", source_control_data)
+    track_data.set_property("track_is_filter", 0)
+
+    # Create a track and test method set_from_generic_data_container.
+    track = Track()
+    track.set_from_generic_data_containers(track_data)
+    assert track.name == "My track"
+    assert track.gain == 15.6
+    assert isinstance(track.source, SourceSpectrum)
+    assert len(track.source.source_spectrum_data.data) == len(source.source_spectrum_data.data)
+    assert isinstance(track.source.source_control, SourceControlSpectrum)
+    assert track.source.source_control.duration == 3.0
+    assert track.source.source_control.method == 1
+    assert track.filter is None
+
+    # Add a filter to the generic data container.
+    op_frf = Operator("load_FRF_from_txt")
+    op_frf.connect(0, pytest.data_path_filter_frf)
+    op_frf.run()
+    f_filter_frf: Field = op_frf.get_output(0, "field")
+
+    track_data.set_property("track_is_filter", 1)
+    track_data.set_property("track_filter", f_filter_frf)
+
+    track.set_from_generic_data_containers(track_data)
+    assert track.name == "My track"
+    assert track.gain == 15.6
+    assert isinstance(track.source, SourceSpectrum)
+    assert len(track.source.source_spectrum_data.data) == len(source.source_spectrum_data.data)
+    assert isinstance(track.source.source_control, SourceControlSpectrum)
+    assert track.source.source_control.duration == 3.0
+    assert track.source.source_control.method == 1
+    assert isinstance(track.filter, Filter)
+
+
 def test_track_process():
     """Test Track process method (no resample needed)."""
     track = Track(
@@ -152,6 +210,18 @@ def test_track_process_exceptions():
         PyAnsysSoundException, match="Sampling frequency must be strictly positive."
     ):
         track.process(sampling_frequency=0.0)
+
+    # Test process method exception3 (sampling frequency value mismatch).
+    track = Track()
+    track.filter = Filter(sampling_frequency=48000.0)
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=(
+            "Specified sampling frequency must be equal to that which is stored in the track's "
+            "filter."
+        ),
+    ):
+        track.process(sampling_frequency=44100.0)
 
 
 def test_track_get_output():

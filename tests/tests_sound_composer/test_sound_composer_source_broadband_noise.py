@@ -25,6 +25,8 @@ from unittest.mock import patch
 from ansys.dpf.core import (
     Field,
     FieldsContainer,
+    GenericDataContainer,
+    Operator,
     TimeFreqSupport,
     fields_container_factory,
     fields_factory,
@@ -44,7 +46,7 @@ EXP_SPECTRUM_DATA03 = 5.0357002692180686e-06
 EXP_STR_NOT_SET = "Broadband noise source: Not set\nSource control: Not set"
 EXP_STR_ALL_SET = (
     "Broadband noise source: ''\n"
-    "\tSpectrum type: Not available\n"
+    "\tSpectrum type: Octave\n"
     "\tSpectrum count: 5\n"
     "\tControl parameter: Speed of wind, m/s\n"
     "\t\t[ 1.   2.   5.3 10.5 27.8]"
@@ -55,7 +57,7 @@ EXP_STR_ALL_SET = (
 )
 EXP_STR_ALL_SET_40_VALUES = (
     "Broadband noise source: ''\n"
-    "\tSpectrum type: Not available\n"
+    "\tSpectrum type: Narrow band (DeltaF: 10.0 Hz)\n"
     "\tSpectrum count: 40\n"
     "\tControl parameter: Speed of wind, m/s\n"
     "\t\t[1. 2. 3. 4. 5. ... 36. 37. 38. 39. 40.]"
@@ -221,6 +223,78 @@ def test_source_specrum_load_source_bbn():
     source_bbn_obj.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
     assert isinstance(source_bbn_obj.source_bbn, FieldsContainer)
     assert source_bbn_obj.source_bbn[0].data[3] == pytest.approx(EXP_SPECTRUM_DATA03)
+
+
+def test_source_broadband_noise_set_from_generic_data_containers():
+    """Test SourceBroadbandNoise set_from_generic_data_containers method."""
+    op = Operator("sound_composer_load_source_bbn")
+    op.connect(0, pytest.data_path_sound_composer_bbn_source_in_container)
+    op.run()
+    fc_data: FieldsContainer = op.get_output(0, "fields_container")
+
+    source_data = GenericDataContainer()
+    source_data.set_property("sound_composer_source", fc_data)
+
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([1.0, 2.0, 3.0, 4.0, 5.0], 1)
+    source_control_data = GenericDataContainer()
+    source_control_data.set_property(
+        "sound_composer_source_control_one_parameter", f_source_control
+    )
+
+    source_bbn_obj = SourceBroadbandNoise()
+    source_bbn_obj.set_from_generic_data_containers(source_data, source_control_data)
+    assert isinstance(source_bbn_obj.source_bbn, FieldsContainer)
+    assert len(source_bbn_obj.source_bbn) == len(fc_data)
+    assert isinstance(source_bbn_obj.source_control, SourceControlTime)
+    assert len(source_bbn_obj.source_control.control.data) == 5
+
+
+def test_source_broadband_noise_get_as_generic_data_containers():
+    """Test SourceBroadbandNoise get_as_generic_data_containers method."""
+    # Source control undefined => warning.
+    source_bbn_obj = SourceBroadbandNoise(
+        file=pytest.data_path_sound_composer_bbn_source_in_container
+    )
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match=(
+            "Cannot create source control generic data container because there is no source "
+            "control data."
+        ),
+    ):
+        _, source_control_data = source_bbn_obj.get_as_generic_data_containers()
+    assert source_control_data is None
+
+    # Source data undefined => warning.
+    source_bbn_obj.source_bbn = None
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([1.0, 2.0, 3.0, 4.0, 5.0], 1)
+    source_bbn_obj.source_control = SourceControlTime()
+    source_bbn_obj.source_control.control = f_source_control
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Cannot create source generic data container because there is no source data.",
+    ):
+        source_data, _ = source_bbn_obj.get_as_generic_data_containers()
+    assert source_data is None
+
+    # Both source and source control are defined.
+    source_bbn_obj.load_source_bbn(
+        pytest.data_path_sound_composer_bbn_source_in_container,
+    )
+    source_data, source_control_data = source_bbn_obj.get_as_generic_data_containers()
+
+    assert isinstance(source_data, GenericDataContainer)
+    assert isinstance(source_data.get_property("sound_composer_source"), FieldsContainer)
+    assert isinstance(source_control_data, GenericDataContainer)
+    assert isinstance(
+        source_control_data.get_property("sound_composer_source_control_one_parameter"), Field
+    )
 
 
 def test_source_broadband_noise_process():
@@ -476,7 +550,7 @@ def test_source_broadband_noise___extract_bbn_info():
 
     source_bbn_obj.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
     assert source_bbn_obj._SourceBroadbandNoise__extract_bbn_info() == (
-        "Not available",
+        "Octave",
         31.0,
         "Speed of wind",
         "m/s",
@@ -486,7 +560,7 @@ def test_source_broadband_noise___extract_bbn_info():
     # Test with empty control support (delta_f not applicable).
     source_bbn_obj.source_bbn[0].time_freq_support.time_frequencies.data = []
     assert source_bbn_obj._SourceBroadbandNoise__extract_bbn_info() == (
-        "Not available",
+        "Octave",
         0.0,
         "Speed of wind",
         "m/s",

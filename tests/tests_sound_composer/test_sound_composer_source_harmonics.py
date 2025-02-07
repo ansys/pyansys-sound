@@ -25,6 +25,8 @@ from unittest.mock import patch
 from ansys.dpf.core import (
     Field,
     FieldsContainer,
+    GenericDataContainer,
+    Operator,
     TimeFreqSupport,
     fields_container_factory,
     fields_factory,
@@ -294,6 +296,79 @@ def test_source_harmonics_load_source_harmonics():
     assert source_harmonics_obj.source_harmonics[0].data[3] == pytest.approx(EXP_ORDER_LEVEL03_XML)
 
 
+def test_source_harmonics_set_from_generic_data_containers():
+    """Test SourceHarmonics set_from_generic_data_containers method."""
+    op = Operator("sound_composer_load_source_harmonics")
+    op.connect(0, pytest.data_path_sound_composer_harmonics_source_in_container)
+    op.run()
+    fc_data: FieldsContainer = op.get_output(0, "fields_container")
+
+    source_data = GenericDataContainer()
+    source_data.set_property("sound_composer_source", fc_data)
+
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([1.0, 2.0, 3.0, 4.0, 5.0], 1)
+    source_control_data = GenericDataContainer()
+    source_control_data.set_property(
+        "sound_composer_source_control_one_parameter", f_source_control
+    )
+
+    source_harmo_obj = SourceHarmonics()
+    source_harmo_obj.set_from_generic_data_containers(source_data, source_control_data)
+    assert isinstance(source_harmo_obj.source_harmonics, FieldsContainer)
+    assert len(source_harmo_obj.source_harmonics) == len(fc_data)
+    assert isinstance(source_harmo_obj.source_control, SourceControlTime)
+    assert len(source_harmo_obj.source_control.control.data) == 5
+
+
+def test_source_harmonics_get_as_generic_data_containers():
+    """Test SourceHarmonics get_as_generic_data_containers method."""
+    # Source control undefined => warning.
+    source_harmo_obj = SourceHarmonics(
+        file=pytest.data_path_sound_composer_harmonics_source_in_container
+    )
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match=(
+            "Cannot create source control generic data container, either because there is no "
+            "source control data, or because the source control data is invalid."
+        ),
+    ):
+        _, source_control_data = source_harmo_obj.get_as_generic_data_containers()
+    assert source_control_data is None
+
+    # Source data undefined => warning.
+    source_harmo_obj.source_harmonics = None
+    f_source_control = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    f_source_control.append([1.0, 2.0, 3.0, 4.0, 5.0], 1)
+    source_control_obj = SourceControlTime()
+    source_control_obj.control = f_source_control
+    source_harmo_obj.source_control = source_control_obj
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Cannot create source generic data container because there is no source data.",
+    ):
+        source_data, _ = source_harmo_obj.get_as_generic_data_containers()
+    assert source_data is None
+
+    # Both source and source control are defined.
+    source_harmo_obj.load_source_harmonics(
+        pytest.data_path_sound_composer_harmonics_source_in_container,
+    )
+    source_data, source_control_data = source_harmo_obj.get_as_generic_data_containers()
+
+    assert isinstance(source_data, GenericDataContainer)
+    assert isinstance(source_data.get_property("sound_composer_source"), FieldsContainer)
+    assert isinstance(source_control_data, GenericDataContainer)
+    assert isinstance(
+        source_control_data.get_property("sound_composer_source_control_one_parameter"), Field
+    )
+
+
 def test_source_harmonics_process():
     """Test SourceHarmonics process method."""
     # Create a field to use in a SourceControlTime object.
@@ -327,7 +402,7 @@ def test_source_harmonics_process_exceptions():
     )
     with pytest.raises(
         PyAnsysSoundException,
-        match="Harmonics source control is not set. Use ``SourceHarmonics.source_control``.",
+        match="Harmonics source control is not set/valid. Use ``SourceHarmonics.source_control``.",
     ):
         source_harmonics_obj.process()
 
@@ -534,7 +609,7 @@ def test_source_harmonics_plot_control_exceptions():
     source_obj = SourceHarmonics()
     with pytest.raises(
         PyAnsysSoundException,
-        match="Harmonics source control is not set. Use ``SourceHarmonics.source_control``.",
+        match="Harmonics source control is not set/valid. Use ``SourceHarmonics.source_control``.",
     ):
         source_obj.plot_control()
 

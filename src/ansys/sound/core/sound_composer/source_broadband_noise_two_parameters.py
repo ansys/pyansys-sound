@@ -23,7 +23,7 @@
 """Sound Composer's broadband noise source with two parameters."""
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
+from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operator
 from matplotlib import pyplot as plt
 import numpy as np
 
@@ -98,12 +98,11 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
             if str_name is None:
                 str_name = ""
 
-            # # Spectrum type. TODO: reactivate if/else when quantity_type is available in python.
-            # if spectrum_type == "NARROWBAND":
-            #     str_type = f"{spectrum_type} (DeltaF: {delta_f:.1f} Hz)"
-            # else:
-            #     str_type = spectrum_type
-            str_type = spectrum_type
+            # Spectrum type.
+            if spectrum_type == "Narrow band":
+                str_type = f"{spectrum_type} (DeltaF: {delta_f:.1f} Hz)"
+            else:
+                str_type = spectrum_type
 
             str_source = (
                 f"'{str_name}'\n"
@@ -263,6 +262,72 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         # Get the loaded sound power level parameters.
         self.source_bbn_two_parameters = self.__operator_load.get_output(0, "fields_container")
 
+    def set_from_generic_data_containers(
+        self,
+        source_data: GenericDataContainer,
+        source_control_data: GenericDataContainer,
+    ):
+        """Set the source and source control data from generic data containers.
+
+        This method is meant to set the source data from generic data containers obtained when
+        loading a Sound Composer project file (.scn).
+
+        Parameters
+        ----------
+        source_data : GenericDataContainer
+            Source data as a DPF generic data container.
+        source_control_data : GenericDataContainer
+            Source control data as a DPF generic data container.
+        """
+        self.source_bbn_two_parameters = source_data.get_property("sound_composer_source")
+        control = source_control_data.get_property("sound_composer_source_control_parameter_1")
+        self.source_control1 = SourceControlTime()
+        self.source_control1.control = control
+        control = source_control_data.get_property("sound_composer_source_control_parameter_2")
+        self.source_control2 = SourceControlTime()
+        self.source_control2.control = control
+
+    def get_as_generic_data_containers(self) -> tuple[GenericDataContainer]:
+        """Get the source and source control data as generic data containers.
+
+        This method is meant to return the source data as generic data containers needed to save a
+        Sound Composer project file (.scn).
+
+        Returns
+        -------
+        tuple[GenericDataContainer]
+            Source as two generic data containers, for source and source control data, respectively.
+        """
+        if self.source_bbn_two_parameters is None:
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    "Cannot create source generic data container because there is no source data."
+                )
+            )
+            source_data = None
+        else:
+            source_data = GenericDataContainer()
+            source_data.set_property("sound_composer_source", self.source_bbn_two_parameters)
+
+        if not self.is_source_control_valid():
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    "Cannot create source control generic data container because at least one "
+                    "source control data is missing."
+                )
+            )
+            source_control_data = None
+        else:
+            source_control_data = GenericDataContainer()
+            source_control_data.set_property(
+                "sound_composer_source_control_parameter_1", self.source_control1.control
+            )
+            source_control_data.set_property(
+                "sound_composer_source_control_parameter_2", self.source_control2.control
+            )
+
+        return (source_data, source_control_data)
+
     def process(self, sampling_frequency: float = 44100.0):
         """Generate the sound of the broadband noise source with two parameters.
 
@@ -400,32 +465,31 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         tuple[str, float, str, str, tuple[float], str, str, tuple[float]]
             Broadband noise source with two parameters information, consisting of the following
             elements:
-                First element is the spectrum type ('NARROWBAND', 'OCTAVE1:1', or 'OCTAVE1:3').
+                -   First element is the spectrum type ('Narrow band', 'Octave', or 'Third octave').
 
-                Second element is the spectrum frequency resolution in Hz (only if spectrum type is
-                'NARROWBAND', 0.0 otherwise).
+                -   Second element is the spectrum frequency resolution in Hz (only if spectrum
+                    type is 'Narrow band', 0.0 otherwise).
 
-                Third element is the first control parameter name.
+                -   Third element is the first control parameter name.
 
-                Sixth element is the first control parameter unit.
+                -   Sixth element is the first control parameter unit.
 
-                Seventh element is the first control parameter min and max values in a tuple.
+                -   Seventh element is the first control parameter min and max values in a tuple.
 
-                Eighth element is the second control parameter name.
+                -   Eighth element is the second control parameter name.
 
-                Ninth element is the second control parameter unit.
+                -   Ninth element is the second control parameter unit.
 
-                Tenth element is the second control parameter min and max values in a tuple.
+                -   Tenth element is the second control parameter min and max values in a tuple.
 
         """
         if self.source_bbn_two_parameters is None:
             return ("", 0.0, "", "", (), "", "", ())
 
         # Spectrum info.
-        # TODO: for now quantity_type can't be accessed in python. When it is, the line below
-        # should be uncommented, and replace the one after.
-        # type = self.source_bbn[0].field_definition.quantity_type
-        type = "Not available"
+        spectrum_support = self.source_bbn_two_parameters[0].time_freq_support
+        spectrum_type: str = spectrum_support.time_frequencies.field_definition.quantity_types[0]
+        spectrum_type = spectrum_type.replace("_", " ").capitalize()
         frequencies = self.source_bbn_two_parameters[0].time_freq_support.time_frequencies.data
         if len(frequencies) > 1:
             delta_f = frequencies[1] - frequencies[0]
@@ -448,4 +512,4 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         values = control_data.field_support_by_property(unit2).data
         min_max2 = (float(values.min()), float(values.max()))
 
-        return type, delta_f, name1, unit1, min_max1, name2, unit2, min_max2
+        return spectrum_type, delta_f, name1, unit1, min_max1, name2, unit2, min_max2

@@ -23,7 +23,7 @@
 """Sound Composer's spectrum source."""
 import warnings
 
-from ansys.dpf.core import Field, Operator
+from ansys.dpf.core import Field, GenericDataContainer, Operator
 from matplotlib import pyplot as plt
 import numpy as np
 
@@ -166,6 +166,71 @@ class SourceSpectrum(SourceParent):
 
         # Get the loaded sound power level parameters.
         self.source_spectrum_data = self.__operator_load.get_output(0, "field")
+
+    def set_from_generic_data_containers(
+        self,
+        source_data: GenericDataContainer,
+        source_control_data: GenericDataContainer,
+    ):
+        """Set the source and source control data from generic data containers.
+
+        This method is meant to set the source data from generic data containers obtained when
+        loading a Sound Composer project file (.scn).
+
+        Parameters
+        ----------
+        source_data : GenericDataContainer
+            Source data as a DPF generic data container.
+        source_control_data : GenericDataContainer
+            Source control data as a DPF generic data container.
+        """
+        self.source_spectrum_data = source_data.get_property("sound_composer_source")
+        duration = source_control_data.get_property(
+            "sound_composer_source_control_spectrum_duration"
+        )
+        method = source_control_data.get_property("sound_composer_source_control_spectrum_method")
+        self.source_control = SourceControlSpectrum(duration=duration, method=method)
+
+    def get_as_generic_data_containers(self) -> tuple[GenericDataContainer]:
+        """Get the source and source control data as generic data containers.
+
+        This method is meant to return the source data as generic data containers needed to save a
+        Sound Composer project file (.scn).
+
+        Returns
+        -------
+        tuple[GenericDataContainer]
+            Source as two generic data containers, for source and source control data, respectively.
+        """
+        if self.source_spectrum_data is None:
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    "Cannot create source generic data container because there is no source data."
+                )
+            )
+            source_data = None
+        else:
+            source_data = GenericDataContainer()
+            source_data.set_property("sound_composer_source", self.source_spectrum_data)
+
+        if not self.is_source_control_valid():
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    "Cannot create source control generic data container because there is no "
+                    "source control data."
+                )
+            )
+            source_control_data = None
+        else:
+            source_control_data = GenericDataContainer()
+            source_control_data.set_property(
+                "sound_composer_source_control_spectrum_duration", self.source_control.duration
+            )
+            source_control_data.set_property(
+                "sound_composer_source_control_spectrum_method", self.source_control.method
+            )
+
+        return (source_data, source_control_data)
 
     def process(self, sampling_frequency: float = 44100.0):
         """Generate the sound of the spectrum source, using the current spectrum and source control.

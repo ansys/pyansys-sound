@@ -20,6 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import pytest
+
+from ansys.sound.core._pyansys_sound import PyAnsysSoundWarning
 from ansys.sound.core.sound_composer import SourceParent
 
 
@@ -35,3 +38,25 @@ def test__source_parent_plot_control():
     """Test SourceParent's plot_control method."""
     source = SourceParent()
     source.plot_control()
+
+
+def test__source_parent_set_from_generic_data_containers():
+    """Test SourceParent's set_from_generic_data_containers method."""
+    source = SourceParent()
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Cannot set from generic data containers because there is nothing to set here.",
+    ):
+        source.set_from_generic_data_containers(None, None)
+
+
+def test__source_parent_get_as_generic_data_containers():
+    """Test SourceParent's get_as_generic_data_containers method."""
+    source = SourceParent()
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Cannot create generic data containers because there is no data.",
+    ):
+        source_data, source_control_data = source.get_as_generic_data_containers()
+    assert source_data is None
+    assert source_control_data is None
