@@ -41,7 +41,7 @@ class TonalityDIN45681(PsychoacousticsParent):
     """
 
     def __init__(self, signal: Field = None, window_length: float = 3.0, overlap: float = 0.0):
-        """Create a ``TonalityDIN45681`` object.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
@@ -199,9 +199,6 @@ class TonalityDIN45681(PsychoacousticsParent):
             Seventh element is the DIN 45681 tonal adjustment Kt over time, in dB.
 
             Eighth element is the time scale, in s.
-
-            Ninth element is the DIN 45681 tonality details (individual tone data for each
-            spectrum).
         """
         output = self.get_output()
 
@@ -210,7 +207,6 @@ class TonalityDIN45681(PsychoacousticsParent):
                 np.nan,
                 np.nan,
                 np.nan,
-                np.array([]),
                 np.array([]),
                 np.array([]),
                 np.array([]),
@@ -227,7 +223,6 @@ class TonalityDIN45681(PsychoacousticsParent):
             np.array(output[5].data),
             np.array(output[6].data),
             np.array(output[3].time_freq_support.time_frequencies.data),
-            np.array(output[7]),
         )
 
     def get_mean_difference(self) -> float:

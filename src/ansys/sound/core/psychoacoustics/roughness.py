@@ -110,7 +110,7 @@ class Roughness(PsychoacousticsParent):
             -   First element (float) is the overall roughness in asper.
 
             -   Second element (Field) is the specific roughness, that is, the roughness in each
-                Bark band, in asper.
+                Bark band, in asper/Bark.
 
             -   Third element (Field) is the roughness over time, in asper.
         """
@@ -132,7 +132,7 @@ class Roughness(PsychoacousticsParent):
             -   First element is the overall roughness in asper.
 
             -   Second element is the specific roughness, that is, the roughness in each Bark band,
-                in asper.
+                in asper/Bark.
 
             -   Third element is the Bark band indexes at which the specific roughness is defined,
                 in Bark.
@@ -165,12 +165,12 @@ class Roughness(PsychoacousticsParent):
         return float(self.get_output_as_nparray()[0])
 
     def get_specific_roughness(self) -> np.ndarray:
-        """Get the specific roughness in asper.
+        """Get the specific roughness in asper/Bark.
 
         Returns
         -------
         numpy.ndarray
-            Specific roughness, that is, the roughness in each Bark band, in asper.
+            Specific roughness, that is, the roughness in each Bark band, in asper/Bark.
         """
         return self.get_output_as_nparray()[1]
 
@@ -243,13 +243,13 @@ class Roughness(PsychoacousticsParent):
         axes[0].plot(bark_band_indexes, specific_roughness)
         axes[0].set_title("Specific roughness")
         axes[0].set_xlabel("z (Bark)")
-        axes[0].set_ylabel("R' (asper)")
+        axes[0].set_ylabel("R' (asper/Bark)")
         axes[0].grid(True)
 
         axes[1].plot(time_scale, roughness_over_time)
         axes[1].set_title("Roughness over time")
         axes[1].set_xlabel("Time (s)")
-        axes[1].set_ylabel("R (asper)")
+        axes[1].set_ylabel("R (asper/Bark)")
         axes[1].grid(True)
 
         plt.tight_layout()

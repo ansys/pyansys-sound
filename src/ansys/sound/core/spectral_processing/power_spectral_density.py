@@ -56,8 +56,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
         signal : Field
             Mono signal as a DPF field on which to compute the PSD.
         fft_size : int, default: 2048
-            Number of FFT points to use for the PSD estimate.
-            Use a power of 2 for better performance.
+            Number of FFT points to use for the PSD estimate. Must be a power of 2.
         window_type : str, default: 'HANN'
             Window type used for the PSD computation. Options are ``'BARTLETT'``, ``'BLACKMAN'``,
             ``'BLACKMANHARRIS'``, ``'HAMMING'``, ``'HANN'``, ``'KAISER'``, and ``'RECTANGULAR'``.
@@ -94,14 +93,23 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
     @property
     def fft_size(self) -> int:
-        """Number of FFT points."""
+        """Number of FFT points.
+
+        Must be a power of 2.
+        """
         return self.__fft_size
 
     @fft_size.setter
     def fft_size(self, value: int):
         """Set FFT size."""
+        # Check if the FFT size is positive.
         if value < 0:
             raise PyAnsysSoundException("FFT size must be positive.")
+
+        # Check if the FFT size is a power of 2.
+        if bin(value).count("1") != 1:
+            raise PyAnsysSoundException("FFT size must be a power of 2.")
+
         self.__fft_size = value
 
     @property

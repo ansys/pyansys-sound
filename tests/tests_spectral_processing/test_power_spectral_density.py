@@ -100,6 +100,11 @@ def test_exception():
 
     with pytest.raises(PyAnsysSoundException) as record:
         psd = PowerSpectralDensity(Field())
+        psd.fft_size = 23
+    assert record.value.args[0] == "FFT size must be a power of 2."
+
+    with pytest.raises(PyAnsysSoundException) as record:
+        psd = PowerSpectralDensity(Field())
         psd.overlap = -1
     assert (
         record.value.args[0]
