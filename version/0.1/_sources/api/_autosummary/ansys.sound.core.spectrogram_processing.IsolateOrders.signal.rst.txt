@@ -1,0 +1,6 @@
+signal
+======
+
+.. currentmodule:: ansys.sound.core.spectrogram_processing
+
+.. autoproperty:: IsolateOrders.signal
