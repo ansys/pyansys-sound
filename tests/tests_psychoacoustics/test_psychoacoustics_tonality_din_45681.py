@@ -168,7 +168,7 @@ def test_tonality_din45681_get_output_as_nparray():
     tonality = TonalityDIN45681(signal=fc[0])
     tonality.process()
 
-    DL, U, Kt, DLj, Uj, fTj, Ktj, time, _ = tonality.get_output_as_nparray()
+    DL, U, Kt, DLj, Uj, fTj, Ktj, time = tonality.get_output_as_nparray()
     assert DL == pytest.approx(EXP_DL)
     assert U == pytest.approx(EXP_U)
     assert Kt == pytest.approx(EXP_KT)
@@ -187,7 +187,7 @@ def test_tonality_din45681_get_output_as_nparray_unprocessed():
         PyAnsysSoundWarning,
         match="Output is not processed yet. Use the ``TonalityDIN45681.process\\(\\)`` method.",
     ):
-        DL, U, Kt, DLj, Uj, fTj, Ktj, time, _ = tonality.get_output_as_nparray()
+        DL, U, Kt, DLj, Uj, fTj, Ktj, time = tonality.get_output_as_nparray()
     assert np.isnan(DL)
     assert np.isnan(Kt)
     assert np.isnan(U)
