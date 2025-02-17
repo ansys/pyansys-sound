@@ -123,7 +123,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
             -   Second element (float) is the loudness level in phon.
 
-            -   Third element (field) is the specific loudness in sone.
+            -   Third element (field) is the specific loudness in sone/Bark.
         """
         if self._output == None:
             warnings.warn(
@@ -145,7 +145,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
             -   Second element is the loudness level in phon.
 
-            -   Third element is the specific loudness in sone.
+            -   Third element is the specific loudness in sone/Bark.
 
             -   Fourth element is the Bark band indexes, in Bark.
         """
@@ -187,7 +187,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Specific loudness array in sone.
+            Specific loudness array in sone/Bark.
         """
         return self.get_output_as_nparray()[2]
 
@@ -222,7 +222,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
     def plot(self):
         """Plot the specific loudness.
 
-        This method creates a figure window that displays the specific loudness in sone as a
+        This method creates a figure window that displays the specific loudness in sone/Bark as a
         function of the Bark band index.
         """
         if self._output == None:
@@ -237,6 +237,6 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         plt.plot(bark_band_indexes, specific_loudness)
         plt.title("Specific loudness")
         plt.xlabel("Bark band index")
-        plt.ylabel("N' (sone)")
+        plt.ylabel("N' (sone/Bark)")
         plt.grid(True)
         plt.show()
