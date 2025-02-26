@@ -30,6 +30,7 @@ from .fluctuation_strength import FluctuationStrength
 from .loudness_ansi_s3_4 import LoudnessANSI_S3_4
 from .loudness_iso_532_1_stationary import LoudnessISO532_1_Stationary
 from .loudness_iso_532_1_time_varying import LoudnessISO532_1_TimeVarying
+from .loudness_iso_532_2 import LoudnessISO532_2
 from .prominence_ratio import ProminenceRatio
 from .prominence_ratio_for_orders_over_time import ProminenceRatioForOrdersOverTime
 from .roughness import Roughness
@@ -50,6 +51,7 @@ __all__ = (
     "PsychoacousticsParent",
     "LoudnessISO532_1_Stationary",
     "LoudnessISO532_1_TimeVarying",
+    "LoudnessISO532_2",
     "LoudnessANSI_S3_4",
     "ProminenceRatio",
     "ToneToNoiseRatio",
