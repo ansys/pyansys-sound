@@ -123,7 +123,7 @@ class TonalityISOTS20065(PsychoacousticsParent):
         """
         if self.signal == None:
             raise PyAnsysSoundException(
-                f"No input signal defined. Use ``{__class__.__name__}.signal``."
+                f"No input signal defined. Use `{__class__.__name__}.signal`."
             )
 
         # Connect the operator input(s).
@@ -168,7 +168,7 @@ class TonalityISOTS20065(PsychoacousticsParent):
             warnings.warn(
                 PyAnsysSoundWarning(
                     f"Output is not processed yet. "
-                    f"Use the ``{__class__.__name__}.process()`` method."
+                    f"Use the `{__class__.__name__}.process()` method."
                 )
             )
 
@@ -335,7 +335,7 @@ class TonalityISOTS20065(PsychoacousticsParent):
         self.__check_spectrum_index(spectrum_index)
 
         # Extract collection.
-        collection = self.get_output()[7]
+        collection = self.get_output()[5]
         # Extract spectrum tones' data from collection, as a GenericDataContainer.
         spectrum = collection.get_entry(spectrum_index)
 
@@ -388,7 +388,7 @@ class TonalityISOTS20065(PsychoacousticsParent):
             )
 
         # Extract collection.
-        collection = self.get_output()[7]
+        collection = self.get_output()[5]
         # Extract spectrum tones' data from collection, as a GenericDataContainer.
         spectrum = collection.get_entry(spectrum_index)
 
@@ -413,7 +413,7 @@ class TonalityISOTS20065(PsychoacousticsParent):
         """
         if self._output == None:
             raise PyAnsysSoundException(
-                f"Output is not processed yet. Use the ``{__class__.__name__}.process()`` method."
+                f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
             )
 
         # Get data to plot

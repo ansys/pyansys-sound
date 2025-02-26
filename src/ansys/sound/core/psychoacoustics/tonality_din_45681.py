@@ -73,7 +73,7 @@ class TonalityDIN45681(PsychoacousticsParent):
             f"\tOverlap: {self.overlap} %\n"
             f"Mean tonality (difference DL): "
             f"{self.get_mean_difference():.1f} (+/-{self.get_uncertainty():.1f}) dB\n"
-            f"Tonal adjustment Kt: {self.get_tonal_adjustment():.0f} dB\n"
+            f"Tonal adjustment Kt: {self.get_tonal_adjustment():.0f} dB"
         )
 
     @property
@@ -124,7 +124,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         """
         if self.signal == None:
             raise PyAnsysSoundException(
-                f"No input signal defined. Use ``{__class__.__name__}.signal``."
+                f"No input signal defined. Use `{__class__.__name__}.signal`."
             )
 
         # Connect the operator input(s).
@@ -175,7 +175,7 @@ class TonalityDIN45681(PsychoacousticsParent):
             warnings.warn(
                 PyAnsysSoundWarning(
                     f"Output is not processed yet. "
-                    f"Use the ``{__class__.__name__}.process()`` method."
+                    f"Use the `{__class__.__name__}.process()` method."
                 )
             )
 
@@ -447,7 +447,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         """
         if self._output == None:
             raise PyAnsysSoundException(
-                f"Output is not processed yet. Use the ``{__class__.__name__}.process()`` method."
+                f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
             )
 
         # Get data to plot
