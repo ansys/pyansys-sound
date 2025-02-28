@@ -42,9 +42,13 @@ class SourceHarmonicsTwoParameters(SourceParent):
 
     This class creates a harmonics source with two parameters for the Sound Composer. A harmonics
     source with two parameters is used to generate a sound signal from a given harmonics source
-    data and its two source controls. The harmonics source data consists of a series of orders
-    whose levels depend on the values of two parameters, the first of which is always RPM. The
-    source controls contain each a control parameter's values over time.
+    data and its two source controls.
+    
+    The harmonics source data consists of a series of orders
+    whose levels depend on the values of two parameters. The
+    two source controls contain each a control parameter's values over time.
+
+    **NB: control parameter 1 must be RPM.**
     """
 
     def __init__(
@@ -53,7 +57,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
         source_control_rpm: SourceControlTime = None,
         source_control2: SourceControlTime = None,
     ):
-        """Class instantiation takes the following parameters.
+        """Class instantiation takes the following parameters:
 
         Parameters
         ----------
@@ -146,7 +150,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
 
     @property
     def source_control_rpm(self) -> SourceControlTime:
-        """First source control, that is, RPM, for harmonics source with two parameters.
+        """First source control (must be RPM) for harmonics source with two parameters.
 
         Contains the RPM values over time.
         """
@@ -189,7 +193,10 @@ class SourceHarmonicsTwoParameters(SourceParent):
 
     @source_harmonics_two_parameters.setter
     def source_harmonics_two_parameters(self, source: FieldsContainer):
-        """Set the harmonics source with two parameters data, from a DPF fields container."""
+        """Set the harmonics source with two parameters data, from a DPF fields container.
+        
+        Levels must be specified in Pa^2. The unit must be indicated in the field's unit.
+        """
         if source is not None:
             if not isinstance(source, FieldsContainer):
                 raise PyAnsysSoundException(
@@ -287,7 +294,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
         """Set the source and source control data from generic data containers.
 
         This method is meant to set the source data from generic data containers obtained when
-        loading a Sound Composer project file (.scn).
+        loading a Sound Composer project file (.scn) with the function SoundComposer.load().
 
         Parameters
         ----------
@@ -436,7 +443,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
         plt.show()
 
     def plot_control(self):
-        """Plot the source control(s) in a figure."""
+        """Plot the source controls in a figure."""
         if not self.is_source_control_valid():
             raise PyAnsysSoundException(
                 "At least one source control for harmonics source with two parameters is not set. "

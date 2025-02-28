@@ -39,22 +39,26 @@ class SourceBroadbandNoise(SourceParent):
     """Sound Composer's broadband noise source class.
 
     This class creates a broadband noise source for the Sound Composer. A broadband noise source is
-    used to generate a sound signal from a given broadband noise and its source control. The
-    broadband noise consists of a series of noise spectra, each corresponding to a control
-    parameter value. The source control contains the control parameter values over time.
+    used to generate a sound signal from a given broadband noise and its source control.
+    
+    The broadband noise consists of a series of noise spectra, each corresponding to a control
+    parameter value.
+    
+    The source control contains the control parameter values over time that will be used for
+    the sound generation.
     """
 
     def __init__(self, file: str = "", source_control: SourceControlTime = None):
-        """Class instantiation takes the following parameters.
+        """Class instantiation takes the following parameters:
 
         Parameters
         ----------
         file : str, default: ""
             Path to the broadband noise file. Supported files are text files with the header
-            `AnsysSound_BBN`. If left empty, the broadband noise source is not loaded.
+            `AnsysSound_BBN`. If left empty, the broadband noise source data is not initialized.
         source_control : SourceControlTime, default: None
-            Source control, consisting of the control parameter values over time, to use when
-            generating the sound from this source.
+            Source control, consisting of the control parameter values over time that will be
+            used for the sound generation.
         """
         super().__init__()
         self.source_control = source_control
@@ -122,7 +126,8 @@ class SourceBroadbandNoise(SourceParent):
     def source_control(self) -> SourceControlTime:
         """Broadband noise source control.
 
-        Contains the control parameter values over time.
+        Contains the control parameter values over time that will be used for
+        the sound generation..
         """
         return self.__source_control
 
@@ -140,8 +145,19 @@ class SourceBroadbandNoise(SourceParent):
         """Broadband noise source data, as a DPF fields container.
 
         The broadband noise source data consists of a series of spectra, each corresponding to a
-        control parameter value. Spectra can be narrowband (in dB or dB/Hz), octave-band levels, or
-        1/3-octave-band levels.
+        control parameter value.
+
+        Each field contains the level vs frequency of the noise at a given value of the control parameter.
+        Level vs frequency may be specified as a Power Spectral Density (PSD) in Pa^2/Hz,
+        or as Octave bands level in Pa^2, or as 1/3 Octave bands level in Pa^2.
+        
+        The control parameter values corresponding ot each spectrum must be stored in the fields container
+        support named "control_parameter_1".
+
+        The unit must be indicated in the field's unit.
+        
+        The type of data (PSD, Octave, 1/3 octave) must be indicated in the field's FieldDefinition attribute,
+        as a quantity_type.
         """
         return self.__source_bbn
 
@@ -217,7 +233,7 @@ class SourceBroadbandNoise(SourceParent):
         """Set the source and source control data from generic data containers.
 
         This method is meant to set the source data from generic data containers obtained when
-        loading a Sound Composer project file (.scn).
+        loading a Sound Composer project file (.scn) with the function SoundComposer.load().
 
         Parameters
         ----------
@@ -234,8 +250,8 @@ class SourceBroadbandNoise(SourceParent):
     def get_as_generic_data_containers(self) -> tuple[GenericDataContainer]:
         """Get the source and source control data as generic data containers.
 
-        This method is meant to return the source data as generic data containers needed to save a
-        Sound Composer project file (.scn).
+        This method is meant to return the source data as generic data containers,
+         in the format needed to save a Sound Composer project file (.scn).
 
         Returns
         -------
@@ -389,9 +405,9 @@ class SourceBroadbandNoise(SourceParent):
 
                 -   Third element is the control parameter name.
 
-                -   Sixth element is the control parameter unit.
+                -   Fourth element is the control parameter unit.
 
-                -   Seventh element is the control parameter values.
+                -   Fifth element is the control parameter values.
         """
         if self.source_bbn is None:
             return ("", 0.0, "", "", [])

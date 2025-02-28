@@ -39,8 +39,9 @@ class SourceSpectrum(SourceParent):
     """Sound Composer's spectrum source class.
 
     This class creates a spectrum source for the Sound Composer. A spectrum source is used to
-    generate a sound signal from a given spectrum and its source control. The source control
-    contains the duration of the sound and the method used to generate it.
+    generate a sound signal from a given spectrum and its source control.
+    
+    The source control contains the duration of the sound and the method to use for generating it.
     """
 
     def __init__(self, file_source: str = "", source_control: SourceControlSpectrum = None):
@@ -49,7 +50,7 @@ class SourceSpectrum(SourceParent):
         Parameters
         ----------
         file_source : str, default: ""
-            Path to the spectrum file.
+            Path to the file that contains the spectrum.
         source_control : SourceControlSpectrum, default: None
             Source control to use when generating the sound from this source.
         """
@@ -97,7 +98,8 @@ class SourceSpectrum(SourceParent):
     def source_control(self) -> SourceControlSpectrum:
         """Spectrum source control object.
 
-        Contains the duration in seconds, and the method used to generate the sound.
+        Contains the duration in seconds of the signal to generate,
+        and the method to use to generate the signal.
         """
         return self.__source_control
 
@@ -114,8 +116,8 @@ class SourceSpectrum(SourceParent):
     def source_spectrum_data(self) -> Field:
         """Spectrum source data, as a DPF field.
 
-        Power spectral density (PSD) as a DPF field, which contains the frequencies in Hz and
-        the levels in unit^2/Hz (for example Pa^2/Hz).
+        The expected source data is a Power spectral density (PSD) as a DPF field,
+        which contains the frequencies in Hz and the levels in unit^2/Hz (for example Pa^2/Hz).
         """
         return self.__source_spectrum_data
 
@@ -175,7 +177,7 @@ class SourceSpectrum(SourceParent):
         """Set the source and source control data from generic data containers.
 
         This method is meant to set the source data from generic data containers obtained when
-        loading a Sound Composer project file (.scn).
+        loading a Sound Composer project file (.scn) with the function SoundComposer.load().
 
         Parameters
         ----------

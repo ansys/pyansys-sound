@@ -41,14 +41,15 @@ class SoundComposer(SoundComposerParent):
     """Sound Composer project class.
 
     This class creates a Sound Composer project. A project is made of several tracks, each
-    containing a source and a filter.
+    containing a source (used to generate the sound) and an optional filter (used to model
+    the transfer between the source and the receiver).
     """
 
     def __init__(
         self,
         project_path: str = "",
     ):
-        """Class instantiation takes the following parameters.
+        """Class instantiation takes the following parameter:
 
         Parameters
         ----------
@@ -80,23 +81,24 @@ class SoundComposer(SoundComposerParent):
 
     @property
     def tracks(self) -> list[Track]:
-        """List of Sound Composer tracks.
+        """List of tracks.
 
-        List of tracks of the Sound Composer. Each track is a :class:`Track` object, and contains a
-        source and a filter.
+        List of the tracks available in this Sound Composer instance (project).
+        
+        Each track is a :class:`Track` object, and contains a source and a filter.
         """
         return self.__tracks
 
     @tracks.setter
     def tracks(self, tracks: list[Track]):
-        """Set the track list."""
+        """Set the tracks list."""
         for track in tracks:
             if not isinstance(track, Track):
                 raise PyAnsysSoundException("Each item in the track list must be of type `Track`.")
         self.__tracks = tracks
 
     def add_track(self, track: Track):
-        """Add a Sound Composer track.
+        """Add a track to the project.
 
         Parameters
         ----------
@@ -148,7 +150,9 @@ class SoundComposer(SoundComposerParent):
     #     self.__operator_save.run()
 
     def process(self, sampling_frequency: float = 44100.0):
-        """Generate the signal of the Sound Composer, using the current tracks.
+        """Generate the resulting signal of the current Sound Composer project.
+
+        This signal is a sum of all the tracks signals.
 
         Parameters
         ----------
@@ -181,7 +185,7 @@ class SoundComposer(SoundComposerParent):
             self._output = track_sum.get_output()
 
     def get_output(self) -> Field:
-        """Get the generated signal as a DPF field.
+        """Get the generated signal of the Sound Composer project as a DPF field.
 
         Returns
         -------
@@ -197,7 +201,7 @@ class SoundComposer(SoundComposerParent):
         return self._output
 
     def get_output_as_nparray(self) -> np.ndarray:
-        """Get the generated signal as a NumPy array.
+        """Get the generated signal of the Sound Composer project as a NumPy array.
 
         Returns
         -------
@@ -212,7 +216,7 @@ class SoundComposer(SoundComposerParent):
         return np.array(output.data)
 
     def plot(self):
-        """Plot the resulting signal in a figure."""
+        """Plot the generated signal of the Sound Composer project in a figure."""
         if self._output is None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
@@ -222,6 +226,6 @@ class SoundComposer(SoundComposerParent):
         plt.plot(output_signal.time_freq_support.time_frequencies.data, output_signal.data)
         plt.title("Generated signal")
         plt.xlabel("Time (s)")
-        plt.ylabel(f"Amplitude")
+        plt.ylabel(f"Amplitude{f' ({output_signal.unit})' if len(output_signal.unit) > 0 else ''}")
         plt.grid(True)
         plt.show()

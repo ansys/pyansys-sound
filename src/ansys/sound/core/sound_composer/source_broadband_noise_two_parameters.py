@@ -40,9 +40,14 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
 
     This class creates a broadband noise source with two parameters for the Sound Composer. A
     broadband noise source with two parameters is used to generate a sound signal from a given
-    broadband noise and its two source controls. The broadband noise consists of a series of noise
+    broadband noise and its two source controls.
+    
+    The broadband noise consists of a series of noise
     spectra, each corresponding to a pair of control parameter values. The source controls contain
     each a control parameter's values over time.
+
+    The source controls contains the control parameter values over time (for parameter 1 and 2)
+    that will be used for the sound generation.
     """
 
     def __init__(
@@ -57,7 +62,8 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         ----------
         file : str, default: ""
             Path to the broadband noise with two parameters file. Supported files are text files
-            with the header `AnsysSound_BBN_MultipleParameters`.
+            with the header `AnsysSound_BBN_MultipleParameters` and should be created using 
+            Ansys Sound SAS.
         source_control1 : SourceControlTime, default: None
             First Source control, consisting of the control parameter values over time, to use when
             generating the sound from this source.
@@ -229,7 +235,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
     def is_source_control_valid(self) -> bool:
         """Source control verification function.
 
-        Checks if both source controls are set.
+        Checks if the two source controls are set.
 
         Returns
         -------
@@ -270,7 +276,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         """Set the source and source control data from generic data containers.
 
         This method is meant to set the source data from generic data containers obtained when
-        loading a Sound Composer project file (.scn).
+        loading a Sound Composer project file (.scn) with the function SoundComposer.load().
 
         Parameters
         ----------
@@ -399,6 +405,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
 
     def plot(self):
         """Plot the resulting signal in a figure."""
+
         if self._output == None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the '{__class__.__name__}.process()' method."
@@ -420,6 +427,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
 
     def plot_control(self):
         """Plot the source control(s) in a figure."""
+
         if not self.is_source_control_valid():
             raise PyAnsysSoundException(
                 "At least one source control for broadband noise source with two parameters is "
@@ -472,15 +480,16 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
 
                 -   Third element is the first control parameter name.
 
-                -   Sixth element is the first control parameter unit.
+                -   Fourth element is the first control parameter unit.
 
-                -   Seventh element is the first control parameter min and max values in a tuple.
+                -   Fifth element is the second control parameter name.
 
-                -   Eighth element is the second control parameter name.
+                -   Sixth element is the second control parameter unit.
 
-                -   Ninth element is the second control parameter unit.
+                -   Seventh element is the second control parameter min and max values in a tuple.
+                
+                -   Eighth element is the first control parameter min and max values in a tuple.
 
-                -   Tenth element is the second control parameter min and max values in a tuple.
 
         """
         if self.source_bbn_two_parameters is None:

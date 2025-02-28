@@ -39,13 +39,18 @@ class SourceHarmonics(SourceParent):
     """Sound Composer's harmonics source class.
 
     This class creates a harmonics source for the Sound Composer. A harmonics source is used to
-    generate a sound signal from a given harmonics source data and its source control. The
-    harmonics source data consists of a series of orders whose levels depend on RPM. The source
-    control contains the RPM values over time.
+    generate a sound signal from a given harmonics source data and its source control.
+
+    The generated signal is composed of a series of orders whose levels depend on the RPM,
+    and whose frequencies depend on the RPM and the order number of each order.
+    
+    The harmonics source data consists of a series of orders whose levels depend on RPM.
+    
+    The source control contains the RPM values over time.
     """
 
     def __init__(self, file: str = "", source_control: SourceControlTime = None):
-        """Class instantiation takes the following parameters.
+        """Class instantiation takes the following parameters:
 
         Parameters
         ----------
@@ -53,7 +58,7 @@ class SourceHarmonics(SourceParent):
             Path to the harmonics source data file. Supported files are the same XML and text (with
             the header `AnsysSound_Orders`) formats as supported by Ansys Sound SAS.
         source_control : SourceControlTime, default: None
-            Source control, consisting of the control parameter values over time, to use when
+            Source control, consisting of the RPM values over time, to use when
             generating the sound from this source.
         """
         super().__init__()
@@ -125,7 +130,7 @@ class SourceHarmonics(SourceParent):
     def source_control(self) -> SourceControlTime:
         """Harmonics source control.
 
-        Contains the control parameter values over time.
+        Contains the control parameter (RPM) values over time.
         """
         return self.__source_control
 
@@ -238,7 +243,7 @@ class SourceHarmonics(SourceParent):
         """Set the source and source control data from generic data containers.
 
         This method is meant to set the source data from generic data containers obtained when
-        loading a Sound Composer project file (.scn).
+        loading a Sound Composer project file (.scn) with the function SoundComposer.load().
 
         Parameters
         ----------
@@ -294,7 +299,7 @@ class SourceHarmonics(SourceParent):
         """Generate the sound of the harmonics source.
 
         This method generates the sound of the harmonics source, using the current harmonics
-        data and source control.
+        data and source control (RPM).
 
         Parameters
         ----------

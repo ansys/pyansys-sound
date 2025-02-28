@@ -38,14 +38,15 @@ ID_LOAD_FROM_TEXT = "load_sound_samples_from_txt"
 class SourceAudio(SourceParent):
     """Sound Composer's audio source class.
 
-    This class creates an audio source for the Sound Composer. An audio source is simply made of a
-    sound signal, that is, sound samples over time, in Pa, that is meant to be played, as is
-    (unless resampling is necessary), along with other Sound Composer sources. The audio source can
-    be loaded from a WAV file or a text file.
+    This class creates an audio source for the Sound Composer.
+    
+    An audio source is simply made of a sound signal (sound samples in Pa over time).
+    
+    The audio source can be loaded from a WAV file or a text file.
     """
 
     def __init__(self, file: str = ""):
-        """Class instantiation takes the following parameters.
+        """Class instantiation takes the following parameters:
 
         Parameters
         ----------
@@ -148,7 +149,7 @@ class SourceAudio(SourceParent):
         """Set the source and source control data from generic data containers.
 
         This method is meant to set the source data from generic data containers obtained when
-        loading a Sound Composer project file (.scn).
+        loading a Sound Composer project file (.scn) with the function SoundComposer.load().
 
         Parameters
         ----------
@@ -188,7 +189,8 @@ class SourceAudio(SourceParent):
     def process(self, sampling_frequency: float = 44100.0):
         """Generate the sound of the audio source.
 
-        The generated sound simply corresponds to the audio source data, resampled if necessary.
+        The generated sound simply corresponds to the audio source data,
+        possibily resampled to the sampling frequency given as input.
 
         Parameters
         ----------
