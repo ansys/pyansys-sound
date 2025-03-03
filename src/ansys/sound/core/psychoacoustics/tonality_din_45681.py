@@ -61,7 +61,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         self.__operator = Operator("compute_tonality_din45681")
 
     def __str__(self):
-        """Overloads the __str__ method."""
+        """Return the string representation of the object."""
         return (
             f"{__class__.__name__} object.\n"
             "Data\n"
@@ -95,7 +95,7 @@ class TonalityDIN45681(PsychoacousticsParent):
 
     @window_length.setter
     def window_length(self, window_length: float):
-        """Set window length."""
+        """Set window length, in s."""
         if window_length <= 0.0:
             raise PyAnsysSoundException("Window length must be strictly positive.")
         self.__window_length = window_length
@@ -107,7 +107,7 @@ class TonalityDIN45681(PsychoacousticsParent):
 
     @overlap.setter
     def overlap(self, overlap: float):
-        """Set overlap property."""
+        """Set overlap, in %."""
         if not (0.0 <= overlap < 100.0):
             raise PyAnsysSoundException(
                 "Overlap must be positive and strictly smaller than 100.0 %."
@@ -150,22 +150,22 @@ class TonalityDIN45681(PsychoacousticsParent):
         Returns
         -------
         tuple
-            First element (float) is the DIN 45681 tonality (mean difference DL), in dB.
+            First element (float): DIN 45681 tonality (mean difference DL), in dB.
 
-            Second element (float) is the DIN 45681 tonality uncertainty, in dB.
+            Second element (float): DIN 45681 tonality uncertainty, in dB.
 
-            Third element (float) is the DIN 45681 tonal adjustment Kt, in dB.
+            Third element (float): DIN 45681 tonal adjustment Kt, in dB.
 
-            Fourth element (Field) is the DIN 45681 tonality over time
+            Fourth element (Field): DIN 45681 tonality over time
             (decisive difference DLj), in dB.
 
-            Fifth element (Field) is the DIN 45681 tonality uncertainty over time, in dB.
+            Fifth element (Field):e DIN 45681 tonality uncertainty over time, in dB.
 
-            Sixth element (Field) is the DIN 45681 decisive frequency over time, in Hz.
+            Sixth element (Field): DIN 45681 decisive frequency over time, in Hz.
 
-            Seventh element (Field) is the DIN 45681 tonal adjustment Kt over time, in dB.
+            Seventh element (Field): DIN 45681 tonal adjustment Kt over time, in dB.
 
-            Eighth element (GenericDataContainer) is the DIN 45681 tonality details (individual
+            Eighth element (GenericDataContainer): DIN 45681 tonality details (individual
             tone data for each spectrum).
         """
         if self._output == None:
@@ -184,21 +184,21 @@ class TonalityDIN45681(PsychoacousticsParent):
         Returns
         -------
         tuple[numpy.ndarray]
-            First element is the DIN 45681 tonality (mean difference DL), in dB.
+            First element: DIN 45681 tonality (mean difference DL), in dB.
 
-            Second element is the DIN 45681 tonality uncertainty, in dB.
+            Second element: DIN 45681 tonality uncertainty, in dB.
 
-            Third element is the DIN 45681 tonal adjustment Kt, in dB.
+            Third element: DIN 45681 tonal adjustment Kt, in dB.
 
-            Fourth element is the DIN 45681 tonality over time (decisive difference DLj), in dB.
+            Fourth element: DIN 45681 tonality over time (decisive difference DLj), in dB.
 
-            Fifth element is the DIN 45681 tonality uncertainty over time, in dB.
+            Fifth element: DIN 45681 tonality uncertainty over time, in dB.
 
-            Sixth element is the DIN 45681 decisive frequency over time, in Hz.
+            Sixth element: DIN 45681 decisive frequency over time, in Hz.
 
-            Seventh element is the DIN 45681 tonal adjustment Kt over time, in dB.
+            Seventh element: DIN 45681 tonal adjustment Kt over time, in dB.
 
-            Eighth element is the time scale, in s.
+            Eighth element: time scale, in s.
         """
         output = self.get_output()
 
@@ -301,7 +301,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Array of the computation times, in seconds, of the DIN 45681 parameters over time
+            Time vector, in seconds, of the DIN 45681 parameters over time
             (decisive difference, uncertainty, and tonal adjustment).
         """
         return self.get_output_as_nparray()[7]
@@ -350,7 +350,7 @@ class TonalityDIN45681(PsychoacousticsParent):
     def get_tone_number(self, spectrum_index: int = 0) -> int:
         """Get the number of tones for a specific spectrum.
 
-        Returns the number of tones detected in a specific spectrum (time step).
+        Returns the number of tones detected in a specific spectrum (specific time step).
 
         Returns
         -------
@@ -372,8 +372,8 @@ class TonalityDIN45681(PsychoacousticsParent):
     ) -> tuple[float, float, float, str, float, float, float, float, float, float]:
         """Get the tone data, for a specific spectrum.
 
-        Returns all data associated with a specific detected tone, in a specific spectrum (time
-        step).
+        Returns all data associated with a specific detected tone, in a specific spectrum
+        (specific time step).
 
         Parameters
         ----------
@@ -435,7 +435,7 @@ class TonalityDIN45681(PsychoacousticsParent):
     def plot(self):
         """Plot the DIN 45681's decisive difference and frequency, and tonal adjustment, over time.
 
-        This method creates a figure window that displays the decisive difference DLj in dB, the
+        This method displays in a new figure the decisive difference DLj in dB, the
         decisive frequency in Hz, and the tonal adjustment Kt in dB, over time.
         """
         if self._output == None:

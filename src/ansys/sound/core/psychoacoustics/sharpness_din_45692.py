@@ -37,8 +37,8 @@ class SharpnessDIN45692(PsychoacousticsParent):
     """Computes the sharpness of a signal according to the DIN 45692 standard.
 
     .. note::
-        The calculation of this indicator uses the loudness model for stationary sounds in the
-        standard ISO 532-1. It is the same loudness model as that which is used in class
+        The calculation of this indicator involves the loudness model for stationary sounds
+        according to ISO 532-1. It is the loudness model implemented in class
         :class:`LoudnessISO532_1_Stationary`.
     """
 

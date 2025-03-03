@@ -35,7 +35,7 @@ ID_COMPUTE_SHARPNESS_DIN = "compute_sharpness_din45692"
 
 
 class SharpnessDIN45692OverTime(PsychoacousticsParent):
-    """Computes the sharpness of a signal according to the DIN 45692 standard, over time.
+    """Computes the sharpness vs time of a signal according to the DIN 45692 standard.
 
     .. note::
         The calculation of this indicator uses the loudness model for time-varying sounds in the
@@ -126,14 +126,14 @@ class SharpnessDIN45692OverTime(PsychoacousticsParent):
         )
 
     def get_output(self) -> tuple:
-        """Get the DIN 45692 sharpness over time data in a tuple.
+        """Get the DIN 45692 sharpness over time data, as a tuple.
 
         Returns
         -------
         tuple
-            -   First element (Field) is the maximum sharpness over time, in acum.
+            -   First element (Field): maximum sharpness over time, in acum.
 
-            -   Second element (float) is the sharpness over time, in acum.
+            -   Second element (float): sharpness over time, in acum.
         """
         if self._output == None:
             warnings.warn(
@@ -145,16 +145,16 @@ class SharpnessDIN45692OverTime(PsychoacousticsParent):
         return self._output
 
     def get_output_as_nparray(self) -> tuple[np.ndarray]:
-        """Get the DIN 45692 sharpness over time data in a tuple of NumPy arrays.
+        """Get the DIN 45692 sharpness over time data, as a tuple of NumPy arrays.
 
         Returns
         -------
         tuple[numpy.ndarray]
-            -   First element is the maximum sharpness over time, in acum.
+            -   First element: maximum sharpness over time, in acum.
 
-            -   Second element is the sharpness over time, in acum.
+            -   Second element: sharpness over time, in acum.
 
-            -   Third element is the time scale, in s.
+            -   Third element: time scale, in s.
         """
         output = self.get_output()
 
@@ -168,12 +168,12 @@ class SharpnessDIN45692OverTime(PsychoacousticsParent):
         )
 
     def get_max_sharpness(self) -> float:
-        """Get the maximum DIN 45692 sharpness over time.
+        """Get the maximum value of the DIN 45692 sharpness over time.
 
         Returns
         -------
         float
-            Maximum sharpness over time, in acum.
+            Maximum of sharpness over time, in acum.
         """
         return float(self.get_output_as_nparray()[0])
 

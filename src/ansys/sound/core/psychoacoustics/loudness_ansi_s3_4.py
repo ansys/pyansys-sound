@@ -74,7 +74,7 @@ class LoudnessANSI_S3_4(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Input sound signal in Pa as a DPF field or fields container."""
+        """Input sound signal in Pa as a DPF field."""
         return self.__signal
 
     @signal.setter
@@ -127,9 +127,9 @@ class LoudnessANSI_S3_4(PsychoacousticsParent):
         Returns
         -------
         tuple[float, float]
-            -   First element is the loudness in sone.
+            -   First element: loudness in sone.
 
-            -   Second element is the loudness level in phon.
+            -   Second element: loudness level in phon.
         """
         if self._output == None:
             warnings.warn(
@@ -147,9 +147,9 @@ class LoudnessANSI_S3_4(PsychoacousticsParent):
         Returns
         -------
         tuple[numpy.ndarray]
-            -   First element is the loudness in sone.
+            -   First element: loudness in sone.
 
-            -   Second element is the loudness level in phon.
+            -   Second element: loudness level in phon.
         """
         output = self.get_output()
 

@@ -35,7 +35,7 @@ ID_COMPUTE_SHARPNESS_OVER_TIME = "compute_sharpness_over_time"
 
 
 class SharpnessOverTime(PsychoacousticsParent):
-    """Computes the sharpness of a signal according to Zwicker & Fastl's model, over time."""
+    """Computes the sharpness vs time of a signal according to Zwicker & Fastl's model."""
 
     def __init__(self, signal: Field = None, field_type: str = FIELD_FREE):
         """Class instantiation takes the following parameters.
@@ -125,9 +125,9 @@ class SharpnessOverTime(PsychoacousticsParent):
         Returns
         -------
         tuple
-            -   First element is the maximum sharpness over time, in acum.
+            -   First element: maximum sharpness over time, in acum.
 
-            -   Second element is the sharpness over time, in acum.
+            -   Second element: sharpness over time, in acum.
         """
         if self._output == None:
             warnings.warn(
@@ -144,11 +144,11 @@ class SharpnessOverTime(PsychoacousticsParent):
         Returns
         -------
         tuple[numpy.ndarray]
-            -   First element is the maximum sharpness over time, in acum.
+            -   First element: maximum sharpness over time, in acum.
 
-            -   Second element is the sharpness over time, in acum.
+            -   Second element: sharpness over time, in acum.
 
-            -   Third element is the time scale, in s.
+            -   Third element: time scale, in s.
         """
         output = self.get_output()
 
@@ -167,7 +167,7 @@ class SharpnessOverTime(PsychoacousticsParent):
         Returns
         -------
         float
-            Maximum sharpness over time, in acum.
+            Maximum of the sharpness over time, in acum.
         """
         return float(self.get_output_as_nparray()[0])
 
@@ -182,7 +182,7 @@ class SharpnessOverTime(PsychoacousticsParent):
         return self.get_output_as_nparray()[1]
 
     def get_time_scale(self) -> np.ndarray:
-        """Get the time scale.
+        """Get the time scale of the sharpness over time.
 
         Returns
         -------
@@ -192,7 +192,7 @@ class SharpnessOverTime(PsychoacousticsParent):
         return self.get_output_as_nparray()[2]
 
     def plot(self):
-        """Plot the sharpness over time."""
+        """Plot the sharpness over time in a new figure."""
         if self._output == None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."

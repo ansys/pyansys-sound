@@ -119,11 +119,11 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         Returns
         -------
         tuple
-            -   First element (float) is the loudness in sone.
+            -   First element (float): loudness in sone.
 
-            -   Second element (float) is the loudness level in phon.
+            -   Second element (float): loudness level in phon.
 
-            -   Third element (field) is the specific loudness in sone/Bark.
+            -   Third element (field): specific loudness in sone/Bark, vs Bark band indexes.
         """
         if self._output == None:
             warnings.warn(
@@ -141,13 +141,13 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         Returns
         -------
         tuple[numpy.ndarray]
-            -   First element is the loudness in sone.
+            -   First element: loudness in sone.
 
-            -   Second element is the loudness level in phon.
+            -   Second element: loudness level in phon.
 
-            -   Third element is the specific loudness in sone/Bark.
+            -   Third element: specific loudness in sone/Bark.
 
-            -   Fourth element is the Bark band indexes, in Bark.
+            -   Fourth element: Bark band indexes, in Bark.
         """
         output = self.get_output()
 
@@ -194,7 +194,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
     def get_bark_band_indexes(self) -> np.ndarray:
         """Get Bark band indexes.
 
-        This method gets the Bark band indexes used for the loudness calculation as a NumPy array.
+        This method returns the Bark band indexes used for the loudness calculation as a NumPy array.
 
         Returns
         -------
@@ -206,7 +206,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
     def get_bark_band_frequencies(self) -> np.ndarray:
         """Get Bark band frequencies.
 
-        This method gets the frequencies corresponding to Bark band indexes as a NumPy array.
+        This method returns the frequencies corresponding to the Bark band indexes as a NumPy array.
 
         Reference:
         Traunmüller, Hartmut. "Analytical Expressions for the Tonotopic Sensory Scale." Journal of
@@ -222,7 +222,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
     def plot(self):
         """Plot the specific loudness.
 
-        This method creates a figure window that displays the specific loudness in sone/Bark as a
+        This method displays in a new figure the specific loudness in sone/Bark as a
         function of the Bark band index.
         """
         if self._output == None:

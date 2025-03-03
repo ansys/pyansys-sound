@@ -35,7 +35,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
     """Computes the ECMA 418-1/ISO 7779 tone-to-noise ratio (TNR) for specific orders over time.
 
     This class computes the TNR, as defined in ECMA 418-1 and ISO 7779 standards, following
-    the specific orders over time in a given time-domain signal.
+    the specific orders over time in a given time-domain signal and its RPM signal.
     """
 
     def __init__(self, signal: Field = None, profile: Field = None, order_list: list = None):
@@ -47,7 +47,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
             Signal on which to compute tone-to-noise ratio, as a DPF field.
 
         profile : Field, default: None
-            Associated RPM profile to the input signal, as a DPF field.
+            RPM profile corresponding to the input signal, as a DPF field.
 
         order_list : list, default: None
             List of the order numbers, as floats, on which to compute the tone-to-noise ratio.
@@ -82,12 +82,12 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
 
     @property
     def profile(self) -> Field:
-        """Associated RPM profile to the input signal as a DPF field."""
+        """ RPM profile associated to the input signal as a DPF field."""
         return self.__profile
 
     @profile.setter
     def profile(self, profile: Field):
-        """Set the profile."""
+        """Set the RPM profile."""
         if not (isinstance(profile, Field) or profile is None):
             raise PyAnsysSoundException("Profile must be provided as a DPF field.")
         self.__profile = profile
@@ -102,7 +102,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
 
     @order_list.setter
     def order_list(self, order_list: list):
-        """Set the order list."""
+        """Set the list of the numbers of the orders of interest."""
         if order_list != None:
             if len(order_list) == 0:
                 raise PyAnsysSoundException("Order list must contain at least one order.")
@@ -149,16 +149,16 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         ), self.__operator.get_output(1, types.field)
 
     def get_output(self) -> tuple[FieldsContainer, Field]:
-        """Get TNR data as a fields container and the associated resampled RPM profile as a Field.
+        """Get TNR data vs time as a fields container and its associated RPM profile as a Field.
 
         Returns
         -------
         tuple[FieldsContainer, Field]
-            First element is the tone-to-noise ratio data in a fields container.
+            First element: tone-to-noise ratio data in a fields container.
             Each field of the fields container gives the TNR over time for one of the requested
-            orders.
+            orders. The list of the order numbers is available in :attr:`self.order_list`.
 
-            Second element is the RPM profile resampled to match the TNR calculation time steps, as
+            Second element: RPM vs time profile corresponding to the TNR vs time, as
             a Field.
 
         """
@@ -178,11 +178,14 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         Returns
         -------
         tuple
-            First element is the tone-to-noise ratio data, in dB.
+            First element: Nuympy array that contains the tone-to-noise ratio data of each
+            specified order, in dB. Each column corresponds to one order.
+            The list of the order numbers is available in :attr:`order_list`.
 
-            Second element is the associated time scale to the output tone-to-noise ratios.
+            Second element: associated time scale to the output tone-to-noise ratios.
 
-            Third element is the RPM profile resampled to match the TNR calculation time steps.
+            Third element: RPM vs time profile corresponding to the TNR vs time, as
+            a Field.
         """
         tnr_container = self.get_output()
         if tnr_container == None:
@@ -200,7 +203,8 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         Parameters
         ----------
         order_index : int
-            Index of the order for which to get the tone-to-noise ratio.
+            Index, in the list The list of the order numbers is available in :attr:`order_list`,
+            of the order for which to get the tone-to-noise ratio.
 
         Returns
         -------
@@ -233,12 +237,12 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         return self.get_output_as_nparray()[1]
 
     def get_rpm_scale(self) -> np.ndarray:
-        """Get the resampled RPM scale.
+        """Get the RPM vs time that corresponds to the TNR vs time vectors.
 
         Returns
         -------
         numpy.ndarray
-            RPM scale, resampled to match the TNR calculation time steps.
+            RPM scale, at the same time steps as TNR vs time.
         """
         return self.get_output_as_nparray()[2]
 

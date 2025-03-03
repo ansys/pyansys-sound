@@ -108,11 +108,11 @@ class TonalityECMA418_2(PsychoacousticsParent):
         Returns
         -------
         tuple
-            First element (float) is the ECMA 418-2 tonality, in tuHMS.
+            First element (float): ECMA 418-2 tonality, in tuHMS.
 
-            Second element (Field) is the ECMA 418-2 tonality over time, in tuHMS.
+            Second element (Field): ECMA 418-2 tonality over time, in tuHMS.
 
-            Third element (Field) is the ECMA 418-2 tone frequency over time, in Hz.
+            Third element (Field): ECMA 418-2 tone frequency over time, in Hz.
         """
         if self._output == None:
             warnings.warn(
@@ -130,15 +130,15 @@ class TonalityECMA418_2(PsychoacousticsParent):
         Returns
         -------
         tuple[numpy.ndarray]
-            First element is the ECMA 418-2 tonality, in tuHMS.
+            First element: ECMA 418-2 tonality, in tuHMS.
 
-            Second element is the ECMA 418-2 tonality over time, in tuHMS.
+            Second element: ECMA 418-2 tonality over time, in tuHMS.
 
-            Third element is the ECMA 418-2 tone frequency over time, in Hz.
+            Third element: ECMA 418-2 tone frequency over time, in Hz.
 
-            Fourth element is the associated time scale for tonality, in s.
+            Fourth element: associated time scale for tonality, in s.
 
-            Fifth element is the associated time scale for tone frequency, in s.
+            Fifth element: associated time scale for tone frequency, in s.
         """
         output = self.get_output()
 
@@ -195,7 +195,7 @@ class TonalityECMA418_2(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Array of the computation times, in seconds, of the ECMA 418-2 tonality over time.
+            Time vector, in seconds, of the ECMA 418-2 tonality over time.
         """
         return self.get_output_as_nparray()[3]
 
@@ -205,14 +205,14 @@ class TonalityECMA418_2(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Array of the computation times, in seconds, of the ECMA 418-2 tone frequency over time.
+            Time vector, in seconds, of the ECMA 418-2 tone frequency over time.
         """
         return self.get_output_as_nparray()[4]
 
     def plot(self):
         """Plot the ECMA 418-2's tonality and tone frequency over time.
 
-        This method creates a figure window that displays the tonality in dB
+        This method displays in a new figure the tonality in dB
         and the tone frequency in Hz, over time.
         """
         if self._output == None:

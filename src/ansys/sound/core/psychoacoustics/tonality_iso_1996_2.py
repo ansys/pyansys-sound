@@ -154,7 +154,7 @@ class TonalityISO1996_2(PsychoacousticsParent):
 
     @noise_bandwidth_ratio.setter
     def noise_bandwidth_ratio(self, ratio: float):
-        """Set noise critical bandwidth ratio property."""
+        """Set ratio of noise bandwidth in proportion to the critical bandwidth."""
         if not (0.75 <= ratio < 2.0) or not isinstance(ratio, float):
             raise PyAnsysSoundException(
                 "Noise critical bandwidth ratio must be provided as a float value,"
@@ -195,11 +195,11 @@ class TonalityISO1996_2(PsychoacousticsParent):
         -------
         tuple
 
-            -   First element (float) is the tonal audibility, in dB.
+            -   First element (float): tonal audibility, in dB.
 
-            -   Second element (float) is the tonal adjustment, in dB.
+            -   Second element (float): tonal adjustment, in dB.
 
-            -   Third element (DataTree) contains the computation details, that is, the main tone's
+            -   Third element (DataTree): computation details, that is, the main tone's
                 critical band boundary frequencies, and the total tone and noise levels in dBA.
         """
         if self._output == None:
@@ -219,11 +219,11 @@ class TonalityISO1996_2(PsychoacousticsParent):
         -------
         tuple
 
-            -   First element (float) is the tonal audibility, in dB.
+            -   First element (float): tonal audibility, in dB.
 
-            -   Second element (float) is the tonal adjustment, in dB.
+            -   Second element (float): tonal adjustment, in dB.
 
-            -   Third element (numpy.ndarray) contains the computation details, that is, the main
+            -   Third element (numpy.ndarray): computation details, that is, the main
                 tone's critical band boundary frequencies, and the total tone and noise levels in
                 dBA.
         """

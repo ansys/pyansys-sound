@@ -123,20 +123,20 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         Returns
         -------
         tuple
-            -   First element (field) is the instantaneous loudness in sone.
+            -   First element (field): instantaneous loudness in sone.
 
-            -   Second element (float) is the N5 indicator in sone. N5 is the loudness that is
+            -   Second element (float): N5 indicator in sone. N5 is the loudness that is
                 exceeded during a cumulated 5 % of the signal duration.
 
-            -   Third element (float) is the N10 indicator in sone. N10 is the loudness that is
+            -   Third element (float): the N10 indicator in sone. N10 is the loudness that is
                 exceeded during a cumulated 10 % of the signal duration.
 
-            -   Fourth element (field) is the instantaneous loudness level in phon.
+            -   Fourth element (field): instantaneous loudness level in phon.
 
-            -   Fifth element (float) is the L5 indicator in phon. L5 is the loudness level that
+            -   Fifth element (float): L5 indicator in phon. L5 is the loudness level that
                 is exceeded during a cumulated 5 % of the signal duration.
 
-            -   Sixth element (float) is the L10 indicator in phon. L10 is the loudness level that
+            -   Sixth element (float): L10 indicator in phon. L10 is the loudness level that
                 is exceeded during a cumulated 10 % of the signal duration.
         """
         if self._output == None:
@@ -155,23 +155,23 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         Returns
         -------
         tuple[numpy.ndarray]
-            -   First element is the instantaneous loudness in sone.
+            -   First element: instantaneous loudness in sone.
 
-            -   Second element is the N5 percentile loudness in sone. N5 is the loudness that is
+            -   Second element: N5 percentile loudness in sone. N5 is the loudness that is
                 exceeded during a cumulated 5 % of the signal duration.
 
-            -   Third element is the N10 percentile loudness in sone. N10 is the loudness that is
+            -   Third element: N10 percentile loudness in sone. N10 is the loudness that is
                 exceeded during a cumulated 10 % of the signal duration.
 
-            -   Fourth element is the instantaneous loudness level in phon.
+            -   Fourth element: instantaneous loudness level in phon.
 
-            -   Fifth element is the L5 percentile loudness level in phon. L5 is the loudness level
+            -   Fifth element: L5 percentile loudness level in phon. L5 is the loudness level
                 that is exceeded during a cumulated 5 % of the signal duration.
 
-            -   Sixth element is the L10 percentile loudness level in phon. L10 is the loudness
+            -   Sixth element: L10 percentile loudness level in phon. L10 is the loudness
                 level that is exceeded during a cumulated 10 % of the signal duration.
 
-            -   Seventh element is the time scale of the instantaneous loudness and loudness level,
+            -   Seventh element: time vector of the instantaneous loudness and loudness level,
                 in seconds.
         """
         output = self.get_output()
@@ -263,14 +263,14 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Time scale of the instantaneous loudness and loudness level, in seconds.
+            Time vector of the instantaneous loudness and loudness level, in seconds.
         """
         return self.get_output_as_nparray()[6]
 
     def plot(self):
         """Plot the instantaneous loudness, in sone, and loudness level, in phon.
 
-        This method creates a figure window that displays the instantaneous loudness (N), in sone,
+        This method displays in a new figure the instantaneous loudness (N), in sone,
         and instantaneous loudness level (L_N), in phon.
         """
         if self.get_output() == None:
