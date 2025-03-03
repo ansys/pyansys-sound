@@ -41,7 +41,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
     """Computes ISO 532-2:2017 loudness.
 
     This class computes the binaural and monaural loudness of a signal following the ISO 532-2:2017
-    standard.
+    standard, corresponding to the "Moore-Glasberg method".
     """
 
     def __init__(
@@ -56,11 +56,11 @@ class LoudnessISO532_2(PsychoacousticsParent):
         ----------
         signal : Field | FieldsContainer, default: None
             Signal in Pa on which to compute loudness. If ``signal`` is a
-            ``Field <ansys.dpf.core.field.Field>``, the listening assumption is diotic (same signal
-            presented at both ears). If ``signal`` is a
-            ``FieldsContainer <ansys.dpf.core.fields_container.FieldsContainer>``, with exactly 2
-            fields, the listening assumption is dichotic (each field's signal presented at each
-            ear).
+            :class:`Field <ansys.dpf.core.field.Field>`, the listening assumption is diotic (same
+            signal presented at both ears). If ``signal`` is a
+            :class:`FieldsContainer <ansys.dpf.core.fields_container.FieldsContainer>`, with
+            exactly 2 fields, the listening assumption is dichotic (each field's signal presented
+            at each ear).
         field_type : str, default: "Free"
             Sound field type. Available options are `"Free"` and `"Diffuse"`.
         recording_type : str, default: "Mic"
@@ -108,7 +108,14 @@ class LoudnessISO532_2(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field | FieldsContainer:
-        """Input sound signal in Pa as a DPF field."""
+        """Input sound signal in Pa.
+
+        Signal in Pa on which to compute loudness. If ``signal`` is a
+        :class:`Field <ansys.dpf.core.field.Field>`, the listening assumption is diotic (same
+        signal presented at both ears). If ``signal`` is a
+        :class:`FieldsContainer <ansys.dpf.core.fields_container.FieldsContainer>`, with exactly 2
+        fields, the listening assumption is dichotic (each field's signal presented at each ear).
+        """
         return self.__signal
 
     @signal.setter
