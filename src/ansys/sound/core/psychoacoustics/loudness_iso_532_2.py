@@ -33,8 +33,8 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_LOUDNESS_ISO_532_2 = "compute_loudness_iso532_2"
 
-RECORDING_MIC = "Single microphone"
-RECORDING_HEAD = "Head and torso simulator"
+RECORDING_MIC = "Mic"
+RECORDING_HEAD = "Head"
 
 
 class LoudnessISO532_2(PsychoacousticsParent):
@@ -63,9 +63,9 @@ class LoudnessISO532_2(PsychoacousticsParent):
             ear).
         field_type : str, default: "Free"
             Sound field type. Available options are `"Free"` and `"Diffuse"`.
-        recording_type : str, default: "Single_microphone"
-            Recording type. Available options are `"Single microphone"` and `"Head and torso
-            simulator"`.
+        recording_type : str, default: "Mic"
+            Recording type. Available options are `"Mic"` for a single microphone and `"Head"` for
+            a head and torso simulator.
         """
         super().__init__()
         self.signal = signal
@@ -75,20 +75,35 @@ class LoudnessISO532_2(PsychoacousticsParent):
 
     def __str__(self):
         """Return the string representation of the class."""
+        if self.signal is not None:
+            signal_str = (
+                f'\tSignal name: "{self.signal.name}"\n'
+                "\tListening assumption: "
+                f"{"Diotic" if type(self.signal) is Field else "Dichotic"}\n"
+            )
+        else:
+            signal_str = "\tSignal name: Not set\n"
+
         if self.recording_type == RECORDING_MIC:
             rec_str = "Single microphone"
         else:
             rec_str = "Head and torso simulator"
 
+        if self._output is not None:
+            output_str = (
+                f"Binaural loudness: {self.get_binaural_loudness_sone():.3} sones\n"
+                f"Binaural loudness level: {self.get_binaural_loudness_level_phon():.1f} phons"
+            )
+        else:
+            output_str = "Binaural loudness: Not processed\nBinaural loudness level: Not processed"
+
         return (
             f"{__class__.__name__} object.\n"
             "Data\n"
-            f'\tSignal name: "{self.signal.name}"\n'
-            f"\tListening assumption:{"Diotic" if type(self.signal) is Field else "Dichotic"}\n"
+            f"{signal_str}"
             f"\tField type: {self.field_type}\n"
-            f"\tRecording type: {rec_str}\n"
-            f"Binaural loudness: {self.get_binaural_loudness_sone():.3} sones\n"
-            f"Binaural loudness level: {self.get_binaural_loudness_level_phon():.1f} phons"
+            f"\tRecording type: {self.recording_type} ({rec_str})\n"
+            f"{output_str}"
         )
 
     @property
@@ -134,7 +149,8 @@ class LoudnessISO532_2(PsychoacousticsParent):
     def recording_type(self) -> str:
         """Recording type.
 
-        Available options are `"Single microphone"` and `"Head and torso simulator"`.
+        Available options are `"Mic"` for a single microphone and `"Head"` for a head and torso
+        simulator.
         """
         return self.__recording_type
 
@@ -154,9 +170,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
         This method calls the appropriate DPF Sound operator to compute the loudness of the signal.
         """
         if self.signal == None:
-            raise PyAnsysSoundException(
-                "No signal found for loudness computation. " f"Use `{__class__.__name__}.signal`."
-            )
+            raise PyAnsysSoundException(f"No input signal set. Use `{__class__.__name__}.signal`.")
 
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, self.field_type)
@@ -243,7 +257,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
             np.array(output[2]),
             np.array(output[3]),
             np.array(output[4].data),
-            self.convert_fields_container_to_nparray(output[5]),
+            self.convert_fields_container_to_np_array(output[5]),
             np.array(output[4].time_freq_support.time_frequencies.data),
         )
 
@@ -275,7 +289,11 @@ class LoudnessISO532_2(PsychoacousticsParent):
         numpy.ndarray
             Monaural loudness in sone at each ear.
         """
-        return self.get_output_as_nparray()[2]
+        output = self.get_output_as_nparray()[2]
+        if len(output) != 2:
+            return np.array([output[0], output[0]])
+        else:
+            return output
 
     def get_monaural_loudness_level_phon(self) -> np.ndarray:
         """Get the monaural loudness level in phon at each ear.
@@ -285,7 +303,11 @@ class LoudnessISO532_2(PsychoacousticsParent):
         numpy.ndarray
             Monaural loudness level in phon at each ear.
         """
-        return self.get_output_as_nparray()[3]
+        output = self.get_output_as_nparray()[3]
+        if len(output) != 2:
+            return np.array([output[0], output[0]])
+        else:
+            return output
 
     def get_binaural_specific_loudness(self) -> np.ndarray:
         """Get the binaural specific loudness in sone/Cam.
@@ -305,7 +327,12 @@ class LoudnessISO532_2(PsychoacousticsParent):
         numpy.ndarray
             Monaural specific loudness array in sone/Cam at each ear.
         """
-        return self.get_output_as_nparray()[5]
+        output = self.get_output_as_nparray()[5]
+        if len(output) != 2:
+            print("1 channel")
+            return np.array([output, output])
+        else:
+            return output
 
     def get_erb_center_frequencies(self) -> np.ndarray:
         """Get the ERB center frequencies in Hz.
@@ -323,7 +350,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
     def get_erbn_numbers(self) -> np.ndarray:
         """Get the ERBn-number scale in Cam.
 
-        This method uses the equation (1) in ISO 532-2:2017 to convert the ERB center frequencies
+        This method uses the equation (6) in ISO 532-2:2017 to convert the ERB center frequencies
         into the ERBn-number scale in Cam.
 
         Returns
@@ -331,7 +358,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
         numpy.ndarray
             ERBn-number scale in Cam.
         """
-        return 24.673 * (0.004368 * self.get_output_as_nparray()[6] + 1)
+        return 21.366 * np.log10(0.004368 * self.get_erb_center_frequencies() + 1)
 
     def plot(self):
         """Plot the binaural specific loudness.
