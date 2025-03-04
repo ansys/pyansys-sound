@@ -77,7 +77,7 @@ class PyAnsysSound:
         warnings.warn(PyAnsysSoundWarning("There is nothing to output."))
         return self._output
 
-    def get_output_as_nparray(self):
+    def get_output_as_nparray(self) -> np.ndarray | tuple[np.ndarray]:
         """Get output as a NumPy array.
 
         There is nothing to output.
