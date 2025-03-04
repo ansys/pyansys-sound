@@ -88,12 +88,13 @@ wav_loader.process()
 signal_field_1 = wav_loader.get_output()[0]
 
 # %%
-# Create a :class:`.LoudnessISO532_1_Stationary` object, set its signal, and compute the loudness.
+# Create a :class:`.LoudnessISO532_1_Stationary` object, set its signal, and compute the loudness
+# according to standard ISO532-1.
 loudness_stationary = LoudnessISO532_1_Stationary(signal=signal_field_1)
 loudness_stationary.process()
 
 # %%
-# Get the loudness (in sone) and loudness level (in phon).
+# Get the ISO532-1 loudness (in sone) and loudness level (in phon).
 loudness_sone = loudness_stationary.get_loudness_sone()
 loudness_level_phon = loudness_stationary.get_loudness_level_phon()
 file_name_1 = os.path.basename(path_flute_wav)
@@ -103,7 +104,7 @@ print(
 )
 
 # %%
-# Plot the specific loudness, that is, the loudness at each Bark band index.
+# Plot the ISO532-1 specific loudness, that is, the loudness at each Bark band index.
 loudness_stationary.plot()
 
 # %%
