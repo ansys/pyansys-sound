@@ -4,7 +4,7 @@ Spectrogram processing
 This module provides useful functions to process signals in the time-frequency domain,
 such as the calculation of the Short-Time Fourier Transform (STFT) and Inverse STFT (ISTFT).
 
-In the case of rotating machines, given the RPm information,
+In the case of rotating machines, given the RPM information,
 it also allows to isolate specific orders from a spectrogram.
 
 .. module:: ansys.sound.core.spectrogram_processing
