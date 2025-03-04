@@ -82,7 +82,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
 
     @property
     def profile(self) -> Field:
-        """ RPM profile associated to the input signal as a DPF field."""
+        """RPM profile associated to the input signal as a DPF field."""
         return self.__profile
 
     @profile.setter

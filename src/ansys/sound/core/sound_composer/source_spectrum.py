@@ -40,7 +40,7 @@ class SourceSpectrum(SourceParent):
 
     This class creates a spectrum source for the Sound Composer. A spectrum source is used to
     generate a sound signal from a given spectrum and its source control.
-    
+
     The source control contains the duration of the sound and the method to use for generating it.
     """
 

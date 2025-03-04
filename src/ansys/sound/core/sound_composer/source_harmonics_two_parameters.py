@@ -43,7 +43,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
     This class creates a harmonics source with two parameters for the Sound Composer. A harmonics
     source with two parameters is used to generate a sound signal from a given harmonics source
     data and its two source controls.
-    
+
     The harmonics source data consists of a series of orders
     whose levels depend on the values of two parameters. The
     two source controls contain each a control parameter's values over time.
@@ -194,7 +194,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
     @source_harmonics_two_parameters.setter
     def source_harmonics_two_parameters(self, source: FieldsContainer):
         """Set the harmonics source with two parameters data, from a DPF fields container.
-        
+
         Levels must be specified in Pa^2. The unit must be indicated in the field's unit.
         """
         if source is not None:

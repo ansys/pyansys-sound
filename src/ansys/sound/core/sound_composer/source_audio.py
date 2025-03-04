@@ -39,9 +39,9 @@ class SourceAudio(SourceParent):
     """Sound Composer's audio source class.
 
     This class creates an audio source for the Sound Composer.
-    
+
     An audio source is simply made of a sound signal (sound samples in Pa over time).
-    
+
     The audio source can be loaded from a WAV file or a text file.
     """
 
