@@ -473,22 +473,22 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         tuple[str, float, str, str, tuple[float], str, str, tuple[float]]
             Broadband noise source with two parameters information, consisting of the following
             elements:
-                -   First element is the spectrum type ('Narrow band', 'Octave', or 'Third octave').
+                -   First element: spectrum type ('Narrow band', 'Octave', or 'Third octave').
 
-                -   Second element is the spectrum frequency resolution in Hz (only if spectrum
+                -   Second element: spectrum frequency resolution in Hz (only if spectrum
                     type is 'Narrow band', 0.0 otherwise).
 
-                -   Third element is the first control parameter name.
+                -   Third element: first control parameter name.
 
-                -   Fourth element is the first control parameter unit.
+                -   Fourth element: first control parameter unit.
 
-                -   Fifth element is the second control parameter name.
+                -   Fifth element: second control parameter name.
 
-                -   Sixth element is the second control parameter unit.
+                -   Sixth element: second control parameter unit.
 
-                -   Seventh element is the second control parameter min and max values in a tuple.
+                -   Seventh element: second control parameter min and max values in a tuple.
 
-                -   Eighth element is the first control parameter min and max values in a tuple.
+                -   Eighth element: first control parameter min and max values in a tuple.
 
 
         """

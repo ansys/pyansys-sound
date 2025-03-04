@@ -66,7 +66,7 @@ The following API reference pages describe some key features of PyAnsys Sound:
 * :doc:`api/psychoacoustics`: Psychoacoustic indicators computation to measure perceived sound quality.
 * :doc:`api/xtract`: Separation of a signal into several components, such as tonal, transient, and noise parts.
 * :doc:`api/sound_composer`: Generation of sounds from sources defined in time or frequency.
-Creation of complex sounds by mixing several tracks (each track contaisn a specific user-defined source).
+Creation of complex sounds by mixing several tracks (each track contains a specific user-defined source).
 * :doc:`api/standard_levels`: Calculation of sstandard levels for time signals.
 * :doc:`api/sound_power`: Calculation of sound power from time signals.
 

@@ -403,11 +403,11 @@ class SourceBroadbandNoise(SourceParent):
                 -   Second element is the spectrum frequency resolution in Hz (only if spectrum
                     type is 'Narrow band', 0.0 otherwise).
 
-                -   Third element is the control parameter name.
+                -   Third element: control parameter name.
 
-                -   Fourth element is the control parameter unit.
+                -   Fourth element: control parameter unit.
 
-                -   Fifth element is the control parameter values.
+                -   Fifth element:control parameter values.
         """
         if self.source_bbn is None:
             return ("", 0.0, "", "", [])

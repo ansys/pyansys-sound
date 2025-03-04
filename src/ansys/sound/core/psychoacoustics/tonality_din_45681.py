@@ -162,7 +162,7 @@ class TonalityDIN45681(PsychoacousticsParent):
             -   Fourth element (Field): DIN 45681 tonality over time
             (decisive difference DLj), in dB.
 
-            -   Fifth element (Field):e DIN 45681 tonality uncertainty over time, in dB.
+            -   Fifth element (Field): DIN 45681 tonality uncertainty over time, in dB.
 
             -   Sixth element (Field): DIN 45681 decisive frequency over time, in Hz.
 

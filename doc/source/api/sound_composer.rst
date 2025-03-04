@@ -11,8 +11,8 @@ Each track contains an optional transfer function (filter) can be applied to eac
 between a source and a receiver.
 
 The Sound composer module allows you to create projects including several tracks, therefore it eases the process of
-mixing different source types: harmonics (1 or 2 control parameters), broadband noise (1 or 2 control paremeters),
-audio and spectrum.
+mixing different source types: harmonics (1 or 2 control parameters), broadband noise (1 or 2 control parameters),
+audio, and spectrum.
 
 .. module:: ansys.sound.core.sound_composer
 
