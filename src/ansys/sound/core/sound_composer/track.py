@@ -66,8 +66,8 @@ class Track(SoundComposerParent):
 
     This class creates a track for the Sound Composer. A track is made of a source (including its
     source control) and an optional filter (which models the transfer from source to receiver).
-    
-    A track allows the generation of the sound corresponding to the source, 
+
+    A track allows the generation of the sound corresponding to the source,
     optionally filtered with the associated filter.
     """
 

@@ -32,7 +32,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 class SpectralCentroid(PsychoacousticsParent):
     """Computes the spectral centroid of a signal.
-    
+
     The spectral centroid is the center of gravity of the spectrum. It is a measure of the
     distribution of the spectral energy of a signal. It is calculated as the weighted mean of the
     frequencies present in the signal, where the weights are the magnitudes of the frequencies.

@@ -41,7 +41,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
     This class creates a broadband noise source with two parameters for the Sound Composer. A
     broadband noise source with two parameters is used to generate a sound signal from a given
     broadband noise and its two source controls.
-    
+
     The broadband noise consists of a series of noise
     spectra, each corresponding to a pair of control parameter values. The source controls contain
     each a control parameter's values over time.
@@ -62,7 +62,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         ----------
         file : str, default: ""
             Path to the broadband noise with two parameters file. Supported files are text files
-            with the header `AnsysSound_BBN_MultipleParameters` and should be created using 
+            with the header `AnsysSound_BBN_MultipleParameters` and should be created using
             Ansys Sound SAS.
         source_control1 : SourceControlTime, default: None
             First Source control, consisting of the control parameter values over time, to use when
@@ -487,7 +487,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
                 -   Sixth element is the second control parameter unit.
 
                 -   Seventh element is the second control parameter min and max values in a tuple.
-                
+
                 -   Eighth element is the first control parameter min and max values in a tuple.
 
 

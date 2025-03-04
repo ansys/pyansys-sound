@@ -43,9 +43,9 @@ class SourceHarmonics(SourceParent):
 
     The generated signal is composed of a series of orders whose levels depend on the RPM,
     and whose frequencies depend on the RPM and the order number of each order.
-    
+
     The harmonics source data consists of a series of orders whose levels depend on RPM.
-    
+
     The source control contains the RPM values over time.
     """
 

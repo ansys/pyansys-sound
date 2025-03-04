@@ -98,7 +98,7 @@ class ProminenceRatio(PsychoacousticsParent):
 
         List of the frequencies in Hz of the tones (peaks in the PSD) where the PR shall be
         calculated.
-        
+
         If this parameter is unspecified (``None``), a peak detection algorithm is
         applied to locate the tones in the input PSD. Then, the PR is calculated for each detected
         tone.

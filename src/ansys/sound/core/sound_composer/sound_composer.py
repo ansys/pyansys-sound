@@ -84,7 +84,7 @@ class SoundComposer(SoundComposerParent):
         """List of tracks.
 
         List of the tracks available in this Sound Composer instance (project).
-        
+
         Each track is a :class:`Track` object, and contains a source and a filter.
         """
         return self.__tracks
