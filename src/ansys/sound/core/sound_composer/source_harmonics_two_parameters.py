@@ -57,7 +57,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
         source_control_rpm: SourceControlTime = None,
         source_control2: SourceControlTime = None,
     ):
-        """Class instantiation takes the following parameters:
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

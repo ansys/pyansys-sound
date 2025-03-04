@@ -34,8 +34,9 @@ class SpectrumSynthesisMethods(Enum):
     """
 
     IFFT = 0
-    """IFFT: Sound generation method based on the Inverse Fast Fourier Transform of the input spectrum,
-    using random phases."""
+    """IFFT: Sound generation method based on the Inverse Fast Fourier Transform of the input
+    spectrum, using random phases."""
+
     Hybrid = 1
     """Hybrid: sound generation method which combines pure tones generation and IFFT.
     If peaks are detected in the input spectrum, they are generated as pure tones (sine waves).

@@ -46,7 +46,7 @@ class SourceAudio(SourceParent):
     """
 
     def __init__(self, file: str = ""):
-        """Class instantiation takes the following parameters:
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
@@ -190,7 +190,7 @@ class SourceAudio(SourceParent):
         """Generate the sound of the audio source.
 
         The generated sound simply corresponds to the audio source data,
-        possibily resampled to the sampling frequency given as input.
+        possibly resampled to the sampling frequency given as input.
 
         Parameters
         ----------

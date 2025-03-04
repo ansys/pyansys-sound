@@ -41,7 +41,7 @@ class SourceControlTime(SourceControlParent):
     """
 
     def __init__(self, file_str: str = ""):
-        """Class instantiation takes the following parameters:
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

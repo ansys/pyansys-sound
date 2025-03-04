@@ -405,7 +405,6 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
 
     def plot(self):
         """Plot the resulting signal in a figure."""
-
         if self._output == None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the '{__class__.__name__}.process()' method."
@@ -427,7 +426,6 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
 
     def plot_control(self):
         """Plot the source control(s) in a figure."""
-
         if not self.is_source_control_valid():
             raise PyAnsysSoundException(
                 "At least one source control for broadband noise source with two parameters is "

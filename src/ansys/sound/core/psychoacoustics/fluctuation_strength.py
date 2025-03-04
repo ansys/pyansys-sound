@@ -101,7 +101,8 @@ class FluctuationStrength(PsychoacousticsParent):
         tuple
             -   First element (float) is the fluctuation strength in vacil.
 
-            -   Second element (field) is the specific fluctuation strength, in vacil, vs Bark band indexes.
+            -   Second element (field) is the specific fluctuation strength, in vacil, vs Bark band
+            indexes.
         """
         if self._output == None:
             warnings.warn(

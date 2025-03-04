@@ -78,7 +78,7 @@ class Track(SoundComposerParent):
         source: AnySourceType = None,
         filter: Filter = None,
     ):
-        """Class instantiation takes the following parameters:
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

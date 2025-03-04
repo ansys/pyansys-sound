@@ -194,7 +194,8 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
     def get_bark_band_indexes(self) -> np.ndarray:
         """Get Bark band indexes.
 
-        This method returns the Bark band indexes used for the loudness calculation as a NumPy array.
+        This method returns the Bark band indexes used for the loudness calculation as a NumPy
+        array.
 
         Returns
         -------

@@ -114,7 +114,7 @@ class TonalityAures(PsychoacousticsParent):
 
     @overlap.setter
     def overlap(self, overlap: float):
-        """Set the overlap btween succesive windows."""
+        """Set the overlap btween successive windows."""
         if overlap < 0.0 or overlap >= 100.0:
             raise PyAnsysSoundException(
                 "Overlap must be greater than or equal to 0 %, and strictly smaller than 100 %."

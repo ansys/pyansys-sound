@@ -35,15 +35,15 @@ class SourceControlSpectrum(SourceControlParent):
     and the method to use for the sound generation.
 
     Two sound generation methods are proposed:
-    - IFFT: Sound generation method based on the Inverse Fast Fourier Transform of the input spectrum,
-    using random phases.
+    - IFFT: Sound generation method based on the Inverse Fast Fourier Transform of the input
+    spectrum, using random phases.
     - Hybrid: sound generation method which combines pure tones generation and IFFT.
     If peaks are detected in the input spectrum, they are generated as pure tones (sine waves).
     The rest is synthesized using the IFFT method.
     """
 
     def __init__(self, duration: float = 0.0, method: int = 0):
-        """Class instantiation takes the following parameters:
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

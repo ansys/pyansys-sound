@@ -50,7 +50,7 @@ class SourceHarmonics(SourceParent):
     """
 
     def __init__(self, file: str = "", source_control: SourceControlTime = None):
-        """Class instantiation takes the following parameters:
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

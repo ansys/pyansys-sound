@@ -49,7 +49,7 @@ class SourceBroadbandNoise(SourceParent):
     """
 
     def __init__(self, file: str = "", source_control: SourceControlTime = None):
-        """Class instantiation takes the following parameters:
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
@@ -147,17 +147,18 @@ class SourceBroadbandNoise(SourceParent):
         The broadband noise source data consists of a series of spectra, each corresponding to a
         control parameter value.
 
-        Each field contains the level vs frequency of the noise at a given value of the control parameter.
+        Each field contains the level vs frequency of the noise at a given value of the control
+        parameter.
         Level vs frequency may be specified as a Power Spectral Density (PSD) in Pa^2/Hz,
         or as Octave bands level in Pa^2, or as 1/3 Octave bands level in Pa^2.
 
-        The control parameter values corresponding ot each spectrum must be stored in the fields container
-        support named "control_parameter_1".
+        The control parameter values corresponding to each spectrum must be stored in the fields
+        container support named "control_parameter_1".
 
         The unit must be indicated in the field's unit.
 
-        The type of data (PSD, Octave, 1/3 octave) must be indicated in the field's FieldDefinition attribute,
-        as a quantity_type.
+        The type of data (PSD, Octave, 1/3 octave) must be indicated in the field's FieldDefinition
+        attribute, as a quantity_type.
         """
         return self.__source_bbn
 

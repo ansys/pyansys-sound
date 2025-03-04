@@ -40,7 +40,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
     """
 
     def __init__(self, psd: Field = None, frequency_list: list = None):
-        """Class instantiation takes the following parameters:
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------

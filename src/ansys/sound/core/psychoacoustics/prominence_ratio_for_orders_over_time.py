@@ -85,7 +85,7 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
 
     @property
     def profile(self) -> Field:
-        """RPM profile (RPM vs time) related to the input signal as a DPF field."""
+        """RPM vs time related to the input signal as a DPF field."""
         return self.__profile
 
     @profile.setter

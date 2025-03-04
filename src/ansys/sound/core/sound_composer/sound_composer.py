@@ -49,7 +49,7 @@ class SoundComposer(SoundComposerParent):
         self,
         project_path: str = "",
     ):
-        """Class instantiation takes the following parameter:
+        """Class instantiation takes the following parameter.
 
         Parameters
         ----------
