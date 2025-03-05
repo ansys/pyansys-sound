@@ -199,8 +199,8 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         Parameters
         ----------
         order_index : int
-            Index, in the list The list of the order numbers is available in :attr:`order_list`,
-            of the order for which to get the tone-to-noise ratio.
+            Index of the order for which to get the tone-to-noise ratio over time.
+            The index refers to the list of orders stored in :attr:`order_list`.
 
         Returns
         -------
@@ -238,7 +238,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            RPM scale, at the same time steps as TNR vs time.
+            RPM scale, resampled to match the PR calculation time steps.
         """
         return self.get_output_as_nparray()[2]
 

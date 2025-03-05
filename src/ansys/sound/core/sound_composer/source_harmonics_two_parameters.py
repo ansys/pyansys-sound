@@ -47,7 +47,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
     The harmonics source data consists of a series of orders whose levels depend on the values of
     two control parameters.
 
-    The two source controls contain each a control parameter's values over time.
+    Each of the two source controls contains one control parameter's values over time.
 
     .. note::
         The first control parameter must correspond to RPM over time.

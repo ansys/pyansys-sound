@@ -45,7 +45,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
     The broadband noise source data consists of a series of noise spectra, each corresponding to a
     pair of control parameter values.
 
-    The two source controls contain each a control parameter's values over time.
+    Each of the two source controls contains one control parameter's values over time.
     """
 
     def __init__(

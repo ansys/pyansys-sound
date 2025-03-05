@@ -93,7 +93,7 @@ class PyAnsysSound:
     def convert_fields_container_to_np_array(self, fc) -> np.ndarray:
         """Convert a DPF fields container to a NumPy array.
 
-        This method converts a DPF fields container which contains several signals into a
+        This method converts a DPF fields container that contains several signals into a
         NumPy array.
 
         Parameters

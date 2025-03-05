@@ -202,7 +202,7 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
         Parameters
         ----------
         order_index : int
-            Index of the order for which to get the prominence ratio vs time.
+            Index of the order for which to get the prominence ratio over time.
             The index refers to the list of orders stored in :attr:`order_list`.
 
         Returns
