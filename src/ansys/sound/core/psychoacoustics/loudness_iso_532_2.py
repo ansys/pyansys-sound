@@ -40,8 +40,8 @@ RECORDING_HEAD = "Head"
 class LoudnessISO532_2(PsychoacousticsParent):
     """Computes ISO 532-2:2017 loudness.
 
-    This class computes the binaural and monaural loudness of a signal following the ISO 532-2:2017
-    standard, corresponding to the "Moore-Glasberg method".
+    This class computes the binaural and monaural loudness of a signal according to the
+    ISO 532-2:2017 standard, corresponding to the "Moore-Glasberg method".
     """
 
     def __init__(
@@ -201,18 +201,19 @@ class LoudnessISO532_2(PsychoacousticsParent):
         Returns
         -------
         tuple
-            -   First element (float) is the binaural loudness in sone.
+            -   First element (float): binaural loudness in sone.
 
-            -   Second element (float) is the binaural loudness level in phon.
+            -   Second element (float): binaural loudness level in phon.
 
-            -   Third element (DPFarray) is the monaural loudness in sone at each ear.
+            -   Third element (DPFarray): monaural loudness in sone at each ear.
 
-            -   Fourth element (DPFarray) is the monaural loudness level in phon at each ear.
+            -   Fourth element (DPFarray): monaural loudness level in phon at each ear.
 
-            -   Fifth element (field) is the binaural specific loudness in sone/Cam.
+            -   Fifth element (Field): binaural specific loudness in sone/Cam, as a function of the
+                ERB center frequency.
 
-            -   Sixth element (fields_container) is the monaural specific loudness in sone/Cam at
-                each ear.
+            -   Sixth element (FieldsContainer): monaural specific loudness in sone/Cam at each ear,
+                as a function of the ERB center frequency.
         """
         if self._output == None:
             warnings.warn(
@@ -230,19 +231,21 @@ class LoudnessISO532_2(PsychoacousticsParent):
         Returns
         -------
         tuple[numpy.ndarray]
-            -   First element is the binaural loudness in sone.
+            -   First element: binaural loudness in sone.
 
-            -   Second element is the binaural loudness level in phon.
+            -   Second element: binaural loudness level in phon.
 
-            -   Third element is the monaural loudness in sone at each ear.
+            -   Third element: monaural loudness in sone at each ear.
 
-            -   Fourth element is the monaural loudness level in phon at each ear.
+            -   Fourth element: monaural loudness level in phon at each ear.
 
-            -   Fifth element is the binaural specific loudness in sone/Cam.
+            -   Fifth element: binaural specific loudness in sone/Cam, as a function of the ERB
+                center frequency.
 
-            -   Sixth element is the monaural specific loudness in sone/Cam at each ear.
+            -   Sixth element: monaural specific loudness in sone/Cam at each ear, as a function of
+                the ERB center frequency.
 
-            -   Seventh element is the center frequencies in Hz of the equivalent rectangular
+            -   Seventh element: center frequencies in Hz of the equivalent rectangular
                 bandwidths (ERB), where specific loudness is defined.
         """
         output = self.get_output()
@@ -317,22 +320,23 @@ class LoudnessISO532_2(PsychoacousticsParent):
             return output
 
     def get_binaural_specific_loudness(self) -> np.ndarray:
-        """Get the binaural specific loudness in sone/Cam.
+        """Get the binaural specific loudness.
 
         Returns
         -------
         numpy.ndarray
-            Binaural specific loudness array in sone/Cam.
+            Binaural specific loudness array in sone/Cam, as a function of the ERB center frequency.
         """
         return self.get_output_as_nparray()[4]
 
     def get_monaural_specific_loudness(self) -> np.ndarray:
-        """Get the monaural specific loudness in sone/Cam at each ear.
+        """Get the monaural specific loudness at each ear.
 
         Returns
         -------
         numpy.ndarray
-            Monaural specific loudness array in sone/Cam at each ear.
+            Monaural specific loudness array in sone/Cam at each ear, as a function of the ERB
+            center frequency.
         """
         output = self.get_output_as_nparray()[5]
         if len(output) != 2:
@@ -350,7 +354,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Array of ERB center frequencies, in Hz.
+            Array of ERB center frequencies in Hz.
         """
         return self.get_output_as_nparray()[6]
 
@@ -370,8 +374,8 @@ class LoudnessISO532_2(PsychoacousticsParent):
     def plot(self):
         """Plot the binaural specific loudness.
 
-        This method creates a figure window that displays the binaural specific loudness in
-        sone/Cam as a function of the ERB center frequency.
+        This method displays the binaural specific loudness in sone/Cam as a function of the ERB
+        center frequency.
         """
         if self._output == None:
             raise PyAnsysSoundException(
