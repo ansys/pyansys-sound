@@ -233,12 +233,12 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         return self.get_output_as_nparray()[1]
 
     def get_rpm_scale(self) -> np.ndarray:
-        """Get the resampled RPM scale corresponding to the TNR array over time.
+        """Get the RPM scale corresponding to the TNR array over time.
 
         Returns
         -------
         numpy.ndarray
-            RPM scale, resampled to match the PR calculation time steps.
+            Array of the RPM values at the time steps of the TNR calculation.
         """
         return self.get_output_as_nparray()[2]
 
