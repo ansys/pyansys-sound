@@ -39,13 +39,12 @@ class SourceBroadbandNoise(SourceParent):
     """Sound Composer's broadband noise source class.
 
     This class creates a broadband noise source for the Sound Composer. A broadband noise source is
-    used to generate a sound signal from a given broadband noise and its source control.
+    used to generate a sound signal from broadband noise source data and one source control.
 
-    The broadband noise consists of a series of noise spectra, each corresponding to a control
-    parameter value.
+    The broadband noise source data consists of a series of noise spectra, each corresponding to a
+    control parameter value.
 
-    The source control contains the control parameter values over time that will be used for
-    the sound generation.
+    The source control contains the control parameter values over time.
     """
 
     def __init__(self, file: str = "", source_control: SourceControlTime = None):
@@ -55,10 +54,10 @@ class SourceBroadbandNoise(SourceParent):
         ----------
         file : str, default: ""
             Path to the broadband noise file. Supported files are text files with the header
-            `AnsysSound_BBN`. If left empty, the broadband noise source data is not initialized.
+            `AnsysSound_BBN`.
         source_control : SourceControlTime, default: None
-            Source control, consisting of the control parameter values over time that will be
-            used for the sound generation.
+            Source control, consisting of the control parameter values over time to use when
+            generating the sound from this source.
         """
         super().__init__()
         self.source_control = source_control
@@ -124,10 +123,9 @@ class SourceBroadbandNoise(SourceParent):
 
     @property
     def source_control(self) -> SourceControlTime:
-        """Broadband noise source control.
+        """Source control of the broadband noise source.
 
-        Contains the control parameter values over time that will be used for
-        the sound generation..
+        Contains the control parameter values over time.
         """
         return self.__source_control
 
@@ -142,23 +140,20 @@ class SourceBroadbandNoise(SourceParent):
 
     @property
     def source_bbn(self) -> FieldsContainer:
-        """Broadband noise source data, as a DPF fields container.
+        """Source data of the broadband noise source.
 
         The broadband noise source data consists of a series of spectra, each corresponding to a
         control parameter value.
 
-        Each field contains the level vs frequency of the noise at a given value of the control
-        parameter.
-        Level vs frequency may be specified as a Power Spectral Density (PSD) in Pa^2/Hz,
-        or as Octave bands level in Pa^2, or as 1/3 Octave bands level in Pa^2.
+        Each field contains the level over frequency of the noise at a given value of the control
+        parameter. Level over frequency may be specified as a power spectral density (PSD) in
+        Pa^2/Hz, as octave-band levels in Pa^2, or as 1/3-octave-band levels in Pa^2. The unit must
+        be indicated in each field's unit. The type of data ('Narrow band', 'Octave', or
+        'Third octave') must be indicated in the field's FieldDefinition attribute, as a
+        quantity type.
 
         The control parameter values corresponding to each spectrum must be stored in the fields
-        container support named "control_parameter_1".
-
-        The unit must be indicated in the field's unit.
-
-        The type of data (PSD, Octave, 1/3 octave) must be indicated in the field's FieldDefinition
-        attribute, as a quantity_type.
+        container's support named "control_parameter_1".
         """
         return self.__source_bbn
 
@@ -214,8 +209,8 @@ class SourceBroadbandNoise(SourceParent):
         Parameters
         ----------
         file : str
-            Path to the broadband noise file. Supported files have the same text format (with the
-            `AnsysSound_BBN` header) as that which is supported by Ansys Sound SAS.
+            Path to the broadband noise source file. Supported files have the same text format
+            (with the `AnsysSound_BBN` header) as supported by Ansys Sound SAS.
         """
         # Set operator inputs.
         self.__operator_load.connect(0, file)
@@ -234,7 +229,7 @@ class SourceBroadbandNoise(SourceParent):
         """Set the source and source control data from generic data containers.
 
         This method is meant to set the source data from generic data containers obtained when
-        loading a Sound Composer project file (.scn) with the function SoundComposer.load().
+        loading a Sound Composer project file (.scn) with the method :meth:`SoundComposer.load()`.
 
         Parameters
         ----------
@@ -251,8 +246,8 @@ class SourceBroadbandNoise(SourceParent):
     def get_as_generic_data_containers(self) -> tuple[GenericDataContainer]:
         """Get the source and source control data as generic data containers.
 
-        This method is meant to return the source data as generic data containers,
-         in the format needed to save a Sound Composer project file (.scn).
+        This method is meant to return the source data as generic data containers, in the format
+        needed to save a Sound Composer project file (.scn).
 
         Returns
         -------
@@ -353,7 +348,7 @@ class SourceBroadbandNoise(SourceParent):
         return np.array(output.data if output is not None else [])
 
     def plot(self):
-        """Plot the resulting signal in a figure."""
+        """Plot the resulting signal."""
         if self._output == None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the '{__class__.__name__}.process()' method."
@@ -370,7 +365,7 @@ class SourceBroadbandNoise(SourceParent):
         plt.show()
 
     def plot_control(self):
-        """Plot the source control(s) in a figure."""
+        """Plot the source control."""
         if not self.is_source_control_valid():
             raise PyAnsysSoundException(
                 "Broadband noise source control is not set. "
@@ -399,16 +394,16 @@ class SourceBroadbandNoise(SourceParent):
         -------
         tuple[str, float, str, str, list[float]]
             Broadband noise source information, consisting of the following elements:
-                -   First element is the spectrum type ('Narrow band', 'Octave', or 'Third octave').
+                -   First element: spectrum type ('Narrow band', 'Octave', or 'Third octave').
 
-                -   Second element is the spectrum frequency resolution in Hz (only if spectrum
-                    type is 'Narrow band', 0.0 otherwise).
+                -   Second element: spectrum frequency resolution in Hz (only if spectrum type is
+                    'Narrow band', 0.0 otherwise).
 
-                -   Third element: control parameter name.
+                -   Third element: name of the control parameter.
 
-                -   Fourth element: control parameter unit.
+                -   Fourth element: unit of the control parameter.
 
-                -   Fifth element:control parameter values.
+                -   Fifth element: list of control parameter values.
         """
         if self.source_bbn is None:
             return ("", 0.0, "", "", [])

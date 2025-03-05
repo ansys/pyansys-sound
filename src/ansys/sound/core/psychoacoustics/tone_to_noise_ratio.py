@@ -35,8 +35,8 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 class ToneToNoiseRatio(PsychoacousticsParent):
     """Computes the ECMA 418-1/ISO 7779 tone-to-noise ratio (TNR).
 
-    This class computes the TNR from a power spectral density (PSD),
-    following the ECMA 418-1 and ISO 7779 standards.
+    This class computes the TNR from a power spectral density (PSD), according to the ECMA 418-1
+    and ISO 7779 standards.
     """
 
     def __init__(self, psd: Field = None, frequency_list: list = None):
@@ -45,17 +45,18 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         Parameters
         ----------
         psd : Field
-            PSD of the signal to compute TNR on as a DPF field.
+            PSD of the signal on which to compute TNR.
             The PSD field has the following characteristics:
 
-            - ``num_entities`` = 1
-            - ``location`` = "TimeFreq_sets"
-            - ``data``: Vector of amplitude values in unit^2/Hz
-            - ``time_freq_support``: Vector of regularly spaced frequencies in Hz associated with
+            -   ``num_entities`` = 1
+            -   ``location`` = "TimeFreq_sets"
+            -   ``data``: Vector of amplitude values in unit^2/Hz
+            -   ``time_freq_support``: Vector of regularly spaced frequencies in Hz associated with
                 amplitude values (from 0 Hz to the maximum frequency)
-            - ``unit`` = "<unit>^2/Hz" (where <unit> is Pa for example).
+            -   ``unit`` = "<unit>^2/Hz" (where <unit> is Pa for example).
 
-            You can use the ``ansys.dpf.core.fields_factory.create_scalar_field()`` function
+            You can use the function
+            :func:`create_scalar_field() <ansys.dpf.core.fields_factory.create_scalar_field>`
             to create the field.
 
         frequency_list : list, default: None
@@ -71,18 +72,19 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
     @property
     def psd(self) -> Field:
-        """Input power spectral density (PSD) as a DPF field.
+        """Input power spectral density (PSD).
 
         The PSD field has the following characteristics:
 
-        - ``num_entities`` = 1
-        - ``location`` = "TimeFreq_sets"
-        - ``data``: Vector of amplitude values in unit^2/Hz
-        - ``time_freq_support``: Vector of regularly spaced frequencies in Hz associated with
+        -   ``num_entities`` = 1
+        -   ``location`` = "TimeFreq_sets"
+        -   ``data``: Vector of amplitude values in unit^2/Hz
+        -   ``time_freq_support``: Vector of regularly spaced frequencies in Hz associated with
             amplitude values (from 0 Hz to the maximum frequency)
-        - ``unit`` = "<unit>^2/Hz" (where <unit> is Pa for example).
+        -   ``unit`` = "<unit>^2/Hz" (where <unit> is Pa for example).
 
-        You can use the ``ansys.dpf.core.fields_factory.create_scalar_field()`` function
+        You can use the function
+        :func:`create_scalar_field() <ansys.dpf.core.fields_factory.create_scalar_field>`
         to create the field.
         """
         return self.__psd
@@ -105,7 +107,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
     @frequency_list.setter
     def frequency_list(self, frequency_list: list):
-        """Set the tone frequency list."""
+        """Set the list of tone frequencies on which to calculate the TNR."""
         self.__frequency_list = frequency_list
 
     def process(self):
@@ -138,7 +140,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         Returns
         -------
         GenericDataContainer
-            TNR data in a generic data container.
+            TNR data as a generic data container.
         """
         if self._output == None:
             warnings.warn(
@@ -155,20 +157,22 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         Returns
         -------
         tuple
-            First element: vector of peaks' frequencies in Hz.
+            -   First element: array of peaks' frequencies in Hz.
 
-            Second element: vector of peaks' TNR values in dB.
+            -   Second element: array of peaks' TNR values in dB.
 
-            Third element: vector of peaks' level values in dB SPL.
+            -   Third element: array of peaks' level values in dB SPL.
 
-            Fourth element: vector of peaks' lower-frequency limits in Hz.
+            -   Fourth element: array of the lower-frequency limits, in Hz, of the critical
+                bandwidths centered on the peaks' frequencies.
 
-            Fifth element: vector of peaks' higher-frequency limits in Hz.
+            -   Fifth element: array of the upper-frequency limits, in Hz, of the critical
+                bandwidths centered on the peaks' frequencies.
 
-            Sixth element: maximum TNR value in dB.
+            -   Sixth element: maximum TNR value in dB.
 
-            Note: The first five elements are vectors of the same length. The sixth
-            element is a float.
+        .. note::
+            The first five elements are arrays of the same length. The sixth element is a float.
         """
         tnr_container = self.get_output()
         if tnr_container == None:
@@ -287,15 +291,17 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         Returns
         -------
         tuple[float]
-            First element: peak's frequency in Hz.
+            -   First element: frequency of the peak in Hz.
 
-            Second element: TNR value in dB.
+            -   Second element: TNR value in dB.
 
-            Third element: peak's level value in dB SPL.
+            -   Third element: level of the peak in dB SPL.
 
-            Fourth element: peak's lower-frequency limit in Hz.
+            -   Fourth element: lower-frequency limit of the critical band centered on the peak,
+                in Hz.
 
-            Fifth element: peak's higher-frequency limit in Hz.
+            -   Fifth element: higher-frequency limit of the critical band centered on the peak,
+                in Hz.
         """
         nb_tones = self.get_nb_tones()
         if nb_tones == 0:
@@ -315,14 +321,13 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         )
 
     def get_reference_curve(self) -> np.ndarray:
-        """Get the threshold reference curve, above which a tone is considered as prominent.
+        """Get the reference threshold curve, above which a tone is considered as prominent.
 
         Returns
         -------
         numpy.ndarray
-            Reference curve to compare the TNR with as defined in the
-            ECMA 418-1 and ISO 7779 standards.
-            If TNR is higher, then the tone is prominent.
+            Reference curve with which to compare the TNR, as defined in the ECMA 418-1 and
+            ISO 7779 standards. If the TNR is higher, then the tone is defined as prominent.
         """
         if self.__psd == None:
             raise PyAnsysSoundException("No PSD set. Use 'ToneToNoiseRatio.psd'.")
@@ -348,7 +353,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         return ref_curve
 
     def plot(self):
-        """Plot the TNR for all identified peaks, along with the reference curve."""
+        """Plot the TNR for all identified peaks, along with the threshold curve."""
         if self._output == None:
             raise PyAnsysSoundException(
                 "Output is not processed yet. Use the 'ToneToNoiseRatio.process()' method."
@@ -360,7 +365,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         all_frequencies = np.copy(self.__psd.time_freq_support.time_frequencies.data)
 
         # Cut both curves at 11220 Hz,
-        # which is the maximum frequency for which the reference curve is defined
+        # which is the maximum frequency for which the reference threshold curve is defined
         max_index = np.min(np.where(all_frequencies > 11220)) + 1
         all_frequencies = all_frequencies[:max_index]
 
@@ -385,7 +390,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
             all_frequencies,
             self.get_reference_curve()[:max_index],
             color="black",
-            label="Reference curve",
+            label="Reference threshold curve",
         )
 
         plt.legend()

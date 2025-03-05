@@ -41,8 +41,8 @@ class SoundComposer(SoundComposerParent):
     """Sound Composer project class.
 
     This class creates a Sound Composer project. A project is made of several tracks, each
-    containing a source (used to generate the sound) and an optional filter (used to model
-    the transfer between the source and the receiver).
+    containing a source, to generate the sound, and an optional filter, to model the transfer
+    between the source and the receiver.
     """
 
     def __init__(
@@ -91,7 +91,7 @@ class SoundComposer(SoundComposerParent):
 
     @tracks.setter
     def tracks(self, tracks: list[Track]):
-        """Set the tracks list."""
+        """Set the track list."""
         for track in tracks:
             if not isinstance(track, Track):
                 raise PyAnsysSoundException("Each item in the track list must be of type `Track`.")
@@ -150,9 +150,9 @@ class SoundComposer(SoundComposerParent):
     #     self.__operator_save.run()
 
     def process(self, sampling_frequency: float = 44100.0):
-        """Generate the resulting signal of the current Sound Composer project.
+        """Generate the signal of the current Sound Composer project.
 
-        This signal is a sum of all the tracks signals.
+        Generates the project's signal corresponding to the sum of all the track signals.
 
         Parameters
         ----------
@@ -216,7 +216,7 @@ class SoundComposer(SoundComposerParent):
         return np.array(output.data)
 
     def plot(self):
-        """Plot the generated signal of the Sound Composer project in a figure."""
+        """Plot the generated signal of the Sound Composer project."""
         if self._output is None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."

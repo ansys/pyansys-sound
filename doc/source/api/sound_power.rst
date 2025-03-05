@@ -1,8 +1,8 @@
 Sound power
 -----------
 
-This module provides useful functions to calculate the sound power level
-from time signals.
+This module provides functions to calculate the sound power level
+from time-domain signals.
 
 .. module:: ansys.sound.core.sound_power
 

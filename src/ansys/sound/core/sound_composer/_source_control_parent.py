@@ -29,16 +29,17 @@ from ._sound_composer_parent import SoundComposerParent
 class SpectrumSynthesisMethods(Enum):
     """Class (enum) providing the list of the available methods to generate a sound from a spectrum.
 
-    Note: The method names used here must all correspond to existing synthesis method identifiers
-    in the DPF Sound operators.
+    .. note::
+        The method names used here must all correspond to existing synthesis method identifiers in
+        the DPF Sound operators.
     """
 
     IFFT = 0
-    """IFFT: Sound generation method based on the Inverse Fast Fourier Transform of the input
+    """IFFT: sound generation method based on the Inverse Fast Fourier Transform of the input
     spectrum, using random phases."""
 
     Hybrid = 1
-    """Hybrid: sound generation method which combines pure tones generation and IFFT.
+    """Hybrid: sound generation method that combines generation of pure tones and IFFT.
     If peaks are detected in the input spectrum, they are generated as pure tones (sine waves).
     The rest is synthesized using the IFFT method."""
 

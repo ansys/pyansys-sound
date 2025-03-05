@@ -47,7 +47,7 @@ class Roughness(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Signal in Pa to compute roughness on as a DPF field.
+            Signal in Pa on which to compute roughness.
         """
         super().__init__()
         self.signal = signal
@@ -69,7 +69,7 @@ class Roughness(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Input sound signal in Pa as a DPF field."""
+        """Input signal in Pa."""
         return self.__signal
 
     @signal.setter
@@ -225,8 +225,7 @@ class Roughness(PsychoacousticsParent):
     def plot(self):
         """Plot the specific roughness and the roughness over time.
 
-        This method displays in a new figure the specific roughness and the roughness
-        over time.
+        This method displays the specific roughness and the roughness over time.
         """
         if self._output == None:
             raise PyAnsysSoundException(

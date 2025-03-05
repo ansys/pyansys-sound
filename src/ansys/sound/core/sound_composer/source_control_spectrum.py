@@ -28,18 +28,16 @@ from ._source_control_parent import SourceControlParent, SpectrumSynthesisMethod
 class SourceControlSpectrum(SourceControlParent):
     """Sound Composer's spectrum source's control class.
 
-    This class stores the control parameters used by the Sound Composer for
-    generating the sound from a spectrum source.
+    This class stores the source control (that is the sound duration and the sound generation
+    method) used by the Sound Composer for generating the sound from a spectrum source.
 
-    It contains the duration in seconds of the sound to generate,
-    and the method to use for the sound generation.
+    Two sound generation methods are offered:
 
-    Two sound generation methods are proposed:
-    - IFFT: Sound generation method based on the Inverse Fast Fourier Transform of the input
-    spectrum, using random phases.
-    - Hybrid: sound generation method which combines pure tones generation and IFFT.
-    If peaks are detected in the input spectrum, they are generated as pure tones (sine waves).
-    The rest is synthesized using the IFFT method.
+    -   IFFT: sound generation method based on the Inverse Fast Fourier Transform of the input
+        spectrum, using random phases.
+    -   Hybrid: sound generation method that combines generation of pure tones and IFFT. If peaks
+        are detected in the input spectrum, they are generated as pure tones (sine waves). The rest
+        is synthesized using the IFFT method.
     """
 
     def __init__(self, duration: float = 0.0, method: int = 0):
@@ -50,7 +48,7 @@ class SourceControlSpectrum(SourceControlParent):
         duration : float, default: 0.0
             Duration of the sound generated from the spectrum source, in seconds.
         method : int, default: 0
-            Method to use for the sound generation: 0 for IFFT, 1 for Hybrid.
+            Method to use for the sound generation: `0` for IFFT, `1` for Hybrid.
         """
         super().__init__()
         self.duration = duration
@@ -74,7 +72,7 @@ class SourceControlSpectrum(SourceControlParent):
 
     @property
     def method(self) -> int:
-        """Method to use for the sound generation: 0 for IFFT, 1 for Hybrid."""
+        """Method to use for the sound generation: `0` for IFFT, `1` for Hybrid."""
         return self.__method
 
     @method.setter

@@ -34,8 +34,7 @@ class SpectralCentroid(PsychoacousticsParent):
     """Computes the spectral centroid of a signal.
 
     The spectral centroid is the center of gravity of the spectrum. It is a measure of the
-    distribution of the spectral energy of a signal. It is calculated as the weighted mean of the
-    frequencies present in the signal, where the weights are the magnitudes of the frequencies.
+    distribution of the spectral energy of a signal.
     """
 
     def __init__(self, signal: Field = None):
@@ -44,7 +43,7 @@ class SpectralCentroid(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Signal on which to compute spectral centroid as a DPF field.
+            Signal on which to compute spectral centroid.
         """
         super().__init__()
         self.signal = signal
@@ -52,7 +51,7 @@ class SpectralCentroid(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Input sound signal as a DPF field."""
+        """Input signal."""
         return self.__signal
 
     @signal.setter
@@ -98,7 +97,7 @@ class SpectralCentroid(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.ndarray:
+        numpy.ndarray
             Singleton array containing the spectral centroid in Hz.
         """
         output = self.get_output()

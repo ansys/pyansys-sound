@@ -1,12 +1,13 @@
 Xtract
 ------
 
-Xtract is a module designed for denoising and component extraction from time signals.
+Xtract is a module designed for denoising and extracting components from time-domain signals.
 
-The module, based on three extraction algorithms, lets you split a time signal into four components:
-noise, tonals, transients, and remaining part.
+The module, based on 3 extraction algorithms, lets you split a time-domain signal into 4 components:
+noise, tones, transients, and the remaining part (that is, everything that is not detected as
+either of the other 3 components).
 
-The algorithm parameters may be set automatically or manually.
+The algorithm parameters can be set automatically or manually.
 
 .. module:: ansys.sound.core.xtract
 

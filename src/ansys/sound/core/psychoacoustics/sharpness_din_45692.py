@@ -37,8 +37,8 @@ class SharpnessDIN45692(PsychoacousticsParent):
     """Computes the sharpness of a signal according to the DIN 45692 standard.
 
     .. note::
-        The calculation of this indicator involves the loudness model for stationary sounds
-        according to ISO 532-1. It is the loudness model implemented in class
+        The calculation of this indicator is based on the loudness model for stationary sounds
+        defined in the standard ISO 532-1. It is the loudness model of the class
         :class:`LoudnessISO532_1_Stationary`.
     """
 
@@ -48,7 +48,7 @@ class SharpnessDIN45692(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Signal in Pa on which to compute sharpness over time as a DPF field.
+            Signal in Pa on which to compute sharpness.
         field_type : str, default: "Free"
             Sound field type. Available options are `"Free"` and `"Diffuse"`.
         """
@@ -73,7 +73,7 @@ class SharpnessDIN45692(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Input sound signal in Pa as a DPF field."""
+        """Input signal in Pa."""
         return self.__signal
 
     @signal.setter
@@ -118,7 +118,7 @@ class SharpnessDIN45692(PsychoacousticsParent):
         # Runs the operator
         self.__operator.run()
 
-        # We skip pin 1 & 2, as they relate to sharpness over time. See class
+        # We skip pins 1 & 2, as they relate to sharpness over time. See class
         # `SharpnessDIN45692OverTime`.
         self._output = self.__operator.get_output(0, types.double)
 

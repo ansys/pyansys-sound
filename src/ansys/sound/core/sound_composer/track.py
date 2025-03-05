@@ -67,8 +67,8 @@ class Track(SoundComposerParent):
     This class creates a track for the Sound Composer. A track is made of a source (including its
     source control) and an optional filter (which models the transfer from source to receiver).
 
-    A track allows the generation of the sound corresponding to the source,
-    optionally filtered with the associated filter.
+    A track allows the generation of the sound corresponding to the source, optionally filtered
+    with the associated filter.
     """
 
     def __init__(
@@ -85,7 +85,7 @@ class Track(SoundComposerParent):
         name : str, default: ""
             Name of the track.
         gain : float, default: 0.0
-            Gain applied to the track's sound, in dB.
+            Gain to apply to the track's generated sound, in dB.
         source : SourceSpectrum, SourceBroadbandNoise, SourceBroadbandNoiseTwoParameters, \
             SourceHarmonics, SourceHarmonicsTwoParameters or SourceAudio, default: None
             Source of the track.
@@ -170,8 +170,7 @@ class Track(SoundComposerParent):
         """Set the track data from a generic data container.
 
         This method is meant to set the track data from a generic data container obtained when
-        loading a Sound Composer project file (.scn) with the function
-        SoundComposer.load().
+        loading a Sound Composer project file (.scn) with the method :meth:`SoundComposer.load()`.
 
         Parameters
         ----------
@@ -202,8 +201,8 @@ class Track(SoundComposerParent):
     # def get_as_generic_data_containers(self) -> GenericDataContainer:
     #     """Get the track data as a generic data container.
 
-    #     This method is meant to return the track data as a generic data container needed to save a
-    #     Sound Composer project file (.scn).
+    #     This method is meant to return the track data as a generic data container, in the format
+    #     needed to save a Sound Composer project file (.scn).
 
     #     Returns
     #     -------
@@ -280,7 +279,7 @@ class Track(SoundComposerParent):
         self._output = signal
 
     def get_output(self) -> Field:
-        """Get the generated signal of the track, as a DPF field.
+        """Get the generated signal of the track as a DPF field.
 
         Returns
         -------
@@ -311,7 +310,7 @@ class Track(SoundComposerParent):
         return np.array(output.data)
 
     def plot(self):
-        """Plot the resulting signal in a figure."""
+        """Plot the resulting signal."""
         if self._output == None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the {__class__.__name__}.process() method."

@@ -36,7 +36,7 @@ ID_COMPUTE_LOUDNESS_ANSI_S3_4 = "compute_loudness_ansi_s3_4"
 class LoudnessANSI_S3_4(PsychoacousticsParent):
     """Computes ANSI S3.4-2007 loudness.
 
-    This class computes the loudness of a signal following the ANSI S3.4-2007 standard.
+    This class computes the loudness of a signal according to the ANSI S3.4-2007 standard.
     """
 
     def __init__(self, signal: Field = None, field_type: str = FIELD_FREE):
@@ -45,7 +45,7 @@ class LoudnessANSI_S3_4(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Input signal in Pa as a DPF field.
+            Input signal in Pa.
         field_type : str, default: "Free"
             Sound field type. Available options are `"Free"` and `"Diffuse"`.
         """
@@ -74,7 +74,7 @@ class LoudnessANSI_S3_4(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Input sound signal in Pa as a DPF field."""
+        """Input signal in Pa."""
         return self.__signal
 
     @signal.setter
@@ -121,15 +121,15 @@ class LoudnessANSI_S3_4(PsychoacousticsParent):
             self.__operator.get_output(1, types.double),
         )
 
-    def get_output(self) -> tuple[float, float]:
+    def get_output(self) -> tuple[float]:
         """Get loudness data.
 
         Returns
         -------
-        tuple[float, float]
-            -   First element: loudness in sone.
+        tuple[float]
+            -   First element (float): loudness in sone.
 
-            -   Second element: loudness level in phon.
+            -   Second element (float): loudness level in phon.
         """
         if self._output == None:
             warnings.warn(

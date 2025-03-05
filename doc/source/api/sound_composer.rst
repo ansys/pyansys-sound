@@ -1,16 +1,17 @@
 Sound composer
 --------------
 
-Sound Composer is a module allowing you to generate complex sounds through mixing several tracks.
+Sound Composer is a module allowing you to generate complex sounds by mixing several tracks.
 
-Each track contains a source, which can be a sound coming from a recording, or the parameters to generate a sound
-(from a CAE simulation for example). A control profile is used to generate this sound, an RPM profile for example,
-to follow a realistic situation.
+Each track contains a source, which can be an audio recording, or a set of spectral data
+(from a CAE simulation for example), possibly associated to specific control values. The track also
+contains control profile(s), an RPM profile for example, that are used to generate the sound, to
+replicate a realistic situation.
 
-Each track contains an optional transfer function (filter) can be applied to each track to simulate the transfer
+Each track contains an optional transfer function (filter) to simulate the transfer
 between a source and a receiver.
 
-The Sound composer module allows you to create projects including several tracks, therefore it eases the process of
+The Sound composer module allows you to create projects including several tracks. Therefore it eases the process of
 mixing different source types: harmonics (1 or 2 control parameters), broadband noise (1 or 2 control parameters),
 audio, and spectrum.
 

@@ -105,7 +105,8 @@ class PyAnsysSound:
         -------
         numpy.ndarray
             DPF fields container in a NumPy array.
-            Data in each field of the field container is stacked vertically in the NumPy array.
+            Data in each field of the fields container is converted to a NumPy array and vertically
+            stacked into another NumPy array.
         """
         num_channels = len(fc)
         np_array = np.array(fc[0].data)

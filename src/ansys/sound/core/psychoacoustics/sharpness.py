@@ -34,7 +34,13 @@ ID_COMPUTE_SHARPNESS = "compute_sharpness"
 
 
 class Sharpness(PsychoacousticsParent):
-    """Computes the sharpness of a signal according to Zwicker & Fastl's model."""
+    """Computes the sharpness of a signal according to Zwicker & Fastl's model.
+
+    .. note::
+        The calculation of this indicator is based on the loudness model for stationary sounds
+        defined in the standard ISO 532-1. It is the loudness model of the class
+        :class:`LoudnessISO532_1_Stationary`.
+    """
 
     def __init__(self, signal: Field = None, field_type: str = FIELD_FREE):
         """Class instantiation takes the following parameters.
@@ -42,7 +48,7 @@ class Sharpness(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Signal in Pa on which to compute sharpness as a DPF field.
+            Signal in Pa on which to compute sharpness.
         field_type : str, default: "Free"
             Sound field type. Available options are `"Free"` and `"Diffuse"`.
         """
@@ -67,7 +73,7 @@ class Sharpness(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Input sound signal in Pa as a DPF field."""
+        """Input signal in Pa."""
         return self.__signal
 
     @signal.setter

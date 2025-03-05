@@ -52,13 +52,13 @@ LIST_SEGMENT_DETAILS_KEYS = [
 
 
 class TonalityISO1996_2_OverTime(PsychoacousticsParent):
-    """Computes the tonality over time according to the standard ISO 1996-2:2007, annex C.
+    """Computes the tonality according to the standard ISO 1996-2:2007, annex C, over time.
 
     .. note::
-        The standard ISO 1996-2:2007, annex C, does not include a method for calculating vs time.
+        The standard ISO 1996-2:2007, annex C, does not include a method for calculation over time.
         The computation of the present indicator is thus not entirely covered by the standard. The
         method used here splits the input signal into overlapping windows (segments), and then
-        computes the tonality, for each window, following the standard ISO 1996-2:2007, annex C.
+        computes the tonality, for each window, according to the standard ISO 1996-2:2007, annex C.
     """
 
     def __init__(
@@ -75,7 +75,7 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Input signal, as a DPF field.
+            Input signal.
         window_length : float, default: 1000.0
             Window length in ms.
         overlap : float, default: 75.0
@@ -131,7 +131,7 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Input signal, as a DPF field."""
+        """Input signal in Pa."""
         return self.__signal
 
     @signal.setter
@@ -241,14 +241,14 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         Returns
         -------
         tuple[Field, Field, Collection[GenericDataContainer]]
+            -   First element (Field): tonal audibility over time, in dB.
 
-            -   First element: tonal audibility over time, in dB.
+            -   Second element (Field): tonal adjustment over time, in dB.
 
-            -   Second element: tonal adjustment over time, in dB.
-
-            -   Third element: computation details, that is, the segment start and end
-                times, the main tone's critical band boundary frequencies, and the total tone and
-                noise levels in dBA, for each successive window (segment) in the input signal.
+            -   Third element (GenericDataContainerCollection): computation details, that is, the
+                segment start and end times, the main tone's critical band boundary frequencies,
+                and the total tone and noise levels in dBA, for each successive window (segment) in
+                the input signal.
         """
         if self._output == None:
             warnings.warn(
@@ -266,7 +266,6 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         Returns
         -------
         tuple[numpy.ndarray]
-
             -   First element: tonal audibility over time, in dB.
 
             -   Second element: tonal adjustment over time, in dB.

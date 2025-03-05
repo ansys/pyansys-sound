@@ -1,8 +1,8 @@
 Psychoacoustics
 ---------------
 
-This module provides functions to compute psychoacoustic metrics,
-useful to study and assess the sound quality from spectra or time signals.
+This module provides functions to compute psychoacoustic indicators,
+which are useful to study and assess sound quality.
 
 .. module:: ansys.sound.core.psychoacoustics
 

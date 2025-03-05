@@ -1,6 +1,6 @@
 Spectral processing
 -------------------
-This module provides useful functions to process signals in the frequency domain,
+This module provides functions to process signals in the frequency domain,
 such as the calculation of the Power Spectral Density (PSD).
 
 .. module:: ansys.sound.core.spectral_processing
