@@ -241,7 +241,7 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Array of the RPM values at the time steps of the TNR calculation.
+            Array of the RPM values at the time steps of the PR calculation.
         """
         return self.get_output_as_nparray()[2]
 
