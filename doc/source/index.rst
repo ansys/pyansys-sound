@@ -65,7 +65,7 @@ The following API reference pages describe some key features of PyAnsys Sound:
 * :doc:`api/signal_processing`: Tools to perform time-domain signal processing, such as filtering.
 * :doc:`api/spectral_processing`: Tools to perform frequency-domain signal processing, such as
   calculating a power spectral density (PSD).
-* :doc:`api/spectrogram_processing`: Spectrogram calculation and edition tools.
+* :doc:`api/spectrogram_processing`: Spectrogram calculation and editing tools.
 * :doc:`api/psychoacoustics`: Psychoacoustic indicators computation to measure perceived sound quality.
 * :doc:`api/xtract`: Separation of a signal into several components, such as tonal, transient, and noise parts.
 * :doc:`api/sound_composer`: Generation of sounds from sources defined in the time domain or the frequency domain.
