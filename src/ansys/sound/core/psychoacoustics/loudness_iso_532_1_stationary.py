@@ -37,7 +37,7 @@ ID_COMPUTE_LOUDNESS_ISO_STATIONARY = "compute_loudness_iso532_1"
 class LoudnessISO532_1_Stationary(PsychoacousticsParent):
     """Computes ISO 532-1 loudness for stationary sounds.
 
-    This class computes the loudness of a signal following the ISO 532-1 standard for stationary
+    This class computes the loudness of a signal according to the ISO 532-1 standard for stationary
     sounds.
     """
 
@@ -51,7 +51,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Signal in Pa on which to compute loudness, as a DPF field.
+            Signal in Pa on which to compute loudness.
         field_type : str, default: "Free"
             Sound field type. Available options are `"Free"` and `"Diffuse"`.
         """
@@ -62,7 +62,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Input sound signal in Pa as a DPF field."""
+        """Input signal in Pa."""
         return self.__signal
 
     @signal.setter
@@ -119,11 +119,12 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         Returns
         -------
         tuple
-            -   First element (float) is the loudness in sone.
+            -   First element (float): loudness in sone.
 
-            -   Second element (float) is the loudness level in phon.
+            -   Second element (float): loudness level in phon.
 
-            -   Third element (field) is the specific loudness in sone/Bark.
+            -   Third element (Field): specific loudness in sone/Bark, as a function of the Bark
+                band index.
         """
         if self._output == None:
             warnings.warn(
@@ -141,13 +142,13 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         Returns
         -------
         tuple[numpy.ndarray]
-            -   First element is the loudness in sone.
+            -   First element: loudness in sone.
 
-            -   Second element is the loudness level in phon.
+            -   Second element: loudness level in phon.
 
-            -   Third element is the specific loudness in sone/Bark.
+            -   Third element: specific loudness in sone/Bark, as a function of the Bark band index.
 
-            -   Fourth element is the Bark band indexes, in Bark.
+            -   Fourth element: Bark band indexes, in Bark.
         """
         output = self.get_output()
 
@@ -187,14 +188,15 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Specific loudness array in sone/Bark.
+            Specific loudness array in sone/Bark, as a function of the Bark band index.
         """
         return self.get_output_as_nparray()[2]
 
     def get_bark_band_indexes(self) -> np.ndarray:
         """Get Bark band indexes.
 
-        This method gets the Bark band indexes used for the loudness calculation as a NumPy array.
+        This method returns the Bark band indexes used for the loudness calculation as a NumPy
+        array.
 
         Returns
         -------
@@ -206,7 +208,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
     def get_bark_band_frequencies(self) -> np.ndarray:
         """Get Bark band frequencies.
 
-        This method gets the frequencies corresponding to Bark band indexes as a NumPy array.
+        This method returns the frequencies corresponding to the Bark band indexes as a NumPy array.
 
         Reference:
         Traunmüller, Hartmut. "Analytical Expressions for the Tonotopic Sensory Scale." Journal of
@@ -222,8 +224,8 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
     def plot(self):
         """Plot the specific loudness.
 
-        This method creates a figure window that displays the specific loudness in sone/Bark as a
-        function of the Bark band index.
+        This method displays the specific loudness in sone/Bark as a function of the Bark band
+        index.
         """
         if self._output == None:
             raise PyAnsysSoundException(

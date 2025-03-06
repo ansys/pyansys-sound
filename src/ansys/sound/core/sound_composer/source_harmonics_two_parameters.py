@@ -41,10 +41,16 @@ class SourceHarmonicsTwoParameters(SourceParent):
     """Sound Composer's harmonics source with two parameters class.
 
     This class creates a harmonics source with two parameters for the Sound Composer. A harmonics
-    source with two parameters is used to generate a sound signal from a given harmonics source
-    data and its two source controls. The harmonics source data consists of a series of orders
-    whose levels depend on the values of two parameters, the first of which is always RPM. The
-    source controls contain each a control parameter's values over time.
+    source with two parameters is used to generate a sound signal from harmonics source data and
+    two source controls.
+
+    The harmonics source data consists of a series of orders whose levels depend on the values of
+    two control parameters.
+
+    Each of the two source controls contains one control parameter's values over time.
+
+    .. note::
+        The first control parameter must correspond to RPM over time.
     """
 
     def __init__(
@@ -59,9 +65,10 @@ class SourceHarmonicsTwoParameters(SourceParent):
         ----------
         file : str, default: ""
             Path to the harmonics source with two parameters file. Supported files are text files
-            with the header `AnsysSound_Orders_MultipleParameters`.
+            with the header `AnsysSound_Orders_MultipleParameters` and should be created using
+            Ansys Sound SAS.
         source_control_rpm : SourceControlTime, default: None
-            First Source control, consisting of the RPM values over time, to use when generating
+            First source control, consisting of the RPM values over time, to use when generating
             the sound from this source.
         source_control2 : SourceControlTime, default: None
             Second source control, consisting of the control parameter values over time, to use
@@ -146,7 +153,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
 
     @property
     def source_control_rpm(self) -> SourceControlTime:
-        """First source control, that is, RPM, for harmonics source with two parameters.
+        """First source control (must be RPM) for the harmonics source with two parameters.
 
         Contains the RPM values over time.
         """
@@ -163,7 +170,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
 
     @property
     def source_control2(self) -> SourceControlTime:
-        """Second source control for harmonics source with two parameters.
+        """Second source control for the harmonics source with two parameters.
 
         Contains the second control parameter values over time.
         """
@@ -180,16 +187,17 @@ class SourceHarmonicsTwoParameters(SourceParent):
 
     @property
     def source_harmonics_two_parameters(self) -> FieldsContainer:
-        """Source data for harmonics source with two parameters.
+        """Source data for the harmonics source with two parameters.
 
         The harmonics source with two parameters data consists of a series of orders whose levels
-        depend on the values of two parameters, the first of which is always RPM.
+        depend on the values of two parameters, the first of which is always RPM. Levels must be
+        specified in unit^2 (for example Pa^2/Hz).
         """
         return self.__source_harmonics_two_parameters
 
     @source_harmonics_two_parameters.setter
     def source_harmonics_two_parameters(self, source: FieldsContainer):
-        """Set the harmonics source with two parameters data, from a DPF fields container."""
+        """Set the harmonics source with two parameters data."""
         if source is not None:
             if not isinstance(source, FieldsContainer):
                 raise PyAnsysSoundException(
@@ -265,8 +273,8 @@ class SourceHarmonicsTwoParameters(SourceParent):
         ----------
         file : str
             Path to the harmonics source with two parameters file. Supported files have the same
-            text format (with the `AnsysSound_Orders_MultipleParameters` header) as that which is
-            supported by Ansys Sound SAS.
+            text format (with the `AnsysSound_Orders_MultipleParameters` header) as supported by
+            Ansys Sound SAS.
         """
         # Set operator inputs.
         self.__operator_load.connect(0, file)
@@ -287,7 +295,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
         """Set the source and source control data from generic data containers.
 
         This method is meant to set the source data from generic data containers obtained when
-        loading a Sound Composer project file (.scn).
+        loading a Sound Composer project file (.scn) with the method :meth:`SoundComposer.load()`.
 
         Parameters
         ----------
@@ -307,8 +315,8 @@ class SourceHarmonicsTwoParameters(SourceParent):
     def get_as_generic_data_containers(self) -> tuple[GenericDataContainer]:
         """Get the source and source control data as generic data containers.
 
-        This method is meant to return the source data as generic data containers needed to save a
-        Sound Composer project file (.scn).
+        This method is meant to return the source data as generic data containers, in the format
+        needed to save a Sound Composer project file (.scn).
 
         Returns
         -------
@@ -415,7 +423,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
         return np.array(output.data if output is not None else [])
 
     def plot(self):
-        """Plot the resulting signal in a figure."""
+        """Plot the resulting signal."""
         if self._output == None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the '{__class__.__name__}.process()' method."
@@ -436,7 +444,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
         plt.show()
 
     def plot_control(self):
-        """Plot the source control(s) in a figure."""
+        """Plot the source controls."""
         if not self.is_source_control_valid():
             raise PyAnsysSoundException(
                 "At least one source control for harmonics source with two parameters is not set. "
@@ -481,17 +489,17 @@ class SourceHarmonicsTwoParameters(SourceParent):
         -------
         tuple[list[float], str, tuple[float], str, str, tuple[float]]
             Harmonics source with two parameters information, consisting of the following elements:
-                First element is the list of order values.
+                First element: list of order values.
 
-                Second element is the RPM control name.
+                Second element: name of the RPM control.
 
-                Third element is the RPM control min and max values.
+                Third element: min and max values of the RPM control.
 
-                Fourth element is the second control parameter name.
+                Fourth element: name of the second control parameter.
 
-                Fifth element is the second control parameter unit.
+                Fifth element: unit of the second control parameter.
 
-                Sixth element is the second control parameter min and max values.
+                Sixth element: min and max values of the second control parameter.
         """
         if self.source_harmonics_two_parameters is None:
             return ([], "", (), "", "", ())

@@ -37,8 +37,8 @@ ID_COMPUTE_LOUDNESS_ISO_TIME_VARYING = "compute_loudness_iso532_1_vs_time"
 class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
     """Computes ISO 532-1 loudness for time-varying sounds.
 
-    This class computes the loudness of a signal following the ISO 532-1 standard for time-varying
-    sounds.
+    This class computes the loudness of a signal according to the ISO 532-1 standard for
+    time-varying sounds.
     """
 
     def __init__(
@@ -51,7 +51,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Signal in Pa on which to compute time-varying ISO532-1 loudness, as a DPF field.
+            Signal in Pa on which to compute time-varying ISO532-1 loudness.
         field_type : str, default: "Free"
             Sound field type. Available options are `"Free"` and `"Diffuse"`.
         """
@@ -62,7 +62,7 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Input sound signal in Pa as a DPF field or fields container."""
+        """Input signal in Pa."""
         return self.__signal
 
     @signal.setter
@@ -123,21 +123,21 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         Returns
         -------
         tuple
-            -   First element (field) is the instantaneous loudness in sone.
+            -   First element (Field): instantaneous loudness in sone.
 
-            -   Second element (float) is the N5 indicator in sone. N5 is the loudness that is
-                exceeded during a cumulated 5 % of the signal duration.
+            -   Second element (float): N5 indicator in sone. N5 is the loudness that is exceeded
+                during a cumulated 5 % of the signal duration.
 
-            -   Third element (float) is the N10 indicator in sone. N10 is the loudness that is
+            -   Third element (float): the N10 indicator in sone. N10 is the loudness that is
                 exceeded during a cumulated 10 % of the signal duration.
 
-            -   Fourth element (field) is the instantaneous loudness level in phon.
+            -   Fourth element (Field): instantaneous loudness level in phon.
 
-            -   Fifth element (float) is the L5 indicator in phon. L5 is the loudness level that
-                is exceeded during a cumulated 5 % of the signal duration.
+            -   Fifth element (float): L5 indicator in phon. L5 is the loudness level that is
+                exceeded during a cumulated 5 % of the signal duration.
 
-            -   Sixth element (float) is the L10 indicator in phon. L10 is the loudness level that
-                is exceeded during a cumulated 10 % of the signal duration.
+            -   Sixth element (float): L10 indicator in phon. L10 is the loudness level that is
+                exceeded during a cumulated 10 % of the signal duration.
         """
         if self._output == None:
             warnings.warn(
@@ -155,24 +155,24 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         Returns
         -------
         tuple[numpy.ndarray]
-            -   First element is the instantaneous loudness in sone.
+            -   First element: instantaneous loudness in sone.
 
-            -   Second element is the N5 percentile loudness in sone. N5 is the loudness that is
-                exceeded during a cumulated 5 % of the signal duration.
+            -   Second element: N5 percentile loudness in sone. N5 is the loudness that is exceeded
+                during a cumulated 5 % of the signal duration.
 
-            -   Third element is the N10 percentile loudness in sone. N10 is the loudness that is
+            -   Third element: N10 percentile loudness in sone. N10 is the loudness that is
                 exceeded during a cumulated 10 % of the signal duration.
 
-            -   Fourth element is the instantaneous loudness level in phon.
+            -   Fourth element: instantaneous loudness level in phon.
 
-            -   Fifth element is the L5 percentile loudness level in phon. L5 is the loudness level
-                that is exceeded during a cumulated 5 % of the signal duration.
+            -   Fifth element: L5 percentile loudness level in phon. L5 is the loudness level that
+                is exceeded during a cumulated 5 % of the signal duration.
 
-            -   Sixth element is the L10 percentile loudness level in phon. L10 is the loudness
-                level that is exceeded during a cumulated 10 % of the signal duration.
+            -   Sixth element: L10 percentile loudness level in phon. L10 is the loudness level
+                that is exceeded during a cumulated 10 % of the signal duration.
 
-            -   Seventh element is the time scale of the instantaneous loudness and loudness level,
-                in seconds.
+            -   Seventh element: time vector of the instantaneous loudness and loudness level, in
+                seconds.
         """
         output = self.get_output()
 
@@ -263,15 +263,15 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Time scale of the instantaneous loudness and loudness level, in seconds.
+            Array of the time steps of the instantaneous loudness and loudness level, in seconds.
         """
         return self.get_output_as_nparray()[6]
 
     def plot(self):
         """Plot the instantaneous loudness, in sone, and loudness level, in phon.
 
-        This method creates a figure window that displays the instantaneous loudness (N), in sone,
-        and instantaneous loudness level (L_N), in phon.
+        This method displays the instantaneous loudness (N), in sone, and instantaneous loudness
+        level (L_N), in phon.
         """
         if self.get_output() == None:
             raise PyAnsysSoundException(
