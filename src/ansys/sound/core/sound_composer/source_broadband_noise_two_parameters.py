@@ -39,10 +39,13 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
     """Sound Composer's broadband noise source with two parameters class.
 
     This class creates a broadband noise source with two parameters for the Sound Composer. A
-    broadband noise source with two parameters is used to generate a sound signal from a given
-    broadband noise and its two source controls. The broadband noise consists of a series of noise
-    spectra, each corresponding to a pair of control parameter values. The source controls contain
-    each a control parameter's values over time.
+    broadband noise source with two parameters is used to generate a sound signal from broadband
+    noise source data and two source controls.
+
+    The broadband noise source data consists of a series of noise spectra, each corresponding to a
+    pair of control parameter values.
+
+    Each of the two source controls contains one control parameter's values over time.
     """
 
     def __init__(
@@ -57,9 +60,10 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         ----------
         file : str, default: ""
             Path to the broadband noise with two parameters file. Supported files are text files
-            with the header `AnsysSound_BBN_MultipleParameters`.
+            with the header `AnsysSound_BBN_MultipleParameters` and should be created using
+            Ansys Sound SAS.
         source_control1 : SourceControlTime, default: None
-            First Source control, consisting of the control parameter values over time, to use when
+            First source control, consisting of the control parameter values over time, to use when
             generating the sound from this source.
         source_control2 : SourceControlTime, default: None
             Second source control, consisting of the control parameter values over time, to use
@@ -145,7 +149,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
 
     @property
     def source_control1(self) -> SourceControlTime:
-        """First source control for broadband noise source with two parameters.
+        """First source control for the broadband noise source with two parameters.
 
         Contains the first control parameter values over time.
         """
@@ -162,7 +166,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
 
     @property
     def source_control2(self) -> SourceControlTime:
-        """Second source control for broadband noise source with two parameters.
+        """Second source control for the broadband noise source with two parameters.
 
         Contains the second control parameter values over time.
         """
@@ -179,17 +183,26 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
 
     @property
     def source_bbn_two_parameters(self) -> FieldsContainer:
-        """Source data for broadband noise source with two parameters.
+        """Source data for the broadband noise source with two parameters.
 
         The broadband noise source with two parameters data consists of a series of spectra, each
-        corresponding to a pair of control parameter values. Spectra can be narrowband (in dB or
-        dB/Hz), octave-band levels, or 1/3-octave-band levels.
+        corresponding to a pair of control parameter values.
+
+        Each field contains the level over frequency of the noise at a given pair of values of the
+        two control parameters. Level over frequency may be specified as a power spectral density
+        (PSD) in Pa^2/Hz, as octave-band levels in Pa^2, or as 1/3-octave-band levels in Pa^2. The
+        unit must be indicated in each field's unit. The type of data ('Narrow band', 'Octave', or
+        'Third octave') must be indicated in the field's FieldDefinition attribute, as a
+        quantity type.
+
+        The two control parameters' values corresponding to spectra must be stored in the fields
+        container's supports named "control_parameter_1", "control_parameter_2", respectively.
         """
         return self.__source_bbn_two_parameters
 
     @source_bbn_two_parameters.setter
     def source_bbn_two_parameters(self, source: FieldsContainer):
-        """Set the broadband noise source with two parameters data, from a DPF fields container."""
+        """Set the broadband noise source with two parameters data."""
         if source is not None:
             if not isinstance(source, FieldsContainer):
                 raise PyAnsysSoundException(
@@ -229,7 +242,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
     def is_source_control_valid(self) -> bool:
         """Source control verification function.
 
-        Checks if both source controls are set.
+        Checks if the two source controls are set.
 
         Returns
         -------
@@ -250,8 +263,8 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         ----------
         file : str
             Path to the broadband noise source with two parameters file. Supported files have the
-            same text format (with the `AnsysSound_BBN_MultipleParameters` header) as that which is
-            supported by Ansys Sound SAS.
+            same text format (with the `AnsysSound_BBN_MultipleParameters` header) as supported by
+            Ansys Sound SAS.
         """
         # Set operator inputs.
         self.__operator_load.connect(0, file)
@@ -270,7 +283,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         """Set the source and source control data from generic data containers.
 
         This method is meant to set the source data from generic data containers obtained when
-        loading a Sound Composer project file (.scn).
+        loading a Sound Composer project file (.scn) with the method :meth:`SoundComposer.load()`.
 
         Parameters
         ----------
@@ -290,8 +303,8 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
     def get_as_generic_data_containers(self) -> tuple[GenericDataContainer]:
         """Get the source and source control data as generic data containers.
 
-        This method is meant to return the source data as generic data containers needed to save a
-        Sound Composer project file (.scn).
+        This method is meant to return the source data as generic data containers, in the format
+        needed to save a Sound Composer project file (.scn).
 
         Returns
         -------
@@ -398,7 +411,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         return np.array(output.data if output is not None else [])
 
     def plot(self):
-        """Plot the resulting signal in a figure."""
+        """Plot the resulting signal."""
         if self._output == None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the '{__class__.__name__}.process()' method."
@@ -419,7 +432,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         plt.show()
 
     def plot_control(self):
-        """Plot the source control(s) in a figure."""
+        """Plot the source controls."""
         if not self.is_source_control_valid():
             raise PyAnsysSoundException(
                 "At least one source control for broadband noise source with two parameters is "
@@ -465,22 +478,23 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         tuple[str, float, str, str, tuple[float], str, str, tuple[float]]
             Broadband noise source with two parameters information, consisting of the following
             elements:
-                -   First element is the spectrum type ('Narrow band', 'Octave', or 'Third octave').
+                -   First element: spectrum type ('Narrow band', 'Octave', or 'Third octave').
 
-                -   Second element is the spectrum frequency resolution in Hz (only if spectrum
-                    type is 'Narrow band', 0.0 otherwise).
+                -   Second element: spectrum frequency resolution in Hz (only if spectrum type is
+                    'Narrow band', 0.0 otherwise).
 
-                -   Third element is the first control parameter name.
+                -   Third element: name of the first control parameter.
 
-                -   Sixth element is the first control parameter unit.
+                -   Fourth element: unit of the first control parameter.
 
-                -   Seventh element is the first control parameter min and max values in a tuple.
+                -   Fifth element: min and max values of the first control parameter, in a tuple.
 
-                -   Eighth element is the second control parameter name.
+                -   Sixth element: name of the second control parameter.
 
-                -   Ninth element is the second control parameter unit.
+                -   Seventh element: unit of the second control parameter.
 
-                -   Tenth element is the second control parameter min and max values in a tuple.
+                -   Eighth element: min and max values of the second control parameter.
+
 
         """
         if self.source_bbn_two_parameters is None:

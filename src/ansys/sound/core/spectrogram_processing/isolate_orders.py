@@ -53,9 +53,9 @@ class IsolateOrders(SpectrogramProcessingParent):
         Parameters
         ----------
         signal : FieldsContainer | Field, default: None
-            One or more input signals to isolate orders on as a DPF fields container or field.
+            One or more input signals on which to isolate orders.
         rpm_profile : Field, default: None
-            RPM signal associated with the time signals as a DPF field.
+            RPM signal associated with the time-domain signals.
             It is assumed that the signal's unit is ``rpm``. If this is not the case,
             inaccurate behavior might occur during the conversion from RPM to frequency.
         orders : list, default: None
@@ -84,7 +84,7 @@ class IsolateOrders(SpectrogramProcessingParent):
 
     @property
     def signal(self) -> Field | FieldsContainer:
-        """Input signal as a DPF field or fields container."""
+        """Input signal."""
         return self.__signal
 
     @signal.setter
@@ -94,7 +94,7 @@ class IsolateOrders(SpectrogramProcessingParent):
 
     @property
     def rpm_profile(self) -> Field:
-        """RPM profile as a DPF field."""
+        """RPM profile."""
         return self.__rpm_profile
 
     @rpm_profile.setter

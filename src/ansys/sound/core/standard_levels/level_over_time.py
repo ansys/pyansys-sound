@@ -115,7 +115,7 @@ class LevelOverTime(StandardLevelsParent):
 
     @property
     def signal(self) -> Field:
-        """Signal input as a :class:`Field <ansys.dpf.core.field.Field>`."""
+        """Input signal."""
         return self.__signal
 
     @signal.setter
@@ -263,9 +263,9 @@ class LevelOverTime(StandardLevelsParent):
         Returns
         -------
         tuple
-            First element (:class:`float`) is the maximum level.
+            First element (:class:`float`): maximum level.
 
-            Second element (:class:`Field <ansys.dpf.core.field.Field>`) is the level over time.
+            Second element (:class:`Field <ansys.dpf.core.field.Field>`): level over time.
         """
         if self._output is None:
             warnings.warn(
@@ -283,11 +283,11 @@ class LevelOverTime(StandardLevelsParent):
         Returns
         -------
         numpy.ndarray
-            First element is the maximum level.
+            First element: maximum level.
 
-            Second element is the level over time.
+            Second element: level over time.
 
-            Third element is the time scale in s.
+            Third element: time scale in s.
         """
         output = self.get_output()
 

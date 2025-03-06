@@ -55,10 +55,10 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
     """Computes the tonality according to the standard ISO 1996-2:2007, annex C, over time.
 
     .. note::
-        The standard ISO 1996-2:2007, annex C, does not include a method for non-stationary sounds.
+        The standard ISO 1996-2:2007, annex C, does not include a method for calculation over time.
         The computation of the present indicator is thus not entirely covered by the standard. The
         method used here splits the input signal into overlapping windows (segments), and then
-        computes the tonality, for each segment, following the standard.
+        computes the tonality, for each window, according to the standard ISO 1996-2:2007, annex C.
     """
 
     def __init__(
@@ -75,9 +75,9 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Input signal, as a DPF field.
+            Input signal.
         window_length : float, default: 1000.0
-            Integration window length in ms.
+            Window length in ms.
         overlap : float, default: 75.0
             Overlap between successive windows in %.
         noise_pause_threshold : float, default: 1.0
@@ -131,7 +131,7 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Input signal, as a DPF field."""
+        """Input signal in Pa."""
         return self.__signal
 
     @signal.setter
@@ -148,7 +148,7 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
 
     @window_length.setter
     def window_length(self, window_length: int | float):
-        """Set the integration window length."""
+        """Set the window length, in ms."""
         if window_length <= 0.0:
             raise PyAnsysSoundException("Integration window length must be greater than 0 ms.")
         self.__window_length = window_length
@@ -160,7 +160,7 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
 
     @overlap.setter
     def overlap(self, overlap: int | float):
-        """Set the overlap."""
+        """Set the overlap, in %."""
         if overlap < 0.0 or overlap >= 100.0:
             raise PyAnsysSoundException(
                 "Overlap must be greater than or equal to 0 %, and strictly smaller than 100 %."
@@ -188,7 +188,7 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
 
     @effective_analysis_bandwidth.setter
     def effective_analysis_bandwidth(self, effective_analysis_bandwidth: int | float):
-        """Set the effective analysis bandwidth."""
+        """Set the effective analysis bandwidth, in Hz."""
         if effective_analysis_bandwidth <= 0.0:
             raise PyAnsysSoundException("Effective analysis bandwidth must be greater than 0 Hz.")
         self.__effective_analysis_bandwidth = effective_analysis_bandwidth
@@ -212,7 +212,7 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         self.__noise_bandwidth_ratio = ratio
 
     def process(self):
-        """Compute the tonal audibility and adjustment according to ISO1996-2 annex C."""
+        """Compute the tonal audibility and tonal adjustment according to ISO1996-2 annex C."""
         if self.signal is None:
             raise PyAnsysSoundException(
                 f"No input signal is set. Use ``{__class__.__name__}.signal``."
@@ -241,14 +241,14 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         Returns
         -------
         tuple[Field, Field, Collection[GenericDataContainer]]
+            -   First element (Field): tonal audibility over time, in dB.
 
-            -   First element is the tonal audibility over time, in dB.
+            -   Second element (Field): tonal adjustment over time, in dB.
 
-            -   Second element is the tonal adjustment over time, in dB.
-
-            -   Third element contains the computation details, that is, the segment start and end
-                times, the main tone's critical band boundary frequencies, and the total tone and
-                noise levels in dBA, for each successive window (segment) in the input signal.
+            -   Third element (GenericDataContainerCollection): computation details, that is, the
+                segment start and end times, the main tone's critical band boundary frequencies,
+                and the total tone and noise levels in dBA, for each successive window (segment) in
+                the input signal.
         """
         if self._output == None:
             warnings.warn(
@@ -266,12 +266,11 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         Returns
         -------
         tuple[numpy.ndarray]
+            -   First element: tonal audibility over time, in dB.
 
-            -   First element is the tonal audibility over time, in dB.
+            -   Second element: tonal adjustment over time, in dB.
 
-            -   Second element is the tonal adjustment over time, in dB.
-
-            -   Third element is the time scale in s.
+            -   Third element: time scale in s.
         """
         output = self.get_output()
 

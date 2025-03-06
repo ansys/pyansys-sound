@@ -50,7 +50,7 @@ class Istft(SpectrogramProcessingParent):
 
     @property
     def stft(self) -> FieldsContainer:
-        """Input short-time Fourier transform as a DPF fields container.
+        """Input short-time Fourier transform.
 
         STFT format is the same as that which is produced by the ``Stft`` class.
         """

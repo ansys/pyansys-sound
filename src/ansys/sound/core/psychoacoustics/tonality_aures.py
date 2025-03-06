@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Computes the tonality of the signal accordingt to Aures model."""
+"""Computes the tonality of the signal according to Aures model."""
 import warnings
 
 from ansys.dpf.core import Field, Operator, types
@@ -58,14 +58,16 @@ class TonalityAures(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Signal on which to compute Aures tonality, as a DPF field.
+            Signal in Pa on which to compute Aures tonality.
         overlap : float, default: 90.0
-            Overlap in %.
+            Overlap in % between two successive windows.
         account_for_w1 : bool, default: False
             Specifies whether bandwidth weighting w1 should be taken into account or not.
         w1_threshold : float, default: 3.0
             Threshold for bandwidth weighting. Ignored when :attr:`account_for_w1` is set to
             `False`.
+
+        For more information about the parameters, please refer to Ansys Sound SAS' user guide.
         """
         super().__init__()
         self.signal = signal
@@ -97,7 +99,7 @@ class TonalityAures(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Input sound signal as a DPF field."""
+        """Input signal in Pa."""
         return self.__signal
 
     @signal.setter
@@ -109,12 +111,12 @@ class TonalityAures(PsychoacousticsParent):
 
     @property
     def overlap(self) -> float:
-        """Overlap in %."""
+        """Overlap in % between two successive windows."""
         return self.__overlap
 
     @overlap.setter
     def overlap(self, overlap: float):
-        """Set the overlap."""
+        """Set the overlap between two successive windows."""
         if overlap < 0.0 or overlap >= 100.0:
             raise PyAnsysSoundException(
                 "Overlap must be greater than or equal to 0 %, and strictly smaller than 100 %."
@@ -185,15 +187,15 @@ class TonalityAures(PsychoacousticsParent):
         Returns
         -------
         tuple[float,Field,Field,Field]
-            First element is the overall tonality value, in tu (tonality unit).
+            -   First element (float): overall tonality value, in tu (tonality unit).
 
-            Second element is the tonality over time, in tu.
+            -   Second element (Field): tonality over time, in tu.
 
-            Third element is the computed tonal component weighting wT over time (between 0.0 and
-            1.0, no unit).
+            -   Third element (Field): tonal component weighting wT over time (between 0.0 and
+                1.0, no unit).
 
-            Fourth element is the computed relative loudness weighting wGr over time (between 0.0
-            and 1.0, no unit).
+            -   Fourth element (Field): relative loudness weighting wGr over time (between 0.0
+                and 1.0, no unit).
         """
         if self._output == None:
             warnings.warn(
@@ -211,17 +213,17 @@ class TonalityAures(PsychoacousticsParent):
         Returns
         -------
         tuple[numpy.ndarray]:
-            First element is the overall tonality value, in tu (tonality unit).
+            -   First element: overall tonality value, in tu (tonality unit).
 
-            Second element is the tonality over time, in tu.
+            -   Second element: tonality over time, in tu.
 
-            Third element is the computed tonal component weighting wT over time (between 0.0 and
-            1.0, no unit).
+            -   Third element: tonal component weighting wT over time (between 0.0 and
+                1.0, no unit).
 
-            Fourth element is the computed relative loudness weighting wGr over time (between 0.0
-            and 1.0, no unit).
+            -   Fourth element: relative loudness weighting wGr over time (between 0.0
+                and 1.0, no unit).
 
-            Fifth element is the computation time scale, in s.
+            -   Fifth element: time scale, in s.
         """
         output = self.get_output()
 
@@ -287,7 +289,7 @@ class TonalityAures(PsychoacousticsParent):
         return self.get_output_as_nparray()[3]
 
     def get_time_scale(self) -> np.ndarray:
-        """Get the computation time scale.
+        """Get the time scale.
 
         Returns
         -------

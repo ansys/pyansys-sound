@@ -38,8 +38,11 @@ class SharpnessDIN45692OverTime(PsychoacousticsParent):
     """Computes the sharpness of a signal according to the DIN 45692 standard, over time.
 
     .. note::
-        The calculation of this indicator uses the loudness model for time-varying sounds in the
-        standard ISO 532-1. It is the same loudness model as that which is used in class
+        The standard DIN 45692 does not include a method for calculation over time. The computation
+        of the present indicator is thus not entirely covered by the standard. The method used here
+        applies the sharpness calculation described in the standard DIN45692, using, at each time
+        step, the specific loudness calculated according the loudness model for time-varying sounds
+        in the standard ISO 532-1. It is the loudness model of the class
         :class:`LoudnessISO532_1_TimeVarying`.
     """
 
@@ -49,7 +52,7 @@ class SharpnessDIN45692OverTime(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Signal in Pa on which to compute sharpness over time as a DPF field.
+            Signal in Pa on which to compute sharpness over time.
         field_type : str, default: "Free"
             Sound field type. Available options are `"Free"` and `"Diffuse"`.
         """
@@ -74,7 +77,7 @@ class SharpnessDIN45692OverTime(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Input sound signal in Pa as a DPF field."""
+        """Input signal in Pa."""
         return self.__signal
 
     @signal.setter
@@ -126,14 +129,14 @@ class SharpnessDIN45692OverTime(PsychoacousticsParent):
         )
 
     def get_output(self) -> tuple:
-        """Get the DIN 45692 sharpness over time data in a tuple.
+        """Get the DIN 45692 sharpness over time data, as a tuple.
 
         Returns
         -------
         tuple
-            -   First element (Field) is the maximum sharpness over time, in acum.
+            -   First element (Field): maximum sharpness over time, in acum.
 
-            -   Second element (float) is the sharpness over time, in acum.
+            -   Second element (float): sharpness over time, in acum.
         """
         if self._output == None:
             warnings.warn(
@@ -145,16 +148,16 @@ class SharpnessDIN45692OverTime(PsychoacousticsParent):
         return self._output
 
     def get_output_as_nparray(self) -> tuple[np.ndarray]:
-        """Get the DIN 45692 sharpness over time data in a tuple of NumPy arrays.
+        """Get the DIN 45692 sharpness over time data, as a tuple of NumPy arrays.
 
         Returns
         -------
         tuple[numpy.ndarray]
-            -   First element is the maximum sharpness over time, in acum.
+            -   First element: maximum sharpness over time, in acum.
 
-            -   Second element is the sharpness over time, in acum.
+            -   Second element: sharpness over time, in acum.
 
-            -   Third element is the time scale, in s.
+            -   Third element: time scale, in s.
         """
         output = self.get_output()
 
@@ -168,12 +171,12 @@ class SharpnessDIN45692OverTime(PsychoacousticsParent):
         )
 
     def get_max_sharpness(self) -> float:
-        """Get the maximum DIN 45692 sharpness over time.
+        """Get the maximum value of the DIN 45692 sharpness over time.
 
         Returns
         -------
         float
-            Maximum sharpness over time, in acum.
+            Maximum value of the sharpness over time, in acum.
         """
         return float(self.get_output_as_nparray()[0])
 

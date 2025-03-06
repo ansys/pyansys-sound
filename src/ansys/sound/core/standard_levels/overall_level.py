@@ -85,7 +85,7 @@ class OverallLevel(StandardLevelsParent):
 
     @property
     def signal(self) -> Field:
-        """Signal input as a :class:`Field <ansys.dpf.core.field.Field>`."""
+        """Input signal."""
         return self.__signal
 
     @signal.setter

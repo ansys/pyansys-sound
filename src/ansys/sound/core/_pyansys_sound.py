@@ -77,7 +77,7 @@ class PyAnsysSound:
         warnings.warn(PyAnsysSoundWarning("There is nothing to output."))
         return self._output
 
-    def get_output_as_nparray(self) -> np.ndarray:
+    def get_output_as_nparray(self) -> np.ndarray | tuple[np.ndarray]:
         """Get output as a NumPy array.
 
         There is nothing to output.
@@ -93,18 +93,20 @@ class PyAnsysSound:
     def convert_fields_container_to_np_array(self, fc) -> np.ndarray:
         """Convert a DPF fields container to a NumPy array.
 
-        This method converts a multichannel signal contained in a DPF fields container to a
+        This method converts a DPF fields container that contains several signals into a
         NumPy array.
 
         Parameters
         ----------
         fc : FieldsContainer
-            DPF fields container to convert to NumPy arrays.
+            DPF fields container to convert into a NumPy array.
 
         Returns
         -------
         numpy.ndarray
             DPF fields container in a NumPy array.
+            Data in each field of the fields container is converted to a NumPy array and vertically
+            stacked into another NumPy array.
         """
         num_channels = len(fc)
         np_array = np.array(fc[0].data)

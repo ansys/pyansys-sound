@@ -62,7 +62,7 @@ class Xtract(XtractParent):
         parameters_denoiser : XtractDenoiserParameters, default: None
             Structure that contains the parameters of the denoising step:
 
-            - Noise PSD (field) is the power spectral density (PSD) of the noise.
+            - Noise PSD (Field) is the power spectral density (PSD) of the noise.
 
             This structure is of the ``XtractDenoiserParameters`` type. For more information,
             see this class.

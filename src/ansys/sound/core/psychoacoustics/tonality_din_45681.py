@@ -40,7 +40,7 @@ class TonalityDIN45681(PsychoacousticsParent):
     """Computes DIN 45681 tonality.
 
     This class is used to compute the tonality (mean difference) and tonal adjustment of
-    a signal following the DIN 45681 standard.
+    a signal according to the DIN 45681 standard.
     """
 
     def __init__(self, signal: Field = None, window_length: float = 3.0, overlap: float = 0.0):
@@ -64,7 +64,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         self.__operator = Operator(ID_COMPUTE_TONALITY_DIN_45681)
 
     def __str__(self):
-        """Overloads the __str__ method."""
+        """Return the string representation of the object."""
         return (
             f"{__class__.__name__} object.\n"
             "Data\n"
@@ -78,7 +78,7 @@ class TonalityDIN45681(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Signal in Pa. Default is None."""
+        """Input signal in Pa."""
         return self.__signal
 
     @signal.setter
@@ -90,27 +90,24 @@ class TonalityDIN45681(PsychoacousticsParent):
 
     @property
     def window_length(self) -> float:
-        """Length, in s, of a slice of the signal used to compute each spectrum.
-
-        Default is 3.0 s.
-        """
+        """Length, in s, of a slice of the signal used to compute each spectrum."""
         return self.__window_length
 
     @window_length.setter
     def window_length(self, window_length: float):
-        """Set window length."""
+        """Set window length, in s."""
         if window_length <= 0.0:
             raise PyAnsysSoundException("Window length must be strictly positive.")
         self.__window_length = window_length
 
     @property
     def overlap(self) -> float:
-        """Overlap, in %, between two consecutive slices of the signal. Default is 0.0 %."""
+        """Overlap, in %, between two consecutive slices of the signal."""
         return self.__overlap
 
     @overlap.setter
     def overlap(self, overlap: float):
-        """Set overlap property."""
+        """Set overlap, in %."""
         if not (0.0 <= overlap < 100.0):
             raise PyAnsysSoundException(
                 "Overlap must be positive and strictly smaller than 100.0 %."
@@ -153,23 +150,23 @@ class TonalityDIN45681(PsychoacousticsParent):
         Returns
         -------
         tuple
-            -   First element (float) is the DIN 45681 tonality (mean difference DL), in dB.
+            -   First element (float): DIN 45681 tonality (mean difference DL), in dB.
 
-            -   Second element (float) is the DIN 45681 tonality uncertainty, in dB.
+            -   Second element (float): DIN 45681 tonality uncertainty, in dB.
 
-            -   Third element (float) is the DIN 45681 tonal adjustment Kt, in dB.
+            -   Third element (float): DIN 45681 tonal adjustment Kt, in dB.
 
-            -   Fourth element (Field) is the DIN 45681 tonality over time
-                (decisive difference DLj), in dB.
+            -   Fourth element (Field): DIN 45681 tonality over time (decisive difference DLj),
+                in dB.
 
-            -   Fifth element (Field) is the DIN 45681 tonality uncertainty over time, in dB.
+            -   Fifth element (Field): DIN 45681 tonality uncertainty over time, in dB.
 
-            -   Sixth element (Field) is the DIN 45681 decisive frequency over time, in Hz.
+            -   Sixth element (Field): DIN 45681 decisive frequency over time, in Hz.
 
-            -   Seventh element (Field) is the DIN 45681 tonal adjustment Kt over time, in dB.
+            -   Seventh element (Field): DIN 45681 tonal adjustment Kt over time, in dB.
 
-            -   Eighth element (GenericDataContainer) is the DIN 45681 tonality details (individual
-                tone data for each spectrum).
+            -   Eighth element (GenericDataContainerCollection): DIN 45681 tonality details
+                (individual tone data for each spectrum).
         """
         if self._output == None:
             warnings.warn(
@@ -187,21 +184,21 @@ class TonalityDIN45681(PsychoacousticsParent):
         Returns
         -------
         tuple[numpy.ndarray]
-            -   First element is the DIN 45681 tonality (mean difference DL), in dB.
+            -   First element: DIN 45681 tonality (mean difference DL), in dB.
 
-            -   Second element is the DIN 45681 tonality uncertainty, in dB.
+            -   Second element: DIN 45681 tonality uncertainty, in dB.
 
-            -   Third element is the DIN 45681 tonal adjustment Kt, in dB.
+            -   Third element: DIN 45681 tonal adjustment Kt, in dB.
 
-            -   Fourth element is the DIN 45681 tonality over time (decisive difference DLj), in dB.
+            -   Fourth element: DIN 45681 tonality over time (decisive difference DLj), in dB.
 
-            -   Fifth element is the DIN 45681 tonality uncertainty over time, in dB.
+            -   Fifth element: DIN 45681 tonality uncertainty over time, in dB.
 
-            -   Sixth element is the DIN 45681 decisive frequency over time, in Hz.
+            -   Sixth element: DIN 45681 decisive frequency over time, in Hz.
 
-            -   Seventh element is the DIN 45681 tonal adjustment Kt over time, in dB.
+            -   Seventh element: DIN 45681 tonal adjustment Kt over time, in dB.
 
-            -   Eighth element is the time scale, in s.
+            -   Eighth element: time scale, in s.
         """
         output = self.get_output()
 
@@ -304,7 +301,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Array of the computation times, in seconds, of the DIN 45681 parameters over time
+            Time array, in seconds, of the DIN 45681 parameters over time
             (decisive difference, uncertainty, and tonal adjustment).
         """
         return self.get_output_as_nparray()[7]
@@ -335,11 +332,11 @@ class TonalityDIN45681(PsychoacousticsParent):
         Returns
         -------
         tuple[float]
-            -   First element is the decisive difference DLj in dB.
+            -   First element: decisive difference DLj in dB.
 
-            -   Second element is the uncertainty in dB.
+            -   Second element: uncertainty in dB.
 
-            -   Third element is the decisive frequency in Hz.
+            -   Third element: decisive frequency in Hz.
         """
         # Check validity of the input spectrum index.
         self.__check_spectrum_index(spectrum_index)
@@ -353,7 +350,8 @@ class TonalityDIN45681(PsychoacousticsParent):
     def get_tone_number(self, spectrum_index: int) -> int:
         """Get the number of tones for a specific spectrum.
 
-        Returns the number of tones detected in a specific spectrum (time step).
+        Returns the number of tones detected in a specific spectrum (that is, at a specific time
+        step).
 
         Parameters
         ----------
@@ -378,8 +376,8 @@ class TonalityDIN45681(PsychoacousticsParent):
     def get_tone_details(self, spectrum_index: int, tone_index: int) -> tuple:
         """Get the tone data, for a specific spectrum.
 
-        Returns all data associated with a specific detected tone, in a specific spectrum (time
-        step).
+        Returns all the data associated with a specific detected tone, in a specific spectrum (that
+        is, at a specific time step).
 
         Parameters
         ----------
@@ -391,26 +389,26 @@ class TonalityDIN45681(PsychoacousticsParent):
         Returns
         -------
         tuple
-            -   First element (float) is the decisive difference DLj in dB.
+            -   First element (float): decisive difference DLj in dB.
 
-            -   Second element (float) is the uncertainty, in dB.
+            -   Second element (float): uncertainty, in dB.
 
-            -   Third element (float) is the decisive frequency, in Hz.
+            -   Third element (float): decisive frequency, in Hz.
 
-            -   Fourth element (str) is the tone type ('' for individual tones, or 'FG' for groups
+            -   Fourth element (str): tone type ('' for individual tones, or 'FG' for groups
                 of tones).
 
-            -   Fifth element (float) is the critical band lower limit, in Hz.
+            -   Fifth element (float): critical band lower limit, in Hz.
 
-            -   Sixth element (float) is the critical band upper limit, in Hz.
+            -   Sixth element (float): critical band upper limit, in Hz.
 
-            -   Seventh element (float) is the mean narrow-band masking noise level Ls, in dBA.
+            -   Seventh element (float): mean narrow-band masking noise level Ls, in dBA.
 
-            -   Eighth element (float) is the tone level Lt, in dBA.
+            -   Eighth element (float): tone level Lt, in dBA.
 
-            -   Ninth element (float) is the masking noise level Lg, in dBA.
+            -   Ninth element (float): masking noise level Lg, in dBA.
 
-            -   Tenth element (float) is the masking index av, in dB.
+            -   Tenth element (float): masking index av, in dB.
         """
         # Check validities of input indexes.
         self.__check_spectrum_index(spectrum_index)
@@ -442,8 +440,8 @@ class TonalityDIN45681(PsychoacousticsParent):
     def plot(self):
         """Plot the DIN 45681's decisive difference and frequency, and tonal adjustment, over time.
 
-        This method creates a figure window that displays the decisive difference DLj in dB, the
-        decisive frequency in Hz, and the tonal adjustment Kt in dB, over time.
+        This method displays the decisive difference DLj in dB, the decisive frequency in Hz, and
+        the tonal adjustment Kt in dB, over time.
         """
         if self._output == None:
             raise PyAnsysSoundException(

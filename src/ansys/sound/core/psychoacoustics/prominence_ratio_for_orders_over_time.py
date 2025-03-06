@@ -38,7 +38,7 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
     """Computes the ECMA 418-1/ISO 7779 prominence ratio (PR) for specific orders over time.
 
     This class computes the PR, as defined in ECMA 418-1 and ISO 7779 standards, following
-    the specific orders over time in a given time-domain signal.
+    specific orders over time in a given time-domain signal.
     """
 
     def __init__(self, signal: Field = None, profile: Field = None, order_list: list = None):
@@ -47,11 +47,9 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Signal on which to compute prominence ratio, as a DPF field.
-
+            Signal on which to compute prominence ratio.
         profile : Field, default: None
-            Associated RPM profile to the input signal, as a DPF field.
-
+            Associated RPM profile to the input signal.
         order_list : list, default: None
             List of the order numbers, as floats, on which to compute the prominence ratio.
         """
@@ -73,7 +71,7 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Input signal as a DPF field."""
+        """Input signal."""
         return self.__signal
 
     @signal.setter
@@ -85,12 +83,12 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
 
     @property
     def profile(self) -> Field:
-        """Associated RPM profile to the input signal as a DPF field."""
+        """RPM over time related to the input signal."""
         return self.__profile
 
     @profile.setter
     def profile(self, profile: Field):
-        """Set the profile."""
+        """Set the RPM profile."""
         if not (isinstance(profile, Field) or profile is None):
             raise PyAnsysSoundException("Profile must be provided as a DPF field.")
         self.__profile = profile
@@ -99,7 +97,7 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
     def order_list(self) -> list[float]:
         """Orders list as floats.
 
-        List of the orders as floats on which to compute the prominence ratio.
+        List of the order numbers on which to compute the prominence ratio, as floats.
         """
         return self.__order_list
 
@@ -119,7 +117,7 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
         """Compute the prominence ratio for orders.
 
         This method calls the appropriate DPF Sound operator to compute the prominence ratio
-        on the orders of the input signal.
+        on the selected orders of the input signal.
         """
         if self.signal == None:
             raise PyAnsysSoundException(
@@ -152,17 +150,16 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
         ), self.__operator.get_output(1, types.field)
 
     def get_output(self) -> tuple[FieldsContainer, Field]:
-        """Get PR data as a fields container and the associated resampled RPM profile as a Field.
+        """Get PR data over time and its associated RPM profile.
 
         Returns
         -------
         tuple[FieldsContainer, Field]
-            First element is the prominence ratio data in a fields container.
-            Each field of the fields container gives the PR over time for one of the requested
-            orders.
+            -   First element (FieldsContainer): prominence ratio data over time for the requested
+                orders. Each field of the fields container gives the PR over time, in dB, for each
+                requested order in :attr:`order_list`.
 
-            Second element is the RPM profile resampled to match the PR calculation time steps, as
-            a Field.
+            -   Second element (Field): RPM over time profile corresponding to the PR over time.
 
         """
         if self._output == None:
@@ -181,11 +178,13 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
         Returns
         -------
         tuple
-            First element is the prominence ratio data, in dB.
+            -   First element: prominence ratio data over time for the requested orders. Each
+                column corresponds to the PR over time, in dB, for each requested order in
+                :attr:`order_list`.
 
-            Second element is the associated time scale to the output prominence ratios.
+            -   Second element: time scale associated with the output prominence ratios.
 
-            Third element is the RPM profile resampled to match the PR calculation time steps.
+            -   Third element: RPM over time profile corresponding to the TNR over time.
         """
         pr_container = self.get_output()
         if pr_container == None:
@@ -198,12 +197,13 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
         )
 
     def get_order_prominence_ratio_over_time(self, order_index: int) -> np.ndarray:
-        """Get the prominence ratio over time for a specific order.
+        """Get the prominence ratio (PR) over time for a specific order.
 
         Parameters
         ----------
         order_index : int
-            Index of the order for which to get the prominence ratio.
+            Index of the order for which to get the prominence ratio over time.
+            The index refers to the list of orders stored in :attr:`order_list`.
 
         Returns
         -------
@@ -226,7 +226,7 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
         return pr_container[0][order_index]
 
     def get_time_scale(self) -> np.ndarray | None:
-        """Get the PR calculation time scale.
+        """Get the time scale corresponding to the PR array over time.
 
         Returns
         -------
@@ -236,17 +236,17 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
         return self.get_output_as_nparray()[1]
 
     def get_rpm_scale(self) -> np.ndarray:
-        """Get the resampled RPM scale.
+        """Get the RPM scale corresponding to the PR array over time.
 
         Returns
         -------
         numpy.ndarray
-            RPM scale, resampled to match the PR calculation time steps.
+            Array of the RPM values at the time steps of the PR calculation.
         """
         return self.get_output_as_nparray()[2]
 
     def plot(self, use_rpm_scale: bool = False):
-        """Plot all orders’ PR as functions of time or RPM.
+        """Plot all orders’ PR over time or RPM.
 
         Parameters
         ----------
