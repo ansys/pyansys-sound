@@ -20,3 +20,5 @@ PyAnsys Sound
 Wav
 wav
 WAV
+resampling
+denoising

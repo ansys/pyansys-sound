@@ -55,8 +55,8 @@ class Filter(SignalProcessingParent):
 
     .. note::
         Whether they are derived from the provided FRF or specified directly, the filter
-        coefficients are linked to the sampling frequency value that is given in the attribute
-        :attr:`sampling_frequency` of the ``Filter`` class. As a consequence, the signal to filter
+        coefficients are linked to the sampling frequency value that is given in the parameter
+        ``sampling_frequency`` of the ``Filter`` class. As a consequence, the signal to filter
         :attr:`signal` must have the same sampling frequency. If necessary, use the
         :class:`.Resample` class to resample the signal prior to using the ``Filter`` class.
     """
@@ -85,7 +85,7 @@ class Filter(SignalProcessingParent):
             by Ansys Sound SAS. If ``file`` is specified, parameters ``a_coefficients`` and
             ``b_coefficients`` are ignored.
         signal : Field, default: None
-            Mono signal to filter, as a DPF field.
+            Signal to filter.
         """
         super().__init__()
 
@@ -154,7 +154,7 @@ class Filter(SignalProcessingParent):
 
     @property
     def signal(self) -> Field:
-        """Input signal as a DPF field."""
+        """Input signal."""
         return self.__signal
 
     @signal.setter
@@ -233,7 +233,7 @@ class Filter(SignalProcessingParent):
         Parameters
         ----------
         frf : Field
-            Frequency response function (FRF) as a DPF field.
+            Frequency response function (FRF).
         """
         # Set operator inputs.
         self.__operator_design.connect(0, frf)
