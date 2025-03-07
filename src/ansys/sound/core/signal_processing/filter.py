@@ -187,8 +187,8 @@ class Filter(SignalProcessingParent):
             if not (isinstance(frf, Field)):
                 raise PyAnsysSoundException("Specified FRF must be provided as a DPF field.")
 
-            time_data = frf.time_freq_support.time_frequencies.data
-            if len(frf.data) < 2 or len(time_data) < 2:
+            freq_data = frf.time_freq_support.time_frequencies.data
+            if len(frf.data) < 2 or len(freq_data) < 2:
                 raise PyAnsysSoundException(
                     "Specified FRF must have at least two frequency points."
                 )
@@ -265,23 +265,23 @@ class Filter(SignalProcessingParent):
         # Check input signal.
         if self.signal is None:
             raise PyAnsysSoundException(
-                f"Input signal is not set. Use {__class__.__name__}.signal."
+                f"Input signal is not set. Use `{__class__.__name__}.signal`."
             )
 
         if self.a_coefficients is None or len(self.a_coefficients) == 0:
             raise PyAnsysSoundException(
                 "Filter's denominator coefficients (a_coefficients) must be defined and cannot be "
-                f"empty. Use {__class__.__name__}.a_coefficients, or the methods "
-                f"{__class__.__name__}.design_FIR_from_FRF() or "
-                f"{__class__.__name__}.design_FIR_from_FRF_file()."
+                f"empty. Use `{__class__.__name__}.a_coefficients`, "
+                f"`{__class__.__name__}.frf`, or the "
+                f"`{__class__.__name__}.design_FIR_from_FRF_file()` method."
             )
 
         if self.b_coefficients is None or len(self.b_coefficients) == 0:
             raise PyAnsysSoundException(
                 "Filter's numerator coefficients (b_coefficients) must be defined and cannot be "
-                f"empty. Use {__class__.__name__}.b_coefficients, or the methods "
-                f"{__class__.__name__}.design_FIR_from_FRF() or "
-                f"{__class__.__name__}.design_FIR_from_FRF_file()."
+                f"empty. Use `{__class__.__name__}.b_coefficients`, "
+                f"`{__class__.__name__}.frf`, or the "
+                f"`{__class__.__name__}.design_FIR_from_FRF_file()` method."
             )
 
         # Set operator inputs.
@@ -307,7 +307,7 @@ class Filter(SignalProcessingParent):
             warnings.warn(
                 PyAnsysSoundWarning(
                     "Output is not processed yet. "
-                    f"Use the {__class__.__name__}.process() method."
+                    f"Use the `{__class__.__name__}.process()` method."
                 )
             )
         return self._output
@@ -331,7 +331,7 @@ class Filter(SignalProcessingParent):
         """Plot the filtered signal in a figure."""
         if self._output == None:
             raise PyAnsysSoundException(
-                f"Output is not processed yet. Use the {__class__.__name__}.process() method."
+                f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
             )
         output = self.get_output()
 
@@ -350,8 +350,8 @@ class Filter(SignalProcessingParent):
             raise PyAnsysSoundException(
                 "Filter's frequency response function (FRF) is not set. Use "
                 f"`{__class__.__name__}.frf`, or `{__class__.__name__}.a_coefficients` and "
-                f"`{__class__.__name__}.b_coefficients` or the method "
-                f"`{__class__.__name__}.design_FIR_from_FRF_file()`."
+                f"`{__class__.__name__}.b_coefficients`, or the "
+                f"`{__class__.__name__}.design_FIR_from_FRF_file()` method."
             )
 
         freq = self.frf.time_freq_support.time_frequencies.data
