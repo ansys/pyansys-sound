@@ -36,15 +36,20 @@ def pytest_configure():
     # configuration. That's why we authorize the use of this function here.
     server = connect_to_or_start_server(use_license_context=True)
 
-    # # Get the current directory of the conftest.py file
+    ## Get the current directory of the conftest.py file
     base_dir = os.path.join(os.path.dirname(__file__), "data")
 
-    # Construct the paths of the different test files after uploading them on the server.
+    ## Construct the paths of the different test files after uploading them on the server.
+    # Audio samples
     pytest.data_path_flute_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "flute.wav"), server=server
     )
     pytest.data_path_flute_nonUnitaryCalib_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "flute_nonUnitaryCalib.wav"), server=server
+    )
+    pytest.data_path_flute_nonUnitaryCalib_as_txt_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "flute_nonUnitaryCalib_as_text_2024R2_20241125.txt"),
+        server=server,
     )
     pytest.data_path_sharp_noise_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "sharp_noise.wav"), server=server
@@ -64,12 +69,30 @@ def pytest_configure():
     pytest.data_path_white_noise_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "white_noise.wav"), server=server
     )
-    pytest.data_path_accel_with_rpm_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "accel_with_rpm.wav"), server=server
-    )
     pytest.data_path_aircraft_nonUnitaryCalib_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "Aircraft-App2_nonUnitaryCalib.wav"), server=server
     )
+    pytest.data_path_Acceleration_stereo_nonUnitaryCalib = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "Acceleration_stereo_nonUnitaryCalib.wav"),
+        server=server,
+    )
+    pytest.data_path_accel_with_rpm_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "accel_with_rpm.wav"), server=server
+    )
+    pytest.data_path_Acceleration_with_Tacho_nonUnitaryCalib = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "Acceleration_with_Tacho_nonUnitaryCalib.wav"),
+        server=server,
+    )
+
+    # RPM profiles
+    pytest.data_path_rpm_profile_as_wav_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "RPM_profile_2024R2_20241126.wav"), server=server
+    )
+    pytest.data_path_rpm_profile_as_txt_in_container = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "RPM_profile_2024R2_20241126.txt"), server=server
+    )
+
+    # Sound power level projects
     pytest.data_path_swl_project_file_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "SoundPowerLevelProject_hemisphere_2025R1_20243008.spw"),
         server=server,
@@ -81,6 +104,8 @@ def pytest_configure():
         ),
         server=server,
     )
+
+    # Sound composer files (including spectrum, harmonics, etc. data files)
     pytest.data_path_sound_composer_spectrum_source_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "AnsysSound_Spectrum_v3_-_nominal_-_dBSPLperHz_2024R2_20241121.txt"),
         server=server,
@@ -138,22 +163,6 @@ def pytest_configure():
     pytest.data_path_sound_composer_harmonics_source_xml_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "VRX_Waterfall_2024R2_20241203.xml"), server=server
     )
-    pytest.data_path_filter_frf = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "AnsysSound_FRF_2024R2_20241206.txt"), server=server
-    )
-    pytest.data_path_filter_frf_wrong_header = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "AnsysSound_FRF_bad_2024R2_20241206.txt"), server=server
-    )
-    pytest.data_path_flute_nonUnitaryCalib_as_txt_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "flute_nonUnitaryCalib_as_text_2024R2_20241125.txt"),
-        server=server,
-    )
-    pytest.data_path_rpm_profile_as_wav_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "RPM_profile_2024R2_20241126.wav"), server=server
-    )
-    pytest.data_path_rpm_profile_as_txt_in_container = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "RPM_profile_2024R2_20241126.txt"), server=server
-    )
     pytest.data_path_sound_composer_bbn_source_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "AnsysSound_BBN dBSPL OCTAVE Constants.txt"), server=server
     )
@@ -175,19 +184,24 @@ def pytest_configure():
         ),
         server=server,
     )
-    pytest.data_path_Acceleration_with_Tacho_nonUnitaryCalib = upload_file_in_tmp_folder(
-        os.path.join(base_dir, "Acceleration_with_Tacho_nonUnitaryCalib.wav"),
-        server=server,
-    )
     pytest.data_path_sound_composer_project_in_container = upload_file_in_tmp_folder(
         os.path.join(base_dir, "20250130_SoundComposerProjectForDpfSoundTesting_valid.scn"),
         server=server,
     )
 
-    # This path is different that the other, we need a local path
+    # FRF files
+    pytest.data_path_filter_frf = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "AnsysSound_FRF_2024R2_20241206.txt"), server=server
+    )
+    pytest.data_path_filter_frf_wrong_header = upload_file_in_tmp_folder(
+        os.path.join(base_dir, "AnsysSound_FRF_bad_2024R2_20241206.txt"), server=server
+    )
+
+    # PSD file
+    # This path is different from the other files': we need a local path
     # and not a server path because we will use a native python
     # `open()` to read this file and not a DPF operator
     pytest.data_path_flute_psd_locally = os.path.join(base_dir, "flute_psd.txt")
 
-    # The temporary folder is the folder in the server where are stored the files
+    ## The temporary folder is the folder in the server where the files are stored.
     pytest.temporary_folder = os.path.dirname(pytest.data_path_flute_in_container)
