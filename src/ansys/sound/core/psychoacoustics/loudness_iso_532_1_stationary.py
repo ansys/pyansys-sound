@@ -35,10 +35,10 @@ ID_COMPUTE_LOUDNESS_ISO_STATIONARY = "compute_loudness_iso532_1"
 
 
 class LoudnessISO532_1_Stationary(PsychoacousticsParent):
-    """Computes ISO 532-1 loudness for stationary sounds.
+    """Computes ISO 532-1:2017 loudness for stationary sounds.
 
-    This class computes the loudness of a signal following the ISO 532-1 standard, corresponding to
-    the "Zwicker method", for stationary sounds.
+    This class computes the loudness of a signal following the ISO 532-1:2017 standard,
+    corresponding to the "Zwicker method", for stationary sounds.
     """
 
     def __init__(

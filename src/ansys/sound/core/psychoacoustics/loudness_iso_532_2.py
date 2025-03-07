@@ -340,7 +340,6 @@ class LoudnessISO532_2(PsychoacousticsParent):
         """
         output = self.get_output_as_nparray()[5]
         if len(output) != 2:
-            print("1 channel")
             return np.array([output, output])
         else:
             return output
