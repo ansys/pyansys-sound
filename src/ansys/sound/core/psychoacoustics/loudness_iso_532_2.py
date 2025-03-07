@@ -339,6 +339,9 @@ class LoudnessISO532_2(PsychoacousticsParent):
             center frequency.
         """
         output = self.get_output_as_nparray()[5]
+        # If signal is a FieldsContainer, then output's length here is 2.
+        # However if signal is a Field, then it is not 1, it is the length of the specific loudness.
+        # So the test below has to compare the length to 2, not 1.
         if len(output) != 2:
             return np.array([output, output])
         else:
