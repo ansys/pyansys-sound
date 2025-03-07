@@ -227,8 +227,8 @@ def test_loudness_iso_532_2_process_exceptions():
         loudness_computer.process()
 
 
-def test_loudness_iso_532_2_get_output():
-    """Test the get_output method of the LoudnessISO532_2 class."""
+def test_loudness_iso_532_2_get_output_diotic_case():
+    """Test the get_output method of the LoudnessISO532_2 class, in the diotic case."""
     loudness_computer = LoudnessISO532_2()
 
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
@@ -237,14 +237,6 @@ def test_loudness_iso_532_2_get_output():
 
     # A single signal channel -> Diotic case
     loudness_computer.signal = fc[0]
-
-    # Loudness not calculated yet -> warning
-    with pytest.warns(
-        PyAnsysSoundWarning,
-        match=("Output is not processed yet. " "Use the `LoudnessISO532_2.process\\(\\)` method."),
-    ):
-        output = loudness_computer.get_output()
-    assert output is None
 
     loudness_computer.process()
 
@@ -265,69 +257,137 @@ def test_loudness_iso_532_2_get_output():
     assert Nprime_mon[0].data[45] == pytest.approx(EXP_MON_SPECIFIC_LOUDNESS_DIOTIC_FREE_MIC_45)
     assert Nprime_mon[0].data[98] == pytest.approx(EXP_MON_SPECIFIC_LOUDNESS_DIOTIC_FREE_MIC_98)
 
-    wav_loader.path_to_wav = pytest.data_path_Acceleration_stereo_nonUnitaryCalib
+
+@pytest.mark.parametrize(
+    "field_type, recording_type, exp_values",
+    [
+        (
+            "Free",
+            "Mic",
+            (
+                EXP_BIN_LOUDNESS_DICHOTIC_FREE_MIC,
+                EXP_BIN_LOUDNESS_LEVEL_DICHOTIC_FREE_MIC,
+                EXP_MON_LOUDNESS_DICHOTIC_FREE_MIC_LEFT,
+                EXP_MON_LOUDNESS_DICHOTIC_FREE_MIC_RIGHT,
+                EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_FREE_MIC_0,
+                EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_FREE_MIC_45,
+                EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_FREE_MIC_98,
+            ),
+        ),
+        (
+            "Diffuse",
+            "Mic",
+            (
+                EXP_BIN_LOUDNESS_DICHOTIC_DIFFUSE_MIC,
+                EXP_BIN_LOUDNESS_LEVEL_DICHOTIC_DIFFUSE_MIC,
+                EXP_MON_LOUDNESS_DICHOTIC_DIFFUSE_MIC_LEFT,
+                EXP_MON_LOUDNESS_DICHOTIC_DIFFUSE_MIC_RIGHT,
+                EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_DIFFUSE_MIC_0,
+                EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_DIFFUSE_MIC_45,
+                EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_DIFFUSE_MIC_98,
+            ),
+        ),
+        (
+            "Free",
+            "Head",
+            (
+                EXP_BIN_LOUDNESS_DICHOTIC_HEAD,
+                EXP_BIN_LOUDNESS_LEVEL_DICHOTIC_HEAD,
+                EXP_MON_LOUDNESS_DICHOTIC_HEAD_LEFT,
+                EXP_MON_LOUDNESS_DICHOTIC_HEAD_RIGHT,
+                EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_HEAD_0,
+                EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_HEAD_45,
+                EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_HEAD_98,
+            ),
+        ),
+        (
+            "Diffuse",
+            "Head",
+            (
+                EXP_BIN_LOUDNESS_DICHOTIC_HEAD,
+                EXP_BIN_LOUDNESS_LEVEL_DICHOTIC_HEAD,
+                EXP_MON_LOUDNESS_DICHOTIC_HEAD_LEFT,
+                EXP_MON_LOUDNESS_DICHOTIC_HEAD_RIGHT,
+                EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_HEAD_0,
+                EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_HEAD_45,
+                EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_HEAD_98,
+            ),
+        ),
+    ],
+)
+def test_loudness_iso_532_2_get_output_dichotic_case(field_type, recording_type, exp_values):
+    """Test the get_output method of the LoudnessISO532_2 class, in the dichotic case."""
+    loudness_computer = LoudnessISO532_2()
+
+    wav_loader = LoadWav(pytest.data_path_Acceleration_stereo_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
-    # Two signal channels -> Dichotic case
+    loudness_computer.signal = fc
+
+    loudness_computer.field_type = field_type
+    loudness_computer.recording_type = recording_type
+
+    loudness_computer.process()
+
+    N_bin, LN_bin, N_mon, _, Nprime_bin, _ = loudness_computer.get_output()
+
+    assert N_bin == pytest.approx(exp_values[0])
+    assert LN_bin == pytest.approx(exp_values[1])
+    assert N_mon[0] == pytest.approx(exp_values[2])
+    assert N_mon[1] == pytest.approx(exp_values[3])
+    assert len(Nprime_bin) == EXP_ERB_LEN
+    assert Nprime_bin.data[0] == pytest.approx(exp_values[4])
+    assert Nprime_bin.data[45] == pytest.approx(exp_values[5])
+    assert Nprime_bin.data[98] == pytest.approx(exp_values[6])
+
+
+def test_loudness_iso_532_2_get_output_monaural_outputs():
+    """Test the get_output method of the LoudnessISO532_2 class for some other monaural outputs.
+
+    Here we test some other monaural outputs, but without repeating the tests for all cases of
+    field and recording types.
+    """
+    loudness_computer = LoudnessISO532_2()
+
+    wav_loader = LoadWav(pytest.data_path_Acceleration_stereo_nonUnitaryCalib)
+    wav_loader.process()
+    fc = wav_loader.get_output()
+
     loudness_computer.signal = fc
 
     loudness_computer.process()
 
-    N_bin, LN_bin, N_mon, LN_mon, Nprime_bin, Nprime_mon = loudness_computer.get_output()
-    assert N_bin == pytest.approx(EXP_BIN_LOUDNESS_DICHOTIC_FREE_MIC)
-    assert LN_bin == pytest.approx(EXP_BIN_LOUDNESS_LEVEL_DICHOTIC_FREE_MIC)
-    assert N_mon[0] == pytest.approx(EXP_MON_LOUDNESS_DICHOTIC_FREE_MIC_LEFT)
-    assert N_mon[1] == pytest.approx(EXP_MON_LOUDNESS_DICHOTIC_FREE_MIC_RIGHT)
+    _, _, _, LN_mon, _, Nprime_mon = loudness_computer.get_output()
     assert LN_mon[0] == pytest.approx(EXP_MON_LOUDNESS_LEVEL_DICHOTIC_FREE_MIC_LEFT)
     assert LN_mon[1] == pytest.approx(EXP_MON_LOUDNESS_LEVEL_DICHOTIC_FREE_MIC_RIGHT)
-    assert Nprime_bin.data[0] == pytest.approx(EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_FREE_MIC_0)
-    assert Nprime_bin.data[45] == pytest.approx(EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_FREE_MIC_45)
-    assert Nprime_bin.data[98] == pytest.approx(EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_FREE_MIC_98)
+    assert len(Nprime_mon[0]) == EXP_ERB_LEN
     assert Nprime_mon[0].data[0] == pytest.approx(EXP_MON_SPECIFIC_LOUDNESS_DICHOTIC_FREE_MIC_L_0)
     assert Nprime_mon[0].data[45] == pytest.approx(EXP_MON_SPECIFIC_LOUDNESS_DICHOTIC_FREE_MIC_L_45)
     assert Nprime_mon[0].data[98] == pytest.approx(EXP_MON_SPECIFIC_LOUDNESS_DICHOTIC_FREE_MIC_L_98)
+    assert len(Nprime_mon[1]) == EXP_ERB_LEN
     assert Nprime_mon[1].data[0] == pytest.approx(EXP_MON_SPECIFIC_LOUDNESS_DICHOTIC_FREE_MIC_R_0)
     assert Nprime_mon[1].data[45] == pytest.approx(EXP_MON_SPECIFIC_LOUDNESS_DICHOTIC_FREE_MIC_R_45)
     assert Nprime_mon[1].data[98] == pytest.approx(EXP_MON_SPECIFIC_LOUDNESS_DICHOTIC_FREE_MIC_R_98)
 
-    loudness_computer.field_type = "Diffuse"
-    loudness_computer.process()
 
-    N_bin, LN_bin, N_mon, LN_mon, Nprime_bin, Nprime_mon = loudness_computer.get_output()
-    assert N_bin == pytest.approx(EXP_BIN_LOUDNESS_DICHOTIC_DIFFUSE_MIC)
-    assert LN_bin == pytest.approx(EXP_BIN_LOUDNESS_LEVEL_DICHOTIC_DIFFUSE_MIC)
-    assert N_mon[0] == pytest.approx(EXP_MON_LOUDNESS_DICHOTIC_DIFFUSE_MIC_LEFT)
-    assert N_mon[1] == pytest.approx(EXP_MON_LOUDNESS_DICHOTIC_DIFFUSE_MIC_RIGHT)
-    assert Nprime_bin.data[0] == pytest.approx(EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_DIFFUSE_MIC_0)
-    assert Nprime_bin.data[45] == pytest.approx(EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_DIFFUSE_MIC_45)
-    assert Nprime_bin.data[98] == pytest.approx(EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_DIFFUSE_MIC_98)
+def test_loudness_iso_532_2_get_output_warning():
+    """Test the get_output method's warning of the LoudnessISO532_2 class."""
+    loudness_computer = LoudnessISO532_2()
 
-    loudness_computer.field_type = "Free"
-    loudness_computer.recording_type = "Head"
-    loudness_computer.process()
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader.process()
+    fc = wav_loader.get_output()
 
-    N_bin, LN_bin, N_mon, LN_mon, Nprime_bin, Nprime_mon = loudness_computer.get_output()
-    assert N_bin == pytest.approx(EXP_BIN_LOUDNESS_DICHOTIC_HEAD)
-    assert LN_bin == pytest.approx(EXP_BIN_LOUDNESS_LEVEL_DICHOTIC_HEAD)
-    assert N_mon[0] == pytest.approx(EXP_MON_LOUDNESS_DICHOTIC_HEAD_LEFT)
-    assert N_mon[1] == pytest.approx(EXP_MON_LOUDNESS_DICHOTIC_HEAD_RIGHT)
-    assert Nprime_bin.data[0] == pytest.approx(EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_HEAD_0)
-    assert Nprime_bin.data[45] == pytest.approx(EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_HEAD_45)
-    assert Nprime_bin.data[98] == pytest.approx(EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_HEAD_98)
+    loudness_computer.signal = fc[0]
 
-    # Diffuse case, with head => should give the same values as the free case
-    loudness_computer.field_type = "Diffuse"
-    loudness_computer.process()
-
-    N_bin, LN_bin, N_mon, LN_mon, Nprime_bin, Nprime_mon = loudness_computer.get_output()
-    assert N_bin == pytest.approx(EXP_BIN_LOUDNESS_DICHOTIC_HEAD)
-    assert LN_bin == pytest.approx(EXP_BIN_LOUDNESS_LEVEL_DICHOTIC_HEAD)
-    assert N_mon[0] == pytest.approx(EXP_MON_LOUDNESS_DICHOTIC_HEAD_LEFT)
-    assert N_mon[1] == pytest.approx(EXP_MON_LOUDNESS_DICHOTIC_HEAD_RIGHT)
-    assert Nprime_bin.data[0] == pytest.approx(EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_HEAD_0)
-    assert Nprime_bin.data[45] == pytest.approx(EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_HEAD_45)
-    assert Nprime_bin.data[98] == pytest.approx(EXP_BIN_SPECIFIC_LOUDNESS_DICHOTIC_HEAD_98)
+    # Loudness not calculated yet -> warning
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match=("Output is not processed yet. " "Use the `LoudnessISO532_2.process\\(\\)` method."),
+    ):
+        output = loudness_computer.get_output()
+    assert output is None
 
 
 def test_loudness_iso_532_2_get_output_as_nparray():

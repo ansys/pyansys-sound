@@ -300,7 +300,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
             Monaural loudness in sone at each ear.
         """
         output = self.get_output_as_nparray()[2]
-        if len(output) != 2:
+        if len(output) == 1:
             return np.array([output[0], output[0]])
         else:
             return output
@@ -314,7 +314,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
             Monaural loudness level in phon at each ear.
         """
         output = self.get_output_as_nparray()[3]
-        if len(output) != 2:
+        if len(output) == 1:
             return np.array([output[0], output[0]])
         else:
             return output
@@ -339,9 +339,10 @@ class LoudnessISO532_2(PsychoacousticsParent):
             center frequency.
         """
         output = self.get_output_as_nparray()[5]
-        # If signal is a FieldsContainer, then output's length here is 2.
-        # However if signal is a Field, then it is not 1, it is the length of the specific loudness.
-        # So the test below has to compare the length to 2, not 1.
+
+        # If signal is a FieldsContainer, then output's length is 2.
+        # However, here, if signal is a Field, then it is not 1, it is the length of the specific
+        # loudness. So the test below has to compare the length to 2, not 1.
         if len(output) != 2:
             return np.array([output, output])
         else:
