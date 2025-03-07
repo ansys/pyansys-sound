@@ -24,9 +24,10 @@
 
 import warnings
 
-from ansys.dpf.core import Field, Operator
+from ansys.dpf.core import Field, Operator, TimeFreqSupport, fields_factory, locations
 import matplotlib.pyplot as plt
 import numpy as np
+import scipy
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ..signal_processing import SignalProcessingParent
@@ -66,6 +67,7 @@ class Filter(SignalProcessingParent):
         b_coefficients: list[float] = None,
         a_coefficients: list[float] = None,
         sampling_frequency: float = 44100.0,
+        frf: Field = None,
         file: str = "",
         signal: Field = None,
     ):
@@ -79,6 +81,9 @@ class Filter(SignalProcessingParent):
             Numerator coefficients of the filter.
         sampling_frequency : float, default: 44100.0
             Sampling frequency associated with the filter coefficients, in Hz.
+        frf : Field, default: None
+            Frequency response function (FRF) to use for designing the filter. If specified, the
+            parameters ``a_coefficients`` and ``b_coefficients`` are ignored.
         file : str, default: ""
             Path to the file containing the frequency response function (FRF) to load. The text
             file shall have the same text format (with the header `AnsysSound_FRF`), as supported
@@ -95,18 +100,31 @@ class Filter(SignalProcessingParent):
 
         self.__sampling_frequency = sampling_frequency
 
-        if file != "":
-            if a_coefficients is not None or b_coefficients is not None:
-                warnings.warn(
-                    PyAnsysSoundWarning(
-                        "Specified parameters a_coefficients and b_coefficients are ignored "
-                        "because FRF file is also specified."
-                    )
-                )
-            self.design_FIR_from_FRF_file(file)
-        else:
+        # Initialize attributes before processing arguments (because of their mutual dependencies).
+        self.__a_coefficients = None
+        self.__b_coefficients = None
+        self.__frf = None
+
+        # Check which filter definition source (coefficients, FRF, or FRF file) is provided (there
+        # should be less than 2).
+        if (
+            not (a_coefficients is None and b_coefficients is None)
+            + (frf is not None)
+            + (file != "")
+            > 1
+        ):
+            raise PyAnsysSoundException(
+                "Not more than one filter definition source (coefficients, FRF, or FRF file) must "
+                "be provided. Specify either `a_coefficients` and `b_coefficients`, `frf`, or "
+                "`file`."
+            )
+        elif a_coefficients is not None or b_coefficients is not None:
             self.a_coefficients = a_coefficients
             self.b_coefficients = b_coefficients
+        elif frf is not None:
+            self.frf = frf
+        elif file != "":
+            self.design_FIR_from_FRF_file(file)
 
         self.signal = signal
 
@@ -142,6 +160,9 @@ class Filter(SignalProcessingParent):
         """Set filter's denominator coefficients."""
         self.__a_coefficients = coefficients
 
+        # Update the FRF to match the new coefficients (if both are set).
+        self.__compute_FRF_from_coefficients()
+
     @property
     def b_coefficients(self) -> list[float]:
         """Numerator coefficients of the filter's transfer function."""
@@ -151,6 +172,31 @@ class Filter(SignalProcessingParent):
     def b_coefficients(self, coefficients: list[float]):
         """Set filter's numerator coefficients."""
         self.__b_coefficients = coefficients
+
+        # Update the FRF to match the new coefficients (if both are set).
+        self.__compute_FRF_from_coefficients()
+
+    @property
+    def frf(self) -> Field:
+        """Frequency response function (FRF) of the filter."""
+        return self.__frf
+
+    @frf.setter
+    def frf(self, frf: Field):
+        """Set filter's frequency response function."""
+        if frf is not None:
+            if not (isinstance(frf, Field)):
+                raise PyAnsysSoundException("Specified FRF must be provided as a DPF field.")
+
+            time_data = frf.time_freq_support.time_frequencies.data
+            if len(frf.data) < 2 or len(time_data) < 2:
+                raise PyAnsysSoundException(
+                    "Specified FRF must have at least two frequency points."
+                )
+        self.__frf = frf
+
+        # Update coefficients to match the FRF.
+        self.__compute_coefficients_from_FRF()
 
     @property
     def signal(self) -> Field:
@@ -213,38 +259,7 @@ class Filter(SignalProcessingParent):
         self.__operator_load.run()
 
         # Get the output.
-        frf = self.__operator_load.get_output(0, "field")
-
-        # Compute the filter coefficients.
-        self.design_FIR_from_FRF(frf)
-
-    def design_FIR_from_FRF(self, frf: Field):
-        """Design a minimum-phase FIR filter from a frequency response function (FRF).
-
-        Computes the filter coefficients according to the filter sampling frequency and the
-        provided FRF data.
-
-        .. note::
-            If the maximum frequency specified in the FRF extends beyond half the filter sampling
-            frequency, the FRF data is truncated to this frequency. If, on the contrary, the FRF
-            maximum frequency is lower than half the filter sampling frequency, the FRF is
-            zero-padded between the two.
-
-        Parameters
-        ----------
-        frf : Field
-            Frequency response function (FRF).
-        """
-        # Set operator inputs.
-        self.__operator_design.connect(0, frf)
-        self.__operator_design.connect(1, self.__sampling_frequency)
-
-        # Run the operator.
-        self.__operator_design.run()
-
-        # Get the output.
-        self.b_coefficients = list(map(float, self.__operator_design.get_output(0, "vec_double")))
-        self.a_coefficients = list(map(float, self.__operator_design.get_output(1, "vec_double")))
+        self.frf = self.__operator_load.get_output(0, "field")
 
     def process(self):
         """Filter the signal with the current coefficients."""
@@ -329,3 +344,96 @@ class Filter(SignalProcessingParent):
         plt.ylabel("Amplitude")
         plt.grid(True)
         plt.show()
+
+    def plot_FRF(self):
+        """Plot the frequency response function (FRF) of the filter in a figure."""
+        if self.frf is None:
+            raise PyAnsysSoundException(
+                "Filter's frequency response function (FRF) is not set. Use "
+                f"`{__class__.__name__}.frf`, or `{__class__.__name__}.a_coefficients` and "
+                f"`{__class__.__name__}.b_coefficients` or the method "
+                f"`{__class__.__name__}.design_FIR_from_FRF_file()`."
+            )
+
+        freq = self.frf.time_freq_support.time_frequencies.data
+        frf_dB = 20 * np.log10(self.frf.data)
+
+        plt.plot(freq, frf_dB)
+        plt.title("Frequency response function (FRF) of the filter")
+        plt.xlabel("Frequency (Hz)")
+        plt.ylabel("Magnitude (dB)")
+        plt.grid(True)
+        plt.show()
+
+    def __compute_coefficients_from_FRF(self):
+        """Design a minimum-phase FIR filter from the frequency response function (FRF).
+
+        Computes the filter coefficients according to the filter sampling frequency and the
+        currently set FRF.
+
+        .. note::
+            If the maximum frequency in the FRF extends beyond half the filter sampling frequency,
+            the FRF data is truncated to this frequency to compute the coefficients. If, on the
+            contrary, the FRF maximum frequency is lower than half the filter sampling frequency,
+            the FRF data is zero-padded between the two.
+        """
+        if self.frf is None:
+            self.__a_coefficients = None
+            self.__b_coefficients = None
+        else:
+            self.__operator_design.connect(0, self.frf)
+            self.__operator_design.connect(1, self.__sampling_frequency)
+
+            self.__operator_design.run()
+
+            # Bypass the coefficients setters to avoid infinite loops.
+            self.__b_coefficients = list(
+                map(float, self.__operator_design.get_output(0, "vec_double"))
+            )
+            self.__a_coefficients = list(
+                map(float, self.__operator_design.get_output(1, "vec_double"))
+            )
+
+    def __compute_FRF_from_coefficients(self):
+        """Compute the frequency response function (FRF) from the filter coefficients.
+
+        Computes the FRF from the filter coefficients, using the scipy.signal.freqz function. If
+        either the numerator or denominator coefficients are empty or not set, the FRF is set to
+        ``None``.
+
+        .. note::
+            The computed FRF length is equal to the number of coefficients in the filter's
+            numerator.
+        """
+        if (
+            self.b_coefficients is None
+            or self.a_coefficients is None
+            or len(self.b_coefficients) == 0
+            or len(self.a_coefficients) == 0
+        ):
+            self.__frf = None
+        else:
+            freq, complex_response = scipy.signal.freqz(
+                b=self.b_coefficients,
+                a=self.a_coefficients,
+                worN=len(self.b_coefficients),
+                whole=False,
+                plot=None,
+                fs=self.__sampling_frequency,
+                include_nyquist=True,
+            )
+
+            f_freq = fields_factory.create_scalar_field(
+                num_entities=1, location=locations.time_freq
+            )
+            f_freq.append(freq, 1)
+
+            frf_support = TimeFreqSupport()
+            frf_support.time_frequencies = f_freq
+
+            # Bypass the FRF setter to avoid infinite loops.
+            self.__frf = fields_factory.create_scalar_field(
+                num_entities=1, location=locations.time_freq
+            )
+            self.__frf.append(abs(complex_response), 1)
+            self.__frf.time_freq_support = frf_support
