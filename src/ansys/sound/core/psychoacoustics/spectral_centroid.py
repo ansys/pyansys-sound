@@ -31,7 +31,11 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class SpectralCentroid(PsychoacousticsParent):
-    """Computes the spectral centroid of a signal."""
+    """Computes the spectral centroid of a signal.
+
+    The spectral centroid is the center of gravity of the spectrum. It is a measure of the
+    distribution of the spectral energy of a signal.
+    """
 
     def __init__(self, signal: Field = None):
         """Class instantiation takes the following parameters.
@@ -39,7 +43,7 @@ class SpectralCentroid(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Signal on which to compute spectral centroid as a DPF field.
+            Signal on which to compute spectral centroid.
         """
         super().__init__()
         self.signal = signal
@@ -47,7 +51,7 @@ class SpectralCentroid(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Input sound signal as a DPF field."""
+        """Input signal."""
         return self.__signal
 
     @signal.setter
@@ -93,8 +97,8 @@ class SpectralCentroid(PsychoacousticsParent):
 
         Returns
         -------
-        numpy.ndarray:
-            Array of spectral centroid values in Hz.
+        numpy.ndarray
+            Singleton array containing the spectral centroid in Hz.
         """
         output = self.get_output()
 
@@ -114,13 +118,7 @@ class SpectralCentroid(PsychoacousticsParent):
         return self.get_output()
 
     def __str__(self):
-        """Create the string for print() call.
-
-        Returns
-        -------
-        str
-            Formatted info about self.
-        """
+        """Return the string representation of the object."""
         str = __class__.__name__ + " object\n"
         str += "Data\n"
         str += "\t Signal name: " + self.signal.name + "\n"
