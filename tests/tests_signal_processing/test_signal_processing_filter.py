@@ -149,9 +149,8 @@ def test_filter_instantiation_exception():
     with pytest.raises(
         PyAnsysSoundException,
         match=(
-            "Not more than one filter definition source \\(coefficients, FRF, or FRF file\\) must "
-            "be provided. Specify either `a_coefficients` and `b_coefficients`, `frf`, or "
-            "`file`."
+            "Only one filter definition source \\(coefficients, FRF, or FRF file\\) must be "
+            "provided. Specify either `a_coefficients` and `b_coefficients`, `frf`, or `file`."
         ),
     ):
         Filter(
@@ -165,9 +164,8 @@ def test_filter_instantiation_exception():
     with pytest.raises(
         PyAnsysSoundException,
         match=(
-            "Not more than one filter definition source \\(coefficients, FRF, or FRF file\\) must "
-            "be provided. Specify either `a_coefficients` and `b_coefficients`, `frf`, or "
-            "`file`."
+            "Only one filter definition source \\(coefficients, FRF, or FRF file\\) must be "
+            "provided. Specify either `a_coefficients` and `b_coefficients`, `frf`, or `file`."
         ),
     ):
         Filter(
@@ -181,9 +179,8 @@ def test_filter_instantiation_exception():
     with pytest.raises(
         PyAnsysSoundException,
         match=(
-            "Not more than one filter definition source \\(coefficients, FRF, or FRF file\\) must "
-            "be provided. Specify either `a_coefficients` and `b_coefficients`, `frf`, or "
-            "`file`."
+            "Only one filter definition source \\(coefficients, FRF, or FRF file\\) must be "
+            "provided. Specify either `a_coefficients` and `b_coefficients`, `frf`, or `file`."
         ),
     ):
         Filter(

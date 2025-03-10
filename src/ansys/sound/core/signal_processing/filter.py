@@ -119,9 +119,8 @@ class Filter(SignalProcessingParent):
             + (file != "")
         ) > 1:
             raise PyAnsysSoundException(
-                "Not more than one filter definition source (coefficients, FRF, or FRF file) must "
-                "be provided. Specify either `a_coefficients` and `b_coefficients`, `frf`, or "
-                "`file`."
+                "Only one filter definition source (coefficients, FRF, or FRF file) must be "
+                "provided. Specify either `a_coefficients` and `b_coefficients`, `frf`, or `file`."
             )
         elif a_coefficients is not None or b_coefficients is not None:
             self.a_coefficients = a_coefficients
@@ -402,8 +401,8 @@ class Filter(SignalProcessingParent):
     def __compute_FRF_from_coefficients(self):
         """Compute the frequency response function (FRF) from the filter coefficients.
 
-        Computes the FRF from the filter coefficients, using the scipy.signal.freqz function. If
-        either the numerator or denominator coefficients are empty or not set, the FRF is set to
+        Computes the FRF from the filter coefficients, using the function ``scipy.signal.freqz()``.
+        If either the numerator or denominator coefficients are empty or not set, the FRF is set to
         ``None``.
 
         .. note::
