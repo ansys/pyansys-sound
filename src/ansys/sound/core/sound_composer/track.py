@@ -201,7 +201,8 @@ class Track(SoundComposerParent):
         """Get the track data as a generic data container.
 
         This method is meant to return the track data as a generic data container, in the format
-        needed to save a Sound Composer project file (.scn).
+        needed to save a Sound Composer project file (.scn) with the method
+        :meth:`SoundComposer.save()`.
 
         Returns
         -------

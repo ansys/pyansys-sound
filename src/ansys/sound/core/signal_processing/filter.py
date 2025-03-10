@@ -43,11 +43,13 @@ class Filter(SignalProcessingParent):
     This class allows designing, loading, and applying a digital filter to a signal. The filter
     coefficients can be provided directly, using the attributes :attr:`b_coefficients` and
     :attr:`a_coefficients`, or computed from a specific frequency response function (FRF), using
-    the attribute :attr:`frf`, or the method :meth:`design_FIR_from_FRF_file`. In this latter
-    case, the filter is designed as a minimum-phase FIR filter, and the filter denominator
+    the attribute :attr:`frf` or the method :meth:`design_FIR_from_FRF_file`. In this latter case,
+    the filter is designed as a minimum-phase FIR filter, and the filter denominator
     (:attr:`a_coefficients`) is set to 1 as a consequence.
 
-    Note that only one filter definition source (coefficients, FRF, or FRF file) must be provided.
+    Note that only one filter definition source (coefficients, FRF, or FRF file) can be provided
+    when instantiating the class. After class instantiation, anytime the coefficients are changed,
+    the FRF is updated accordingly, and vice versa.
 
     Filtering a signal consists in applying the filter coefficients :math:`b[k]` and :math:`a[k]`
     in the following difference equation, with :math:`x[n]` the input signal, and :math:`y[n]` the
@@ -78,17 +80,21 @@ class Filter(SignalProcessingParent):
         Parameters
         ----------
         a_coefficients : list[float], default: None
-            Denominator coefficients of the filter.
+            Denominator coefficients of the filter. This is mutually exclusive with parameters
+            ``frf`` and ``file``.
         b_coefficients : list[float], default: None
-            Numerator coefficients of the filter.
+            Numerator coefficients of the filter. This is mutually exclusive with parameters ``frf``
+            and ``file``.
         sampling_frequency : float, default: 44100.0
             Sampling frequency associated with the filter coefficients, in Hz.
         frf : Field, default: None
-            Frequency response function (FRF) to use for designing the filter.
+            Frequency response function (FRF) of the filter. This is mutually exclusive with
+            parameters ``a_coefficients``, ``b_coefficients``, and ``file``.
         file : str, default: ""
             Path to the file containing the frequency response function (FRF) to load. The text
             file shall have the same text format (with the header `AnsysSound_FRF`), as supported
-            by Ansys Sound SAS.
+            by Ansys Sound SAS. This is mutually exclusive with parameters ``a_coefficients``,
+            ``b_coefficients``, and ``frf``.
         signal : Field, default: None
             Signal to filter.
         """
@@ -345,7 +351,7 @@ class Filter(SignalProcessingParent):
         plt.show()
 
     def plot_FRF(self):
-        """Plot the frequency response function (FRF) of the filter in a figure."""
+        """Plot the frequency response function (FRF) of the filter."""
         if self.frf is None:
             raise PyAnsysSoundException(
                 "Filter's frequency response function (FRF) is not set. Use "

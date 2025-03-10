@@ -134,7 +134,7 @@ class SoundComposer(SoundComposerParent):
         Parameters
         ----------
         project_path : str
-            Path and file (.scn) name where the Sound Composer project shall be saved.
+            Path and file name (.scn) where the Sound Composer project shall be saved.
         """
         track_collection = GenericDataContainersCollection()
         track_collection.add_label("track_index")
