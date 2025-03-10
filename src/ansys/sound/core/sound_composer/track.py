@@ -230,7 +230,8 @@ class Track(SoundComposerParent):
                 "track_type",
                 [i for i in DICT_SOURCE_TYPE if isinstance(self.source, DICT_SOURCE_TYPE[i])][0],
             )
-            track_data.set_property("track_source", source_data)
+            if source_data is not None:
+                track_data.set_property("track_source", source_data)
             if source_control_data is not None:
                 track_data.set_property("track_source_control", source_control_data)
 

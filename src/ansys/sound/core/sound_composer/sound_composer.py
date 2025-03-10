@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Sound Composer project class."""
+import os
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, GenericDataContainersCollection, Operator
@@ -123,6 +124,15 @@ class SoundComposer(SoundComposerParent):
 
         track_collection = self.__operator_load.get_output(0, GenericDataContainersCollection)
 
+        if len(track_collection) == 0:
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    f"The project file `{os.path.basename(project_path)}` does not contain any "
+                    "track."
+                )
+            )
+
+        self.tracks = []
         for i in range(len(track_collection)):
             track = Track()
             track.set_from_generic_data_containers(track_collection.get_entry({"track_index": i}))
@@ -136,6 +146,14 @@ class SoundComposer(SoundComposerParent):
         project_path : str
             Path and file name (.scn) where the Sound Composer project shall be saved.
         """
+        if len(self.tracks) == 0:
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    f"There are no tracks to save. Use `{__class__.__name__}.tracks`, "
+                    f"`{__class__.__name__}.add_track()` or `{__class__.__name__}.load()`."
+                )
+            )
+
         track_collection = GenericDataContainersCollection()
         track_collection.add_label("track_index")
 
@@ -161,7 +179,7 @@ class SoundComposer(SoundComposerParent):
         if len(self.tracks) == 0:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    f"There are no track to process. Use `{__class__.__name__}.tracks`, "
+                    f"There are no tracks to process. Use `{__class__.__name__}.tracks`, "
                     f"`{__class__.__name__}.add_track()` or `{__class__.__name__}.load()`."
                 )
             )
