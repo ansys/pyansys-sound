@@ -26,6 +26,7 @@ dependencies = [
     "matplotlib>=3.8.2,<4",
     "platformdirs>=3.6.0",
     "requests>=2.30.0",
+    "scipy>=1.15.2",
 ]
 
 [project.optional-dependencies]

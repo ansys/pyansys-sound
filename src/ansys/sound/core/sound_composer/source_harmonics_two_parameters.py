@@ -316,7 +316,8 @@ class SourceHarmonicsTwoParameters(SourceParent):
         """Get the source and source control data as generic data containers.
 
         This method is meant to return the source data as generic data containers, in the format
-        needed to save a Sound Composer project file (.scn).
+        needed to save a Sound Composer project file (.scn) with the method
+        :meth:`SoundComposer.save()`.
 
         Returns
         -------
@@ -349,6 +350,14 @@ class SourceHarmonicsTwoParameters(SourceParent):
             )
             source_control_data.set_property(
                 "sound_composer_source_control_parameter_2", self.source_control2.control
+            )
+            source_control_data.set_property(
+                "sound_composer_source_control_two_parameter_displayed_string1",
+                self.source_control_rpm.control.name,
+            )
+            source_control_data.set_property(
+                "sound_composer_source_control_two_parameter_displayed_string2",
+                self.source_control2.control.name,
             )
 
         return (source_data, source_control_data)

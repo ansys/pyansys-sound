@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import os
 from unittest.mock import patch
 
 from ansys.dpf.core import Field
@@ -188,6 +189,37 @@ def test_sound_composer_load():
     assert sound_composer.tracks[6].filter is None
 
 
+def test_sound_composer_save():
+    """Test SoundComposer save method."""
+    sound_composer = SoundComposer(
+        project_path=pytest.data_path_sound_composer_project_in_container
+    )
+    path_to_save = pytest.temporary_folder + "/test_sound_composer_save.scn"
+    sound_composer.save(project_path=path_to_save)
+    assert os.path.exists(path_to_save)
+
+
+def test_sound_composer_save_load_warnings():
+    """Test SoundComposer load & save methods' warnings."""
+    sound_composer = SoundComposer()
+
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match=(
+            "There are no tracks to save. Use `SoundComposer.tracks`, "
+            "`SoundComposer.add_track\\(\\)` or `SoundComposer.load\\(\\)`."
+        ),
+    ):
+        sound_composer.save(project_path=pytest.temporary_folder + "/test_sound_composer_save.scn")
+
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="The project file `test_sound_composer_save.scn` does not contain any track.",
+    ):
+        sound_composer.load(project_path=pytest.temporary_folder + "/test_sound_composer_save.scn")
+    assert len(sound_composer.tracks) == 0
+
+
 def test_sound_composer_process():
     """Test SoundComposer process method (resample needed)."""
     sound_composer = SoundComposer(
@@ -203,7 +235,7 @@ def test_sound_composer_process_warning():
     with pytest.warns(
         PyAnsysSoundWarning,
         match=(
-            "There are no track to process. Use `SoundComposer.tracks`, "
+            "There are no tracks to process. Use `SoundComposer.tracks`, "
             "`SoundComposer.add_track\\(\\)` or `SoundComposer.load\\(\\)`."
         ),
     ):

@@ -247,7 +247,8 @@ class SourceBroadbandNoise(SourceParent):
         """Get the source and source control data as generic data containers.
 
         This method is meant to return the source data as generic data containers, in the format
-        needed to save a Sound Composer project file (.scn).
+        needed to save a Sound Composer project file (.scn) with the method
+        :meth:`SoundComposer.save()`.
 
         Returns
         -------
@@ -277,6 +278,10 @@ class SourceBroadbandNoise(SourceParent):
             source_control_data = GenericDataContainer()
             source_control_data.set_property(
                 "sound_composer_source_control_one_parameter", self.source_control.control
+            )
+            source_control_data.set_property(
+                "sound_composer_source_control_one_parameter_displayed_string",
+                self.source_control.control.name,
             )
 
         return (source_data, source_control_data)
