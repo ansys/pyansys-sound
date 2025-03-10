@@ -58,8 +58,7 @@ class SoundComposer(SoundComposerParent):
         """
         super().__init__()
         self.__operator_load = Operator(ID_OPERATOR_LOAD)
-        # Save operator is not implemented yet, because the FRF is not stored in the Filter class.
-        # self.__operator_save = Operator(ID_OPERATOR_SAVE)
+        self.__operator_save = Operator(ID_OPERATOR_SAVE)
 
         self.tracks = []
 
@@ -129,25 +128,25 @@ class SoundComposer(SoundComposerParent):
             track.set_from_generic_data_containers(track_collection.get_entry({"track_index": i}))
             self.add_track(track)
 
-    # TODO: Save cannot work for now because the FRF is not stored in the Filter class.
-    # def save(self, project_path: str):
-    #     """Save the Sound Composer project.
+    def save(self, project_path: str):
+        """Save the Sound Composer project.
 
-    #     Parameters
-    #     ----------
-    #     project_path : str
-    #         Path and file (.scn) name where the Sound Composer project shall be saved.
-    #     """
-    #     track_collection = GenericDataContainersCollection()
+        Parameters
+        ----------
+        project_path : str
+            Path and file (.scn) name where the Sound Composer project shall be saved.
+        """
+        track_collection = GenericDataContainersCollection()
+        track_collection.add_label("track_index")
 
-    #     for i, track in enumerate(self.tracks):
-    #         track_collection.add_entry({"track_index": i}, track.get_as_generic_data_container())
+        for i, track in enumerate(self.tracks):
+            track_collection.add_entry({"track_index": i}, track.get_as_generic_data_containers())
 
-    #     # Save the Sound Composer project.
-    #     self.__operator_save.connect(0, project_path)
-    #     self.__operator_save.connect(1, track_collection)
+        # Save the Sound Composer project.
+        self.__operator_save.connect(0, project_path)
+        self.__operator_save.connect(1, track_collection)
 
-    #     self.__operator_save.run()
+        self.__operator_save.run()
 
     def process(self, sampling_frequency: float = 44100.0):
         """Generate the signal of the current Sound Composer project.

@@ -193,52 +193,53 @@ class Track(SoundComposerParent):
         if track_data.get_property("track_is_filter") == 1:
             frequency_response_function = track_data.get_property("track_filter")
             self.filter = Filter(sampling_frequency=sampling_frequency)
-            self.filter.design_FIR_from_FRF(frequency_response_function)
+            self.filter.frf = frequency_response_function
         else:
             self.filter = None
 
-    # TODO: Save cannot work for now because the FRF is not stored in the Filter class.
-    # def get_as_generic_data_containers(self) -> GenericDataContainer:
-    #     """Get the track data as a generic data container.
+    def get_as_generic_data_containers(self) -> GenericDataContainer:
+        """Get the track data as a generic data container.
 
-    #     This method is meant to return the track data as a generic data container, in the format
-    #     needed to save a Sound Composer project file (.scn).
+        This method is meant to return the track data as a generic data container, in the format
+        needed to save a Sound Composer project file (.scn).
 
-    #     Returns
-    #     -------
-    #     GenericDataContainer
-    #         Track data as a generic data container.
-    #     """
-    #     if self.source is None:
-    #         warnings.warn(
-    #             PyAnsysSoundWarning(
-    #                 "Cannot create track generic data container because there is no source."
-    #             )
-    #         )
-    #         return None
-    #     else:
-    #         # Get source and source control as generic data containers.
-    #         source_data, source_control_data = self.source.get_as_generic_data_containers()
+        Returns
+        -------
+        GenericDataContainer
+            Track data as a generic data container.
+        """
+        if self.source is None:
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    "Cannot create track generic data container because there is no source."
+                )
+            )
+            return None
+        else:
+            # Get source and source control as generic data containers.
+            source_data, source_control_data = self.source.get_as_generic_data_containers()
 
-    #         # Create a generic data container for the track.
-    #         track_data = GenericDataContainer()
+            # Create a generic data container for the track.
+            track_data = GenericDataContainer()
 
-    #         # Set track generic data container properties.
-    #         track_data.set_property(
-    #             "track_type",
-    #             [i for i in DICT_SOURCE_TYPE if isinstance(self.source, DICT_SOURCE_TYPE[i])][0],
-    #         )
-    #         track_data.set_property("track_source", source_data)
-    #         track_data.set_property("track_source_control", source_control_data)
+            # Set track generic data container properties.
+            track_data.set_property("track_name", self.name)
+            track_data.set_property("track_gain", self.gain)
+            track_data.set_property(
+                "track_type",
+                [i for i in DICT_SOURCE_TYPE if isinstance(self.source, DICT_SOURCE_TYPE[i])][0],
+            )
+            track_data.set_property("track_source", source_data)
+            if source_control_data is not None:
+                track_data.set_property("track_source_control", source_control_data)
 
-    #         if self.filter is not None:
-    #             track_data.set_property("track_is_filter", 1)
-    #             # TODO: sort out the fact that FRF is not stored in the filter object
-    #             track_data.set_property("track_filter", self.filter.FRF)
-    #         else:
-    #             track_data.set_property("track_is_filter", 0)
+            if self.filter is not None and self.filter.frf is not None:
+                track_data.set_property("track_is_filter", 1)
+                track_data.set_property("track_filter", self.filter.frf)
+            else:
+                track_data.set_property("track_is_filter", 0)
 
-    #         return track_data
+            return track_data
 
     def process(self, sampling_frequency: float = 44100.0):
         """Generate the signal of the track, using the source and filter currently set.

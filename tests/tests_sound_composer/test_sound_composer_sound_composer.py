@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import os
 from unittest.mock import patch
 
 from ansys.dpf.core import Field
@@ -186,6 +187,16 @@ def test_sound_composer_load():
     assert sound_composer.tracks[6].name == "Harmo2ParamsRpmAsSecondParam"
     assert sound_composer.tracks[6].gain == 0.0
     assert sound_composer.tracks[6].filter is None
+
+
+def test_sound_composer_save():
+    """Test SoundComposer save method."""
+    sound_composer = SoundComposer(
+        project_path=pytest.data_path_sound_composer_project_in_container
+    )
+    path_to_save = pytest.temporary_folder + "/test_sound_composer_save.scn"
+    sound_composer.save(project_path=path_to_save)
+    assert os.path.exists(path_to_save)
 
 
 def test_sound_composer_process():

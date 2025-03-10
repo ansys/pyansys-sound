@@ -290,6 +290,10 @@ class SourceHarmonics(SourceParent):
             source_control_data.set_property(
                 "sound_composer_source_control_one_parameter", self.source_control.control
             )
+            source_control_data.set_property(
+                "sound_composer_source_control_one_parameter_displayed_string",
+                self.source_control.control.name,
+            )
 
         return (source_data, source_control_data)
 
