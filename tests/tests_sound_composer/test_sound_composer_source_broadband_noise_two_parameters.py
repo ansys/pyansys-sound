@@ -348,6 +348,8 @@ def test_source_broadband_noise_two_parameters_get_as_generic_data_containers():
     source_control_obj.control = f_source_control
     source_bbn_2p_obj.source_control1 = source_control_obj
     source_bbn_2p_obj.source_control1.description = "test1"
+    source_control_obj = SourceControlTime()
+    source_control_obj.control = f_source_control
     source_bbn_2p_obj.source_control2 = source_control_obj
     source_bbn_2p_obj.source_control2.description = "test2"
     with pytest.warns(
