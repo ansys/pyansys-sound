@@ -68,7 +68,6 @@ def test_filter_instantiation_no_arg():
 
 def test_filter_instantiation_args():
     """Test Filter instantiation with arguments."""
-    # Create a field to use in a suitable Field object (signal).
     fs = 44100.0
 
     support = TimeFreqSupport()
@@ -127,7 +126,6 @@ def test_filter_instantiation_args():
 
 def test_filter_instantiation_exception():
     """Test Filter instantiation's exception."""
-    # Create a field to use in a suitable Field object (signal).
     fs = 44100.0
 
     support = TimeFreqSupport()
