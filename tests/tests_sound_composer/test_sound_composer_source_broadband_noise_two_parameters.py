@@ -304,10 +304,10 @@ def test_source_broadband_noise_two_parameters_set_from_generic_data_containers(
     source_control_data.set_property("sound_composer_source_control_parameter_1", f_source_control)
     source_control_data.set_property("sound_composer_source_control_parameter_2", f_source_control)
     source_control_data.set_property(
-        "sound_composer_source_control_one_parameter_displayed_string1", "test1"
+        "sound_composer_source_control_two_parameter_displayed_string1", "test1"
     )
     source_control_data.set_property(
-        "sound_composer_source_control_one_parameter_displayed_string2", "test2"
+        "sound_composer_source_control_two_parameter_displayed_string2", "test2"
     )
 
     source_bbn_2p_obj = SourceBroadbandNoiseTwoParameters()
@@ -374,13 +374,13 @@ def test_source_broadband_noise_two_parameters_get_as_generic_data_containers():
     )
     assert (
         source_control_data.get_property(
-            "sound_composer_source_control_one_parameter_displayed_string1"
+            "sound_composer_source_control_two_parameter_displayed_string1"
         )
         == "test1"
     )
     assert (
         source_control_data.get_property(
-            "sound_composer_source_control_one_parameter_displayed_string2"
+            "sound_composer_source_control_two_parameter_displayed_string2"
         )
         == "test2"
     )
