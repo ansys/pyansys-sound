@@ -314,6 +314,9 @@ def test_source_harmonics_set_from_generic_data_containers():
     source_control_data.set_property(
         "sound_composer_source_control_one_parameter", f_source_control
     )
+    source_control_data.set_property(
+        "sound_composer_source_control_one_parameter_displayed_string", "test"
+    )
 
     source_harmo_obj = SourceHarmonics()
     source_harmo_obj.set_from_generic_data_containers(source_data, source_control_data)
@@ -321,6 +324,7 @@ def test_source_harmonics_set_from_generic_data_containers():
     assert len(source_harmo_obj.source_harmonics) == len(fc_data)
     assert isinstance(source_harmo_obj.source_control, SourceControlTime)
     assert len(source_harmo_obj.source_control.control.data) == 5
+    assert source_harmo_obj.source_control.description == "test"
 
 
 def test_source_harmonics_get_as_generic_data_containers():
@@ -348,6 +352,7 @@ def test_source_harmonics_get_as_generic_data_containers():
     source_control_obj = SourceControlTime()
     source_control_obj.control = f_source_control
     source_harmo_obj.source_control = source_control_obj
+    source_harmo_obj.source_control.description = "test"
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Cannot create source generic data container because there is no source data.",
@@ -366,6 +371,12 @@ def test_source_harmonics_get_as_generic_data_containers():
     assert isinstance(source_control_data, GenericDataContainer)
     assert isinstance(
         source_control_data.get_property("sound_composer_source_control_one_parameter"), Field
+    )
+    assert (
+        source_control_data.get_property(
+            "sound_composer_source_control_one_parameter_displayed_string"
+        )
+        == "test"
     )
 
 

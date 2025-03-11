@@ -243,6 +243,9 @@ def test_source_broadband_noise_set_from_generic_data_containers():
     source_control_data.set_property(
         "sound_composer_source_control_one_parameter", f_source_control
     )
+    source_control_data.set_property(
+        "sound_composer_source_control_one_parameter_displayed_string", "test"
+    )
 
     source_bbn_obj = SourceBroadbandNoise()
     source_bbn_obj.set_from_generic_data_containers(source_data, source_control_data)
@@ -250,6 +253,7 @@ def test_source_broadband_noise_set_from_generic_data_containers():
     assert len(source_bbn_obj.source_bbn) == len(fc_data)
     assert isinstance(source_bbn_obj.source_control, SourceControlTime)
     assert len(source_bbn_obj.source_control.control.data) == 5
+    assert source_bbn_obj.source_control.description == "test"
 
 
 def test_source_broadband_noise_get_as_generic_data_containers():
@@ -276,6 +280,7 @@ def test_source_broadband_noise_get_as_generic_data_containers():
     f_source_control.append([1.0, 2.0, 3.0, 4.0, 5.0], 1)
     source_bbn_obj.source_control = SourceControlTime()
     source_bbn_obj.source_control.control = f_source_control
+    source_bbn_obj.source_control.description = "test"
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Cannot create source generic data container because there is no source data.",
@@ -294,6 +299,12 @@ def test_source_broadband_noise_get_as_generic_data_containers():
     assert isinstance(source_control_data, GenericDataContainer)
     assert isinstance(
         source_control_data.get_property("sound_composer_source_control_one_parameter"), Field
+    )
+    assert (
+        source_control_data.get_property(
+            "sound_composer_source_control_one_parameter_displayed_string"
+        )
+        == "test"
     )
 
 
