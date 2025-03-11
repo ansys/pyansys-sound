@@ -149,7 +149,8 @@ class SoundComposer(SoundComposerParent):
         if len(self.tracks) == 0:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    f"There are no tracks to save. Use `{__class__.__name__}.tracks`, "
+                    "There are no tracks to save. The saved project will be empty. To add tracks "
+                    f"before saving the project, use `{__class__.__name__}.tracks`, "
                     f"`{__class__.__name__}.add_track()` or `{__class__.__name__}.load()`."
                 )
             )

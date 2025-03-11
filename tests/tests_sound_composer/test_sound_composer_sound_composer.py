@@ -206,8 +206,9 @@ def test_sound_composer_save_load_warnings():
     with pytest.warns(
         PyAnsysSoundWarning,
         match=(
-            "There are no tracks to save. Use `SoundComposer.tracks`, "
-            "`SoundComposer.add_track\\(\\)` or `SoundComposer.load\\(\\)`."
+            "There are no tracks to save. The saved project will be empty. To add tracks before "
+            "saving the project, use `SoundComposer.tracks`, `SoundComposer.add_track\\(\\)` or "
+            "`SoundComposer.load\\(\\)`."
         ),
     ):
         sound_composer.save(project_path=pytest.temporary_folder + "/test_sound_composer_save.scn")
