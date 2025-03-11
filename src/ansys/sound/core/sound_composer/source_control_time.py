@@ -104,7 +104,7 @@ class SourceControlTime(SourceControlParent):
         track's source control tab.
 
         .. note::
-            The description is reset every time the :attr:`control` property is modified.
+            The description is reset every time the attribute :attr:`control` is modified.
         """
         return self.__description
 
