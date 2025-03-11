@@ -308,9 +308,15 @@ class SourceHarmonicsTwoParameters(SourceParent):
         control = source_control_data.get_property("sound_composer_source_control_parameter_1")
         self.source_control_rpm = SourceControlTime()
         self.source_control_rpm.control = control
+        self.source_control_rpm.description = source_control_data.get_property(
+            "sound_composer_source_control_two_parameter_displayed_string1"
+        )
         control = source_control_data.get_property("sound_composer_source_control_parameter_2")
         self.source_control2 = SourceControlTime()
         self.source_control2.control = control
+        self.source_control2.description = source_control_data.get_property(
+            "sound_composer_source_control_two_parameter_displayed_string2"
+        )
 
     def get_as_generic_data_containers(self) -> tuple[GenericDataContainer]:
         """Get the source and source control data as generic data containers.
@@ -353,11 +359,11 @@ class SourceHarmonicsTwoParameters(SourceParent):
             )
             source_control_data.set_property(
                 "sound_composer_source_control_two_parameter_displayed_string1",
-                self.source_control_rpm.control.name,
+                self.source_control_rpm.description,
             )
             source_control_data.set_property(
                 "sound_composer_source_control_two_parameter_displayed_string2",
-                self.source_control2.control.name,
+                self.source_control2.description,
             )
 
         return (source_data, source_control_data)
