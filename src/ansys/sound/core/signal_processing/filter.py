@@ -88,7 +88,7 @@ class Filter(SignalProcessingParent):
         sampling_frequency : float, default: 44100.0
             Sampling frequency associated with the filter coefficients, in Hz.
         frf : Field, default: None
-            Frequency response function (FRF) of the filter. This is mutually exclusive with
+            Frequency response function (FRF) of the filter, in dB. This is mutually exclusive with
             parameters ``a_coefficients``, ``b_coefficients``, and ``file``.
         file : str, default: ""
             Path to the file containing the frequency response function (FRF) to load. The text
@@ -182,12 +182,15 @@ class Filter(SignalProcessingParent):
 
     @property
     def frf(self) -> Field:
-        """Frequency response function (FRF) of the filter."""
+        """Frequency response function (FRF) of the filter.
+
+        Contains the response magnitue in dB of the filter as a function of frequency.
+        """
         return self.__frf
 
     @frf.setter
     def frf(self, frf: Field):
-        """Set filter's frequency response function."""
+        """Set frequency response function."""
         if frf is not None:
             if not (isinstance(frf, Field)):
                 raise PyAnsysSoundException("Specified FRF must be provided as a DPF field.")
@@ -359,10 +362,7 @@ class Filter(SignalProcessingParent):
                 f"`{__class__.__name__}.design_FIR_from_FRF_file()` method."
             )
 
-        freq = self.frf.time_freq_support.time_frequencies.data
-        frf_dB = 20 * np.log10(self.frf.data)
-
-        plt.plot(freq, frf_dB)
+        plt.plot(self.frf.time_freq_support.time_frequencies.data, self.frf.data)
         plt.title("Frequency response function (FRF) of the filter")
         plt.xlabel("Frequency (Hz)")
         plt.ylabel("Magnitude (dB)")
@@ -439,5 +439,5 @@ class Filter(SignalProcessingParent):
             self.__frf = fields_factory.create_scalar_field(
                 num_entities=1, location=locations.time_freq
             )
-            self.__frf.append(abs(complex_response), 1)
+            self.__frf.append(20 * np.log10(abs(complex_response)), 1)
             self.__frf.time_freq_support = frf_support

@@ -54,6 +54,8 @@ EXP_OUTPUT8834 = 1.372925758
 EXP_OUTPUT13536 = -20.87648773
 EXP_OUTPUT24189 = 51.00528336
 EXP_OUTPUT43544 = -17.25708771
+EXP_FRF1 = 3.521825
+EXP_FRF2 = -6.020600
 
 
 def test_filter_instantiation_no_arg():
@@ -517,5 +519,5 @@ def test_filter___compute_FRF_from_coefficients():
 
     filter._Filter__compute_FRF_from_coefficients()
     assert len(filter.frf.data) == 2
-    assert filter.frf.data[0] == pytest.approx(1.5)
-    assert filter.frf.data[1] == pytest.approx(0.5)
+    assert filter.frf.data[0] == pytest.approx(EXP_FRF1)
+    assert filter.frf.data[1] == pytest.approx(EXP_FRF2)
