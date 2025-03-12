@@ -35,10 +35,10 @@ ID_COMPUTE_LOUDNESS_ISO_TIME_VARYING = "compute_loudness_iso532_1_vs_time"
 
 
 class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
-    """Computes ISO 532-1 loudness for time-varying sounds.
+    """Computes ISO 532-1:2017 loudness for time-varying sounds.
 
-    This class computes the loudness of a signal according to the ISO 532-1 standard for
-    time-varying sounds.
+    This class computes the loudness of a signal according to the ISO 532-1:2017 standard,
+    corresponding to the "Zwicker method", for time-varying sounds.
     """
 
     def __init__(
