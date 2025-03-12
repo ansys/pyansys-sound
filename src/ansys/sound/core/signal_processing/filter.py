@@ -184,7 +184,7 @@ class Filter(SignalProcessingParent):
     def frf(self) -> Field:
         """Frequency response function (FRF) of the filter.
 
-        Contains the response magnitue in dB of the filter as a function of frequency.
+        Contains the response magnitude in dB of the filter as a function of frequency.
         """
         return self.__frf
 
