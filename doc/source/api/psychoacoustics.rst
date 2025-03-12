@@ -11,6 +11,7 @@ which are useful to study and assess sound quality.
 
     LoudnessISO532_1_Stationary
     LoudnessISO532_1_TimeVarying
+    LoudnessISO532_2
     LoudnessANSI_S3_4
     SpectralCentroid
     Sharpness
