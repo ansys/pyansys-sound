@@ -207,6 +207,12 @@ def test_sound_composer_save():
     download_file(path_to_save, local_filepath)
     assert os.path.exists(local_filepath)
 
+    # Check saved project content against original project.
+    sound_composer_check = SoundComposer(project_path=local_filepath)
+    assert len(sound_composer_check.tracks) == len(sound_composer.tracks)
+    assert isinstance(sound_composer_check.tracks[0], Track)
+    assert isinstance(sound_composer_check.tracks[0].source, type(sound_composer.tracks[0].source))
+
     # Clean up the file.
     os.remove(local_filepath)
 
