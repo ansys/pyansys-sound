@@ -113,11 +113,10 @@ class Filter(SignalProcessingParent):
 
         # Check which filter definition source (coefficients, FRF, or FRF file) is provided (there
         # should be less than 2).
-        if (
-            (not (a_coefficients is None and b_coefficients is None))
-            + (frf is not None)
-            + (file != "")
-        ) > 1:
+        is_coefficient_specified = not (a_coefficients is None and b_coefficients is None)
+        is_frf_specified = frf is not None
+        is_frf_file_specified = file != ""
+        if (is_coefficient_specified + is_frf_specified + is_frf_file_specified) > 1:
             raise PyAnsysSoundException(
                 "Only one filter definition source (coefficients, FRF, or FRF file) must be "
                 "provided. Specify either `a_coefficients` and `b_coefficients`, `frf`, or `file`."
