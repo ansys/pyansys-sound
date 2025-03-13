@@ -188,6 +188,43 @@ def test_sound_composer_load():
     assert sound_composer.tracks[6].filter is None
 
 
+def test_sound_composer_save():
+    """Test SoundComposer save method."""
+    sound_composer = SoundComposer(
+        project_path=pytest.data_path_sound_composer_project_in_container
+    )
+    path_to_save = pytest.temporary_folder + "/test_sound_composer_save.scn"
+    sound_composer.save(project_path=path_to_save)
+
+    # Check saved project's content against original project.
+    sound_composer_check = SoundComposer(project_path=path_to_save)
+    assert len(sound_composer_check.tracks) == len(sound_composer.tracks)
+    assert isinstance(sound_composer_check.tracks[0], Track)
+    assert isinstance(sound_composer_check.tracks[0].source, type(sound_composer.tracks[0].source))
+
+
+def test_sound_composer_save_load_warnings():
+    """Test SoundComposer load & save methods' warnings."""
+    sound_composer = SoundComposer()
+
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match=(
+            "There are no tracks to save. The saved project will be empty. To add tracks before "
+            "saving the project, use `SoundComposer.tracks`, `SoundComposer.add_track\\(\\)` or "
+            "`SoundComposer.load\\(\\)`."
+        ),
+    ):
+        sound_composer.save(project_path=pytest.temporary_folder + "/test_sound_composer_save.scn")
+
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="The project file `test_sound_composer_save.scn` does not contain any track.",
+    ):
+        sound_composer.load(project_path=pytest.temporary_folder + "/test_sound_composer_save.scn")
+    assert len(sound_composer.tracks) == 0
+
+
 def test_sound_composer_process():
     """Test SoundComposer process method (resample needed)."""
     sound_composer = SoundComposer(
@@ -203,7 +240,7 @@ def test_sound_composer_process_warning():
     with pytest.warns(
         PyAnsysSoundWarning,
         match=(
-            "There are no track to process. Use `SoundComposer.tracks`, "
+            "There are no tracks to process. Use `SoundComposer.tracks`, "
             "`SoundComposer.add_track\\(\\)` or `SoundComposer.load\\(\\)`."
         ),
     ):

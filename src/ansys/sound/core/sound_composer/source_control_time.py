@@ -92,6 +92,29 @@ class SourceControlTime(SourceControlParent):
 
         self.__control = control
 
+        # Reset the description to store when saving a Sound Composer project (.scn file).
+        self.description = "Profile created in PyAnsys Sound."
+
+    @property
+    def description(self) -> str:
+        """Description of the control profile.
+
+        This description is used when saving a Sound Composer project (.scn file). When loading the
+        project file in the Sound Composer module of SAS, this description is displayed in the
+        track's source control tab.
+
+        .. note::
+            The description is reset every time the attribute :attr:`control` is modified.
+        """
+        return self.__description
+
+    @description.setter
+    def description(self, description: str):
+        """Set the description."""
+        if not isinstance(description, str):
+            raise PyAnsysSoundException("Description must be a string.")
+        self.__description = description
+
     def load_from_wave_file(self, file_str: str):
         """Load control data from a WAV file.
 
