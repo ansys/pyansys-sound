@@ -20,10 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
 from unittest.mock import patch
 
-from ansys.dpf.core import Field, download_file
+from ansys.dpf.core import Field
 import numpy as np
 import pytest
 
@@ -197,24 +196,11 @@ def test_sound_composer_save():
     path_to_save = pytest.temporary_folder + "/test_sound_composer_save.scn"
     sound_composer.save(project_path=path_to_save)
 
-    local_filepath = os.path.join(os.path.dirname(__file__), "../data/temp.scn")
-
-    # Remove any pre-existing file of the same path and name.
-    if os.path.exists(local_filepath):
-        os.remove(local_filepath)
-
-    # Re-download saved project and check that it exists.
-    download_file(path_to_save, local_filepath)
-    assert os.path.exists(local_filepath)
-
-    # Check saved project content against original project.
-    sound_composer_check = SoundComposer(project_path=local_filepath)
+    # Check saved project's content against original project.
+    sound_composer_check = SoundComposer(project_path=path_to_save)
     assert len(sound_composer_check.tracks) == len(sound_composer.tracks)
     assert isinstance(sound_composer_check.tracks[0], Track)
     assert isinstance(sound_composer_check.tracks[0].source, type(sound_composer.tracks[0].source))
-
-    # Clean up the file.
-    os.remove(local_filepath)
 
 
 def test_sound_composer_save_load_warnings():
