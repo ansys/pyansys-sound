@@ -64,8 +64,8 @@ class WriteWav(SignalUtilitiesParent):
     def signal(self) -> Field | FieldsContainer:
         """Input signal.
 
-        Signal may be single-channel (Field, or FieldsContainer with one Field) or multichannel
-        (FieldsContainer with more than one Field).
+        Signal may be single-channel (``Field``, or ``FieldsContainer`` with one ``Field``) or
+        multichannel (``FieldsContainer`` with more than one ``Field``).
         """
         return self.__signal
 
