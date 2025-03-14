@@ -35,14 +35,13 @@ def test_write_wav_instantiation():
 
 def test_write_wav_process():
     wav_writer = WriteWav()
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
 
     # Error 1
-    with pytest.raises(PyAnsysSoundException) as excinfo:
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Path for writing WAV file is not specified. Use `WriteWav.path_to_write`.",
+    ):
         wav_writer.process()
-    assert (
-        str(excinfo.value) == "Path for writing WAV file is not specified. Use 'WriteWav.set_path'."
-    )
 
     wav_writer.path_to_write = pytest.temporary_folder + r"\flute_modified.wav"
 
@@ -52,13 +51,18 @@ def test_write_wav_process():
     assert (
         str(excinfo.value)
         == "No signal is specified for writing to a WAV file. \
-                    Use 'WriteWav.set_signal'."
+                    Use `WriteWav.signal`."
     )
 
+    wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
-    wav_writer.signal = wav_loader.get_output()
 
-    # Computing, no error expected
+    # Test process with FieldsContainer
+    wav_writer.signal = wav_loader.get_output()
+    wav_writer.process()
+
+    # Test process with Field
+    wav_writer.signal = wav_loader.get_output()[0]
     wav_writer.process()
 
 
@@ -90,10 +94,14 @@ def test_write_wav_set_get_bit_depth():
 
 def test_write_wav_set_get_signal():
     wav_writer = WriteWav()
-    fc = FieldsContainer()
-    fc.labels = ["channel"]
     f = Field()
     f.data = 42 * np.ones(3)
+    wav_writer.signal = f
+    f_from_get = wav_writer.signal
+    assert f_from_get.data[0, 2] == 42
+
+    fc = FieldsContainer()
+    fc.labels = ["channel"]
     fc.add_field({"channel": 0}, f)
     fc.name = "testField"
     wav_writer.signal = fc
@@ -102,6 +110,11 @@ def test_write_wav_set_get_signal():
     assert fc_from_get.name == "testField"
     assert len(fc_from_get) == 1
     assert fc_from_get[0].data[0, 2] == 42
+
+    with pytest.raises(
+        PyAnsysSoundException, match="Signal must be specified as a `Field` or `FieldsContainer`."
+    ):
+        wav_writer.signal = "WrongType"
 
 
 def test_write_wav_plot():

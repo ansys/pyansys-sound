@@ -24,7 +24,7 @@
 
 import warnings
 
-from ansys.dpf.core import DataSources, FieldsContainer, Operator
+from ansys.dpf.core import DataSources, Field, FieldsContainer, Operator
 
 from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -34,14 +34,17 @@ class WriteWav(SignalUtilitiesParent):
     """Writes a signal into a WAV file."""
 
     def __init__(
-        self, signal: FieldsContainer = None, path_to_write: str = "", bit_depth: str = "float32"
+        self,
+        signal: Field | FieldsContainer = None,
+        path_to_write: str = "",
+        bit_depth: str = "float32",
     ):
         """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        signal : FieldsContainer, default: None
-            Signal to write to a WAV file. Each channel in the DPF fields container is a field.
+        signal : Field | FieldsContainer, default: None
+            Signal to write to a WAV file.
         path_to_write : str, default: ''
             Path for the WAV file. This parameter can be set during the instantiation
             of the object or with the ``LoadWav.set_path()`` method.
@@ -57,20 +60,27 @@ class WriteWav(SignalUtilitiesParent):
         self.__operator = Operator("write_wav_sas")
 
     @property
-    def signal(self) -> FieldsContainer:
-        """Input signal as a DPF fields container."""
+    def signal(self) -> Field | FieldsContainer:
+        """Input signal.
+
+        Signal be single-channel (Field, or FieldsContainer with one Field) or multichannel.
+        """
         return self.__signal
 
     @signal.setter
-    def signal(self, signal: FieldsContainer):
+    def signal(self, signal: Field | FieldsContainer):
         """Setter for the signal."""
+        if not isinstance(signal, (Field, FieldsContainer)) and signal is not None:
+            raise PyAnsysSoundException(
+                "Signal must be specified as a `Field` or `FieldsContainer`."
+            )
         self.__signal = signal
 
     @property
     def bit_depth(self) -> str:
         """Bit depth.
 
-        Options are ``'float32'``, ``'int32'``, ``'int16'``, and ``'int8'``. These mean that the
+        Options are `'float32'`, `'int32'`, `'int16'`, and `'int8'`. These mean that the
         samples are coded into the WAV file using 32 bits (32-bit IEEE Float), 32 bits (int),
         16 bits (int), or 8 bits (int), respectively.
         """
@@ -103,13 +113,13 @@ class WriteWav(SignalUtilitiesParent):
         """
         if self.path_to_write == "":
             raise PyAnsysSoundException(
-                "Path for writing WAV file is not specified. Use 'WriteWav.set_path'."
+                "Path for writing WAV file is not specified. Use `WriteWav.path_to_write`."
             )
 
         if self.signal == None:
             raise PyAnsysSoundException(
                 "No signal is specified for writing to a WAV file. \
-                    Use 'WriteWav.set_signal'."
+                    Use `WriteWav.signal`."
             )
 
         data_source_out = DataSources()
