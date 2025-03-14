@@ -24,6 +24,7 @@ import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.sound_composer import SourceControlSpectrum
+from ansys.sound.core.sound_composer import SpectrumSynthesisMethods as Methods
 
 EXP_STR = "Duration: 0.0 s\nMethod: IFFT"
 
@@ -44,8 +45,8 @@ def test_source_control_spectrum_properties():
     assert control.duration == 1.0
 
     # Test method setter.
-    control.method = 1
-    assert control.method == 1
+    control.method = Methods.Hybrid
+    assert control.method == Methods.Hybrid
 
 
 def test_source_control_spectrum_propertiess_exceptions():
@@ -59,9 +60,12 @@ def test_source_control_spectrum_propertiess_exceptions():
     # Test method setter exception.
     with pytest.raises(
         PyAnsysSoundException,
-        match="Method must be an integer. Available options are:\n0: IFFT\n1: Hybrid",
+        match=(
+            "Specified method must be of type `SpectrumSynthesisMethods`. Available methods are: "
+            "IFFT, Hybrid."
+        ),
     ):
-        control.method = 3
+        control.method = "WrongType"
 
 
 def test_source_control_spectrum___str__():

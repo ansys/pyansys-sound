@@ -36,6 +36,7 @@ import pytest
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.signal_utilities.load_wav import LoadWav
 from ansys.sound.core.sound_composer import SourceControlSpectrum, SourceSpectrum
+from ansys.sound.core.sound_composer import SpectrumSynthesisMethods as Methods
 from ansys.sound.core.spectral_processing import PowerSpectralDensity
 
 REF_ACOUSTIC_POWER = 4e-10
@@ -199,14 +200,14 @@ def test_source_spectrum_set_from_generic_data_containers():
 
     source_control_data = GenericDataContainer()
     source_control_data.set_property("sound_composer_source_control_spectrum_duration", 1.0)
-    source_control_data.set_property("sound_composer_source_control_spectrum_method", 1)
+    source_control_data.set_property("sound_composer_source_control_spectrum_method", "Hybrid")
 
     source_spectrum = SourceSpectrum()
     source_spectrum.set_from_generic_data_containers(source_data, source_control_data)
     assert isinstance(source_spectrum.source_spectrum_data, Field)
     assert len(source_spectrum.source_spectrum_data.data) == len(f_data.data)
     assert source_spectrum.source_control.duration == 1.0
-    assert source_spectrum.source_control.method == 1
+    assert source_spectrum.source_control.method == Methods.Hybrid
 
 
 def test_source_spectrum_get_as_generic_data_containers():
@@ -248,7 +249,9 @@ def test_source_spectrum_get_as_generic_data_containers():
     assert (
         source_control_data.get_property("sound_composer_source_control_spectrum_duration") == 1.0
     )
-    assert source_control_data.get_property("sound_composer_source_control_spectrum_method") == 0
+    assert (
+        source_control_data.get_property("sound_composer_source_control_spectrum_method") == "IFFT"
+    )
 
 
 def test_source_spectrum_process():

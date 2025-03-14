@@ -41,8 +41,11 @@ from ansys.sound.core.sound_composer import (
     SourceControlSpectrum,
     SourceControlTime,
     SourceSpectrum,
+)
+from ansys.sound.core.sound_composer import (
     Track,
 )
+from ansys.sound.core.sound_composer import SpectrumSynthesisMethods as Methods
 from ansys.sound.core.spectral_processing.power_spectral_density import PowerSpectralDensity
 
 REF_ACOUSTIC_POWER = 4e-10
@@ -132,7 +135,7 @@ def test_track_properties_exceptions():
 def test_track_set_from_generic_data_containers():
     """Test Track set_from_generic_data_containers method."""
     # Create generic data containers for the source and source control.
-    source_control = SourceControlSpectrum(duration=3.0, method=1)
+    source_control = SourceControlSpectrum(duration=3.0, method=Methods.Hybrid)
     source = SourceSpectrum(
         file_source=pytest.data_path_sound_composer_spectrum_source_in_container,
         source_control=source_control,
@@ -157,7 +160,7 @@ def test_track_set_from_generic_data_containers():
     assert len(track.source.source_spectrum_data.data) == len(source.source_spectrum_data.data)
     assert isinstance(track.source.source_control, SourceControlSpectrum)
     assert track.source.source_control.duration == 3.0
-    assert track.source.source_control.method == 1
+    assert track.source.source_control.method == Methods.Hybrid
     assert track.filter is None
 
     # Add a filter to the generic data container.
@@ -176,14 +179,14 @@ def test_track_set_from_generic_data_containers():
     assert len(track.source.source_spectrum_data.data) == len(source.source_spectrum_data.data)
     assert isinstance(track.source.source_control, SourceControlSpectrum)
     assert track.source.source_control.duration == 3.0
-    assert track.source.source_control.method == 1
+    assert track.source.source_control.method == Methods.Hybrid
     assert isinstance(track.filter, Filter)
 
 
 def test_track_get_as_generic_data_containers():
     """Test Track get_as_generic_data_containers method."""
     # Create a source and a source control.
-    source_control = SourceControlSpectrum(duration=3.0, method=1)
+    source_control = SourceControlSpectrum(duration=3.0, method=Methods.Hybrid)
     source = SourceSpectrum(
         file_source=pytest.data_path_sound_composer_spectrum_source_in_container,
         source_control=source_control,
@@ -256,7 +259,7 @@ def test_track_process():
         gain=3.0,
         source=SourceSpectrum(
             file_source=pytest.data_path_sound_composer_spectrum_source_in_container,
-            source_control=SourceControlSpectrum(duration=3.0, method=1),
+            source_control=SourceControlSpectrum(duration=3.0, method=Methods.Hybrid),
         ),
         filter=Filter(a_coefficients=[1.0], b_coefficients=[1.0, 0.5]),
     )
@@ -300,7 +303,7 @@ def test_track_get_output():
         gain=3.0,
         source=SourceSpectrum(
             file_source=pytest.data_path_sound_composer_spectrum_source_in_container,
-            source_control=SourceControlSpectrum(duration=3.0, method=1),
+            source_control=SourceControlSpectrum(duration=3.0, method=Methods.Hybrid),
         ),
         filter=Filter(a_coefficients=[1.0], b_coefficients=[1.0, 0.5]),
     )
@@ -363,7 +366,7 @@ def test_track_get_output_as_nparray():
         gain=3.0,
         source=SourceSpectrum(
             file_source=pytest.data_path_sound_composer_spectrum_source_in_container,
-            source_control=SourceControlSpectrum(duration=3.0, method=1),
+            source_control=SourceControlSpectrum(duration=3.0, method=Methods.Hybrid),
         ),
         filter=Filter(a_coefficients=[1.0], b_coefficients=[1.0, 0.5]),
     )

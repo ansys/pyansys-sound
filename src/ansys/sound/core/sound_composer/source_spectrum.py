@@ -28,6 +28,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ._source_control_parent import SpectrumSynthesisMethods as Methods
 from ._source_parent import SourceParent
 from .source_control_spectrum import SourceControlSpectrum
 
@@ -92,7 +93,7 @@ class SourceSpectrum(SourceParent):
 
         if self.is_source_control_valid():
             str_source_control = (
-                f"{self.source_control.get_method_name()}, {self.source_control.duration} s"
+                f"{self.source_control.method.value}, {self.source_control.duration} s"
             )
         else:
             str_source_control = "Not set/valid"
@@ -195,7 +196,9 @@ class SourceSpectrum(SourceParent):
         duration = source_control_data.get_property(
             "sound_composer_source_control_spectrum_duration"
         )
-        method = source_control_data.get_property("sound_composer_source_control_spectrum_method")
+        method = Methods[
+            source_control_data.get_property("sound_composer_source_control_spectrum_method")
+        ]
         self.source_control = SourceControlSpectrum(duration=duration, method=method)
 
     def get_as_generic_data_containers(self) -> tuple[GenericDataContainer]:
@@ -235,7 +238,7 @@ class SourceSpectrum(SourceParent):
                 "sound_composer_source_control_spectrum_duration", self.source_control.duration
             )
             source_control_data.set_property(
-                "sound_composer_source_control_spectrum_method", self.source_control.method
+                "sound_composer_source_control_spectrum_method", self.source_control.method.value
             )
 
         return (source_data, source_control_data)
@@ -271,7 +274,7 @@ class SourceSpectrum(SourceParent):
         # Set operator inputs.
         self.__operator_generate.connect(0, self.source_spectrum_data)
         self.__operator_generate.connect(1, self.source_control.duration)
-        self.__operator_generate.connect(2, self.source_control.get_method_name())
+        self.__operator_generate.connect(2, self.source_control.method.value)
         self.__operator_generate.connect(3, sampling_frequency)
 
         # Run the operator.
