@@ -44,8 +44,9 @@ class WriteWav(SignalUtilitiesParent):
         Parameters
         ----------
         signal : Field | FieldsContainer, default: None
-            Signal to write to a WAV file. Signal may be single-channel (Field, or FieldsContainer
-            with one Field) or multichannel (FieldsContainer with more than one Field).
+            Signal to write to a WAV file. Signal may be single-channel (``Field``, or
+            ``FieldsContainer`` with one ``Field``) or multichannel (``FieldsContainer`` with more
+            than one ``Field``).
         path_to_write : str, default: ''
             Path for the WAV file.
         bit_depth : str, default: 'float32'
