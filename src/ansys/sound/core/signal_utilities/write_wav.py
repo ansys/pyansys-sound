@@ -44,7 +44,8 @@ class WriteWav(SignalUtilitiesParent):
         Parameters
         ----------
         signal : Field | FieldsContainer, default: None
-            Signal to write to a WAV file.
+            Signal to write to a WAV file. Signal may be single-channel (Field, or FieldsContainer
+            with one Field) or multichannel (FieldsContainer with more than one Field).
         path_to_write : str, default: ''
             Path for the WAV file. This parameter can be set during the instantiation
             of the object or with the ``LoadWav.set_path()`` method.
@@ -63,7 +64,8 @@ class WriteWav(SignalUtilitiesParent):
     def signal(self) -> Field | FieldsContainer:
         """Input signal.
 
-        Signal be single-channel (Field, or FieldsContainer with one Field) or multichannel.
+        Signal may be single-channel (Field, or FieldsContainer with one Field) or multichannel
+        (FieldsContainer with more than one Field).
         """
         return self.__signal
 
