@@ -180,6 +180,76 @@ def test_track_set_from_generic_data_containers():
     assert isinstance(track.filter, Filter)
 
 
+def test_track_get_as_generic_data_containers():
+    """Test Track get_as_generic_data_containers method."""
+    # Create a source and a source control.
+    source_control = SourceControlSpectrum(duration=3.0, method=1)
+    source = SourceSpectrum(
+        file_source=pytest.data_path_sound_composer_spectrum_source_in_container,
+        source_control=source_control,
+    )
+
+    # Create a track (no filter).
+    track = Track(
+        name="My track",
+        gain=15.6,
+        source=source,
+    )
+
+    # Test method get_as_generic_data_containers.
+    track_data = track.get_as_generic_data_containers()
+    assert set(track_data.get_property_description()) == {
+        "track_name",
+        "track_gain",
+        "track_type",
+        "track_source",
+        "track_source_control",
+        "track_is_filter",
+    }
+    assert track_data.get_property("track_name") == "My track"
+    assert track_data.get_property("track_gain") == 15.6
+    assert track_data.get_property("track_type") == 5
+    assert isinstance(track_data.get_property("track_source"), GenericDataContainer)
+    assert isinstance(track_data.get_property("track_source_control"), GenericDataContainer)
+    assert track_data.get_property("track_is_filter") == 0
+
+    # Add a filter to the track.
+    track.filter = Filter(a_coefficients=[1.0], b_coefficients=[1.0, 0.5])
+
+    # Test method get_as_generic_data_containers again.
+    track_data = track.get_as_generic_data_containers()
+    assert set(track_data.get_property_description()) == {
+        "track_name",
+        "track_gain",
+        "track_type",
+        "track_source",
+        "track_source_control",
+        "track_is_filter",
+        "track_filter",
+    }
+    assert track_data.get_property("track_name") == "My track"
+    assert track_data.get_property("track_gain") == 15.6
+    assert track_data.get_property("track_type") == 5
+    assert isinstance(track_data.get_property("track_source"), GenericDataContainer)
+    assert isinstance(track_data.get_property("track_source_control"), GenericDataContainer)
+    assert track_data.get_property("track_is_filter") == 1
+    assert isinstance(track_data.get_property("track_filter"), Field)
+
+
+def test_track_get_as_generic_data_containers_warning():
+    """Test Track get_as_generic_data_containers method's warning."""
+    # Create a track.
+    track = Track()
+
+    # Test method get_as_generic_data_containers.
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Cannot create track generic data container because there is no source.",
+    ):
+        track_data = track.get_as_generic_data_containers()
+    assert track_data is None
+
+
 def test_track_process():
     """Test Track process method (no resample needed)."""
     track = Track(

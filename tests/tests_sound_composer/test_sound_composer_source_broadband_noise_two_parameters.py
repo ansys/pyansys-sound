@@ -303,6 +303,12 @@ def test_source_broadband_noise_two_parameters_set_from_generic_data_containers(
     source_control_data = GenericDataContainer()
     source_control_data.set_property("sound_composer_source_control_parameter_1", f_source_control)
     source_control_data.set_property("sound_composer_source_control_parameter_2", f_source_control)
+    source_control_data.set_property(
+        "sound_composer_source_control_two_parameter_displayed_string1", "test1"
+    )
+    source_control_data.set_property(
+        "sound_composer_source_control_two_parameter_displayed_string2", "test2"
+    )
 
     source_bbn_2p_obj = SourceBroadbandNoiseTwoParameters()
     source_bbn_2p_obj.set_from_generic_data_containers(source_data, source_control_data)
@@ -312,6 +318,8 @@ def test_source_broadband_noise_two_parameters_set_from_generic_data_containers(
     assert len(source_bbn_2p_obj.source_control1.control.data) == 5
     assert isinstance(source_bbn_2p_obj.source_control2, SourceControlTime)
     assert len(source_bbn_2p_obj.source_control2.control.data) == 5
+    assert source_bbn_2p_obj.source_control1.description == "test1"
+    assert source_bbn_2p_obj.source_control2.description == "test2"
 
 
 def test_source_broadband_noise_two_parameters_get_as_generic_data_containers():
@@ -339,7 +347,11 @@ def test_source_broadband_noise_two_parameters_get_as_generic_data_containers():
     source_control_obj = SourceControlTime()
     source_control_obj.control = f_source_control
     source_bbn_2p_obj.source_control1 = source_control_obj
+    source_bbn_2p_obj.source_control1.description = "test1"
+    source_control_obj = SourceControlTime()
+    source_control_obj.control = f_source_control
     source_bbn_2p_obj.source_control2 = source_control_obj
+    source_bbn_2p_obj.source_control2.description = "test2"
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Cannot create source generic data container because there is no source data.",
@@ -361,6 +373,18 @@ def test_source_broadband_noise_two_parameters_get_as_generic_data_containers():
     )
     assert isinstance(
         source_control_data.get_property("sound_composer_source_control_parameter_2"), Field
+    )
+    assert (
+        source_control_data.get_property(
+            "sound_composer_source_control_two_parameter_displayed_string1"
+        )
+        == "test1"
+    )
+    assert (
+        source_control_data.get_property(
+            "sound_composer_source_control_two_parameter_displayed_string2"
+        )
+        == "test2"
     )
 
 

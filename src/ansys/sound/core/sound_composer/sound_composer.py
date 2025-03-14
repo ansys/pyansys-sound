@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Sound Composer project class."""
+import os
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, GenericDataContainersCollection, Operator
@@ -58,8 +59,7 @@ class SoundComposer(SoundComposerParent):
         """
         super().__init__()
         self.__operator_load = Operator(ID_OPERATOR_LOAD)
-        # Save operator is not implemented yet, because the FRF is not stored in the Filter class.
-        # self.__operator_save = Operator(ID_OPERATOR_SAVE)
+        self.__operator_save = Operator(ID_OPERATOR_SAVE)
 
         self.tracks = []
 
@@ -124,30 +124,48 @@ class SoundComposer(SoundComposerParent):
 
         track_collection = self.__operator_load.get_output(0, GenericDataContainersCollection)
 
+        if len(track_collection) == 0:
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    f"The project file `{os.path.basename(project_path)}` does not contain any "
+                    "track."
+                )
+            )
+
+        self.tracks = []
         for i in range(len(track_collection)):
             track = Track()
             track.set_from_generic_data_containers(track_collection.get_entry({"track_index": i}))
             self.add_track(track)
 
-    # TODO: Save cannot work for now because the FRF is not stored in the Filter class.
-    # def save(self, project_path: str):
-    #     """Save the Sound Composer project.
+    def save(self, project_path: str):
+        """Save the Sound Composer project.
 
-    #     Parameters
-    #     ----------
-    #     project_path : str
-    #         Path and file (.scn) name where the Sound Composer project shall be saved.
-    #     """
-    #     track_collection = GenericDataContainersCollection()
+        Parameters
+        ----------
+        project_path : str
+            Path and file name (.scn) where the Sound Composer project shall be saved.
+        """
+        if len(self.tracks) == 0:
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    "There are no tracks to save. The saved project will be empty. To add tracks "
+                    f"before saving the project, use `{__class__.__name__}.tracks`, "
+                    f"`{__class__.__name__}.add_track()` or `{__class__.__name__}.load()`."
+                )
+            )
 
-    #     for i, track in enumerate(self.tracks):
-    #         track_collection.add_entry({"track_index": i}, track.get_as_generic_data_container())
+        track_collection = GenericDataContainersCollection()
+        track_collection.add_label("track_index")
 
-    #     # Save the Sound Composer project.
-    #     self.__operator_save.connect(0, project_path)
-    #     self.__operator_save.connect(1, track_collection)
+        for i, track in enumerate(self.tracks):
+            track_collection.add_entry({"track_index": i}, track.get_as_generic_data_containers())
 
-    #     self.__operator_save.run()
+        # Save the Sound Composer project.
+        self.__operator_save.connect(0, project_path)
+        self.__operator_save.connect(1, track_collection)
+
+        self.__operator_save.run()
 
     def process(self, sampling_frequency: float = 44100.0):
         """Generate the signal of the current Sound Composer project.
@@ -162,7 +180,7 @@ class SoundComposer(SoundComposerParent):
         if len(self.tracks) == 0:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    f"There are no track to process. Use `{__class__.__name__}.tracks`, "
+                    f"There are no tracks to process. Use `{__class__.__name__}.tracks`, "
                     f"`{__class__.__name__}.add_track()` or `{__class__.__name__}.load()`."
                 )
             )

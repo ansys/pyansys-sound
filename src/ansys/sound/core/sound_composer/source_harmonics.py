@@ -254,12 +254,16 @@ class SourceHarmonics(SourceParent):
         control = source_control_data.get_property("sound_composer_source_control_one_parameter")
         self.source_control = SourceControlTime()
         self.source_control.control = control
+        self.source_control.description = source_control_data.get_property(
+            "sound_composer_source_control_one_parameter_displayed_string"
+        )
 
     def get_as_generic_data_containers(self) -> tuple[GenericDataContainer]:
         """Get the source and source control data as generic data containers.
 
         This method is meant to return the source data as generic data containers, in the format
-        needed to save a Sound Composer project file (.scn).
+        needed to save a Sound Composer project file (.scn) with the method
+        :meth:`SoundComposer.save()`.
 
         Returns
         -------
@@ -289,6 +293,10 @@ class SourceHarmonics(SourceParent):
             source_control_data = GenericDataContainer()
             source_control_data.set_property(
                 "sound_composer_source_control_one_parameter", self.source_control.control
+            )
+            source_control_data.set_property(
+                "sound_composer_source_control_one_parameter_displayed_string",
+                self.source_control.description,
             )
 
         return (source_data, source_control_data)
