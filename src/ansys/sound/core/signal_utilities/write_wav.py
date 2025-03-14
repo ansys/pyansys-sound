@@ -47,10 +47,9 @@ class WriteWav(SignalUtilitiesParent):
             Signal to write to a WAV file. Signal may be single-channel (Field, or FieldsContainer
             with one Field) or multichannel (FieldsContainer with more than one Field).
         path_to_write : str, default: ''
-            Path for the WAV file. This parameter can be set during the instantiation
-            of the object or with the ``LoadWav.set_path()`` method.
+            Path for the WAV file.
         bit_depth : str, default: 'float32'
-            Bit depth. Options are ``'float32'``, ``'int32'``, ``'int16'``, and ``'int8'``.
+            Bit depth. Options are `'float32'`, `'int32'`, `'int16'`, and `'int8'`.
             These mean that the samples are coded into the WAV file using 32 bits (32-bit IEEE
             Float), 32 bits (int), 16 bits (int), or 8 bits (int), respectively.
         """
