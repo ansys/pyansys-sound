@@ -34,11 +34,11 @@ class SpectrumSynthesisMethods(Enum):
         the DPF Sound operators.
     """
 
-    IFFT = 0
+    IFFT = "IFFT"
     """IFFT: sound generation method based on the Inverse Fast Fourier Transform of the input
     spectrum, using random phases."""
 
-    Hybrid = 1
+    Hybrid = "Hybrid"
     """Hybrid: sound generation method that combines generation of pure tones and IFFT.
     If peaks are detected in the input spectrum, they are generated as pure tones (sine waves).
     The rest is synthesized using the IFFT method."""

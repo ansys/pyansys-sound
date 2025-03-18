@@ -44,14 +44,15 @@ REF_ACOUSTIC_POWER = 4e-10
 EXP_LEVEL_OCTAVE_BAND = [71.9, 78.7, 66.2]
 EXP_STR_NOT_SET = "Sound Composer object (0 track(s))"
 EXP_STR_ALL_SET = (
-    "Sound Composer object (7 track(s))\n"
+    "Sound Composer object (8 track(s))\n"
     '\tTrack 1: SourceBroadbandNoise, "BBN", gain = +0.0 dB\n'
     '\tTrack 2: SourceSpectrum, "Spectrum", gain = +0.0 dB\n'
     '\tTrack 3: SourceAudio, "Audio", gain = +10.0 dB\n'
     '\tTrack 4: SourceBroadbandNoiseTwoParameters, "BBN2Params", gain = +0.0 dB\n'
     '\tTrack 5: SourceHarmonics, "Harmo", gain = +0.0 dB\n'
     '\tTrack 6: SourceHarmonicsTwoParameters, "Harmo2Params", gain = +0.0 dB\n'
-    '\tTrack 7: SourceHarmonicsTwoParameters, "Harmo2ParamsRpmAsSecondParam", gain = +0.0 dB'
+    '\tTrack 7: SourceHarmonicsTwoParameters, "Harmo2ParamsRpmAsSecondParam", gain = +0.0 dB\n'
+    '\tTrack 8: SourceSpectrum, "HybridSpectrumSource", gain = +0.0 dB'
 )
 
 
@@ -71,7 +72,7 @@ def test_sound_composer_instantiation_all_args():
     )
 
     assert isinstance(sound_composer, SoundComposer)
-    assert len(sound_composer.tracks) == 7
+    assert len(sound_composer.tracks) == 8
     assert isinstance(sound_composer.tracks[0].source, SourceBroadbandNoise)
     assert sound_composer.tracks[0].name == "BBN"
     assert sound_composer.tracks[0].gain == 0.0
@@ -100,6 +101,10 @@ def test_sound_composer_instantiation_all_args():
     assert sound_composer.tracks[6].name == "Harmo2ParamsRpmAsSecondParam"
     assert sound_composer.tracks[6].gain == 0.0
     assert sound_composer.tracks[6].filter is None
+    assert isinstance(sound_composer.tracks[7].source, SourceSpectrum)
+    assert sound_composer.tracks[7].name == "HybridSpectrumSource"
+    assert sound_composer.tracks[7].gain == 0.0
+    assert sound_composer.tracks[7].filter is None
 
 
 def test_sound_composer___str___not_set():
@@ -157,7 +162,7 @@ def test_sound_composer_load():
     sound_composer.load(project_path=pytest.data_path_sound_composer_project_in_container)
 
     assert isinstance(sound_composer, SoundComposer)
-    assert len(sound_composer.tracks) == 7
+    assert len(sound_composer.tracks) == 8
     assert isinstance(sound_composer.tracks[0].source, SourceBroadbandNoise)
     assert sound_composer.tracks[0].name == "BBN"
     assert sound_composer.tracks[0].gain == 0.0
@@ -186,6 +191,10 @@ def test_sound_composer_load():
     assert sound_composer.tracks[6].name == "Harmo2ParamsRpmAsSecondParam"
     assert sound_composer.tracks[6].gain == 0.0
     assert sound_composer.tracks[6].filter is None
+    assert isinstance(sound_composer.tracks[7].source, SourceSpectrum)
+    assert sound_composer.tracks[7].name == "HybridSpectrumSource"
+    assert sound_composer.tracks[7].gain == 0.0
+    assert sound_composer.tracks[7].filter is None
 
 
 def test_sound_composer_save():
