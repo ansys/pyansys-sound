@@ -47,9 +47,9 @@ class Stft(SpectrogramProcessingParent):
         Parameters
         ----------
         signal : Field | FieldsContainer, default: None
-            Mono signal to compute the STFT on as a DPF field or fields container.
+            Input signal on which to compute the STFT.
         fft_size : int, default: 2048
-            Size (as an integer) of the FFT to compute the STFT.
+            Size of the FFT to compute the STFT.
             Use a power of 2 for better performance.
         window_type : str, default: 'HANN'
             Window type used for the FFT computation. Options are ``'BARTLETT'``, ``'BLACKMAN'``,
@@ -68,7 +68,7 @@ class Stft(SpectrogramProcessingParent):
 
     @property
     def signal(self) -> Field:
-        """Input signal as a DPF field.
+        """Input signal.
 
         Can be provided as a DPF field or fields container, but will be stored as DPF field
         regardless.

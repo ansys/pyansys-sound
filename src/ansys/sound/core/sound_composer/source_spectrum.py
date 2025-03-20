@@ -28,6 +28,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ._source_control_parent import SpectrumSynthesisMethods as Methods
 from ._source_parent import SourceParent
 from .source_control_spectrum import SourceControlSpectrum
 
@@ -39,8 +40,12 @@ class SourceSpectrum(SourceParent):
     """Sound Composer's spectrum source class.
 
     This class creates a spectrum source for the Sound Composer. A spectrum source is used to
-    generate a sound signal from a given spectrum and its source control. The source control
-    contains the duration of the sound and the method used to generate it.
+    generate a sound signal from a spectrum and a source control.
+
+    The source's spectrum data consists of a power spectral density (PSD), where levels are
+    specified in unit^2/Hz (for example Pa^2/Hz).
+
+    The source control contains the duration of the sound and the generation method to use.
     """
 
     def __init__(self, file_source: str = "", source_control: SourceControlSpectrum = None):
@@ -49,9 +54,11 @@ class SourceSpectrum(SourceParent):
         Parameters
         ----------
         file_source : str, default: ""
-            Path to the spectrum file.
+            Path to the file that contains the spectrum data. Supported files are the same XML and
+            text (with the AnsysSound_Spectrum header) formats as supported by Ansys Sound SAS.
         source_control : SourceControlSpectrum, default: None
-            Source control to use when generating the sound from this source.
+            Source control, consisting of the sound duration and sound generation method to use
+            when generating the sound from this source.
         """
         super().__init__()
         self.source_control = source_control
@@ -86,7 +93,7 @@ class SourceSpectrum(SourceParent):
 
         if self.is_source_control_valid():
             str_source_control = (
-                f"{self.source_control.get_method_name()}, {self.source_control.duration} s"
+                f"{self.source_control.method.value}, {self.source_control.duration} s"
             )
         else:
             str_source_control = "Not set/valid"
@@ -95,9 +102,10 @@ class SourceSpectrum(SourceParent):
 
     @property
     def source_control(self) -> SourceControlSpectrum:
-        """Spectrum source control object.
+        """Source control of the spectrum source.
 
-        Contains the duration in seconds, and the method used to generate the sound.
+        Contains the duration in seconds of the signal to generate, and the method to use to
+        generate the signal.
         """
         return self.__source_control
 
@@ -112,16 +120,16 @@ class SourceSpectrum(SourceParent):
 
     @property
     def source_spectrum_data(self) -> Field:
-        """Spectrum source data, as a DPF field.
+        """Source data for the spectrum source.
 
-        Power spectral density (PSD) as a DPF field, which contains the frequencies in Hz and
-        the levels in unit^2/Hz (for example Pa^2/Hz).
+        The source data consists of a power spectral density (PSD), where levels are specified in
+        unit^2/Hz (for example Pa^2/Hz).
         """
         return self.__source_spectrum_data
 
     @source_spectrum_data.setter
     def source_spectrum_data(self, source_spectrum_data: Field):
-        """Set the spectrum source data, from a DPF field."""
+        """Set the spectrum source data."""
         if source_spectrum_data is not None:
             if not isinstance(source_spectrum_data, Field):
                 raise PyAnsysSoundException(
@@ -155,7 +163,7 @@ class SourceSpectrum(SourceParent):
         Parameters
         ----------
         file_source : str
-            Path to the spectrum file. Supported files are the same XML and text (with the
+            Path to the spectrum source file. Supported files are the same XML and text (with the
             AnsysSound_Spectrum header) formats as supported by Ansys Sound SAS.
         """
         # Set operator inputs.
@@ -175,7 +183,7 @@ class SourceSpectrum(SourceParent):
         """Set the source and source control data from generic data containers.
 
         This method is meant to set the source data from generic data containers obtained when
-        loading a Sound Composer project file (.scn).
+        loading a Sound Composer project file (.scn) with the method :meth:`SoundComposer.load()`.
 
         Parameters
         ----------
@@ -188,14 +196,17 @@ class SourceSpectrum(SourceParent):
         duration = source_control_data.get_property(
             "sound_composer_source_control_spectrum_duration"
         )
-        method = source_control_data.get_property("sound_composer_source_control_spectrum_method")
+        method = Methods[
+            source_control_data.get_property("sound_composer_source_control_spectrum_method")
+        ]
         self.source_control = SourceControlSpectrum(duration=duration, method=method)
 
     def get_as_generic_data_containers(self) -> tuple[GenericDataContainer]:
         """Get the source and source control data as generic data containers.
 
-        This method is meant to return the source data as generic data containers needed to save a
-        Sound Composer project file (.scn).
+        This method is meant to return the source data as generic data containers, in the format
+        needed to save a Sound Composer project file (.scn) with the method
+        :meth:`SoundComposer.save()`.
 
         Returns
         -------
@@ -227,13 +238,16 @@ class SourceSpectrum(SourceParent):
                 "sound_composer_source_control_spectrum_duration", self.source_control.duration
             )
             source_control_data.set_property(
-                "sound_composer_source_control_spectrum_method", self.source_control.method
+                "sound_composer_source_control_spectrum_method", self.source_control.method.value
             )
 
         return (source_data, source_control_data)
 
     def process(self, sampling_frequency: float = 44100.0):
-        """Generate the sound of the spectrum source, using the current spectrum and source control.
+        """Generate the sound of the spectrum source.
+
+        This method generates the sound of the spectrum source, using the current spectrum and
+        source control.
 
         Parameters
         ----------
@@ -260,7 +274,7 @@ class SourceSpectrum(SourceParent):
         # Set operator inputs.
         self.__operator_generate.connect(0, self.source_spectrum_data)
         self.__operator_generate.connect(1, self.source_control.duration)
-        self.__operator_generate.connect(2, self.source_control.get_method_name())
+        self.__operator_generate.connect(2, self.source_control.method.value)
         self.__operator_generate.connect(3, sampling_frequency)
 
         # Run the operator.
@@ -302,7 +316,7 @@ class SourceSpectrum(SourceParent):
         return np.array(output.data)
 
     def plot(self):
-        """Plot the resulting signal in a figure."""
+        """Plot the resulting signal."""
         if self._output == None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the '{__class__.__name__}.process()' method."

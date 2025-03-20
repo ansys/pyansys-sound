@@ -37,7 +37,7 @@ ID_LOAD_SOUND_POWER_LEVEL = "load_project_sound_power_level_iso3744"
 class SoundPowerLevelISO3744(SoundPowerParent):
     """Computes ISO 3744 sound power level.
 
-    This class computes the sound power level following the ISO 3744 standard.
+    This class computes the sound power level according to the ISO 3744 standard.
     """
 
     def __init__(
@@ -115,7 +115,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     def surface_shape(self) -> str:
         """Shape of the measurement surface.
 
-        Available options are 'Hemisphere' and 'Half-hemisphere'. Default is 'Hemisphere'.
+        Available options are 'Hemisphere' and 'Half-hemisphere'.
         """
         return self.__surface_shape
 
@@ -131,7 +131,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
     @property
     def surface_radius(self) -> float:
-        """Radius of the measurement surface in m. Default is 1.0 m."""
+        """Radius of the measurement surface in m."""
         return self.__surface_radius
 
     @surface_radius.setter
@@ -145,7 +145,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     def K1(self) -> float:
         """Background noise correction K1 in dB.
 
-        See section 8.2.3 of ISO 3744. Default is 0.0 dB.
+        See section 8.2.3 of ISO 3744.
         """
         return self.__K1
 
@@ -158,7 +158,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     def K2(self) -> float:
         """Environmental correction K2 in dB.
 
-        See annex A of ISO 3744. Default is 0.0 dB.
+        See annex A of ISO 3744..
         """
         return self.__K2
 
@@ -171,7 +171,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     def C1(self) -> float:
         """Meteorological reference quantity correction C1 in dB.
 
-        See annex G of ISO 3744. Default is 0.0 dB.
+        See annex G of ISO 3744.
         """
         return self.__C1
 
@@ -184,7 +184,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     def C2(self) -> float:
         """Meteorological radiation impedance correction C2 in dB.
 
-        See annex G of ISO 3744). Default is 0.0 dB.
+        See annex G of ISO 3744).
         """
         return self.__C2
 
@@ -196,9 +196,11 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     def add_microphone_signal(self, signal: Field):
         """Add microphone signal.
 
-        Adds a microphone-recorded signal as a DPF field.
-        Note: It is assumed that the microphone positions where the signals were recorded follow
-        Annex B of ISO 3744 for the specific measurement surface shape used.
+        Adds a microphone-recorded signal.
+
+        .. note::
+            It is assumed that the microphone positions where the signals were recorded follow
+            Annex B of ISO 3744 for the specific measurement surface shape used.
 
         Parameters
         ----------
@@ -327,8 +329,8 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         Returns
         -------
         tuple[float]
-            First element is the correction C1 in dB.
-            Second element is the correction C2 in dB.
+            First element: correction C1 in dB.
+            Second element: correction C2 in dB.
         """
         ps0 = 101.325  # Reference static pressure in kPa.
         theta0 = 314.0  # Reference temperature in K under an air impedance of 400 N s/m^3.
@@ -417,9 +419,9 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         Returns
         -------
         tuple
-            First element is the unweighted sound power level (Lw) in dB.
+            First element: unweighted sound power level (Lw) in dB.
 
-            Second element is the A-weighted sound power level (Lw(A)) in dBA.
+            Second element: A-weighted sound power level (Lw(A)) in dBA.
 
             Third element is a DPF field containing an array of the octave-band sound power
             levels, in dB.
@@ -443,17 +445,17 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         Returns
         -------
         tuple
-            First element is the unweighted sound power level (Lw) in dB.
+            First element: unweighted sound power level (Lw) in dB.
 
-            Second element is the A-weighted sound power level (Lw(A)) in dBA.
+            Second element: A-weighted sound power level (Lw(A)) in dBA.
 
-            Third element is a NumPy array of the octave-band sound power levels, in dB.
+            Third element: NumPy array of the octave-band sound power levels, in dB.
 
-            Fourth element is a NumPy array of the octave-band center frequencies, in Hz.
+            Fourth element: NumPy array of the octave-band center frequencies, in Hz.
 
-            Fifth element is a NumPy array of the one-third-octave-band sound power levels, in dB.
+            Fifth element: NumPy array of the one-third-octave-band sound power levels, in dB.
 
-            Sixth element is a NumPy array of the one-third-octave-band center frequencies, in Hz.
+            Sixth element: NumPy array of the one-third-octave-band center frequencies, in Hz.
         """
         output = self.get_output()
 

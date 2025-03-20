@@ -35,8 +35,9 @@ ID_LOAD_FROM_TEXT = "load_sound_samples_from_txt"
 class SourceControlTime(SourceControlParent):
     """Sound Composer's time source control class.
 
-    This class stores the source control, that is the control parameter values over time, used by
-    the Sound Composer to generate a sound from a BBN or harmonic source.
+    This class stores the source control (that is, the control parameter values over time) used by
+    the Sound Composer to generate a sound from sources of types broadband noise and harmonics
+    (with one or two control parameters).
     """
 
     def __init__(self, file_str: str = ""):
@@ -45,8 +46,8 @@ class SourceControlTime(SourceControlParent):
         Parameters
         ----------
         file_str : str, default: ""
-            Path to the control data file (WAV format or text format with header
-            `AnsysSound_SoundSamples`).
+            Path to the control data file. Supported files are WAV files and and text files with
+            the header `AnsysSound_SoundSamples`.
         """
         super().__init__()
 
@@ -91,6 +92,29 @@ class SourceControlTime(SourceControlParent):
 
         self.__control = control
 
+        # Reset the description to store when saving a Sound Composer project (.scn file).
+        self.description = "Profile created in PyAnsys Sound."
+
+    @property
+    def description(self) -> str:
+        """Description of the control profile.
+
+        This description is used when saving a Sound Composer project (.scn file). When loading the
+        project file in the Sound Composer module of SAS, this description is displayed in the
+        track's source control tab.
+
+        .. note::
+            The description is reset every time the attribute :attr:`control` is modified.
+        """
+        return self.__description
+
+    @description.setter
+    def description(self, description: str):
+        """Set the description."""
+        if not isinstance(description, str):
+            raise PyAnsysSoundException("Description must be a string.")
+        self.__description = description
+
     def load_from_wave_file(self, file_str: str):
         """Load control data from a WAV file.
 
@@ -109,8 +133,8 @@ class SourceControlTime(SourceControlParent):
         Parameters
         ----------
         file_str : str
-            Path to the text file. The text file shall have the same text format (with the header
-            `AnsysSound_SoundSamples`), as supported by Ansys Sound SAS.
+            Path to the text file. Supported files have the same text format (with the header
+            `AnsysSound_SoundSamples`) as supported by Ansys Sound SAS.
         """
         # Set operator inputs.
         self.__operator_load.connect(0, file_str)
@@ -125,7 +149,7 @@ class SourceControlTime(SourceControlParent):
         self.control.unit = ""
 
     def plot(self):
-        """Plot the control profile in a figure."""
+        """Plot the control profile."""
         time_data = self.control.time_freq_support.time_frequencies.data
 
         plt.plot(time_data, self.control.data)

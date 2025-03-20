@@ -47,7 +47,7 @@ class Roughness(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Signal in Pa to compute roughness on as a DPF field.
+            Signal in Pa on which to compute roughness.
         """
         super().__init__()
         self.signal = signal
@@ -69,7 +69,7 @@ class Roughness(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Input sound signal in Pa as a DPF field."""
+        """Input signal in Pa."""
         return self.__signal
 
     @signal.setter
@@ -107,12 +107,12 @@ class Roughness(PsychoacousticsParent):
         Returns
         -------
         tuple
-            -   First element (float) is the overall roughness in asper.
+            -   First element (float): overall roughness in asper.
 
-            -   Second element (Field) is the specific roughness, that is, the roughness in each
+            -   Second element (Field): specific roughness, that is, the roughness in each
                 Bark band, in asper/Bark.
 
-            -   Third element (Field) is the roughness over time, in asper.
+            -   Third element (Field): roughness over time, in asper.
         """
         if self._output == None:
             warnings.warn(
@@ -129,17 +129,17 @@ class Roughness(PsychoacousticsParent):
         Returns
         -------
         tuple[numpy.ndarray]
-            -   First element is the overall roughness in asper.
+            -   First element: overall roughness in asper.
 
-            -   Second element is the specific roughness, that is, the roughness in each Bark band,
+            -   Second element: specific roughness, that is, the roughness in each Bark band,
                 in asper/Bark.
 
-            -   Third element is the Bark band indexes at which the specific roughness is defined,
+            -   Third element: Bark band indexes at which the specific roughness is defined,
                 in Bark.
 
-            -   Fourth element is the roughness over time, in asper.
+            -   Fourth element: roughness over time, in asper.
 
-            -   Fifth element is the time scale of the roughness over time, in s.
+            -   Fifth element: time scale of the roughness over time, in s.
         """
         output = self.get_output()
 
@@ -225,8 +225,7 @@ class Roughness(PsychoacousticsParent):
     def plot(self):
         """Plot the specific roughness and the roughness over time.
 
-        This method creates a figure window that displays the specific roughness and the roughness
-        over time.
+        This method displays the specific roughness and the roughness over time.
         """
         if self._output == None:
             raise PyAnsysSoundException(

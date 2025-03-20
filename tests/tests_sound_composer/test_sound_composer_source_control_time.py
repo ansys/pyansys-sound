@@ -61,10 +61,15 @@ def test_source_control_time_properties():
     loader.process()
     control = loader.get_output()[0]
 
-    # Test control setter.
+    # Test control property.
     control_time.control = control
     assert isinstance(control_time.control, Field)
     assert len(control_time.control.data) > 0
+    assert control_time.description == "Profile created in PyAnsys Sound."
+
+    # Test description property.
+    control_time.description = "Test description."
+    assert control_time.description == "Test description."
 
 
 def test_source_control_time_properties_exceptions():
@@ -77,6 +82,10 @@ def test_source_control_time_properties_exceptions():
         match="Specified control profile must be provided as a DPF field.",
     ):
         control_time.control = "WrongType"
+
+    # Test description setter exception (wrong description type).
+    with pytest.raises(PyAnsysSoundException, match="Description must be a string."):
+        control_time.description = 1
 
 
 def test_source_control_time___str__():

@@ -54,7 +54,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
         Parameters
         ----------
         signal : Field
-            Mono signal as a DPF field on which to compute the PSD.
+            Input signal on which to compute the PSD.
         fft_size : int, default: 2048
             Number of FFT points to use for the PSD estimate. Must be a power of 2.
         window_type : str, default: 'HANN'
@@ -83,7 +83,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
     @property
     def input_signal(self) -> Field:
-        """Input signal as a DPF field."""
+        """Input signal."""
         return self.__input_signal
 
     @input_signal.setter
@@ -194,9 +194,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
         Returns
         -------
         Field
-            First element contains the PSD amplitudes in squared linear unit.
-
-            Second element contains the corresponding frequencies in Hz.
+            PSD amplitudes in squared linear unit.
         """
         if self._output is None:
             warnings.warn(PyAnsysSoundWarning("No output is available."))
@@ -209,9 +207,8 @@ class PowerSpectralDensity(SpectralProcessingParent):
         Returns
         -------
         tuple[numpy.ndarray]
-            First element contains the PSD amplitudes in squared linear unit.
-
-            Second element contains the corresponding frequencies in Hz.
+            -   First element: PSD amplitudes in squared linear unit.
+            -   Second element: corresponding frequencies in Hz.
         """
         l_output = self.get_output()
 
@@ -224,12 +221,12 @@ class PowerSpectralDensity(SpectralProcessingParent):
         return (np.array(l_psd), np.array(l_frequencies))
 
     def get_PSD_squared_linear(self) -> Field:
-        """Get the PSD in squared linear unit, as a DPF field.
+        """Get the PSD in squared linear unit.
 
         Returns
         -------
         Field
-            PSD data in squared linear unit, as a DPF field.
+            PSD data in squared linear unit.
         """
         return self.get_output()
 
@@ -239,9 +236,9 @@ class PowerSpectralDensity(SpectralProcessingParent):
         Returns
         -------
         tuple[numpy.ndarray]
-            First element contains the PSD amplitudes in squared linear unit.
+            First element: PSD amplitudes in squared linear unit.
 
-            Second element contains the corresponding frequencies in Hz.
+            Second element: corresponding frequencies in Hz.
         """
         return self.get_output_as_nparray()
 

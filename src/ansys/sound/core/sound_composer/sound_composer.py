@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Sound Composer project class."""
+import os
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, GenericDataContainersCollection, Operator
@@ -41,14 +42,15 @@ class SoundComposer(SoundComposerParent):
     """Sound Composer project class.
 
     This class creates a Sound Composer project. A project is made of several tracks, each
-    containing a source and a filter.
+    containing a source, to generate the sound, and an optional filter, to model the transfer
+    between the source and the receiver.
     """
 
     def __init__(
         self,
         project_path: str = "",
     ):
-        """Class instantiation takes the following parameters.
+        """Class instantiation takes the following parameter.
 
         Parameters
         ----------
@@ -57,8 +59,7 @@ class SoundComposer(SoundComposerParent):
         """
         super().__init__()
         self.__operator_load = Operator(ID_OPERATOR_LOAD)
-        # Save operator is not implemented yet, because the FRF is not stored in the Filter class.
-        # self.__operator_save = Operator(ID_OPERATOR_SAVE)
+        self.__operator_save = Operator(ID_OPERATOR_SAVE)
 
         self.tracks = []
 
@@ -80,10 +81,11 @@ class SoundComposer(SoundComposerParent):
 
     @property
     def tracks(self) -> list[Track]:
-        """List of Sound Composer tracks.
+        """List of tracks.
 
-        List of tracks of the Sound Composer. Each track is a :class:`Track` object, and contains a
-        source and a filter.
+        List of the tracks available in this Sound Composer instance (project).
+
+        Each track is a :class:`Track` object, and contains a source and a filter.
         """
         return self.__tracks
 
@@ -96,7 +98,7 @@ class SoundComposer(SoundComposerParent):
         self.__tracks = tracks
 
     def add_track(self, track: Track):
-        """Add a Sound Composer track.
+        """Add a track to the project.
 
         Parameters
         ----------
@@ -122,33 +124,53 @@ class SoundComposer(SoundComposerParent):
 
         track_collection = self.__operator_load.get_output(0, GenericDataContainersCollection)
 
+        if len(track_collection) == 0:
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    f"The project file `{os.path.basename(project_path)}` does not contain any "
+                    "track."
+                )
+            )
+
+        self.tracks = []
         for i in range(len(track_collection)):
             track = Track()
             track.set_from_generic_data_containers(track_collection.get_entry({"track_index": i}))
             self.add_track(track)
 
-    # TODO: Save cannot work for now because the FRF is not stored in the Filter class.
-    # def save(self, project_path: str):
-    #     """Save the Sound Composer project.
+    def save(self, project_path: str):
+        """Save the Sound Composer project.
 
-    #     Parameters
-    #     ----------
-    #     project_path : str
-    #         Path and file (.scn) name where the Sound Composer project shall be saved.
-    #     """
-    #     track_collection = GenericDataContainersCollection()
+        Parameters
+        ----------
+        project_path : str
+            Path and file name (.scn) where the Sound Composer project shall be saved.
+        """
+        if len(self.tracks) == 0:
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    "There are no tracks to save. The saved project will be empty. To add tracks "
+                    f"before saving the project, use `{__class__.__name__}.tracks`, "
+                    f"`{__class__.__name__}.add_track()` or `{__class__.__name__}.load()`."
+                )
+            )
 
-    #     for i, track in enumerate(self.tracks):
-    #         track_collection.add_entry({"track_index": i}, track.get_as_generic_data_container())
+        track_collection = GenericDataContainersCollection()
+        track_collection.add_label("track_index")
 
-    #     # Save the Sound Composer project.
-    #     self.__operator_save.connect(0, project_path)
-    #     self.__operator_save.connect(1, track_collection)
+        for i, track in enumerate(self.tracks):
+            track_collection.add_entry({"track_index": i}, track.get_as_generic_data_containers())
 
-    #     self.__operator_save.run()
+        # Save the Sound Composer project.
+        self.__operator_save.connect(0, project_path)
+        self.__operator_save.connect(1, track_collection)
+
+        self.__operator_save.run()
 
     def process(self, sampling_frequency: float = 44100.0):
-        """Generate the signal of the Sound Composer, using the current tracks.
+        """Generate the signal of the current Sound Composer project.
+
+        Generates the project's signal corresponding to the sum of all the track signals.
 
         Parameters
         ----------
@@ -158,7 +180,7 @@ class SoundComposer(SoundComposerParent):
         if len(self.tracks) == 0:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    f"There are no track to process. Use `{__class__.__name__}.tracks`, "
+                    f"There are no tracks to process. Use `{__class__.__name__}.tracks`, "
                     f"`{__class__.__name__}.add_track()` or `{__class__.__name__}.load()`."
                 )
             )
@@ -181,7 +203,7 @@ class SoundComposer(SoundComposerParent):
             self._output = track_sum.get_output()
 
     def get_output(self) -> Field:
-        """Get the generated signal as a DPF field.
+        """Get the generated signal of the Sound Composer project as a DPF field.
 
         Returns
         -------
@@ -197,7 +219,7 @@ class SoundComposer(SoundComposerParent):
         return self._output
 
     def get_output_as_nparray(self) -> np.ndarray:
-        """Get the generated signal as a NumPy array.
+        """Get the generated signal of the Sound Composer project as a NumPy array.
 
         Returns
         -------
@@ -212,7 +234,7 @@ class SoundComposer(SoundComposerParent):
         return np.array(output.data)
 
     def plot(self):
-        """Plot the resulting signal in a figure."""
+        """Plot the generated signal of the Sound Composer project."""
         if self._output is None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
@@ -222,6 +244,6 @@ class SoundComposer(SoundComposerParent):
         plt.plot(output_signal.time_freq_support.time_frequencies.data, output_signal.data)
         plt.title("Generated signal")
         plt.xlabel("Time (s)")
-        plt.ylabel(f"Amplitude")
+        plt.ylabel(f"Amplitude{f' ({output_signal.unit})' if len(output_signal.unit) > 0 else ''}")
         plt.grid(True)
         plt.show()
