@@ -22,25 +22,34 @@
 
 """Sound Composer's control for a source of type spectrum."""
 from .._pyansys_sound import PyAnsysSoundException
-from ._source_control_parent import SourceControlParent, SpectrumSynthesisMethods
+from ._source_control_parent import SourceControlParent
+from ._source_control_parent import SpectrumSynthesisMethods as Methods
 
 
 class SourceControlSpectrum(SourceControlParent):
     """Sound Composer's spectrum source's control class.
 
-    This class stores the control parameters used by the Sound Composer for a spectrum source,
-    namely its duration in seconds and the sound generation method to be used.
+    This class stores the source control (that is the sound duration and the sound generation
+    method) used by the Sound Composer for generating the sound from a spectrum source.
+
+    Two sound generation methods are offered:
+
+    -   IFFT: sound generation method based on the Inverse Fast Fourier Transform of the input
+        spectrum, using random phases.
+    -   Hybrid: sound generation method that combines generation of pure tones and IFFT. If peaks
+        are detected in the input spectrum, they are generated as pure tones (sine waves). The rest
+        is synthesized using the IFFT method.
     """
 
-    def __init__(self, duration: float = 0.0, method: int = 0):
+    def __init__(self, duration: float = 0.0, method: Methods = Methods.IFFT):
         """Class instantiation takes the following parameters.
 
         Parameters
         ----------
         duration : float, default: 0.0
             Duration of the sound generated from the spectrum source, in seconds.
-        method : int, default: 0
-            Sound generation method to be used. 0 for IFFT, 1 for Hybrid.
+        method : SpectrumSynthesisMethods, default: SpectrumSynthesisMethods.IFFT
+            Method to use for the sound generation: IFFT or Hybrid.
         """
         super().__init__()
         self.duration = duration
@@ -48,7 +57,7 @@ class SourceControlSpectrum(SourceControlParent):
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
-        return f"Duration: {self.duration} s\nMethod: {self.get_method_name()}"
+        return f"Duration: {self.duration} s\nMethod: {self.method.value}"
 
     @property
     def duration(self) -> float:
@@ -57,32 +66,23 @@ class SourceControlSpectrum(SourceControlParent):
 
     @duration.setter
     def duration(self, duration: float):
-        """Set the duration."""
+        """Set the duration, in seconds."""
         if duration < 0.0:
             raise PyAnsysSoundException("Duration must be positive.")
         self.__duration = duration
 
     @property
-    def method(self) -> int:
-        """Sound generation method to be used. 0 for IFFT, 1 for Hybrid."""
+    def method(self) -> Methods:
+        """Method to use for the sound generation: IFFT or Hybrid."""
         return self.__method
 
     @method.setter
-    def method(self, method: int):
-        """Set the sound generation method."""
-        if method not in [m.value for m in SpectrumSynthesisMethods]:
-            available_methods = "\n".join(f"{m.value}: {m.name}" for m in SpectrumSynthesisMethods)
+    def method(self, method: Methods):
+        """Set the sound generation method: IFFT or Hybrid."""
+        if method not in Methods:
+            available_methods = ", ".join(Methods.__members__.keys())
             raise PyAnsysSoundException(
-                "Method must be an integer. Available options are:\n" + available_methods
+                "Specified method must be of type `SpectrumSynthesisMethods`. Available methods "
+                f"are: {available_methods}."
             )
         self.__method = method
-
-    def get_method_name(self) -> str:
-        """Get the sound generation method name.
-
-        Returns
-        -------
-        str
-            Name of the sound generation method.
-        """
-        return SpectrumSynthesisMethods(self.method).name

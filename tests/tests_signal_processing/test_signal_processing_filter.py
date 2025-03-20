@@ -54,6 +54,8 @@ EXP_OUTPUT8834 = 1.372925758
 EXP_OUTPUT13536 = -20.87648773
 EXP_OUTPUT24189 = 51.00528336
 EXP_OUTPUT43544 = -17.25708771
+EXP_FRF1 = 3.521825
+EXP_FRF2 = -6.020600
 
 
 def test_filter_instantiation_no_arg():
@@ -62,13 +64,14 @@ def test_filter_instantiation_no_arg():
     assert isinstance(filter, Filter)
     assert filter.a_coefficients is None
     assert filter.b_coefficients is None
+    assert filter.frf is None
     assert filter.signal is None
 
 
 def test_filter_instantiation_args():
-    """Test Filter instantiation without arguments."""
-    # Create a field to use in a suitable Field object (signal).
+    """Test Filter instantiation with arguments."""
     fs = 44100.0
+
     support = TimeFreqSupport()
     f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
     f_time.append([0, 1 / fs, 2 / fs, 3 / fs], 1)
@@ -77,25 +80,117 @@ def test_filter_instantiation_args():
     f_signal.append([1, 2, 3, 4], 1)
     f_signal.time_freq_support = support
 
-    # Test instantiation.
-    with pytest.warns(
-        PyAnsysSoundWarning,
+    support = TimeFreqSupport()
+    f_freq = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_freq.append([0, 11025, 22050], 1)
+    support.time_frequencies = f_freq
+    f_frf = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_frf.append([0.1, 1.0, 0.5], 1)
+    f_frf.time_freq_support = support
+
+    # Instantiation with coefficients.
+    filter = Filter(
+        a_coefficients=[1, 2, 3],
+        b_coefficients=[4, 5, 6],
+        sampling_frequency=fs,
+        signal=f_signal,
+    )
+    assert isinstance(filter, Filter)
+    assert filter.a_coefficients is not None
+    assert filter.b_coefficients is not None
+    assert filter.frf is not None
+    assert filter.signal is not None
+
+    # Instantiation with FRF.
+    filter = Filter(
+        sampling_frequency=fs,
+        file=pytest.data_path_filter_frf,
+        signal=f_signal,
+    )
+    assert isinstance(filter, Filter)
+    assert filter.a_coefficients is not None
+    assert filter.b_coefficients is not None
+    assert filter.frf is not None
+    assert filter.signal is not None
+
+    # Instantiation with file.
+    filter = Filter(
+        sampling_frequency=fs,
+        frf=f_frf,
+        signal=f_signal,
+    )
+    assert isinstance(filter, Filter)
+    assert filter.a_coefficients is not None
+    assert filter.b_coefficients is not None
+    assert filter.frf is not None
+    assert filter.signal is not None
+
+
+def test_filter_instantiation_exception():
+    """Test Filter instantiation's exception."""
+    fs = 44100.0
+
+    support = TimeFreqSupport()
+    f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_time.append([0, 1 / fs, 2 / fs, 3 / fs], 1)
+    support.time_frequencies = f_time
+    f_signal = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_signal.append([1, 2, 3, 4], 1)
+    f_signal.time_freq_support = support
+
+    support = TimeFreqSupport()
+    f_freq = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_freq.append([0, 11025, 22050], 1)
+    support.time_frequencies = f_freq
+    f_frf = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_frf.append([0.1, 1.0, 0.5], 1)
+    f_frf.time_freq_support = support
+
+    with pytest.raises(
+        PyAnsysSoundException,
         match=(
-            "Specified parameters a_coefficients and b_coefficients are ignored because FRF file "
-            "is also specified."
+            "Only one filter definition source \\(coefficients, FRF, or FRF file\\) must be "
+            "provided. Specify either `a_coefficients` and `b_coefficients`, `frf`, or `file`."
         ),
     ):
-        filter = Filter(
+        Filter(
             a_coefficients=[1, 2, 3],
             b_coefficients=[4, 5, 6],
             sampling_frequency=fs,
             file=pytest.data_path_filter_frf,
             signal=f_signal,
         )
-    assert isinstance(filter, Filter)
-    assert filter.a_coefficients is not []
-    assert filter.b_coefficients is not []
-    assert filter.signal is not None
+
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=(
+            "Only one filter definition source \\(coefficients, FRF, or FRF file\\) must be "
+            "provided. Specify either `a_coefficients` and `b_coefficients`, `frf`, or `file`."
+        ),
+    ):
+        Filter(
+            a_coefficients=[1, 2, 3],
+            b_coefficients=[4, 5, 6],
+            sampling_frequency=fs,
+            frf=f_frf,
+            signal=f_signal,
+        )
+
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=(
+            "Only one filter definition source \\(coefficients, FRF, or FRF file\\) must be "
+            "provided. Specify either `a_coefficients` and `b_coefficients`, `frf`, or `file`."
+        ),
+    ):
+        Filter(
+            a_coefficients=[1, 2, 3],
+            b_coefficients=[4, 5, 6],
+            sampling_frequency=fs,
+            frf=f_frf,
+            file=pytest.data_path_filter_frf,
+            signal=f_signal,
+        )
 
 
 def test_filter___str__():
@@ -126,6 +221,20 @@ def test_filter_properties():
     filter.b_coefficients = [4, 5, 6]
     assert filter.b_coefficients == [4, 5, 6]
 
+    # Test property frf.
+    support = TimeFreqSupport()
+    f_freq = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_freq.append([0, 11025, 22050], 1)
+    support.time_frequencies = f_freq
+    f_frf = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_frf.append([0.1, 1.0, 0.5], 1)
+    f_frf.time_freq_support = support
+    filter.frf = f_frf
+    assert isinstance(filter.frf, Field)
+    assert filter.frf.data[0] == pytest.approx(0.1)
+    assert filter.frf.data[1] == pytest.approx(1.0)
+    assert filter.frf.data[2] == pytest.approx(0.5)
+
     # Test property signal.
     support = TimeFreqSupport()
     f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
@@ -141,6 +250,27 @@ def test_filter_properties():
 def test_filter_properties_exceptions():
     """Test Filter properties' exceptions."""
     filter = Filter()
+
+    # Test property frf's exception 1 (wrong type).
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Specified FRF must be provided as a DPF field.",
+    ):
+        filter.frf = "WrongType"
+
+    # Test property frf's exception 2 (wrong number of samples).
+    support = TimeFreqSupport()
+    f_freq = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_freq.append([0], 1)
+    support.time_frequencies = f_freq
+    f_frf = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    f_frf.append([0], 1)
+    f_frf.time_freq_support = support
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Specified FRF must have at least two frequency points.",
+    ):
+        filter.frf = f_frf
 
     # Test property signal's exception 1 (wrong type).
     with pytest.raises(
@@ -200,22 +330,6 @@ def test_filter_design_FIR_from_FRF_file():
         filter.design_FIR_from_FRF_file(file=pytest.data_path_filter_frf_wrong_header)
 
 
-def test_filter_design_FIR_from_FRF():
-    """Test Filter design_FIR_from_FRF method."""
-    op = Operator("load_FRF_from_txt")
-    op.connect(0, pytest.data_path_filter_frf)
-    op.run()
-    frf = op.get_output(0, "field")
-
-    filter = Filter()
-    filter.design_FIR_from_FRF(frf=frf)
-    assert len(filter.a_coefficients) == 1
-    assert filter.a_coefficients[0] == pytest.approx(1.0)
-    assert filter.b_coefficients[0] == pytest.approx(EXP_B0)
-    assert filter.b_coefficients[2] == pytest.approx(EXP_B2)
-    assert filter.b_coefficients[13] == pytest.approx(EXP_B13)
-
-
 def test_filter_process():
     """Test Filter process method."""
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
@@ -239,7 +353,7 @@ def test_filter_process_exceptions():
     # Test process method exception1 (missing signal).
     with pytest.raises(
         PyAnsysSoundException,
-        match="Input signal is not set. Use Filter.signal.",
+        match="Input signal is not set. Use `Filter.signal`.",
     ):
         filter.process()
 
@@ -255,8 +369,8 @@ def test_filter_process_exceptions():
         PyAnsysSoundException,
         match=(
             "Filter's denominator coefficients \\(a_coefficients\\) must be defined and cannot be "
-            "empty. Use Filter.a_coefficients, or the methods Filter.design_FIR_from_FRF\\(\\) or "
-            "Filter.design_FIR_from_FRF_file\\(\\)."
+            "empty. Use `Filter.a_coefficients`, `Filter.frf`, or the "
+            "`Filter.design_FIR_from_FRF_file\\(\\)` method."
         ),
     ):
         filter.process()
@@ -268,8 +382,8 @@ def test_filter_process_exceptions():
         PyAnsysSoundException,
         match=(
             "Filter's numerator coefficients \\(b_coefficients\\) must be defined and cannot be "
-            "empty. Use Filter.b_coefficients, or the methods Filter.design_FIR_from_FRF\\(\\) or "
-            "Filter.design_FIR_from_FRF_file\\(\\)."
+            "empty. Use `Filter.b_coefficients`, `Filter.frf`, or the "
+            "`Filter.design_FIR_from_FRF_file\\(\\)` method."
         ),
     ):
         filter.process()
@@ -280,7 +394,7 @@ def test_filter_get_output():
     filter = Filter(file=pytest.data_path_filter_frf)
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the Filter.process\\(\\) method.",
+        match="Output is not processed yet. Use the `Filter.process\\(\\)` method.",
     ):
         output = filter.get_output()
     assert output is None
@@ -304,7 +418,7 @@ def test_filter_get_output_as_nparray():
     filter = Filter(file=pytest.data_path_filter_frf)
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the Filter.process\\(\\) method.",
+        match="Output is not processed yet. Use the `Filter.process\\(\\)` method.",
     ):
         output = filter.get_output_as_nparray()
     assert len(output) == 0
@@ -325,7 +439,7 @@ def test_filter_get_output_as_nparray():
 
 @patch("matplotlib.pyplot.show")
 def test_filter_plot(mock_show):
-    """Test SourceAudio plot method."""
+    """Test Filter plot method."""
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -336,7 +450,7 @@ def test_filter_plot(mock_show):
 
 
 def test_filter_plot_exception():
-    """Test SourceAudio plot method's exception."""
+    """Test Filter plot method's exception."""
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -345,6 +459,65 @@ def test_filter_plot_exception():
 
     with pytest.raises(
         PyAnsysSoundException,
-        match="Output is not processed yet. Use the Filter.process\\(\\) method.",
+        match="Output is not processed yet. Use the `Filter.process\\(\\)` method.",
     ):
         filter.plot()
+
+
+@patch("matplotlib.pyplot.show")
+def test_filter_plot_FRF(mock_show):
+    """Test Filter plot_FRF method."""
+    filter = Filter(file=pytest.data_path_filter_frf)
+    filter.plot_FRF()
+
+
+def test_filter_plot_FRF_exception():
+    """Test Filter plot method's exception."""
+    filter = Filter()
+
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=(
+            "Filter's frequency response function \\(FRF\\) is not set. Use `Filter.frf`, or "
+            "`Filter.a_coefficients` and `Filter.b_coefficients`, or the "
+            "`Filter.design_FIR_from_FRF_file\\(\\)` method."
+        ),
+    ):
+        filter.plot_FRF()
+
+
+def test_filter___compute_coefficients_from_FRF():
+    """Test Filter's __compute_coefficients_from_FRF method."""
+    filter = Filter()
+
+    filter._Filter__compute_coefficients_from_FRF()
+    assert filter.a_coefficients is None
+    assert filter.b_coefficients is None
+
+    op = Operator("load_FRF_from_txt")
+    op.connect(0, pytest.data_path_filter_frf)
+    op.run()
+    filter.frf = op.get_output(0, "field")
+
+    filter._Filter__compute_coefficients_from_FRF()
+    assert len(filter.a_coefficients) == 1
+    assert filter.a_coefficients[0] == pytest.approx(1.0)
+    assert filter.b_coefficients[0] == pytest.approx(EXP_B0)
+    assert filter.b_coefficients[2] == pytest.approx(EXP_B2)
+    assert filter.b_coefficients[13] == pytest.approx(EXP_B13)
+
+
+def test_filter___compute_FRF_from_coefficients():
+    """Test Filter's __compute_FRF_from_coefficients method."""
+    filter = Filter()
+
+    filter._Filter__compute_FRF_from_coefficients()
+    assert filter.frf is None
+
+    filter.a_coefficients = [1.0]
+    filter.b_coefficients = [1.0, 0.5]
+
+    filter._Filter__compute_FRF_from_coefficients()
+    assert len(filter.frf.data) == 2
+    assert filter.frf.data[0] == pytest.approx(EXP_FRF1)
+    assert filter.frf.data[1] == pytest.approx(EXP_FRF2)

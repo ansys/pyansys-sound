@@ -39,9 +39,11 @@ class SourceHarmonics(SourceParent):
     """Sound Composer's harmonics source class.
 
     This class creates a harmonics source for the Sound Composer. A harmonics source is used to
-    generate a sound signal from a given harmonics source data and its source control. The
-    harmonics source data consists of a series of orders whose levels depend on RPM. The source
-    control contains the RPM values over time.
+    generate a sound signal from harmonics source data and one source control.
+
+    The harmonics source data consists of a series of orders whose levels depend on RPM.
+
+    The source control contains the RPM values over time.
     """
 
     def __init__(self, file: str = "", source_control: SourceControlTime = None):
@@ -53,8 +55,8 @@ class SourceHarmonics(SourceParent):
             Path to the harmonics source data file. Supported files are the same XML and text (with
             the header `AnsysSound_Orders`) formats as supported by Ansys Sound SAS.
         source_control : SourceControlTime, default: None
-            Source control, consisting of the control parameter values over time, to use when
-            generating the sound from this source.
+            Source control, consisting of the RPM values over time, to use when generating the
+            sound from this source.
         """
         super().__init__()
         self.source_control = source_control
@@ -123,9 +125,9 @@ class SourceHarmonics(SourceParent):
 
     @property
     def source_control(self) -> SourceControlTime:
-        """Harmonics source control.
+        """Source control for the harmonics source.
 
-        Contains the control parameter values over time.
+        Contains the control parameter (RPM) values over time.
         """
         return self.__source_control
 
@@ -140,15 +142,16 @@ class SourceHarmonics(SourceParent):
 
     @property
     def source_harmonics(self) -> FieldsContainer:
-        """Harmonics source data, as a DPF fields container.
+        """Source data for the harmonics source.
 
-        The harmonics source data consists of a series of orders whose levels depend on RPM.
+        The harmonics source data consists of a series of orders whose levels depend on RPM. Levels
+        must be specified in unit^2 (for example Pa^2/Hz).
         """
         return self.__source_harmonics
 
     @source_harmonics.setter
     def source_harmonics(self, source: FieldsContainer):
-        """Set the harmonics source data, from a DPF fields container."""
+        """Set the harmonics source data."""
         if source is not None:
             if not isinstance(source, FieldsContainer):
                 raise PyAnsysSoundException(
@@ -218,8 +221,8 @@ class SourceHarmonics(SourceParent):
         Parameters
         ----------
         file : str
-            Path to the harmonics source data file. Supported files are the same XML and text (with
-            the header `AnsysSound_Orders`) formats as supported by Ansys Sound SAS.
+            Path to the harmonics source file. Supported files are the same XML and text (with the
+            header `AnsysSound_Orders`) formats as supported by Ansys Sound SAS.
         """
         # Set operator inputs.
         self.__operator_load.connect(0, file)
@@ -238,7 +241,7 @@ class SourceHarmonics(SourceParent):
         """Set the source and source control data from generic data containers.
 
         This method is meant to set the source data from generic data containers obtained when
-        loading a Sound Composer project file (.scn).
+        loading a Sound Composer project file (.scn) with the method :meth:`SoundComposer.load()`.
 
         Parameters
         ----------
@@ -251,12 +254,16 @@ class SourceHarmonics(SourceParent):
         control = source_control_data.get_property("sound_composer_source_control_one_parameter")
         self.source_control = SourceControlTime()
         self.source_control.control = control
+        self.source_control.description = source_control_data.get_property(
+            "sound_composer_source_control_one_parameter_displayed_string"
+        )
 
     def get_as_generic_data_containers(self) -> tuple[GenericDataContainer]:
         """Get the source and source control data as generic data containers.
 
-        This method is meant to return the source data as generic data containers needed to save a
-        Sound Composer project file (.scn).
+        This method is meant to return the source data as generic data containers, in the format
+        needed to save a Sound Composer project file (.scn) with the method
+        :meth:`SoundComposer.save()`.
 
         Returns
         -------
@@ -287,6 +294,10 @@ class SourceHarmonics(SourceParent):
             source_control_data.set_property(
                 "sound_composer_source_control_one_parameter", self.source_control.control
             )
+            source_control_data.set_property(
+                "sound_composer_source_control_one_parameter_displayed_string",
+                self.source_control.description,
+            )
 
         return (source_data, source_control_data)
 
@@ -294,7 +305,7 @@ class SourceHarmonics(SourceParent):
         """Generate the sound of the harmonics source.
 
         This method generates the sound of the harmonics source, using the current harmonics
-        data and source control.
+        data and source control (RPM).
 
         Parameters
         ----------
@@ -357,7 +368,7 @@ class SourceHarmonics(SourceParent):
         return np.array(output.data if output is not None else [])
 
     def plot(self):
-        """Plot the resulting signal in a figure."""
+        """Plot the resulting signal."""
         if self._output == None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the '{__class__.__name__}.process()' method."
@@ -374,7 +385,7 @@ class SourceHarmonics(SourceParent):
         plt.show()
 
     def plot_control(self):
-        """Plot the source control(s) in a figure."""
+        """Plot the source control."""
         if not self.is_source_control_valid():
             raise PyAnsysSoundException(
                 "Harmonics source control is not set/valid. "
@@ -403,11 +414,11 @@ class SourceHarmonics(SourceParent):
         -------
         tuple[list[float], str, list[float]]
             Harmonics source information, consisting of the following elements:
-                First element is the list of order values.
+                First element: list of order values.
 
-                Second element is the control parameter name.
+                Second element: name of the control parameter.
 
-                Third element is the list of control parameter values.
+                Third element: list of control parameter values.
         """
         if self.source_harmonics is None:
             return ([], "", [])

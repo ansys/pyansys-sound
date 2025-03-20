@@ -35,7 +35,13 @@ ID_COMPUTE_SHARPNESS_OVER_TIME = "compute_sharpness_over_time"
 
 
 class SharpnessOverTime(PsychoacousticsParent):
-    """Computes the sharpness of a signal according to Zwicker & Fastl's model, over time."""
+    """Computes the sharpness of a signal according to Zwicker & Fastl's model, over time.
+
+    .. note::
+        The calculation of this indicator is based on the loudness model for time-varying sounds
+        defined in the standard ISO 532-1. It is the loudness model of the class
+        :class:`LoudnessISO532_1_TimeVarying`.
+    """
 
     def __init__(self, signal: Field = None, field_type: str = FIELD_FREE):
         """Class instantiation takes the following parameters.
@@ -43,7 +49,7 @@ class SharpnessOverTime(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Signal in Pa on which to compute sharpness over time as a DPF field.
+            Signal in Pa on which to compute sharpness over time.
         field_type : str, default: "Free"
             Sound field type. Available options are `"Free"` and `"Diffuse"`.
         """
@@ -68,7 +74,7 @@ class SharpnessOverTime(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Input sound signal in Pa as a DPF field."""
+        """Input signal in Pa."""
         return self.__signal
 
     @signal.setter
@@ -125,9 +131,9 @@ class SharpnessOverTime(PsychoacousticsParent):
         Returns
         -------
         tuple
-            -   First element is the maximum sharpness over time, in acum.
+            -   First element (float): maximum sharpness over time, in acum.
 
-            -   Second element is the sharpness over time, in acum.
+            -   Second element (Field): sharpness over time, in acum.
         """
         if self._output == None:
             warnings.warn(
@@ -144,11 +150,11 @@ class SharpnessOverTime(PsychoacousticsParent):
         Returns
         -------
         tuple[numpy.ndarray]
-            -   First element is the maximum sharpness over time, in acum.
+            -   First element: maximum sharpness over time, in acum.
 
-            -   Second element is the sharpness over time, in acum.
+            -   Second element: sharpness over time, in acum.
 
-            -   Third element is the time scale, in s.
+            -   Third element: time scale, in s.
         """
         output = self.get_output()
 
@@ -162,12 +168,12 @@ class SharpnessOverTime(PsychoacousticsParent):
         )
 
     def get_max_sharpness(self) -> float:
-        """Get the maximum sharpness over time.
+        """Get the maximum value of the sharpness over time.
 
         Returns
         -------
         float
-            Maximum sharpness over time, in acum.
+            Maximum value of the sharpness over time, in acum.
         """
         return float(self.get_output_as_nparray()[0])
 
@@ -182,7 +188,7 @@ class SharpnessOverTime(PsychoacousticsParent):
         return self.get_output_as_nparray()[1]
 
     def get_time_scale(self) -> np.ndarray:
-        """Get the time scale.
+        """Get the time scale of the sharpness over time.
 
         Returns
         -------

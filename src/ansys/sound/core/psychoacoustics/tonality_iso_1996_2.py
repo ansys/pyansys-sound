@@ -42,8 +42,8 @@ KEY_DATA_TREE_TOTAL_TONAL_LEVEL = "Total tonal level (dBA)"
 class TonalityISO1996_2(PsychoacousticsParent):
     """Computes the tonality according to the standard ISO 1996-2:2007, annex C.
 
-    This class is used to compute the tonal audibility and tonal adjustment of
-    a signal following the annex C of the ISO 1996-2:2007 standard.
+    This class is used to compute the tonal audibility and tonal adjustment of a signal according
+    to the annex C of the ISO 1996-2:2007 standard.
     """
 
     def __init__(
@@ -58,7 +58,7 @@ class TonalityISO1996_2(PsychoacousticsParent):
         Parameters
         ----------
         signal: Field, default: None
-            Signal on which to calculate the tonality, as a DPF field.
+            Signal in Pa on which to calculate the tonality.
         noise_pause_threshold: float, default: 1.0
             Noise pause detection threshold ("level excess") in dB.
         effective_analysis_bandwidth: float, default: 5.0
@@ -100,7 +100,7 @@ class TonalityISO1996_2(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Input signal, as a DPF field."""
+        """Input signal in Pa."""
         return self.__signal
 
     @signal.setter
@@ -154,7 +154,7 @@ class TonalityISO1996_2(PsychoacousticsParent):
 
     @noise_bandwidth_ratio.setter
     def noise_bandwidth_ratio(self, ratio: float):
-        """Set noise critical bandwidth ratio property."""
+        """Set the noise bandwidth in proportion to the critical bandwidth."""
         if not (0.75 <= ratio < 2.0) or not isinstance(ratio, float):
             raise PyAnsysSoundException(
                 "Noise critical bandwidth ratio must be provided as a float value,"
@@ -194,13 +194,12 @@ class TonalityISO1996_2(PsychoacousticsParent):
         Returns
         -------
         tuple
+            -   First element (float): tonal audibility, in dB.
 
-            -   First element (float) is the tonal audibility, in dB.
+            -   Second element (float): tonal adjustment, in dB.
 
-            -   Second element (float) is the tonal adjustment, in dB.
-
-            -   Third element (DataTree) contains the computation details, that is, the main tone's
-                critical band boundary frequencies, and the total tone and noise levels in dBA.
+            -   Third element (DataTree): computation details, that is, the main tone's critical
+                band boundary frequencies, and the total tone and noise levels in dBA.
         """
         if self._output == None:
             warnings.warn(
@@ -218,14 +217,12 @@ class TonalityISO1996_2(PsychoacousticsParent):
         Returns
         -------
         tuple
+            -   First element: tonal audibility, in dB.
 
-            -   First element (float) is the tonal audibility, in dB.
+            -   Second element: tonal adjustment, in dB.
 
-            -   Second element (float) is the tonal adjustment, in dB.
-
-            -   Third element (numpy.ndarray) contains the computation details, that is, the main
-                tone's critical band boundary frequencies, and the total tone and noise levels in
-                dBA.
+            -   Third element: computation details, that is, the main tone's critical band boundary
+                frequencies, and the total tone and noise levels in dBA.
         """
         output = self.get_output()
 
