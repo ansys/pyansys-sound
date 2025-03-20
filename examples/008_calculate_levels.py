@@ -52,19 +52,20 @@ The example shows how to perform these operations:
 # Setting up the analysis consists of loading Ansys libraries, connecting to the
 # DPF server, and retrieving the example files.
 
+import csv
+
 # Load Ansys libraries.
 import os
-import csv
+
 import matplotlib.pyplot as plt
 
 from ansys.sound.core.examples_helpers import (
-    download_fan_wav,
     download_aircraft_wav,
+    download_fan_wav,
 )
-
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
-from ansys.sound.core.standard_levels import OverallLevel, LevelOverTime
+from ansys.sound.core.standard_levels import LevelOverTime, OverallLevel
 
 # Connect to a remote server or start a local server.
 my_server = connect_to_or_start_server(use_license_context=True)
@@ -83,13 +84,15 @@ path_aircraft_wav = download_aircraft_wav(server=my_server)
 
 # %%
 # Create a first .csv file in which the overall levels will be written, and write the first row.
-file = open(os.path.join('Overall_Results.csv'), 'w+', newline='') 
+file = open(os.path.join("Overall_Results.csv"), "w+", newline="")
 csv_writer1 = csv.writer(file)
-csv_writer1.writerow(['Signal name', 'overall level [RMS]', 'overall level [dBSPL]', 'overall level [dBA]'])
+csv_writer1.writerow(
+    ["Signal name", "overall level [RMS]", "overall level [dBSPL]", "overall level [dBA]"]
+)
 
 
 # %%
-# In a loop, for each sound, create a :class:`.OverallLevel` object, set its signals, 
+# In a loop, for each sound, create a :class:`.OverallLevel` object, set its signals,
 # get and the overall RMS, dBSPL and dBA levels, then Write the results into the first .csv file.
 
 for file_name in (path_fan_wav, path_aircraft_wav):
@@ -99,25 +102,27 @@ for file_name in (path_fan_wav, path_aircraft_wav):
     fc_signal = wav_loader.get_output()[0]
 
     # Calculate RMS.
-    level_RMS = OverallLevel(signal=fc_signal,  scale='RMS', reference_value=1.0)
+    level_RMS = OverallLevel(signal=fc_signal, scale="RMS", reference_value=1.0)
     level_RMS.process()
     RMS = level_RMS.get_level()
-        
+
     # Calculate dBSPL.
-    level_dBSPL = OverallLevel(signal=fc_signal,  scale='dB', reference_value=0.00002)
+    level_dBSPL = OverallLevel(signal=fc_signal, scale="dB", reference_value=0.00002)
     level_dBSPL.process()
     dBSPL = level_dBSPL.get_level()
 
     # Calculate dBA.
-    level_dBA = OverallLevel(signal=fc_signal, scale='dB', reference_value = 0.00002, frequency_weighting = 'A')
+    level_dBA = OverallLevel(
+        signal=fc_signal, scale="dB", reference_value=0.00002, frequency_weighting="A"
+    )
     level_dBA.process()
     dBA = level_dBA.get_level()
 
     # Print the results.
     file = os.path.basename(file_name)
     print(
-    f"\nThe RMS level of sound file {file} is {RMS:.1f} Pa, its dBSPL level is {dBSPL:.1f} dBSPL and its dBA level is {dBA:.1f} dBA  "
-        )
+        f"\nThe RMS level of sound file {file} is {RMS:.1f} Pa, its dBSPL level is {dBSPL:.1f} dBSPL and its dBA level is {dBA:.1f} dBA  "
+    )
 
     # Write the results in .csv.
     row1 = [file[:-4], RMS, dBSPL, dBA]
@@ -134,47 +139,65 @@ dBSPL_levels = []
 dBA_levels = []
 
 # %%
-# In a loop, for each sound, create a :class:`.OverallLevel` object, set its signals, 
+# In a loop, for each sound, create a :class:`.OverallLevel` object, set its signals,
 # get and the overall RMS, dBSPL and dBA levels, then Write the results into the one .csv file per sound.
 
 for file_name in (path_fan_wav, path_aircraft_wav):
     # Write a .csv file for each sound with the first row.
     file = os.path.basename(file_name)
-    file2 = open(os.path.join(file[:-4]+'_Levels_vs_time_Results.csv'), 'w+', newline='')
+    file2 = open(os.path.join(file[:-4] + "_Levels_vs_time_Results.csv"), "w+", newline="")
     csv_writer2 = csv.writer(file2)
-    csv_writer2.writerow(['time steps [s]', 'RMS level', 'dBSPL level', 'dBA level'])
+    csv_writer2.writerow(["time steps [s]", "RMS level", "dBSPL level", "dBA level"])
 
     # Load wav.
     wav_loader = LoadWav(file_name)
     wav_loader.process()
     fc_signal = wav_loader.get_output()[0]
-        
+
     # Calculate RMS vs time and get the time steps.
-    RMS_time_varying = LevelOverTime(signal=fc_signal, scale='RMS', reference_value=1.0, frequency_weighting='', time_weighting='Fast')
+    RMS_time_varying = LevelOverTime(
+        signal=fc_signal,
+        scale="RMS",
+        reference_value=1.0,
+        frequency_weighting="",
+        time_weighting="Fast",
+    )
     RMS_time_varying.process()
-    time_steps=RMS_time_varying.get_time_scale()
+    time_steps = RMS_time_varying.get_time_scale()
     t.append(time_steps.tolist())
-    
+
     # Calculate dBSPL vs time.
-    dBSPL_time_varying = LevelOverTime(signal=fc_signal, scale='dB', reference_value=0.00002, frequency_weighting='', time_weighting='Fast')
+    dBSPL_time_varying = LevelOverTime(
+        signal=fc_signal,
+        scale="dB",
+        reference_value=0.00002,
+        frequency_weighting="",
+        time_weighting="Fast",
+    )
     dBSPL_time_varying.process()
     dBSPL = dBSPL_time_varying.get_level_over_time()
-        
+
     # Calculate dBA vs time.
-    dBA_time_varying = LevelOverTime(signal=fc_signal, scale='dB', reference_value=0.00002, frequency_weighting='A', time_weighting='Fast')
+    dBA_time_varying = LevelOverTime(
+        signal=fc_signal,
+        scale="dB",
+        reference_value=0.00002,
+        frequency_weighting="A",
+        time_weighting="Fast",
+    )
     dBA_time_varying.process()
     dBA = dBA_time_varying.get_level_over_time()
-    
+
     # Append all the results to the empty lists previously created.
     RMS = RMS_time_varying.get_level_over_time()
     RMS_levels.append(RMS.tolist())
     dBSPL_levels.append(dBSPL.tolist())
     dBA_levels.append(dBA.tolist())
-    
+
     # Write the results in the .csv files.
     for i in range(len(time_steps)):
         csv_writer2.writerow([time_steps[i], RMS[i], dBSPL[i], dBA[i]])
- 
+
 
 # %%
 # Plot the results versus time for both signals into three graphs.
@@ -187,8 +210,8 @@ axs[0].plot(t[1], RMS_levels[1], color="r", label="Airplane")
 axs[0].set_ylabel("RMS (Pa)")
 axs[0].legend(loc="upper right")
 
-axs[1].plot(t[0],dBSPL_levels[0], color="b", label="Fan")
-axs[1].plot(t[1],dBSPL_levels[1], color="r", label="Airplane")
+axs[1].plot(t[0], dBSPL_levels[0], color="b", label="Fan")
+axs[1].plot(t[1], dBSPL_levels[1], color="r", label="Airplane")
 axs[1].set_ylabel("dBSPL")
 axs[1].legend(loc="upper right")
 
