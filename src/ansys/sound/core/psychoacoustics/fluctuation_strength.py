@@ -53,7 +53,7 @@ class FluctuationStrength(PsychoacousticsParent):
         Parameters
         ----------
         signal : Field, default: None
-            Signal in Pa on which to compute fluctuation strength, as a DPF field.
+            Signal in Pa on which to compute fluctuation strength.
         """
         super().__init__()
         self.signal = signal
@@ -61,7 +61,7 @@ class FluctuationStrength(PsychoacousticsParent):
 
     @property
     def signal(self) -> Field:
-        """Input sound signal in Pa as a DPF field."""
+        """Input signal in Pa."""
         return self.__signal
 
     @signal.setter
@@ -99,9 +99,10 @@ class FluctuationStrength(PsychoacousticsParent):
         Returns
         -------
         tuple
-            -   First element (float) is the fluctuation strength in vacil.
+            -   First element (float): fluctuation strength in vacil.
 
-            -   Second element (field) is the specific fluctuation strength in vacil.
+            -   Second element (Field): specific fluctuation strength, that is, the fluctuation
+                strength in each Bark band, in vacil.
         """
         if self._output == None:
             warnings.warn(
@@ -118,13 +119,13 @@ class FluctuationStrength(PsychoacousticsParent):
         Returns
         -------
         tuple[numpy.ndarray]
-            -   First element is the fluctuation strength in vacil.
+            -   First element: fluctuation strength in vacil.
 
-            -   Second element is the specific fluctuation strength, that is, the fluctuation
-                strength in each Bark band, in vacil.
+            -   Second element: specific fluctuation strength, that is, the fluctuation strength in
+                each Bark band, in vacil.
 
-            -   Third element is the Bark band indexes at which the specific fluctuation strength
-                is defined, in Bark.
+            -   Third element: Bark band indexes at which the specific fluctuation strength is
+                defined, in Bark.
         """
         output = self.get_output()
 
@@ -153,7 +154,8 @@ class FluctuationStrength(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Specific fluctuation strength in vacil.
+            Specific fluctuation strength, that is, the fluctuation strength in each Bark band, in
+            vacil.
         """
         return self.get_output_as_nparray()[1]
 
@@ -173,7 +175,8 @@ class FluctuationStrength(PsychoacousticsParent):
     def get_bark_band_frequencies(self) -> np.ndarray:
         """Get Bark band frequencies.
 
-        This method gets the frequencies corresponding to Bark band indexes as a NumPy array.
+        This method returns the frequencies corresponding to the Bark band indexes, as a NumPy
+        array.
 
         Reference: Traunmüller, Hartmut. "Analytical Expressions for the Tonotopic Sensory Scale."
         Journal of the Acoustical Society of America. Vol. 88, Issue 1, 1990, pp. 97-100.
@@ -188,8 +191,8 @@ class FluctuationStrength(PsychoacousticsParent):
     def plot(self):
         """Plot the specific fluctuation strength.
 
-        This method creates a figure window displaying the specific fluctuation strength in vacil
-        as a function of the Bark band index.
+        This method displays the specific fluctuation strength, in vacil, as a function of the Bark
+        band index.
         """
         if self._output == None:
             raise PyAnsysSoundException(

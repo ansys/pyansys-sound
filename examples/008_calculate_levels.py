@@ -26,15 +26,15 @@
 Calculate RMS, dBSPL and dBA levels
 -----------------------------------
 
-This example shows how to calculate RMS, dBSPL and dBA levels from two signals.
-The following indicators are included:
+This example shows how to calculate RMS, dBSPL and dBA levels.
+The following levels are included:
 
 - Overall RMS level
 - Overall dBSPL level
 - Overall dBA level
-- RMS level vs time
-- dBSPL level vs time
-- dBA level vs time
+- RMS level over time
+- dBSPL level over time
+- dBA level over time
 
 The example shows how to perform these operations:
 
@@ -60,13 +60,12 @@ import matplotlib.pyplot as plt
 
 # Load Ansys libraries.
 from ansys.sound.core.examples_helpers import (
-    download_fan_wav,
     download_aircraft_wav,
+    download_fan_wav,
 )
-
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
-from ansys.sound.core.standard_levels import OverallLevel, LevelOverTime
+from ansys.sound.core.standard_levels import LevelOverTime, OverallLevel
 
 # Connect to a remote server or start a local server.
 my_server = connect_to_or_start_server(use_license_context=True)
@@ -91,8 +90,8 @@ csv_writer_overall_results.writerow(['Signal name', 'overall level [RMS]', 'over
 
 
 # %%
-# In a loop, for each sound, create a :class:`.OverallLevel` object, set its signals, 
-# get and the overall RMS, dBSPL and dBA levels, then Write the results into the first .csv file.
+# For each sound, create an :class:`.OverallLevel` object, set its signals, compute the overall RMS,
+# dBSPL and dBA levels, and then write the results into the .csv file.
 
 for file_path in (path_fan_wav, path_aircraft_wav):
     # Load wav.
@@ -128,7 +127,7 @@ filepath_overall_results.close()
 
 
 # %%
-# Calculate RMS, dBSPL and dBA levels versus time
+# Calculate RMS, dBSPL and dBA levels over time
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Initialize empty lists to store the levels in order to plot them.
 time = []
@@ -137,8 +136,9 @@ dBSPL_levels = []
 dBA_levels = []
 
 # %%
-# In a loop, for each sound, create a :class:`.OverallLevel` object, set its signals, 
-# get and the overall RMS, dBSPL and dBA levels, then Write the results into the one .csv file per sound.
+# For each sound, create a :class:`.LevelOverTime` object, set its signals, compute and plot the
+# RMS level over time, the dBSPL level over time and the dBA level over time, then write the
+# results into an individual .csv file.
 
 for file_path in (path_fan_wav, path_aircraft_wav):
     # Write a .csv file for each sound with the first row.
@@ -165,7 +165,7 @@ for file_path in (path_fan_wav, path_aircraft_wav):
     dBSPL_time_varying.process()
     dBSPL_time_varying.plot()
     dBSPL = dBSPL_time_varying.get_level_over_time()
-        
+
     # Calculate dBA vs time.
     dBA_time_varying = LevelOverTime(signal=signal, scale='dB', reference_value=2e-5, frequency_weighting='A', time_weighting='Fast')
     dBA_time_varying.process()
@@ -176,14 +176,14 @@ for file_path in (path_fan_wav, path_aircraft_wav):
     rms_levels.append(rms.tolist())
     dBSPL_levels.append(dBSPL.tolist())
     dBA_levels.append(dBA.tolist())
-    
+
     # Write the results in the .csv files.
     for i in range(len(time_steps)):
         csv_writer_results_vs_time.writerow([time_steps[i], rms[i], dBSPL[i], dBA[i]])
  
 
 # %%
-# Plot the results versus time for both signals into three graphs.
+# Plot the results over time for both signals into three graphs.
 
 fig, axs = plt.subplots(3)
 fig.suptitle("Time varying RMS, dBSPL and dBA levels")

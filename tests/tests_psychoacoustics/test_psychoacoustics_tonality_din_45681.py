@@ -48,12 +48,12 @@ EXP_SPECTRUM1_TONE3_TYPE = ""
 EXP_SPECTRUM1_TONE3_MASKING_NOISE_LEVEL = -5.367661476135254
 EXP_STR = (
     "TonalityDIN45681 object.\n"
-    + "Data\n"
-    + f'Signal name: "Acceleration_with_Tacho"\n'
-    + f"Window length: 3.0 s\n"
-    + f"Overlap: 0.0 %\n"
-    + f"Mean difference DL: 9.8 (+/-0.9) dB\n"
-    + f"Tonal adjustment Kt: 5 dB\n"
+    "Data\n"
+    f'\tSignal name: "Acceleration_with_Tacho"\n'
+    f"\tWindow length: 3.0 s\n"
+    f"\tOverlap: 0.0 %\n"
+    f"Mean tonality (difference DL): 9.8 (+/-0.9) dB\n"
+    f"Tonal adjustment Kt: 5 dB"
 )
 
 
@@ -129,7 +129,7 @@ def test_tonality_din45681_process_exception():
 
     with pytest.raises(
         PyAnsysSoundException,
-        match="No input signal defined. Use ``TonalityDIN45681.signal``.",
+        match="No input signal defined. Use `TonalityDIN45681.signal`.",
     ):
         tonality.process()
 
@@ -153,7 +153,7 @@ def test_tonality_din45681_get_output_unprocessed():
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the ``TonalityDIN45681.process\\(\\)`` method.",
+        match="Output is not processed yet. Use the `TonalityDIN45681.process\\(\\)` method.",
     ):
         output = tonality.get_output()
     assert output is None
@@ -185,7 +185,7 @@ def test_tonality_din45681_get_output_as_nparray_unprocessed():
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the ``TonalityDIN45681.process\\(\\)`` method.",
+        match="Output is not processed yet. Use the `TonalityDIN45681.process\\(\\)` method.",
     ):
         DL, U, Kt, DLj, Uj, fTj, Ktj, time = tonality.get_output_as_nparray()
     assert np.isnan(DL)
@@ -386,7 +386,7 @@ def test_tonality_din45681_plot_exception():
 
     with pytest.raises(
         PyAnsysSoundException,
-        match="Output is not processed yet. Use the ``TonalityDIN45681.process\\(\\)`` method.",
+        match="Output is not processed yet. Use the `TonalityDIN45681.process\\(\\)` method.",
     ):
         tonality.plot()
 

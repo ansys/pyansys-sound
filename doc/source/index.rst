@@ -62,9 +62,17 @@ The following API reference pages describe some key features of PyAnsys Sound:
 
 * :doc:`api/signal_utilities`: Tools to read and write WAV files in the format used by Ansys Sound Analysis
   and Specification (SAS) and tools to perform basic editing of audio signals.
-* :doc:`api/spectrogram_processing`: Time-frequency and time-representation conversion tools and time-frequency editing tools.
+* :doc:`api/signal_processing`: Tools to perform time-domain signal processing, such as filtering.
+* :doc:`api/spectral_processing`: Tools to perform frequency-domain signal processing, such as
+  calculating a power spectral density (PSD).
+* :doc:`api/spectrogram_processing`: Spectrogram calculation and editing tools.
 * :doc:`api/psychoacoustics`: Psychoacoustic indicators computation to measure perceived sound quality.
 * :doc:`api/xtract`: Separation of a signal into several components, such as tonal, transient, and noise parts.
+* :doc:`api/sound_composer`: Generation of sounds from sources defined in the time domain or the frequency domain.
+  Creation of complex sounds by mixing several tracks (each track contains a specific user-defined source).
+* :doc:`api/standard_levels`: Calculation of standard levels for time-domain signals.
+* :doc:`api/sound_power`: Calculation of sound power from time-domain signals.
+
 
 Not all features of Ansys SAS are available in PyAnsys Sound. Features are regularly
 added in new versions.
