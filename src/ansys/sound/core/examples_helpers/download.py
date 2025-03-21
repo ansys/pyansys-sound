@@ -253,3 +253,25 @@ def download_xtract_demo_signal_2_wav(server=None):
         Path for the ``xtract_demo_signal_2.wav`` file.
     """
     return _download_example_file_to_server_tmp_folder("xtract_demo_signal_2.wav", server=server)
+
+
+def download_fan_wav(server=None):
+    """Download the ``Fan.wav`` file.
+
+    Returns
+    -------
+    str
+        Path for the ``Fan.wav`` file.
+    """
+    return _download_example_file_to_server_tmp_folder("Fan.wav", server=server)
+
+
+def download_aircraft_wav(server=None):
+    """Download the ``Aircraft.wav`` file.
+
+    Returns
+    -------
+    str
+        Path for the ``Aircraft.wav`` file.
+    """
+    return _download_example_file_to_server_tmp_folder("Aircraft.wav", server=server)
