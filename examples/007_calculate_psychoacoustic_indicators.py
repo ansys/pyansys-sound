@@ -124,7 +124,8 @@ loudness_ISO532_1_sone = loudness_ISO532_1_stationary.get_loudness_sone()
 loudness_ISO532_1_level_phon = loudness_ISO532_1_stationary.get_loudness_level_phon()
 
 print(
-    f"\nThe ISO 532-1 loudness of sound file {file_name_flute} is {loudness_ISO532_1_sone:.1f} sones "
+    f"\nThe ISO 532-1 loudness of sound file {file_name_flute} is "
+    f"{loudness_ISO532_1_sone:.1f} sones "
     f"and its loudness level is {loudness_ISO532_1_level_phon:.1f} phons."
 )
 
@@ -149,8 +150,8 @@ L5 = loudness_ISO532_1_time_varying.get_L5_phon()
 L10 = loudness_ISO532_1_time_varying.get_L10_phon()
 
 print(
-    f"\nThe sound file {file_name_car_acceleration} has the following percentile loudness and loudness level "
-    "values: \n"
+    f"\nThe sound file {file_name_car_acceleration} has the following percentile "
+    f"loudness and loudness level values:\n"
     f"- N5  = {N5:.1f} sones.\n"
     f"- N10 = {N10:.1f} sones.\n"
     f"- L5  = {L5:.1f} phons.\n"
@@ -180,14 +181,18 @@ loudness_ISO532_2_phon_binaural = loudness_ISO532_2.get_binaural_loudness_level_
 
 print(
     f"\nThe ISO 532-2 loudness of sound file {file_name_flute} is: \n"
-    f" monaural loudness: {loudness_ISO532_2_sone_monaural:.1f} sones, {loudness_ISO532_2_phon_monaural:.1f} phons.\n"
-    f" binaural loudness: {loudness_ISO532_2_sone_binaural:.1f} sones, {loudness_ISO532_2_phon_binaural:.1f} phons."
+    f" monaural loudness: {loudness_ISO532_2_sone_monaural:.1f} sones, "
+    f"{loudness_ISO532_2_phon_monaural:.1f} phons.\n"
+    f" binaural loudness: {loudness_ISO532_2_sone_binaural:.1f} sones, "
+    f"{loudness_ISO532_2_phon_binaural:.1f} phons."
 )
 
 # %%
-# You can compare the loudness values to the ISO 532-1 loudness values, to see the difference between the two standards.
+# You can compare the loudness values to the ISO 532-1 loudness values,
+# to see the difference between the two standards.
 print(
-    f"\nThe ISO 532-1 loudness of sound file {file_name_flute} is {loudness_ISO532_1_sone:.1f} sones "
+    f"\nThe ISO 532-1 loudness of sound file {file_name_flute} is "
+    f"{loudness_ISO532_1_sone:.1f} sones "
     f"and its loudness level is {loudness_ISO532_1_level_phon:.1f} phons."
 )
 
