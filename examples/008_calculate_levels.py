@@ -85,9 +85,8 @@ path_aircraft_wav = download_aircraft_wav(server=my_server)
 # Create a first .csv file in which the overall levels will be written, and write the header row.
 filepath_overall_results = open("Overall_Results.csv", "w+", newline="")
 csv_writer_overall_results = csv.writer(filepath_overall_results)
-_ = csv_writer_overall_results.writerow(
-    ["Signal name", "overall level [RMS]", "overall level [dBSPL]", "overall level [dBA]"]
-)  # Note: writerow() returns the number of characters written to the file that we don't need here.
+header_row = ["Signal name", "Overall level [RMS]", "Overall level [dBSPL]", "Overall level [dBA]"]
+_ = csv_writer_overall_results.writerow(header_row)
 
 
 # %%
