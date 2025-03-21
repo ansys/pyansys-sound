@@ -121,7 +121,8 @@ for file_path in (path_fan_wav, path_aircraft_wav):
     # Print the results.
     file_name = os.path.basename(file_path)
     print(
-        f"\nThe RMS level of sound file {file_name} is {rms:.1f} Pa, its dBSPL level is {dBSPL:.1f} dBSPL and its dBA level is {dBA:.1f} dBA  "
+        f"\nThe RMS level of sound file {file_name} is {rms:.1f} Pa, its dBSPL level is"
+        f" {dBSPL:.1f} dBSPL and its dBA level is {dBA:.1f} dBA"
     )
 
     # Write the results in .csv.
