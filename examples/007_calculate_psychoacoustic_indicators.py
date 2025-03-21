@@ -197,7 +197,8 @@ print(
 )
 
 # %%
-# Plot the ISO 532-2 binaural specific loudness, that is, the binaural loudness at each Bark band index.
+# Plot the ISO 532-2 binaural specific loudness, that is, 
+# the binaural loudness at each Bark band index.
 loudness_ISO532_2.plot()
 
 
