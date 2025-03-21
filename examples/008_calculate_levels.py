@@ -87,7 +87,7 @@ filepath_overall_results = open("Overall_Results.csv", "w+", newline="")
 csv_writer_overall_results = csv.writer(filepath_overall_results)
 _ = csv_writer_overall_results.writerow(
     ["Signal name", "overall level [RMS]", "overall level [dBSPL]", "overall level [dBA]"]
-)  # Note: writrow() returns the number of characters written to the file, which we don't need here.
+)  # Note: writerow() returns the number of characters written to the file that we don't need here.
 
 
 # %%
