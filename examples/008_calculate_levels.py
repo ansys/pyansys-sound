@@ -26,15 +26,15 @@
 Calculate RMS, dBSPL and dBA levels
 -----------------------------------
 
-This example shows how to calculate RMS, dBSPL and dBA levels from two signals.
-The following indicators are included:
+This example shows how to calculate RMS, dBSPL and dBA levels.
+The following levels are included:
 
 - Overall RMS level
 - Overall dBSPL level
 - Overall dBA level
-- RMS level vs time
-- dBSPL level vs time
-- dBA level vs time
+- RMS level over time
+- dBSPL level over time
+- dBA level over time
 
 The example shows how to perform these operations:
 
@@ -83,17 +83,17 @@ path_aircraft_wav = download_aircraft_wav(server=my_server)
 
 
 # %%
-# Create a first .csv file in which the overall levels will be written, and write the first row.
+# Create a .csv file to write the overall levels, and write the header row.
 file = open(os.path.join("Overall_Results.csv"), "w+", newline="")
 csv_writer1 = csv.writer(file)
 csv_writer1.writerow(
-    ["Signal name", "overall level [RMS]", "overall level [dBSPL]", "overall level [dBA]"]
+    ["Signal name", "Overall level [RMS]", "Overall level [dBSPL]", "Overall level [dBA]"]
 )
 
 
 # %%
-# In a loop, for each sound, create a :class:`.OverallLevel` object, set its signals,
-# get and the overall RMS, dBSPL and dBA levels, then Write the results into the first .csv file.
+# For each sound, create an :class:`.OverallLevel` object, set its signals, compute the overall RMS,
+# dBSPL and dBA levels, and then write the results into the .csv file.
 
 for file_name in (path_fan_wav, path_aircraft_wav):
     # Load wav.
@@ -121,7 +121,8 @@ for file_name in (path_fan_wav, path_aircraft_wav):
     # Print the results.
     file = os.path.basename(file_name)
     print(
-        f"\nThe RMS level of sound file {file} is {RMS:.1f} Pa, its dBSPL level is {dBSPL:.1f} dBSPL and its dBA level is {dBA:.1f} dBA  "
+        f"\nThe RMS level of sound file {file} is {RMS:.1f} Pa, "
+        f"its dBSPL level is {dBSPL:.1f} dBSPL and its dBA level is {dBA:.1f} dBA  "
     )
 
     # Write the results in .csv.
@@ -130,24 +131,25 @@ for file_name in (path_fan_wav, path_aircraft_wav):
 
 
 # %%
-# Calculate RMS, dBSPL and dBA levels versus time
+# Calculate RMS, dBSPL and dBA levels over time
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Initialize empty lists to store the levels in order to plot them.
+# Initialize empty lists to store the levels over time to plot.
 t = []
 RMS_levels = []
 dBSPL_levels = []
 dBA_levels = []
 
 # %%
-# In a loop, for each sound, create a :class:`.OverallLevel` object, set its signals,
-# get and the overall RMS, dBSPL and dBA levels, then Write the results into the one .csv file per sound.
+# For each sound, create a :class:`.LevelOverTime` object, set its signals, compute and plot the
+# RMS level over time, the dBSPL level over time and the dBA level over time, then write the
+# results into an individual .csv file.
 
 for file_name in (path_fan_wav, path_aircraft_wav):
-    # Write a .csv file for each sound with the first row.
+    # Write a .csv file for each sound with the header row.
     file = os.path.basename(file_name)
     file2 = open(os.path.join(file[:-4] + "_Levels_vs_time_Results.csv"), "w+", newline="")
     csv_writer2 = csv.writer(file2)
-    csv_writer2.writerow(["time steps [s]", "RMS level", "dBSPL level", "dBA level"])
+    csv_writer2.writerow(["Time [s]", "RMS level", "dBSPL level", "dBA level"])
 
     # Load wav.
     wav_loader = LoadWav(file_name)
@@ -188,7 +190,7 @@ for file_name in (path_fan_wav, path_aircraft_wav):
     dBA_time_varying.process()
     dBA = dBA_time_varying.get_level_over_time()
 
-    # Append all the results to the empty lists previously created.
+    # Append all the results to the lists.
     RMS = RMS_time_varying.get_level_over_time()
     RMS_levels.append(RMS.tolist())
     dBSPL_levels.append(dBSPL.tolist())
@@ -200,7 +202,7 @@ for file_name in (path_fan_wav, path_aircraft_wav):
 
 
 # %%
-# Plot the results versus time for both signals into three graphs.
+# Plot the results over time for both signals into three graphs.
 
 fig, axs = plt.subplots(3)
 fig.suptitle("Time varying RMS, dBSPL and dBA levels")
