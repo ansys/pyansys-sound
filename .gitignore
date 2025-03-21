@@ -172,3 +172,4 @@ tests/data/output/*.wav
 
 # Example outputs
 examples/*.csv
+/*.csv
