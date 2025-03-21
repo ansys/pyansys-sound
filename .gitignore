@@ -169,3 +169,6 @@ doc/source/api/_autosummary/
 
 # Data output
 tests/data/output/*.wav
+
+# Example outputs
+examples/*.csv
