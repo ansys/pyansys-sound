@@ -35,7 +35,7 @@ tests = [
     "pytest==8.3.5",
     "pytest-cov==6.0.0",
     "pytest-dependency==0.6.0",
-    "platformdirs==4.3.6",
+    "platformdirs==4.3.7",
     "regex==2024.11.6",
 ]
 
@@ -54,7 +54,7 @@ doc = [
     "pypandoc==1.15",
     "jupyter-sphinx==0.5.3",
     "sphinx-autobuild==2024.10.3",
-    "platformdirs==4.3.6"
+    "platformdirs==4.3.7"
 ]
 
 [tool.flit.module]
