@@ -27,6 +27,8 @@ from ansys.sound.core.examples_helpers import (
     download_accel_with_rpm_2_wav,
     download_accel_with_rpm_3_wav,
     download_accel_with_rpm_wav,
+    download_aircraft_wav,
+    download_fan_wav,
     download_flute_psd,
     download_flute_wav,
     download_xtract_demo_signal_1_wav,
@@ -39,7 +41,6 @@ def test_download_flute_psd():
     download_flute_psd()[0]
     p = str(EXAMPLES_PATH) + "/flute_psd.txt"
     assert pathlib.Path(p).exists() == True
-
     assert os.path.getsize(p) == 118119
 
 
@@ -55,10 +56,12 @@ def test_download_accel_with_rpm_wav():
     p = str(EXAMPLES_PATH) + "/accel_with_rpm.wav"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 3639982
+
     p = str(EXAMPLES_PATH) + "/accel_with_rpm_2.wav"
     download_accel_with_rpm_2_wav()[0]
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 3639982
+
     p = str(EXAMPLES_PATH) + "/accel_with_rpm_3.wav"
     download_accel_with_rpm_3_wav()[0]
     assert pathlib.Path(p).exists() == True
@@ -70,7 +73,22 @@ def test_download_xtract_demo_signal_wav():
     p = str(EXAMPLES_PATH) + "/xtract_demo_signal_1.wav"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 882363
+
     p = str(EXAMPLES_PATH) + "/xtract_demo_signal_2.wav"
     download_xtract_demo_signal_2_wav()[0]
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 882363
+
+
+def test_download_fan_wav():
+    download_fan_wav()[0]
+    p = str(EXAMPLES_PATH) + "/Fan.wav"
+    assert pathlib.Path(p).exists() == True
+    assert os.path.getsize(p) == 500195
+
+
+def test_download_aircraft_wav():
+    download_aircraft_wav()[0]
+    p = str(EXAMPLES_PATH) + "/Aircraft.wav"
+    assert pathlib.Path(p).exists() == True
+    assert os.path.getsize(p) == 2299160
