@@ -90,7 +90,7 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
             masking noise level is estimated in a band delimited by 75 % of the critical bandwidth
             on each side of the tone). Value must be between `0.75` and `2`.
 
-        For more information about the parameters, please refer to Ansys Sound SAS' user guide.
+        For more information about the parameters, please refer to the Ansys Sound SAS user guide.
         """
         super().__init__()
         self.signal = signal

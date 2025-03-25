@@ -76,7 +76,7 @@ Examples
 --------
 
 Comprehensive information on using PyAnsys Sound is available in :doc:`examples/index`.
-At the end of each example, a button provides for downloading the example's Python source code.
+At the end of each example, a button allows you to download the example's Python source code.
 
 
 .. _DPF Server Docker image:

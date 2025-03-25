@@ -67,7 +67,7 @@ class TonalityAures(PsychoacousticsParent):
             Threshold for bandwidth weighting. Ignored when :attr:`account_for_w1` is set to
             `False`.
 
-        For more information about the parameters, please refer to Ansys Sound SAS' user guide.
+        For more information about the parameters, please refer to the Ansys Sound SAS user guide.
         """
         super().__init__()
         self.signal = signal

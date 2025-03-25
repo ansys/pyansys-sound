@@ -62,7 +62,7 @@ class XtractTonalParameters(XtractParent):
             A higher value enables finding tonal components with a greater
             frequency slope over time.
         minimum_duration : float, default: 1.0
-            Minimum duration in seconds for each tonal components.
+            Minimum duration in seconds for each tonal component.
             Values are between 0 and 5.
         intertonal_gap : float, default: 20.0
             Minimum gap in Hz between two tonal components.

@@ -53,7 +53,7 @@ class Stft(SpectrogramProcessingParent):
             Use a power of 2 for better performance.
         window_type : str, default: 'HANN'
             Window type used for the FFT computation. Options are ``'BARTLETT'``, ``'BLACKMAN'``,
-            ``'BLACKMANHARRIS'``,``'HAMMING'``, ``'HANN'``, ``'KAISER'``, and
+            ``'BLACKMANHARRIS'``, ``'HAMMING'``, ``'HANN'``, ``'KAISER'``, and
             ``'RECTANGULAR'``.
         window_overlap : float, default: 0.5
             Overlap value between two successive FFT computations. Values can range from 0 to 1.

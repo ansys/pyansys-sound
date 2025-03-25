@@ -48,10 +48,10 @@ class Filter(SignalProcessingParent):
     (:attr:`a_coefficients`) is set to 1 as a consequence.
 
     Note that only one filter definition source (coefficients, FRF, or FRF file) can be provided
-    when instantiating the class. After class instantiation, anytime the coefficients are changed,
-    the FRF is updated accordingly, and vice versa.
+    when instantiating the class. After class instantiation, any time the coefficients are
+    changed, the FRF is updated accordingly, and vice versa.
 
-    Filtering a signal consists in applying the filter coefficients :math:`b[k]` and :math:`a[k]`
+    Filtering a signal consists of applying the filter coefficients :math:`b[k]` and :math:`a[k]`
     in the following difference equation, with :math:`x[n]` the input signal, and :math:`y[n]` the
     output signal:
 
@@ -60,9 +60,9 @@ class Filter(SignalProcessingParent):
 
     .. note::
         Whether they are derived from the provided FRF or specified directly, the filter
-        coefficients are linked to the sampling frequency value that is given in the parameter
-        ``sampling_frequency`` of the ``Filter`` class. As a consequence, the signal to filter
-        :attr:`signal` must have the same sampling frequency. If necessary, use the
+        coefficients are linked to the sampling frequency value that is given in the
+        ``sampling_frequency`` parameter of the ``Filter`` class. As a consequence, the signal to
+        filter :attr:`signal` must have the same sampling frequency. If necessary, use the
         :class:`.Resample` class to resample the signal prior to using the ``Filter`` class.
     """
 

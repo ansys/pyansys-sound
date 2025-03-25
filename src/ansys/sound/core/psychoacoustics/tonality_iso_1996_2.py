@@ -69,7 +69,7 @@ class TonalityISO1996_2(PsychoacousticsParent):
             masking noise level is estimated in a band delimited by 75 % of the critical bandwidth
             on each side of the tone). Value must be between `0.75` and `2`.
 
-        For more information about the parameters, please refer to Ansys Sound SAS' user guide.
+        For more information about the parameters, please refer to the Ansys Sound SAS user guide.
         """
         super().__init__()
         self.signal = signal
@@ -281,9 +281,9 @@ class TonalityISO1996_2(PsychoacousticsParent):
             -   Main tone's critical band higher frequency in Hz
                 (`"Higher critical band limit (Hz)"`),
 
-            -   Total tone level in dBA (`"Total noise level (dBA)"`),
+            -   Total tone level in dBA (`"Total tonal level (dBA)"`),
 
-            -   Total noise level in dBA (`"Total tonal level (dBA)"`).
+            -   Total noise level in dBA (`"Total noise level (dBA)"`).
         """
         if self.get_output() is None:
             return {}
