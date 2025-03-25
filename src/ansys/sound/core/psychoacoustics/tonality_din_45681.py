@@ -55,7 +55,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         overlap: float, default: 0.0
             Overlap, in %, between two successive slices of the signal.
 
-        For more information about the parameters, please refer to Ansys Sound SAS' user guide.
+        For more information about the parameters, please refer to the Ansys Sound SAS user guide.
         """
         super().__init__()
         self.signal = signal
