@@ -160,12 +160,12 @@ def test_stft_set_get_window_type():
         stft.window_type = "InvalidWindow"
     assert (
         str(excinfo.value)
-        == "Window type is invalid. Options are 'BARTLETT', 'BLACKMAN', 'BLACKMANHARRIS', "
-        "'HAMMING', 'HANN', 'KAISER', and 'RECTANGULAR'."
+        == "Window type is invalid. Options are 'TRIANGULAR', 'BLACKMAN', 'BLACKMANHARRIS', "
+        "'HAMMING', 'HANN', 'GAUSS', 'FLATTOP' and 'RECTANGULAR'."
     )
 
-    stft.window_type = "KAISER"
-    assert stft.window_type == "KAISER"
+    stft.window_type = "GAUSS"
+    assert stft.window_type == "GAUSS"
 
 
 @patch("matplotlib.pyplot.show")
