@@ -35,7 +35,7 @@ ID_COMPUTE_ROUGHNESS = "compute_roughness"
 
 
 class Roughness(PsychoacousticsParent):
-    """Computes the roughness for stationary sounds.
+    """Computes the roughness and the roughness over time of a sound.
 
     Reference: Daniel and Weber, "Psychoacoustical roughness: implementation of an
     optimized model." Acta Acustica united with Acustica, 83, pp. 113-123 (1997).
