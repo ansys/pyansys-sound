@@ -186,12 +186,12 @@ def test_isolate_orders_set_get_window_type():
     with pytest.raises(PyAnsysSoundException) as excinfo:
         isolate_orders.window_type = "InvalidWindow"
     assert (
-        str(excinfo.value) == "Invalid window type, accepted values are 'BLACKMANHARRIS', 'HANN',"
-        " 'BLACKMAN','HAMMING', 'KAISER', 'BARTLETT', 'RECTANGULAR'."
+        str(excinfo.value) == "Invalid window type, accepted values are 'BLACKMANHARRIS', 'HANN', "
+        "'BLACKMAN','HAMMING', 'GAUSS', 'FLATTOP', 'TRIANGULAR', 'RECTANGULAR'."
     )
 
-    isolate_orders.window_type = "KAISER"
-    assert isolate_orders.window_type == "KAISER"
+    isolate_orders.window_type = "GAUSS"
+    assert isolate_orders.window_type == "GAUSS"
 
 
 def test_isolate_orders_set_get_rpm_profile():

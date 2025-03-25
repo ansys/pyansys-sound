@@ -58,8 +58,9 @@ class PowerSpectralDensity(SpectralProcessingParent):
         fft_size : int, default: 2048
             Number of FFT points to use for the PSD estimate. Must be a power of 2.
         window_type : str, default: 'HANN'
-            Window type used for the PSD computation. Options are ``'BARTLETT'``, ``'BLACKMAN'``,
-            ``'BLACKMANHARRIS'``, ``'HAMMING'``, ``'HANN'``, ``'KAISER'``, and ``'RECTANGULAR'``.
+            Window type used for the PSD computation. Options are ``'TRIANGULAR'``, ``'BLACKMAN'``,
+            ``'BLACKMANHARRIS'``, ``'HAMMING'``, ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``,
+            and ``'RECTANGULAR'``.
         window_length : int, default: 2048
             Number of points of the window used for the PSD computation , by default 2048.
         overlap : float, default: 0.25
@@ -116,8 +117,8 @@ class PowerSpectralDensity(SpectralProcessingParent):
     def window_type(self) -> str:
         """Window type.
 
-        Supported options are ``'BARTLETT'``, ``'BLACKMAN'``, ``'BLACKMANHARRIS'``, ``'HAMMING'``,
-        ``'HANN'``, ``'KAISER'``, ``'RECTANGULAR'``.
+        Supported options are ``'TRIANGULAR'``, ``'BLACKMAN'``, ``'BLACKMANHARRIS'``, ``'HAMMING'``,
+        ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``, ``'RECTANGULAR'``.
         """
         return self.__window_type
 
@@ -126,17 +127,18 @@ class PowerSpectralDensity(SpectralProcessingParent):
     def window_type(self, value: str):
         """Set window type."""
         if value not in [
-            "BARTLETT",
+            "TRIANGULAR",
             "BLACKMAN",
             "BLACKMANHARRIS",
             "HAMMING",
             "HANN",
-            "KAISER",
+            "FLATTOP",
+            "GAUSS",
             "RECTANGULAR",
         ]:
             raise PyAnsysSoundException(
-                "Window type is invalid. Options are 'BARTLETT', 'BLACKMAN', 'BLACKMANHARRIS', "
-                "'HAMMING', 'HANN', 'KAISER', and 'RECTANGULAR'."
+                "Window type is invalid. Options are 'TRIANGULAR', 'BLACKMAN', 'BLACKMANHARRIS', "
+                "'HAMMING', 'HANN', 'GAUSS', 'FLATTOP' and 'RECTANGULAR'."
             )
         self.__window_type = value
 

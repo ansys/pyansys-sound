@@ -84,8 +84,8 @@ def test_exception():
         psd = PowerSpectralDensity(Field())
         psd.window_type = "INVALID"
     assert (
-        record.value.args[0] == "Window type is invalid. Options are 'BARTLETT', 'BLACKMAN', "
-        "'BLACKMANHARRIS', 'HAMMING', 'HANN', 'KAISER', and 'RECTANGULAR'."
+        record.value.args[0] == "Window type is invalid. Options are 'TRIANGULAR', 'BLACKMAN', "
+        "'BLACKMANHARRIS', 'HAMMING', 'HANN', 'GAUSS', 'FLATTOP' and 'RECTANGULAR'."
     )
 
     with pytest.raises(PyAnsysSoundException) as record:

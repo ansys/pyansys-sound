@@ -63,8 +63,9 @@ class IsolateOrders(SpectrogramProcessingParent):
         fft_size : int, default: 1024
             Size of the FFT used to compute the STFT.
         window_type : str, default: 'HANN'
-            Window type used for the FFT computation. Options are ``'BARTLETT'``, ``'BLACKMAN'``,
-            ``'BLACKMANHARRIS'``,``'HAMMING'``, ``'HANN'``, ``'KAISER'``, and ``'RECTANGULAR'``.
+            Window type used for the FFT computation. Options are ``'TRIANGULAR'``, ``'BLACKMAN'``,
+            ``'BLACKMANHARRIS'``,``'HAMMING'``, ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``
+             and ``'RECTANGULAR'``.
         window_overlap : float, default: 0.5
             Overlap value between two successive FFT computations. Values can range from 0 to 1.
             For example, ``0`` means no overlap, and ``0.5`` means 50% overlap.
@@ -136,8 +137,8 @@ class IsolateOrders(SpectrogramProcessingParent):
     def window_type(self) -> str:
         """Window type.
 
-        Supported options are ``'BARTLETT'``, ``'BLACKMAN'``, ``'BLACKMANHARRIS'``, ``'HAMMING'``,
-        ``'HANN'``, ``'KAISER'``, ``'RECTANGULAR'``.
+        Supported options are ``'TRIANGULAR'``, ``'BLACKMAN'``, ``'BLACKMANHARRIS'``, ``'HAMMING'``,
+        ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``, ``'RECTANGULAR'``.
         """
         return self.__window_type
 
@@ -148,14 +149,15 @@ class IsolateOrders(SpectrogramProcessingParent):
             "BLACKMANHARRIS",
             "HANN",
             "HAMMING",
-            "KAISER",
-            "BARTLETT",
+            "GAUSS",
+            "FLATTOP",
+            "TRIANGULAR",
             "BLACKMAN",
             "RECTANGULAR",
         ):
             raise PyAnsysSoundException(
                 "Invalid window type, accepted values are 'BLACKMANHARRIS', 'HANN', "
-                "'BLACKMAN','HAMMING', 'KAISER', 'BARTLETT', 'RECTANGULAR'."
+                "'BLACKMAN','HAMMING', 'GAUSS', 'FLATTOP', 'TRIANGULAR', 'RECTANGULAR'."
             )
 
         self.__window_type = window_type
