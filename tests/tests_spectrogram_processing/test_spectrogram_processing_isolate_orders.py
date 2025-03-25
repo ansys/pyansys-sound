@@ -187,7 +187,7 @@ def test_isolate_orders_set_get_window_type():
         isolate_orders.window_type = "InvalidWindow"
     assert (
         str(excinfo.value) == "Invalid window type, accepted values are 'BLACKMANHARRIS', 'HANN', "
-        "'BLACKMAN','HAMMING', 'GAUSS', 'FLATTOP', 'TRIANGULAR', 'RECTANGULAR'."
+        "'BLACKMAN', 'HAMMING', 'GAUSS', 'FLATTOP', 'TRIANGULAR' and 'RECTANGULAR'."
     )
 
     isolate_orders.window_type = "GAUSS"
