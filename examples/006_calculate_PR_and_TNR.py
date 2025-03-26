@@ -28,7 +28,10 @@ Calculate TNR and PR
 
 This example shows how to calculate tone-to-noise ratio (TNR) and prominence
 ratio (PR) following the ECMA 418-1 and ISO 7779 standards. It also extracts
-the desired TNR and PR information.
+the desired TNR and PR information and display it in the console.
+
+In a second part, the example shows how to calculate TNR and PR for specific
+orders, given a signal in the time domain and its corresponding RPM signal.
 """
 
 # %%
