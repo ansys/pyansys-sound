@@ -316,7 +316,7 @@ def test_filter_get_sampling_frequency():
 
 
 def test_filter_design_FIR_from_FRF_file():
-    """Test Filter design_FIR_from_FRF method."""
+    """Test Filter design_FIR_from_FRF_file method."""
     filter = Filter()
     filter.design_FIR_from_FRF_file(file=pytest.data_path_filter_frf)
     assert len(filter.a_coefficients) == 1
