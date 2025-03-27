@@ -30,7 +30,7 @@ This example shows how to calculate tone-to-noise ratio (TNR) and prominence
 ratio (PR) following the ECMA 418-1 and ISO 7779 standards. It also extracts
 the desired TNR and PR information and displays it in the console.
 
-In a second part, the example shows how to calculate TNR and PR for specific
+In the second part, the example shows how to calculate TNR and PR for specific
 orders, given a signal in the time domain and its corresponding RPM signal.
 """
 
@@ -247,7 +247,7 @@ TNR_orders.process()
 TNR_orders.plot(use_rpm_scale=False)
 
 # %%
-# One can notice that, according to TNR, order #2 is prominent around 10 s and after 18 s,
+# You can notice that, according to TNR, order #2 is prominent around 10 s and after 18 s,
 # order #4 is highly prominent at some times, and order #6 is sometimes prominent.
 
 # %%
@@ -265,5 +265,5 @@ PR_orders.process()
 PR_orders.plot(use_rpm_scale=True)
 
 # %%
-# One can notice that, according to PR, order #6 is prominent in the range 2600-3600 rpm,
+# You can notice that, according to PR, order #6 is prominent in the range 2600-3600 rpm,
 # order #4 is prominent above 4000 rpm, and order #2 is prominent at some specific RPM values.
