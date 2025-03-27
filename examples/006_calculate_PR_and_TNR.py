@@ -26,12 +26,12 @@
 Calculate TNR and PR
 --------------------
 
-This example shows how to calculate tone-to-noise ratio (TNR) and prominence
+In the first part, this example shows how to calculate tone-to-noise ratio (TNR) and prominence
 ratio (PR) following the ECMA 418-1 and ISO 7779 standards. It also extracts
 the desired TNR and PR information and displays it in the console.
 
 In the second part, the example shows how to calculate TNR and PR for specific
-orders, given a signal in the time domain and its corresponding RPM signal.
+orders, when the input signal is associated with an RPM profile.
 """
 
 # %%
@@ -105,7 +105,8 @@ support.time_frequencies = f_frequencies
 f_psd.time_freq_support = support
 
 # %%
-# Create a ``ToneToNoiseRatio`` object, set the created PSD field as input, and compute the TNR.
+# Create a :class:`.ToneToNoiseRatio` object, set the created PSD field as input, and compute the
+# TNR.
 tone_to_noise_ratio = ToneToNoiseRatio(psd=f_psd)
 tone_to_noise_ratio.process()
 
@@ -154,16 +155,17 @@ print(
 # %%
 # Calculate PR from a signal
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Use the ``PowerSpectralDensity`` class to calculate a PSD, and compute Prominence Ratio (PR).
+# Use the :class:`.PowerSpectralDensity` class to calculate a PSD, and compute Prominence Ratio
+# (PR).
 
-# Load example data from WAV file (recording of a flute).
+# Load example data from a WAV file (recording of a flute).
 path_flute_wav = download_flute_wav(server=my_server)
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
 flute_signal = wav_loader.get_output()[0]
 
 # %%
-# Create a ``PowerSpectralDensity`` object, set its input signal and parameters,
+# Create a :class:`.PowerSpectralDensity` object, set its input signal and parameters,
 # and compute the PSD.
 psd_object = PowerSpectralDensity(
     flute_signal, fft_size=32768, window_type="HANN", window_length=32768, overlap=0.5
@@ -175,7 +177,7 @@ psd_object.process()
 f_psd = psd_object.get_output()
 
 # %%
-# Create a ``ProminenceRatio`` object, set the computed PSD as input, and compute the PR.
+# Create a :class:`.ProminenceRatio` object, set the computed PSD as input, and compute the PR.
 prominence_ratio = ProminenceRatio(psd=f_psd)
 prominence_ratio.process()
 
@@ -220,13 +222,13 @@ print(
 )
 
 # %%
-# Calculate TNR of orders #2, #4 and #6 from a signal, and display TNR vs time
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load an acoustic signal and its associated RPM vs time and calculate the TNR for
-# the specific order numbers 2, 4 and 6.
+# Calculate TNR over time for specific orders
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Load an acoustic signal and its associated RPM over time profile and calculate the TNR for
+# order numbers 2, 4, and 6.
 
-# Load example data from WAV file: acoustic recording of the noise in a car cabin
-# during an acceleration. Note that this file contains the RPM signal as well,
+# Load example data from a WAV file: this is a recording of the noise in a car cabin
+# during an acceleration. Note that this file contains the RPM profile as well,
 # in its second channel.
 path_accel_wav = download_accel_with_rpm_wav(server=my_server)
 wav_loader = LoadWav(path_accel_wav)
@@ -235,8 +237,8 @@ accel_signal = wav_loader.get_output()[0]
 accel_rpm = wav_loader.get_output()[1]
 
 # %%
-# Create a ``ToneToNoiseRatioForOrdersOverTime`` object, set the input signal, the associated
-# RPM profile, the orders of interest, and compute the TNR.
+# Create a :class:`.ToneToNoiseRatioForOrdersOverTime` object, set the input signal, the associated
+# RPM profile, and the orders of interest, and compute the orders' TNR over time.
 TNR_orders = ToneToNoiseRatioForOrdersOverTime(
     signal=accel_signal, profile=accel_rpm, order_list=[2.0, 4.0, 6.0]
 )
@@ -247,14 +249,14 @@ TNR_orders.process()
 TNR_orders.plot(use_rpm_scale=False)
 
 # %%
-# You can notice that, according to TNR, order #2 is prominent around 10 s and after 18 s,
-# order #4 is highly prominent at some times, and order #6 is sometimes prominent.
+# You can then notice that order #2's TNR is above 0 dB at around 10 s and after 18 s, order #4's,
+# at various times throughout the signal duration, and order #6's exceeds 0 dB more rarely.
 
 # %%
-# Calculate PR of orders #2 #4 and #6 from a signal, and display PR vs RPM
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Create a ``ProminenceRatioForOrdersOverTime`` object, set the input signal, the associated
-# RPM profile, the orders of interest, and compute the PR.
+# Calculate PR over time for specific orders
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Create a :class:`.ProminenceRatioForOrdersOverTime` object, set the input signal, the associated
+# RPM profile, and the orders of interest, and compute the orders' PR over time.
 PR_orders = ProminenceRatioForOrdersOverTime(
     signal=accel_signal, profile=accel_rpm, order_list=[2.0, 4.0, 6.0]
 )
@@ -265,5 +267,5 @@ PR_orders.process()
 PR_orders.plot(use_rpm_scale=True)
 
 # %%
-# You can notice that, according to PR, order #6 is prominent in the range 2600-3600 rpm,
-# order #4 is prominent above 4000 rpm, and order #2 is prominent at some specific RPM values.
+# You can then notice that order #6's PR is above 0 dB mostly in the range 2600-3600 rpm,
+# order #4's, only above 4000 rpm, and order #2's, at various RPM values above 3000 rpm.
