@@ -34,4 +34,3 @@ The list of indicators covered in this example includes:
 - ISO/TS 20065
 - Aurès
 """
-
