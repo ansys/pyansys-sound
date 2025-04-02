@@ -269,7 +269,8 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         """Set K2 from measurement room properties and measurement surface area.
 
         Sets K2 following Annex A of ISO 3744, based on specified room dimensions and averaged
-        sound absorption coefficient, and current measurement surface area (ie shape and radius).
+        sound absorption coefficient, and current measurement surface area (that is,
+        shape and radius).
 
         Parameters
         ----------

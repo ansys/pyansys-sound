@@ -61,7 +61,7 @@ class ProminenceRatio(PsychoacousticsParent):
 
         frequency_list : list, default: None
             List of the frequencies in Hz of the tones (peaks in the spectrum)
-            to calculate the PR on. The default is ``None``, in which case a peak
+            on which to calculate the PR. The default is ``None``, in which case a peak
             detection method is applied to automatically find the tones in the input
             spectrum. Then, the PR is calculated for each detected tone.
         """
