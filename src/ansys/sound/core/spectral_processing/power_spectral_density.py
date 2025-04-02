@@ -59,7 +59,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
             Number of FFT points to use for the PSD estimate. Must be a power of 2.
         window_type : str, default: 'HANN'
             Window type used for the PSD computation. Options are ``'TRIANGULAR'``, ``'BLACKMAN'``,
-            ``'HAMMING'``, ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'`` and ``'RECTANGULAR'``.
+            ``'HAMMING'``, ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``, and ``'RECTANGULAR'``.
         window_length : int, default: 2048
             Number of points of the window used for the PSD computation , by default 2048.
         overlap : float, default: 0.25
@@ -117,7 +117,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
         """Window type.
 
         Supported options are ``'TRIANGULAR'``, ``'BLACKMAN'``, ``'HAMMING'``,
-        ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``, ``'RECTANGULAR'``.
+        ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``, and ``'RECTANGULAR'``.
         """
         return self.__window_type
 
