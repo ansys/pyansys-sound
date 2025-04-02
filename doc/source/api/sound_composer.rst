@@ -11,7 +11,7 @@ replicate a realistic situation.
 Each track contains an optional transfer function (filter) to simulate the transfer
 between a source and a receiver.
 
-The Sound composer module allows you to create projects including several tracks. Therefore it eases the process of
+The Sound composer module allows you to create projects including several tracks. It therefore eases the process of
 mixing different source types: harmonics (1 or 2 control parameters), broadband noise (1 or 2 control parameters),
 audio, and spectrum.
 
