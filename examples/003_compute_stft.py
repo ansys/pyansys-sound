@@ -90,7 +90,7 @@ stft.plot()
 
 stft.fft_size = 4096
 stft.window_overlap = 0.95
-stft.window_type = "BARTLETT"
+stft.window_type = "TRIANGULAR"
 
 # Reprocess the STFT with the new parameters
 stft.process()
