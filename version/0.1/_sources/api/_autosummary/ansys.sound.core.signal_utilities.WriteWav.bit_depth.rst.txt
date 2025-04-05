@@ -1,0 +1,6 @@
+bit\_depth
+==========
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoproperty:: WriteWav.bit_depth
