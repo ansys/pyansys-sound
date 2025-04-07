@@ -8,9 +8,11 @@
 ## Individual Contributors
 
 * [Antoine Minard](https://github.com/ansaminard)
-* [Camille Latapie](https://github.com/clatapie)
+* [Camille](https://github.com/clatapie)
 * [Cyrille Quesson](https://github.com/anscquesson)
 * [Hélène Lachambre](https://github.com/anshlachamb)
-* [Matt Bennett](https://github.com/mattbennett72)
-* [Milan Redon](https://github.com/milanredon)
+* [Kathy Pippert](https://github.com/PipKat)
 * [Roberto Pastor Muela](https://github.com/RobPasMue)
+* [Sébastien Morais](https://github.com/SMoraisAnsys)
+* [ansmilan](https://github.com/milanredon)
+* [mattbennett72](https://github.com/mattbennett72)
