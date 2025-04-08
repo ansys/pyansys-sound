@@ -52,8 +52,8 @@ class Stft(SpectrogramProcessingParent):
             Size of the FFT to compute the STFT.
             Use a power of 2 for better performance.
         window_type : str, default: 'HANN'
-            Window type used for the FFT computation. Options are ``'BARTLETT'``, ``'BLACKMAN'``,
-            ``'BLACKMANHARRIS'``, ``'HAMMING'``, ``'HANN'``, ``'KAISER'``, and
+            Window type used for the FFT computation. Options are ``'TRIANGULAR'``, ``'BLACKMAN'``,
+            ``'BLACKMANHARRIS'``, ``'HAMMING'``, ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``, and
             ``'RECTANGULAR'``.
         window_overlap : float, default: 0.5
             Overlap value between two successive FFT computations. Values can range from 0 to 1.
@@ -104,8 +104,8 @@ class Stft(SpectrogramProcessingParent):
     def window_type(self) -> str:
         """Window type.
 
-        Supported options are ``'BARTLETT'``, ``'BLACKMAN'``, ``'BLACKMANHARRIS'``, ``'HAMMING'``,
-        ``'HANN'``, ``'KAISER'``, ``'RECTANGULAR'``.
+        Supported options are ``'TRIANGULAR'``, ``'BLACKMAN'``, ``'BLACKMANHARRIS'``, ``'HAMMING'``,
+        ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``, and ``'RECTANGULAR'``.
         """
         return self.__window_type
 
@@ -113,17 +113,18 @@ class Stft(SpectrogramProcessingParent):
     def window_type(self, window_type: str):
         """Set the window type."""
         if window_type not in [
-            "BARTLETT",
+            "TRIANGULAR",
             "BLACKMAN",
             "BLACKMANHARRIS",
             "HAMMING",
             "HANN",
-            "KAISER",
+            "GAUSS",
+            "FLATTOP",
             "RECTANGULAR",
         ]:
             raise PyAnsysSoundException(
-                "Window type is invalid. Options are 'BARTLETT', 'BLACKMAN', 'BLACKMANHARRIS', "
-                "'HAMMING', 'HANN', 'KAISER', and 'RECTANGULAR'."
+                "Window type is invalid. Options are 'TRIANGULAR', 'BLACKMAN', 'BLACKMANHARRIS', "
+                "'HAMMING', 'HANN', 'GAUSS', 'FLATTOP' and 'RECTANGULAR'."
             )
 
         self.__window_type = window_type
