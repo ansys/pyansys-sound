@@ -188,9 +188,9 @@ tonality_Aures.process()
 # has a tonality of 1 tu.
 #
 # The figure represents, over time, the following quantities:
-# - the tonality over time,
-# - the tonal component weighting, which corresponds to ???
-# - the relative loudness weighting, which corresponds to ???
+# - the Aurès tonality, which is the main value of interest,
+# - the tonal component weighting, which is an intermediate value used to calculate the tonality,
+# - the relative loudness weighting, another intermediate value used to calculate the tonality.
 
 # Display values in the console
 print(f"Aures tonality: \n" f"- average tonality : {tonality_Aures.get_tonality():.1f} tu\n")
