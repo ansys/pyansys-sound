@@ -1,7 +1,6 @@
 documentation:
 - changed-files:
-  - any-glob-to-any-file: 'doc/source/**/*'
-  - any-glob-to-any-file: 'examples/**/*'
+  - any-glob-to-any-file: ['doc/source/**/*']
 
 examples:
 - changed-files:
@@ -9,9 +8,7 @@ examples:
 
 maintenance:
 - changed-files:
-  - any-glob-to-any-file: '.github/**/*'
-  - any-glob-to-any-file: '.flake8'
-  - any-glob-to-any-file: 'pyproject.toml'
+  - any-glob-to-any-file: ['.github/**/*', '.flake8', 'pyproject.toml']
 
 dependencies:
 - changed-files:
@@ -19,7 +16,7 @@ dependencies:
 
 testing:
 - changed-files:
-  - any-glob-to-any-file:  'tests/*'
+  - any-glob-to-any-file:  ['tests/*']
 
 ci/cd:
 - changed-files:
