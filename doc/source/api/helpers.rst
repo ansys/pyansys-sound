@@ -1,6 +1,9 @@
 Server helpers
 --------------
 
+This module offers helpers to connect to a DPF server and
+validate the availability of DPF Sound.
+
 .. module:: ansys.sound.core.server_helpers
 
 .. autosummary::

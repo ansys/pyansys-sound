@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -32,12 +32,12 @@ from ansys.sound.core.xtract.xtract_tonal import XtractTonal
 from ansys.sound.core.xtract.xtract_tonal_parameters import XtractTonalParameters
 
 
-def test_xtract_tonal_instantiation(dpf_sound_test_server):
+def test_xtract_tonal_instantiation():
     xtract_tonal = XtractTonal()
     assert xtract_tonal != None
 
 
-def test_xtract_tonal_initialization_FieldsContainer(dpf_sound_test_server):
+def test_xtract_tonal_initialization_FieldsContainer():
     # Test initialization with default values
     xtract_tonal = XtractTonal()
     assert xtract_tonal.input_signal is None
@@ -58,7 +58,7 @@ def test_xtract_tonal_initialization_FieldsContainer(dpf_sound_test_server):
     assert xtract_tonal.output_non_tonal_signals is None
 
 
-def test_xtract_tonal_initialization_Field(dpf_sound_test_server):
+def test_xtract_tonal_initialization_Field():
     # Test initialization with default values
     xtract_tonal = XtractTonal()
     assert xtract_tonal.input_signal is None
@@ -79,21 +79,21 @@ def test_xtract_tonal_initialization_Field(dpf_sound_test_server):
     assert xtract_tonal.output_non_tonal_signals is None
 
 
-def test_xtract_tonal_process_except1(dpf_sound_test_server):
+def test_xtract_tonal_process_except1():
     xtract_tonal = XtractTonal(None, XtractTonalParameters())
     with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_tonal.process()
     assert str(excinfo.value) == "No input signal found for tonal analysis."
 
 
-def test_xtract_tonal_process_except2(dpf_sound_test_server):
+def test_xtract_tonal_process_except2():
     xtract_tonal = XtractTonal(Field(), None)
     with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract_tonal.process()
     assert str(excinfo.value) == "Input parameters are not set."
 
 
-def test_xtract_tonal_process(dpf_sound_test_server):
+def test_xtract_tonal_process():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -134,21 +134,21 @@ def test_xtract_tonal_process(dpf_sound_test_server):
     assert xtract_tonal.get_output_as_nparray()[1][99] == pytest.approx(1.8362156879447866e-06)
 
 
-def test_xtract_tonal_get_output_warns(dpf_sound_test_server):
+def test_xtract_tonal_get_output_warns():
     xtract_tonal = XtractTonal()
     with pytest.warns(PyAnsysSoundWarning) as record:
         xtract_tonal.get_output()
     assert "Output is not processed yet." in record[0].message.args[0]
 
 
-def test_xtract_tonal_get_output_as_nparray_warns(dpf_sound_test_server):
+def test_xtract_tonal_get_output_as_nparray_warns():
     xtract_tonal = XtractTonal()
     with pytest.warns(PyAnsysSoundWarning) as record:
         xtract_tonal.get_output_as_nparray()
     assert "Output is not processed yet." in record[0].message.args[0]
 
 
-def test_xtract_tonal_get_output(dpf_sound_test_server):
+def test_xtract_tonal_get_output():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -180,7 +180,7 @@ def test_xtract_tonal_get_output(dpf_sound_test_server):
     assert xtract_tonal.get_output()[1].data[99] == pytest.approx(1.8362156879447866e-06)
 
 
-def test_xtract_tonal_get_output_noprocess(dpf_sound_test_server):
+def test_xtract_tonal_get_output_noprocess():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -202,7 +202,7 @@ def test_xtract_tonal_get_output_noprocess(dpf_sound_test_server):
     assert output2 is None
 
 
-def test_xtract_tonal_get_output_fc(dpf_sound_test_server):
+def test_xtract_tonal_get_output_fc():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -246,7 +246,7 @@ def test_xtract_tonal_get_output_fc(dpf_sound_test_server):
     assert xtract_tonal.get_output()[1][0].data[99] == pytest.approx(1.8362156879447866e-06)
 
 
-def test_xtract_tonal_get_output_as_nparray(dpf_sound_test_server):
+def test_xtract_tonal_get_output_as_nparray():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -280,7 +280,7 @@ def test_xtract_tonal_get_output_as_nparray(dpf_sound_test_server):
     assert xtract_tonal.get_output_as_nparray()[1][99] == pytest.approx(1.8362156879447866e-06)
 
 
-def test_xtract_tonal_get_output_fc_as_nparray(dpf_sound_test_server):
+def test_xtract_tonal_get_output_fc_as_nparray():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -308,7 +308,7 @@ def test_xtract_tonal_get_output_fc_as_nparray(dpf_sound_test_server):
     assert type(xtract_tonal.get_output_as_nparray()[1]) == np.ndarray
 
 
-def test_extract_tonal_setters(dpf_sound_test_server):
+def test_extract_tonal_setters():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -335,7 +335,7 @@ def test_extract_tonal_setters(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_xtract_tonal_plot_output(mock_show, dpf_sound_test_server):
+def test_xtract_tonal_plot_output(mock_show):
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -357,7 +357,7 @@ def test_xtract_tonal_plot_output(mock_show, dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_xtract_tonal_plot_output_fc(mock_show, dpf_sound_test_server):
+def test_xtract_tonal_plot_output_fc(mock_show):
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 

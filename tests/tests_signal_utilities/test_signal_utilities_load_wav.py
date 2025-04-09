@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -29,12 +29,12 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.signal_utilities import LoadWav
 
 
-def test_load_wav_instantiation(dpf_sound_test_server):
+def test_load_wav_instantiation():
     wav_loader = LoadWav()
     assert wav_loader != None
 
 
-def test_load_wav_process(dpf_sound_test_server):
+def test_load_wav_process():
     # Should not return an error
     wav_loader_good = LoadWav(pytest.data_path_flute_in_container)
     wav_loader_good.process()
@@ -49,7 +49,7 @@ def test_load_wav_process(dpf_sound_test_server):
     )
 
 
-def test_load_wav_get_output(dpf_sound_test_server):
+def test_load_wav_get_output():
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
 
     # Loading a wav signal using LoadWav class
@@ -74,7 +74,7 @@ def test_load_wav_get_output(dpf_sound_test_server):
     assert data[136047] == -0.084686279296875
 
 
-def test_load_wav_get_output_as_nparray(dpf_sound_test_server):
+def test_load_wav_get_output_as_nparray():
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
 
@@ -101,14 +101,14 @@ def test_load_wav_get_output_as_nparray(dpf_sound_test_server):
     assert np_arr[1][100000] == -0.0509033203125
 
 
-def test_load_wav_get_set_path(dpf_sound_test_server):
+def test_load_wav_get_set_path():
     wav_loader = LoadWav()
     wav_loader.path_to_wav = pytest.data_path_flute_in_container
     assert wav_loader.path_to_wav == pytest.data_path_flute_in_container
 
 
 @patch("matplotlib.pyplot.show")
-def test_load_wav_plot(mock_show, dpf_sound_test_server):
+def test_load_wav_plot(mock_show):
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
     wav_loader.process()
     wav_loader.plot()

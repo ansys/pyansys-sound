@@ -25,53 +25,39 @@ import warnings
 
 from ansys.dpf.core import Field, Operator
 import numpy as np
-from numpy import typing as npt
 
 from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class SpectralCentroid(PsychoacousticsParent):
-    """Computes the spectral centroid of a signal."""
+    """Computes the spectral centroid of a signal.
+
+    The spectral centroid is the center of gravity of the spectrum. It is a measure of the
+    distribution of the spectral energy of a signal.
+    """
 
     def __init__(self, signal: Field = None):
-        """Create a ``SpectralCentroid`` object.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        signal: Field
-            Signal to compute spectral centroid on as a DPF field.
+        signal : Field, default: None
+            Signal on which to compute spectral centroid.
         """
         super().__init__()
         self.signal = signal
         self.__operator = Operator("compute_spectral_centroid")
 
     @property
-    def signal(self):
-        """Signal."""
-        return self.__signal  # pragma: no cover
+    def signal(self) -> Field:
+        """Input signal."""
+        return self.__signal
 
     @signal.setter
     def signal(self, signal: Field):
-        """Set the signal.
-
-        Parameters
-        -------
-        signal: Field
-            Signal to compute spectral centroid on as a DPF field.
-        """
+        """Set the signal."""
         self.__signal = signal
-
-    @signal.getter
-    def signal(self) -> Field:
-        """Signal.
-
-        Returns
-        -------
-        Field
-            Signal as a DPF field.
-        """
-        return self.__signal
 
     def process(self):
         """Compute the spectral centroid."""
@@ -106,13 +92,13 @@ class SpectralCentroid(PsychoacousticsParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get the spectral centroid as a NumPy array.
 
         Returns
         -------
-        numpy.ndarray:
-            Array of spectral centroid values in Hz.
+        numpy.ndarray
+            Singleton array containing the spectral centroid in Hz.
         """
         output = self.get_output()
 
@@ -132,13 +118,7 @@ class SpectralCentroid(PsychoacousticsParent):
         return self.get_output()
 
     def __str__(self):
-        """Create the string for print() call.
-
-        Returns
-        -------
-        str
-            Formatted info about self.
-        """
+        """Return the string representation of the object."""
         str = __class__.__name__ + " object\n"
         str += "Data\n"
         str += "\t Signal name: " + self.signal.name + "\n"

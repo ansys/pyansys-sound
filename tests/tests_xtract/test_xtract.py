@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -34,12 +34,12 @@ from ansys.sound.core.xtract.xtract_tonal_parameters import XtractTonalParameter
 from ansys.sound.core.xtract.xtract_transient_parameters import XtractTransientParameters
 
 
-def test_xtract_instantiation(dpf_sound_test_server):
+def test_xtract_instantiation():
     xtract = Xtract()
     assert xtract != None
 
 
-def test_xtract_initialization(dpf_sound_test_server):
+def test_xtract_initialization():
     # Test initialization with default values
     xtract = Xtract()
     assert xtract.input_signal is None
@@ -61,7 +61,7 @@ def test_xtract_initialization(dpf_sound_test_server):
     assert xtract.parameters_transient == parameters_transient
 
 
-def test_xtract_initialization_FieldsContainer(dpf_sound_test_server):
+def test_xtract_initialization_FieldsContainer():
     # Test initialization with default values
     xtract = Xtract()
     assert xtract.input_signal is None
@@ -95,7 +95,7 @@ def test_xtract_initialization_FieldsContainer(dpf_sound_test_server):
     assert xtract.output_remainder_signal is None
 
 
-def test_xtract_initialization_Field(dpf_sound_test_server):
+def test_xtract_initialization_Field():
     # Test initialization with default values
     xtract = Xtract()
 
@@ -121,7 +121,7 @@ def test_xtract_initialization_Field(dpf_sound_test_server):
     assert xtract.output_remainder_signal is None
 
 
-def test_xtract_except1(dpf_sound_test_server):
+def test_xtract_except1():
     xtract = Xtract(Field(), None, GenericDataContainer(), GenericDataContainer())
     with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract.process()
@@ -138,14 +138,14 @@ def test_xtract_except1(dpf_sound_test_server):
     assert str(excinfo.value) == "Input parameters for the transient extraction are not set."
 
 
-def test_xtract_except2(dpf_sound_test_server):
+def test_xtract_except2():
     xtract = Xtract(None, GenericDataContainer(), GenericDataContainer(), GenericDataContainer())
     with pytest.raises(PyAnsysSoundException) as excinfo:
         xtract.process()
     assert str(excinfo.value) == "Input signal is not set."
 
 
-def test_xtract_process(dpf_sound_test_server):
+def test_xtract_process():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -188,7 +188,7 @@ def test_xtract_process(dpf_sound_test_server):
     assert type(remainder) == Field
 
 
-def test_xtract_get_output_warns(dpf_sound_test_server):
+def test_xtract_get_output_warns():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -221,7 +221,7 @@ def test_xtract_get_output_warns(dpf_sound_test_server):
     assert record[0].message.args[0] == "No output is available."
 
 
-def test_xtract_get_output_as_np_array_warns(dpf_sound_test_server):
+def test_xtract_get_output_as_np_array_warns():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -253,7 +253,7 @@ def test_xtract_get_output_as_np_array_warns(dpf_sound_test_server):
     assert record[0].message.args[0] == "No output is available."
 
 
-def test_xtract_get_output(dpf_sound_test_server):
+def test_xtract_get_output():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -299,7 +299,7 @@ def test_xtract_get_output(dpf_sound_test_server):
     assert np.max(remainder.data) == pytest.approx(7.01886734e-07)
 
 
-def test_xtract_get_output_noprocess(dpf_sound_test_server):
+def test_xtract_get_output_noprocess():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -333,7 +333,7 @@ def test_xtract_get_output_noprocess(dpf_sound_test_server):
     assert xtract.output_remainder_signal is None
 
 
-def test_xtract_get_output_fc(dpf_sound_test_server):
+def test_xtract_get_output_fc():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -406,7 +406,7 @@ def test_xtract_get_output_fc(dpf_sound_test_server):
     assert np.max(fc_remainder[1].data) == pytest.approx(7.01886734e-07)
 
 
-def test_xtract_get_output_as_nparray(dpf_sound_test_server):
+def test_xtract_get_output_as_nparray():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -462,7 +462,7 @@ def test_xtract_get_output_as_nparray(dpf_sound_test_server):
     assert np.max(np_remainder) == pytest.approx(7.01886734e-07)
 
 
-def test_xtract_get_output_fc_as_nparray(dpf_sound_test_server):
+def test_xtract_get_output_fc_as_nparray():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -545,7 +545,7 @@ def test_xtract_get_output_fc_as_nparray(dpf_sound_test_server):
     assert np.max(np_fc_remainder[1][:]) == pytest.approx(7.01886734e-07)
 
 
-def test_xtract_setters(dpf_sound_test_server):
+def test_xtract_setters():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -592,7 +592,7 @@ def test_xtract_setters(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_xtract_plot_output(mock_show, dpf_sound_test_server):
+def test_xtract_plot_output(mock_show):
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -625,7 +625,7 @@ def test_xtract_plot_output(mock_show, dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_xtract_plot_output_fc(mock_show, dpf_sound_test_server):
+def test_xtract_plot_output_fc(mock_show):
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 

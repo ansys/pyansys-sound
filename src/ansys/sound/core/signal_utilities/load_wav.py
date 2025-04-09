@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -25,7 +25,7 @@
 import warnings
 
 from ansys.dpf.core import DataSources, FieldsContainer, Operator
-from numpy import typing as npt
+import numpy as np
 
 from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -35,11 +35,11 @@ class LoadWav(SignalUtilitiesParent):
     """Loads a signal from a WAV file."""
 
     def __init__(self, path_to_wav: str = ""):
-        """Create a ``LoadWav`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        path_to_wav: str, default: ""
+        path_to_wav : str, default: ""
             Path to the WAV file to load. The path can be set during the instantiation
             of the object or with the ``LoadWav.set_path()`` method.
         """
@@ -48,31 +48,14 @@ class LoadWav(SignalUtilitiesParent):
         self.__operator = Operator("load_wav_sas")
 
     @property
-    def path_to_wav(self):
+    def path_to_wav(self) -> str:
         """Path to the WAV file."""
-        return self.__path_to_wav  # pragma: no cover
+        return self.__path_to_wav
 
     @path_to_wav.setter
     def path_to_wav(self, path_to_wav: str):
-        """Set the path to the WAV file.
-
-        Parameters
-        ----------
-        path_to_wav: str
-            Path to the WAV file.
-        """
+        """Set the path to the WAV file."""
         self.__path_to_wav = path_to_wav
-
-    @path_to_wav.getter
-    def path_to_wav(self) -> str:
-        """Path to the WAV file.
-
-        Returns
-        -------
-        str
-            Path to the WAV file.
-        """
-        return self.__path_to_wav
 
     def process(self):
         """Load the WAV file.
@@ -118,12 +101,12 @@ class LoadWav(SignalUtilitiesParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get the signal loaded from the WAV file as a NumPy array.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             Signal loaded from the WAV file in a NumPy array.
         """
         fc = self.get_output()

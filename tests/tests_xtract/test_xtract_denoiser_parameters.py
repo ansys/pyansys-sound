@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -29,12 +29,12 @@ from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.xtract.xtract_denoiser_parameters import XtractDenoiserParameters
 
 
-def test_xtract_denoiser_parameters_instantiation(dpf_sound_test_server):
+def test_xtract_denoiser_parameters_instantiation():
     xtract_denoiser_parameters = XtractDenoiserParameters()
     assert xtract_denoiser_parameters != None
 
 
-def test_xtract_denoiser_parameters_getter_setter_upper_threshold(dpf_sound_test_server):
+def test_xtract_denoiser_parameters_getter_setter_upper_threshold():
     xtract_denoiser_parameters = XtractDenoiserParameters()
 
     # Invalid value
@@ -47,16 +47,14 @@ def test_xtract_denoiser_parameters_getter_setter_upper_threshold(dpf_sound_test
     assert type(xtract_denoiser_parameters.noise_psd) == Field
 
 
-def test_xtract_denoiser_parameters_getter_generic_data_container(dpf_sound_test_server):
+def test_xtract_denoiser_parameters_getter_generic_data_container():
     xtract_denoiser_parameters = XtractDenoiserParameters()
 
     gdc = xtract_denoiser_parameters.get_parameters_as_generic_data_container()
     assert gdc is not None
 
 
-def test_xtract_denoiser_parameters_generate_noise_psd_from_white_noise_level(
-    dpf_sound_test_server,
-):
+def test_xtract_denoiser_parameters_generate_noise_psd_from_white_noise_level():
     xtract_denoiser_parameters = XtractDenoiserParameters()
 
     noise_psd = xtract_denoiser_parameters.create_noise_psd_from_white_noise_level(
@@ -69,9 +67,7 @@ def test_xtract_denoiser_parameters_generate_noise_psd_from_white_noise_level(
     assert s == pytest.approx(464.853)
 
 
-def test_xtract_denoiser_parameters_generate_noise_psd_from_automatic_estimation(
-    dpf_sound_test_server,
-):
+def test_xtract_denoiser_parameters_generate_noise_psd_from_automatic_estimation():
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -85,9 +81,7 @@ def test_xtract_denoiser_parameters_generate_noise_psd_from_automatic_estimation
     assert s == pytest.approx(0.005321223133933017)
 
 
-def test_xtract_denoiser_parameters_generate_noise_psd_from_noise_samples(
-    dpf_sound_test_server,
-):
+def test_xtract_denoiser_parameters_generate_noise_psd_from_noise_samples():
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()

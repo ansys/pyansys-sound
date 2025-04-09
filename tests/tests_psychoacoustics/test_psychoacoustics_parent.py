@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -23,20 +23,16 @@
 import numpy as np
 import pytest
 
-from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.psychoacoustics import PsychoacousticsParent
-from ansys.sound.core.psychoacoustics.loudness_iso_532_1_stationary import (
-    LoudnessISO532_1_Stationary,
-)
-from ansys.sound.core.signal_utilities.load_wav import LoadWav
 
 
-def test_psychoacoustics_parent_instantiation(dpf_sound_test_server):
+def test_psychoacoustics_parent_instantiation():
     psychoacoustics_parent = PsychoacousticsParent()
     assert psychoacoustics_parent != None
 
 
-def test_psychoacoustics_convert_bark_to_hertz(dpf_sound_test_server):
+def test_psychoacoustics_convert_bark_to_hertz():
     psychoacoustics_parent = PsychoacousticsParent()
 
     # Invalid Bark band index -> error
@@ -59,46 +55,3 @@ def test_psychoacoustics_convert_bark_to_hertz(dpf_sound_test_server):
     assert bark_band_frequencies[1] == pytest.approx(21.33995918005147)
     assert bark_band_frequencies[4] == pytest.approx(975.1181102362203)
     assert bark_band_frequencies[6] == pytest.approx(15334.573030003306)
-
-
-def test_psychoacoustics_parent_check_channel_index(dpf_sound_test_server):
-    # We need to instantiate either of the child classes (loudness here), otherwise we cannot
-    # achieve complete test coverage of the method.
-    loudness = LoudnessISO532_1_Stationary()
-    # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
-    wav_loader.process()
-    fc = wav_loader.get_output()
-
-    # Set signal as a field
-    loudness.signal = fc[0]
-
-    # Nothing computed -> false
-    with pytest.warns(
-        PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the "
-        "'LoudnessISO532_1_Stationary.process\\(\\)' method.",
-    ):
-        valid_status = loudness._check_channel_index(0)
-    assert valid_status == False
-
-    loudness.process()
-
-    # Check unexisting channel (field case)
-    with pytest.raises(
-        PyAnsysSoundException, match="Specified channel index \\(1\\) does not exist."
-    ):
-        loudness._check_channel_index(1)
-
-    # Set signal as a fields container
-    loudness.signal = fc
-    loudness.process()
-
-    # Check unexisting channel (fields container case)
-    with pytest.raises(
-        PyAnsysSoundException, match="Specified channel index \\(1\\) does not exist."
-    ):
-        loudness._check_channel_index(1)
-
-    # Check existing channel (0)
-    assert loudness._check_channel_index(0) == True

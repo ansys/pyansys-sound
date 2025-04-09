@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -25,7 +25,6 @@ import warnings
 
 from ansys.dpf.core import Field, Operator
 import numpy as np
-from numpy import typing as npt
 
 from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -39,19 +38,19 @@ class CreateSoundField(SignalUtilitiesParent):
 
     def __init__(
         self,
-        data: npt.ArrayLike = np.empty(0),
+        data: np.ndarray = np.empty(0),
         sampling_frequency: float = 44100.0,
         unit: str = "Pa",
     ):
-        """Create a ``CreateSoundField`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        data:
+        data : numpy.ndarray, default: np.empty(0)
             Data to use to create the PyAnsys Sound field as a 1D NumPy array.
-        sampling_frequency: float, default: 44100.0
+        sampling_frequency : float, default: 44100.0
             Sampling frequency of the data.
-        unit: str, default: "Pa"
+        unit : str, default: "Pa"
             Unit of the data.
         """
         super().__init__()
@@ -61,81 +60,36 @@ class CreateSoundField(SignalUtilitiesParent):
         self.__operator = Operator("create_field_from_vector")
 
     @property
-    def data(self):
-        """Data."""
-        return self.__data  # pragma: no cover
+    def data(self) -> np.ndarray:
+        """Data to store in the created DPF field."""
+        return self.__data
 
     @data.setter
-    def data(self, data: npt.ArrayLike):
+    def data(self, data: np.ndarray):
         """Set the data."""
         self.__data = data
 
-    @data.getter
-    def data(self) -> npt.ArrayLike:
-        """Get data.
-
-        Returns
-        -------
-        np.array
-            Data as a NumPy array.
-        """
-        return self.__data
-
     @property
-    def unit(self):
-        """Unit."""
-        return self.__unit  # pragma: no cover
+    def unit(self) -> str:
+        """Unit of the data to store."""
+        return self.__unit
 
     @unit.setter
     def unit(self, new_unit: str):
-        """Set a new unit.
-
-        Parameters
-        ----------
-        new_unit: str
-            New unit as a string.
-        """
+        """Set a new unit."""
         self.__unit = new_unit
 
-    @unit.getter
-    def unit(self) -> str:
-        """Get the unit.
-
-        Returns
-        -------
-        str
-            Unit.
-        """
-        return self.__unit
-
     @property
-    def sampling_frequency(self):
-        """Sampling frequency."""
-        return self.__sampling_frequency  # pragma: no cover
+    def sampling_frequency(self) -> float:
+        """Sampling frequency in Hz of the data."""
+        return self.__sampling_frequency
 
     @sampling_frequency.setter
     def sampling_frequency(self, new_sampling_frequency: float):
-        """Set a new sampling frequency.
-
-        Parameters
-        ----------
-        new_sampling_frequency: float
-            New sampling frequency in Hz.
-        """
+        """Set a new sampling frequency."""
         if new_sampling_frequency < 0.0:
             raise PyAnsysSoundException("Sampling frequency must be greater than or equal to 0.0.")
         self.__sampling_frequency = new_sampling_frequency
-
-    @sampling_frequency.getter
-    def sampling_frequency(self) -> float:
-        """Get the sampling frequency.
-
-        Returns
-        -------
-        float
-            Sampling frequency.
-        """
-        return self.__sampling_frequency
 
     def process(self):
         """Create the PyAnsys Sound field.
@@ -175,12 +129,12 @@ class CreateSoundField(SignalUtilitiesParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get the data as a NumPy array.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             Data in a NumPy array.
         """
         output = self.get_output()

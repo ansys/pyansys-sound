@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -27,7 +27,6 @@ import warnings
 from ansys.dpf.core import Field, GenericDataContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -36,32 +35,33 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 class ProminenceRatio(PsychoacousticsParent):
     """Computes the ECMA 418-1/ISO 7779 prominence ratio (PR).
 
-    This class computes the PR on a power spectral density (PSD)
-    following the ECMA 418-1 and ISO 7779 standards.
+    This class computes the PR from a power spectral density (PSD), according to the ECMA 418-1 and
+    ISO 7779 standards.
     """
 
     def __init__(self, psd: Field = None, frequency_list: list = None):
-        """Create a ``ProminenceRatio`` object.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        psd: Field
-            PSD of the signal to compute PR on as a DPF field.
+        psd : Field
+            PSD of the signal on which to compute PR.
             The PSD field has the following characteristics:
 
-            - num_entities = 1
-            - location = "TimeFreq_sets"
-            - data: Vector of amplitude values in unit^2/Hz
-            - time_freq_support: Vector of regularly spaced frequencies in Hz associated with
-              amplitude values (from 0 Hz to the maximum frequency)
-            - unit = "<unit>^2/Hz" (where <unit> is Pa for example).
+            -   ``num_entities`` = 1
+            -   ``location`` = "TimeFreq_sets"
+            -   ``data``: Array of amplitude values in unit^2/Hz
+            -   ``time_freq_support``: Array of regularly spaced frequencies in Hz associated with
+                amplitude values (from 0 Hz to the maximum frequency)
+            -   ``unit`` = "<unit>^2/Hz" (where <unit> is Pa for example).
 
-            You can use the ``ansys.dpf.core.fields_factory.create_scalar_field()`` function
+            You can use the function
+            :func:`create_scalar_field() <ansys.dpf.core.fields_factory.create_scalar_field>`
             to create the field.
 
-        frequency_list: list, default: None
+        frequency_list : list, default: None
             List of the frequencies in Hz of the tones (peaks in the spectrum)
-            to calculate the PR on. The default is ``None``, in which case a peak
+            on which to calculate the PR. The default is ``None``, in which case a peak
             detection method is applied to automatically find the tones in the input
             spectrum. Then, the PR is calculated for each detected tone.
         """
@@ -71,74 +71,45 @@ class ProminenceRatio(PsychoacousticsParent):
         self.__operator = Operator("compute_PR")
 
     @property
-    def psd(self):
-        """Power spectral density."""
-        return self.__psd  # pragma: no cover
-
-    @psd.setter
-    def psd(self, psd: Field):
-        """Set the PSD.
-
-        Parameters
-        -------
-        psd: Field
-            PSD of the signal to compute PR on as a DPF field.
-
-            The PSD field has the following characteristics:
-
-            - num_entities = 1
-            - location = "TimeFreq_sets"
-            - data: Vector of amplitude values in unit^2/Hz
-            - time_freq_support: Vector of regularly spaced frequencies in Hz associated to
-              amplitude values (from 0 Hz to the maximum frequency)
-            - unit = "<unit>^2/Hz" (where <unit> is Pa for example).
-
-            You can use the ``ansys.dpf.core.fields_factory.create_scalar_field()`` function
-            to create the field.
-        """
-        self.__psd = psd
-
-    @psd.getter
     def psd(self) -> Field:
-        """Power spectral density.
+        """Input power spectral density (PSD).
 
-        Returns
-        -------
-        Field
-            PSD of the signal to compute PR on as a DPF field.
+        The PSD field has the following characteristics:
+
+        -   ``num_entities`` = 1
+        -   ``location`` = "TimeFreq_sets"
+        -   ``data``: Vector of amplitude values in unit^2/Hz
+        -   ``time_freq_support``: Vector of regularly spaced frequencies in Hz associated with
+            amplitude values (from 0 Hz to the maximum frequency)
+        -   ``unit`` = "<unit>^2/Hz" (where <unit> is Pa for example).
+
+        You can use the function
+        :func:`create_scalar_field() <ansys.dpf.core.fields_factory.create_scalar_field>`
+        to create the field.
         """
         return self.__psd
 
+    @psd.setter
+    def psd(self, psd: Field):
+        """Set the PSD."""
+        self.__psd = psd
+
     @property
-    def frequency_list(self):
-        """Frequency list."""
-        return self.__frequency_list  # pragma: no cover
+    def frequency_list(self) -> list[float]:
+        """Tone frequency list in Hz.
 
-    @frequency_list.setter
-    def frequency_list(self, frequency_list: list):
-        """Set the frequency list.
+        List of the frequencies in Hz of the tones (peaks in the PSD) where the PR shall be
+        calculated.
 
-        Parameters
-        -------
-        frequency_list: list
-            List of the frequencies in Hz of the tones (peaks in the spectrum) to
-            calculate the PR for. If this parameter is empty (not specified), a peak
-            detection method is applied to automatically find the tones in the input
-            spectrum. Then, the PR is calculated for each detected tone.
-        """
-        self.__frequency_list = frequency_list
-
-    @frequency_list.getter
-    def frequency_list(self) -> list:
-        """Frequency list.
-
-        Returns
-        -------
-        list
-            List of the frequencies in Hz of the tones (peaks in the spectrum) to
-            calculate the PR on.
+        If this parameter is unspecified (``None``), a peak detection algorithm is applied to
+        locate the tones in the input PSD. Then, the PR is calculated for each detected tone.
         """
         return self.__frequency_list
+
+    @frequency_list.setter
+    def frequency_list(self, frequency_list: list[float]):
+        """Set the list of tone frequencies on which to calculate the PR."""
+        self.__frequency_list = frequency_list
 
     def process(self):
         """Compute the PR.
@@ -170,9 +141,7 @@ class ProminenceRatio(PsychoacousticsParent):
         Returns
         -------
         GenericDataContainer
-            First element is the PR curve.
-
-            Second element is the PR information.
+            PR data as a generic data container.
         """
         if self._output == None:
             warnings.warn(
@@ -184,26 +153,29 @@ class ProminenceRatio(PsychoacousticsParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> tuple[npt.ArrayLike] | None:
+    def get_output_as_nparray(self) -> tuple[np.ndarray] | None:
         """Get PR data in a tuple as a NumPy array.
 
         Returns
         -------
         tuple
-            First element is the vector of the peaks' frequencies in Hz.
+            -   First element: array of the peaks' frequencies in Hz.
 
-            Second element is the vector of the peaks' PR values in dB.
+            -   Second element: array of the peaks' PR values in dB.
 
-            Third element is the vector of the peaks' level values in dB SPL.
+            -   Third element: array of the peaks' level values in dB SPL.
 
-            Fourth element is the vector of the peaks' lower-frequency limits in Hz.
+            -   Fourth element: array of the lower-frequency limits, in Hz, of the critical
+                bandwidths centered on the peaks' frequencies.
 
-            Fifth element is the vector of the peaks' higher-frequency limits in Hz.
+            -   Fifth element: array of the upper-frequency limits, in Hz, of the critical
+                bandwidths centered on the peaks' frequencies.
 
-            Sixth element is the maximum PR value in dB.
+            -   Sixth element: maximum PR value in dB.
 
-            Note: The first five elements are vectors of the same length.
-            The sixth element is a float.
+            .. note::
+                The first five elements are arrays of the same length.
+                The sixth element is a float.
         """
         pr_container = self.get_output()
         if pr_container == None:
@@ -234,7 +206,7 @@ class ProminenceRatio(PsychoacousticsParent):
 
         return len(self.get_output_as_nparray()[0])
 
-    def get_peaks_frequencies(self) -> npt.ArrayLike:
+    def get_peaks_frequencies(self) -> np.ndarray:
         """Get the vector of the peaks' frequencies.
 
         Returns
@@ -247,7 +219,7 @@ class ProminenceRatio(PsychoacousticsParent):
 
         return self.get_output_as_nparray()[0]
 
-    def get_PR_values(self) -> npt.ArrayLike:
+    def get_PR_values(self) -> np.ndarray:
         """Get the vector of the peaks' PR values.
 
         Returns
@@ -260,7 +232,7 @@ class ProminenceRatio(PsychoacousticsParent):
 
         return self.get_output_as_nparray()[1]
 
-    def get_peaks_levels(self) -> npt.ArrayLike:
+    def get_peaks_levels(self) -> np.ndarray:
         """Get the vector of the peaks' level values.
 
         Returns
@@ -273,7 +245,7 @@ class ProminenceRatio(PsychoacousticsParent):
 
         return self.get_output_as_nparray()[2]
 
-    def get_peaks_low_frequencies(self) -> npt.ArrayLike:
+    def get_peaks_low_frequencies(self) -> np.ndarray:
         """Get the vector of the peaks' lower-frequency limits.
 
         Returns
@@ -286,7 +258,7 @@ class ProminenceRatio(PsychoacousticsParent):
 
         return self.get_output_as_nparray()[3]
 
-    def get_peaks_high_frequencies(self) -> npt.ArrayLike:
+    def get_peaks_high_frequencies(self) -> np.ndarray:
         """Get the vector of the peaks' higher-frequency limits.
 
         Returns
@@ -317,21 +289,23 @@ class ProminenceRatio(PsychoacousticsParent):
 
         Parameters
         ----------
-        tone_index: int
+        tone_index : int
             Index of the tone.
 
         Returns
         -------
         tuple[float]
-            First element is the peak's frequency in Hz.
+            -   First element: frequency of the peak in Hz.
 
-            Second element is the PR value in dB.
+            -   Second element: PR value in dB.
 
-            Third element is the peak's level value in dB SPL.
+            -   Third element: level of the peak in dB SPL.
 
-            Fourth element is the peak's lower-frequency limit in Hz.
+            -   Fourth element: lower-frequency limit of the critical band centered on the peak,
+                in Hz.
 
-            Fifth element is the peak's higher-frequency limit in Hz.
+            -   Fifth element: higher-frequency limit of the critical band centered on the peak,
+                in Hz.
         """
         nb_tones = self.get_nb_tones()
         if nb_tones == 0:
@@ -350,15 +324,14 @@ class ProminenceRatio(PsychoacousticsParent):
             self.get_peaks_high_frequencies()[tone_index],
         )
 
-    def get_reference_curve(self) -> npt.ArrayLike:
-        """Get a reference curve to compare the PR with.
+    def get_reference_curve(self) -> np.ndarray:
+        """Get the reference threshold curve, above which a tone is considered as prominent.
 
         Returns
         -------
         numpy.ndarray
-            Reference curve to compare the PR with as defined in the
-            ECMA 418-1 and ISO 7779 standards.
-            If the PR is higher, then the tone is prominent.
+            Reference curve with which to compare the PR, as defined in the ECMA 418-1 and ISO 7779
+            standards. If the PR is higher, then the tone is defined as prominent.
         """
         if self.__psd == None:
             raise PyAnsysSoundException("No PSD set. Use 'ProminenceRatio.psd'.")
@@ -384,7 +357,7 @@ class ProminenceRatio(PsychoacousticsParent):
         return ref_curve
 
     def plot(self):
-        """Plot the PR for all identified peaks, along with the reference curve."""
+        """Plot the PR for all identified peaks, along with the threshold curve."""
         if self._output == None:
             raise PyAnsysSoundException(
                 "Output is not processed yet. \
@@ -397,7 +370,7 @@ class ProminenceRatio(PsychoacousticsParent):
         all_frequencies = np.copy(self.__psd.time_freq_support.time_frequencies.data)
 
         # Cut both curves at 11220 Hz,
-        # which is the maximum frequency for which the reference curve is defined
+        # which is the maximum frequency for which the reference threshold curve is defined
         max_index = np.min(np.where(all_frequencies > 11220)) + 1
         all_frequencies = all_frequencies[:max_index]
 
@@ -422,7 +395,7 @@ class ProminenceRatio(PsychoacousticsParent):
             all_frequencies,
             self.get_reference_curve()[:max_index],
             color="black",
-            label="Reference curve",
+            label="Reference threshold curve",
         )
 
         plt.legend()

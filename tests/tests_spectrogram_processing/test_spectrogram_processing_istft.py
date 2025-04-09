@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -31,12 +31,12 @@ from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectrogram_processing import Istft, Stft
 
 
-def test_istft_instantiation(dpf_sound_test_server):
+def test_istft_instantiation():
     stft = Istft()
     assert stft != None
 
 
-def test_istft_process(dpf_sound_test_server):
+def test_istft_process():
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     stft = Stft(signal=wav_loader.get_output())
@@ -57,7 +57,7 @@ def test_istft_process(dpf_sound_test_server):
         assert False
 
 
-def test_istft_get_output(dpf_sound_test_server):
+def test_istft_get_output():
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     stft = Stft(signal=wav_loader.get_output())
@@ -80,7 +80,7 @@ def test_istft_get_output(dpf_sound_test_server):
     assert f_out.data[30000] == 0.0740051195025444
 
 
-def test_istft_get_output_as_np_array(dpf_sound_test_server):
+def test_istft_get_output_as_np_array():
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     stft = Stft(signal=wav_loader.get_output())
@@ -96,7 +96,7 @@ def test_istft_get_output_as_np_array(dpf_sound_test_server):
     assert arr[30000] == 0.0740051195025444
 
 
-def test_istft_set_get_signal(dpf_sound_test_server):
+def test_istft_set_get_signal():
     # Test 1 with error
     istft = Istft()
     fc = FieldsContainer()
@@ -132,7 +132,7 @@ def test_istft_set_get_signal(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_istft_plot(mock_show, dpf_sound_test_server):
+def test_istft_plot(mock_show):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     stft = Stft(signal=wav_loader.get_output())

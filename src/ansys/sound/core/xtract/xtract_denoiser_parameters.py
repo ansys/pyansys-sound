@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -35,11 +35,11 @@ class XtractDenoiserParameters(XtractParent):
     """Contains denoiser parameters for use in Xtract processing or signal denoising."""
 
     def __init__(self, noise_psd: Field = None):
-        """Init.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        noise_psd:
+        noise_psd : Field, optional
             Power spectral density of the noise in unit^2/Hz (Pa^2/Hz for example).
             This parameter can be produced using one of the following methods:
 
@@ -56,9 +56,9 @@ class XtractDenoiserParameters(XtractParent):
         self.noise_psd = noise_psd
 
     @property
-    def noise_psd(self):
+    def noise_psd(self) -> Field:
         """Power spectral density (PSD) of the noise in unit^2/Hz (Pa^2/Hz for example)."""
-        return self.__generic_data_container.get_property(ID_NOISE_PSD)  # pragma: no cover
+        return self.__generic_data_container.get_property(ID_NOISE_PSD)
 
     @noise_psd.setter
     def noise_psd(self, noise_psd: Field):
@@ -67,17 +67,6 @@ class XtractDenoiserParameters(XtractParent):
             raise PyAnsysSoundException("Noise PSD must be a non-empty field.")
 
         self.__generic_data_container.set_property(ID_NOISE_PSD, noise_psd)
-
-    @noise_psd.getter
-    def noise_psd(self) -> Field:
-        """Power spectral density (PSD) of the noise in unit^2/Hz (Pa^2/Hz for example).
-
-        Returns
-        -------
-        Field
-            Noise PSD as a DPF field.
-        """
-        return self.__generic_data_container.get_property(ID_NOISE_PSD)
 
     def get_parameters_as_generic_data_container(self) -> GenericDataContainer:
         """Get the parameters as a generic data container.
@@ -96,13 +85,13 @@ class XtractDenoiserParameters(XtractParent):
 
         Parameters
         ----------
-        white_noise_level: float
+        white_noise_level : float
             Power of the white noise  in dB SPL.
-        sampling_frequency: float, optional
+        sampling_frequency : float, optional
             Sampling frequency in Hz of the signal to denoise,
             which can be different from the signal used for creating the noise profile.
             The default is the sampling frequency of the noise signal.
-        window_length: int, default: 50
+        window_length : int, default: 50
             Window length for the noise level estimation in milliseconds (ms).
 
         Returns
@@ -126,13 +115,13 @@ class XtractDenoiserParameters(XtractParent):
 
         Parameters
         ----------
-        signal: Field
+        signal : Field
             Noise signal.
-        sampling_frequency: float, optional
+        sampling_frequency : float, optional
             Sampling frequency in Hz of the signal to denoise,
             which can be different from the signal used for creating the noise profile.
             The default is the sampling frequency of the noise signal.
-        window_length: int, default: 50
+        window_length : int, default: 50
             Window length for the noise level estimation in milliseconds (ms).
 
         Returns
@@ -156,9 +145,9 @@ class XtractDenoiserParameters(XtractParent):
 
         Parameters
         ----------
-        signal: Field
+        signal : Field
             Signal to estimate the noise profile from.
-        window_length: int, default: 50
+        window_length : int, default: 50
             Window length for the noise level estimation in milliseconds (ms).
 
         Returns

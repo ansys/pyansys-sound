@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -23,56 +23,83 @@
 """Computes the sharpness of the signal according to Zwicker & Fastl's model."""
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
+from ansys.dpf.core import Field, Operator, types
 import numpy as np
-from numpy import typing as npt
 
-from . import PsychoacousticsParent
+from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+
+# Name of the DPF Sound operator used in this module.
+ID_COMPUTE_SHARPNESS = "compute_sharpness"
 
 
 class Sharpness(PsychoacousticsParent):
-    """Computes the sharpness of a signal according to Zwicker & Fastl's model."""
+    """Computes the sharpness of a signal according to Zwicker & Fastl's model.
 
-    def __init__(self, signal: Field | FieldsContainer = None):
-        """Create a ``Sharpness`` object.
+    .. note::
+        The calculation of this indicator is based on the loudness model for stationary sounds
+        defined in the standard ISO 532-1. It is the loudness model of the class
+        :class:`LoudnessISO532_1_Stationary`.
+    """
+
+    def __init__(self, signal: Field = None, field_type: str = FIELD_FREE):
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        signal: Field | FieldsContainer
-            Signal in Pa to compute sharpness on as a DPF field or fields container.
+        signal : Field, default: None
+            Signal in Pa on which to compute sharpness.
+        field_type : str, default: "Free"
+            Sound field type. Available options are `"Free"` and `"Diffuse"`.
         """
         super().__init__()
         self.signal = signal
-        self.__operator = Operator("compute_sharpness")
+        self.field_type = field_type
+        self.__operator = Operator(ID_COMPUTE_SHARPNESS)
+
+    def __str__(self):
+        """Return the string representation of the object."""
+        if self._output is None:
+            str_sharpness = "Not processed"
+        else:
+            str_sharpness = f"{self.get_sharpness():.2f} acums"
+
+        return (
+            f"{__class__.__name__} object\n"
+            "Data:\n"
+            f'\tSignal name: {f'"{self.signal.name}"' if self.signal is not None else "Not set"}\n'
+            f"Sharpness: {str_sharpness}"
+        )
 
     @property
-    def signal(self):
-        """Signal."""
-        return self.__signal  # pragma: no cover
+    def signal(self) -> Field:
+        """Input signal in Pa."""
+        return self.__signal
 
     @signal.setter
-    def signal(self, signal: Field | FieldsContainer):
-        """Set the signal.
-
-        Parameters
-        -------
-        signal: Field | FieldsContainer
-            Signal in Pa to compute sharpness on as a DPF field or fields container.
-
-        """
+    def signal(self, signal: Field):
+        """Set the signal."""
+        if not (isinstance(signal, Field) or signal is None):
+            raise PyAnsysSoundException("Signal must be specified as a DPF field.")
         self.__signal = signal
 
-    @signal.getter
-    def signal(self) -> Field | FieldsContainer:
-        """Signal.
+    @property
+    def field_type(self) -> str:
+        """Sound field type.
 
-        Returns
-        -------
-        FieldsContainer | Field
-            Signal in Pa as a DPF field or fields container.
+        Available options are `"Free"` and `"Diffuse"`.
         """
-        return self.__signal
+        return self.__field_type
+
+    @field_type.setter
+    def field_type(self, field_type: str):
+        """Set the sound field type."""
+        if field_type.lower() not in [FIELD_FREE.lower(), FIELD_DIFFUSE.lower()]:
+            raise PyAnsysSoundException(
+                f'Invalid field type "{field_type}". Available options are "{FIELD_FREE}" and '
+                f'"{FIELD_DIFFUSE}".'
+            )
+        self.__field_type = field_type
 
     def process(self):
         """Compute the sharpness.
@@ -80,89 +107,57 @@ class Sharpness(PsychoacousticsParent):
         This method calls the appropriate DPF Sound operator to compute the sharpness
         of the signal.
         """
-        if self.__signal == None:
+        if self.signal == None:
             raise PyAnsysSoundException(
-                "No signal found for sharpness computation. Use 'Sharpness.signal'."
+                "No signal found for sharpness computation. Use `Sharpness.signal`."
             )
 
         self.__operator.connect(0, self.signal)
+        self.__operator.connect(1, self.field_type)
 
         # Runs the operator
         self.__operator.run()
 
-        # Stores outputs in the tuple variable
-        if type(self.signal) == FieldsContainer:
-            self._output = self.__operator.get_output(0, "fields_container")
-        elif type(self.signal) == Field:
-            self._output = self.__operator.get_output(0, "field")
+        self._output = float(self.__operator.get_output(0, types.double))
 
-    def get_output(self) -> FieldsContainer | Field:
-        """Get the sharpness in a tuple of a DPF fields container or field.
+    def get_output(self) -> float:
+        """Get the sharpness value.
 
         Returns
         -------
-        FieldsContainer | Field
-            Sharpness in acum.
+        float
+            Sharpness value in acum.
         """
         if self._output == None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. \
-                        Use the 'Sharpness.process()' method."
+                    "Output is not processed yet. Use the `Sharpness.process()` method."
                 )
             )
 
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get the sharpness as a NumPy array.
 
         Returns
         -------
         numpy.ndarray:
-            Array of sharpness values in acum.
+            Singleton array containing the sharpness value in acum.
         """
         output = self.get_output()
 
         if output == None:
-            return None
+            return np.nan
 
-        if type(output) == Field:
-            return np.array(output.data)
+        return np.array([output])
 
-        return self.convert_fields_container_to_np_array(output)
-
-    def get_sharpness(self, channel_index: int = 0) -> np.float64:
-        """Get the sharpness as a float value.
-
-        This method gets the sharpness in acum for the specified channel.
-
-        Parameters
-        ----------
-        channel_index: int, default: 0
-            Index of the signal channel to get the sharpness value for.
+    def get_sharpness(self) -> float:
+        """Get the sharpness value.
 
         Returns
         -------
-        numpy.float64
+        float
             Sharpness value in acum.
         """
-        if self.get_output() == None:
-            return None
-
-        sharpness_data = self.get_output_as_nparray()
-
-        # Get last channel index.
-        channel_max = len(sharpness_data) - 1
-
-        # Check that specified channel index exists.
-        if channel_index > channel_max:
-            raise PyAnsysSoundException(
-                f"Specified channel index ({channel_index}) does not exist."
-            )
-
-        # Return sharpness for the specified channel.
-        if channel_max > 0:
-            return sharpness_data[channel_index][0]
-        else:
-            return sharpness_data[0]
+        return self.get_output()

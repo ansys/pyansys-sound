@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -26,7 +26,7 @@ import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
-from numpy import typing as npt
+import numpy as np
 
 from . import SpectrogramProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -48,28 +48,28 @@ class IsolateOrders(SpectrogramProcessingParent):
         window_overlap: float = 0.5,
         width_selection: int = 10,
     ):
-        """Create an ``Istft`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        signal: FieldsContainer | Field, default: None
-            One or more input signals to isolate orders on as a DPF fields container or field.
-        rpm_profile: Field, default: None
-            RPM signal associated with the time signals as a DPF field.
+        signal : FieldsContainer | Field, default: None
+            One or more input signals on which to isolate orders.
+        rpm_profile : Field, default: None
+            RPM signal associated with the time-domain signals.
             It is assumed that the signal's unit is ``rpm``. If this is not the case,
             inaccurate behavior might occur during the conversion from RPM to frequency.
-        orders: list, default: None
+        orders : list, default: None
             List of the order numbers to isolate. The list must contain at least one value.
-        fft_size: int, default: 1024
+        fft_size : int, default: 1024
             Size of the FFT used to compute the STFT.
-        window_type: str, default: 'HANN'
-            Window type used for the FFT computation. Options are ``'BARTLETT'``, ``'BLACKMAN'``,
-            ``'BLACKMANHARRIS'``,``'HAMMING'``, ``'HANN'``, ``'HANNING'``, ``'KAISER'``, and
-            ``'RECTANGULAR'``.
-        window_overlap: float, default: 0.5
+        window_type : str, default: 'HANN'
+            Window type used for the FFT computation. Options are ``'TRIANGULAR'``, ``'BLACKMAN'``,
+            ``'BLACKMANHARRIS'``, ``'HAMMING'``, ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``,
+             and ``'RECTANGULAR'``.
+        window_overlap : float, default: 0.5
             Overlap value between two successive FFT computations. Values can range from 0 to 1.
             For example, ``0`` means no overlap, and ``0.5`` means 50% overlap.
-        width_selection: int, default: 10
+        width_selection : int, default: 10
             Width in Hz of the area used to select each individual order.
             Note that its precision depends on the FFT size.
         """
@@ -84,40 +84,18 @@ class IsolateOrders(SpectrogramProcessingParent):
         self.__operator = Operator("isolate_orders")
 
     @property
-    def signal(self):
-        """Signal."""
-        return self.__signal  # pragma: no cover
+    def signal(self) -> Field | FieldsContainer:
+        """Input signal."""
+        return self.__signal
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):
         """Set the signal."""
         self.__signal = signal
 
-    @signal.getter
-    def signal(self) -> Field | FieldsContainer:
-        """Signal.
-
-        Returns
-        -------
-        Field | FieldsContainer
-            Signal as a DPF field or fields container.
-        """
-        return self.__signal
-
     @property
-    def rpm_profile(self):
-        """RPM profile."""
-        return self.__rpm_profile  # pragma: no cover
-
-    @rpm_profile.getter
     def rpm_profile(self) -> Field:
-        """RPM profile.
-
-        Returns
-        -------
-        Field
-            RPM profile.
-        """
+        """RPM profile."""
         return self.__rpm_profile
 
     @rpm_profile.setter
@@ -126,18 +104,10 @@ class IsolateOrders(SpectrogramProcessingParent):
         self.__rpm_profile = rpm_profile
 
     @property
-    def orders(self):
-        """Orders."""
-        return self.__orders  # pragma: no cover
-
-    @orders.getter
     def orders(self) -> Field:
-        """Orders.
+        """List of the order numbers to isolate.
 
-        Returns
-        -------
-        list
-            Orders.
+        Can be provided as a list or a DPF field, but will be stored as DPF field regardless.
         """
         return self.__orders
 
@@ -148,114 +118,77 @@ class IsolateOrders(SpectrogramProcessingParent):
             f = Field()
             f.append(orders, 1)
             self.__orders = f
-        elif type(orders):
+        else:
             self.__orders = orders
 
     @property
-    def fft_size(self):
-        """FFT size."""
-        return self.__fft_size  # pragma: no cover
+    def fft_size(self) -> int:
+        """Number of FFT points."""
+        return self.__fft_size
 
     @fft_size.setter
-    def fft_size(self, fft_size):
+    def fft_size(self, fft_size: int):
         """Set the FFT size."""
         if fft_size < 0:
             raise PyAnsysSoundException("FFT size must be greater than 0.0.")
         self.__fft_size = fft_size
 
-    @fft_size.getter
-    def fft_size(self) -> float:
-        """FFT size.
-
-        Returns
-        -------
-        float
-            FFT size.
-        """
-        return self.__fft_size
-
     @property
-    def window_type(self):
-        """Window type."""
-        return self.__window_type  # pragma: no cover
+    def window_type(self) -> str:
+        """Window type.
+
+        Supported options are ``'TRIANGULAR'``, ``'BLACKMAN'``, ``'BLACKMANHARRIS'``, ``'HAMMING'``,
+        ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``, and ``'RECTANGULAR'``.
+        """
+        return self.__window_type
 
     @window_type.setter
-    def window_type(self, window_type):
+    def window_type(self, window_type: str):
         """Set the window type."""
-        if (
-            window_type != "BLACKMANHARRIS"
-            and window_type != "HANN"
-            and window_type != "HAMMING"
-            and window_type != "HANNING"
-            and window_type != "KAISER"
-            and window_type != "BARTLETT"
-            and window_type != "BLACKMAN"
-            and window_type != "RECTANGULAR"
+        if window_type not in (
+            "BLACKMANHARRIS",
+            "HANN",
+            "HAMMING",
+            "GAUSS",
+            "FLATTOP",
+            "TRIANGULAR",
+            "BLACKMAN",
+            "RECTANGULAR",
         ):
             raise PyAnsysSoundException(
-                "Invalid window type, accepted values are 'HANNING', 'BLACKMANHARRIS', 'HANN', "
-                "'BLACKMAN','HAMMING', 'KAISER', 'BARTLETT', 'RECTANGULAR'."
+                "Invalid window type, accepted values are 'BLACKMANHARRIS', 'HANN', "
+                "'BLACKMAN', 'HAMMING', 'GAUSS', 'FLATTOP', 'TRIANGULAR' and 'RECTANGULAR'."
             )
 
         self.__window_type = window_type
 
-    @window_type.getter
-    def window_type(self) -> str:
-        """Window type.
-
-        Returns
-        -------
-        str
-            Window type.
-        """
-        return self.__window_type
-
     @property
-    def window_overlap(self):
-        """Window overlap."""
-        return self.__window_overlap  # pragma: no cover
+    def window_overlap(self) -> float:
+        """Window overlap in %."""
+        return self.__window_overlap
 
     @window_overlap.setter
-    def window_overlap(self, window_overlap):
+    def window_overlap(self, window_overlap: float):
         """Set the window overlap."""
         if window_overlap < 0.0 or window_overlap > 1.0:
             raise PyAnsysSoundException("Window overlap must be between 0.0 and 1.0.")
 
         self.__window_overlap = window_overlap
 
-    @window_overlap.getter
-    def window_overlap(self) -> float:
-        """Window overlap.
-
-        Returns
-        -------
-        float
-            Window overlap.
-        """
-        return self.__window_overlap
-
     @property
-    def width_selection(self):
-        """Width selection."""
-        return self.__width_selection  # pragma: no cover
+    def width_selection(self) -> int:
+        """Width in Hz of each individual order selection.
+
+        Results may vary depending on ``fft_size`` value.
+        """
+        return self.__width_selection
 
     @width_selection.setter
-    def width_selection(self, widt_selection):
+    def width_selection(self, widt_selection: int):
         """Set the width selection."""
         if widt_selection < 0:
             raise PyAnsysSoundException("Width selection must be greater than 0.0.")
         self.__width_selection = widt_selection
-
-    @width_selection.getter
-    def width_selection(self) -> int:
-        """Width selection.
-
-        Returns
-        -------
-        int
-            Width selection.
-        """
-        return self.__width_selection
 
     def process(self):
         """Isolate the orders of the signal.
@@ -313,12 +246,12 @@ class IsolateOrders(SpectrogramProcessingParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get the temporal signal of the isolated orders as a NumPy array.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             Temporal signal of the isolated orders in a NumPy array.
         """
         output = self.get_output()

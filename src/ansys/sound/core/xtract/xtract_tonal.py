@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -22,13 +22,11 @@
 
 """Xtract tonal module."""
 
-from typing import Tuple
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import XtractParent, XtractTonalParameters
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -42,24 +40,24 @@ class XtractTonal(XtractParent):
         input_signal: FieldsContainer | Field = None,
         input_parameters: XtractTonalParameters = None,
     ):
-        """Create an ``XtractTonal`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        input_signal: FieldsContainer | Field, default: None
+        input_signal : FieldsContainer | Field, default: None
             One or more signals to extract tonal components from
             as a DPF field or fields container.
             When inputting a fields container,
             each signal (each field of the fields container) is processed individually.
-        input_parameters:
+        input_parameters : XtractTonalParameters, default: None
             Structure that contains the parameters of the algorithm:
 
             - NFFT (int) is the number of points used for the FFT computation.
-            - Regularity setting (float) in percent.
+            - Regularity setting (float) between 0 and 1.
             - Maximum slope (float) in dB/Hz.
             - Minimum duration (float) in seconds.
             - Intertonal gap (float) in Hz.
-            - Local smergence (float) in dB.
+            - Local emergence (float) in dB.
 
             This structure is of the ``XtractTonalParameters`` type. For more information,
             see this class.
@@ -80,15 +78,11 @@ class XtractTonal(XtractParent):
     def input_signal(self) -> FieldsContainer | Field:
         """Input signal.
 
-        Returns
-        -------
-        FieldsContainer | Field
-            One or more signals to extract tonal components from
-            as a DPF fields container or field.
-            When inputting a fields container, each signal (each field of the fields container)
-            is processed individually.
+        One or more signals from which to extract tonal components, as a DPF field or fields
+        container. When inputting a fields container, each signal (each field of the fields
+        container) is processed individually.
         """
-        return self.__input_signal  # pragma: no cover
+        return self.__input_signal
 
     @input_signal.setter
     def input_signal(self, value: FieldsContainer | Field):
@@ -99,17 +93,14 @@ class XtractTonal(XtractParent):
     def input_parameters(self) -> XtractTonalParameters:
         """Input parameters.
 
-        Returns
-        -------
-        GenericDataContainer
-            Structure that contains the parameters of the algorithm:
+        Structure that contains the parameters of the algorithm:
 
-            - NFFT (int) is the number of points used for the FFT computation.
-            - Regularity setting (float) in percent.
-            - Maximum slope (float) in dB/Hz.
-            - Minimum duration (float) in seconds (s).
-            - Intertonal gap (float) in Hz.
-            - Local smergence (float) in dB.
+        - NFFT (int) is the number of points used for the FFT computation.
+        - Regularity setting (float) between 0 and 1.
+        - Maximum slope (float) in dB/Hz.
+        - Minimum duration (float) in seconds (s).
+        - Intertonal gap (float) in Hz.
+        - Local emergence (float) in dB.
         """
         return self.__input_parameters
 
@@ -122,24 +113,17 @@ class XtractTonal(XtractParent):
     def output_tonal_signals(self) -> FieldsContainer | Field:
         """Output tonal signals.
 
-        Returns
-        -------
-        FieldsContainer | Field
-            One or more tonal signals as a DPF fields container or field (depending on the input).
+        One or more tonal signals as a DPF field or fields container (depending on the input).
         """
-        return self.__output_tonal_signals  # pragma: no cover
+        return self.__output_tonal_signals
 
     @property
     def output_non_tonal_signals(self) -> FieldsContainer | Field:
         """Output non-tonal signals.
 
-        Returns
-        -------
-        FieldsContainer | Field
-            One or more non-tonal signals as a DPF fields container or field (depending on
-            the input).
+        One or more non-tonal signals as a DPF field or fields container (depending on the input).
         """
-        return self.__output_non_tonal_signals  # pragma: no cover
+        return self.__output_non_tonal_signals
 
     def process(self):
         """Process the tonal analysis."""
@@ -165,12 +149,12 @@ class XtractTonal(XtractParent):
 
         self._output = (self.__output_tonal_signals, self.__output_non_tonal_signals)
 
-    def get_output(self) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
+    def get_output(self) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
         """Get the output of the tonal analysis.
 
         Returns
         -------
-        Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
+        tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]
             Tonal and non-tonal signals in a tuple as DPF fields containers or fields.
         """
         if self.__output_tonal_signals == None or self.__output_non_tonal_signals == None:
@@ -178,12 +162,12 @@ class XtractTonal(XtractParent):
 
         return self.__output_tonal_signals, self.__output_non_tonal_signals
 
-    def get_output_as_nparray(self) -> Tuple[npt.ArrayLike, npt.ArrayLike]:
+    def get_output_as_nparray(self) -> tuple[np.ndarray, np.ndarray]:
         """Get the output of the tonal analysis as NumPy arrays.
 
         Returns
         -------
-        Tuple[npt.ArrayLike, npt.ArrayLike]
+        tuple[np.ndarray, np.ndarray]
             Tonal and non-tonal signals as a tuple in NumPy arrays.
         """
         l_output_tonal_signals, l_output_non_tonal_signals = self.get_output()

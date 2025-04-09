@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -27,13 +27,12 @@ import numpy as np
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException
-from ansys.sound.core.examples_helpers._get_example_files import get_absolute_path_for_flute_psd_txt
 from ansys.sound.core.psychoacoustics import ProminenceRatio
 
 
 @pytest.fixture
 def create_psd_from_txt_data():
-    path_flute_psd = get_absolute_path_for_flute_psd_txt()
+    path_flute_psd = pytest.data_path_flute_psd_locally
 
     # Open a txt file for reading
     fid = open(path_flute_psd)
@@ -77,12 +76,12 @@ def create_psd_from_txt_data():
     return psd
 
 
-def test_prominence_ratio_instantiation(dpf_sound_test_server):
+def test_prominence_ratio_instantiation():
     pr = ProminenceRatio()
     assert pr != None
 
 
-def test_prominence_ratio_set_get_psd(dpf_sound_test_server, create_psd_from_txt_data):
+def test_prominence_ratio_set_get_psd(create_psd_from_txt_data):
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -93,7 +92,7 @@ def test_prominence_ratio_set_get_psd(dpf_sound_test_server, create_psd_from_txt
     assert psd_from_get.data[42] == pytest.approx(6.8086340335798055e-09)
 
 
-def test_prominence_ratio_set_get_frequency_list(dpf_sound_test_server):
+def test_prominence_ratio_set_get_frequency_list():
     pr = ProminenceRatio()
 
     frequency_list = [2, 5, 9]
@@ -104,7 +103,7 @@ def test_prominence_ratio_set_get_frequency_list(dpf_sound_test_server):
     assert frequency_list_from_get[2] == 9
 
 
-def test_prominence_ratio_process(dpf_sound_test_server, create_psd_from_txt_data):
+def test_prominence_ratio_process(create_psd_from_txt_data):
     pr = ProminenceRatio()
 
     # no signal -> error 1
@@ -119,7 +118,7 @@ def test_prominence_ratio_process(dpf_sound_test_server, create_psd_from_txt_dat
     pr.process()
 
 
-def test_prominence_ratio_get_output(dpf_sound_test_server, create_psd_from_txt_data):
+def test_prominence_ratio_get_output(create_psd_from_txt_data):
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -136,7 +135,7 @@ def test_prominence_ratio_get_output(dpf_sound_test_server, create_psd_from_txt_
     assert type(pr_container) == GenericDataContainer
 
 
-def test_prominence_ratio_get_output_as_nparray(dpf_sound_test_server, create_psd_from_txt_data):
+def test_prominence_ratio_get_output_as_nparray(create_psd_from_txt_data):
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -186,7 +185,7 @@ def test_prominence_ratio_get_output_as_nparray(dpf_sound_test_server, create_ps
     assert pr_max == pytest.approx(44.87330627441406)
 
 
-def test_prominence_ratio_get_nb_tones(dpf_sound_test_server, create_psd_from_txt_data):
+def test_prominence_ratio_get_nb_tones(create_psd_from_txt_data):
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -209,7 +208,7 @@ def test_prominence_ratio_get_nb_tones(dpf_sound_test_server, create_psd_from_tx
     assert pr.get_nb_tones() == 0
 
 
-def test_prominence_ratio_get_peaks_frequencies(dpf_sound_test_server, create_psd_from_txt_data):
+def test_prominence_ratio_get_peaks_frequencies(create_psd_from_txt_data):
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -226,7 +225,7 @@ def test_prominence_ratio_get_peaks_frequencies(dpf_sound_test_server, create_ps
     assert peaks_frequencies[6] == pytest.approx(3671.41113281)
 
 
-def test_prominence_ratio_get_PR_values(dpf_sound_test_server, create_psd_from_txt_data):
+def test_prominence_ratio_get_PR_values(create_psd_from_txt_data):
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -243,7 +242,7 @@ def test_prominence_ratio_get_PR_values(dpf_sound_test_server, create_psd_from_t
     assert pr_db[6] == pytest.approx(2.68530488)
 
 
-def test_prominence_ratio_get_peaks_levels(dpf_sound_test_server, create_psd_from_txt_data):
+def test_prominence_ratio_get_peaks_levels(create_psd_from_txt_data):
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -260,9 +259,7 @@ def test_prominence_ratio_get_peaks_levels(dpf_sound_test_server, create_psd_fro
     assert level_db[6] == pytest.approx(45.19826385)
 
 
-def test_prominence_ratio_get_peaks_low_frequencies(
-    dpf_sound_test_server, create_psd_from_txt_data
-):
+def test_prominence_ratio_get_peaks_low_frequencies(create_psd_from_txt_data):
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -279,9 +276,7 @@ def test_prominence_ratio_get_peaks_low_frequencies(
     assert bandwidth_low[6] == pytest.approx(3652.56958008)
 
 
-def test_prominence_ratio_get_peaks_high_frequencies(
-    dpf_sound_test_server, create_psd_from_txt_data
-):
+def test_prominence_ratio_get_peaks_high_frequencies(create_psd_from_txt_data):
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -298,7 +293,7 @@ def test_prominence_ratio_get_peaks_high_frequencies(
     assert bandwidth_high[6] == pytest.approx(3698.32763672)
 
 
-def test_prominence_ratio_get_max_PR_value(dpf_sound_test_server, create_psd_from_txt_data):
+def test_prominence_ratio_get_max_PR_value(create_psd_from_txt_data):
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -314,7 +309,7 @@ def test_prominence_ratio_get_max_PR_value(dpf_sound_test_server, create_psd_fro
     assert pr_max == pytest.approx(44.87330627441406)
 
 
-def test_prominence_ratio_get_all_tone_infos(dpf_sound_test_server, create_psd_from_txt_data):
+def test_prominence_ratio_get_all_tone_infos(create_psd_from_txt_data):
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -355,7 +350,7 @@ def test_prominence_ratio_get_all_tone_infos(dpf_sound_test_server, create_psd_f
     assert str(excinfo.value) == "No peak is detected."
 
 
-def test_prominence_ratio_get_reference_curve(dpf_sound_test_server, create_psd_from_txt_data):
+def test_prominence_ratio_get_reference_curve(create_psd_from_txt_data):
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -381,7 +376,7 @@ def test_prominence_ratio_get_reference_curve(dpf_sound_test_server, create_psd_
 
 
 @patch("matplotlib.pyplot.show")
-def test_prominence_ratio_plot(dpf_sound_test_server, create_psd_from_txt_data):
+def test_prominence_ratio_plot(mock_show, create_psd_from_txt_data):
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -399,7 +394,7 @@ def test_prominence_ratio_plot(dpf_sound_test_server, create_psd_from_txt_data):
     pr.plot()
 
 
-def test_prominence_ratio_with_frequency_list(dpf_sound_test_server, create_psd_from_txt_data):
+def test_prominence_ratio_with_frequency_list(create_psd_from_txt_data):
     psd = create_psd_from_txt_data
     frequency_list = [
         261.090087890625,

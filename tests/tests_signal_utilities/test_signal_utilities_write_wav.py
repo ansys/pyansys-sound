@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -28,23 +28,22 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.signal_utilities import LoadWav, WriteWav
 
 
-def test_write_wav_instantiation(dpf_sound_test_server):
+def test_write_wav_instantiation():
     wav_writer = WriteWav()
     assert wav_writer != None
 
 
-def test_write_wav_process(dpf_sound_test_server):
+def test_write_wav_process():
     wav_writer = WriteWav()
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
 
     # Error 1
-    with pytest.raises(PyAnsysSoundException) as excinfo:
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Path for writing WAV file is not specified. Use `WriteWav.path_to_write`.",
+    ):
         wav_writer.process()
-    assert (
-        str(excinfo.value) == "Path for writing WAV file is not specified. Use 'WriteWav.set_path'."
-    )
 
-    wav_writer.path_to_write = r"C:\data\flute_modified.wav"
+    wav_writer.path_to_write = pytest.temporary_folder + r"\flute_modified.wav"
 
     # Error 2
     with pytest.raises(PyAnsysSoundException) as excinfo:
@@ -52,17 +51,22 @@ def test_write_wav_process(dpf_sound_test_server):
     assert (
         str(excinfo.value)
         == "No signal is specified for writing to a WAV file. \
-                    Use 'WriteWav.set_signal'."
+                    Use `WriteWav.signal`."
     )
 
+    wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
-    wav_writer.signal = wav_loader.get_output()
 
-    # Computing, no error expected
+    # Test process with FieldsContainer
+    wav_writer.signal = wav_loader.get_output()
+    wav_writer.process()
+
+    # Test process with Field
+    wav_writer.signal = wav_loader.get_output()[0]
     wav_writer.process()
 
 
-def test_write_wav_set_get_path(dpf_sound_test_server):
+def test_write_wav_set_get_path():
     wav_writer = WriteWav()
 
     wav_writer.path_to_write = r"C:\test\path"
@@ -71,7 +75,7 @@ def test_write_wav_set_get_path(dpf_sound_test_server):
     assert p == r"C:\test\path"
 
 
-def test_write_wav_set_get_bit_depth(dpf_sound_test_server):
+def test_write_wav_set_get_bit_depth():
     wav_writer = WriteWav()
 
     # Error
@@ -88,12 +92,16 @@ def test_write_wav_set_get_bit_depth(dpf_sound_test_server):
     assert b == "int8"
 
 
-def test_write_wav_set_get_signal(dpf_sound_test_server):
+def test_write_wav_set_get_signal():
     wav_writer = WriteWav()
-    fc = FieldsContainer()
-    fc.labels = ["channel"]
     f = Field()
     f.data = 42 * np.ones(3)
+    wav_writer.signal = f
+    f_from_get = wav_writer.signal
+    assert f_from_get.data[0, 2] == 42
+
+    fc = FieldsContainer()
+    fc.labels = ["channel"]
     fc.add_field({"channel": 0}, f)
     fc.name = "testField"
     wav_writer.signal = fc
@@ -103,8 +111,13 @@ def test_write_wav_set_get_signal(dpf_sound_test_server):
     assert len(fc_from_get) == 1
     assert fc_from_get[0].data[0, 2] == 42
 
+    with pytest.raises(
+        PyAnsysSoundException, match="Signal must be specified as a `Field` or `FieldsContainer`."
+    ):
+        wav_writer.signal = "WrongType"
 
-def test_write_wav_plot(dpf_sound_test_server):
+
+def test_write_wav_plot():
     wav_writer = WriteWav()
 
     with pytest.warns(PyAnsysSoundWarning, match="Nothing to plot."):

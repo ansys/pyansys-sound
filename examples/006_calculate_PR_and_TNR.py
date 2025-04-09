@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -26,9 +26,12 @@
 Calculate TNR and PR
 --------------------
 
-This example shows how to calculate tone-to-noise ratio (TNR) and prominence
+In the first part, this example shows how to calculate tone-to-noise ratio (TNR) and prominence
 ratio (PR) following the ECMA 418-1 and ISO 7779 standards. It also extracts
-the desired TNR and PR information.
+the desired TNR and PR information and displays it in the console.
+
+In the second part, the example shows how to calculate TNR and PR for specific
+orders, when the input signal is associated with an RPM profile.
 """
 
 # %%
@@ -41,8 +44,17 @@ the desired TNR and PR information.
 from ansys.dpf.core import TimeFreqSupport, fields_factory, locations
 import numpy as np
 
-from ansys.sound.core.examples_helpers import download_flute_psd, download_flute_wav
-from ansys.sound.core.psychoacoustics import ProminenceRatio, ToneToNoiseRatio
+from ansys.sound.core.examples_helpers import (
+    download_accel_with_rpm_wav,
+    download_flute_psd,
+    download_flute_wav,
+)
+from ansys.sound.core.psychoacoustics import (
+    ProminenceRatio,
+    ProminenceRatioForOrdersOverTime,
+    ToneToNoiseRatio,
+    ToneToNoiseRatioForOrdersOverTime,
+)
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectral_processing import PowerSpectralDensity
@@ -57,8 +69,7 @@ my_server = connect_to_or_start_server(use_license_context=True)
 # a field that serves as an input for the TNR calculation.
 
 # Load the PSD contained in an ASCII file. This file has two columns: 'Frequency (Hz)'
-# and 'PSD amplitude (dB SPL/Hz)'. The data is located in
-# "C:\Users\username\AppData\Local\Ansys\ansys_sound_core\examples\".
+# and 'PSD amplitude (dB SPL/Hz)'.
 path_flute_psd = download_flute_psd()
 fid = open(path_flute_psd)
 fid.readline()  # Skip the first line (header)
@@ -94,7 +105,8 @@ support.time_frequencies = f_frequencies
 f_psd.time_freq_support = support
 
 # %%
-# Create a ``ToneToNoiseRatio`` object, set the created PSD field as input, and compute the TNR.
+# Create a :class:`.ToneToNoiseRatio` object, set the created PSD field as input, and compute the
+# TNR.
 tone_to_noise_ratio = ToneToNoiseRatio(psd=f_psd)
 tone_to_noise_ratio.process()
 
@@ -113,7 +125,7 @@ print(
     f"All detected peaks' frequencies (Hz): "
     f"{np.round(TNR_frequencies)}\n"
     f"All peaks' TNR values (dB): {np.round(TNR_values, 1)}\n"
-    f"All peaks' absolute levels (dB SPL): {np.round(TNR_levels, 1)}\n"
+    f"All peaks' absolute levels (dB SPL): {np.round(TNR_levels, 1)}"
 )
 
 # %%
@@ -137,24 +149,26 @@ print(
     f"TNR info for peak at ~525 Hz: \n"
     f"Exact tone frequency: {round(TNR_frequency, 2)} Hz\n"
     f"Tone width: {round(TNR_width, 2)} Hz\n"
-    f"TNR value: {round(TNR, 2)} dB\n\n"
+    f"TNR value: {round(TNR, 2)} dB"
 )
 
 # %%
-# Calculate PR from a PSD
-# ~~~~~~~~~~~~~~~~~~~~~~~
-# Use the PowerSpectralDensity class to calculate a PSD, and compute Prominence Ratio (PR).
+# Calculate PR from a signal
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Use the :class:`.PowerSpectralDensity` class to calculate a PSD, and compute Prominence Ratio
+# (PR).
 
-# Load example data from WAV file.
-path_flute_wav = download_flute_wav()
+# Load example data from a WAV file (recording of a flute).
+path_flute_wav = download_flute_wav(server=my_server)
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
 flute_signal = wav_loader.get_output()[0]
 
 # %%
-# Create a PowerSpectralDensity object, set its input signal and parameters, and compute the PSD.
+# Create a :class:`.PowerSpectralDensity` object, set its input signal and parameters,
+# and compute the PSD.
 psd_object = PowerSpectralDensity(
-    flute_signal, fft_size=8192, window_type="HANN", window_length=8192, overlap=0.8
+    flute_signal, fft_size=32768, window_type="HANN", window_length=32768, overlap=0.5
 )
 psd_object.process()
 
@@ -163,7 +177,7 @@ psd_object.process()
 f_psd = psd_object.get_output()
 
 # %%
-# Create a ProminenceRatio object, set the computed PSD as input, and compute the PR.
+# Create a :class:`.ProminenceRatio` object, set the computed PSD as input, and compute the PR.
 prominence_ratio = ProminenceRatio(psd=f_psd)
 prominence_ratio.process()
 
@@ -180,7 +194,7 @@ print(
     f"Maximum PR value: {np.round(PR, 1)} dB\n"
     f"All detected peaks' frequencies (Hz): {np.round(PR_frequencies)}\n"
     f"All peaks' PR values (dB): {np.round(PR_values, 1)}\n"
-    f"All peaks' absolute levels (dB SPL): {np.round(PR_levels, 1)}\n"
+    f"All peaks' absolute levels (dB SPL): {np.round(PR_levels, 1)}"
 )
 
 # %%
@@ -204,5 +218,54 @@ print(
     f"PR info for peak at ~786 Hz: \n"
     f"Exact tone frequency: {round(PR_frequency, 2)} Hz\n"
     f"Tone width: {round(PR_width, 2)} Hz\n"
-    f"PR value: {round(PR, 2)} dB\n"
+    f"PR value: {round(PR, 2)} dB"
 )
+
+# %%
+# Calculate TNR over time for specific orders
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Load an acoustic signal and its associated RPM over time profile and calculate the TNR for
+# order numbers 2, 4, and 6.
+
+# Load example data from a WAV file: this is a recording of the noise in a car cabin
+# during an acceleration. Note that this file contains the RPM profile as well,
+# in its second channel.
+path_accel_wav = download_accel_with_rpm_wav(server=my_server)
+wav_loader = LoadWav(path_accel_wav)
+wav_loader.process()
+accel_signal = wav_loader.get_output()[0]
+accel_rpm = wav_loader.get_output()[1]
+
+# %%
+# Create a :class:`.ToneToNoiseRatioForOrdersOverTime` object, set the input signal, the associated
+# RPM profile, and the orders of interest, and compute the orders' TNR over time.
+TNR_orders = ToneToNoiseRatioForOrdersOverTime(
+    signal=accel_signal, profile=accel_rpm, order_list=[2.0, 4.0, 6.0]
+)
+TNR_orders.process()
+
+# %%
+# Display the TNR values over time, for the orders of interest.
+TNR_orders.plot(use_rpm_scale=False)
+
+# %%
+# You can then notice that order #2's TNR is above 0 dB at around 10 s and after 18 s, order #4's,
+# at various times throughout the signal duration, and order #6's exceeds 0 dB more rarely.
+
+# %%
+# Calculate PR over time for specific orders
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Create a :class:`.ProminenceRatioForOrdersOverTime` object, set the input signal, the associated
+# RPM profile, and the orders of interest, and compute the orders' PR over time.
+PR_orders = ProminenceRatioForOrdersOverTime(
+    signal=accel_signal, profile=accel_rpm, order_list=[2.0, 4.0, 6.0]
+)
+PR_orders.process()
+
+# %%
+# Display the PR values over RPM, for the orders of interest.
+PR_orders.plot(use_rpm_scale=True)
+
+# %%
+# You can then notice that order #6's PR is above 0 dB mostly in the range 2600-3600 rpm,
+# order #4's, only above 4000 rpm, and order #2's, at various RPM values above 3000 rpm.

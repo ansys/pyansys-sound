@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -27,7 +27,6 @@ import warnings
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import SpectrogramProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -43,20 +42,20 @@ class Stft(SpectrogramProcessingParent):
         window_type: str = "HANN",
         window_overlap: float = 0.5,
     ):
-        """Create a ``Stft`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        signal: Field | FieldsContainer, default: None
-            Mono signal to compute the STFT on as a DPF field or fields container.
-        fft_size: int, default: 2048
-            Size (as an integer) of the FFT to compute the STFT.
+        signal : Field | FieldsContainer, default: None
+            Input signal on which to compute the STFT.
+        fft_size : int, default: 2048
+            Size of the FFT to compute the STFT.
             Use a power of 2 for better performance.
-        window_type: str, default: 'HANN'
-            Window type used for the FFT computation. Options are ``'BARTLETT'``, ``'BLACKMAN'``,
-            ``'BLACKMANHARRIS'``,``'HAMMING'``, ``'HANN'``, ``'KAISER'``, and
+        window_type : str, default: 'HANN'
+            Window type used for the FFT computation. Options are ``'TRIANGULAR'``, ``'BLACKMAN'``,
+            ``'BLACKMANHARRIS'``, ``'HAMMING'``, ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``, and
             ``'RECTANGULAR'``.
-        window_overlap: float, default: 0.5
+        window_overlap : float, default: 0.5
             Overlap value between two successive FFT computations. Values can range from 0 to 1.
             For example, ``0`` means no overlap, and ``0.5`` means 50% overlap.
         """
@@ -68,9 +67,13 @@ class Stft(SpectrogramProcessingParent):
         self.__operator = Operator("compute_stft")
 
     @property
-    def signal(self):
-        """Signal."""
-        return self.__signal  # pragma: no cover
+    def signal(self) -> Field:
+        """Input signal.
+
+        Can be provided as a DPF field or fields container, but will be stored as DPF field
+        regardless.
+        """
+        return self.__signal
 
     @signal.setter
     def signal(self, signal: Field | FieldsContainer):
@@ -85,21 +88,10 @@ class Stft(SpectrogramProcessingParent):
         else:
             self.__signal = signal
 
-    @signal.getter
-    def signal(self) -> Field:
-        """Signal.
-
-        Returns
-        -------
-        Field
-            Signal as a DPF field.
-        """
-        return self.__signal
-
     @property
-    def fft_size(self):
-        """FFT size."""
-        return self.__fft_size  # pragma: no cover
+    def fft_size(self) -> int:
+        """Number of FFT points."""
+        return self.__fft_size
 
     @fft_size.setter
     def fft_size(self, fft_size: int):
@@ -108,75 +100,47 @@ class Stft(SpectrogramProcessingParent):
             raise PyAnsysSoundException("FFT size must be greater than 0.0.")
         self.__fft_size = fft_size
 
-    @fft_size.getter
-    def fft_size(self) -> float:
-        """FFT size.
-
-        Returns
-        -------
-        float
-            FFT size.
-        """
-        return self.__fft_size
-
     @property
-    def window_type(self):
-        """Window type property."""
-        return self.__window_type  # pragma: no cover
+    def window_type(self) -> str:
+        """Window type.
+
+        Supported options are ``'TRIANGULAR'``, ``'BLACKMAN'``, ``'BLACKMANHARRIS'``, ``'HAMMING'``,
+        ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``, and ``'RECTANGULAR'``.
+        """
+        return self.__window_type
 
     @window_type.setter
-    def window_type(self, window_type):
+    def window_type(self, window_type: str):
         """Set the window type."""
         if window_type not in [
-            "BARTLETT",
+            "TRIANGULAR",
             "BLACKMAN",
             "BLACKMANHARRIS",
             "HAMMING",
             "HANN",
-            "KAISER",
+            "GAUSS",
+            "FLATTOP",
             "RECTANGULAR",
         ]:
             raise PyAnsysSoundException(
-                "Window type is invalid. Options are 'BARTLETT', 'BLACKMAN', 'BLACKMANHARRIS', "
-                "'HAMMING', 'HANN', 'KAISER', and 'RECTANGULAR'."
+                "Window type is invalid. Options are 'TRIANGULAR', 'BLACKMAN', 'BLACKMANHARRIS', "
+                "'HAMMING', 'HANN', 'GAUSS', 'FLATTOP' and 'RECTANGULAR'."
             )
 
         self.__window_type = window_type
 
-    @window_type.getter
-    def window_type(self) -> str:
-        """Window type.
-
-        Returns
-        -------
-        str
-            Window type.
-        """
-        return self.__window_type
-
     @property
-    def window_overlap(self):
-        """Window overlap."""
-        return self.__window_overlap  # pragma: no cover
+    def window_overlap(self) -> float:
+        """Window overlap in %."""
+        return self.__window_overlap
 
     @window_overlap.setter
-    def window_overlap(self, window_overlap):
+    def window_overlap(self, window_overlap: float):
         """Window overlap."""
         if window_overlap < 0.0 or window_overlap > 1.0:
             raise PyAnsysSoundException("Window overlap must be between 0.0 and 1.0.")
 
         self.__window_overlap = window_overlap
-
-    @window_overlap.getter
-    def window_overlap(self) -> float:
-        """Window overlap.
-
-        Returns
-        -------
-        float
-            Window overlap.
-        """
-        return self.__window_overlap
 
     def process(self):
         """Compute the STFT.
@@ -216,12 +180,12 @@ class Stft(SpectrogramProcessingParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get the STFT of the signal as a NumPy array.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             STFT of the signal in a NumPy array.
         """
         output = self.get_output()
@@ -241,23 +205,23 @@ class Stft(SpectrogramProcessingParent):
         # return out_as_np_array
         return np.transpose(out_as_np_array)
 
-    def get_stft_magnitude_as_nparray(self) -> npt.ArrayLike:
+    def get_stft_magnitude_as_nparray(self) -> np.ndarray:
         """Get the amplitude of the STFT as a NumPy array.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             Amplitude of the STFT in a NumPy array.
         """
         output = self.get_output_as_nparray()
         return np.absolute(output)
 
-    def get_stft_phase_as_nparray(self) -> npt.ArrayLike:
+    def get_stft_phase_as_nparray(self) -> np.ndarray:
         """Get the phase of the STFT as a NumPy array.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             Phase of the STFT in a NumPy array.
         """
         output = self.get_output_as_nparray()

@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -25,7 +25,8 @@ import warnings
 
 from ansys.dpf.core import FieldsContainer
 import numpy as np
-from numpy.typing import ArrayLike
+
+REFERENCE_ACOUSTIC_PRESSURE = 2e-5
 
 
 class PyAnsysSound:
@@ -76,29 +77,36 @@ class PyAnsysSound:
         warnings.warn(PyAnsysSoundWarning("There is nothing to output."))
         return self._output
 
-    def get_output_as_nparray(self) -> ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray | tuple[np.ndarray]:
         """Get output as a NumPy array.
 
         There is nothing to output.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             Empty NumPy array.
         """
         warnings.warn(PyAnsysSoundWarning("There is nothing to output."))
         return np.empty(0)
 
-    def convert_fields_container_to_np_array(self, fc):
+    def convert_fields_container_to_np_array(self, fc) -> np.ndarray:
         """Convert a DPF fields container to a NumPy array.
 
-        This method converts a multichannel signal contained in a DPF fields container to a
+        This method converts a DPF fields container that contains several signals into a
         NumPy array.
+
+        Parameters
+        ----------
+        fc : FieldsContainer
+            DPF fields container to convert into a NumPy array.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             DPF fields container in a NumPy array.
+            Data in each field of the fields container is converted to a NumPy array and vertically
+            stacked into another NumPy array.
         """
         num_channels = len(fc)
         np_array = np.array(fc[0].data)

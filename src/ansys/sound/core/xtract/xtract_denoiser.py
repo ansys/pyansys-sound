@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -22,13 +22,11 @@
 
 """Xtract denoiser class."""
 
-from typing import Tuple
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import XtractDenoiserParameters, XtractParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -42,15 +40,15 @@ class XtractDenoiser(XtractParent):
         input_signal: FieldsContainer | Field = None,
         input_parameters: XtractDenoiserParameters = None,
     ):
-        """Create an ``XtractDenoiser`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        input_signal: FieldsContainer | Field, default: None
+        input_signal : FieldsContainer | Field, default: None
             One or more signals to denoise as a DPF fields container or field. When inputting a
             fields container, each signal (each field of the fields container) is processed
             individually.
-        input_parameters: XtractDenoiserParametersm default: None
+        input_parameters : XtractDenoiserParametersm, default: None
             Structure that contains the parameters of the algorithm:
 
             - Noise PSD (Field): Power spectral density of the noise
@@ -74,14 +72,11 @@ class XtractDenoiser(XtractParent):
     def input_signal(self) -> FieldsContainer | Field:
         """Input signal.
 
-        Returns
-        -------
-        FieldsContainer | Field
-            One or more signals to denoise as a DPF fields container or field. When inputting a
-            fields container, each signal (each field of the fields container) is processed
-            individually.
+        One or more signals to denoise, as a DPF field or fields container. When inputting a
+        fields container, each signal (each field of the fields container) is processed
+        individually.
         """
-        return self.__input_signal  # pragma: no cover
+        return self.__input_signal
 
     @input_signal.setter
     def input_signal(self, value: FieldsContainer | Field):
@@ -92,12 +87,11 @@ class XtractDenoiser(XtractParent):
     def input_parameters(self) -> XtractDenoiserParameters:
         """Input parameters.
 
-        Returns
-        -------
-        XtractDenoiserParameters
-            Structure that contains the parameters of the algorithm.
+        Structure that contains the parameters of the algorithm:
+
+        - Power spectral density of the noise, as a DPF field.
         """
-        return self.__input_parameters  # pragma: no cover
+        return self.__input_parameters
 
     @input_parameters.setter
     def input_parameters(self, value: XtractDenoiserParameters):
@@ -108,25 +102,19 @@ class XtractDenoiser(XtractParent):
     def output_denoised_signals(self) -> FieldsContainer | Field:
         """Output denoised signals.
 
-        Returns
-        -------
-        FieldsContainer | Field
-            One or more denoised signals as a DPF fields container or field (depending on
-            the input).
+        One or more denoised signals as a DPF field or fields container (depending on
+        the input).
         """
-        return self.__output_denoised_signals  # pragma: no cover
+        return self.__output_denoised_signals
 
     @property
     def output_noise_signals(self) -> FieldsContainer | Field:
         """Output noise signals.
 
-        Returns
-        -------
-        FieldsContainer | Field
-            One or more noise signals as a DPF fields container or field (depending on the input).
-            The noise signal is the original signal minus the denoised signal.
+        One or more noise signals as a DPF field or fields container (depending on the input).
+        The noise signal is the original signal minus the denoised signal.
         """
-        return self.__output_noise_signals  # pragma: no cover
+        return self.__output_noise_signals
 
     def process(self):
         """Apply denoising."""
@@ -152,12 +140,12 @@ class XtractDenoiser(XtractParent):
 
         self._output = (self.__output_denoised_signals, self.__output_noise_signals)
 
-    def get_output(self) -> Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]:
+    def get_output(self) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
         """Get the output of the denoising.
 
         Returns
         -------
-        Tuple[FieldsContainer, FieldsContainer] | Tuple[Field, Field]
+        tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]
             Denoised signal and noise signal in a tuple as
             DPF fields containers or fields (depending on the input).
         """
@@ -166,12 +154,12 @@ class XtractDenoiser(XtractParent):
 
         return self._output  # i.e. self.__output_denoised_signals, self.__output_noise_signals
 
-    def get_output_as_nparray(self) -> Tuple[npt.ArrayLike, npt.ArrayLike]:
+    def get_output_as_nparray(self) -> tuple[np.ndarray, np.ndarray]:
         """Get the output of the denoising as NumPy arrays.
 
         Returns
         -------
-        Tuple[npt.ArrayLike, npt.ArrayLike]
+        tuple[np.ndarray, np.ndarray]
             Denoised signal and noise signal in a tuple as NumPy arrays.
         """
         l_output_denoised_signals, l_output_noise_signals = self.get_output()

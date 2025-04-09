@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -22,7 +22,7 @@
 
 from unittest.mock import patch
 
-from ansys.dpf.core import Field, FieldsContainer
+from ansys.dpf.core import Field
 import numpy as np
 import pytest
 
@@ -30,14 +30,10 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.psychoacoustics import FluctuationStrength
 from ansys.sound.core.signal_utilities import LoadWav
 
-EXP_FS_1 = 1.0416046380996704
-EXP_FS_2 = 0.9974160194396973
-EXP_SPECIFIC_FS_1_0 = 0.09723643958568573
-EXP_SPECIFIC_FS_1_9 = 0.15443961322307587
-EXP_SPECIFIC_FS_1_40 = 0.17233367264270782
-EXP_SPECIFIC_FS_2_15 = 0.26900193095207214
-EXP_SPECIFIC_FS_2_17 = 0.2570513188838959
-EXP_SPECIFIC_FS_2_40 = 0.11656410992145538
+EXP_FS = 1.0416046380996704
+EXP_SPECIFIC_FS_0 = 0.09723643958568573
+EXP_SPECIFIC_FS_9 = 0.15443961322307587
+EXP_SPECIFIC_FS_40 = 0.17233367264270782
 EXP_BARK_0 = 0.5
 EXP_BARK_9 = 5.0
 EXP_BARK_40 = 20.5
@@ -49,19 +45,22 @@ TOTAL_FS_ID = "total"
 SPECIFIC_FS_ID = "specific"
 
 
-def test_fs_instantiation(dpf_sound_test_server):
+def test_fs_instantiation():
+    """Test the instantiation of the FluctuationStrength class."""
     fs_computer = FluctuationStrength()
-    assert fs_computer != None
+    assert isinstance(fs_computer, FluctuationStrength)
+    assert fs_computer.signal == None
 
 
-def test_fs_process(dpf_sound_test_server):
+def test_fs_process():
+    """Test the process method of the FluctuationStrength class."""
     fs_computer = FluctuationStrength()
 
     # No signal -> error
     with pytest.raises(
         PyAnsysSoundException,
         match="No signal found for fluctuation strength computation."
-        " Use 'FluctuationStrength.signal'.",
+        " Use `FluctuationStrength.signal`.",
     ):
         fs_computer.process()
 
@@ -70,126 +69,74 @@ def test_fs_process(dpf_sound_test_server):
     wav_loader.process()
     fc = wav_loader.get_output()
 
-    # Set signal as field container
-    fs_computer.signal = fc
-    # Compute: no error
-    fs_computer.process()
-
-    # Set signal as field
+    # Set signal
     fs_computer.signal = fc[0]
     # Compute: no error
     fs_computer.process()
+    assert fs_computer._output is not None
 
 
-def test_fs_get_output(dpf_sound_test_server):
+def test_fs_get_output():
+    """Test the get_output method of the FluctuationStrength class."""
     fs_computer = FluctuationStrength()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
+    # Set signal
+    fs_computer.signal = fc[0]
+
     # Fluctuation strength not calculated yet -> warning
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. \
-                        Use the 'FluctuationStrength.process\\(\\)' method.",
+        match="Output is not processed yet. Use the `FluctuationStrength.process\\(\\)` method.",
     ):
         output = fs_computer.get_output()
-    assert output == None
-
-    # Set signal
-    fs_computer.signal = fc
+    assert output is None
 
     # Compute
     fs_computer.process()
 
     (fs, specific_fs) = fs_computer.get_output()
-    assert fs != None
-    assert type(fs) == FieldsContainer
-    assert specific_fs != None
-    assert type(specific_fs) == FieldsContainer
+    assert isinstance(fs, float)
+    assert fs == pytest.approx(EXP_FS)
+    assert isinstance(specific_fs, Field)
+    assert specific_fs.data[0] == pytest.approx(EXP_SPECIFIC_FS_0)
+    assert specific_fs.data[9] == pytest.approx(EXP_SPECIFIC_FS_9)
+    assert specific_fs.data[40] == pytest.approx(EXP_SPECIFIC_FS_40)
 
 
-def test_fs_get_fluctuation_strength(dpf_sound_test_server):
+def test_fs_get_fluctuation_strength():
+    """Test the get_fluctuation_strength method of the FluctuationStrength class."""
     fs_computer = FluctuationStrength()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
-    # Fluctuation strength not calculated yet -> warning
-    with pytest.warns(
-        PyAnsysSoundWarning,
-        match="Output is not processed yet. \
-                        Use the 'FluctuationStrength.process\\(\\)' method.",
-    ):
-        output = fs_computer.get_fluctuation_strength()
-    assert output == None
-
-    # Set signal as a field
+    # Set signal
     fs_computer.signal = fc[0]
 
     # Compute
     fs_computer.process()
 
-    # Request second channel's fluctuation strength while signal is a field (mono) -> error
-    with pytest.raises(
-        PyAnsysSoundException, match="Specified channel index \\(1\\) does not exist."
-    ):
-        fs = fs_computer.get_fluctuation_strength(1)
-
-    fs = fs_computer.get_fluctuation_strength(0)
-    assert type(fs) == np.float64
-    assert fs == pytest.approx(EXP_FS_1)
-
-    # Set signal as a fields container
-    fs_computer.signal = fc
-
-    # Compute
-    fs_computer.process()
-
-    # Request second channel's fluctuation strength while signal is mono -> error
-    with pytest.raises(
-        PyAnsysSoundException, match="Specified channel index \\(1\\) does not exist."
-    ):
-        fs = fs_computer.get_fluctuation_strength(1)
-
-    fs = fs_computer.get_fluctuation_strength(0)
-    assert type(fs) == np.float64
-    assert fs == pytest.approx(EXP_FS_1)
-
-    # Add a second signal in the fields container
-    # Note: No need to re-assign the signal property, as fc is simply an alias for it
-    wav_loader = LoadWav(pytest.data_path_fluctuating_tone_in_container)
-    wav_loader.process()
-    fc.add_field({"channel_number": 1}, wav_loader.get_output()[0])
-
-    # Compute again
-    fs_computer.process()
-
-    fs = fs_computer.get_fluctuation_strength(1)
-    assert type(fs) == np.float64
-    assert fs == pytest.approx(EXP_FS_2)
+    fs = fs_computer.get_fluctuation_strength()
+    assert isinstance(fs, np.ndarray)
+    assert fs == pytest.approx(EXP_FS)
 
 
-def test_fs_get_specific_fluctuation_strength(dpf_sound_test_server):
+def test_fs_get_specific_fluctuation_strength():
+    """Test the get_specific_fluctuation_strength method of the FluctuationStrength class."""
     fs_computer = FluctuationStrength()
+
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
-    # Fluctuation strength not calculated yet -> warning
-    with pytest.warns(
-        PyAnsysSoundWarning,
-        match="Output is not processed yet. \
-                        Use the 'FluctuationStrength.process\\(\\)' method.",
-    ):
-        output = fs_computer.get_specific_fluctuation_strength()
-    assert output == None
-
     # Set signal
-    fs_computer.signal = fc
+    fs_computer.signal = fc[0]
 
     # Compute
     fs_computer.process()
@@ -198,122 +145,21 @@ def test_fs_get_specific_fluctuation_strength(dpf_sound_test_server):
 
     assert type(specific_fs) == np.ndarray
     assert len(specific_fs) == 47
-    assert specific_fs[0] == pytest.approx(EXP_SPECIFIC_FS_1_0)
-    assert specific_fs[9] == pytest.approx(EXP_SPECIFIC_FS_1_9)
-    assert specific_fs[40] == pytest.approx(EXP_SPECIFIC_FS_1_40)
-
-    # Add a second signal in the fields container
-    # Note: No need to re-assign the signal property, as fc is simply an alias for it
-    wav_loader = LoadWav(pytest.data_path_fluctuating_tone_in_container)
-    wav_loader.process()
-    fc.add_field({"channel_number": 1}, wav_loader.get_output()[0])
-
-    # Compute again
-    fs_computer.process()
-
-    specific_fs = fs_computer.get_specific_fluctuation_strength(1)
-
-    assert type(specific_fs) == np.ndarray
-    assert len(specific_fs) == 47
-    assert specific_fs[15] == pytest.approx(EXP_SPECIFIC_FS_2_15)
-    assert specific_fs[17] == pytest.approx(EXP_SPECIFIC_FS_2_17)
-    assert specific_fs[40] == pytest.approx(EXP_SPECIFIC_FS_2_40)
+    assert specific_fs[0] == pytest.approx(EXP_SPECIFIC_FS_0)
+    assert specific_fs[9] == pytest.approx(EXP_SPECIFIC_FS_9)
+    assert specific_fs[40] == pytest.approx(EXP_SPECIFIC_FS_40)
 
 
-def test_fs__get_ouptut_parameter(dpf_sound_test_server):
+def test_fs_get_bark_band_indexes():
+    """Test the get_bark_band_indexes method of the FluctuationStrength class."""
     fs_computer = FluctuationStrength()
+
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
     # Set signal
-    fs_computer.signal = fc
-
-    # Fluctuation strength not calculated yet -> warning
-    with pytest.warns(
-        PyAnsysSoundWarning,
-        match="Output is not processed yet. \
-                        Use the 'FluctuationStrength.process\\(\\)' method.",
-    ):
-        output = fs_computer._get_output_parameter(0, TOTAL_FS_ID)
-    assert output == None
-
-    # Compute
-    fs_computer.process()
-
-    # Invalid parameter identifier -> error
-    with pytest.raises(PyAnsysSoundException, match="ID of output parameter is invalid."):
-        param = fs_computer._get_output_parameter(0, "thisIsNotValid")
-
-    # Invalid channel index -> error
-    with pytest.raises(
-        PyAnsysSoundException, match="Specified channel index \\(1\\) does not exist."
-    ):
-        param = fs_computer._get_output_parameter(1, TOTAL_FS_ID)
-
-    param = fs_computer._get_output_parameter(0, TOTAL_FS_ID)
-    assert type(param) == np.float64
-    assert param == pytest.approx(EXP_FS_1)
-
-    param = fs_computer._get_output_parameter(0, SPECIFIC_FS_ID)
-    assert type(param) == np.ndarray
-    assert len(param) == 47
-    assert param[0] == pytest.approx(EXP_SPECIFIC_FS_1_0)
-    assert param[9] == pytest.approx(EXP_SPECIFIC_FS_1_9)
-    assert param[40] == pytest.approx(EXP_SPECIFIC_FS_1_40)
-
-    # Add a second signal in the fields container
-    # Note: No need to re-assign the signal property, as fc is simply an alias for it
-    wav_loader = LoadWav(pytest.data_path_fluctuating_tone_in_container)
-    wav_loader.process()
-    fc.add_field({"channel_number": 1}, wav_loader.get_output()[0])
-
-    # Compute again
-    fs_computer.process()
-
-    param = fs_computer._get_output_parameter(1, TOTAL_FS_ID)
-    assert type(param) == np.float64
-    assert param == pytest.approx(EXP_FS_2)
-
-    param = fs_computer._get_output_parameter(1, SPECIFIC_FS_ID)
-    assert type(param) == np.ndarray
-    assert len(param) == 47
-    assert param[15] == pytest.approx(EXP_SPECIFIC_FS_2_15)
-    assert param[17] == pytest.approx(EXP_SPECIFIC_FS_2_17)
-    assert param[40] == pytest.approx(EXP_SPECIFIC_FS_2_40)
-
-
-def test_fs_get_bark_band_indexes(dpf_sound_test_server):
-    fs_computer = FluctuationStrength()
-    # Get a signal
-    wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
-    wav_loader.process()
-    fc = wav_loader.get_output()
-
-    # Fluctuation strength not calculated yet -> warning
-    with pytest.warns(
-        PyAnsysSoundWarning,
-        match="Output is not processed yet. \
-                        Use the 'FluctuationStrength.process\\(\\)' method.",
-    ):
-        output = fs_computer.get_bark_band_indexes()
-    assert output == None
-
-    # Set signal as a fields container
-    fs_computer.signal = fc
-
-    # Compute
-    fs_computer.process()
-
-    bark_band_indexes = fs_computer.get_bark_band_indexes()
-    assert type(bark_band_indexes) == np.ndarray
-    assert len(bark_band_indexes) == 47
-    assert bark_band_indexes[0] == pytest.approx(EXP_BARK_0)
-    assert bark_band_indexes[9] == pytest.approx(EXP_BARK_9)
-    assert bark_band_indexes[40] == pytest.approx(EXP_BARK_40)
-
-    # Set signal as a field
     fs_computer.signal = fc[0]
 
     # Compute
@@ -327,16 +173,17 @@ def test_fs_get_bark_band_indexes(dpf_sound_test_server):
     assert bark_band_indexes[40] == pytest.approx(EXP_BARK_40)
 
 
-def test_fs_get_bark_band_frequencies(dpf_sound_test_server):
+def test_fs_get_bark_band_frequencies():
+    """Test the get_bark_band_frequencies method of the FluctuationStrength class."""
     fs_computer = FluctuationStrength()
+
     # Get a signal
-    # assert pytest.data_path_flute_in_container == 'toto'
     wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
     # Set signal
-    fs_computer.signal = fc
+    fs_computer.signal = fc[0]
 
     # Compute
     fs_computer.process()
@@ -349,42 +196,10 @@ def test_fs_get_bark_band_frequencies(dpf_sound_test_server):
     assert bark_band_frequencies[40] == pytest.approx(EXP_FREQ_40)
 
 
-def test_fs_get_output_as_nparray_from_fields_container(dpf_sound_test_server):
+def test_fs_get_output_as_nparray():
+    """Test the get_output_as_nparray method of the FluctuationStrength class."""
     fs_computer = FluctuationStrength()
-    # Get a signal
-    wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
-    wav_loader.process()
-    fc = wav_loader.get_output()
 
-    # Fluctuation strength not calculated yet -> warning
-    with pytest.warns(
-        PyAnsysSoundWarning,
-        match="Output is not processed yet. \
-                        Use the 'FluctuationStrength.process\\(\\)' method.",
-    ):
-        output = fs_computer.get_output_as_nparray()
-    assert output == None
-
-    # Set signal
-    fs_computer.signal = fc
-
-    # Compute
-    fs_computer.process()
-
-    (fs, specific_fs) = fs_computer.get_output_as_nparray()
-
-    assert type(fs) == np.ndarray
-    assert len(fs) == 1
-    assert fs[0] == pytest.approx(EXP_FS_1)
-    assert type(specific_fs) == np.ndarray
-    assert len(specific_fs) == 47
-    assert specific_fs[0] == pytest.approx(EXP_SPECIFIC_FS_1_0)
-    assert specific_fs[9] == pytest.approx(EXP_SPECIFIC_FS_1_9)
-    assert specific_fs[40] == pytest.approx(EXP_SPECIFIC_FS_1_40)
-
-
-def test_fs_get_output_as_nparray_from_field(dpf_sound_test_server):
-    fs_computer = FluctuationStrength()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
     wav_loader.process()
@@ -393,37 +208,51 @@ def test_fs_get_output_as_nparray_from_field(dpf_sound_test_server):
     # Set signal
     fs_computer.signal = fc[0]
 
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. Use the `FluctuationStrength.process\\(\\)` method.",
+    ):
+        fs, specific_fs, bark_band_indexes = fs_computer.get_output_as_nparray()
+    assert np.isnan(fs)
+    assert len(specific_fs) == 0
+    assert len(bark_band_indexes) == 0
+
     # Compute
     fs_computer.process()
 
-    (fs, specific_fs) = fs_computer.get_output_as_nparray()
+    fs, specific_fs, bark_band_indexes = fs_computer.get_output_as_nparray()
 
     assert type(fs) == np.ndarray
-    assert len(fs) == 1
-    assert fs[0] == pytest.approx(EXP_FS_1)
+    assert fs == pytest.approx(EXP_FS)
     assert type(specific_fs) == np.ndarray
     assert len(specific_fs) == 47
-    assert specific_fs[0] == pytest.approx(EXP_SPECIFIC_FS_1_0)
-    assert specific_fs[9] == pytest.approx(EXP_SPECIFIC_FS_1_9)
-    assert specific_fs[40] == pytest.approx(EXP_SPECIFIC_FS_1_40)
+    assert specific_fs[0] == pytest.approx(EXP_SPECIFIC_FS_0)
+    assert specific_fs[9] == pytest.approx(EXP_SPECIFIC_FS_9)
+    assert specific_fs[40] == pytest.approx(EXP_SPECIFIC_FS_40)
+    assert type(bark_band_indexes) == np.ndarray
+    assert len(bark_band_indexes) == 47
+    assert bark_band_indexes[0] == pytest.approx(EXP_BARK_0)
+    assert bark_band_indexes[9] == pytest.approx(EXP_BARK_9)
+    assert bark_band_indexes[40] == pytest.approx(EXP_BARK_40)
 
 
 @patch("matplotlib.pyplot.show")
-def test_fs_plot_from_fields_container(mock_show, dpf_sound_test_server):
+def test_fs_plot(mock_show):
+    """Test the plot method of the FluctuationStrength class."""
     fs_computer = FluctuationStrength()
+
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
     wav_loader.process()
     fc = wav_loader.get_output()
 
     # Set signal
-    fs_computer.signal = fc
+    fs_computer.signal = fc[0]
 
     # Fluctuation strength not computed yet -> error
     with pytest.raises(
         PyAnsysSoundException,
-        match="Output is not processed yet. \
-                    Use the 'FluctuationStrength.process\\(\\)' method.",
+        match="Output is not processed yet. Use the `FluctuationStrength.process\\(\\)` method.",
     ):
         fs_computer.plot()
 
@@ -433,47 +262,17 @@ def test_fs_plot_from_fields_container(mock_show, dpf_sound_test_server):
     # Plot
     fs_computer.plot()
 
-    # Add a second signal in the fields container
-    wav_loader = LoadWav(pytest.data_path_fluctuating_tone_in_container)
-    wav_loader.process()
-    fc.add_field({"channel_number": 1}, wav_loader.get_output()[0])
 
-    # Compute
-    fs_computer.process()
-
-    # Plot
-    fs_computer.plot()
-
-
-@patch("matplotlib.pyplot.show")
-def test_fs_plot_from_field(mock_show, dpf_sound_test_server):
+def test_fs_set_get_signal():
+    """Test the set and get signal methods of the FluctuationStrength class."""
     fs_computer = FluctuationStrength()
-    # Get a signal
-    wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
-    wav_loader.process()
-    fc = wav_loader.get_output()
+    f_signal = Field()
+    f_signal.data = 42 * np.ones(3)
+    fs_computer.signal = f_signal
+    f_signal_from_property = fs_computer.signal
 
-    # Set signal
-    fs_computer.signal = fc[0]
+    assert f_signal_from_property.data[0, 2] == 42
 
-    # Compute
-    fs_computer.process()
-
-    # Plot
-    fs_computer.plot()
-
-
-def test_fs_set_get_signal(dpf_sound_test_server):
-    fs_computer = FluctuationStrength()
-    fc = FieldsContainer()
-    fc.labels = ["channel"]
-    f = Field()
-    f.data = 42 * np.ones(3)
-    fc.add_field({"channel": 0}, f)
-    fc.name = "testField"
-    fs_computer.signal = fc
-    fc_from_get = fs_computer.signal
-
-    assert fc_from_get.name == "testField"
-    assert len(fc_from_get) == 1
-    assert fc_from_get[0].data[0, 2] == 42
+    # Set invalid value
+    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
+        fs_computer.signal = "WrongType"

@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -30,6 +30,26 @@ import importlib.metadata as importlib_metadata
 __version__ = importlib_metadata.version(__name__.replace(".", "-"))
 """PyAnsys Sound version."""
 
-from . import examples_helpers, server_helpers, signal_utilities
+from . import (
+    examples_helpers,
+    psychoacoustics,
+    server_helpers,
+    signal_utilities,
+    sound_composer,
+    sound_power,
+    spectral_processing,
+    spectrogram_processing,
+    xtract,
+)
 
-__all__ = ("examples_helpers", "server_helpers", "signal_utilities")
+__all__ = (
+    "examples_helpers",
+    "psychoacoustics",
+    "server_helpers",
+    "signal_utilities",
+    "sound_composer",
+    "sound_power",
+    "spectral_processing",
+    "spectrogram_processing",
+    "xtract",
+)

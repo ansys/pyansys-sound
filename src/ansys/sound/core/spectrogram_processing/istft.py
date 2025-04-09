@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -27,7 +27,6 @@ import warnings
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import SpectrogramProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -37,11 +36,11 @@ class Istft(SpectrogramProcessingParent):
     """Computes the inverse short-time Fourier transform (ISTFT) of a signal."""
 
     def __init__(self, stft: FieldsContainer = None):
-        """Create an ``Istft`` instance.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        stft: FieldsContainer, default: None
+        stft : FieldsContainer, default: None
             DPF fields container containing a short-time Fourier transform (STFT)
             computed with the ``Stft`` class.
         """
@@ -50,9 +49,12 @@ class Istft(SpectrogramProcessingParent):
         self.__operator = Operator("compute_istft")
 
     @property
-    def stft(self):
-        """Short-time Fourier transform."""
-        return self.__stft  # pragma: no cover
+    def stft(self) -> FieldsContainer:
+        """Input short-time Fourier transform.
+
+        STFT format is the same as that which is produced by the ``Stft`` class.
+        """
+        return self.__stft
 
     @stft.setter
     def stft(self, stft: FieldsContainer):
@@ -71,17 +73,6 @@ class Istft(SpectrogramProcessingParent):
             )
 
         self.__stft = stft
-
-    @stft.getter
-    def stft(self) -> FieldsContainer:
-        """Short-time Fourier transform.
-
-        Returns
-        -------
-        FieldsContainer
-            STFT as a DPF fields container.
-        """
-        return self.__stft
 
     def process(self):
         """Compute the ISTFT.
@@ -121,12 +112,12 @@ class Istft(SpectrogramProcessingParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> npt.ArrayLike:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get the ISTFT resulting signal as a NumPy array.
 
         Returns
         -------
-        np.array
+        numpy.ndarray
             ISTFT resulting signal in a NumPy array.
         """
         output = self.get_output()

@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -20,9 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""PowerSpectralDensity classes.
+"""Spectral processing classes.
 
-Helper functions related to Power Spectral Density (PSD) calculations.
+Helper functions related to spectral processing.
 """
 
 from ._spectral_processing_parent import SpectralProcessingParent

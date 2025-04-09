@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -26,14 +26,7 @@ from .._pyansys_sound import PyAnsysSound
 
 class SpectralProcessingParent(PyAnsysSound):
     """
-    Provides the base class for PowerSpectralDensity classes.
+    Provides the base class for spectral processing classes.
 
-    This is the base class of all PowerSpectralDensity classes and should not be used directly.
+    This is the base class of all spectral processing classes and should not be used directly.
     """
-
-    def __init__(self):
-        """Init.
-
-        Init the class.
-        """
-        super().__init__()

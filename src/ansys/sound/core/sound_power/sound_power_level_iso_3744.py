@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -26,7 +26,6 @@ import warnings
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy import typing as npt
 
 from . import SoundPowerParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -38,7 +37,7 @@ ID_LOAD_SOUND_POWER_LEVEL = "load_project_sound_power_level_iso3744"
 class SoundPowerLevelISO3744(SoundPowerParent):
     """Computes ISO 3744 sound power level.
 
-    This class computes the sound power level following the ISO 3744 standard.
+    This class computes the sound power level according to the ISO 3744 standard.
     """
 
     def __init__(
@@ -50,27 +49,27 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         C1: float = 0.0,
         C2: float = 0.0,
     ):
-        """Create a ``SoundPowerLevelISO3744`` object.
+        """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        surface_shape: str, default: 'Hemisphere'
+        surface_shape : str, default: 'Hemisphere'
             Shape of measurement surface. Available options are 'Hemisphere' (default) and
             'Half-hemisphere'.
-        surface_radius: float, default: 1
+        surface_radius : float, default: 1.0
             Radius in m of the hemisphere or half-hemisphere measurement surface.
-            By default, 1 meter.
-        K1: float, default: 0
+            By default, 1.0 meter.
+        K1 : float, default: 0.0
             Background noise correction K1 in dB (section 8.2.3 of ISO 3744).
-            By default, 0 dB.
-        K2: float, default: 0
-            Environmental correction K2 in dB (Annex A of ISO 3744). By default, 0 dB.
-        C1: float, default: 0
+            By default, 0.0 dB.
+        K2 : float, default: 0.0
+            Environmental correction K2 in dB (Annex A of ISO 3744). By default, 0.0 dB.
+        C1 : float, default: 0.0
             Meteorological reference quantity correction C1 in dB (Annex G of ISO 3744).
-            By default, 0 dB.
-        C2: float, default: 0
+            By default, 0.0 dB.
+        C2 : float, default: 0.0
             Meteorological radiation impedance correction C2 in dB (Annex G of ISO 3744).
-            By default, 0 dB.
+            By default, 0.0 dB.
         """
         super().__init__()
         self.surface_shape = surface_shape
@@ -113,8 +112,11 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         return string
 
     @property
-    def surface_shape(self):
-        """Surface shape."""
+    def surface_shape(self) -> str:
+        """Shape of the measurement surface.
+
+        Available options are 'Hemisphere' and 'Half-hemisphere'.
+        """
         return self.__surface_shape
 
     @surface_shape.setter
@@ -128,8 +130,8 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self.__surface_shape = surface_shape
 
     @property
-    def surface_radius(self):
-        """Surface radius."""
+    def surface_radius(self) -> float:
+        """Radius of the measurement surface in m."""
         return self.__surface_radius
 
     @surface_radius.setter
@@ -140,8 +142,11 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self.__surface_radius = surface_radius
 
     @property
-    def K1(self):
-        """K1 correction."""
+    def K1(self) -> float:
+        """Background noise correction K1 in dB.
+
+        See section 8.2.3 of ISO 3744.
+        """
         return self.__K1
 
     @K1.setter
@@ -150,8 +155,11 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self.__K1 = K1
 
     @property
-    def K2(self):
-        """K2 correction."""
+    def K2(self) -> float:
+        """Environmental correction K2 in dB.
+
+        See annex A of ISO 3744..
+        """
         return self.__K2
 
     @K2.setter
@@ -160,8 +168,11 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self.__K2 = K2
 
     @property
-    def C1(self):
-        """C1 correction."""
+    def C1(self) -> float:
+        """Meteorological reference quantity correction C1 in dB.
+
+        See annex G of ISO 3744.
+        """
         return self.__C1
 
     @C1.setter
@@ -170,8 +181,11 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         self.__C1 = C1
 
     @property
-    def C2(self):
-        """C2 correction."""
+    def C2(self) -> float:
+        """Meteorological radiation impedance correction C2 in dB.
+
+        See annex G of ISO 3744).
+        """
         return self.__C2
 
     @C2.setter
@@ -182,13 +196,15 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     def add_microphone_signal(self, signal: Field):
         """Add microphone signal.
 
-        Adds a microphone-recorded signal as a DPF field.
-        Note: It is assumed that the microphone positions where the signals were recorded follow
-        Annex B of ISO 3744 for the specific measurement surface shape used.
+        Adds a microphone-recorded signal.
+
+        .. note::
+            It is assumed that the microphone positions where the signals were recorded follow
+            Annex B of ISO 3744 for the specific measurement surface shape used.
 
         Parameters
         ----------
-        signal: Field
+        signal : Field
             Recorded signal in Pa from one specific position.
         """
         if type(signal) is not Field:
@@ -203,7 +219,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         Parameters
         ----------
-        index: int
+        index : int
             Signal index.
 
         Returns
@@ -223,7 +239,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         Parameters
         ----------
-        index: int
+        index : int
             Signal index.
         """
         if index > len(self.__signals) - 1:
@@ -250,27 +266,28 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     def set_K2_from_room_properties(
         self, length: float, width: float, height: float, alpha: float
     ) -> float:
-        """Set K2 from measurement room properties.
+        """Set K2 from measurement room properties and measurement surface area.
 
         Sets K2 following Annex A of ISO 3744, based on specified room dimensions and averaged
-        sound absorption coefficient.
+        sound absorption coefficient, and current measurement surface area (that is,
+        shape and radius).
 
         Parameters
         ----------
-            length: float
-                Measurement room length in m.
-            width: float
-                Measurement room width in m.
-            height: float
-                Measurement room height in m.
-            alpha: float
-                Mean sound absorption coefficient between 0 and 1. Typical example values are
-                given in Table A.1 of ISO 3744.
+        length : float
+            Measurement room length in m.
+        width : float
+            Measurement room width in m.
+        height : float
+            Measurement room height in m.
+        alpha : float
+            Mean sound absorption coefficient between 0 and 1. Typical example values are
+            given in Table A.1 of ISO 3744.
 
         Returns
         -------
-            float
-                Calculated correction K2 in dB
+        float
+            Calculated correction K2 in dB
         """
         if length <= 0.0 or width <= 0.0 or height <= 0.0:
             raise PyAnsysSoundException(
@@ -305,16 +322,16 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         Parameters
         ----------
-        pressure: float, default: 101.325
+        pressure : float, default: 101.325
             Static pressure in kPa.
-        temperature: float, default: 23.0
+        temperature : float, default: 23.0
             Temperature in °C.
 
         Returns
         -------
         tuple[float]
-            First element is the correction C1 in dB.
-            Second element is the correction C2 in dB.
+            First element: correction C1 in dB.
+            Second element: correction C2 in dB.
         """
         ps0 = 101.325  # Reference static pressure in kPa.
         theta0 = 314.0  # Reference temperature in K under an air impedance of 400 N s/m^3.
@@ -335,8 +352,8 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         Parameters
         ----------
-            filename: string
-                Sound power level project file.
+        filename: string
+            Sound power level project file.
         """
         # Set operator inputs.
         self.__operator_load.connect(0, filename)
@@ -403,9 +420,9 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         Returns
         -------
         tuple
-            First element is the unweighted sound power level (Lw) in dB.
+            First element: unweighted sound power level (Lw) in dB.
 
-            Second element is the A-weighted sound power level (Lw(A)) in dBA.
+            Second element: A-weighted sound power level (Lw(A)) in dBA.
 
             Third element is a DPF field containing an array of the octave-band sound power
             levels, in dB.
@@ -429,17 +446,17 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         Returns
         -------
         tuple
-            First element is the unweighted sound power level (Lw) in dB.
+            First element: unweighted sound power level (Lw) in dB.
 
-            Second element is the A-weighted sound power level (Lw(A)) in dBA.
+            Second element: A-weighted sound power level (Lw(A)) in dBA.
 
-            Third element is a NumPy array of the octave-band sound power levels, in dB.
+            Third element: NumPy array of the octave-band sound power levels, in dB.
 
-            Fourth element is a NumPy array of the octave-band center frequencies, in Hz.
+            Fourth element: NumPy array of the octave-band center frequencies, in Hz.
 
-            Fifth element is a NumPy array of the one-third-octave-band sound power levels, in dB.
+            Fifth element: NumPy array of the one-third-octave-band sound power levels, in dB.
 
-            Sixth element is a NumPy array of the one-third-octave-band center frequencies, in Hz.
+            Sixth element: NumPy array of the one-third-octave-band center frequencies, in Hz.
         """
         output = self.get_output()
 
@@ -479,7 +496,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         return output[1]
 
-    def get_Lw_octave(self) -> npt.ArrayLike:
+    def get_Lw_octave(self) -> np.ndarray:
         """Get octave-band power sound levels.
 
         Returns
@@ -491,7 +508,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         return output[2]
 
-    def get_octave_center_frequencies(self) -> npt.ArrayLike:
+    def get_octave_center_frequencies(self) -> np.ndarray:
         """Get octave-band center frequencies.
 
         Returns
@@ -503,7 +520,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         return output[3]
 
-    def get_Lw_thirdoctave(self) -> npt.ArrayLike:
+    def get_Lw_thirdoctave(self) -> np.ndarray:
         """Get one-third-octave-band power sound levels.
 
         Returns
@@ -515,7 +532,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         return output[4]
 
-    def get_thirdoctave_center_frequencies(self) -> npt.ArrayLike:
+    def get_thirdoctave_center_frequencies(self) -> np.ndarray:
         """Get one-third-octave-band center frequencies.
 
         Returns
@@ -537,7 +554,6 @@ class SoundPowerLevelISO3744(SoundPowerParent):
             raise PyAnsysSoundException(
                 "Output is not processed yet. Use the 'SoundPowerLevelISO3744.process()' method."
             )
-        output = self.get_output_as_nparray()
 
         # Display octave-band levels in the upper subplot.
         Lw = self.get_Lw_octave()

@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -27,8 +27,10 @@ from typing import Any, Optional, Union
 
 from ansys.dpf.core import (
     LicenseContextManager,
+    ServerConfig,
     connect_to_server,
     load_library,
+    server_factory,
     start_local_server,
 )
 
@@ -49,14 +51,14 @@ def connect_to_or_start_server(
 
     Parameters
     ----------
-    port: str, default: None
-        Port that the DPF server is listening on.
-    ip: str, default: None
+    port : int, default: None
+        Port that the DPF server is listening to.
+    ip : str, default: None
         IP address for the DPF server.
-    ansys_path: str, default: None
+    ansys_path : str, default: None
         Root path for the Ansys installation. For example, ``C:\\Program Files\\ANSYS Inc\\v242``.
         This parameter is ignored if either the port or IP address is set.
-    use_license_context: bool, default: False
+    use_license_context : bool, default: False
         Whether to check out the DPF Sound license increment (``avrxp_snd_level1``) before using
         PyAnsys Sound. Checking out the license increment improves performance if you are doing
         multiple calls to DPF Sound operators because they require licensing. This parameter
@@ -86,7 +88,10 @@ def connect_to_or_start_server(
             **connect_kwargs,
         )
     else:  # pragma: no cover
-        server = start_local_server(ansys_path=ansys_path)
+        grpc_config = ServerConfig(
+            protocol=server_factory.CommunicationProtocols.gRPC, legacy=False
+        )
+        server = start_local_server(config=grpc_config, ansys_path=ansys_path, as_global=True)
         full_path_dll = os.path.join(server.ansys_path, "Acoustics\\SAS\\ads\\")
 
     required_version = "8.0"

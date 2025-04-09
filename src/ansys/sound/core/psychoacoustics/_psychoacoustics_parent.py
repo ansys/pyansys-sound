@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -21,10 +21,13 @@
 # SOFTWARE.
 
 """Psychoacoustics functions."""
-from ansys.dpf.core import Field
-from numpy import typing as npt
+import numpy as np
 
 from .._pyansys_sound import PyAnsysSound, PyAnsysSoundException
+
+# Sound field types.
+FIELD_FREE = "Free"
+FIELD_DIFFUSE = "Diffuse"
 
 
 class PsychoacousticsParent(PyAnsysSound):
@@ -34,14 +37,7 @@ class PsychoacousticsParent(PyAnsysSound):
     This is the base class for all pychoacoustics indicators classes and should not be used as is.
     """
 
-    def __init__(self):
-        """Init.
-
-        Init the class.
-        """
-        super().__init__()
-
-    def _convert_bark_to_hertz(self, bark_band_indexes: npt.ArrayLike) -> npt.ArrayLike:
+    def _convert_bark_to_hertz(self, bark_band_indexes: np.ndarray) -> np.ndarray:
         """Convert Bark band indexes into frequencies.
 
         Converts input Bark band indexes (in Bark) into corresponding frequencies (in Hz)
@@ -51,12 +47,12 @@ class PsychoacousticsParent(PyAnsysSound):
 
         Parameters
         ----------
-        bark_band_indexes: numpy array
+        bark_band_indexes : numpy.ndarray
             Array of Bark band indexes to convert in Bark.
 
         Returns
         -------
-        numpy array
+        numpy.ndarray
             Array of corresponding frequencies in Hz.
         """
         for ibark in range(len(bark_band_indexes)):
@@ -73,34 +69,3 @@ class PsychoacousticsParent(PyAnsysSound):
                 bark_band_indexes[ibark] = (bark_band_indexes[ibark] + 4.422) / 1.22
 
         return 1920 * (bark_band_indexes + 0.53) / (26.28 - bark_band_indexes)
-
-    def _check_channel_index(self, channel_index: int) -> bool:
-        """Check whether a specified signal channel index is available.
-
-        Parameters
-        ----------
-        channel_index: int
-            Index of the signal channel to check.
-
-        Returns
-        -------
-        bool
-            ``True`` if the channel index is available, ``False`` if it is not.
-        """
-        output = self.get_output()
-        if output == None:
-            return False
-
-        if type(output[0]) == Field:
-            if channel_index != 0:
-                raise PyAnsysSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
-
-        else:
-            if channel_index < 0 or channel_index > self.get_output_as_nparray()[0].ndim - 1:
-                raise PyAnsysSoundException(
-                    f"Specified channel index ({channel_index}) does not exist."
-                )
-
-        return True

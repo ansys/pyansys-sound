@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -57,7 +57,7 @@ server = connect_to_or_start_server(use_license_context=True)
 # in the DPF-Core API documentation.
 
 # Return the input data of the example file
-path_flute_wav = download_flute_wav()
+path_flute_wav = download_flute_wav(server=server)
 
 # Load the WAV file.
 wav_loader = LoadWav(path_flute_wav)
@@ -94,7 +94,7 @@ fc_signal_modified = gain_applier.get_output()
 # ~~~~~~~~~~~~
 # Plot both the original signal and modified signal.
 
-# Get the signals as nparray
+# Get the signals as NumPy arrays
 data_original = wav_loader.get_output_as_nparray()
 data_modified = gain_applier.get_output_as_nparray()
 

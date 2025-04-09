@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2024 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -30,12 +30,12 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.signal_utilities import LoadWav, Resample
 
 
-def test_resample_instantiation(dpf_sound_test_server):
+def test_resample_instantiation():
     resampler = Resample()
     assert resampler != None
 
 
-def test_resample_process(dpf_sound_test_server):
+def test_resample_process():
     resampler = Resample()
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
 
@@ -56,7 +56,7 @@ def test_resample_process(dpf_sound_test_server):
     resampler.process()
 
 
-def test_resample_get_output(dpf_sound_test_server):
+def test_resample_get_output():
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -85,7 +85,7 @@ def test_resample_get_output(dpf_sound_test_server):
     assert f_out.data[60000] == -0.4175410866737366
 
 
-def test_resample_get_output_as_np_array(dpf_sound_test_server):
+def test_resample_get_output_as_np_array():
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -110,7 +110,7 @@ def test_resample_get_output_as_np_array(dpf_sound_test_server):
     assert out_arr[60000] == -0.4175410866737366
 
 
-def test_resample_set_get_signal(dpf_sound_test_server):
+def test_resample_set_get_signal():
     resampler = Resample()
     fc = FieldsContainer()
     fc.labels = ["channel"]
@@ -126,7 +126,7 @@ def test_resample_set_get_signal(dpf_sound_test_server):
     assert fc_from_get[0].data[0, 2] == 42
 
 
-def test_resample_set_get_sampling_frequency(dpf_sound_test_server):
+def test_resample_set_get_sampling_frequency():
     resampler = Resample()
 
     # Error
@@ -139,7 +139,7 @@ def test_resample_set_get_sampling_frequency(dpf_sound_test_server):
 
 
 @patch("matplotlib.pyplot.show")
-def test_resample_plot(mock_show, dpf_sound_test_server):
+def test_resample_plot(mock_show):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
