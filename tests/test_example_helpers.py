@@ -95,7 +95,7 @@ def test_download_aircraft_wav():
     assert os.path.getsize(p) == 2299160
 
 
-def download_aircraft10kHz_wav():
+def test_download_aircraft10kHz_wav():
     download_aircraft10kHz_wav()[0]
     p = str(EXAMPLES_PATH) + "/Aircraft_FS10kHz.wav"
     assert pathlib.Path(p).exists() == True
