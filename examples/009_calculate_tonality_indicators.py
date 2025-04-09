@@ -86,7 +86,7 @@ stft.plot()
 # %%
 # ISO 1996-2 annex C
 # ~~~~~~~~~~~~~~~~~~
-# In this section, we calculate and print out the tonal audibility of the signal according to the
+# In this section, we calculate and print out the tonal audibility of the signal according to
 # annex C of the standard ISO 1996-2 using the class :class:`.TonalityISO1996_2`.
 
 # Calculate the ISO 1996-2 tonality.
@@ -132,8 +132,8 @@ tonality_ISO1996_2_over_time.plot()
 # %%
 # DIN 45681
 # ~~~~~~~~~
-# In this section, we calculate, print out, and plot the tonality according to the standard
-# DIN 45681 using the same signal and the class :class:`.TonalityDIN45681`.
+# In this section, we calculate, print out, and plot the tonality according to the DIN 45681
+# standard using the same signal and the class :class:`.TonalityDIN45681`.
 
 # Calculate the DIN 45681 tonality.
 tonality_DIN45681 = TonalityDIN45681(signal=signal_aircraft)
@@ -170,8 +170,8 @@ tonality_DIN45681.plot()
 # %%
 # ISO/TS 20065
 # ~~~~~~~~~~~~
-# In this section, we calculate, print out, and plot the tonality according to the standard ISO/TS
-# 20065 using the same signal and the class :class:`TonalityISOTS20065`.
+# In this section, we calculate, print out, and plot the tonality according to the ISO/TS 20065
+# standard using the same signal and the class :class:`TonalityISOTS20065`.
 
 # Calculate the ISO/TS 20065 tonality.
 tonality_ISOTS20065 = TonalityISOTS20065(signal=signal_aircraft)
@@ -243,12 +243,12 @@ print(
 )
 
 # %%
-# Like with the Aures tonality, the ECMA 418-2 uses a perceptual scale, with a specific unit called
-# tuHMS (tonality unit, hearing model of Sottek). The hearing model of Sottek is a perceptual model
-# of sound, where the tonality is computed based on autocorrelation functions calculated in each
-# critical band. A value of 1 tuHMS corresponds to the tonality of a 1-kHz pure tone with a level
-# of 40 dB SPL. A value of 0 tuHMS indicates that no tonality could be detected (that is, no tonal
-# content), while high values in tuHMS indicate prominent tonal contents.
+# As with the Aures tonality, the ECMA 418-2 standard uses a perceptual scale, with a specific unit
+# called tuHMS (tonality unit, hearing model of Sottek). The hearing model of Sottek is a
+# perceptual model of sound, where the tonality is computed based on autocorrelation functions
+# calculated in each critical band. A value of 1 tuHMS corresponds to the tonality of a 1-kHz pure
+# tone with a level of 40 dB SPL. A value of 0 tuHMS indicates that no tonality could be detected
+# (that is, no tonal content), while high values in tuHMS indicate prominent tonal contents.
 
 
 # Display the results over time in a figure.
