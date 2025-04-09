@@ -22,6 +22,18 @@
   description: Package and maintenance related
   color: f78c37
 
+- name: examples
+  description: Examples and tutorials
+  color: 6c5271
+
+- name: testing
+  description: Tests and testing related
+  color: 99d5eb
+
+- name: ci/cd
+  description: Continuous integration and deployment
+  color: 06cb71
+
 - name: release
   description: Anything related to an incoming release
   color: ffffff
