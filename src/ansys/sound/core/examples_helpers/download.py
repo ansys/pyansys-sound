@@ -278,8 +278,9 @@ def download_aircraft_wav(server=None):
 
 
 def download_sound_composer_project_whatif(server=None):
-    """Download the ``SoundComposer-WhatIfScenario-Motor-Gear-HVAC-Noise.scn`` file,
-    an example project file the Sound Composer.
+    """Download the ``SoundComposer-WhatIfScenario-Motor-Gear-HVAC-Noise.scn`` file.
+
+    This file is a Sound Composer project file.
 
     Returns
     -------
@@ -287,5 +288,5 @@ def download_sound_composer_project_whatif(server=None):
         Path for the ``SoundComposer-WhatIfScenario-Motor-Gear-HVAC-Noise.scn`` file.
     """
     return _download_example_file_to_server_tmp_folder(
-        "SoundComposer-WhatIfScenario-Motor-Gear-HVAC-Noise.scn", server=server)
-
+        "SoundComposer-WhatIfScenario-Motor-Gear-HVAC-Noise.scn", server=server
+    )
