@@ -275,3 +275,14 @@ def download_aircraft_wav(server=None):
         Path for the ``Aircraft.wav`` file.
     """
     return _download_example_file_to_server_tmp_folder("Aircraft.wav", server=server)
+
+
+def download_aircraft10kHz_wav(server=None):
+    """Download the ``Aircraft.wav`` file.
+
+    Returns
+    -------
+    str
+        Path for the ``Aircraft_FS10kHz.wav`` file.
+    """
+    return _download_example_file_to_server_tmp_folder("Aircraft_FS10kHz.wav", server=server)

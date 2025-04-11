@@ -27,6 +27,7 @@ from ansys.sound.core.examples_helpers import (
     download_accel_with_rpm_2_wav,
     download_accel_with_rpm_3_wav,
     download_accel_with_rpm_wav,
+    download_aircraft10kHz_wav,
     download_aircraft_wav,
     download_fan_wav,
     download_flute_psd,
@@ -92,3 +93,10 @@ def test_download_aircraft_wav():
     p = str(EXAMPLES_PATH) + "/Aircraft.wav"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 2299160
+
+
+def test_download_aircraft10kHz_wav():
+    download_aircraft10kHz_wav()[0]
+    p = str(EXAMPLES_PATH) + "/Aircraft_FS10kHz.wav"
+    assert pathlib.Path(p).exists() == True
+    assert os.path.getsize(p) == 521565
