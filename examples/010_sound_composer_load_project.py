@@ -45,7 +45,7 @@ The example shows how to perform these operations:
 - Get the project information and content
 - Investigate the content of a track
 - Generate the signal of a track
-- Generated the signal of the Sound Composer project
+- Generate the signal of the Sound Composer project
 
 """
 
