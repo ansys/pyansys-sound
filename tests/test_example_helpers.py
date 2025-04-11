@@ -102,7 +102,7 @@ def test_download_sound_composer_project_whatif():
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 1313147
 
-    
+
 def test_download_aircraft10kHz_wav():
     download_aircraft10kHz_wav()[0]
     p = str(EXAMPLES_PATH) + "/Aircraft_FS10kHz.wav"
