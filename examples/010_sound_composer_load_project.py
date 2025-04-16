@@ -26,27 +26,27 @@
 Sound Composer - Load project
 -----------------------------
 
-The Sound Composer is a tool that allows to generate the sound of a system
-by combining the sound of its components, which are called sources. A source can be
-a recording from a test, data coming from test analysis, or from a simulation.
-The sources are combined together in a project, each source belonging to a track.
+The Sound Composer is a tool that allows you to generate the sound of a system by combining the
+sounds of its components, which we call sources here. Each source can be made of data coming from
+test analysis, or from a simulation, or simply consist of a single audio recording. The sources are
+combined into a project, where each source is assigned a track.
 
-A track is a container that contains a source, a control profile and optionally a filter. It
-is used to generate the sound of the component (characterized by the source) given a specific
-functioning mode (named the control profile), and a transfer function (the filter).
+A track is a data structure made of source data, source control data, an output gain, and,
+optionally, a transfer function in the form of a digital filter. It can generate the sound of the
+component (as characterized by the source data), in specific operating conditions (the source
+control), and filtered according to the transfer function.
 
-This example shows how use the :class:`.SoundComposer`. It starts from an existing project file,
-loads the project into the Sound Composer and explains the notions of project, track, source,
-control profile and filter.
+This example shows how to use the Sound Composer, with the :class:`.SoundComposer` class. It starts
+from an existing Sound Composer project file, and illustrates the notions of project, track, source,
+source control, and filter.
 
 The example shows how to perform these operations:
 
-- Load a project file
-- Get the project information and content
-- Investigate the content of a track
-- Generate the signal of a track
-- Generate the signal of the Sound Composer project
-
+- Load a project file,
+- Get the project information and content,
+- Investigate the content of a track,
+- Generate the signal of a track,
+- Generate the signal of the entire Sound Composer project.
 """
 
 # %%
@@ -55,12 +55,8 @@ The example shows how to perform these operations:
 # Setting up the analysis consists of loading the required libraries,
 # and connecting to the DPF server.
 
-# Load standard libraries.
-
 # Load Ansys libraries.
-from ansys.sound.core.examples_helpers import (
-    download_sound_composer_project_whatif,
-)
+from ansys.sound.core.examples_helpers import download_sound_composer_project_whatif
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.sound_composer import SoundComposer
 from ansys.sound.core.spectrogram_processing import Stft
@@ -72,40 +68,34 @@ my_server = connect_to_or_start_server(use_license_context=True)
 # %%
 # Load a Sound Composer project from a file
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load a project in the Sound Composer, using the :meth:`.SoundComposer.load` method
-# of the :class:`.SoundComposer` class.
-# A project is a file with the extension .scn, usually created within Sound SAS.
-#
+# Load a Sound Composer project, using the :meth:`.SoundComposer.load()` method. A Sound Composer
+# project file has the extension .scn, and can be created with Ansys Sound SAS.
 
-# Download the Sound Composer project used in this example.
+# Download the Sound Composer project file used in this example.
 path_sound_composer_project_scn = download_sound_composer_project_whatif(server=my_server)
 
 # Create a SoundComposer object and load the project.
-# The project is loaded in the Sound Composer object, which contains all the information
 sound_composer_project = SoundComposer()
 sound_composer_project.load(path_sound_composer_project_scn)
 
-
 # %%
-# Display a summary of the content of the project using print.
-
+# You can use built-in :func:`print()` function to display a summary of the content of the project.
 print(sound_composer_project)
 
 # %%
-# You can see that this project is made of four tracks:
-# - the first track contains a source of type Harmonics, it comes form a FEM simulation
-# of an e-motor
-# - the second track contains a source of type Harmonics, it comes from a a multibody
-# simulation of the gearbox
-# - the third track contains a source of type Broadband Noise, it comes from a CFD simulation
-# of the HVAC system
-# - the fourth track contains a source of type Broadband Noise, it comes form the analysis of
-# a measurement of the background noise in the cabin, which contains rolling noise and wind noise.
+# You can see that this project is made of 4 tracks:
 
 # %%
-# Explore the content of the project
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Let us have a closer look at the content of each track by printing individually each track.
+# - a track with a harmonics source, coming form the FEM simulation of an e-motor,
+# - a track with another harmonics source, coming from the multibody simulation of a gearbox,
+# - a track with a broadband noise source, coming from the CFD simulation of a HVAC system,
+# - a track with another broadband noise source, coming form the analysis of a background noise
+#   measurement in the cabin, which would correspond to the rolling noise and the wind noise.
+
+# %%
+# Explore the project's list of tracks
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Let us have a closer look at the content of each individual track by printing it.
 
 for i, track in enumerate(sound_composer_project.tracks, start=1):
     print(f"--- Track n. {i} ---")
@@ -114,43 +104,42 @@ for i, track in enumerate(sound_composer_project.tracks, start=1):
 
 
 # %%
-# For each track you can see some details about the source content, the control parameter
-# set in the track, and if there is a filter or not in the track.
+# For each track, you can see some details about the source content, the associated control profile,
+# and whether the track includes a filter or not.
 
 # %%
-# Access to the content of a track
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# To get a specific track, access the attribute :attr:`.tracks` of the SoundComposer object.
-# Let us get the second track of the project, which contains the source of the gearbox.
+# Explore the content of a track
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# To look at a specific track, use the attribute :attr:`.tracks` of the :class:`.SoundComposer`
+# object, containing the list of the tracks included.
+# For example, let us extract the second track of the project, which contains the gearbox source.
 #
-# The track is an object of type :class:`.Track`.
+# The track object returned is of type :class:`.Track`. You can also print it to see its content.
 track_gear = sound_composer_project.tracks[1]
 print(track_gear)
 
 # %%
-# The figure below displays the content of the source, which is of type
-# :class:`.SourceHarmonics`, as seen in the print above.
-# In that case, the source is a set of 50 harmonics, which are defined by their order number,
-# their level, for value of the control parameter (which is the RPM value).
+# This track contains a harmonics source, stored as a :class:`.SourceHarmonics` object.
+# Here, the source is a set of 50 harmonics, which are defined by their order numbers,
+# and their levels for various values of the control parameter (RPM).
 print(track_gear.source.source_harmonics)
 
 # %%
 # The source control can be accessed using the :attr:`.SourceHarmonics.source_control` attribute
-# of the track. Let us display this control in a figure: it is a linear evolution of the RPM from
-# 250 rev/mn to 5000 rev/mn, during 8 seconds.
+# of the source in the track. Let us display this control profile in a figure: it is a linear
+# ramp-up from 250 rpm to 5000 rpm, over 8 seconds.
 track_gear.source.source_control.plot()
 
 # %%
-# The track also contains a filter, which is an object of type :class:`.Filter`.
-# The coefficients of the filter are displayed in the console using
-# `print()`. In our case, it is a FIR filter that models the transfer
-# between the source and the ears of the receiver.
+# The track also contains a filter, stored as a :class:`.Filter` object.
+# Here, it is a finite impulse response (FIR) filter that models the transfer between the source
+# and the listening position.
 track_gear.filter
 print(track_gear.filter)
 
 # %%
-# Let us generate the signal corresponding to the track using :meth:`.Track.process`, and display
-# its waveform and spectrogram.
+# Let us generate the signal corresponding to the track using the :meth:`.Track.process()` method,
+# plot its waveform, and display its spectrogram with the :class:`.Stft` class.
 track_gear.process(sampling_frequency=44100.0)
 track_gear.plot()
 
@@ -159,23 +148,21 @@ spectrogram_gear.process()
 spectrogram_gear.plot()
 
 # %%
-# If needed, you can access the content of a track using the :meth:`.Track.get_output`,
-# and further save or process it.
+# If needed, you can access the output signal of a track using :meth:`.Track.get_output()`.
 signal_gear = track_gear.get_output()
 
 # %%
 # Generate the signal of the project
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Now, let us generate the signal of the project using the :meth:`.SoundComposer.process` method.
-# This method generates the signal of all the tracks, including the potentially defined filters
-# of each track, and the performs a combination of the tracks' signals (they are summed
-# all together).
+# Now, let us generate the signal of the project using the :meth:`.SoundComposer.process()` method.
+# This method generates all track signals, filters them with the associated filters whenever
+# specified, applies track gains, and sums the resulting signals together.
 
 sound_composer_project.process(sampling_frequency=44100.0)
 
 # %%
-# Display the waveform of the generated signal using the :meth:`.SoundComposer.plot` method,
-# and its spectrogram using the :class:`.Stft` class.
+# You can display the waveform of the generated signal using the :meth:`.SoundComposer.plot()`
+# method, and its spectrogram using the :class:`.Stft` class.
 sound_composer_project.plot()
 
 spectrogram = Stft(signal=sound_composer_project.get_output())
@@ -183,14 +170,13 @@ spectrogram.process()
 spectrogram.plot()
 
 # %%
-# The signal of the sound composer project allows to analyze and listen the sound of the gearbox
-# and the e-motor, in a real condition including the HVAC noise and background noise inside the
-# cabin.
+# This workflow allows you to analyze and listen to the sound of the gearbox and the e-motor, in
+# realistic conditions, that is, including the HVAC noise and the background noise inside the cabin.
 #
-# You can see in the spectrogram how some harmonic tones from the e-motor and the gearbox may be
-# perceived and potentially heard by the passengers in the cabin.
+# By analyzing the spectrogram, you can anticipate how some harmonic tones from the e-motor and the
+# gearbox may be perceived by the passengers in the cabin.
 #
-# Further investigations may be conducted to validate it, using other tools included in PyAnsys
-# Sound, such as :mod:`Standard Levels<ansys.sound.core.standard_levels>`,
-# :mod:`Psychoacoustics<ansys.sound.core.psychoacoustics>` and
-# :mod:`Spectral Processing<ansys.sound.core.spectral_processing>`.
+# Further investigations can be conducted, using other tools included in PyAnsys
+# Sound, such as modules :mod:`Standard levels <ansys.sound.core.standard_levels>`,
+# :mod:`Psychoacoustics <ansys.sound.core.psychoacoustics>` and
+# :mod:`Spectral processing <ansys.sound.core.spectral_processing>`.
