@@ -141,9 +141,6 @@ jobs:
           pip install --upgrade build wheel
           pip install .[tests]
 
-      - name: "Install Tcl/Tk"
-        run: sudo apt-get install tk8.6-dev
-
       - name: "Login to GitHub Container Registry"
         uses: docker/login-action@v3
         with:
