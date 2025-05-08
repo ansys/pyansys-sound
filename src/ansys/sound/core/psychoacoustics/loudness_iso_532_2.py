@@ -245,8 +245,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
             -   Sixth element: monaural specific loudness in sone/Cam at each ear, as a function of
                 the ERB center frequency.
 
-            -   Seventh element: center frequencies in Hz of the equivalent rectangular
-                bandwidths (ERB), where specific loudness is defined.
+            -   Seventh element: ERBn-number scale in Cam, where specific loudness is defined.
         """
         output = self.get_output()
 
@@ -359,7 +358,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
         numpy.ndarray
             Array of ERB center frequencies in Hz.
         """
-        return self.get_output_as_nparray()[6]
+        return (pow(10, self.get_erbn_numbers() / 21.366) - 1) / 0.004368
 
     def get_erbn_numbers(self) -> np.ndarray:
         """Get the ERBn-number scale in Cam.
@@ -372,7 +371,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
         numpy.ndarray
             ERBn-number scale in Cam.
         """
-        return 21.366 * np.log10(0.004368 * self.get_erb_center_frequencies() + 1)
+        return self.get_output_as_nparray()[6]
 
     def plot(self):
         """Plot the binaural specific loudness.
