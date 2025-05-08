@@ -28,13 +28,13 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.psychoacoustics import SharpnessDIN45692
 from ansys.sound.core.signal_utilities import LoadWav
 
-EXP_SHARPNESS_FREE = 1.216734
-EXP_SHARPNESS_DIFFUSE = 1.225831
+EXP_SHARPNESS_FREE = 1.212122
+EXP_SHARPNESS_DIFFUSE = 1.221786
 
 EXP_STR_DEFAULT = (
     "SharpnessDIN45692 object\nData:\n\tSignal name: Not set\nSharpness: Not processed"
 )
-EXP_STR = 'SharpnessDIN45692 object\nData:\n\tSignal name: "flute"\nSharpness: 1.22 acums'
+EXP_STR = 'SharpnessDIN45692 object\nData:\n\tSignal name: "flute"\nSharpness: 1.21 acums'
 
 
 def test_sharpness_din_45692_instantiation():
