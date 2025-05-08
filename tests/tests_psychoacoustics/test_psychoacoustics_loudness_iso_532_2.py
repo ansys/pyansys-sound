@@ -396,16 +396,16 @@ def test_loudness_iso_532_2_get_output_as_nparray():
 
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
     wav_loader.process()
-    fc = wav_loader.get_output()
+    ERBn = wav_loader.get_output()
 
-    loudness_computer.signal = fc[0]
+    loudness_computer.signal = ERBn[0]
 
     # Loudness not calculated yet -> warning
     with pytest.warns(
         PyAnsysSoundWarning,
         match=("Output is not processed yet. " "Use the `LoudnessISO532_2.process\\(\\)` method."),
     ):
-        N_bin, LN_bin, N_mon, LN_mon, Nprime_bin, Nprime_mon, fc = (
+        N_bin, LN_bin, N_mon, LN_mon, Nprime_bin, Nprime_mon, ERBn = (
             loudness_computer.get_output_as_nparray()
         )
     assert np.isnan(N_bin)
@@ -414,11 +414,11 @@ def test_loudness_iso_532_2_get_output_as_nparray():
     assert len(LN_mon) == 0
     assert len(Nprime_bin) == 0
     assert len(Nprime_mon) == 0
-    assert len(fc) == 0
+    assert len(ERBn) == 0
 
     loudness_computer.process()
 
-    N_bin, LN_bin, N_mon, LN_mon, Nprime_bin, Nprime_mon, fc = (
+    N_bin, LN_bin, N_mon, LN_mon, Nprime_bin, Nprime_mon, ERBn = (
         loudness_computer.get_output_as_nparray()
     )
     assert N_bin == pytest.approx(EXP_BIN_LOUDNESS_DIOTIC_FREE_MIC)
@@ -435,10 +435,10 @@ def test_loudness_iso_532_2_get_output_as_nparray():
     assert Nprime_mon[0] == pytest.approx(EXP_MON_SPECIFIC_LOUDNESS_DIOTIC_FREE_MIC_0)
     assert Nprime_mon[45] == pytest.approx(EXP_MON_SPECIFIC_LOUDNESS_DIOTIC_FREE_MIC_45)
     assert Nprime_mon[98] == pytest.approx(EXP_MON_SPECIFIC_LOUDNESS_DIOTIC_FREE_MIC_98)
-    assert len(fc) == 372
-    assert fc[0] == pytest.approx(EXP_FREQ_0)
-    assert fc[45] == pytest.approx(EXP_FREQ_45)
-    assert fc[98] == pytest.approx(EXP_FREQ_98)
+    assert len(ERBn) == 372
+    assert ERBn[0] == pytest.approx(EXP_ERB_0)
+    assert ERBn[45] == pytest.approx(EXP_ERB_45)
+    assert ERBn[98] == pytest.approx(EXP_ERB_98)
 
 
 def test_loudness_iso_532_2_get_binaural_loudness_sone():
