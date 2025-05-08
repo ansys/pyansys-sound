@@ -29,7 +29,7 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.signal_utilities.load_wav import LoadWav
 from ansys.sound.core.sound_composer import SourceControlTime
 
-EXP_STR_ALL_SET = "Unit: \nDuration: 20.6 s\nMin - max: 968.8 - 4821.3 "
+EXP_STR_ALL_SET = "Unit: rpm\nDuration: 20.6 s\nMin - max: 968.8 - 4821.3 rpm"
 EXP_STR_NOT_SET = "Not set"
 
 
