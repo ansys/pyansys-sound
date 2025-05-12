@@ -100,7 +100,6 @@ print(sound_composer_project)
 for i, track in enumerate(sound_composer_project.tracks, start=1):
     print(f"--- Track n. {i} ---\n {track}\n")
 
-
 # %%
 # For each track, you can see some details about the source content, the associated control profile,
 # and whether the track includes a filter or not.
@@ -116,25 +115,25 @@ for i, track in enumerate(sound_composer_project.tracks, start=1):
 # as shown in the previous section.
 track_gear = sound_composer_project.tracks[1]
 
-
 # %%
-# This track contains a harmonics source, stored as a :class:`.SourceHarmonics` object.
-# Here, the source is a set of 50 harmonics, which are defined by their order numbers,
-# and their levels for 249 values of the control parameter (RPM).
+# This track contains a harmonics source, stored in its :attr:`.Track.source` attribute of
+# type :class:`.SourceHarmonics`. Here, it consists of a set of 50 harmonics, which are defined by
+# their order numbers, and their levels over 249 values of the control parameter (RPM).
 #
-# The source data is stored in the :attr:`.source.source_harmonics` attribute of the source in
-# the track. It is stored as a fields container, which contains 249 fields.
-# Each field corresponds to a different value of the control parameter (RPM), and contains the
-# levels in Pa^2 of the 50 harmonics at this RPM value.
+# These data are stored in the :attr:`.SourceHarmonics.source_harmonics`
+# attribute of the track's source object, as a :class:`FieldsContainer
+# <ansys.dpf.core.fields_container.FieldsContainer>` object. It contains 249 fields, each
+# corresponding to a specific value of the control parameter (RPM), and containing
+# the levels in Pa² of the 50 harmonics at this RPM value.
 print(
     f"Number of RPM points defined in the source dataset: "
     f"{len(track_gear.source.source_harmonics)}"
 )
 
 # %%
-# The source control can be accessed using the :attr:`.SourceHarmonics.source_control` attribute
-# of the source in the track. Let us display this control profile in a figure: it is a linear
-# ramp-up from 250 rpm to 5000 rpm, over 8 seconds.
+# The source control data (that is, the RPM values over time) can be accessed using the
+# :attr:`.SourceHarmonics.source_control` attribute of the source in the track. Let us display this
+# control profile in a figure: it is a linear ramp-up from 250 rpm to 5000 rpm, over 8 seconds.
 track_gear.source.plot_control()
 
 # %%

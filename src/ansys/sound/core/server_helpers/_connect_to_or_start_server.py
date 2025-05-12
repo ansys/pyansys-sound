@@ -65,7 +65,7 @@ def connect_to_or_start_server(
         multiple calls to DPF Sound operators because they require licensing. This parameter
         can also be used to force check out before running a script when few DPF Sound license
         increments are available. The license is checked in when the server object is deleted.
-        If another license increment is required, set this parameter to True and set the
+        If a different license increment is required, set this parameter to True and set the
         ``license_increment_name`` parameter to the name of the license increment to check out.
     license_increment_name : str, default: "avrxp_snd_level1"
         Name of the license increment to check out. Only required if use_license_context is True.
