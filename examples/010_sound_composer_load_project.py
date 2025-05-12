@@ -23,8 +23,8 @@
 """
 .. _sound_composer_load_project:
 
-Sound Composer - Load project
------------------------------
+Use an existing Sound Composer project file
+-------------------------------------------
 
 The Sound Composer is a tool that allows you to generate the sound of a system by combining the
 sounds of its components, which we call sources here. Each source can be made of data coming from
@@ -98,9 +98,7 @@ print(sound_composer_project)
 # Let us have a closer look at the content of each individual track by printing it.
 
 for i, track in enumerate(sound_composer_project.tracks, start=1):
-    print(f"--- Track n. {i} ---")
-    print(track)
-    print()
+    print(f"--- Track n. {i} ---\n {track}\n")
 
 
 # %%
@@ -114,21 +112,30 @@ for i, track in enumerate(sound_composer_project.tracks, start=1):
 # object, containing the list of the tracks included.
 # For example, let us extract the second track of the project, which contains the gearbox source.
 #
-# The track object returned is of type :class:`.Track`. You can also print it to see its content.
+# The track object returned is of type :class:`.Track`. You can print it to display its content,
+# as shown in the previous section.
 track_gear = sound_composer_project.tracks[1]
-print(track_gear)
+
 
 # %%
 # This track contains a harmonics source, stored as a :class:`.SourceHarmonics` object.
 # Here, the source is a set of 50 harmonics, which are defined by their order numbers,
-# and their levels for various values of the control parameter (RPM).
-print(track_gear.source.source_harmonics)
+# and their levels for 249 values of the control parameter (RPM).
+#
+# The source data is stored in the :attr:`.source.source_harmonics` attribute of the source in
+# the track. It is stored as a fields container, which contains 249 fields.
+# Each field corresponds to a different value of the control parameter (RPM), and contains the
+# levels in Pa^2 of the 50 harmonics at this RPM value.
+print(
+    f"Number of RPM points defined in the source dataset: "
+    f"{len(track_gear.source.source_harmonics)}"
+)
 
 # %%
 # The source control can be accessed using the :attr:`.SourceHarmonics.source_control` attribute
 # of the source in the track. Let us display this control profile in a figure: it is a linear
 # ramp-up from 250 rpm to 5000 rpm, over 8 seconds.
-track_gear.source.source_control.plot()
+track_gear.source.plot_control()
 
 # %%
 # The track also contains a filter, stored as a :class:`.Filter` object.
