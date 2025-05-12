@@ -115,6 +115,7 @@ jobs:
     runs-on: [self-hosted, Windows, pyansys-sound]
     env:
       PYVISTA_OFF_SCREEN: true
+      MPLBACKEND: Agg  # non-interactive backend for matplotlib
 
     steps:
       - uses: actions/checkout@v4
