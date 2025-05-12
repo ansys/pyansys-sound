@@ -68,9 +68,9 @@ def connect_to_or_start_server(
         If another license increment is required, set this parameter to True and set the
         ``license_increment_name`` parameter to the name of the license increment to check out.
     license_increment_name : str, default: "avrxp_snd_level1"
-        Name of the license increment to check out. Only required if use_license_context is True.
-        The default is ``avrxp_snd_level1``, which corresponds to the license required by Ansys
-        Sound Pro.
+        Name of the license increment to check out. Only taken into account if use_license_context
+        is True. The default value is ``avrxp_snd_level1``, which corresponds to the license 
+        required by Ansys Sound Pro.
 
     Returns
     -------
