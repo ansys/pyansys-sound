@@ -40,6 +40,7 @@ def connect_to_or_start_server(
     ip: Optional[str] = None,
     ansys_path: Optional[str] = None,
     use_license_context: Optional[bool] = False,
+    license_increment_name: Optional[str] = "avrxp_snd_level1",
 ) -> Any:
     r"""Connect to or start a DPF server with the DPF Sound plugin loaded.
 
@@ -64,6 +65,12 @@ def connect_to_or_start_server(
         multiple calls to DPF Sound operators because they require licensing. This parameter
         can also be used to force check out before running a script when few DPF Sound license
         increments are available. The license is checked in when the server object is deleted.
+        If a different license increment is required, set this parameter to True and set the
+        ``license_increment_name`` parameter to the name of the license increment to check out.
+    license_increment_name : str, default: "avrxp_snd_level1"
+        Name of the license increment to check out. Only taken into account if use_license_context
+        is True. The default value is ``avrxp_snd_level1``, which corresponds to the license
+        required by Ansys Sound Pro.
 
     Returns
     -------
@@ -106,7 +113,7 @@ def connect_to_or_start_server(
     # if required, check out the DPF Sound license once and for all for this session
     lic_context = None
     if use_license_context == True:
-        lic_context = LicenseContextManager(increment_name="avrxp_snd_level1", server=server)
+        lic_context = LicenseContextManager(license_increment_name, server=server)
 
     # "attach" the license context to the server as a member so that they have the same
     # life duration
