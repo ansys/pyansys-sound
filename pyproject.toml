@@ -31,11 +31,11 @@ dependencies = [
 
 [project.optional-dependencies]
 tests = [
-    "matplotlib==3.10.1",
+    "matplotlib==3.10.3",
     "pytest==8.3.5",
     "pytest-cov==6.1.1",
     "pytest-dependency==0.6.0",
-    "platformdirs==4.3.7",
+    "platformdirs==4.3.8",
     "regex==2024.11.6",
 ]
 
@@ -54,7 +54,7 @@ doc = [
     "pypandoc==1.15",
     "jupyter-sphinx==0.5.3",
     "sphinx-autobuild==2024.10.3",
-    "platformdirs==4.3.7"
+    "platformdirs==4.3.8"
 ]
 
 [tool.flit.module]
