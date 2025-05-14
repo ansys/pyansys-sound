@@ -59,6 +59,10 @@ from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectrogram_processing.stft import Stft
 
+# sphinx_gallery_start_ignore
+# sphinx_gallery_thumbnail_path = '_static/_image/example009_thumbnail.png'
+# sphinx_gallery_end_ignore
+
 # Connect to a remote server or start a local server.
 my_server = connect_to_or_start_server(use_license_context=True)
 

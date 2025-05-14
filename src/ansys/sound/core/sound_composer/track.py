@@ -332,5 +332,3 @@ class Track(SoundComposerParent):
         plt.grid(True)
         plt.tight_layout()
         plt.show()
-
-        self.source.plot_control()
