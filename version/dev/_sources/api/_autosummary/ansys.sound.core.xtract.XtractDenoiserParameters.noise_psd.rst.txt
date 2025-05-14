@@ -1,0 +1,6 @@
+noise\_psd
+==========
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoproperty:: XtractDenoiserParameters.noise_psd
