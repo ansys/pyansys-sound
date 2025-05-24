@@ -1,0 +1,6 @@
+output\_remainder\_signal
+=========================
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoproperty:: Xtract.output_remainder_signal

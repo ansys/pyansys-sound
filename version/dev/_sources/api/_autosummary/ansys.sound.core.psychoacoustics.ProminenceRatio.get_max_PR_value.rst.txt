@@ -1,0 +1,6 @@
+get\_max\_PR\_value
+===================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: ProminenceRatio.get_max_PR_value
