@@ -230,22 +230,19 @@ class Stft(SpectrogramProcessingParent):
 
         This method plots the STFT amplitude and the associated phase.
         """
-        out = self.get_output_as_nparray()
-
-        # Extracting first half of the STFT (second half is symmetrical)
-        half_nfft = int(np.shape(out)[0] / 2) + 1
         magnitude = self.get_stft_magnitude_as_nparray()
+
+        # Only extract the first half of the STFT, as it is symmetrical
+        half_nfft = int(np.shape(magnitude)[0] / 2) + 1
 
         np.seterr(divide="ignore")
         magnitude = 20 * np.log10(magnitude[0:half_nfft, :])
         np.seterr(divide="warn")
         phase = self.get_stft_phase_as_nparray()
         phase = phase[0:half_nfft, :]
-        fs = 1.0 / (
-            self.signal.time_freq_support.time_frequencies.data[1]
-            - self.signal.time_freq_support.time_frequencies.data[0]
-        )
-        time_step = np.floor(self.fft_size * (1.0 - self.window_overlap) + 0.5) / fs
+        time_data = self.signal.time_freq_support.time_frequencies.data
+        time_step = time_data[1] - time_data[0]
+        fs = 1.0 / time_step
         num_time_index = len(self.get_output().get_available_ids_for_label("time"))
 
         # Boundaries of the plot
