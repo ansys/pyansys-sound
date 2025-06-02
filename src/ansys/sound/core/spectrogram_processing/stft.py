@@ -190,19 +190,17 @@ class Stft(SpectrogramProcessingParent):
         """
         output = self.get_output()
 
-        num_time_index = len(output.get_available_ids_for_label("time"))
+        time_indexes = output.get_available_ids_for_label("time")
+        Ntime = len(time_indexes)
+        Nfft = output.get_field({"complex": 0, "time": 0, "channel_number": 0}).data.shape[0]
 
-        f1 = output.get_field({"complex": 0, "time": 0, "channel_number": 0})
-        f2 = output.get_field({"complex": 1, "time": 0, "channel_number": 0})
+        out_as_np_array = np.empty((Ntime, Nfft), dtype=np.complex128)
 
-        out_as_np_array = f1.data + 1j * f2.data
-        for i in range(1, num_time_index):
+        for i in time_indexes:
             f1 = output.get_field({"complex": 0, "time": i, "channel_number": 0})
             f2 = output.get_field({"complex": 1, "time": i, "channel_number": 0})
-            tmp_arr = f1.data + 1j * f2.data
-            out_as_np_array = np.vstack((out_as_np_array, tmp_arr))
+            out_as_np_array[i] = f1.data + 1j * f2.data
 
-        # return out_as_np_array
         return np.transpose(out_as_np_array)
 
     def get_stft_magnitude_as_nparray(self) -> np.ndarray:
