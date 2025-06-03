@@ -41,7 +41,7 @@ def connect_to_or_start_server(
     ansys_path: Optional[str] = None,
     use_license_context: Optional[bool] = False,
     license_increment_name: Optional[str] = "avrxp_snd_level1",
-) -> Any:
+) -> Any :
     r"""Connect to or start a DPF server with the DPF Sound plugin loaded.
 
     .. note::
@@ -75,9 +75,8 @@ def connect_to_or_start_server(
 
     Returns
     -------
-    Any
-        server : server.ServerBase
-        lic_context : LicenseContextManager. Is None if use_license_context is False. Otherwise,
+    server : server.ServerBase
+    lic_context : LicenseContextManager. Is None if use_license_context is False. Otherwise,
         it is a LicenseContextManager object, and should not be deleted until the end of the part
         of your program which uses PyAnsys Sound.
     """
