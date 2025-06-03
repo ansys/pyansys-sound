@@ -75,8 +75,26 @@ my_server = connect_to_or_start_server(use_license_context=True)
 # more control over what you are displaying.
 # While you could use the ``Stft.plot()`` method, the custom function
 # defined here restricts the frequency range of the plot.
-def plot_stft(stft_obj, vmax):
-    magnitude = stft_obj.get_stft_magnitude_as_nparray()
+def plot_stft(
+    stft: Stft,
+    SPLmax: float,
+    title: str = "STFT",
+    maximum_frequency: float = MAX_FREQUENCY_PLOT_STFT,
+) -> None:
+    """Plot a short-term Fourier transform (STFT) into a figure window.
+
+    Parameters
+    ----------
+    stft: Stft
+        Object containing the STFT.
+    SPLmax: float
+        Maximum value (here in dB SPL) for the colormap.
+    title: str, default: "STFT"
+        Title of the figure.
+    maximum_frequency: float, default: MAX_FREQUENCY_PLOT_STFT
+        Maximum frequency in Hz to display.
+    """
+    magnitude = stft.get_stft_magnitude_as_nparray()
 
     # Only extract the first half of the STFT, as it is symmetrical
     half_nfft = int(magnitude.shape[0] / 2) + 1
@@ -87,32 +105,30 @@ def plot_stft(stft_obj, vmax):
     np.seterr(divide="warn")
 
     # Obtain sampling frequency, time steps, and number of time samples
-    time_data = stft_obj.signal.time_freq_support.time_frequencies.data
+    time_data = stft.signal.time_freq_support.time_frequencies.data
     time_step = time_data[1] - time_data[0]
-
     fs = 1.0 / time_step
-    num_time_index = len(stft_obj.get_output().get_available_ids_for_label("time"))
+    num_time_index = len(stft.get_output().get_available_ids_for_label("time"))
 
     # Define boundaries of the plot
     extent = [0, time_step * num_time_index, 0.0, fs / 2.0]
 
     # Plot
+    plt.figure()
     plt.imshow(
         magnitude,
         origin="lower",
         aspect="auto",
         cmap="jet",
         extent=extent,
-        vmin=vmax - 70.0,
-        vmax=vmax,
+        vmax=SPLmax,
+        vmin=SPLmax - 70.0,
     )
-    plt.colorbar(label="Amplitude (dB SPL)")
+    plt.colorbar(label="Magnitude (dB SPL)")
     plt.ylabel("Frequency (Hz)")
     plt.xlabel("Time (s)")
-    plt.ylim(
-        [0.0, MAX_FREQUENCY_PLOT_STFT]
-    )  # Change the value of MAX_FREQUENCY_PLOT_STFT if needed
-    plt.title("STFT")
+    plt.ylim([0.0, maximum_frequency])  # Change the value of MAX_FREQUENCY_PLOT_STFT if needed
+    plt.title(title)
     plt.show()
 
 

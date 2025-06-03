@@ -194,6 +194,7 @@ class Stft(SpectrogramProcessingParent):
         Ntime = len(time_indexes)
         Nfft = output.get_field({"complex": 0, "time": 0, "channel_number": 0}).data.shape[0]
 
+        # Pre-allocate memory for the output array.
         out_as_np_array = np.empty((Ntime, Nfft), dtype=np.complex128)
 
         for i in time_indexes:
