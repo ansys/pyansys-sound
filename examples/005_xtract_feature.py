@@ -79,25 +79,29 @@ my_server = connect_to_or_start_server(use_license_context=True)
 # more control over what you are displaying.
 # While you could use the ``Stft.plot()`` method, the custom function
 # defined here restricts the frequency range of the plot.
-def plot_stft(stft_class, SPLmax, title="STFT", maximum_frequency=MAX_FREQUENCY_PLOT_STFT):
+def plot_stft(
+    stft: Stft,
+    SPLmax: float,
+    title: str = "STFT",
+    maximum_frequency: float = MAX_FREQUENCY_PLOT_STFT,
+) -> None:
     """Plot a short-term Fourier transform (STFT) into a figure window.
 
     Parameters
     ----------
-    stft_class: Stft
+    stft: Stft
         Object containing the STFT.
     SPLmax: float
         Maximum value (here in dB SPL) for the colormap.
-    title: str
+    title: str, default: "STFT"
         Title of the figure.
-    maximum_frequency: float
+    maximum_frequency: float, default: MAX_FREQUENCY_PLOT_STFT
         Maximum frequency in Hz to display.
     """
-    out = stft_class.get_output_as_nparray()
+    magnitude = stft.get_stft_magnitude_as_nparray()
 
-    # Extract first half of the STFT (second half is symmetrical)
-    half_nfft = int(out.shape[0] / 2) + 1
-    magnitude = stft_class.get_stft_magnitude_as_nparray()
+    # Only extract the first half of the STFT, as it is symmetrical
+    half_nfft = int(magnitude.shape[0] / 2) + 1
 
     # Voluntarily ignore a numpy warning
     np.seterr(divide="ignore")
@@ -105,12 +109,10 @@ def plot_stft(stft_class, SPLmax, title="STFT", maximum_frequency=MAX_FREQUENCY_
     np.seterr(divide="warn")
 
     # Obtain sampling frequency, time steps, and number of time samples
-    fs = 1.0 / (
-        stft_class.signal.time_freq_support.time_frequencies.data[1]
-        - stft_class.signal.time_freq_support.time_frequencies.data[0]
-    )
-    time_step = np.floor(stft_class.fft_size * (1.0 - stft_class.window_overlap) + 0.5) / fs
-    num_time_index = len(stft_class.get_output().get_available_ids_for_label("time"))
+    time_data = stft.signal.time_freq_support.time_frequencies.data
+    time_step = time_data[1] - time_data[0]
+    fs = 1.0 / time_step
+    num_time_index = len(stft.get_output().get_available_ids_for_label("time"))
 
     # Define boundaries of the plot
     extent = [0, time_step * num_time_index, 0.0, fs / 2.0]
@@ -124,7 +126,7 @@ def plot_stft(stft_class, SPLmax, title="STFT", maximum_frequency=MAX_FREQUENCY_
         cmap="jet",
         extent=extent,
         vmax=SPLmax,
-        vmin=(SPLmax - 70.0),
+        vmin=SPLmax - 70.0,
     )
     plt.colorbar(label="Magnitude (dB SPL)")
     plt.ylabel("Frequency (Hz)")
@@ -328,7 +330,7 @@ for p in paths:
     # Compute and plot the STFT
     stft_original.signal = time_domain_signal
     stft_original.process()
-    plot_stft(stft_class=stft_original, SPLmax=max_stft, title=f"STFT for signal {signal_name}")
+    plot_stft(stft=stft_original, SPLmax=max_stft, title=f"STFT for signal {signal_name}")
 
     # Use Xtract with the loaded signal
     xtract.input_signal = time_domain_signal
