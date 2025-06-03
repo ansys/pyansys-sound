@@ -41,7 +41,7 @@ def connect_to_or_start_server(
     ansys_path: Optional[str] = None,
     use_license_context: Optional[bool] = False,
     license_increment_name: Optional[str] = "avrxp_snd_level1",
-) -> Any :
+) -> Any:
     r"""Connect to or start a DPF server with the DPF Sound plugin loaded.
 
     .. note::
