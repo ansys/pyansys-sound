@@ -330,7 +330,7 @@ for p in paths:
     # Compute and plot the STFT
     stft_original.signal = time_domain_signal
     stft_original.process()
-    plot_stft(stft_obj=stft_original, SPLmax=max_stft, title=f"STFT for signal {signal_name}")
+    plot_stft(stft=stft_original, SPLmax=max_stft, title=f"STFT for signal {signal_name}")
 
     # Use Xtract with the loaded signal
     xtract.input_signal = time_domain_signal
