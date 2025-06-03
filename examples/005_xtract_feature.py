@@ -69,7 +69,7 @@ from ansys.sound.core.xtract import (
 # sphinx_gallery_end_ignore
 
 # Connect to a remote server or start a local server
-my_server = connect_to_or_start_server(use_license_context=True)
+my_server, lic_context = connect_to_or_start_server(use_license_context=True)
 
 
 # %%

@@ -79,7 +79,7 @@ from ansys.sound.core.signal_utilities import LoadWav
 
 # Connect to a remote server or start a local server without using a LicenseContextManager
 print("Connecting to the server without using a LicenseContextManager")
-my_server = connect_to_or_start_server(use_license_context=False)
+my_server, my_license_context = connect_to_or_start_server(use_license_context=False)
 
 # Check if you are using a local or remote server
 has_local_server = dpf.server.has_local_server()
@@ -113,8 +113,8 @@ for i in range(5):
     )
 
 # %%
-# Disconnect (shut down) the server and release the license increment.
-print("Disconnecting from the server and releasing the license increment.")
+# Disconnect (shut down) the server.
+print("Disconnecting from the server.")
 my_server = None
 
 # %%
@@ -128,7 +128,7 @@ my_server = None
 
 # Connect to a remote server or start a local server using a LicenseContextManager
 print("Connecting to the server using a LicenseContextManager")
-my_server = connect_to_or_start_server(use_license_context=True)
+my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
 # Execute the same and measure the execution time
 path_flute_wav = download_flute_wav(server=my_server)
@@ -150,3 +150,28 @@ for i in range(5):
 # You can see that the execution time is much faster when you use a LicenseContextManager.
 # This is because when a LicenseContactManager is not used, the license is checked out
 # each time you use a DPF Sound operator.
+
+# %%
+# You can release the license increment by deleting the LicenseContextManager object.
+print("Releasing the license increment by deleting the LicenseContextManager object.")
+my_license_context = None
+
+# %%
+# Now the LicenseContextManager has been deleted, any call to a PyAnsys Sound function will
+# again take the time to check out the license increment. Let us call the same function as before:
+now = datetime.datetime.now()
+wav_loader = LoadWav(path_flute_wav)
+wav_loader.process()
+fc_signal = wav_loader.get_output()
+later = datetime.datetime.now()
+execution_time = later - now
+print(
+    f"Elapsed time: "
+    f"{execution_time.seconds + execution_time.microseconds / 1e6}"
+    f" seconds",
+)
+
+# %%
+# Disconnect (shut down) the server and release the license increment.
+print("Disconnecting from the server and releasing the license increment.")
+my_server = None

@@ -64,9 +64,10 @@ def connect_to_or_start_server(
         PyAnsys Sound. Checking out the license increment improves performance if you are doing
         multiple calls to DPF Sound operators because they require licensing. This parameter
         can also be used to force check out before running a script when few DPF Sound license
-        increments are available. The license is checked in when the server object is deleted.
-        If a different license increment is required, set this parameter to True and set the
-        ``license_increment_name`` parameter to the name of the license increment to check out.
+        increments are available. The license is checked in when the LicenseContextManager object
+        is deleted. If a different license increment is required, set this parameter to True and
+        set the ``license_increment_name`` parameter to the name of the license increment to check
+        out.
     license_increment_name : str, default: "avrxp_snd_level1"
         Name of the license increment to check out. Only taken into account if use_license_context
         is True. The default value is ``avrxp_snd_level1``, which corresponds to the license
@@ -76,6 +77,9 @@ def connect_to_or_start_server(
     -------
     Any
         server : server.ServerBase
+        lic_context : LicenseContextManager. Is None if use_license_context is False. Otherwise,
+        it is a LicenseContextManager object, and should not be deleted until the end of the part
+        of your program which uses PyAnsys Sound.
     """
     # Collect the port to connect to the server
     port_in_env = os.environ.get("ANSRV_DPF_SOUND_PORT")
@@ -115,8 +119,4 @@ def connect_to_or_start_server(
     if use_license_context == True:
         lic_context = LicenseContextManager(license_increment_name, server=server)
 
-    # "attach" the license context to the server as a member so that they have the same
-    # life duration
-    server.license_context_manager = lic_context
-
-    return server
+    return server, lic_context
