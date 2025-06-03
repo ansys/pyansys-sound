@@ -166,9 +166,7 @@ fc_signal = wav_loader.get_output()
 later = datetime.datetime.now()
 execution_time = later - now
 print(
-    f"Elapsed time: "
-    f"{execution_time.seconds + execution_time.microseconds / 1e6}"
-    f" seconds",
+    f"Elapsed time: " f"{execution_time.seconds + execution_time.microseconds / 1e6}" f" seconds",
 )
 
 # %%
