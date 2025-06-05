@@ -23,7 +23,7 @@
 """Helpers to connect to or start a DPF server with the DPF Sound plugin."""
 
 import os
-from typing import Any, Optional, Union
+from typing import Optional, Union
 
 from ansys.dpf.core import (
     LicenseContextManager,
@@ -31,6 +31,7 @@ from ansys.dpf.core import (
     connect_to_server,
     load_library,
     server_factory,
+    server_types,
     start_local_server,
 )
 
@@ -41,7 +42,8 @@ def connect_to_or_start_server(
     ansys_path: Optional[str] = None,
     use_license_context: Optional[bool] = False,
     license_increment_name: Optional[str] = "avrxp_snd_level1",
-) -> Any:
+    use_grpc: Optional[bool] = False,
+) -> server_types.InProcessServer | server_types.GrpcServer:
     r"""Connect to or start a DPF server with the DPF Sound plugin loaded.
 
     .. note::
@@ -71,11 +73,15 @@ def connect_to_or_start_server(
         Name of the license increment to check out. Only taken into account if use_license_context
         is True. The default value is ``avrxp_snd_level1``, which corresponds to the license
         required by Ansys Sound Pro.
+    use_grpc : bool, default: False
+        If True, a gRPC server is started. If False, an in-process server is started, where the DPF
+        libraries are loaded directly into the Python process. This is overridden as True if either
+        ``ip`` or ``port`` is set, as a remote server connection is required.
 
     Returns
     -------
-    Any
-        server : server.ServerBase
+    server_types.InProcessServer | server_types.GrpcServer
+        Server object started or connected to.
     """
     # Collect the port to connect to the server
     port_in_env = os.environ.get("ANSRV_DPF_SOUND_PORT")
@@ -88,17 +94,21 @@ def connect_to_or_start_server(
     if ip is not None:
         connect_kwargs["ip"] = ip
 
-    # Decide whether we start a local server or a remote server
     full_path_dll = ""
     if len(list(connect_kwargs.keys())) > 0:
+        # Remote server => connect using gRPC
         server = connect_to_server(
             **connect_kwargs,
         )
     else:  # pragma: no cover
-        grpc_config = ServerConfig(
-            protocol=server_factory.CommunicationProtocols.gRPC, legacy=False
-        )
-        server = start_local_server(config=grpc_config, ansys_path=ansys_path, as_global=True)
+        # Local server => start a local server
+        if use_grpc:
+            # gRPC server
+            config = ServerConfig(protocol=server_factory.CommunicationProtocols.gRPC, legacy=False)
+        else:
+            # In-process server
+            config = None
+        server = start_local_server(config=config, ansys_path=ansys_path, as_global=True)
         full_path_dll = os.path.join(server.ansys_path, "Acoustics\\SAS\\ads\\")
 
     required_version = "8.0"

@@ -140,10 +140,12 @@ def _download_example_file_to_server_tmp_folder(filename, server=None):  # pragm
     try:
         # download file locally
         local_path = _download_file_in_local_tmp_folder(url, filename)
-        # upload file to DPF server,
-        # so that we are independent on the server configuration
-        server_path = upload_file_in_tmp_folder(file_path=local_path, server=server)
-        return server_path
+        if server.has_client():
+            # If the server has a client, then it is a remote server and we need to upload the file
+            # to the server's tmp folder.
+            return upload_file_in_tmp_folder(file_path=local_path, server=server)
+        # Otherwise, the server is a local server, and we can use the local path directly
+        return local_path
 
     except Exception as e:  # Generate exception
         raise RuntimeError(
