@@ -23,12 +23,13 @@
 """Computes ISO 532-1 loudness for stationary sounds."""
 import warnings
 
-from ansys.dpf.core import Field, Operator, types
+from ansys.dpf.core import Field, FieldsContainer, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
 from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ..data_management import Sound
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_LOUDNESS_ISO_STATIONARY = "compute_loudness_iso532_1"
@@ -43,7 +44,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
     def __init__(
         self,
-        signal: Field = None,
+        signal: Field | Sound = None,
         field_type: str = FIELD_FREE,
     ):
         """Class instantiation takes the following parameters.
@@ -61,15 +62,18 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         self.__operator = Operator(ID_COMPUTE_LOUDNESS_ISO_STATIONARY)
 
     @property
-    def signal(self) -> Field:
+    def signal(self) -> Sound:
         """Input signal in Pa."""
         return self.__signal
 
     @signal.setter
-    def signal(self, signal: Field):
+    def signal(self, signal: Sound):
         """Set the signal."""
-        if not (isinstance(signal, Field) or signal is None):
-            raise PyAnsysSoundException("Signal must be specified as a DPF field.")
+        if signal is not None:
+            if not isinstance(signal, FieldsContainer):
+                raise PyAnsysSoundException("Signal must be specified as Sound object.")
+            if len(signal) > 1:
+                raise PyAnsysSoundException("Signal must be mono.")
         self.__signal = signal
 
     @property
@@ -101,7 +105,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
                 "Use `LoudnessISO532_1_Stationary.signal`."
             )
 
-        self.__operator.connect(0, self.signal)
+        self.__operator.connect(0, self.signal[0])
         self.__operator.connect(1, self.field_type)
 
         # Runs the operator

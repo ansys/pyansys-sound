@@ -26,15 +26,18 @@ import warnings
 from ansys.dpf.core import Field, FieldsContainer, Operator
 import numpy as np
 
+from ansys.sound.core.data_management.sound import convert_to_sound
+
 from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ..data_management import Sound
 
 
 class CropSignal(SignalUtilitiesParent):
     """Crops a signal."""
 
     def __init__(
-        self, signal: Field | FieldsContainer = None, start_time: float = 0.0, end_time: float = 0.0
+        self, signal: Sound | FieldsContainer = None, start_time: float = 0.0, end_time: float = 0.0
     ):
         """Class instantiation takes the following parameters.
 
@@ -82,12 +85,12 @@ class CropSignal(SignalUtilitiesParent):
         self.__end_time = new_end
 
     @property
-    def signal(self) -> Field | FieldsContainer:
+    def signal(self) -> Sound | FieldsContainer:
         """Input signal as a DPF field or fields container."""
         return self.__signal
 
     @signal.setter
-    def signal(self, signal: Field | FieldsContainer):
+    def signal(self, signal: Sound | FieldsContainer):
         """Set the signal."""
         self.__signal = signal
 
@@ -110,12 +113,13 @@ class CropSignal(SignalUtilitiesParent):
         self.__operator.run()
 
         # Stores output in the variable
-        if type(self.signal) == FieldsContainer:
-            self._output = self.__operator.get_output(0, "fields_container")
-        elif type(self.signal) == Field:
+        if isinstance(self.signal, FieldsContainer):
+            self._output = convert_to_sound(self.__operator.get_output(0, "fields_container"))
+        elif isinstance(self.signal, Field):
             self._output = self.__operator.get_output(0, "field")
+            self._output.__class__ = Sound
 
-    def get_output(self) -> FieldsContainer | Field:
+    def get_output(self) -> FieldsContainer | Sound:
         """Get the cropped signal as a DPF fields container.
 
         Returns
@@ -144,7 +148,7 @@ class CropSignal(SignalUtilitiesParent):
         """
         output = self.get_output()
 
-        if type(output) == Field:
+        if isinstance(self.signal, Field):
             return output.data
 
         return self.convert_fields_container_to_np_array(output)
