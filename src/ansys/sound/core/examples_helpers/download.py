@@ -25,6 +25,7 @@ from functools import wraps
 import os
 import shutil
 
+from ansys.dpf.core import server as server_module
 from ansys.dpf.core import upload_file_in_tmp_folder
 import platformdirs
 import requests
@@ -119,15 +120,18 @@ def _download_file_in_local_tmp_folder(url, filename):  # pragma no cover
 
 
 def _download_example_file_to_server_tmp_folder(filename, server=None):  # pragma no cover
-    """Download a file from the PyAnsys Sound examples repository and upload it to the DPF server.
+    """Download a PyAnsys Sound example file and make it available to the DPF server.
+
+    If the server is remote, the file is uploaded to the server's temporary folder, and the remote
+    path is returned. Otherwise, the local download path is returned.
 
     Parameters
     ----------
     filename : str
         Example file name.
 
-    server : ansys.dpf.core.server.Server, optional
-        DPF server to which to upload the file.
+    server : ansys.dpf.core.server.Server, default: None
+        DPF server to which to upload the file (if remote).
         If None, attempts to use the global server.
 
     Returns
@@ -140,9 +144,12 @@ def _download_example_file_to_server_tmp_folder(filename, server=None):  # pragm
     try:
         # download file locally
         local_path = _download_file_in_local_tmp_folder(url, filename)
+        if server is None:
+            # If no server is provided, retrieve the global server
+            server = server_module.get_or_create_server(server)
         if server.has_client():
             # If the server has a client, then it is a remote server and we need to upload the file
-            # to the server's tmp folder.
+            # to the server's temporary folder.
             return upload_file_in_tmp_folder(file_path=local_path, server=server)
         # Otherwise, the server is a local server, and we can use the local path directly
         return local_path
