@@ -34,7 +34,7 @@ def pytest_configure():
     # a docker or local configuration.
     # There are tests for the function connect_to_or_start_server that are independent from the
     # configuration. That's why we authorize the use of this function here.
-    server = connect_to_or_start_server(use_license_context=True)
+    server, lic_context = connect_to_or_start_server(use_license_context=True)
 
     ## Get the current directory of the conftest.py file
     base_dir = os.path.join(os.path.dirname(__file__), "data")

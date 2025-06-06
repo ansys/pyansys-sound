@@ -64,7 +64,7 @@ from ansys.sound.core.spectrogram_processing.stft import Stft
 # sphinx_gallery_end_ignore
 
 # Connect to a remote server or start a local server.
-my_server = connect_to_or_start_server(use_license_context=True)
+my_server, lic_context = connect_to_or_start_server(use_license_context=True)
 
 # Load example data from a WAV file: flyover noise of an aircraft.
 path_aircraft_wav = download_aircraft10kHz_wav(server=my_server)
