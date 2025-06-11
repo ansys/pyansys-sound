@@ -39,7 +39,7 @@ def pytest_configure():
     # Use the conftest.py file's directory to set the base directory for the test data files.
     base_dir = os.path.join(os.path.dirname(__file__), "data")
 
-    def get_test_file_path(filename, base_dir, server):
+    def get_test_file_path(filename, base_dir, server) -> str:
         # Set the local path to the test file.
         local_path = os.path.join(base_dir, filename)
 

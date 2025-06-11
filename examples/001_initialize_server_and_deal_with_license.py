@@ -57,8 +57,6 @@ the PyDPF-Core documentation:
 # Load Ansys and other libraries.
 import datetime
 
-import ansys.dpf.core as dpf
-
 from ansys.sound.core.examples_helpers import download_flute_wav
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
@@ -82,11 +80,11 @@ print("Connecting to the server without using a LicenseContextManager")
 my_server = connect_to_or_start_server(use_license_context=False)
 
 # Check if you are using a local or remote server
-has_local_server = dpf.server.has_local_server()
-print(f"Local server: {has_local_server}")
+is_server_local = my_server.has_client()
+print(f"Local server: {is_server_local}")
 
 # If using a local server, display the path to the server
-if has_local_server == True:
+if is_server_local == True:
     print(f"Local server path (server variable): {my_server.ansys_path}")
 
 # %%
