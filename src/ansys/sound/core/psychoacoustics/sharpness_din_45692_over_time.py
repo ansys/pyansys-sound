@@ -68,12 +68,12 @@ class SharpnessDIN45692OverTime(PsychoacousticsParent):
         else:
             str_sharpness = f"{self.get_max_sharpness():.2f} acums"
 
-        signal_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
+        str_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
 
         return (
             f"{__class__.__name__} object\n"
             "Data:\n"
-            f"\tSignal name: {signal_name}\n"
+            f"\tSignal name: {str_name}\n"
             f"Max sharpness: {str_sharpness}"
         )
 

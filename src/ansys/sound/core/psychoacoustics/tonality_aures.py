@@ -88,12 +88,12 @@ class TonalityAures(PsychoacousticsParent):
         else:
             str_tonality = f"{self.get_tonality():.2f} tu"
 
-        signal_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
+        str_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
 
         return (
             f"{__class__.__name__} object\n"
             "Data:\n"
-            f"\tSignal name: {signal_name}\n"
+            f"\tSignal name: {str_name}\n"
             f"\tOverlap: {self.overlap} %\n"
             f"\tAccount for w1 weighting: {str_w1}\n"
             f"Tonality: {str_tonality}"

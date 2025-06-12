@@ -100,10 +100,10 @@ class Track(SoundComposerParent):
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
-        source_str = f"\n{self.source.__str__()}" if self.source is not None else " Not set"
-        name = self.name if len(self.name) > 0 else "Unnamed track"
-        filter = "Set" if self.filter is not None else "Not set"
-        return f"{name}\n" f"\tSource:{source_str}\n" f"\tFilter: {filter}"
+        str_source = f"\n{self.source.__str__()}" if self.source is not None else " Not set"
+        str_name = self.name if len(self.name) > 0 else "Unnamed track"
+        str_filter = "Set" if self.filter is not None else "Not set"
+        return f"{str_name}\n" f"\tSource:{str_source}\n" f"\tFilter: {str_filter}"
 
     @property
     def name(self) -> str:
