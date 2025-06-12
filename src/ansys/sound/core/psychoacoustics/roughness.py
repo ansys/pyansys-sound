@@ -60,10 +60,12 @@ class Roughness(PsychoacousticsParent):
         else:
             str_roughness = f"{self.get_roughness():.2f} aspers"
 
+        signal_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
+
         return (
             f"{__class__.__name__} object\n"
             "Data:\n"
-            f'\tSignal name: {f'"{self.signal.name}"' if self.signal is not None else "Not set"}\n'
+            f"\tSignal name: {signal_name}\n"
             f"Overall roughness: {str_roughness}"
         )
 

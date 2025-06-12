@@ -101,10 +101,12 @@ class LevelOverTime(StandardLevelsParent):
 
         max_level = self.get_level_max()
 
+        signal_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
+
         return (
             f"{__class__.__name__} object.\n"
             "Data\n"
-            f"\tSignal: {f'"{self.signal.name}"' if self.signal is not None else "Not set"}\n"
+            f"\tSignal: {signal_name}\n"
             f"\tScale type: {self.scale}\n"
             f"\tReference value: {self.reference_value}\n"
             f"\tFrequency weighting: "
