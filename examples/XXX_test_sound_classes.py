@@ -23,28 +23,48 @@
 from ansys.sound.core.psychoacoustics.loudness_iso_532_1_stationary import (
     LoudnessISO532_1_Stationary,
 )
+from ansys.sound.core.psychoacoustics.tone_to_noise_ratio import ToneToNoiseRatio
 from ansys.sound.core.server_helpers._connect_to_or_start_server import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import CropSignal, LoadWav
+from ansys.sound.core.spectral_processing.power_spectral_density import PowerSpectralDensity
+from ansys.sound.core.spectrogram_processing.stft import Stft
 
 server = connect_to_or_start_server(use_license_context=True)
 
-loader = LoadWav("C:/ANSYSDev/PyDev/pyansys-sound/tests/data/Acceleration_stereo_84dBSPL.wav")
+loader = LoadWav(
+    "C:/ANSYSDev/PyDev/pyansys-sound/tests/data/Acceleration_stereo_nonUnitaryCalib.wav"
+)
 loader.process()
 sound = loader.get_output()
 print(sound)
+# sound.plot()
+channels = sound.split_channels()
+print(channels)
 loader = LoadWav("C:/ANSYSDev/PyDev/pyansys-sound/tests/data/flute.wav")
 loader.process()
 sound = loader.get_output()
 print(sound)
+# sound.plot()
 cropper = CropSignal(sound, start_time=0.0, end_time=1.0)
 cropper.process()
 cropped = cropper.get_output()
+# cropped.plot()
 loudness = LoudnessISO532_1_Stationary(signal=cropped)
 loudness.process()
 print(f"Loudness: {loudness.get_loudness_sone()}")
-loader = LoadWav("C:/ANSYSDev/PyDev/pyansys-sound/tests/data/Acceleration_stereo_84dBSPL.wav")
-loader.process()
-sound = loader.get_output()
-print(sound)
-channels = sound.split_channels()
-print(channels)
+
+psder = PowerSpectralDensity(input_signal=sound)
+psder.process()
+psd = psder.get_output()
+print(type(psd))
+print(psd)
+
+tnrer = ToneToNoiseRatio(psd=psd)
+tnrer.process()
+# tnrer.plot()
+
+stfter = Stft(signal=sound, fft_size=1024, window_type="HANN", window_overlap=0.5)
+stfter.process()
+stft = stfter.get_output()
+print(stft.time)
+print(stft.frequencies)

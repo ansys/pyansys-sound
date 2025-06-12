@@ -30,6 +30,7 @@ import numpy as np
 
 from . import SpectralProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ..data_management import PSD
 
 ID_POWER_SPECTRAL_DENSITY = "compute_power_spectral_density"
 
@@ -186,7 +187,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
         self.__operator.run()
 
         # Get the output.
-        self._output = self.__operator.get_output(0, "field")
+        self._output = PSD.create(self.__operator.get_output(0, "field"))
 
     def get_output(self) -> Field:
         """Get the PSD data as a DPF field.

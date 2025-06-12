@@ -21,8 +21,8 @@
 # SOFTWARE.
 
 """PyAnsys Sound class to store sound data."""
-
 from ansys.dpf.core import Field, FieldsContainer
+import matplotlib.pyplot as plt
 import numpy as np
 
 from .._pyansys_sound import PyAnsysSoundException
@@ -37,6 +37,18 @@ class Sound(FieldsContainer):
         """TODO."""
         super().__init__()
 
+    def __str__(self):
+        """Return the string representation of the object."""
+        if self.channel_count > 0:
+            properties_str = (
+                f":\n\tsampling frequency: {self.fs:.1f} Hz" f"\n\tDuration: {self.duration:.2f} s"
+            )
+        else:
+            properties_str = ""
+        return f"Sound object with {self.channel_count} channels{properties_str}"
+
+    # This is actually not a good idea as other classes need Fields as input, while Sound will
+    # always be returned homgeneously to a FieldsContainer.
     # def __getitem__(self, index: int) -> "Sound":
     #     """Get a channel from the sound data."""
     #     if index < 0 or index >= len(self):
@@ -50,13 +62,28 @@ class Sound(FieldsContainer):
 
     @property
     def time(self) -> np.ndarray:
-        """Sampling frequency in Hz."""
-        return np.ndarray(self[0].time_freq_support.time_frequencies.data)
+        """Array of times in s where the sound is defined."""
+        if self.channel_count == 0:
+            raise PyAnsysSoundException("No channels available in the Sound object.")
+
+        return np.array(self[0].time_freq_support.time_frequencies.data)
 
     @property
-    def fs(self) -> Field:
+    def fs(self) -> float:
         """Sampling frequency in Hz."""
+        if self.channel_count == 0:
+            raise PyAnsysSoundException("No channels available in the Sound object.")
+        if len(self.time) < 2:
+            raise PyAnsysSoundException("Not enough time points to determine sampling frequency.")
+
         return 1 / (self.time[1] - self.time[0])
+
+    @property
+    def duration(self) -> float:
+        """Duration in s."""
+        if self.channel_count == 0:
+            raise PyAnsysSoundException("No channels available in the Sound object.")
+        return self.time[-1] - self.time[0]
 
     def update(self) -> None:
         """Update the sound data."""
@@ -71,15 +98,15 @@ class Sound(FieldsContainer):
         """Get the sound data as a NumPy array."""
         return np.array(self.data)
 
-    @staticmethod
-    def create(object: Field | FieldsContainer) -> "Sound":
+    @classmethod
+    def create(cls, object: Field | FieldsContainer) -> "Sound":
         """TODO."""
         if isinstance(object, FieldsContainer):
-            object.__class__ = Sound
+            object.__class__ = cls
             object.update()
             return object
         elif isinstance(object, Field):
-            sound = Sound()
+            sound = cls()
             sound.labels = ["channel_number"]
             sound.add_field({"channel_number": 0}, object)
             return sound
@@ -91,6 +118,23 @@ class Sound(FieldsContainer):
             channels.append(Sound.create(channel))
 
         return channels
+
+    def plot(self):
+        """Plot the sound data."""
+        if self.channel_count == 0:
+            raise PyAnsysSoundException("No channels available in the Sound object.")
+
+        for i, channel in enumerate(self):
+            plt.plot(
+                channel.time_freq_support.time_frequencies.data, channel.data, label=f"Channel {i}"
+            )
+
+        plt.xlabel("Time (s)")
+        plt.ylabel("Amplitude (Pa)")
+        if self.channel_count > 1:
+            plt.legend()
+        plt.title(self.name)
+        plt.show()
 
 
 # class Sound_tmp(Field):

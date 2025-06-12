@@ -28,6 +28,9 @@ from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
 
+from ansys.sound.core.data_management.sonagram import Sonagram
+from ansys.sound.core.data_management.sound import Sound
+
 from . import SpectrogramProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
@@ -67,7 +70,7 @@ class Stft(SpectrogramProcessingParent):
         self.__operator = Operator("compute_stft")
 
     @property
-    def signal(self) -> Field:
+    def signal(self) -> Sound:
         """Input signal.
 
         Can be provided as a DPF field or fields container, but will be stored as DPF field
@@ -76,17 +79,14 @@ class Stft(SpectrogramProcessingParent):
         return self.__signal
 
     @signal.setter
-    def signal(self, signal: Field | FieldsContainer):
+    def signal(self, signal: Sound):
         """Signal."""
-        if type(signal) == FieldsContainer:
-            if len(signal) > 1:
-                raise PyAnsysSoundException(
-                    "Input as a DPF fields container can only have one field (mono signal)."
-                )
-            else:
-                self.__signal = signal[0]
-        else:
-            self.__signal = signal
+        if len(signal) > 1:
+            raise PyAnsysSoundException(
+                "Input as a DPF fields container can only have one field (mono signal)."
+            )
+
+        self.__signal = signal
 
     @property
     def fft_size(self) -> int:
@@ -150,7 +150,7 @@ class Stft(SpectrogramProcessingParent):
         if self.signal == None:
             raise PyAnsysSoundException("No signal found for STFT. Use 'Stft.signal'.")
 
-        self.__operator.connect(0, self.signal)
+        self.__operator.connect(0, self.signal[0])
         self.__operator.connect(1, int(self.fft_size))
         self.__operator.connect(2, str(self.window_type))
         self.__operator.connect(3, float(self.window_overlap))
@@ -159,9 +159,10 @@ class Stft(SpectrogramProcessingParent):
         self.__operator.run()
 
         # Stores output in the variable
-        self._output = self.__operator.get_output(0, "fields_container")
+        tmp = self.__operator.get_output(0, "fields_container")
+        self._output = Sonagram.create(tmp)
 
-    def get_output(self) -> FieldsContainer:
+    def get_output(self) -> Sonagram:
         """Get the STFT of the signal as a DPF fields container.
 
         Returns
@@ -241,7 +242,7 @@ class Stft(SpectrogramProcessingParent):
         np.seterr(divide="warn")
         phase = self.get_stft_phase_as_nparray()
         phase = phase[0:half_nfft, :]
-        time_data = self.signal.time_freq_support.time_frequencies.data
+        time_data = self.signal[0].time_freq_support.time_frequencies.data
         time_step = time_data[1] - time_data[0]
         fs = 1.0 / time_step
         num_time_index = len(self.get_output().get_available_ids_for_label("time"))

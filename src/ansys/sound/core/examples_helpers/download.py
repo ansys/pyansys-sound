@@ -25,7 +25,6 @@ from functools import wraps
 import os
 import shutil
 
-from ansys.dpf.core import upload_file_in_tmp_folder
 import platformdirs
 import requests
 
@@ -142,8 +141,8 @@ def _download_example_file_to_server_tmp_folder(filename, server=None):  # pragm
         local_path = _download_file_in_local_tmp_folder(url, filename)
         # upload file to DPF server,
         # so that we are independent on the server configuration
-        server_path = upload_file_in_tmp_folder(file_path=local_path, server=server)
-        return server_path
+        # server_path = upload_file_in_tmp_folder(file_path=local_path, server=server)
+        return local_path
 
     except Exception as e:  # Generate exception
         raise RuntimeError(

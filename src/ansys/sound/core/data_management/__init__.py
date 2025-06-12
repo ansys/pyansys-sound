@@ -21,12 +21,16 @@
 # SOFTWARE.
 
 """PyAnsys Sound data classes."""
+from .psd2 import PSD
+from .sonagram import Sonagram
 from .sound import Sound, convert_to_sound
 
 # from .utilities import convert_type
 
 __all__ = (
     "Sound",
+    "PSD",
+    "Sonagram",
     # "convert_type",
     "convert_to_sound",
 )

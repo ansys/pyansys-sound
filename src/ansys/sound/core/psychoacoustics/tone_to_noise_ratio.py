@@ -30,6 +30,7 @@ import numpy as np
 
 from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ..data_management import PSD
 
 
 class ToneToNoiseRatio(PsychoacousticsParent):
@@ -39,7 +40,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
     and ISO 7779 standards.
     """
 
-    def __init__(self, psd: Field = None, frequency_list: list = None):
+    def __init__(self, psd: PSD = None, frequency_list: list = None):
         """Class instantiation takes the following parameters.
 
         Parameters

@@ -29,7 +29,7 @@ import numpy as np
 
 from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-from ..data_management import Sound, convert_to_sound
+from ..data_management import Sound
 
 
 class LoadWav(SignalUtilitiesParent):
@@ -82,7 +82,7 @@ class LoadWav(SignalUtilitiesParent):
 
         # Store output in the variable
         tmp = self.__operator.get_output(0, "fields_container")
-        self._output = convert_to_sound(tmp)
+        self._output = Sound.create(tmp)
         # self._output = convert_to_sound(self.__operator.get_output(0, "fields_container"))
 
     def get_output(self) -> FieldsContainer | Sound:
