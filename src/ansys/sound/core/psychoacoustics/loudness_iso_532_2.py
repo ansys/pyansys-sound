@@ -75,11 +75,11 @@ class LoudnessISO532_2(PsychoacousticsParent):
 
     def __str__(self):
         """Return the string representation of the class."""
+        listening_assumption = "Diotic" if type(self.signal) is Field else "Dichotic"
         if self.signal is not None:
             signal_str = (
                 f'\tSignal name: "{self.signal.name}"\n'
-                "\tListening assumption: "
-                f"{"Diotic" if type(self.signal) is Field else "Dichotic"}\n"
+                f"\tListening assumption: {listening_assumption}\n"
             )
         else:
             signal_str = "\tSignal name: Not set\n"
