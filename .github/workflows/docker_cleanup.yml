@@ -1,5 +1,8 @@
 name: Docker image cleanup
 on:
+  push:
+    branches:
+      - feat/old-docker-image-housekeeping
   schedule: # UTC at 0200 every Sunday
     - cron: "0 2 * * 0"
   workflow_dispatch:
