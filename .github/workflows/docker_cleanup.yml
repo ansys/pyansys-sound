@@ -1,8 +1,8 @@
 name: Docker image cleanup
 on:
   workflow_dispatch:
-#   schedule: # UTC at 0200 every Sunday
-#     - cron: "0 2 * * 0"
+  schedule: # UTC at 0200 every Sunday
+    - cron: "0 2 * * 0"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -27,4 +27,4 @@ jobs:
         package-name: 'pyansys-sound'
         token: ${{ secrets.GITHUB_TOKEN }}
         tags-kept: '25.2, latest'
-        allow-last-days: '30'
+        allow-last-days: '150'
