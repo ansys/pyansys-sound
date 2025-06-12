@@ -1,10 +1,8 @@
 name: Docker image cleanup
 on:
-  push:
   workflow_dispatch:
   schedule: # UTC at 0200 every Sunday
-    - cron: "25 9 * * *"
-    # - cron: "0 2 * * 0"
+    - cron: "0 2 * * 0"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
