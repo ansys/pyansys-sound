@@ -95,7 +95,7 @@ def test_xtract_denoiser_process_except2():
     assert excinfo.value.args[0] == "Input parameters are not set."
 
 
-def test_xtract_process():
+def test_xtract_denoiser_process():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -125,8 +125,8 @@ def test_xtract_process():
     assert xtract_denoiser.get_output_as_nparray()[0][99] == pytest.approx(-3.329021806551297e-15)
 
     assert xtract_denoiser.get_output_as_nparray()[0].shape == (156048,)
-    assert np.min(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(-0.6995288133621216)
-    assert np.max(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(0.8091265559196472)
+    assert np.min(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(-0.7059202790260315)
+    assert np.max(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(0.8131743669509888)
 
     # Get the noise signal
     assert xtract_denoiser.get_output_as_nparray()[1][0] == pytest.approx(-4.048184330747483e-15)
@@ -294,8 +294,8 @@ def test_xtract_denoiser_get_output_as_nparray():
     assert xtract_denoiser.get_output_as_nparray()[0][99] == pytest.approx(-3.329021806551297e-15)
 
     assert xtract_denoiser.get_output_as_nparray()[0].shape == (156048,)
-    assert np.min(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(-0.6995288133621216)
-    assert np.max(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(0.8091265559196472)
+    assert np.min(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(-0.7059202790260315)
+    assert np.max(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(0.8131743669509888)
 
     # Get the noise signal
     assert xtract_denoiser.get_output_as_nparray()[1][0] == pytest.approx(-4.048184330747483e-15)

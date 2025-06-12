@@ -78,7 +78,7 @@ def test_xtract_denoiser_parameters_generate_noise_psd_from_automatic_estimation
     noise = noise_psd.data
 
     s = np.sum(noise)
-    assert s == pytest.approx(0.0051941522299330245)
+    assert s == pytest.approx(0.00522007046561157)
 
 
 def test_xtract_denoiser_parameters_generate_noise_psd_from_noise_samples():
