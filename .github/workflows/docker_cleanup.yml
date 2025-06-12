@@ -27,7 +27,7 @@ jobs:
     - name: "Perform docker image cleanup - except certain tags"
       uses: ansys/actions/hk-package-clean-except@9cef56e3b566d664473773f61079c401dddfabba # v10.0.6
       with:
-        package-name: 'sound'
+        package-name: 'ansys-sound'
         token: ${{ secrets.GITHUB_TOKEN }}
         tags-kept: '25.2, latest'
         allow-last-days: '150'
