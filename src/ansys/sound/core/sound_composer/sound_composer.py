@@ -69,8 +69,8 @@ class SoundComposer(SoundComposerParent):
     def __str__(self) -> str:
         """Return the string representation of the object."""
         str_tracks = ""
-        source = "Source not set" if track.source is None else track.source.__class__.__name__
         for i, track in enumerate(self.tracks):
+            source = "Source not set" if track.source is None else track.source.__class__.__name__
             str_tracks += (
                 f"\n\tTrack {i+1}: {source}"
                 f'"{track.name if len(track.name) > 0 else "Unnamed"}", '
