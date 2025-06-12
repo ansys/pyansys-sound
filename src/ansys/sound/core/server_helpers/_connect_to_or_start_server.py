@@ -27,10 +27,8 @@ from typing import Optional, Union
 
 from ansys.dpf.core import (
     LicenseContextManager,
-    ServerConfig,
     connect_to_server,
     load_library,
-    server_factory,
     server_types,
     start_local_server,
 )
@@ -42,7 +40,6 @@ def connect_to_or_start_server(
     ansys_path: Optional[str] = None,
     use_license_context: Optional[bool] = False,
     license_increment_name: Optional[str] = "avrxp_snd_level1",
-    use_grpc: Optional[bool] = False,
 ) -> server_types.InProcessServer | server_types.GrpcServer:
     r"""Connect to or start a DPF server with the DPF Sound plugin loaded.
 
@@ -73,10 +70,6 @@ def connect_to_or_start_server(
         Name of the license increment to check out. Only taken into account if use_license_context
         is True. The default value is ``avrxp_snd_level1``, which corresponds to the license
         required by Ansys Sound Pro.
-    use_grpc : bool, default: False
-        If True, a gRPC server is started. If False, an in-process server is started, where the DPF
-        libraries are loaded directly into the Python process. This is overridden as True if either
-        ``ip`` or ``port`` is set, as a remote server connection is required.
 
     Returns
     -------
@@ -102,13 +95,7 @@ def connect_to_or_start_server(
         )
     else:  # pragma: no cover
         # Local server => start a local server
-        if use_grpc:
-            # gRPC server
-            config = ServerConfig(protocol=server_factory.CommunicationProtocols.gRPC, legacy=False)
-        else:
-            # In-process server
-            config = None
-        server = start_local_server(config=config, ansys_path=ansys_path, as_global=True)
+        server = start_local_server(ansys_path=ansys_path, as_global=True)
         full_path_dll = os.path.join(server.ansys_path, "Acoustics\\SAS\\ads\\")
 
     required_version = "8.0"
