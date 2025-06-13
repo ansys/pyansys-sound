@@ -70,9 +70,11 @@ class SoundComposer(SoundComposerParent):
         """Return the string representation of the object."""
         str_tracks = ""
         for i, track in enumerate(self.tracks):
+            str_track_source = (
+                "Source not set" if track.source is None else track.source.__class__.__name__
+            )
             str_tracks += (
-                f"\n\tTrack {i+1}: "
-                f"{"Source not set" if track.source is None else track.source.__class__.__name__}, "
+                f"\n\tTrack {i+1}: {str_track_source}, "
                 f'"{track.name if len(track.name) > 0 else "Unnamed"}", '
                 f"gain = {np.round(track.gain, 1):+} dB"
             )
@@ -241,9 +243,10 @@ class SoundComposer(SoundComposerParent):
             )
         output_signal = self.get_output()
 
+        str_unit = f" ({output_signal.unit})" if len(output_signal.unit) > 0 else ""
         plt.plot(output_signal.time_freq_support.time_frequencies.data, output_signal.data)
         plt.title("Generated signal")
         plt.xlabel("Time (s)")
-        plt.ylabel(f"Amplitude{f' ({output_signal.unit})' if len(output_signal.unit) > 0 else ''}")
+        plt.ylabel(f"Amplitude{str_unit}")
         plt.grid(True)
         plt.show()

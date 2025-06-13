@@ -72,15 +72,21 @@ class OverallLevel(StandardLevelsParent):
     def __str__(self) -> str:
         """Return the string representation of the object."""
         output = self.get_output()
+
+        str_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
+        str_frequency_weighting = (
+            self.frequency_weighting if len(self.frequency_weighting) > 0 else "None"
+        )
+        str_level = f"{output:.1f}" if output is not None else "Not processed"
+
         return (
             f"{__class__.__name__} object.\n"
             "Data\n"
-            f"\tSignal: {f'"{self.signal.name}"' if self.signal is not None else "Not set"}\n"
+            f"\tSignal: {str_name}\n"
             f"\tScale type: {self.scale}\n"
             f"\tReference value: {self.reference_value}\n"
-            f"\tFrequency weighting: "
-            f"{self.frequency_weighting if len(self.frequency_weighting) > 0 else "None"}\n"
-            f"Output level value: {f"{output:.1f}" if output is not None else 'Not processed'}"
+            f"\tFrequency weighting: {str_frequency_weighting}\n"
+            f"Output level value: {str_level}"
         )
 
     @property
