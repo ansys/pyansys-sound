@@ -28,6 +28,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ..data_management import HarmonicsSource
 from ._source_parent import SourceParent
 from .source_control_time import SourceControlTime
 
@@ -91,22 +92,13 @@ class SourceHarmonicsTwoParameters(SourceParent):
         """Return the string representation of the object."""
         # Source info.
         if self.source_harmonics_two_parameters is not None:
-            (
-                orders,
-                rpm_name,
-                rpm_min_max,
-                control_name,
-                control_unit,
-                control_min_max,
-            ) = self.__extract_harmonics_two_parameters_info()
-
             # Source name.
             str_name = self.source_harmonics_two_parameters.name
             if str_name is None:
                 str_name = ""
 
             # Orders.
-            orders = np.round(orders, 1)
+            orders = np.round(self.source_harmonics_two_parameters.orders, 1)
             if len(orders) > 10:
                 str_order_values = f"{str(orders[:5])[:-1]} ... {str(orders[-5:])[1:]}"
             else:
@@ -116,10 +108,13 @@ class SourceHarmonicsTwoParameters(SourceParent):
                 f"'{str_name}'\n"
                 f"\tNumber of orders: {len(orders)}\n"
                 f"\t\t{str_order_values}\n"
-                f"\tControl parameter 1: {rpm_name}, "
-                f"{rpm_min_max[0]} - {rpm_min_max[1]} rpm\n"
-                f"\tControl parameter 2: {control_name}, "
-                f"{control_min_max[0]} - {control_min_max[1]} {control_unit}"
+                f"\tControl parameter 1: {self.source_harmonics_two_parameters.control_names[0]}, "
+                f"{self.source_harmonics_two_parameters.control_mins[0]} - "
+                f"{self.source_harmonics_two_parameters.control_maxs[0]} rpm\n"
+                f"\tControl parameter 2: {self.source_harmonics_two_parameters.control_names[1]}, "
+                f"{self.source_harmonics_two_parameters.control_mins[1]} - "
+                f"{self.source_harmonics_two_parameters.control_maxs[1]} "
+                f"{self.source_harmonics_two_parameters.control_units[1]}\n"
             )
         else:
             str_source = "Not set"
@@ -186,7 +181,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
         self.__control2 = control
 
     @property
-    def source_harmonics_two_parameters(self) -> FieldsContainer:
+    def source_harmonics_two_parameters(self) -> HarmonicsSource:
         """Source data for the harmonics source with two parameters.
 
         The harmonics source with two parameters data consists of a series of orders whose levels
@@ -196,7 +191,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
         return self.__source_harmonics_two_parameters
 
     @source_harmonics_two_parameters.setter
-    def source_harmonics_two_parameters(self, source: FieldsContainer):
+    def source_harmonics_two_parameters(self, source: HarmonicsSource):
         """Set the harmonics source with two parameters data."""
         if source is not None:
             if not isinstance(source, FieldsContainer):
@@ -205,11 +200,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
                     "fields container."
                 )
 
-            if (
-                len(source) < 1
-                or len(source[0].data) < 1
-                or len(source[0].time_freq_support.time_frequencies.data) < 1
-            ):
+            if len(source) < 1 or len(source[0].data) < 1 or len(source.orders) < 1:
                 raise PyAnsysSoundException(
                     "Specified harmonics source with two parameters must contain at least one "
                     "order level (the provided DPF fields container must contain at least one "
@@ -217,7 +208,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
                 )
 
             for field in source:
-                if len(field.data) != len(field.time_freq_support.time_frequencies.data):
+                if len(field.data) != len(source.orders):
                     raise PyAnsysSoundException(
                         "Each set of order levels in the specified harmonics source with two "
                         "parameters must contain as many level values as the number of orders (in "
@@ -233,13 +224,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
                         "points)."
                     )
 
-            support_data = source.get_support("control_parameter_1")
-            support_properties = support_data.available_field_supported_properties()
-            support1_values = support_data.field_support_by_property(support_properties[0])
-            support_data = source.get_support("control_parameter_2")
-            support_properties = support_data.available_field_supported_properties()
-            support2_values = support_data.field_support_by_property(support_properties[0])
-            if len(support1_values) != len(source) or len(support2_values) != len(source):
+            if source.shape[1] != len(source):
                 raise PyAnsysSoundException(
                     "Specified harmonics source with two parameters must contain as many sets of "
                     "order levels as the number of values in both associated control parameters "
@@ -283,9 +268,8 @@ class SourceHarmonicsTwoParameters(SourceParent):
         self.__operator_load.run()
 
         # Get the loaded sound power level parameters.
-        self.source_harmonics_two_parameters = self.__operator_load.get_output(
-            0, "fields_container"
-        )
+        tmp = self.__operator_load.get_output(0, "fields_container")
+        self.source_harmonics_two_parameters = HarmonicsSource.create(tmp)
 
     def set_from_generic_data_containers(
         self,
@@ -304,7 +288,9 @@ class SourceHarmonicsTwoParameters(SourceParent):
         source_control_data : GenericDataContainer
             Source control data as a DPF generic data container.
         """
-        self.source_harmonics_two_parameters = source_data.get_property("sound_composer_source")
+        self.source_harmonics_two_parameters = HarmonicsSource.create(
+            source_data.get_property("sound_composer_source")
+        )
         control = source_control_data.get_property("sound_composer_source_control_parameter_1")
         self.source_control_rpm = SourceControlTime()
         self.source_control_rpm.control = control
@@ -494,48 +480,3 @@ class SourceHarmonicsTwoParameters(SourceParent):
 
         plt.tight_layout()
         plt.show()
-
-    def __extract_harmonics_two_parameters_info(
-        self,
-    ) -> tuple[list[float], str, tuple[float], str, str, tuple[float]]:
-        """Extract the harmonics source with two parameters information.
-
-        Returns
-        -------
-        tuple[list[float], str, tuple[float], str, str, tuple[float]]
-            Harmonics source with two parameters information, consisting of the following elements:
-                First element: list of order values.
-
-                Second element: name of the RPM control.
-
-                Third element: min and max values of the RPM control.
-
-                Fourth element: name of the second control parameter.
-
-                Fifth element: unit of the second control parameter.
-
-                Sixth element: min and max values of the second control parameter.
-        """
-        if self.source_harmonics_two_parameters is None:
-            return ([], "", (), "", "", ())
-
-        # Orders (same values for each field).
-        orders = self.source_harmonics_two_parameters[0].time_freq_support.time_frequencies.data
-
-        # RPM control info.
-        rpm_data = self.source_harmonics_two_parameters.get_support("control_parameter_1")
-        parameter_ids = rpm_data.available_field_supported_properties()
-        rpm_unit = parameter_ids[0]
-        rpm_name = rpm_data.field_support_by_property(rpm_unit).name
-        rpm_values = rpm_data.field_support_by_property(rpm_unit).data
-        rpm_min_max = (float(rpm_values.min()), float(rpm_values.max()))
-
-        # Control parameter 2 info.
-        control_data = self.source_harmonics_two_parameters.get_support("control_parameter_2")
-        parameter_ids = control_data.available_field_supported_properties()
-        control_unit = parameter_ids[0]
-        control_name = control_data.field_support_by_property(control_unit).name
-        control_values = control_data.field_support_by_property(control_unit).data
-        control_min_max = (float(control_values.min()), float(control_values.max()))
-
-        return list(orders), rpm_name, rpm_min_max, control_name, control_unit, control_min_max

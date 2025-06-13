@@ -31,11 +31,10 @@ from .._pyansys_sound import PyAnsysSoundException
 class Sound(FieldsContainer):
     """PyAnsys Sound class to store sound data."""
 
-    def __init__(
-        self,
-    ):
-        """TODO."""
-        super().__init__()
+    # ctor or not ctor?
+    # not ctor: class behaves exactly like a FieldsContainer, so it can be used in the same way (but
+    # their is no "sound_factory", the FieldsContainer's would still need to be used)
+    # ctor: allow building a sound object by passing np arrays or a list of Fields...
 
     def __str__(self):
         """Return the string representation of the object."""
@@ -96,7 +95,16 @@ class Sound(FieldsContainer):
 
     def get_as_nparray(self) -> list[np.ndarray]:
         """Get the sound data as a NumPy array."""
-        return np.array(self.data)
+        # start by update to do required checks?
+        self.update()
+
+        if self.channel_count == 1:
+            return [np.array(self[0].data)]
+
+        arrays = [np.empty(len(self.time)) for _ in range(self.channel_count)]
+        for i, channel in enumerate(self):
+            arrays[i] = np.array(channel.data)
+        return arrays
 
     @classmethod
     def create(cls, object: Field | FieldsContainer) -> "Sound":

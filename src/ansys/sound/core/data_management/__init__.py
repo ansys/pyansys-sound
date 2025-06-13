@@ -24,6 +24,7 @@
 from .psd2 import PSD
 from .sonagram import Sonagram
 from .sound import Sound, convert_to_sound
+from .sources import BroadbandNoiseSource, HarmonicsSource
 
 # from .utilities import convert_type
 
@@ -31,6 +32,8 @@ __all__ = (
     "Sound",
     "PSD",
     "Sonagram",
+    "BroadbandNoiseSource",
+    "HarmonicsSource",
     # "convert_type",
     "convert_to_sound",
 )
