@@ -99,18 +99,22 @@ class LevelOverTime(StandardLevelsParent):
                 f"\tAnalysis window: {self.__analysis_window}\n"
             )
 
+        str_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
+        str_frequency_weighting = (
+            self.frequency_weighting if len(self.frequency_weighting) > 0 else "None"
+        )
         max_level = self.get_level_max()
+        str_level = f"{max_level:.1f}" if max_level is not None else "Not processed"
 
         return (
             f"{__class__.__name__} object.\n"
             "Data\n"
-            f"\tSignal: {f'"{self.signal.name}"' if self.signal is not None else "Not set"}\n"
+            f"\tSignal: {str_name}\n"
             f"\tScale type: {self.scale}\n"
             f"\tReference value: {self.reference_value}\n"
-            f"\tFrequency weighting: "
-            f"{self.frequency_weighting if len(self.frequency_weighting) > 0 else "None"}\n"
+            f"\tFrequency weighting: {str_frequency_weighting}\n"
             f"\tTime weighting: {self.time_weighting}\n{str_custom_param}"
-            f"Maximum level: {f"{max_level:.1f}" if max_level is not None else 'Not processed'}"
+            f"Maximum level: {str_level}"
         )
 
     @property
