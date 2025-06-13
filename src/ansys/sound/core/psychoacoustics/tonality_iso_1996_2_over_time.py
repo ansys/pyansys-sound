@@ -116,10 +116,12 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
                 f"Maximum tonal adjustment: {max(self.get_tonal_adjustment_over_time()):.1f} dB"
             )
 
+        str_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
+
         return (
             f"{__class__.__name__} object\n"
             "Data:\n"
-            f'\tSignal name: {f'"{self.signal.name}"' if self.signal is not None else "Not set"}\n'
+            f"\tSignal name: {str_name}\n"
             f"\tIntegration window length: {self.window_length} ms\n"
             f"\tOverlap: {self.overlap} %\n"
             f"\tNoise pause detection threshold: {self.noise_pause_threshold} dB\n"

@@ -63,10 +63,12 @@ class LoudnessANSI_S3_4(PsychoacousticsParent):
             str_loudness = f"{self.get_loudness_sone():.3} sones"
             str_loudness_level = f"{self.get_loudness_level_phon():.1f} phons"
 
+        str_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
+
         return (
             f"{__class__.__name__} object\n"
             "Data:\n"
-            f'\tSignal name: {f'"{self.signal.name}"' if self.signal is not None else "Not set"}\n'
+            f"\tSignal name: {str_name}\n"
             f"\tField type: {self.field_type}\n"
             f"Loudness: {str_loudness}\n"
             f"Loudness level: {str_loudness_level}"
