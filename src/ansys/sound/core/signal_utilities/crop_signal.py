@@ -113,11 +113,8 @@ class CropSignal(SignalUtilitiesParent):
         self.__operator.run()
 
         # Stores output in the variable
-        if isinstance(self.signal, FieldsContainer):
-            self._output = convert_to_sound(self.__operator.get_output(0, "fields_container"))
-        elif isinstance(self.signal, Field):
-            self._output = self.__operator.get_output(0, "field")
-            self._output.__class__ = Sound
+        tmp = convert_to_sound(self.__operator.get_output(0, "fields_container"))
+        self._output = Sound.create(tmp)
 
     def get_output(self) -> FieldsContainer | Sound:
         """Get the cropped signal as a DPF fields container.
