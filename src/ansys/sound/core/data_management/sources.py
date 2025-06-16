@@ -23,7 +23,7 @@
 """PyAnsys Sound class to store sound data."""
 from typing import Optional
 
-from ansys.dpf.core import FieldsContainer
+from ansys.dpf.core import FieldsContainer, GenericDataContainer
 import numpy as np
 
 from .._pyansys_sound import PyAnsysSoundException
@@ -44,6 +44,19 @@ class _SourceBase(FieldsContainer):
         object.check()
         object.update()
         return object
+
+    @classmethod
+    def create_from_generic_data_container(
+        cls, data: GenericDataContainer
+    ) -> "BroadbandNoiseSource | HarmonicsSource":
+        """Create a sound source from a generic data container."""
+        return cls.create(data.get_property("sound_composer_source"))
+
+    def get_as_generic_data_containers(self) -> GenericDataContainer:
+        """Get the sound data as a generic data container."""
+        container = GenericDataContainer()
+        container.set_property("sound_composer_source", self)
+        return container
 
     def __str__(self):
         """Return the string representation of the object."""

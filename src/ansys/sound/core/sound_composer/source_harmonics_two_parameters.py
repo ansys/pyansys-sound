@@ -258,8 +258,8 @@ class SourceHarmonicsTwoParameters(SourceParent):
         source_control_data : GenericDataContainer
             Source control data as a DPF generic data container.
         """
-        self.source_harmonics_two_parameters = HarmonicsSource.create(
-            source_data.get_property("sound_composer_source")
+        self.source_harmonics_two_parameters = HarmonicsSource.create_from_generic_data_container(
+            source_data
         )
         control = source_control_data.get_property("sound_composer_source_control_parameter_1")
         self.source_control_rpm = SourceControlTime()
@@ -294,8 +294,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
             )
             source_data = None
         else:
-            source_data = GenericDataContainer()
-            source_data.set_property("sound_composer_source", self.source_harmonics_two_parameters)
+            source_data = self.source_harmonics_two_parameters.get_as_generic_data_containers()
 
         if not self.is_source_control_valid():
             warnings.warn(
