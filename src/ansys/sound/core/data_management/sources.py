@@ -41,6 +41,7 @@ class _SourceBase(FieldsContainer):
     def create(cls, object: FieldsContainer) -> "BroadbandNoiseSource | HarmonicsSource":
         """TODO."""
         object.__class__ = cls
+        object.check()
         object.update()
         return object
 
@@ -54,15 +55,15 @@ class _SourceBase(FieldsContainer):
             properties_str = ""
         return f"Sound object with {self.channel_count} channels{properties_str}"
 
-    @property
-    def shape(self) -> tuple[int]:
-        data_count = len(self._main_support)
-        return (data_count, len(self.control_points[0]))
-        # THIS IS NOT WORKING BECAUSE SOME I-J COMBINATIONS MIGHT BE MISSING
-        # control_count = len(self.control_names)
-        # if control_count == 1:
-        #     return (data_count, len(self.control_points[0]))
-        # return (data_count, len(self.control_points[0]), len(self.control_points[1]))
+    # @property
+    # def shape(self) -> tuple[int]:
+    #     data_count = len(self._main_support)
+    #     return (data_count, len(self.control_points[0]))
+    #     # THIS IS NOT WORKING BECAUSE SOME I-J COMBINATIONS MIGHT BE MISSING
+    #     # control_count = len(self.control_names)
+    #     # if control_count == 1:
+    #     #     return (data_count, len(self.control_points[0]))
+    #     # return (data_count, len(self.control_points[0]), len(self.control_points[1]))
 
     @property
     def control_names(self) -> list[str]:
@@ -86,12 +87,37 @@ class _SourceBase(FieldsContainer):
 
     def update(self) -> None:
         """Update the sound data."""
-        # Nothing to update here for now
-        # TODO:
-        # - check at least one field is present
-        # - check all fields are the same size and have the same time frequency support
-        # - check support is regularly spaced
+        if (
+            len(self) < 1
+            or len(self[0].data) < 1
+            or len(self[0].time_freq_support.time_frequencies.data) < 1
+        ):
+            # NOTE: error message should be adjusted for each source type. Possibly use class
+            # attributes containing the messages
+            raise PyAnsysSoundException(
+                "Specified harmonics source with two parameters must contain at least one "
+                "order level (the provided DPF fields container must contain at least one "
+                "field with at least one data point)."
+            )
+
         self._main_support = np.array(self[0].time_freq_support.time_frequencies.data)
+
+        for field in self:
+            if len(field.data) != len(self._main_support):
+                raise PyAnsysSoundException(
+                    "Each set of order levels in the specified harmonics source with two "
+                    "parameters must contain as many level values as the number of orders (in "
+                    "the provided DPF fields container, each field must contain the same "
+                    "number of data points and support values)."
+                )
+
+            if len(field.data) != len(self[0].data):
+                raise PyAnsysSoundException(
+                    "Each set of order levels in the specified harmonics source with two "
+                    "parameters must contain the same number of level values (in the provided "
+                    "DPF fields container, each field must contain the same number of data "
+                    "points)."
+                )
 
         name, unit, min, max, data = self.__get_control_info(1)
         self.__control_names = [name]
@@ -115,34 +141,44 @@ class _SourceBase(FieldsContainer):
             self.__control_points.append(data)
             # self.__control_points.append(np.unique(data))
 
+        # test against 2nd control parameter (if relevant) is covered by the above check within the
+        # if statement (technically, by the combination of it and this one)
+        if self.__control_points[0] != len(self):
+            raise PyAnsysSoundException(
+                "Specified harmonics source with two parameters must contain as many sets of "
+                "order levels as the number of values in both associated control parameters "
+                "(in the provided DPF fields container, the number of fields should be the "
+                "same as the number of values in both fields container supports)."
+            )
+
     def get_as_nparray(self, i: int, j: Optional[int] = None) -> np.ndarray:
         """Get the sound data as a NumPy array."""
         # start by update to do required checks?
         self.update()
 
-        # THIS IS NOT WORKING BECAUSE SOME I-J COMBINATIONS MIGHT BE MISSING
+        # # THIS IS NOT WORKING BECAUSE SOME I-J COMBINATIONS MIGHT BE MISSING
 
-        if i < 0 or i >= self.shape[1]:
-            raise PyAnsysSoundException(
-                f"Control index i ({i}) is out of range. "
-                f"This source control has {self.shape[1]} points."
-            )
+        # if i < 0 or i >= self.shape[1]:
+        #     raise PyAnsysSoundException(
+        #         f"Control index i ({i}) is out of range. "
+        #         f"This source control has {self.shape[1]} points."
+        #     )
 
-        if j is not None:
-            if len(self.shape) < 3:
-                raise PyAnsysSoundException(
-                    f"Source data has 1 control only. Only one index must be provided."
-                )
+        # if j is not None:
+        #     if len(self.shape) < 3:
+        #         raise PyAnsysSoundException(
+        #             f"Source data has 1 control only. Only one index must be provided."
+        #         )
 
-            if j < 0 or j >= self.shape[2]:
-                raise PyAnsysSoundException(
-                    f"Control index j ({j}) is out of range. "
-                    f"This source control has {self.shape[2]} points."
-                )
+        #     if j < 0 or j >= self.shape[2]:
+        #         raise PyAnsysSoundException(
+        #             f"Control index j ({j}) is out of range. "
+        #             f"This source control has {self.shape[2]} points."
+        #         )
 
-            return np.array(self.get_field({self.labels[0]: i, self.labels[1]: j}).data)
+        #     return np.array(self.get_field({self.labels[0]: i, self.labels[1]: j}).data)
 
-        return np.array(self.get_field({self.labels[0]: i}).data)
+        # return np.array(self.get_field({self.labels[0]: i}).data)
 
     def __get_control_info(self, index) -> tuple[str, str, float, float, np.ndarray]:
         if index > len(self.labels) or index < 1:

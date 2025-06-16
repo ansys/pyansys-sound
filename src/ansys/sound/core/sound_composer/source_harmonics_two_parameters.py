@@ -200,37 +200,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
                     "fields container."
                 )
 
-            if len(source) < 1 or len(source[0].data) < 1 or len(source.orders) < 1:
-                raise PyAnsysSoundException(
-                    "Specified harmonics source with two parameters must contain at least one "
-                    "order level (the provided DPF fields container must contain at least one "
-                    "field with at least one data point)."
-                )
-
-            for field in source:
-                if len(field.data) != len(source.orders):
-                    raise PyAnsysSoundException(
-                        "Each set of order levels in the specified harmonics source with two "
-                        "parameters must contain as many level values as the number of orders (in "
-                        "the provided DPF fields container, each field must contain the same "
-                        "number of data points and support values)."
-                    )
-
-                if len(field.data) != len(source[0].data):
-                    raise PyAnsysSoundException(
-                        "Each set of order levels in the specified harmonics source with two "
-                        "parameters must contain the same number of level values (in the provided "
-                        "DPF fields container, each field must contain the same number of data "
-                        "points)."
-                    )
-
-            if source.shape[1] != len(source):
-                raise PyAnsysSoundException(
-                    "Specified harmonics source with two parameters must contain as many sets of "
-                    "order levels as the number of values in both associated control parameters "
-                    "(in the provided DPF fields container, the number of fields should be the "
-                    "same as the number of values in both fields container supports)."
-                )
+        # shape tests npw handled in HarmonicsSource class
 
         self.__source_harmonics_two_parameters = source
 
