@@ -26,8 +26,6 @@ import warnings
 from ansys.dpf.core import FieldsContainer, Operator
 import numpy as np
 
-from ansys.sound.core.data_management.sound import convert_to_sound
-
 from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ..data_management import Sound
@@ -113,7 +111,7 @@ class CropSignal(SignalUtilitiesParent):
         self.__operator.run()
 
         # Stores output in the variable
-        tmp = convert_to_sound(self.__operator.get_output(0, "fields_container"))
+        tmp = self.__operator.get_output(0, "fields_container")
         self._output = Sound.create(tmp)
 
     def get_output(self) -> FieldsContainer | Sound:
