@@ -41,7 +41,6 @@ class _SourceBase(FieldsContainer):
     def create(cls, object: FieldsContainer) -> "BroadbandNoiseSource | HarmonicsSource":
         """TODO."""
         object.__class__ = cls
-        object.check()
         object.update()
         return object
 
@@ -116,7 +115,7 @@ class _SourceBase(FieldsContainer):
         self._main_support = np.array(self[0].time_freq_support.time_frequencies.data)
 
         for field in self:
-            if len(field.data) != len(self._main_support):
+            if len(field.data) != len(field.time_freq_support.time_frequencies.data):
                 raise PyAnsysSoundException(
                     "Each set of order levels in the specified harmonics source with two "
                     "parameters must contain as many level values as the number of orders (in "
@@ -124,7 +123,7 @@ class _SourceBase(FieldsContainer):
                     "number of data points and support values)."
                 )
 
-            if len(field.data) != len(self[0].data):
+            if len(field.data) != len(self._main_support):
                 raise PyAnsysSoundException(
                     "Each set of order levels in the specified harmonics source with two "
                     "parameters must contain the same number of level values (in the provided "
@@ -156,7 +155,7 @@ class _SourceBase(FieldsContainer):
 
         # test against 2nd control parameter (if relevant) is covered by the above check within the
         # if statement (technically, by the combination of it and this one)
-        if self.__control_points[0] != len(self):
+        if len(self.__control_points[0]) != len(self):
             raise PyAnsysSoundException(
                 "Specified harmonics source with two parameters must contain as many sets of "
                 "order levels as the number of values in both associated control parameters "

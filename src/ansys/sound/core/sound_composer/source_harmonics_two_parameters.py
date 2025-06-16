@@ -114,7 +114,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
                 f"\tControl parameter 2: {self.source_harmonics_two_parameters.control_names[1]}, "
                 f"{self.source_harmonics_two_parameters.control_mins[1]} - "
                 f"{self.source_harmonics_two_parameters.control_maxs[1]} "
-                f"{self.source_harmonics_two_parameters.control_units[1]}\n"
+                f"{self.source_harmonics_two_parameters.control_units[1]}"
             )
         else:
             str_source = "Not set"
@@ -199,6 +199,9 @@ class SourceHarmonicsTwoParameters(SourceParent):
                     "Specified harmonics source with two parameters must be provided as a DPF "
                     "fields container."
                 )
+        if type(source) is FieldsContainer:
+            # convert to HarmonicsSource to make sure necessary checks are done
+            source = HarmonicsSource.create(source)
 
         # shape tests npw handled in HarmonicsSource class
 
