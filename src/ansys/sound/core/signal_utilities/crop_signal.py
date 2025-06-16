@@ -23,7 +23,7 @@
 """Crops a signal."""
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
+from ansys.dpf.core import FieldsContainer, Operator
 import numpy as np
 
 from ansys.sound.core.data_management.sound import convert_to_sound
@@ -144,8 +144,5 @@ class CropSignal(SignalUtilitiesParent):
             Cropped signal in a NumPy array.
         """
         output = self.get_output()
-
-        if isinstance(self.signal, Field):
-            return output.data
 
         return self.convert_fields_container_to_np_array(output)
