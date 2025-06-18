@@ -69,12 +69,10 @@ my_server = connect_to_or_start_server(use_license_context=True)
 
 
 # %%
-# Define a custom function for STFT plots
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Defining a custom function for STFT plots lets you have
-# more control over what you are displaying.
-# While you could use the ``Stft.plot()`` method, the custom function
-# defined here restricts the frequency range of the plot.
+# Define custom STFT plot function
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Define a custom function for STFT plots. It differs from the ``Stft.plot()`` method in that it
+# does not display the phase
 def plot_stft(
     stft: Stft,
     SPLmax: float,

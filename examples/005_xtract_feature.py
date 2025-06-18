@@ -73,12 +73,10 @@ my_server = connect_to_or_start_server(use_license_context=True)
 
 
 # %%
-# Define a custom function for STFT plots
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Define a custom function for STFT plots lets you have
-# more control over what you are displaying.
-# While you could use the ``Stft.plot()`` method, the custom function
-# defined here restricts the frequency range of the plot.
+# Define custom STFT plot function
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Define a custom function for STFT plots. It differs from the ``Stft.plot()`` method in that it
+# does not display the phase
 def plot_stft(
     stft: Stft,
     SPLmax: float,
@@ -99,6 +97,9 @@ def plot_stft(
         Maximum frequency in Hz to display.
     """
     magnitude = stft.get_stft_magnitude_as_nparray()
+    mag_unit = stft.get_output()[0].unit
+    freq_unit = stft.get_output()[0].time_freq_support.time_frequencies.unit
+    time_unit = stft.get_output().time_freq_support.time_frequencies.unit
 
     # Only extract the first half of the STFT, as it is symmetrical
     half_nfft = int(magnitude.shape[0] / 2) + 1
@@ -128,9 +129,9 @@ def plot_stft(
         vmax=SPLmax,
         vmin=SPLmax - 70.0,
     )
-    plt.colorbar(label="Magnitude (dB SPL)")
-    plt.ylabel("Frequency (Hz)")
-    plt.xlabel("Time (s)")
+    plt.colorbar(label=f"Magnitude ({mag_unit})")
+    plt.ylabel(f"Frequency ({freq_unit})")
+    plt.xlabel(f"Time ({time_unit})")
     plt.ylim([0.0, maximum_frequency])  # Change the value of MAX_FREQUENCY_PLOT_STFT if needed
     plt.title(title)
     plt.show()
@@ -151,12 +152,14 @@ wav_loader.process()
 
 # Plot the signal in time domain
 time_domain_signal = wav_loader.get_output()[0]
-time_vector = time_domain_signal.time_freq_support.time_frequencies.data
+time = time_domain_signal.time_freq_support.time_frequencies
+time_vector = time.data
+time_unit = time.unit
 plt.plot(time_vector, time_domain_signal.data)
 plt.title("Xtract Demo Signal 1")
 plt.grid(True)
-plt.xlabel("Time (s)")
-plt.ylabel("Amplitude (Pa)")
+plt.xlabel(f"Time ({time_unit})")
+plt.ylabel(f"Amplitude ({time_domain_signal.unit})")
 plt.show()
 
 # Compute the spectrogram of the signal and plot it
@@ -200,8 +203,8 @@ noise_signal = xtract_denoiser.get_output()[1]
 plt.plot(time_vector, time_domain_signal.data, label="Original Signal")
 plt.plot(time_vector, noise_signal.data, label="Noise Signal")
 plt.grid(True)
-plt.xlabel("Time (s)")
-plt.ylabel("Amplitude (Pa)")
+plt.xlabel(f"Time ({time_unit})")
+plt.ylabel(f"Amplitude ({time_domain_signal.unit})")
 plt.title("Original Signal and Noise Signal")
 plt.legend()
 plt.show()
@@ -279,8 +282,8 @@ transient_signal = xtract_transient.get_output()[0]
 plt.plot(time_vector, time_domain_signal.data, label="Original Signal", linewidth=0.1)
 plt.plot(time_vector, transient_signal.data, label="Transient Signal", linewidth=0.1)
 plt.grid(True)
-plt.xlabel("Time (s)")
-plt.ylabel("Amplitude (Pa)")
+plt.xlabel(f"Time ({time_unit})")
+plt.ylabel(f"Amplitude ({time_domain_signal.unit})")
 plt.title("Original Signal and Transient signal")
 leg = plt.legend()
 for line in leg.get_lines():
@@ -320,8 +323,8 @@ for p in paths:
     plt.figure()
     plt.plot(time_vector, time_domain_signal.data, label="Original Signal")
     plt.ylim(ylims)
-    plt.ylabel("Amplitude (Pa)")
-    plt.xlabel("Time (s)")
+    plt.xlabel(f"Time ({time_unit})")
+    plt.ylabel(f"Amplitude ({time_domain_signal.unit})")
     plt.grid()
     plt.legend()
     plt.title(signal_name)
@@ -343,7 +346,7 @@ for p in paths:
     axs[0].plot(time_vector, time_domain_signal.data, label="Original Signal", color="blue")
     axs[1].plot(time_vector, noise_signal.data, label="Noise Signal", color="red")
     axs[2].plot(time_vector, tonal_signal.data, label="Tonal Signal", color="green")
-    axs[2].set(ylabel="Amplitude (Pa)")  # Set ylabel for middle plot only
+    axs[2].set(ylabel=f"Amplitude ({time_domain_signal.unit})")  # Set ylabel for middle plot only
     axs[3].plot(time_vector, transient_signal.data, label="Transient Signal", color="purple")
     axs[4].plot(time_vector, remainder_signal.data, label="Remainder Signal", color="black")
 
@@ -353,7 +356,7 @@ for p in paths:
         ax.legend()
         ax.set_aspect("auto")
 
-    plt.xlabel("Time (s)")
+    plt.xlabel(f"Time ({time_unit})")
     plt.legend()
     plt.suptitle(f"Original and extracted signals for {signal_name}")
     plt.show()
