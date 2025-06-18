@@ -118,10 +118,10 @@ TNR_frequencies = tone_to_noise_ratio.get_peaks_frequencies()
 TNR_values = tone_to_noise_ratio.get_TNR_values()
 TNR_levels = tone_to_noise_ratio.get_peaks_levels()
 
-freq_unit = tone_to_noise_ratio.get_output().get_property("frequency_Hz")
-bandwidth_unit = tone_to_noise_ratio.get_output().get_property("bandwidth_lower_Hz")
-tnr_unit = tone_to_noise_ratio.get_output().get_property("TNR_dB")
-level_unit = tone_to_noise_ratio.get_output().get_property("level_dB")
+freq_unit = tone_to_noise_ratio.get_output().get_property("frequency_Hz").unit
+bandwidth_unit = tone_to_noise_ratio.get_output().get_property("bandwidth_lower_Hz").unit
+tnr_unit = tone_to_noise_ratio.get_output().get_property("TNR_dB").unit
+level_unit = tone_to_noise_ratio.get_output().get_property("level_dB").unit
 
 print(
     f"\n"
