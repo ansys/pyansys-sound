@@ -252,8 +252,8 @@ loudness.process()
 
 loudness_original_signal = loudness.get_loudness_level_phon()
 
-print(f"Loudness of the original signal is {loudness_original_signal: .1f} phons.")
-print(f"Loudness of the isolated signal is {loudness_isolated_signal: .1f} phons.")
+print(f"Loudness of the original signal is {loudness_original_signal:.1f} phons.")
+print(f"Loudness of the isolated signal is {loudness_isolated_signal:.1f} phons.")
 
 # %%
 # Isolate orders of several signals in a loop

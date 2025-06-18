@@ -113,7 +113,7 @@ axs[0].set_ylim([-3, 3])
 axs[1].plot(
     t2, data_modified, color="r", label=f"modified signal, sf={int(sf2)} Hz, gain={gain}{gain_unit}"
 )
-axs[1].set_xlabel("Time(s)")
+axs[1].set_xlabel("Time (s)")
 axs[1].set_ylabel(f"Amplitude ({unit_modified})")
 axs[1].legend(loc="upper right")
 axs[1].set_ylim([-3, 3])
