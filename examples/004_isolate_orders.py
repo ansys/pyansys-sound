@@ -95,6 +95,9 @@ def plot_stft(
         Maximum frequency in Hz to display.
     """
     magnitude = stft.get_stft_magnitude_as_nparray()
+    mag_unit = stft.get_output()[0].unit
+    freq_unit = stft.get_output()[0].time_freq_support.time_frequencies.unit
+    time_unit = stft.get_output().time_freq_support.time_frequencies.unit
 
     # Only extract the first half of the STFT, as it is symmetrical
     half_nfft = int(magnitude.shape[0] / 2) + 1
@@ -124,9 +127,9 @@ def plot_stft(
         vmax=SPLmax,
         vmin=SPLmax - 70.0,
     )
-    plt.colorbar(label="Magnitude (dB SPL)")
-    plt.ylabel("Frequency (Hz)")
-    plt.xlabel("Time (s)")
+    plt.colorbar(label=f"Magnitude ({mag_unit})")
+    plt.ylabel(f"Frequency ({freq_unit})")
+    plt.xlabel(f"Time ({time_unit})")
     plt.ylim([0.0, maximum_frequency])  # Change the value of MAX_FREQUENCY_PLOT_STFT if needed
     plt.title(title)
     plt.show()
@@ -154,19 +157,19 @@ fc_signal = wav_loader.get_output()
 wav_signal, rpm_signal = wav_loader.get_output_as_nparray()
 
 # Extract time support associated with the signal
-time_support = fc_signal[0].time_freq_support.time_frequencies.data
+time_support = fc_signal[0].time_freq_support.time_frequencies
 
 # Plot the signal and its associated RPM profile
 fig, ax = plt.subplots(nrows=2, sharex=True)
-ax[0].plot(time_support, wav_signal)
+ax[0].plot(time_support.data, wav_signal)
 ax[0].set_title("Audio Signal")
-ax[0].set_ylabel("Amplitude (Pa)")
+ax[0].set_ylabel(f"Amplitude ({fc_signal[0].unit})")
 ax[0].grid(True)
-ax[1].plot(time_support, rpm_signal, color="red")
+ax[1].plot(time_support.data, rpm_signal, color="red")
 ax[1].set_title("RPM profile")
-ax[1].set_ylabel("rpm")
+ax[1].set_ylabel(f"RPM ({fc_signal[1].unit})")
 ax[1].grid(True)
-plt.xlabel("Time (s)")
+plt.xlabel(f"Time ({time_support.unit})")
 plt.show()
 
 # %%
@@ -187,7 +190,6 @@ plot_stft(stft, max_stft)
 field_wav, field_rpm = wav_loader.get_output()
 
 # Define parameters for order isolation
-field_wav.unit = "Pa"
 order_to_isolate = [2, 4, 6]  # Orders indexes to isolate as a list
 fft_size = 8192  # FFT Size (in samples)
 window_type = "HANN"  # Window type

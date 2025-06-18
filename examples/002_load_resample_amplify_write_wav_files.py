@@ -96,22 +96,25 @@ fc_signal_modified = gain_applier.get_output()
 
 # Get the signals as NumPy arrays
 data_original = wav_loader.get_output_as_nparray()
+unit_original = wav_loader.get_output()[0].unit
 data_modified = gain_applier.get_output_as_nparray()
+unit_modified = gain_applier.get_output()[0].unit
+gain_unit = " dB" if gain_applier.gain_in_db else "(linear)"
 
 # Prepare the figure
 fig, axs = plt.subplots(2)
 fig.suptitle("Signals")
 
 axs[0].plot(t1, data_original, color="g", label=f"original signal, sf={int(sf1)} Hz")
-axs[0].set_ylabel("Pa")
+axs[0].set_ylabel(f"Amplitude ({unit_original})")
 axs[0].legend(loc="upper right")
 axs[0].set_ylim([-3, 3])
 
 axs[1].plot(
-    t2, data_modified, color="r", label=f"modified signal, sf={int(sf2)} Hz, gain={gain} dBSPL"
+    t2, data_modified, color="r", label=f"modified signal, sf={int(sf2)} Hz, gain={gain}{gain_unit}"
 )
 axs[1].set_xlabel("Time(s)")
-axs[1].set_ylabel("Amplitude(Pa)")
+axs[1].set_ylabel(f"Amplitude ({unit_modified})")
 axs[1].legend(loc="upper right")
 axs[1].set_ylim([-3, 3])
 
