@@ -1,0 +1,30 @@
+name: Docker image cleanup
+on:
+  schedule: # UTC at 0200 every Sunday
+    - cron: "0 2 * * 0"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  cleanup:
+    name: Cleaning unnecessary docker images
+    runs-on: ubuntu-latest
+    env:
+      PACKAGE_DELETION_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+
+    - name: "Perform docker image cleanup - except certain tags"
+      uses: ansys/actions/hk-package-clean-except@dce0e98a78079681554a90abde4ec81a7fa8e06a # v10.0.10
+      with:
+        package-name: 'ansys-sound'
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tags-kept: '25.2, latest'
+        allow-last-days: '15'
