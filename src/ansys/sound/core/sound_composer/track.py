@@ -318,13 +318,13 @@ class Track(SoundComposerParent):
             )
         output = self.get_output()
 
-        output_time = output.time_freq_support.time_frequencies.data
+        time = output.time_freq_support.time_frequencies
         str_unit = f" ({output.unit})" if len(output.unit) > 0 else ""
         str_title = self.name if len(self.name) > 0 else "Generated signal"
 
-        plt.plot(output_time, output.data)
+        plt.plot(time.data, output.data)
         plt.title(f"{str_title} ({type(self.source).__name__})")
-        plt.xlabel("Time (s)")
+        plt.xlabel(f"Time ({time.unit})")
         plt.ylabel(f"Amplitude{str_unit}")
         plt.grid(True)
         plt.tight_layout()
