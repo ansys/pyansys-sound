@@ -56,17 +56,20 @@ def connect_to_or_start_server(
     ip : str, default: None
         IP address for the DPF server.
     ansys_path : str, default: None
-        Root path for the Ansys installation. For example, ``C:\\Program Files\\ANSYS Inc\\v242``.
+        Root path for the Ansys installation. For example, "C:\\Program Files\\ANSYS Inc\\v242".
         This parameter is ignored if either the port or IP address is set.
     use_license_context : bool, default: False
-        Whether to check out the DPF Sound license increment (``avrxp_snd_level1``) before using
-        PyAnsys Sound. Checking out the license increment improves performance if you are doing
-        multiple calls to DPF Sound operators because they require licensing. This parameter
-        can also be used to force check out before running a script when few DPF Sound license
-        increments are available. The license is checked in when the LicenseContextManager object
-        is deleted. If a different license increment is required, set this parameter to True and
-        set the ``license_increment_name`` parameter to the name of the license increment to check
-        out.
+        Whether to check out the DPF Sound license increment (see parameter
+        ``license_increment_name``) before using PyAnsys Sound.
+
+        Checking out the license increment improves performance of applications in which you are
+        doing multiple calls to DPF Sound operators, as it allows a single check out of the license
+        increment for the duration of the session (until the ``LicenseContextManager`` object is
+        deleted). This parameter can also be used to force check out before running a script
+        when only few DPF Sound license increments are available.
+
+        The license is checked in (that is, released) when the LicenseContextManager object is
+        deleted.
     license_increment_name : str, default: "avrxp_snd_level1"
         Name of the license increment to check out. Only taken into account if use_license_context
         is True. The default value is ``avrxp_snd_level1``, which corresponds to the license
@@ -74,11 +77,13 @@ def connect_to_or_start_server(
 
     Returns
     -------
-    server_types.InProcessServer | server_types.GrpcServer
-        Server object started or connected to.
-    lic_context : LicenseContextManager. Is None if use_license_context is False. Otherwise,
-        it is a LicenseContextManager object, and should not be deleted until the end of the part
-        of your program which uses PyAnsys Sound.
+        tuple[server_types.InProcessServer | server_types.GrpcServer, LicenseContextManager]
+
+            - First element: server object that has been started or connected to.
+
+            - Second element: licensing context. Is None if use_license_context is False.
+              Otherwise, it is a LicenseContextManager object, and should not be deleted until the
+              end of the part of your program which uses PyAnsys Sound.
     """
     # Collect the port to connect to the server
     port_in_env = os.environ.get("ANSRV_DPF_SOUND_PORT")
