@@ -36,6 +36,8 @@ def pytest_configure(config):
     # configuration. That's why we authorize the use of this function here.
     server, lic_context = connect_to_or_start_server(use_license_context=True)
 
+    # Store the server and licensing context into the pytest config object, 
+    # so that they persist until the end of the tests.
     config.dpf_server = server
     config.dpf_lic_context = lic_context
 
