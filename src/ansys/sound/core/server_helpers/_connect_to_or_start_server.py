@@ -64,15 +64,18 @@ def connect_to_or_start_server(
 
         Checking out the license increment improves performance of applications in which you are
         doing multiple calls to DPF Sound operators, as it allows a single check out of the license
-        increment for the duration of the session (until the ``LicenseContextManager`` object is
-        deleted). This parameter can also be used to force check out before running a script
-        when only few DPF Sound license increments are available.
+        increment for the duration of the session until the
+        :class:`LicenseContextManager <ansys.dpf.core.server_context.LicenseContextManager>`
+        object is deleted).
+        
+        This parameter can also be used to force check out before running a script when only few
+        DPF Sound license increments are available.
 
         The license is checked in (that is, released) when the LicenseContextManager object is
         deleted.
     license_increment_name : str, default: "avrxp_snd_level1"
         Name of the license increment to check out. Only taken into account if use_license_context
-        is True. The default value is ``avrxp_snd_level1``, which corresponds to the license
+        is True. The default value is "avrxp_snd_level1", which corresponds to the license
         required by Ansys Sound Pro.
 
     Returns
@@ -82,8 +85,10 @@ def connect_to_or_start_server(
             - First element: server object that has been started or connected to.
 
             - Second element: licensing context. Is None if use_license_context is False.
-              Otherwise, it is a LicenseContextManager object, and should not be deleted until the
-              end of the part of your program which uses PyAnsys Sound.
+              Otherwise, it is a 
+              :class:`LicenseContextManager <ansys.dpf.core.server_context.LicenseContextManager>`
+              object, and should not be deleted until the end of the part of your program which
+              uses PyAnsys Sound.
     """
     # Collect the port to connect to the server
     port_in_env = os.environ.get("ANSRV_DPF_SOUND_PORT")
