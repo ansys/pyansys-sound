@@ -388,7 +388,7 @@ class SourceBroadbandNoise(SourceParent):
         plt.plot(time.data, control.data)
         plt.title("Control profile 1")
         plt.ylabel(f"{name_str}{unit_str}")
-        plt.xlabel("Time (s)")
+        plt.xlabel(f"Time ({time.unit})")
         plt.grid(True)
 
         plt.tight_layout()
