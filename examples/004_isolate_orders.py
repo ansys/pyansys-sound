@@ -72,7 +72,7 @@ my_server = connect_to_or_start_server(use_license_context=True)
 # Define custom STFT plot function
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Define a custom function for STFT plots. It differs from the ``Stft.plot()`` method in that it
-# does not display the phase
+# does not display the phase and allows setting custom title, maximum SPL, and maximum frequency.
 def plot_stft(
     stft: Stft,
     SPLmax: float,
