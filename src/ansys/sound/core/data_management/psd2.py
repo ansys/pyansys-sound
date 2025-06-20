@@ -28,6 +28,7 @@ import numpy as np
 from .._pyansys_sound import PyAnsysSoundException
 
 
+# class PSD(Field, metaclass=NoExtraAttributesMeta):
 class PSD(Field):
     """PyAnsys Sound class to store sound data.
 

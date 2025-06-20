@@ -28,6 +28,7 @@ import numpy as np
 from .._pyansys_sound import PyAnsysSoundException
 
 
+# class Sound(FieldsContainer, metaclass=NoExtraAttributesMeta):
 class Sound(FieldsContainer):
     """PyAnsys Sound class to store sound data."""
 
