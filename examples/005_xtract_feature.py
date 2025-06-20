@@ -97,8 +97,8 @@ def plot_stft(
         Maximum frequency in Hz to display.
     """
     magnitude = stft.get_stft_magnitude_as_nparray()
-    mag_unit = stft.get_output()[0].unit
-    freq_unit = stft.get_output()[0].time_freq_support.time_frequencies.unit
+    magnitude_unit = stft.get_output()[0].unit
+    frequency_unit = stft.get_output()[0].time_freq_support.time_frequencies.unit
     time_unit = stft.get_output().time_freq_support.time_frequencies.unit
 
     # Only extract the first half of the STFT, as it is symmetrical
@@ -129,8 +129,8 @@ def plot_stft(
         vmax=SPLmax,
         vmin=SPLmax - 70.0,
     )
-    plt.colorbar(label=f"Magnitude ({mag_unit})")
-    plt.ylabel(f"Frequency ({freq_unit})")
+    plt.colorbar(label=f"Magnitude ({magnitude_unit})")
+    plt.ylabel(f"Frequency ({frequency_unit})")
     plt.xlabel(f"Time ({time_unit})")
     plt.ylim([0.0, maximum_frequency])  # Change the value of MAX_FREQUENCY_PLOT_STFT if needed
     plt.title(title)

@@ -119,7 +119,7 @@ TNR_frequencies = tone_to_noise_ratio.get_peaks_frequencies()
 TNR_values = tone_to_noise_ratio.get_TNR_values()
 TNR_levels = tone_to_noise_ratio.get_peaks_levels()
 
-freq_unit = tone_to_noise_ratio.get_output().get_property("frequency_Hz").unit
+frequency_unit = tone_to_noise_ratio.get_output().get_property("frequency_Hz").unit
 bandwidth_unit = tone_to_noise_ratio.get_output().get_property("bandwidth_lower_Hz").unit
 tnr_unit = tone_to_noise_ratio.get_output().get_property("TNR_dB").unit
 level_unit = tone_to_noise_ratio.get_output().get_property("level_dB").unit
@@ -128,7 +128,7 @@ print(
     f"\n"
     f"Number of tones found: {number_tones}\n"
     f"Maximum TNR value: {np.round(TNR, 1)} dB\n"
-    f"All detected peaks' frequencies ({freq_unit}): {np.round(TNR_frequencies)}\n"
+    f"All detected peaks' frequencies ({frequency_unit}): {np.round(TNR_frequencies)}\n"
     f"All peaks' TNR values ({tnr_unit}): {np.round(TNR_values, 1)}\n"
     f"All peaks' absolute levels ({level_unit}): {np.round(TNR_levels, 1)}"
 )
@@ -152,7 +152,7 @@ TNR = tone_to_noise_ratio_525[1]
 print(
     f"\n"
     f"TNR info for peak at ~525 Hz: \n"
-    f"Exact tone frequency: {round(TNR_frequency, 2)} {freq_unit}\n"
+    f"Exact tone frequency: {round(TNR_frequency, 2)} {frequency_unit}\n"
     f"Tone width: {round(TNR_width, 2)} {bandwidth_unit}\n"
     f"TNR value: {round(TNR, 2)} {tnr_unit}"
 )
@@ -197,7 +197,7 @@ print(
     f"\n"
     f"Number of tones found: {number_tones}\n"
     f"Maximum PR value: {np.round(PR, 1)} dB\n"
-    f"All detected peaks' frequencies ({freq_unit}): {np.round(PR_frequencies)}\n"
+    f"All detected peaks' frequencies ({frequency_unit}): {np.round(PR_frequencies)}\n"
     f"All peaks' PR values ({tnr_unit}): {np.round(PR_values, 1)}\n"
     f"All peaks' absolute levels ({level_unit}): {np.round(PR_levels, 1)}"
 )
@@ -221,7 +221,7 @@ PR = prominence_ratio_786[1]
 print(
     f"\n"
     f"PR info for peak at ~786 Hz: \n"
-    f"Exact tone frequency: {round(PR_frequency, 2)} {freq_unit}\n"
+    f"Exact tone frequency: {round(PR_frequency, 2)} {frequency_unit}\n"
     f"Tone width: {round(PR_width, 2)} {bandwidth_unit}\n"
     f"PR value: {round(PR, 2)} {tnr_unit}"
 )
