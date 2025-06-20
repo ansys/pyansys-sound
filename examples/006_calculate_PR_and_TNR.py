@@ -96,6 +96,7 @@ psd_Pa2_per_Hz_interp = np.interp(frequencies_interp, frequencies_original, psd_
 # Create the input PSD field for computation of TNR and PR.
 f_psd = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
 f_psd.append(psd_Pa2_per_Hz_interp, 1)
+f_psd.unit = "Pa^2/Hz"
 
 # Create and include a field containing the array of frequencies.
 support = TimeFreqSupport()
