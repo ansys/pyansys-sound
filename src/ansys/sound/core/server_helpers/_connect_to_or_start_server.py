@@ -64,8 +64,8 @@ def connect_to_or_start_server(
         (:obj:`None` otherwise) in addition to the server object.
 
         This improves performance if you are doing multiple calls to DPF Sound operators, as it
-        allows a single check out of the license increment. The license is checked back in (that is,
-        released) when the
+        allows a single check out of the license increment, rather than requiring a check out for
+        each operator call. The license is checked back in (that is, released) when the
         :class:`LicenseContextManager <ansys.dpf.core.server_context.LicenseContextManager>` object
         is deleted.
 
