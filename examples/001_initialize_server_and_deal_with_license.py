@@ -155,9 +155,9 @@ print("Releasing the license increment by deleting the LicenseContextManager obj
 my_license_context = None
 
 # %%
-# Now the LicenseContextManager has been deleted, any call to a PyAnsys Sound function will
-# again spend time checking out the license increment. Let us call the same function as before
-# and measure the execution time:
+# Now that the LicenseContextManager has been deleted, any new call to a PyAnsys Sound function
+# will spend time checking out the license increment again. Let us call the same function as before
+# and measure the execution time again:
 now = datetime.datetime.now()
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
