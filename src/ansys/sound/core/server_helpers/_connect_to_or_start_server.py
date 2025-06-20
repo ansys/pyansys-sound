@@ -44,10 +44,9 @@ def connect_to_or_start_server(
     r"""Connect to or start a DPF server with the DPF Sound plugin loaded.
 
     .. note::
-
-        If a port or IP address is set, this method tries to connect to the server specified
-        and the ``ansys_path`` parameter is ignored. If no parameters are set, a local server
-        from the latest available Ansys installation is started.
+        If a port or IP address is set, this method tries to connect to the server specified and
+        the ``ansys_path`` parameter is ignored. If no parameters are set, a local server from the
+        latest available Ansys installation is started.
 
     Parameters
     ----------
@@ -59,16 +58,16 @@ def connect_to_or_start_server(
         Root path for the Ansys installation. For example, "C:\\Program Files\\ANSYS Inc\\v242".
         This parameter is ignored if either the port or IP address is set.
     use_license_context : bool, default: False
-        Whether to check out the DPF Sound license increment before using PyAnsys Sound
-        (see parameter ``license_increment_name``). If set to :obj:`True`, the function returns a
-        :class:`LicenseContextManager <ansys.dpf.core.server_context.LicenseContextManager>`
-        object (:obj:`None` otherwise) in addition to the server object.
+        Whether to check out the DPF Sound license increment before using PyAnsys Sound (see
+        parameter ``license_increment_name``). If set to :obj:`True`, the function returns a
+        :class:`LicenseContextManager <ansys.dpf.core.server_context.LicenseContextManager>` object
+        (:obj:`None` otherwise) in addition to the server object.
 
         This improves performance if you are doing multiple calls to DPF Sound operators, as it
         allows a single check out of the license increment. The license is checked back in (that is,
         released) when the
-        :class:`LicenseContextManager <ansys.dpf.core.server_context.LicenseContextManager>`
-        object is deleted.
+        :class:`LicenseContextManager <ansys.dpf.core.server_context.LicenseContextManager>` object
+        is deleted.
 
         This parameter can also be used to force check out before running a script when only few
         DPF Sound license increments are available.
@@ -79,13 +78,11 @@ def connect_to_or_start_server(
 
     Returns
     -------
-        tuple[server_types.InProcessServer | server_types.GrpcServer, LicenseContextManager]
-
-            - First element: server object started or connected to.
-
-            - Second element: licensing context object to only delete when you no longer need to
-              use PyAnsys Sound objects and features. :obj:`None` if ``use_license_context``
-              is set to :obj:`False`.
+    InProcessServer | GrpcServer
+        Server object started or connected to.
+    LicenseContextManager
+        Licensing context object. Retains the licence increment until the object is deleted.
+        :obj:`None` if ``use_license_context`` is set to :obj:`False`.
     """
     # Collect the port to connect to the server
     port_in_env = os.environ.get("ANSRV_DPF_SOUND_PORT")
