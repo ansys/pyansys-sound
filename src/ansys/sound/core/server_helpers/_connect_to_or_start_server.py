@@ -50,7 +50,7 @@ def connect_to_or_start_server(
     ip : str, default: None
         IP address for the DPF server.
     ansys_path : str, default: None
-        Root path for the Ansys installation. For example, "C:\\Program Files\\ANSYS Inc\\v242".
+        Root path for the Ansys installation. For example, `"C:\\Program Files\\ANSYS Inc\\v242"`.
         This parameter is ignored if either the port or IP address is set.
     use_license_context : bool, default: False
         Whether to check out the DPF Sound license increment before using PyAnsys Sound (see
