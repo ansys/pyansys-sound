@@ -43,11 +43,6 @@ def connect_to_or_start_server(
 ) -> tuple[server_types.InProcessServer | server_types.GrpcServer, LicenseContextManager]:
     r"""Connect to or start a DPF server with the DPF Sound plugin loaded.
 
-    .. note::
-        If a port or IP address is set, this method tries to connect to the server specified and
-        the ``ansys_path`` parameter is ignored. If no parameters are set, a local server from the
-        latest available Ansys installation is started.
-
     Parameters
     ----------
     port : int, default: None
@@ -83,6 +78,12 @@ def connect_to_or_start_server(
     LicenseContextManager
         Licensing context object. Retains the licence increment until the object is deleted.
         :obj:`None` if ``use_license_context`` is set to :obj:`False`.
+
+    Notes
+    -----
+    If a port or IP address is set, this method tries to connect to the server specified and
+    the ``ansys_path`` parameter is ignored. If no parameters are set, a local server from the
+    latest available Ansys installation is started.
     """
     # Collect the port to connect to the server
     port_in_env = os.environ.get("ANSRV_DPF_SOUND_PORT")
