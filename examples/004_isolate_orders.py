@@ -244,16 +244,16 @@ input_loudness.unit = "Pa"
 loudness = LoudnessISO532_1_Stationary(signal=input_loudness)
 loudness.process()
 
-loudness_isolated_signal = loudness.get_loudness_level_phon()
+loudness_level_isolated_signal = loudness.get_loudness_level_phon()
 
 # Compute the loudness for the original signal
 loudness.signal = field_wav
 loudness.process()
 
-loudness_original_signal = loudness.get_loudness_level_phon()
+loudness_level_original_signal = loudness.get_loudness_level_phon()
 
-print(f"Loudness of the original signal is {loudness_original_signal:.1f} phons.")
-print(f"Loudness of the isolated signal is {loudness_isolated_signal:.1f} phons.")
+print(f"The loudness level of the original signal is {loudness_level_original_signal:.1f} phons.")
+print(f"The loudness level of the isolated signal is {loudness_level_isolated_signal:.1f} phons.")
 
 # %%
 # Isolate orders of several signals in a loop
