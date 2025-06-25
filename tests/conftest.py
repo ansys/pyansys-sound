@@ -28,13 +28,19 @@ import pytest
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 
 
-def pytest_configure():
+def pytest_configure(config):
 
     # We're using here a PyAnsys Sound function to connect to the server based on whether we're in
     # a docker or local configuration.
     # There are tests for the function connect_to_or_start_server that are independent from the
     # configuration. That's why we authorize the use of this function here.
-    server = connect_to_or_start_server(use_license_context=True)
+    server, lic_context = connect_to_or_start_server(use_license_context=True)
+
+    # Store the server and licensing context into the pytest Config object (see
+    # https://docs.pytest.org/en/stable/reference/reference.html#pytest.Config), so that they
+    # persist until the end of the tests.
+    config.dpf_server = server
+    config.dpf_lic_context = lic_context
 
     # Use the conftest.py file's directory to set the base directory for the test data files.
     base_dir = os.path.join(os.path.dirname(__file__), "data")

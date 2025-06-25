@@ -60,7 +60,7 @@ from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectral_processing import PowerSpectralDensity
 
 # Connect to a remote server or start a local server.
-my_server = connect_to_or_start_server(use_license_context=True)
+my_server, lic_context = connect_to_or_start_server(use_license_context=True)
 
 # %%
 # Calculate TNR from a PSD

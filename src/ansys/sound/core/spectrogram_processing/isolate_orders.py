@@ -65,7 +65,7 @@ class IsolateOrders(SpectrogramProcessingParent):
         window_type : str, default: 'HANN'
             Window type used for the FFT computation. Options are ``'TRIANGULAR'``, ``'BLACKMAN'``,
             ``'BLACKMANHARRIS'``, ``'HAMMING'``, ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``,
-             and ``'RECTANGULAR'``.
+            and ``'RECTANGULAR'``.
         window_overlap : float, default: 0.5
             Overlap value between two successive FFT computations. Values can range from 0 to 1.
             For example, ``0`` means no overlap, and ``0.5`` means 50% overlap.
