@@ -237,6 +237,11 @@ def test_isolate_orders_plot(mock_show):
     rpm_profile = fc[1]
     rpm_profile.time_freq_support = signal.time_freq_support
     isolate_orders = IsolateOrders(signal=signal, rpm_profile=rpm_profile, orders=[2, 4])
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Output is not processed yet. Use the `IsolateOrders.process\\(\\)` method.",
+    ):
+        isolate_orders.plot()
     isolate_orders.process()
     isolate_orders.plot()
 

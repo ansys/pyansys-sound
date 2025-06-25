@@ -342,12 +342,12 @@ class Filter(SignalProcessingParent):
             )
         output = self.get_output()
 
-        time_data = output.time_freq_support.time_frequencies.data
+        time = output.time_freq_support.time_frequencies
 
-        plt.plot(time_data, output.data)
+        plt.plot(time.data, output.data)
         plt.title("Filtered signal")
-        plt.xlabel("Time (s)")
-        plt.ylabel("Amplitude")
+        plt.xlabel(f"Time ({time.unit})")
+        plt.ylabel(f"Amplitude ({output.unit})")
         plt.grid(True)
         plt.show()
 
@@ -360,11 +360,12 @@ class Filter(SignalProcessingParent):
                 f"`{__class__.__name__}.b_coefficients`, or the "
                 f"`{__class__.__name__}.design_FIR_from_FRF_file()` method."
             )
+        frequencies = self.frf.time_freq_support.time_frequencies
 
-        plt.plot(self.frf.time_freq_support.time_frequencies.data, self.frf.data)
+        plt.plot(frequencies.data, self.frf.data)
         plt.title("Frequency response function (FRF) of the filter")
-        plt.xlabel("Frequency (Hz)")
-        plt.ylabel("Magnitude (dB)")
+        plt.xlabel(f"Frequency ({frequencies.unit})")
+        plt.ylabel(f"Magnitude ({self.frf.unit})")
         plt.grid(True)
         plt.show()
 

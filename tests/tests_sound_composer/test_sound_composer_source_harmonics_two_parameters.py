@@ -66,12 +66,12 @@ EXP_STR_ALL_SET = (
     "0.0 - 10.0 %\n"
     "Source control:\n"
     "\tControl 1: \n"
-    "\t\tMin: 0.0\n"
-    "\t\tMax: 3.0\n"
+    "\t\tMin: 0.0 RPM\n"
+    "\t\tMax: 3.0 RPM\n"
     "\t\tDuration: 3.0 s\n"
     "\tControl 2: \n"
-    "\t\tMin: 0.0\n"
-    "\t\tMax: 3.0\n"
+    "\t\tMin: 0.0 RPM\n"
+    "\t\tMax: 3.0 RPM\n"
     "\t\tDuration: 3.0 s"
 )
 EXP_STR_ALL_SET_MANY_VALUES = (
@@ -84,12 +84,12 @@ EXP_STR_ALL_SET_MANY_VALUES = (
     "0.0 - 50.0 %\n"
     "Source control:\n"
     "\tControl 1: \n"
-    "\t\tMin: 0.0\n"
-    "\t\tMax: 3.0\n"
+    "\t\tMin: 0.0 RPM\n"
+    "\t\tMax: 3.0 RPM\n"
     "\t\tDuration: 3.0 s\n"
     "\tControl 2: \n"
-    "\t\tMin: 0.0\n"
-    "\t\tMax: 3.0\n"
+    "\t\tMin: 0.0 RPM\n"
+    "\t\tMax: 3.0 RPM\n"
     "\t\tDuration: 3.0 s"
 )
 
@@ -123,9 +123,11 @@ def test_source_harmonics_two_parameters___str___all_set():
         num_entities=1, location=locations.time_freq
     )
     f_source_control.append([0, 1, 2, 3], 1)
+    f_source_control.unit = "RPM"
     support = TimeFreqSupport()
     f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
     f_time.append([0, 1, 2, 3], 1)
+    f_time.unit = "s"
     support.time_frequencies = f_time
     f_source_control.time_freq_support = support
 

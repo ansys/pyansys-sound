@@ -315,25 +315,24 @@ class PowerSpectralDensity(SpectralProcessingParent):
             Parameter that specifies whether the PSD should be plotted in dB/Hz (True)
             or unit^2/Hz (False).
         """
-        unit = self.input_signal.unit
+        if self._output is None:
+            raise PyAnsysSoundException(
+                f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
+            )
+        psd = self.get_output()
+        frequencies = psd.time_freq_support.time_frequencies
         if display_in_dB == False:
-            # Get the output in unit^2/Hz.
-            psd_values, l_frequencies = self.get_output_as_nparray()
-
             # Plot the PSD in unit^2/Hz.
-            plt.plot(l_frequencies, psd_values)
+            plt.plot(frequencies.data, psd.data)
             plt.title("Power Spectral Density (PSD)")
-            plt.xlabel("Frequency (Hz)")
-            plt.ylabel(f"Amplitude ({unit}^2/Hz)")
-            plt.show()
+            plt.ylabel(f"Amplitude ({psd.unit})")
         else:
             # Get the output in dB/Hz.
             psd_dB_values = self.get_PSD_dB_as_nparray()
-            l_frequencies = self.get_frequencies()
 
             # Plot the PSD in dB/Hz.
-            plt.plot(l_frequencies, psd_dB_values)
+            plt.plot(frequencies.data, psd_dB_values)
             plt.title("Power Spectral Density (PSD)")
-            plt.xlabel("Frequency (Hz)")
             plt.ylabel("Level (dB/Hz)")
-            plt.show()
+        plt.xlabel(f"Frequency ({frequencies.unit})")
+        plt.show()

@@ -126,19 +126,21 @@ class SourceHarmonicsTwoParameters(SourceParent):
 
         # Source control info.
         if self.is_source_control_valid():
+            control = self.source_control_rpm.control
+            time = control.time_freq_support.time_frequencies
             str_control_rpm = (
-                f"{self.source_control_rpm.control.name}\n"
-                f"\t\tMin: {self.source_control_rpm.control.data.min()}\n"
-                f"\t\tMax: {self.source_control_rpm.control.data.max()}\n"
-                f"\t\tDuration: "
-                f"{self.source_control_rpm.control.time_freq_support.time_frequencies.data[-1]} s"
+                f"{control.name}\n"
+                f"\t\tMin: {control.data.min()} {control.unit}\n"
+                f"\t\tMax: {control.data.max()} {control.unit}\n"
+                f"\t\tDuration: {time.data[-1]} {time.unit}"
             )
+            control = self.source_control2.control
+            time = control.time_freq_support.time_frequencies
             str_control2 = (
-                f"{self.source_control2.control.name}\n"
-                f"\t\tMin: {self.source_control2.control.data.min()}\n"
-                f"\t\tMax: {self.source_control2.control.data.max()}\n"
-                f"\t\tDuration: "
-                f"{self.source_control2.control.time_freq_support.time_frequencies.data[-1]} s"
+                f"{control.name}\n"
+                f"\t\tMin: {control.data.min()} {control.unit}\n"
+                f"\t\tMax: {control.data.max()} {control.unit}\n"
+                f"\t\tDuration: {time.data[-1]} {time.unit}"
             )
         else:
             str_control_rpm = "Not set"
@@ -445,16 +447,16 @@ class SourceHarmonicsTwoParameters(SourceParent):
             )
         output = self.get_output()
 
-        time_data = output.time_freq_support.time_frequencies.data
+        time = output.time_freq_support.time_frequencies
 
-        plt.plot(time_data, output.data)
+        plt.plot(time.data, output.data)
         plt.title(
             output.name
             if len(output.name) > 0
             else "Signal from harmonics source with two parameters"
         )
-        plt.xlabel("Time (s)")
-        plt.ylabel("Amplitude (Pa)")
+        plt.xlabel(f"Time ({time.unit})")
+        plt.ylabel(f"Amplitude ({output.unit})")
         plt.grid(True)
         plt.show()
 
@@ -469,27 +471,23 @@ class SourceHarmonicsTwoParameters(SourceParent):
 
         _, axes = plt.subplots(2, 1, sharex=True)
 
-        data = self.source_control_rpm.control.data
-        time = self.source_control_rpm.control.time_freq_support.time_frequencies.data
-        unit = self.source_control_rpm.control.unit
-        name = self.source_control_rpm.control.name
-        unit_str = f" ({unit})" if len(unit) > 0 else ""
-        name_str = name if len(name) > 0 else "Amplitude"
-        axes[0].plot(time, data)
+        control = self.source_control_rpm.control
+        time = control.time_freq_support.time_frequencies
+        unit_str = f" ({control.unit})" if len(control.unit) > 0 else ""
+        name_str = control.name if len(control.name) > 0 else "Amplitude"
+        axes[0].plot(time.data, control.data)
         axes[0].set_title("Control profile 1")
         axes[0].set_ylabel(f"{name_str}{unit_str}")
         axes[0].grid(True)
 
-        data = self.source_control2.control.data
-        time = self.source_control2.control.time_freq_support.time_frequencies.data
-        unit = self.source_control2.control.unit
-        name = self.source_control2.control.name
-        unit_str = f" ({unit})" if len(unit) > 0 else ""
-        name_str = name if len(name) > 0 else "Amplitude"
-        axes[1].plot(time, data)
+        control = self.source_control2.control
+        time = control.time_freq_support.time_frequencies
+        unit_str = f" ({control.unit})" if len(control.unit) > 0 else ""
+        name_str = control.name if len(control.name) > 0 else "Amplitude"
+        axes[1].plot(time.data, control.data)
         axes[1].set_title("Control profile 2")
         axes[1].set_ylabel(f"{name_str}{unit_str}")
-        axes[1].set_xlabel("Time (s)")
+        axes[1].set_xlabel(f"Time ({time.unit})")
         axes[1].grid(True)
 
         plt.tight_layout()

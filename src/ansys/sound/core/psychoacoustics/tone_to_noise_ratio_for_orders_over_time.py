@@ -101,7 +101,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
     @order_list.setter
     def order_list(self, order_list: list):
         """Set the list of the numbers of the orders of interest."""
-        if order_list != None:
+        if order_list is not None:
             if len(order_list) == 0:
                 raise PyAnsysSoundException("Order list must contain at least one order.")
 
@@ -128,7 +128,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
                 "Use 'ToneToNoiseRatioForOrdersOverTime.profile'."
             )
 
-        if self.order_list == None:
+        if self.order_list is None:
             raise PyAnsysSoundException(
                 "No order list found for tone-to-noise ratio computation. "
                 "Use 'ToneToNoiseRatioForOrdersOverTime.order_list'."
@@ -207,7 +207,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         numpy.ndarray
             Tone-to-noise ratio over time, in dB, for the specified order.
         """
-        if self.order_list != None:
+        if self.order_list is not None:
             if order_index >= len(self.order_list) or order_index < 0:
                 raise PyAnsysSoundException(
                     f"Order index {order_index} is out of range. "
@@ -256,12 +256,16 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
                 f"Output is not processed yet. Use the ``{__class__.__name__}.process()`` method."
             )
 
+        unit = tnr_container[0][0].unit
+
         if use_rpm_scale:
-            x_scale_label = "RPM"
+            x_unit = tnr_container[1].unit
+            x_scale_label = f"RPM ({x_unit})"
             x_scale_data = self.get_rpm_scale()
             title = "Orders’ tone-to-noise ratio over RPM"
         else:
-            x_scale_label = "Time (s)"
+            x_unit = tnr_container[0][0].time_freq_support.time_frequencies.unit
+            x_scale_label = f"Time ({x_unit})"
             x_scale_data = self.get_time_scale()
             title = "Orders’ tone-to-noise ratio over time"
 
@@ -269,7 +273,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         fig.suptitle(title)
         ax.set_xlabel(x_scale_label)
 
-        ax.set_ylabel("Tone-to-noise ratio (dB)")
+        ax.set_ylabel(f"Tone-to-noise ratio ({unit})")
 
         for order_idx in range(len(self.order_list)):
             order_data = self.get_order_tone_to_noise_ratio_over_time(order_idx)

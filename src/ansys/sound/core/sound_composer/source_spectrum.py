@@ -76,16 +76,16 @@ class SourceSpectrum(SourceParent):
     def __str__(self) -> str:
         """Return the string representation of the object."""
         if self.source_spectrum_data is not None:
-            support_data = self.source_spectrum_data.time_freq_support.time_frequencies.data
+            frequencies = self.source_spectrum_data.time_freq_support.time_frequencies
 
-            if len(support_data) < 2:
+            if len(frequencies.data) < 2:
                 str_deltaf = "N/A"
             else:
-                str_deltaf = f"{support_data[1] - support_data[0]:.1f} Hz"
+                str_deltaf = f"{frequencies.data[1] - frequencies.data[0]:.1f} {frequencies.unit}"
 
             str_source = (
                 f"'{self.source_spectrum_data.name}'\n"
-                f"\tFmax: {support_data[-1]:.0f} Hz\n"
+                f"\tFmax: {frequencies.data[-1]:.0f} {frequencies.unit}\n"
                 f"\tDeltaF: {str_deltaf}"
             )
         else:
@@ -323,11 +323,11 @@ class SourceSpectrum(SourceParent):
             )
         output = self.get_output()
 
-        time_data = output.time_freq_support.time_frequencies.data
+        time = output.time_freq_support.time_frequencies
 
-        plt.plot(time_data, output.data)
+        plt.plot(time.data, output.data)
         plt.title(output.name if len(output.name) > 0 else "Signal from spectrum source")
-        plt.xlabel("Time (s)")
-        plt.ylabel("Amplitude (Pa)")
+        plt.xlabel(f"Time ({time.unit})")
+        plt.ylabel(f"Amplitude ({output.unit})")
         plt.grid(True)
         plt.show()

@@ -123,7 +123,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
         self.__operator.connect(0, self.psd)
 
         # optional parameter: frequency list
-        if self.frequency_list != None:
+        if self.frequency_list is not None:
             # Convert to floats (in case integers were provided)
             frequency_list = list(np.float64(self.frequency_list))
             self.__operator.connect(1, frequency_list)
