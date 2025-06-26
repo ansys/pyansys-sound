@@ -18,7 +18,8 @@ env:
   MAIN_PYTHON_VERSION: '3.12'
   PACKAGE_NAME: 'ansys-sound-core'
   DOCUMENTATION_CNAME: 'sound.docs.pyansys.com'
-  ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG: ghcr.io/ansys/ansys-sound:latest
+  ANSRV_DPF_SOUND_IMAGE_WINDOWS: ghcr.io/ansys/ansys-sound
+  ANSRV_DPF_SOUND_MAIN_TAG: latest
   ANSRV_DPF_SOUND_PORT: 6780
   DPF_SOUND_CONT_NAME: ansys-sound-core
 
@@ -116,6 +117,12 @@ jobs:
     env:
       PYVISTA_OFF_SCREEN: true
       MPLBACKEND: Agg  # non-interactive mode ("headless backend") for matplotlib: no GUI is used when plotting
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - docker-image: 25.2
+          - docker-image: ${ env.ANSRV_DPF_SOUND_MAIN_TAG }
 
     steps:
       - uses: actions/checkout@v4
@@ -150,12 +157,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download DPF-Sound service container
-        run: docker pull $env:ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG
+        run: docker pull ${{ env.ANSRV_DPF_SOUND_IMAGE_WINDOWS }}:${{ matrix.docker-image }}
 
       - name: "Start DPF-Sound service and verify start"
         run: |
           .\.venv\Scripts\Activate.ps1
-          docker run -d --name ${{ env.DPF_SOUND_CONT_NAME }} -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ secrets.LICENSE_SERVER }}" -p ${{ env.ANSRV_DPF_SOUND_PORT }}:50052 --dns '8.8.8.8' ${{ env.ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG }}
+          docker run -d --name ${{ env.DPF_SOUND_CONT_NAME }} -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ secrets.LICENSE_SERVER }}" -p ${{ env.ANSRV_DPF_SOUND_PORT }}:50052 --dns '8.8.8.8' ${{ env.ANSRV_DPF_SOUND_IMAGE_WINDOWS }}:${{ matrix.docker-image }}
           python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
       - name: "Testing"
@@ -231,12 +238,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Download DPF-Sound service container"
-        run: docker pull $env:ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG
+        run: docker pull ${{ env.ANSRV_DPF_SOUND_IMAGE_WINDOWS }}:${{ env.ANSRV_DPF_SOUND_MAIN_TAG }}
 
       - name: "Start DPF-Sound service and verify start"
         run: |
           .\.venv\Scripts\Activate.ps1
-          docker run -d --name ${{ env.DPF_SOUND_CONT_NAME }} -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ secrets.LICENSE_SERVER }}" -p ${{ env.ANSRV_DPF_SOUND_PORT }}:50052 --dns '8.8.8.8' ${{ env.ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG }}
+          docker run -d --name ${{ env.DPF_SOUND_CONT_NAME }} -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ secrets.LICENSE_SERVER }}" -p ${{ env.ANSRV_DPF_SOUND_PORT }}:50052 --dns '8.8.8.8' ${{ env.ANSRV_DPF_SOUND_IMAGE_WINDOWS }}:${{ env.ANSRV_DPF_SOUND_MAIN_TAG }}
           python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
       - name: "Run Ansys documentation building action"
