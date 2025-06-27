@@ -131,7 +131,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        docker-image: [25.2, "${{ needs.retrieve-main-tag.outputs.main_tag }}"]
+        docker-image: ["${{ needs.retrieve-main-tag.outputs.main_tag }}", 25.2]
 
     steps:
       - uses: actions/checkout@v4
