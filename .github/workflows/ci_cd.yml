@@ -132,15 +132,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        docker-image: ["${{ needs.retrieve-main-tag.outputs.main_tag }}", 25.2]
-        # docker-image: ["${{ needs.retrieve-main-tag.outputs.main_tag }}", 25.2]
+        docker-image: [25.2, "${{ needs.retrieve-main-tag.outputs.main_tag }}"]
 
     steps:
-      - name: "debug"
-        run: |
-          echo "matrix.docker-image: ${{ matrix.docker-image }}"
-          echo "needs.retrieve-main-tag.outputs.main_tag: ${{ needs.retrieve-main-tag.outputs.main_tag }}"
-
       - uses: actions/checkout@v4
 
       - name: "Set up Python"
