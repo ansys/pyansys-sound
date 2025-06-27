@@ -23,6 +23,7 @@
 from unittest.mock import patch
 
 from ansys.dpf.core import Field, FieldsContainer
+from ansys.dpf.core.check_version import version_requires
 import numpy as np
 import pytest
 
@@ -57,6 +58,7 @@ def test_stft_process():
         assert False
 
 
+@version_requires("11.0")
 def test_stft_get_output():
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()

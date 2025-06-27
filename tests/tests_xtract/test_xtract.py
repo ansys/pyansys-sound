@@ -23,6 +23,7 @@
 from unittest.mock import patch
 
 from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer
+from ansys.dpf.core.check_version import version_requires
 import numpy as np
 import pytest
 
@@ -253,6 +254,7 @@ def test_xtract_get_output_as_np_array_warns():
     assert record[0].message.args[0] == "No output is available."
 
 
+@version_requires("11.0")
 def test_xtract_get_output():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
@@ -333,6 +335,7 @@ def test_xtract_get_output_noprocess():
     assert xtract.output_remainder_signal is None
 
 
+@version_requires("11.0")
 def test_xtract_get_output_fc():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
@@ -406,6 +409,7 @@ def test_xtract_get_output_fc():
     assert np.max(fc_remainder[1].data) == pytest.approx(7.01886734e-07)
 
 
+@version_requires("11.0")
 def test_xtract_get_output_as_nparray():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
@@ -462,6 +466,7 @@ def test_xtract_get_output_as_nparray():
     assert np.max(np_remainder) == pytest.approx(7.01886734e-07)
 
 
+@version_requires("11.0")
 def test_xtract_get_output_fc_as_nparray():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()

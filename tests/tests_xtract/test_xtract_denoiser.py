@@ -23,6 +23,7 @@
 from unittest.mock import patch
 
 from ansys.dpf.core import Field, FieldsContainer
+from ansys.dpf.core.check_version import version_requires
 import numpy as np
 import pytest
 
@@ -95,6 +96,7 @@ def test_xtract_denoiser_process_except2():
     assert excinfo.value.args[0] == "Input parameters are not set."
 
 
+@version_requires("11.0")
 def test_xtract_denoiser_process():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
@@ -267,6 +269,7 @@ def test_xtract_denoiser_get_output_fc():
     assert xtract_denoiser.get_output()[1][0].data[99] == pytest.approx(-3.329021806551297e-15)
 
 
+@version_requires("11.0")
 def test_xtract_denoiser_get_output_as_nparray():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()

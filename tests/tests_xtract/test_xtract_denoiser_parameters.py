@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 from ansys.dpf.core import Field
+from ansys.dpf.core.check_version import version_requires
 import numpy as np
 import pytest
 
@@ -67,6 +68,7 @@ def test_xtract_denoiser_parameters_generate_noise_psd_from_white_noise_level():
     assert s == pytest.approx(464.853)
 
 
+@version_requires("11.0")
 def test_xtract_denoiser_parameters_generate_noise_psd_from_automatic_estimation():
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
     wav_loader.process()
