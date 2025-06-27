@@ -110,6 +110,17 @@ jobs:
 # vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv    RUNNING ON SELF-HOSTED RUNNER    vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 # =================================================================================================
 
+  retrieve-main-tag:
+    name: "Retrieve main Docker image tag for testing matrix"
+    runs-on: ubuntu-latest
+    outputs:
+      main_tag: ${{ steps.set-tag.outputs.main_tag }}
+    steps:
+      - id: set-tag
+        run: echo "main_tag=${{ env.ANSRV_DPF_SOUND_MAIN_TAG }}" >> $GITHUB_OUTPUT
+        env:
+          ANSRV_DPF_SOUND_MAIN_TAG: ${{ env.ANSRV_DPF_SOUND_MAIN_TAG }}
+
   testing-windows:
     name: "Testing and coverage (Windows)"
     needs: [smoke-tests]
@@ -120,9 +131,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - docker-image: 25.2
-          - docker-image: ${{ env.ANSRV_DPF_SOUND_MAIN_TAG }}
+        docker-image: [25.2, "${{ needs.retrieve-main-tag.outputs.main_tag }}"]
 
     steps:
       - uses: actions/checkout@v4
