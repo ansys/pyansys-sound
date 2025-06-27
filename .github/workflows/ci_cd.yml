@@ -122,7 +122,7 @@ jobs:
       matrix:
         include:
           - docker-image: 25.2
-          - docker-image: ${ env.ANSRV_DPF_SOUND_MAIN_TAG }
+          - docker-image: ${{ env.ANSRV_DPF_SOUND_MAIN_TAG }}
 
     steps:
       - uses: actions/checkout@v4
