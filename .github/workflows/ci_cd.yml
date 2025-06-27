@@ -123,7 +123,8 @@ jobs:
 
   testing-windows:
     name: "Testing and coverage (Windows)"
-    # needs: [smoke-tests]
+    needs: [retrieve-main-tag]
+    # needs: [smoke-tests, retrieve-main-tag]
     runs-on: [self-hosted, Windows, pyansys-sound]
     env:
       PYVISTA_OFF_SCREEN: true
