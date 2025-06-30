@@ -224,19 +224,22 @@ class TonalityECMA418_2(PsychoacousticsParent):
         ft_over_time = self.get_tone_frequency_over_time()
         time_scale_tonality = self.get_tonality_time_scale()
         time_scale_ft = self.get_tone_frequency_time_scale()
+        tonality_unit = self.get_output()[1].unit
+        time_unit = self.get_output()[1].time_freq_support.time_frequencies.unit
+        frequency_unit = self.get_output()[2].unit
 
         # Plot ECMA 418-2 parameters over time.
         _, axes = plt.subplots(2, 1, sharex=True)
         axes[0].plot(time_scale_tonality, tonality_over_time)
         axes[0].set_title("ECMA418-2 psychoacoustic tonality")
-        axes[0].set_ylabel(r"T ($\mathregular{tu_{HMS}})$")
+        axes[0].set_ylabel(f"T ({tonality_unit})")
         axes[0].grid(True)
 
         axes[1].plot(time_scale_ft, ft_over_time)
         axes[1].set_title("ECMA418-2 tone frequency")
-        axes[1].set_ylabel(r"$\mathregular{f_{ton}}$ (Hz)")
+        axes[1].set_ylabel(r"$\mathregular{f_{ton}}$" + f" ({frequency_unit})")
         axes[1].grid(True)
-        axes[1].set_xlabel("Time (s)")
+        axes[1].set_xlabel(f"Time ({time_unit})")
 
         plt.tight_layout()
         plt.show()

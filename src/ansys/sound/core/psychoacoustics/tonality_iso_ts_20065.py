@@ -417,19 +417,22 @@ class TonalityISOTS20065(PsychoacousticsParent):
         decisive_audibility_over_time = self.get_decisive_audibility_over_time()
         decisive_frequency_over_time = self.get_decisive_frequency_over_time()
         time_scale = self.get_time_scale()
+        difference_unit = self.get_output()[2].unit
+        frequency_unit = self.get_output()[4].unit
+        time_unit = self.get_output()[2].time_freq_support.time_frequencies.unit
 
         # Plot ISO/TS 20065 parameters over time.
         _, axes = plt.subplots(2, 1, sharex=True)
         axes[0].plot(time_scale, decisive_audibility_over_time)
         axes[0].set_title("ISO/TS 20065 decisive audibility")
-        axes[0].set_ylabel(r"$\mathregular{\Delta L_j}$ (dB)")
+        axes[0].set_ylabel(r"$\mathregular{\Delta L_j}$" + f" ({difference_unit})")
         axes[0].grid(True)
 
         axes[1].plot(time_scale, decisive_frequency_over_time)
         axes[1].set_title("ISO/TS 20065 decisive frequency")
-        axes[1].set_ylabel(r"$\mathregular{f_T}$ (Hz)")
+        axes[1].set_ylabel(r"$\mathregular{f_T}$" + f" ({frequency_unit})")
         axes[1].grid(True)
-        axes[1].set_xlabel("Time (s)")
+        axes[1].set_xlabel(f"Time ({time_unit})")
 
         plt.tight_layout()
         plt.show()

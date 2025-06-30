@@ -138,5 +138,10 @@ def test_istft_plot(mock_show):
     stft = Stft(signal=wav_loader.get_output())
     stft.process()
     istft = Istft(stft=stft.get_output())
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Output is not processed yet. Use the `Istft.process\\(\\)` method.",
+    ):
+        istft.plot()
     istft.process()
     istft.plot()

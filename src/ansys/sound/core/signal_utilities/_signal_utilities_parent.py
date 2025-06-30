@@ -24,7 +24,7 @@
 from ansys.dpf.core import Field
 import matplotlib.pyplot as plt
 
-from .._pyansys_sound import PyAnsysSound
+from .._pyansys_sound import PyAnsysSound, PyAnsysSoundException
 
 
 class SignalUtilitiesParent(PyAnsysSound):
@@ -36,6 +36,11 @@ class SignalUtilitiesParent(PyAnsysSound):
 
     def plot(self):
         """Plot the resulting signals in a single figure."""
+        if self._output is None:
+            raise PyAnsysSoundException(
+                "Output is not processed yet. "
+                f"Use the `{self.__class__.__name__}.process()` method."
+            )
         output = self.get_output()
 
         if type(output) == Field:
@@ -50,11 +55,11 @@ class SignalUtilitiesParent(PyAnsysSound):
         unit = field.unit
 
         for i in range(num_channels):
-            plt.plot(time_data, output[i].data, label="Channel {}".format(i))
+            plt.plot(time_data, output[i].data, label=f"Channel {i}")
 
         plt.title(field.name)
         plt.legend()
-        plt.xlabel(time_unit)
-        plt.ylabel(unit)
+        plt.xlabel(f"Time ({time_unit})")
+        plt.ylabel(f"Amplitude ({unit})")
         plt.grid(True)
         plt.show()

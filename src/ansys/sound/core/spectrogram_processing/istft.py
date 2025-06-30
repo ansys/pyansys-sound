@@ -59,10 +59,10 @@ class Istft(SpectrogramProcessingParent):
     @stft.setter
     def stft(self, stft: FieldsContainer):
         """Set the STFT."""
-        if type(stft) != FieldsContainer and stft != None:
+        if type(stft) != FieldsContainer and stft is not None:
             raise PyAnsysSoundException("Input must be a DPF fields container.")
 
-        if stft != None and (
+        if stft is not None and (
             not stft.has_label("time")
             or not stft.has_label("complex")
             or not stft.has_label("channel_number")
@@ -131,17 +131,17 @@ class Istft(SpectrogramProcessingParent):
 
         Plot the signal resulting from the ISTFT.
         """
+        if self._output is None:
+            raise PyAnsysSoundException(
+                f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
+            )
         output = self.get_output()
-        field = output
+        time = output.time_freq_support.time_frequencies
 
-        time_data = output.time_freq_support.time_frequencies.data
-        time_unit = output.time_freq_support.time_frequencies.unit
-        unit = field.unit
-        plt.plot(time_data, field.data, label="Signal")
-
-        plt.title(field.name)
+        plt.plot(time.data, output.data, label="Signal")
+        plt.title(output.name)
         plt.legend()
-        plt.xlabel(time_unit)
-        plt.ylabel(unit)
+        plt.xlabel(f"Time ({time.unit})")
+        plt.ylabel(f"Amplitude ({output.unit})")
         plt.grid(True)
         plt.show()

@@ -110,5 +110,10 @@ def test_load_wav_get_set_path():
 @patch("matplotlib.pyplot.show")
 def test_load_wav_plot(mock_show):
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Output is not processed yet. Use the `LoadWav.process\\(\\)` method.",
+    ):
+        wav_loader.plot()
     wav_loader.process()
     wav_loader.plot()

@@ -242,11 +242,12 @@ class SoundComposer(SoundComposerParent):
                 f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
             )
         output_signal = self.get_output()
+        str_output_unit = f" ({output_signal.unit})" if len(output_signal.unit) > 0 else ""
+        time = output_signal.time_freq_support.time_frequencies
 
-        str_unit = f" ({output_signal.unit})" if len(output_signal.unit) > 0 else ""
-        plt.plot(output_signal.time_freq_support.time_frequencies.data, output_signal.data)
+        plt.plot(time.data, output_signal.data)
         plt.title("Generated signal")
-        plt.xlabel("Time (s)")
-        plt.ylabel(f"Amplitude{str_unit}")
+        plt.xlabel(f"Time ({time.unit})")
+        plt.ylabel(f"Amplitude{str_output_unit}")
         plt.grid(True)
         plt.show()
