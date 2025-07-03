@@ -55,121 +55,126 @@ The example shows how to perform these operations:
 # Set up analysis
 # ~~~~~~~~~~~~~~~
 # Setting up the analysis consists of loading the required libraries,
-# and connecting to the DPF server.
+# connecting to the DPF server, and downloading the data files.
+
+from ansys.sound.core.examples_helpers import (
+    download_sound_composer_FRF_eMotor,
+    download_sound_composer_source_eMotor,
+    download_sound_composer_source_WindRoadNoise,
+    download_sound_composer_sourcecontrol_eMotor,
+    download_sound_composer_sourcecontrol_WindRoadNoise,
+)
 
 # Load Ansys libraries.
-from ansys.sound.core.examples_helpers import download_sound_composer_project_whatif
 from ansys.sound.core.server_helpers import connect_to_or_start_server
-from ansys.sound.core.sound_composer import SoundComposer
+from ansys.sound.core.signal_processing import Filter
+from ansys.sound.core.signal_utilities.write_wav import WriteWav
+from ansys.sound.core.sound_composer import *
 from ansys.sound.core.spectrogram_processing import Stft
 
 # sphinx_gallery_start_ignore
-# sphinx_gallery_thumbnail_path = '_static/_image/example010_thumbnail.png'
+# sphinx_gallery_thumbnail_path = '_static/_image/example011_thumbnail.png'
 # sphinx_gallery_end_ignore
 
 # Connect to a remote server or start a local server.
-my_server = connect_to_or_start_server(use_license_context=True)
+my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
-
-# %%
-# Load a Sound Composer project from a file
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load a Sound Composer project, using the :meth:`.SoundComposer.load()` method. A Sound Composer
-# project file has the extension .scn, and can be created with Ansys Sound SAS.
-
-# Download the Sound Composer project file used in this example.
-path_sound_composer_project_scn = download_sound_composer_project_whatif(server=my_server)
-
-# Create a SoundComposer object and load the project.
-sound_composer_project = SoundComposer()
-sound_composer_project.load(path_sound_composer_project_scn)
-
-# %%
-# You can use built-in :func:`print()` function to display a summary of the content of the project.
-print(sound_composer_project)
-
-# %%
-# You can see that this project is made of 4 tracks:
-
-# %%
-# - a track with a harmonics source, coming form the FEM simulation of an e-motor,
-# - a track with another harmonics source, coming from the multibody simulation of a gearbox,
-# - a track with a broadband noise source, coming from the CFD simulation of a HVAC system,
-# - a track with another broadband noise source, coming form the analysis of a background noise
-#   measurement in the cabin, which would correspond to the rolling noise and the wind noise.
-
-# %%
-# Explore the project's list of tracks
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Let us have a closer look at the content of each individual track by printing it.
-
-for i, track in enumerate(sound_composer_project.tracks, start=1):
-    print(f"--- Track n. {i} ---\n {track}\n")
-
-# %%
-# For each track, you can see some details about the source content, the associated control profile,
-# and whether the track includes a filter or not.
-
-# %%
-# Explore the content of a track
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# To look at a specific track, use the attribute :attr:`.tracks` of the :class:`.SoundComposer`
-# object, containing the list of the tracks included.
-# For example, let us extract the second track of the project, which contains the gearbox source.
-#
-# The track object returned is of type :class:`.Track`. You can print it to display its content,
-# as shown in the previous section.
-track_gear = sound_composer_project.tracks[1]
-
-# %%
-# This track contains a harmonics source, stored in its :attr:`.Track.source` attribute of
-# type :class:`.SourceHarmonics`. Here, it consists of a set of 50 harmonics, which are defined by
-# their order numbers, and their levels over 249 values of the control parameter (RPM).
-#
-# These data are stored in the :attr:`.SourceHarmonics.source_harmonics`
-# attribute of the track's source object, as a :class:`FieldsContainer
-# <ansys.dpf.core.fields_container.FieldsContainer>` object. It contains 249 fields, each
-# corresponding to a specific value of the control parameter (RPM), and containing
-# the levels in Pa² of the 50 harmonics at this RPM value.
-print(
-    f"Number of RPM points defined in the source dataset: "
-    f"{len(track_gear.source.source_harmonics)}"
+# Download the necessary files used in this example, that is the source, FRF and control profile
+# files which contains the acoustic definition of the sources, the transfer and the
+# conditions of the sources (speed of the engine, speed of the vehicle).
+path_sound_composer_source_eMotor = download_sound_composer_source_eMotor(server=my_server)
+path_sound_composer_sourcecontrol_eMotor = download_sound_composer_sourcecontrol_eMotor(
+    server=my_server
+)
+path_sound_composer_FRF_eMotor = download_sound_composer_FRF_eMotor(server=my_server)
+path_sound_composer_source_WindRoadNoise = download_sound_composer_source_WindRoadNoise(
+    server=my_server
+)
+path_sound_composer_sourcecontrol_WindRoadNoise = (
+    download_sound_composer_sourcecontrol_WindRoadNoise(server=my_server)
 )
 
 # %%
-# The source control data (that is, the RPM values over time) can be accessed using the
-# :attr:`.SourceHarmonics.source_control` attribute of the source in the track. Let us display this
-# control profile in a figure: it is a linear ramp-up from 250 rpm to 5000 rpm, over 8 seconds.
-track_gear.source.plot_control()
+# Create a new Sound Composer project
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# To create a new Sound Composer project, instantiate the :class:`.SoundComposer` class.
+# This instance will be used to create tracks, add sources to them, and generate the sound
+# of the project.
+
+sound_composer_project = SoundComposer()
 
 # %%
-# The track also contains a filter, stored as a :class:`.Filter` object.
-# Here, it is a finite impulse response (FIR) filter that models the transfer between the source
-# and the listening position.
-track_gear.filter
-print(track_gear.filter)
+# Create track #1, with a source of type harmonics
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# To model the noise of an e-motor, we create a track with a source of type harmonics.
+# This track contains a source that represents the harmonics of the e-motor noise, a source control
+# that defines the operating conditions of the e-motor, and a filter that represents the transfer
+# function of the e-motor noise source to the receiver point, usually the driver position.
+
+# Create a new Sound Composer track: it will host the source, FRF and control parameter
+# of the eMotor noise
+track_eMotor = Track(name="eMotor harmonics noise")
+
+# Create a source of type harmonics, using the :class:`.SourceHarmonics` class, given the
+# path to the source file, which contains the data relative to the levels of the harmonics
+# of the e-motor noise.
+source_eMotor = SourceHarmonics(file=path_sound_composer_source_eMotor)
+
+# Create a source control profile, using the :class:`.SourceControlOneParameter` class,
+# and assign it to the source.
+# This source control profile defines the operating conditions of the e-motor, in that case the
+# speed of the e-motor, evolving from 250 to 5000 rpm in 8 seconds.
+source_control_eMotor = SourceControlTime(file_str=path_sound_composer_sourcecontrol_eMotor)
+
+# Assign the source control to the source
+source_eMotor.source_control = source_control_eMotor
+
+# Assign the source to the track
+track_eMotor.source = source_eMotor
+
+# Create a filter, using the :class:`.Filter` class, and assign it to the track.
+# This filter models the transfer function (FRF) of the e-motor noise source to the receiver point.
+filter_eMotor = Filter(file=path_sound_composer_FRF_eMotor)
+track_eMotor.filter = filter_eMotor
+
+# Assign the track to the Sound Composer project. It is the first track of this project.
+sound_composer_project.add_track(track_eMotor)
 
 # %%
-# Let us generate the signal corresponding to the track using the :meth:`.Track.process()` method,
-# plot its waveform, and display its spectrogram with the :class:`.Stft` class.
-track_gear.process(sampling_frequency=44100.0)
-track_gear.plot()
+# Create track #2, with a source of type broadband noise
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# To model the wind and road noise produced in the cabin during its movement, we create a track
+# with a source of type broadband noise, evolving according to a control profile which gives
+# the evolution of the speed of the vehicle.
 
-spectrogram_gear = Stft(signal=track_gear.get_output())
-spectrogram_gear.process()
-spectrogram_gear.plot()
+# Create a new Sound Composer track: it will host the source and control parameter of the wind
+# and road noise source, that is the background noise produced in the cabin while the vehicle
+# is moving.
+track_WindRoadNoise = Track(name="Wind and road noise")
 
-# %%
-# If needed, you can access the output signal of a track using :meth:`.Track.get_output()`.
-signal_gear = track_gear.get_output()
+# Create a source of type Broadband Noise (BBN), using the :class:`.SourceBroadbandNoise` class.
+source_WindRoadNoise = SourceBroadbandNoise(file=path_sound_composer_source_WindRoadNoise)
+
+# Create a source control profile, using the :class:`.SourceControlOneParameter` class,
+# and assign it to the source
+source_control_WindRoadNoise = SourceControlTime(
+    file_str=path_sound_composer_sourcecontrol_WindRoadNoise
+)
+source_WindRoadNoise.source_control = source_control_WindRoadNoise
+
+# Assign the source to the track
+track_WindRoadNoise.source = source_WindRoadNoise
+
+# Assign the track to the Sound Composer project. It is the second track of this project.
+sound_composer_project.add_track(track_WindRoadNoise)
 
 # %%
 # Generate the signal of the project
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Now, let us generate the signal of the project using the :meth:`.SoundComposer.process()` method.
-# This method generates all track signals, filters them with the associated filters whenever
-# specified, applies track gains, and sums the resulting signals together.
-
+# This method generates the acoustic signals of each track, filters them with the associated filters,
+# whenever specified, applies track's gains, and sums the resulting signals together.
+# At the end, the overall noise of this system is displayed, and saved into a file.
 sound_composer_project.process(sampling_frequency=44100.0)
 
 # %%
@@ -177,16 +182,45 @@ sound_composer_project.process(sampling_frequency=44100.0)
 # method, and its spectrogram using the :class:`.Stft` class.
 sound_composer_project.plot()
 
-spectrogram = Stft(signal=sound_composer_project.get_output())
+# %%
+# You can use built-in :func:`print()` function to display a summary of the content of the project.
+print(sound_composer_project)
+
+# %%
+# Get the resulting signal, as a :class:`Field`
+generated_signal_from_project = sound_composer_project.get_output()
+
+# %%
+# Display the spectrogram of the generated signal using the :class:`.Stft` class.
+spectrogram = Stft(signal=generated_signal_from_project)
 spectrogram.process()
 spectrogram.plot()
 
 # %%
-# This workflow allows you to analyze and listen to the sound of the gearbox and the e-motor, in
-# realistic conditions, that is, including the HVAC noise and the background noise inside the cabin.
+# Save the signal as wav file sing :func:`WriteWav` operator.
+WriteWav(
+    signal=generated_signal_from_project,
+    path_to_write="generated_sound_from_SoundComposer_project.wav",
+).process()
+
+
+# %%
+# You can also save the Sound Composer project for later use, using the
+# :meth:`.SoundComposer.save()` method. This saves the project in a file with
+# the extension ``.scn`` (Sound Composer project file).
+# This file can also be loaded in Ansys Sound Analysis & Specification.
+
+sound_composer_project.save(project_path="My_SoundComposer_Project.scn")
+
+
+# %%
+# Conclusion
+# ~~~~~~~~~~
+# This workflow allows you to analyze and listen to the sound of the e-motor, in
+# realistic conditions, that is, including the background noise inside the cabin.
 #
-# By analyzing the spectrogram, you can anticipate how some harmonic tones from the e-motor and the
-# gearbox may be perceived by the passengers in the cabin.
+# By analyzing the spectrogram, you can anticipate how some harmonic tones from the e-motor
+# may be perceived by the passengers in the cabin.
 #
 # Further investigations can be conducted, using other tools included in PyAnsys
 # Sound, such as modules :mod:`Standard levels <ansys.sound.core.standard_levels>`,
