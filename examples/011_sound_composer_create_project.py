@@ -48,8 +48,8 @@ The example shows how to perform these operations:
 - Create a track with a source of type Harmonics, add it to the project
 - Create a track with a source of type Spectrum, add it to the project
 - Generate the signal of the project,
-Display the spectrogram of the generated signal
-- Save the signal as a wav file, 
+- Display the spectrogram of the generated signal
+- Save the signal as a wav file,
 - Save the project as a file.
 """
 
@@ -174,9 +174,10 @@ sound_composer_project.add_track(track_WindRoadNoise)
 # Generate the signal of the project
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Now, let us generate the signal of the project using the :meth:`.SoundComposer.process()` method.
-# This method generates the acoustic signals of each track, filters them with the associated filters,
-# whenever specified, applies track's gains, and sums the resulting signals together.
-# At the end, the overall noise of this system is displayed, and saved into a file.
+# This method generates the acoustic signals of each track, filters them with the
+# associated filter, whenever specified, applies track's gains, and sums the resulting signals
+# together. At the end, the overall noise of this system is displayed, and saved into a file.
+
 sound_composer_project.process(sampling_frequency=44100.0)
 
 # %%
