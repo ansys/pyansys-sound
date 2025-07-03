@@ -29,25 +29,27 @@ Create and work with a Sound Composer project
 The Sound Composer is a tool that allows you to generate the sound of a system by combining the
 sounds of its components, which we call sources here. Each source can be made of data coming from
 test analysis, or from a simulation, or simply consist of a single audio recording. The sources are
-combined into a project, where each source is assigned a track.
+combined into a Sound Composer project, where each source is assigned to a track.
 
-A track is a data structure made of source data, source control data, an output gain, and,
+A track is a data structure made of a source data, a source control data, an output gain, and,
 optionally, a transfer function in the form of a digital filter. It can generate the sound of the
 component (as characterized by the source data), in specific operating conditions (the source
-control), and filtered according to the transfer function.
+control), and filtered according to the transfer function (which models the transfer from the
+source to the receiver).
 
 This example shows how to create a Sound Composer project, with the :class:`.SoundComposer` class.
 It starts by creating a new project, then adds tracks to it, and finally generates the sound of the
-project. It illustrates the notions of project, track, source, source control, and filter.
+project. It illustrates the notions of Sound Composer project, track, source, source control,
+and filter.
 
 The example shows how to perform these operations:
 
 - Create a project,
 - Create a track with a source of type Harmonics, add it to the project
 - Create a track with a source of type Spectrum, add it to the project
-- Create a track with a source of type Audio, add it to the project
-- Create a track with a source of type HarmoBroadband noisenics, add it to the project
 - Generate the signal of the project,
+Display the spectrogram of the generated signal
+- Save the signal as a wav file, 
 - Save the project as a file.
 """
 
