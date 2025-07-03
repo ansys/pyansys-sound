@@ -49,7 +49,7 @@ The example shows how to perform these operations:
 - Create a track with a source of type Spectrum, add it to the project
 - Generate the signal of the project,
 Display the spectrogram of the generated signal
-- Save the signal as a wav file, 
+- Save the signal as a wav file,
 - Save the project as a file.
 """
 
