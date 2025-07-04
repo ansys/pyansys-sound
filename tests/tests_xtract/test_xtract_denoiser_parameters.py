@@ -27,6 +27,7 @@ import pytest
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.xtract.xtract_denoiser_parameters import XtractDenoiserParameters
+import conftest
 
 
 def test_xtract_denoiser_parameters_instantiation():
@@ -78,7 +79,12 @@ def test_xtract_denoiser_parameters_generate_noise_psd_from_automatic_estimation
     noise = noise_psd.data
 
     s = np.sum(noise)
-    assert s == pytest.approx(0.00522007046561157)
+
+    if conftest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+        # bug fix in DPF Sound 2026 R1 ID#1247009
+        assert s == pytest.approx(0.00522007046561157)
+    else:  # DPF Sound <= 2025 R2
+        assert s == pytest.approx(0.0051941522299330245)
 
 
 def test_xtract_denoiser_parameters_generate_noise_psd_from_noise_samples():

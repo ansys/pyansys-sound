@@ -22,7 +22,9 @@
 
 import os
 
+from ansys.dpf import core
 from ansys.dpf.core import upload_file_in_tmp_folder
+from ansys.dpf.core.check_version import get_server_version, meets_version
 import pytest
 
 from ansys.sound.core.server_helpers import connect_to_or_start_server
@@ -213,3 +215,14 @@ def pytest_configure(config):
 
     ## The temporary folder is the folder in the server where the files are stored.
     pytest.temporary_folder = os.path.dirname(pytest.data_path_flute_in_container)
+
+
+#### Define macros for server version checks
+# 11.0 corresponds to Ansys 2026 R1
+SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0 = meets_version(
+    get_server_version(core._global_server()), "11.0"
+)
+# 10.0 corresponds to Ansys 2025 R2
+SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_10_0 = meets_version(
+    get_server_version(core._global_server()), "10.0"
+)
