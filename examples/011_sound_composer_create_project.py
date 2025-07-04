@@ -49,7 +49,6 @@ The example shows how to perform these operations:
 - Create a track with a source of type Spectrum, add it to the project
 - Generate the signal of the project,
 - Display the spectrogram of the generated signal,
-- Save the signal as a wav file,
 - Save the project as a scn file.
 """
 
@@ -70,7 +69,6 @@ from ansys.sound.core.examples_helpers import (
 # Load Ansys libraries.
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_processing import Filter
-from ansys.sound.core.signal_utilities.write_wav import WriteWav
 from ansys.sound.core.sound_composer import *
 from ansys.sound.core.spectrogram_processing import Stft
 
@@ -198,13 +196,6 @@ generated_signal_from_project = sound_composer_project.get_output()
 spectrogram = Stft(signal=generated_signal_from_project)
 spectrogram.process()
 spectrogram.plot()
-
-# %%
-# Save the signal as wav file sing :func:`WriteWav` operator.
-WriteWav(
-    signal=generated_signal_from_project,
-    path_to_write="generated_sound_from_SoundComposer_project.wav",
-).process()
 
 # %%
 # You can also save the Sound Composer project for later use, using the
