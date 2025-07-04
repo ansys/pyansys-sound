@@ -145,6 +145,6 @@ def test_download_sound_composer_source_WindRoadNoise():
 
 def test_download_sound_composer_sourcecontrol_WindRoadNoise():
     download_sound_composer_sourcecontrol_WindRoadNoise()[0]
-    p = str(EXAMPLES_PATH) + "/WindRoadNoise - vehicle speed.txt`"
+    p = str(EXAMPLES_PATH) + "/WindRoadNoise - vehicle speed.txt"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 80
