@@ -1,7 +1,7 @@
 Sound composer
 --------------
 
-Sound Composer is a module allowing you to generate complex sounds by mixing several tracks.
+Sound Composer is a feature allowing you to generate complex sounds by mixing several tracks.
 
 Each track contains a source, which can be an audio recording, or a set of spectral data
 (from a CAE simulation for example), possibly associated to specific control values. The track may also

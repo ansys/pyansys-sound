@@ -241,13 +241,14 @@ class Stft(SpectrogramProcessingParent):
         np.seterr(divide="warn")
         phase = self.get_stft_phase_as_nparray()
         phase = phase[0:half_nfft, :]
-        time_data = self.signal.time_freq_support.time_frequencies.data
-        time_step = time_data[1] - time_data[0]
+        time_data_signal = self.signal.time_freq_support.time_frequencies.data
+        time_step = time_data_signal[1] - time_data_signal[0]
         fs = 1.0 / time_step
-        num_time_index = len(self.get_output().get_available_ids_for_label("time"))
+
+        time_data_spectrogram = self.get_output().time_freq_support.time_frequencies.data
 
         # Boundaries of the plot
-        extent = [0, time_step * num_time_index, 0.0, fs / 2.0]
+        extent = [time_data_spectrogram[0], time_data_spectrogram[-1], 0.0, fs / 2.0]
 
         # Plotting
         f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
