@@ -83,6 +83,7 @@ def test_stft_get_output():
         assert fc_out[298].data[0] == -0.019828863441944122
     else:  # DPF Sound <= 2025 R2
         assert len(fc_out) == 310
+        assert len(fc_out[100].data) == stft.fft_size
         assert fc_out[100].data[0] == -0.11434437334537506
         assert fc_out[200].data[0] == -0.09117653965950012
         assert fc_out[300].data[0] == -0.019828863441944122
