@@ -29,6 +29,7 @@ import pytest
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectrogram_processing import Stft
+import conftest
 
 
 def test_stft_instantiation():
@@ -73,11 +74,18 @@ def test_stft_get_output():
     stft.process()
     fc_out = stft.get_output()
 
-    assert len(fc_out) == 308
-    assert len(fc_out[100].data) == stft.fft_size
-    assert fc_out[98].data[0] == -0.11434437334537506
-    assert fc_out[198].data[0] == -0.09117653965950012
-    assert fc_out[298].data[0] == -0.019828863441944122
+    if conftest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+        # bug fix in DPF Sound 2026 R1 ID#1247009
+        assert len(fc_out) == 308
+        assert len(fc_out[100].data) == stft.fft_size
+        assert fc_out[98].data[0] == -0.11434437334537506
+        assert fc_out[198].data[0] == -0.09117653965950012
+        assert fc_out[298].data[0] == -0.019828863441944122
+    else:  # DPF Sound <= 2025 R2
+        assert len(fc_out) == 310
+        assert fc_out[100].data[0] == -0.11434437334537506
+        assert fc_out[200].data[0] == -0.09117653965950012
+        assert fc_out[300].data[0] == -0.019828863441944122
 
 
 def test_stft_get_output_as_np_array():
@@ -89,12 +97,19 @@ def test_stft_get_output_as_np_array():
     stft.process()
     arr = stft.get_output_as_nparray()
 
-    assert np.shape(arr) == (stft.fft_size, 154)
-
-    assert type(arr[100, 0]) == np.complex128
-    assert arr[100, 49] == (-1.0736324787139893 - 1.4027032852172852j)
-    assert arr[200, 49] == (0.511505126953125 + 0.3143689036369324j)
-    assert arr[300, 49] == (-0.03049434721469879 - 0.49174121022224426j)
+    if conftest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+        # bug fix in DPF Sound 2026 R1 ID#1247009
+        assert np.shape(arr) == (stft.fft_size, 154)
+        assert type(arr[100, 0]) == np.complex128
+        assert arr[100, 49] == (-1.0736324787139893 - 1.4027032852172852j)
+        assert arr[200, 49] == (0.511505126953125 + 0.3143689036369324j)
+        assert arr[300, 49] == (-0.03049434721469879 - 0.49174121022224426j)
+    else:  # DPF Sound <= 2025 R2
+        assert np.shape(arr) == (stft.fft_size, 155)
+        assert type(arr[100, 0]) == np.complex128
+        assert arr[100, 50] == (-1.0736324787139893 - 1.4027032852172852j)
+        assert arr[200, 50] == (0.511505126953125 + 0.3143689036369324j)
+        assert arr[300, 50] == (-0.03049434721469879 - 0.49174121022224426j)
 
 
 def test_stft_set_get_signal():
