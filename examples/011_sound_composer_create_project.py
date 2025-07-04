@@ -48,16 +48,16 @@ The example shows how to perform these operations:
 - Create a track with a source of type Harmonics, add it to the project
 - Create a track with a source of type Spectrum, add it to the project
 - Generate the signal of the project,
-- Display the spectrogram of the generated signal
+- Display the spectrogram of the generated signal,
 - Save the signal as a wav file,
-- Save the project as a file.
+- Save the project as a scn file.
 """
 
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
 # Setting up the analysis consists of loading the required libraries,
-# connecting to the DPF server, and downloading the data files.
+# connecting to the DPF server, and downloading the data files required in this example.
 
 from ansys.sound.core.examples_helpers import (
     download_sound_composer_FRF_eMotor,
@@ -206,7 +206,6 @@ WriteWav(
     path_to_write="generated_sound_from_SoundComposer_project.wav",
 ).process()
 
-
 # %%
 # You can also save the Sound Composer project for later use, using the
 # :meth:`.SoundComposer.save()` method. This saves the project in a file with
@@ -214,7 +213,6 @@ WriteWav(
 # This file can also be loaded in Ansys Sound Analysis & Specification.
 
 sound_composer_project.save(project_path="My_SoundComposer_Project.scn")
-
 
 # %%
 # Conclusion
