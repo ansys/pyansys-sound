@@ -1,0 +1,6 @@
+frf
+===
+
+.. currentmodule:: ansys.sound.core.signal_processing
+
+.. autoproperty:: Filter.frf
