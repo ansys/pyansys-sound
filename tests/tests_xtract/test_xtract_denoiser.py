@@ -31,6 +31,7 @@ from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.xtract.xtract_denoiser import XtractDenoiser
 from ansys.sound.core.xtract.xtract_denoiser_parameters import XtractDenoiserParameters
 
+
 def test_xtract_denoiser_instantiation():
     xtract_denoiser = XtractDenoiser()
     assert xtract_denoiser != None

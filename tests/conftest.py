@@ -216,7 +216,6 @@ def pytest_configure(config):
     ## The temporary folder is the folder in the server where the files are stored.
     pytest.temporary_folder = os.path.dirname(pytest.data_path_flute_in_container)
 
-
     #### Define global variables for server version checks
     # 11.0 corresponds to Ansys 2026 R1
     config.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0 = meets_version(
