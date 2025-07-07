@@ -125,7 +125,9 @@ def test_xtract_denoiser_process(request):
     assert xtract_denoiser.get_output_as_nparray()[0][99] == pytest.approx(-3.329021806551297e-15)
 
     assert xtract_denoiser.get_output_as_nparray()[0].shape == (156048,)
-    if request.config.dpf_version >= 11.0:
+    if request.config.dpf_version < 11.0:
+        pytest.skip("Requires DPF version 11.0 or higher.")
+    else:
         assert np.min(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(
             -0.7059202790260315
         )
@@ -303,7 +305,9 @@ def test_xtract_denoiser_get_output_as_nparray(request):
     assert xtract_denoiser.get_output_as_nparray()[0][99] == pytest.approx(-3.329021806551297e-15)
 
     assert xtract_denoiser.get_output_as_nparray()[0].shape == (156048,)
-    if request.config.dpf_version >= 11.0:
+    if request.config.dpf_version < 11.0:
+        pytest.skip("Requires DPF version 11.0 or higher.")
+    else:
         assert np.min(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(
             -0.7059202790260315
         )

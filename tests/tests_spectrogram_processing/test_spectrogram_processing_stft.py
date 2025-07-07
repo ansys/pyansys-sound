@@ -171,10 +171,13 @@ def test_stft_set_get_window_type():
 
 
 @patch("matplotlib.pyplot.show")
-def test_stft_plot(mock_show):
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
-    wav_loader.process()
-    fc_signal = wav_loader.get_output()
-    stft = Stft(signal=fc_signal)
-    stft.process()
-    stft.plot()
+def test_stft_plot(mock_show, request):
+    if request.config.dpf_version < 11.0:
+        pytest.skip("Requires DPF version 11.0 or higher.")
+    else:
+        wav_loader = LoadWav(pytest.data_path_flute_in_container)
+        wav_loader.process()
+        fc_signal = wav_loader.get_output()
+        stft = Stft(signal=fc_signal)
+        stft.process()
+        stft.plot()

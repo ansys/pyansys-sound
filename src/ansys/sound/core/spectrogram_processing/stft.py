@@ -28,6 +28,8 @@ from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
 
+from ansys.sound.core.server_helpers import version_requires
+
 from . import SpectrogramProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
@@ -226,6 +228,7 @@ class Stft(SpectrogramProcessingParent):
         output = self.get_output_as_nparray()
         return np.arctan2(np.imag(output), np.real(output))
 
+    @version_requires("11.0")
     def plot(self):
         """Plot signals.
 

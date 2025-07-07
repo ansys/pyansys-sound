@@ -1,0 +1,80 @@
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+"""Helpers to check DPF version."""
+
+from functools import wraps
+import sys
+
+from ansys.dpf.core import _global_server
+
+
+def version_requires(min_version):
+    """Check that the method being called matches a certain server version.
+
+    .. note::
+       The method must be used as a decorator.
+    """
+
+    def decorator(func):
+        # first arg *must* be a tuple containing the version
+        if not isinstance(min_version, str):
+            raise TypeError("version_requires decorator must be a string with a dot separator.")
+
+        @wraps(func)
+        def wrapper(self, *args, **kwargs):
+            """Call the original function."""
+            server = _global_server()
+            func_name = func.__name__
+
+            # particular cases
+            # scoping._set_ids case, must be checked in a particular way
+            from ansys.dpf.core import scoping
+
+            if func_name == "_set_ids" and isinstance(self, scoping.Scoping):
+                ids = args[0]
+                size = len(ids)
+                if size != 0:
+                    max_size = 8.0e6 // sys.getsizeof(ids[0])
+                    if size > max_size:
+                        server.check_version(
+                            min_version,
+                            (
+                                f"Function `{func.__name__}` of class `{self.__class__.__name__}` "
+                                f"requires DPF version {min_version} or higher."
+                            ),
+                        )
+            # default case, just check the compatibility
+            else:
+                server.check_version(
+                    min_version,
+                    (
+                        f"Function `{func.__name__}` of class `{self.__class__.__name__}` "
+                        f"requires DPF version {min_version} or higher."
+                    ),
+                )
+
+            return func(self, *args, **kwargs)
+
+        return wrapper
+
+    return decorator

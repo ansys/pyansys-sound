@@ -285,7 +285,9 @@ def test_xtract_get_output(request):
     ## Collecting outputs as Field
     noise, tonal, transient, remainder = xtract.get_output()
 
-    if request.config.dpf_version >= 11.0:
+    if request.config.dpf_version < 11.0:
+        pytest.skip("Requires DPF version 11.0 or higher.")
+    else:
         # Check numerical apps.
         assert np.min(noise.data) == pytest.approx(-0.2724415361881256)
         assert np.max(noise.data) == pytest.approx(0.30289316177368164)
@@ -385,7 +387,9 @@ def test_xtract_get_output_fc(request):
     assert len(fc_transient) == 2
     assert len(fc_remainder) == 2
 
-    if request.config.dpf_version >= 11.0:
+    if request.config.dpf_version < 11.0:
+        pytest.skip("Requires DPF version 11.0 or higher.")
+    else:
         # Check numerical apps.
         assert np.min(fc_noise[0].data) == pytest.approx(-0.2724415361881256)
         assert np.min(fc_tonal[0].data) == pytest.approx(-0.6827592849731445)
@@ -450,7 +454,9 @@ def test_xtract_get_output_as_nparray(request):
     assert type(np_transient) == np.ndarray
     assert type(np_remainder) == np.ndarray
 
-    if request.config.dpf_version >= 11.0:
+    if request.config.dpf_version < 11.0:
+        pytest.skip("Requires DPF version 11.0 or higher.")
+    else:
         # Check numerical apps.
         assert np.min(np_noise) == pytest.approx(-0.2724415361881256)
         assert np.max(np_noise) == pytest.approx(0.30289316177368164)
@@ -526,7 +532,9 @@ def test_xtract_get_output_fc_as_nparray(request):
     assert np_fc_transient[1] is not None
     assert np_fc_remainder[1] is not None
 
-    if request.config.dpf_version >= 11.0:
+    if request.config.dpf_version < 11.0:
+        pytest.skip("Requires DPF version 11.0 or higher.")
+    else:
         # Check numerical apps.
         assert np.min(np_fc_noise[0][:]) == pytest.approx(-0.2724415361881256)
         assert np.min(np_fc_tonal[0][:]) == pytest.approx(-0.6827592849731445)

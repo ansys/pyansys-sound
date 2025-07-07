@@ -78,7 +78,9 @@ def test_xtract_denoiser_parameters_generate_noise_psd_from_automatic_estimation
     noise = noise_psd.data
 
     s = np.sum(noise)
-    if request.config.dpf_version >= 11.0:
+    if request.config.dpf_version < 11.0:
+        pytest.skip("Requires DPF version 11.0 or higher.")
+    else:
         assert s == pytest.approx(0.00522007046561157)
 
 
@@ -95,5 +97,7 @@ def test_xtract_denoiser_parameters_generate_noise_psd_from_noise_samples(reques
     noise = noise_psd.data
 
     s = np.sum(noise)
-    if request.config.dpf_version >= 11.0:
+    if request.config.dpf_version < 11.0:
+        pytest.skip("Requires DPF version 11.0 or higher.")
+    else:
         assert s == pytest.approx(0.0025502318834469406)
