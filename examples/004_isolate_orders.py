@@ -105,13 +105,13 @@ def plot_stft(
     np.seterr(divide="warn")
 
     # Obtain sampling frequency, time steps, and number of time samples
-    time_data = stft.signal.time_freq_support.time_frequencies.data
-    time_step = time_data[1] - time_data[0]
+    time_data_signal = stft.signal.time_freq_support.time_frequencies.data
+    time_step = time_data_signal[1] - time_data_signal[0]
     fs = 1.0 / time_step
-    num_time_index = len(stft.get_output().get_available_ids_for_label("time"))
+    time_data_spectrogram = stft.get_output().time_freq_support.time_frequencies.data
 
     # Define boundaries of the plot
-    extent = [0, time_step * num_time_index, 0.0, fs / 2.0]
+    extent = [time_data_spectrogram[0], time_data_spectrogram[-1], 0.0, fs / 2.0]
 
     # Plot
     plt.figure()
