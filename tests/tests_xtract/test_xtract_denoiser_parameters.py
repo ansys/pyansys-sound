@@ -21,7 +21,6 @@
 # SOFTWARE.
 
 from ansys.dpf.core import Field
-from ansys.dpf.core.check_version import version_requires
 import numpy as np
 import pytest
 
@@ -68,8 +67,7 @@ def test_xtract_denoiser_parameters_generate_noise_psd_from_white_noise_level():
     assert s == pytest.approx(464.853)
 
 
-@version_requires("11.0")
-def test_xtract_denoiser_parameters_generate_noise_psd_from_automatic_estimation():
+def test_xtract_denoiser_parameters_generate_noise_psd_from_automatic_estimation(request):
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -80,10 +78,11 @@ def test_xtract_denoiser_parameters_generate_noise_psd_from_automatic_estimation
     noise = noise_psd.data
 
     s = np.sum(noise)
-    assert s == pytest.approx(0.00522007046561157)
+    if request.config.dpf_version >= 11.0:
+        assert s == pytest.approx(0.00522007046561157)
 
 
-def test_xtract_denoiser_parameters_generate_noise_psd_from_noise_samples():
+def test_xtract_denoiser_parameters_generate_noise_psd_from_noise_samples(request):
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -96,4 +95,5 @@ def test_xtract_denoiser_parameters_generate_noise_psd_from_noise_samples():
     noise = noise_psd.data
 
     s = np.sum(noise)
-    assert s == pytest.approx(0.0025502318834469406)
+    if request.config.dpf_version >= 11.0:
+        assert s == pytest.approx(0.0025502318834469406)

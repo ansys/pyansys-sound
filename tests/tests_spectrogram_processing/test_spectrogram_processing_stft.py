@@ -23,7 +23,6 @@
 from unittest.mock import patch
 
 from ansys.dpf.core import Field, FieldsContainer
-from ansys.dpf.core.check_version import version_requires
 import numpy as np
 import pytest
 
@@ -58,8 +57,7 @@ def test_stft_process():
         assert False
 
 
-@version_requires("11.0")
-def test_stft_get_output():
+def test_stft_get_output(request):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -75,14 +73,15 @@ def test_stft_get_output():
     stft.process()
     fc_out = stft.get_output()
 
-    assert len(fc_out) == 308
-    assert len(fc_out[100].data) == stft.fft_size
-    assert fc_out[98].data[0] == -0.11434437334537506
-    assert fc_out[198].data[0] == -0.09117653965950012
-    assert fc_out[298].data[0] == -0.019828863441944122
+    if request.config.dpf_version >= 11.0:
+        assert len(fc_out) == 308
+        assert len(fc_out[100].data) == stft.fft_size
+        assert fc_out[98].data[0] == -0.11434437334537506
+        assert fc_out[198].data[0] == -0.09117653965950012
+        assert fc_out[298].data[0] == -0.019828863441944122
 
 
-def test_stft_get_output_as_np_array():
+def test_stft_get_output_as_np_array(request):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -91,12 +90,13 @@ def test_stft_get_output_as_np_array():
     stft.process()
     arr = stft.get_output_as_nparray()
 
-    assert np.shape(arr) == (stft.fft_size, 154)
+    if request.config.dpf_version >= 11.0:
+        assert np.shape(arr) == (stft.fft_size, 154)
 
-    assert type(arr[100, 0]) == np.complex128
-    assert arr[100, 49] == (-1.0736324787139893 - 1.4027032852172852j)
-    assert arr[200, 49] == (0.511505126953125 + 0.3143689036369324j)
-    assert arr[300, 49] == (-0.03049434721469879 - 0.49174121022224426j)
+        assert type(arr[100, 0]) == np.complex128
+        assert arr[100, 49] == (-1.0736324787139893 - 1.4027032852172852j)
+        assert arr[200, 49] == (0.511505126953125 + 0.3143689036369324j)
+        assert arr[300, 49] == (-0.03049434721469879 - 0.49174121022224426j)
 
 
 def test_stft_set_get_signal():

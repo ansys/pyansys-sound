@@ -41,6 +41,7 @@ def pytest_configure(config):
     # persist until the end of the tests.
     config.dpf_server = server
     config.dpf_lic_context = lic_context
+    config.dpf_version = float(server.version)
 
     # Use the conftest.py file's directory to set the base directory for the test data files.
     base_dir = os.path.join(os.path.dirname(__file__), "data")
