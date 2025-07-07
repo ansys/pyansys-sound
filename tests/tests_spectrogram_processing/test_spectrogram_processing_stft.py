@@ -29,7 +29,6 @@ import pytest
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectrogram_processing import Stft
-import conftest
 
 
 def test_stft_instantiation():
@@ -58,7 +57,7 @@ def test_stft_process():
         assert False
 
 
-def test_stft_get_output():
+def test_stft_get_output(request):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -74,7 +73,7 @@ def test_stft_get_output():
     stft.process()
     fc_out = stft.get_output()
 
-    if conftest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    if request.config.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
         # bug fix in DPF Sound 2026 R1 ID#1247009
         assert len(fc_out) == 308
         assert len(fc_out[100].data) == stft.fft_size
@@ -89,7 +88,7 @@ def test_stft_get_output():
         assert fc_out[300].data[0] == -0.019828863441944122
 
 
-def test_stft_get_output_as_np_array():
+def test_stft_get_output_as_np_array(request):
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -98,7 +97,7 @@ def test_stft_get_output_as_np_array():
     stft.process()
     arr = stft.get_output_as_nparray()
 
-    if conftest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    if request.config.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
         # bug fix in DPF Sound 2026 R1 ID#1247009
         assert np.shape(arr) == (stft.fft_size, 154)
         assert type(arr[100, 0]) == np.complex128

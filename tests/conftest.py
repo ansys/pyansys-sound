@@ -217,12 +217,12 @@ def pytest_configure(config):
     pytest.temporary_folder = os.path.dirname(pytest.data_path_flute_in_container)
 
 
-#### Define macros for server version checks
-# 11.0 corresponds to Ansys 2026 R1
-SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0 = meets_version(
-    get_server_version(core._global_server()), "11.0"
-)
-# 10.0 corresponds to Ansys 2025 R2
-SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_10_0 = meets_version(
-    get_server_version(core._global_server()), "10.0"
-)
+    #### Define global variables for server version checks
+    # 11.0 corresponds to Ansys 2026 R1
+    config.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0 = meets_version(
+        get_server_version(server), "11.0"
+    )
+    # 10.0 corresponds to Ansys 2025 R2
+    config.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_10_0 = meets_version(
+        get_server_version(server), "10.0"
+    )
