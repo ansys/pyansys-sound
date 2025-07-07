@@ -27,7 +27,7 @@ from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
-from .._pyansys_sound import REFERENCE_ACOUSTIC_PRESSURE, PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._standard_levels_parent import DICT_FREQUENCY_WEIGHTING, DICT_SCALE, StandardLevelsParent
 
 DICT_TIME_WEIGHTING = {"Fast": 1, "Slow": 0, "Impulse": 2, "Custom": 3}
@@ -104,7 +104,11 @@ class LevelOverTime(StandardLevelsParent):
             self.frequency_weighting if len(self.frequency_weighting) > 0 else "None"
         )
         max_level = self.get_level_max()
-        str_level = f"{max_level:.1f}" if max_level is not None else "Not processed"
+        if max_level is not None:
+            unit = self.get_output()[1].unit
+            str_level = f"{max_level:.1f} {unit}"
+        else:
+            str_level = "Not processed"
 
         return (
             f"{__class__.__name__} object.\n"
@@ -344,19 +348,12 @@ class LevelOverTime(StandardLevelsParent):
 
         level_over_time = self.get_level_over_time()
         time_scale = self.get_time_scale()
-        if self.scale == "RMS":
-            str_unit = ""
-        elif self.reference_value == REFERENCE_ACOUSTIC_PRESSURE:
-            if self.frequency_weighting == "":
-                str_unit = " (dBSPL)"
-            else:
-                str_unit = f" (dB{self.frequency_weighting})"
-        else:
-            str_unit = " (dB)"
+        unit = self.get_output()[1].unit
+        time_unit = self.get_output()[1].time_freq_support.time_frequencies.unit
 
         plt.plot(time_scale, level_over_time)
-        plt.xlabel("Time (s)")
-        plt.ylabel(f"Level{str_unit}")
+        plt.xlabel(f"Time ({time_unit})")
+        plt.ylabel(f"Level ({unit})")
         plt.title("Level over time")
         plt.grid()
         plt.show()

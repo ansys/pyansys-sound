@@ -67,8 +67,8 @@ class SourceControlTime(SourceControlParent):
         if self.control is None:
             return "Not set"
         else:
-            support_data = self.control.time_freq_support.time_frequencies.data
-            str_duration = f"{support_data[-1]:.1f} s" if len(support_data) > 0 else "N/A"
+            time = self.control.time_freq_support.time_frequencies
+            str_duration = f"{time.data[-1]:.1f} {time.unit}" if len(time.data) > 0 else "N/A"
             return (
                 f"Unit: {self.control.unit}\n"
                 f"Duration: {str_duration}\n"
@@ -150,11 +150,11 @@ class SourceControlTime(SourceControlParent):
 
     def plot(self):
         """Plot the control profile."""
-        time_data = self.control.time_freq_support.time_frequencies.data
+        time = self.control.time_freq_support.time_frequencies
 
-        plt.plot(time_data, self.control.data)
+        plt.plot(time.data, self.control.data)
         plt.title(self.control.name if len(self.control.name) > 0 else "Control profile")
-        plt.xlabel("Time (s)")
+        plt.xlabel(f"Time ({time.unit})")
         str_unit = f" ({self.control.unit})" if len(self.control.unit) > 0 else ""
         plt.ylabel("Control parameter" + str_unit)
         plt.grid(True)

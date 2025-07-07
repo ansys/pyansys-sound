@@ -50,8 +50,8 @@ from ansys.sound.core.spectral_processing.power_spectral_density import PowerSpe
 
 REF_ACOUSTIC_POWER = 4e-10
 
-EXP_STR_NOT_SET = "Unnamed track\n\tSource: Not set\n\tFilter: Not set"
-EXP_STR_ALL_SET = "MyTrack\n\tSource:\nAudio source: Not set\n\tFilter: Set"
+EXP_STR_NOT_SET = "Unnamed track\nSource not set\nGain: +0.0 dB\nFilter: Not set"
+EXP_STR_ALL_SET = "MyTrack\nAudio source: Not set\nGain: +0.0 dB\nFilter: Set"
 EXP_LEVEL_BAND_3RD_250_Hz = 76.05368
 EXP_LEVEL_BAND_3RD_500_Hz = 73.08566
 EXP_LEVEL_BAND_3RD_1000_Hz = 69.42302
