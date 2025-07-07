@@ -38,11 +38,20 @@ def pytest_configure(config):
     # configuration. That's why we authorize the use of this function here.
     server, lic_context = connect_to_or_start_server(use_license_context=True)
 
-    # Store the server and licensing context into the pytest Config object (see
-    # https://docs.pytest.org/en/stable/reference/reference.html#pytest.Config), so that they
-    # persist until the end of the tests.
-    config.dpf_server = server
-    config.dpf_lic_context = lic_context
+    # Store the server and licensing context into the pytest object, to make these attributes
+    # available in the tests, everywhere we import pytest
+    pytest.dpf_server = server
+    pytest.dpf_lic_context = lic_context
+
+    # Define global variables for server version checks: store it in the config object
+    # Note: 11.0 corresponds to Ansys 2026 R1
+    pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0 = meets_version(
+        get_server_version(server), "11.0"
+    )
+    # 10.0 corresponds to Ansys 2025 R2
+    pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_10_0 = meets_version(
+        get_server_version(server), "10.0"
+    )
 
     # Use the conftest.py file's directory to set the base directory for the test data files.
     base_dir = os.path.join(os.path.dirname(__file__), "data")
@@ -216,13 +225,3 @@ def pytest_configure(config):
     ## The temporary folder is the folder in the server where the files are stored.
     pytest.temporary_folder = os.path.dirname(pytest.data_path_flute_in_container)
 
-
-    #### Define global variables for server version checks
-    # 11.0 corresponds to Ansys 2026 R1
-    config.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0 = meets_version(
-        get_server_version(server), "11.0"
-    )
-    # 10.0 corresponds to Ansys 2025 R2
-    config.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_10_0 = meets_version(
-        get_server_version(server), "10.0"
-    )

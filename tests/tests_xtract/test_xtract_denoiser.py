@@ -94,7 +94,7 @@ def test_xtract_denoiser_process_except2():
     assert excinfo.value.args[0] == "Input parameters are not set."
 
 
-def test_xtract_denoiser_process(request):
+def test_xtract_denoiser_process():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -125,7 +125,7 @@ def test_xtract_denoiser_process(request):
 
     assert xtract_denoiser.get_output_as_nparray()[0].shape == (156048,)
 
-    if request.config.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
         # bug fix in DPF Sound 2026 R1 ID#1247009
         assert np.min(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(
             -0.7059202790260315
@@ -280,7 +280,7 @@ def test_xtract_denoiser_get_output_fc():
     assert xtract_denoiser.get_output()[1][0].data[99] == pytest.approx(-3.329021806551297e-15)
 
 
-def test_xtract_denoiser_get_output_as_nparray(request):
+def test_xtract_denoiser_get_output_as_nparray():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -308,7 +308,7 @@ def test_xtract_denoiser_get_output_as_nparray(request):
 
     assert xtract_denoiser.get_output_as_nparray()[0].shape == (156048,)
 
-    if request.config.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
         # bug fix in DPF Sound 2026 R1 ID#1247009
         assert np.min(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(
             -0.7059202790260315

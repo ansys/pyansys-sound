@@ -67,7 +67,7 @@ def test_xtract_denoiser_parameters_generate_noise_psd_from_white_noise_level():
     assert s == pytest.approx(464.853)
 
 
-def test_xtract_denoiser_parameters_generate_noise_psd_from_automatic_estimation(request):
+def test_xtract_denoiser_parameters_generate_noise_psd_from_automatic_estimation():
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -79,7 +79,7 @@ def test_xtract_denoiser_parameters_generate_noise_psd_from_automatic_estimation
 
     s = np.sum(noise)
 
-    if request.config.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
         # bug fix in DPF Sound 2026 R1 ID#1247009
         assert s == pytest.approx(0.00522007046561157)
     else:  # DPF Sound <= 2025 R2

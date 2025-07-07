@@ -253,7 +253,7 @@ def test_xtract_get_output_as_np_array_warns():
     assert record[0].message.args[0] == "No output is available."
 
 
-def test_xtract_get_output(request):
+def test_xtract_get_output():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -286,7 +286,7 @@ def test_xtract_get_output(request):
     noise, tonal, transient, remainder = xtract.get_output()
 
     # Check numerical values
-    if request.config.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
         # bug fix in DPF Sound 2026 R1 ID#1247009
         assert np.min(noise.data) == pytest.approx(-0.2724415361881256)
         assert np.max(noise.data) == pytest.approx(0.30289316177368164)
@@ -348,7 +348,7 @@ def test_xtract_get_output_noprocess():
     assert xtract.output_remainder_signal is None
 
 
-def test_xtract_get_output_fc(request):
+def test_xtract_get_output_fc():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -400,7 +400,7 @@ def test_xtract_get_output_fc(request):
     assert len(fc_remainder) == 2
 
     # Check numerical values
-    if request.config.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
         # bug fix in DPF Sound 2026 R1 ID#1247009
         assert np.min(fc_noise[0].data) == pytest.approx(-0.2724415361881256)
         assert np.min(fc_tonal[0].data) == pytest.approx(-0.6827592849731445)
@@ -443,7 +443,7 @@ def test_xtract_get_output_fc(request):
         assert np.max(fc_remainder[1].data) == pytest.approx(7.01886734e-07)
 
 
-def test_xtract_get_output_as_nparray(request):
+def test_xtract_get_output_as_nparray():
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
     wav_bird_plus_idle.process()
 
@@ -486,7 +486,7 @@ def test_xtract_get_output_as_nparray(request):
     assert type(np_remainder) == np.ndarray
 
     # Check numerical values
-    if request.config.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
         # bug fix in DPF Sound 2026 R1 ID#1247009
         assert np.min(np_noise) == pytest.approx(-0.2724415361881256)
         assert np.max(np_noise) == pytest.approx(0.30289316177368164)
