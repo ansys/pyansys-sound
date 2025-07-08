@@ -325,7 +325,7 @@ def download_sound_composer_source_eMotor(server=None):
     )
 
 
-def download_sound_composer_sourcecontrol_eMotor(server=None):
+def download_sound_composer_source_control_eMotor(server=None):
     """Download the ``eMotor - rpm evolution.txt`` file.
 
     This file is an eMotor source control, from 250 to 5000 rpm, in 8 seconds.
@@ -369,7 +369,7 @@ def download_sound_composer_source_WindRoadNoise(server=None):
     )
 
 
-def download_sound_composer_sourcecontrol_WindRoadNoise(server=None):
+def download_sound_composer_source_control_WindRoadNoise(server=None):
     """Download the ``WindRoadNoise - vehicle speed.txt`` file.
 
     This file is a wind and noise source control, evolving from 10 to 100 kph, in 8 seconds.

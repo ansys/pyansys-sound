@@ -61,18 +61,20 @@ from ansys.sound.core.examples_helpers import (
     download_sound_composer_FRF_eMotor,
     download_sound_composer_source_eMotor,
     download_sound_composer_source_WindRoadNoise,
-    download_sound_composer_sourcecontrol_eMotor,
-    download_sound_composer_sourcecontrol_WindRoadNoise,
+    download_sound_composer_source_control_eMotor,
+    download_sound_composer_source_control_WindRoadNoise,
 )
 
 # Load Ansys libraries.
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_processing import Filter
-from ansys.sound.core.sound_composer.sound_composer import SoundComposer
-from ansys.sound.core.sound_composer.source_broadband_noise import SourceBroadbandNoise
-from ansys.sound.core.sound_composer.source_control_time import SourceControlTime
-from ansys.sound.core.sound_composer.source_harmonics import SourceHarmonics
-from ansys.sound.core.sound_composer.track import Track
+from ansys.sound.core.sound_composer import (
+    SoundComposer,
+    SourceBroadbandNoise,
+    SourceControlTime,
+    SourceHarmonics,
+    Track,
+)
 from ansys.sound.core.spectrogram_processing import Stft
 
 # sphinx_gallery_start_ignore
@@ -87,7 +89,7 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # operating conditions of the source (engine or vehicle speed over time), and optionally the FRF
 # file containing the source's transfer function.
 path_sound_composer_source_eMotor = download_sound_composer_source_eMotor(server=my_server)
-path_sound_composer_sourcecontrol_eMotor = download_sound_composer_sourcecontrol_eMotor(
+path_sound_composer_sourcecontrol_eMotor = download_sound_composer_source_control_eMotor(
     server=my_server
 )
 path_sound_composer_FRF_eMotor = download_sound_composer_FRF_eMotor(server=my_server)
@@ -95,7 +97,7 @@ path_sound_composer_source_WindRoadNoise = download_sound_composer_source_WindRo
     server=my_server
 )
 path_sound_composer_sourcecontrol_WindRoadNoise = (
-    download_sound_composer_sourcecontrol_WindRoadNoise(server=my_server)
+    download_sound_composer_source_control_WindRoadNoise(server=my_server)
 )
 
 # %%

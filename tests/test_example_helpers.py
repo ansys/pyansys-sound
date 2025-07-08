@@ -36,8 +36,8 @@ from ansys.sound.core.examples_helpers import (
     download_sound_composer_project_whatif,
     download_sound_composer_source_eMotor,
     download_sound_composer_source_WindRoadNoise,
-    download_sound_composer_sourcecontrol_eMotor,
-    download_sound_composer_sourcecontrol_WindRoadNoise,
+    download_sound_composer_source_control_eMotor,
+    download_sound_composer_source_control_WindRoadNoise,
     download_xtract_demo_signal_1_wav,
     download_xtract_demo_signal_2_wav,
 )
@@ -123,7 +123,7 @@ def test_download_sound_composer_source_eMotor():
 
 
 def test_download_sound_composer_sourcecontrol_eMotor():
-    download_sound_composer_sourcecontrol_eMotor()[0]
+    download_sound_composer_source_control_eMotor()[0]
     p = str(EXAMPLES_PATH) + "/eMotor - rpm evolution.txt"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 48
@@ -144,7 +144,7 @@ def test_download_sound_composer_source_WindRoadNoise():
 
 
 def test_download_sound_composer_sourcecontrol_WindRoadNoise():
-    download_sound_composer_sourcecontrol_WindRoadNoise()[0]
+    download_sound_composer_source_control_WindRoadNoise()[0]
     p = str(EXAMPLES_PATH) + "/WindRoadNoise - vehicle speed.txt"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 80
