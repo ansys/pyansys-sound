@@ -26,6 +26,7 @@ from functools import wraps
 import sys
 
 from ansys.dpf.core import _global_server
+
 from ansys import dpf
 
 
