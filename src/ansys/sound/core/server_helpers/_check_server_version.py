@@ -51,9 +51,6 @@ def version_requires(min_version):
         def wrapper(self, *args, **kwargs):
             """Call the original function."""
             server = _global_server()
-            func_name = func.__name__
-
-            toto = dpf.core.SERVER
 
             server.check_version(
                 min_version,
