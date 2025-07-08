@@ -38,13 +38,13 @@ def pytest_configure(config):
     # configuration. That's why we authorize the use of this function here.
     server, lic_context = connect_to_or_start_server(use_license_context=True)
 
-    # Store the server and licensing context into the pytest object, to make these attributes
-    # available in the tests, everywhere we import pytest
+    # Store the server and licensing context into the config object, to make these attributes
+    # available in the tests, everywhere we pass request as argument
     config.dpf_server = server
     config.dpf_lic_context = lic_context
 
     # Define global variables for server version checks: store it in the pytest object
-    # to make it global and available in all tests.
+    # to make it global and available in all tests where we import pytest.
     # Note: 11.0 corresponds to Ansys 2026 R1
     pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0 = meets_version(
         get_server_version(server), "11.0"
