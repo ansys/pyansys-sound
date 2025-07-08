@@ -59,10 +59,10 @@ The example shows how to perform these operations:
 
 from ansys.sound.core.examples_helpers import (
     download_sound_composer_FRF_eMotor,
-    download_sound_composer_source_eMotor,
-    download_sound_composer_source_WindRoadNoise,
     download_sound_composer_source_control_eMotor,
     download_sound_composer_source_control_WindRoadNoise,
+    download_sound_composer_source_eMotor,
+    download_sound_composer_source_WindRoadNoise,
 )
 
 # Load Ansys libraries.
