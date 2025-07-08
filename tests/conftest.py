@@ -22,7 +22,6 @@
 
 import os
 
-from ansys.dpf import core
 from ansys.dpf.core import upload_file_in_tmp_folder
 from ansys.dpf.core.check_version import get_server_version, meets_version
 import pytest
