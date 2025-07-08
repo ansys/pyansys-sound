@@ -42,7 +42,7 @@ EXP_STR_ALL_SET = (
 EXP_STR_ALL_PROCESSED = (
     'LevelOverTime object.\nData\n\tSignal: "flute"\n\tScale type: dB\n\tReference value: 2e-05\n'
     "\tFrequency weighting: None\n\tTime weighting: Custom\n\tTime step: 100.0 ms\n"
-    "\tWindow size: 5000.0 ms\n\tAnalysis window: HANN\nMaximum level: 89.2"
+    "\tWindow size: 5000.0 ms\n\tAnalysis window: HANN\nMaximum level: 89.2 dB"
 )
 
 EXP_LEVEL_MAX_DEFAULT = -3.72917

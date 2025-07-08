@@ -110,10 +110,14 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
                 f"Maximum tonal adjustment: Not processed"
             )
         else:
+            tonal_audibility_unit = self.get_output()[0].unit
+            tonal_adjustment_unit = self.get_output()[1].unit
             str_tonality = (
                 f"Number of segments: {self.get_segment_count()}\n"
-                f"Maximum tonal audibility: {max(self.get_tonal_audibility_over_time()):.1f} dB\n"
-                f"Maximum tonal adjustment: {max(self.get_tonal_adjustment_over_time()):.1f} dB"
+                f"Maximum tonal audibility: {max(self.get_tonal_audibility_over_time()):.1f} "
+                f"{tonal_audibility_unit}\n"
+                f"Maximum tonal adjustment: {max(self.get_tonal_adjustment_over_time()):.1f} "
+                f"{tonal_adjustment_unit}"
             )
 
         str_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
@@ -377,18 +381,21 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         tonal_audibility = self.get_tonal_audibility_over_time()
         tonal_adjustment = self.get_tonal_adjustment_over_time()
         time_scale = self.get_time_scale()
+        tonal_audibility_unit = self.get_output()[0].unit
+        tonal_adjustment_unit = self.get_output()[1].unit
+        time_unit = self.get_output()[0].time_freq_support.time_frequencies.unit
 
         _, axes = plt.subplots(2, 1, sharex=True)
 
         axes[0].plot(time_scale, tonal_audibility)
         axes[0].set_title("ISO 1996-2 tonal audibility over time")
-        axes[0].set_ylabel(r"$\mathregular{\Delta L_{ta}}$ (dB)")
+        axes[0].set_ylabel(r"$\mathregular{\Delta L_{ta}}$" + f" ({tonal_audibility_unit})")
         axes[0].grid()
 
         axes[1].plot(time_scale, tonal_adjustment)
         axes[1].set_title("ISO 1996-2 tonal adjustment over time")
-        axes[1].set_ylabel(r"$\mathregular{K_t}$ (dB)")
-        axes[1].set_xlabel("Time (s)")
+        axes[1].set_ylabel(r"$\mathregular{K_t}$" + f" ({tonal_adjustment_unit})")
+        axes[1].set_xlabel(f"Time ({time_unit})")
         axes[1].grid()
 
         plt.tight_layout()
