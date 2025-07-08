@@ -29,16 +29,17 @@ Use an existing Sound Composer project file
 The Sound Composer is a tool that allows you to generate the sound of a system by combining the
 sounds of its components, which we call sources here. Each source can be made of data coming from
 test analysis, or from a simulation, or simply consist of a single audio recording. The sources are
-combined into a project, where each source is assigned a track.
+combined into a Sound Composer project, where each source is assigned a track.
 
-A track is a data structure made of source data, source control data, an output gain, and,
-optionally, a transfer function in the form of a digital filter. It can generate the sound of the
+A track is a data structure made of a source data, a source control data, an output gain, and,
+optionally, a transfer function in the form of a digital filter (which models the transfer from the
+source to the listening/recording position). It can generate the sound of the
 component (as characterized by the source data), in specific operating conditions (the source
 control), and filtered according to the transfer function.
 
 This example shows how to use the Sound Composer, with the :class:`.SoundComposer` class. It starts
-from an existing Sound Composer project file, and illustrates the notions of project, track, source,
-source control, and filter.
+from an existing Sound Composer project file, and illustrates the notions of Sound Composer project,
+track, source, source control, and filter.
 
 The example shows how to perform these operations:
 
@@ -165,9 +166,12 @@ signal_gear = track_gear.get_output()
 # Generate the signal of the project
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Now, let us generate the signal of the project using the :meth:`.SoundComposer.process()` method.
-# This method generates all track signals, filters them with the associated filters whenever
-# specified, applies track gains, and sums the resulting signals together.
+# This method generates, for each track, the acoustic signal of the source, filters it with the
+# associated filter, if any, and applies the track gain, and finally sums all resulting tracks'
+# signals together.
 
+# %%
+# Generate the signal of the project, using a sampling frequency of 44100 Hz.
 sound_composer_project.process(sampling_frequency=44100.0)
 
 # %%
@@ -180,6 +184,8 @@ spectrogram.process()
 spectrogram.plot()
 
 # %%
+# Conclusion
+# ~~~~~~~~~~
 # This workflow allows you to analyze and listen to the sound of the gearbox and the e-motor, in
 # realistic conditions, that is, including the HVAC noise and the background noise inside the cabin.
 #
