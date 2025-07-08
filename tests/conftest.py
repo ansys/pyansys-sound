@@ -40,8 +40,8 @@ def pytest_configure(config):
 
     # Store the server and licensing context into the pytest object, to make these attributes
     # available in the tests, everywhere we import pytest
-    pytest.dpf_server = server
-    pytest.dpf_lic_context = lic_context
+    config.dpf_server = server
+    config.dpf_lic_context = lic_context
 
     # Define global variables for server version checks: store it in the config object
     # Note: 11.0 corresponds to Ansys 2026 R1
