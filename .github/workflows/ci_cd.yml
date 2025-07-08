@@ -183,7 +183,7 @@ jobs:
       - name: "Upload Coverage Results"
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-html
+          name: coverage-html_${{ matrix.docker-image }}
           path: .cov/html
           retention-days: 7
 
