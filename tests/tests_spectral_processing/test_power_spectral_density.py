@@ -302,6 +302,11 @@ def test_power_spectral_density_plot(mock_show):
     input_signal = op_load_wav.get_output()[0]
 
     psd = PowerSpectralDensity(input_signal)
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Output is not processed yet. Use the `PowerSpectralDensity.process\\(\\)` method.",
+    ):
+        psd.plot()
     psd.process()
     psd.plot()  # Plot in unit^2/Hz.
     psd.plot(display_in_dB=True)  # Plot in dB/Hz.
