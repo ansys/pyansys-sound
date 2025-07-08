@@ -29,7 +29,7 @@ Use an existing Sound Composer project file
 The Sound Composer is a tool that allows you to generate the sound of a system by combining the
 sounds of its components, which we call sources here. Each source can be made of data coming from
 test analysis, or from a simulation, or simply consist of a single audio recording. The sources are
-combined into a Sound Composer project, where each source is assigned a track.
+combined into a Sound Composer project, where each source is assigned to a track.
 
 A track is a data structure made of a source data, a source control data, an output gain, and,
 optionally, a transfer function in the form of a digital filter (which models the transfer from the
