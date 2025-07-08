@@ -44,7 +44,7 @@ def pytest_configure(config):
 
     # Define global variables for server version checks: store it in the pytest object
     # to make it global and available in all tests where we import pytest.
-    # Note: 11.0 corresponds to Ansys 2026 R1
+    # 11.0 corresponds to Ansys 2026 R1
     pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0 = meets_version(
         get_server_version(server), "11.0"
     )
