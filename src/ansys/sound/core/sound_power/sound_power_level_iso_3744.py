@@ -420,15 +420,15 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         Returns
         -------
         tuple
-            First element: unweighted sound power level (Lw) in dB.
+            -   First element: unweighted sound power level (Lw) in dB.
 
-            Second element: A-weighted sound power level (Lw(A)) in dBA.
+            -   Second element: A-weighted sound power level (Lw(A)) in dBA.
 
-            Third element is a DPF field containing an array of the octave-band sound power
-            levels, in dB.
+            -   Third element is a DPF field containing an array of the octave-band sound power
+                levels, in dB.
 
-            Fourth element is a DPF field containing an array of the one-third-octave-band sound
-            power levels, in dB.
+            -   Fourth element is a DPF field containing an array of the one-third-octave-band
+                sound power levels, in dB.
         """
         if self._output == None:
             warnings.warn(
@@ -446,17 +446,17 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         Returns
         -------
         tuple
-            First element: unweighted sound power level (Lw) in dB.
+            -   First element: unweighted sound power level (Lw) in dB.
 
-            Second element: A-weighted sound power level (Lw(A)) in dBA.
+            -   Second element: A-weighted sound power level (Lw(A)) in dBA.
 
-            Third element: NumPy array of the octave-band sound power levels, in dB.
+            -   Third element: NumPy array of the octave-band sound power levels, in dB.
 
-            Fourth element: NumPy array of the octave-band center frequencies, in Hz.
+            -   Fourth element: NumPy array of the octave-band center frequencies, in Hz.
 
-            Fifth element: NumPy array of the one-third-octave-band sound power levels, in dB.
+            -   Fifth element: NumPy array of the one-third-octave-band sound power levels, in dB.
 
-            Sixth element: NumPy array of the one-third-octave-band center frequencies, in Hz.
+            -   Sixth element: NumPy array of the one-third-octave-band center frequencies, in Hz.
         """
         output = self.get_output()
 
@@ -557,24 +557,27 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         # Display octave-band levels in the upper subplot.
         Lw = self.get_Lw_octave()
+        Lw_unit = self.get_output()[2].unit
         f_center = self.get_octave_center_frequencies()
 
         plt.subplot(211)
         plt.bar(range(len(Lw)), Lw)
         plt.xticks(range(len(Lw)), f_center.astype(int), rotation=45, fontsize=9)
         plt.title("Octave-band sound power level")
-        plt.ylabel(r"$\mathregular{L_w}$ (dB)")
+        plt.ylabel(r"$\mathregular{L_w}$" + f" ({Lw_unit})")
 
         # Display 1/3-octave-band levels in the lower subplot.
         Lw = self.get_Lw_thirdoctave()
+        Lw_unit = self.get_output()[3].unit
         f_center = self.get_thirdoctave_center_frequencies()
+        f_unit = self.get_output()[3].time_freq_support.time_frequencies.unit
 
         plt.subplot(212)
         plt.bar(range(len(Lw)), Lw)
         plt.xticks(range(len(Lw)), f_center.astype(int), rotation=45, fontsize=9)
         plt.title("1/3-octave-band sound power level")
-        plt.ylabel(r"$\mathregular{L_w}$ (dB)")
-        plt.xlabel("Frequency (Hz)")
+        plt.ylabel(r"$\mathregular{L_w}$" + f" ({Lw_unit})")
+        plt.xlabel(f"Frequency ({f_unit})")
 
         plt.tight_layout()
         plt.show()

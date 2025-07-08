@@ -453,23 +453,27 @@ class TonalityDIN45681(PsychoacousticsParent):
         decisive_frequency_over_time = self.get_decisive_frequency_over_time()
         tonal_adjustment_over_time = self.get_tonal_adjustment_over_time()
         time_scale = self.get_time_scale()
+        difference_unit = self.get_output()[3].unit
+        adjustment_unit = self.get_output()[6].unit
+        frequency_unit = self.get_output()[5].unit
+        time_unit = self.get_output()[3].time_freq_support.time_frequencies.unit
 
         # Plot DIN 45681 parameters over time.
         _, axes = plt.subplots(3, 1, sharex=True)
         axes[0].plot(time_scale, decisive_difference_over_time)
         axes[0].set_title("DIN45681 decisive difference")
-        axes[0].set_ylabel(r"$\mathregular{\Delta L_j}$ (dB)")
+        axes[0].set_ylabel(r"$\mathregular{\Delta L_j}$" + f" ({difference_unit})")
         axes[0].grid(True)
 
         axes[1].plot(time_scale, decisive_frequency_over_time)
         axes[1].set_title("DIN45681 decisive frequency")
-        axes[1].set_ylabel(r"$\mathregular{f_T}$ (Hz)")
+        axes[1].set_ylabel(r"$\mathregular{f_T}$" + f" ({frequency_unit})")
         axes[1].grid(True)
 
         axes[2].plot(time_scale, tonal_adjustment_over_time)
         axes[2].set_title("DIN45681 tonal adjustment")
-        axes[2].set_xlabel("Time (s)")
-        axes[2].set_ylabel(r"$\mathregular{K_T}$ (dB)")
+        axes[2].set_xlabel(f"Time ({time_unit})")
+        axes[2].set_ylabel(r"$\mathregular{K_T}$" + f" ({adjustment_unit})")
         axes[2].grid(True)
 
         plt.tight_layout()

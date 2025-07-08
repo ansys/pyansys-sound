@@ -59,12 +59,12 @@ EXP_STR_ALL_SET = (
     "\tControl parameter 2: charge, 0.0-10.0 %\n"
     "Source control:\n"
     "\tControl 1: \n"
-    "\t\tMin: 3.0\n"
-    "\t\tMax: 38.0\n"
+    "\t\tMin: 3.0 m/s\n"
+    "\t\tMax: 38.0 m/s\n"
     "\t\tDuration: 3.0 s\n"
     "\tControl 2: \n"
-    "\t\tMin: 3.0\n"
-    "\t\tMax: 38.0\n"
+    "\t\tMin: 3.0 m/s\n"
+    "\t\tMax: 38.0 m/s\n"
     "\t\tDuration: 3.0 s"
 )
 EXP_STR_ALL_SET_OCTAVE = (
@@ -75,12 +75,12 @@ EXP_STR_ALL_SET_OCTAVE = (
     "\tControl parameter 2: charge, 0.0-10.0 %\n"
     "Source control:\n"
     "\tControl 1: \n"
-    "\t\tMin: 3.0\n"
-    "\t\tMax: 38.0\n"
+    "\t\tMin: 3.0 m/s\n"
+    "\t\tMax: 38.0 m/s\n"
     "\t\tDuration: 3.0 s\n"
     "\tControl 2: \n"
-    "\t\tMin: 3.0\n"
-    "\t\tMax: 38.0\n"
+    "\t\tMin: 3.0 m/s\n"
+    "\t\tMax: 38.0 m/s\n"
     "\t\tDuration: 3.0 s"
 )
 
@@ -114,9 +114,11 @@ def test_source_broadband_noise_two_parameters___str___all_set():
         num_entities=1, location=locations.time_freq
     )
     f_source_control.append([3, 4, 35, 38], 1)
+    f_source_control.unit = "m/s"
     support = TimeFreqSupport()
     f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
     f_time.append([0, 1, 2, 3], 1)
+    f_time.unit = "s"
     support.time_frequencies = f_time
     f_source_control.time_freq_support = support
 

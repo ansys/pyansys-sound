@@ -174,5 +174,10 @@ def test_stft_plot(mock_show):
     wav_loader.process()
     fc_signal = wav_loader.get_output()
     stft = Stft(signal=fc_signal)
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Output is not processed yet. Use the `Stft.process\\(\\)` method.",
+    ):
+        stft.plot()
     stft.process()
     stft.plot()
