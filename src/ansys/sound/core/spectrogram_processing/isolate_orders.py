@@ -205,7 +205,7 @@ class IsolateOrders(SpectrogramProcessingParent):
                 "No RPM profile found for order isolation. Use 'IsolateOrder.rpm_profile'."
             )
 
-        if self.orders == None:
+        if self.orders is None:
             raise PyAnsysSoundException(
                 "No orders found for order isolation. Use 'IsolateOrder.orders'."
             )
@@ -263,6 +263,10 @@ class IsolateOrders(SpectrogramProcessingParent):
 
     def plot(self):
         """Plot the signal after order isolation."""
+        if self._output is None:
+            raise PyAnsysSoundException(
+                f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
+            )
         output = self.get_output()
 
         if type(output) == Field:
@@ -277,13 +281,13 @@ class IsolateOrders(SpectrogramProcessingParent):
         unit = field.unit
 
         for i in range(num_channels):
-            plt.plot(time_data, output[i].data, label="Channel {}".format(i))
+            plt.plot(time_data, output[i].data, label=f"Channel {i}")
         else:
             plt.plot(time_data, field.data, label="Channel 0")
 
         plt.title(field.name)
         plt.legend()
-        plt.xlabel(time_unit)
-        plt.ylabel(unit)
+        plt.xlabel(f"Time ({time_unit})")
+        plt.ylabel(f"Amplitude ({unit})")
         plt.grid(True)
         plt.show()

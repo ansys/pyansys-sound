@@ -231,7 +231,14 @@ class Stft(SpectrogramProcessingParent):
 
         This method plots the STFT amplitude and the associated phase.
         """
+        if self._output is None:
+            raise PyAnsysSoundException(
+                f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
+            )
         magnitude = self.get_stft_magnitude_as_nparray()
+        mag_unit = self.get_output()[0].unit
+        freq_unit = self.get_output()[0].time_freq_support.time_frequencies.unit
+        time_unit = self.get_output().time_freq_support.time_frequencies.unit
 
         # Only extract the first half of the STFT, as it is symmetrical
         half_nfft = int(np.shape(magnitude)[0] / 2) + 1
@@ -253,14 +260,14 @@ class Stft(SpectrogramProcessingParent):
         # Plotting
         f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
         p = ax1.imshow(magnitude, origin="lower", aspect="auto", cmap="jet", extent=extent)
-        f.colorbar(p, ax=ax1, label="dB")
+        f.colorbar(p, ax=ax1, label=f"Amplitude ({mag_unit})")
         ax1.set_title("Amplitude")
-        ax1.set_ylabel("Frequency (Hz)")
+        ax1.set_ylabel(f"Frequency ({freq_unit})")
         p = ax2.imshow(phase, origin="lower", aspect="auto", cmap="jet", extent=extent)
-        f.colorbar(p, ax=ax2, label="rad")
+        f.colorbar(p, ax=ax2, label="Phase (rad)")
         ax2.set_title("Phase")
-        ax2.set_xlabel("Time (s)")
-        ax2.set_ylabel("Frequency (Hz)")
+        ax2.set_xlabel(f"Time ({time_unit})")
+        ax2.set_ylabel(f"Frequency ({freq_unit})")
 
         f.suptitle("STFT")
         plt.show()

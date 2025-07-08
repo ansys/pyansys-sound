@@ -258,15 +258,15 @@ class SourceAudio(SourceParent):
             )
         output = self.get_output()
 
-        time_data = output.time_freq_support.time_frequencies.data
+        time = output.time_freq_support.time_frequencies
 
-        plt.plot(time_data, output.data)
+        plt.plot(time.data, output.data)
         name = output.name
         if len(name) > 0:
             plt.title(name)
         else:
             plt.title("Sound generated from the audio source")
-        plt.xlabel("Time (s)")
-        plt.ylabel("Amplitude (Pa)")
+        plt.xlabel(f"Time ({time.unit})")
+        plt.ylabel(f"Amplitude ({output.unit})")
         plt.grid(True)
         plt.show()

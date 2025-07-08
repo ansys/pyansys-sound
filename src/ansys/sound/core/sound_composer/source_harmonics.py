@@ -111,12 +111,13 @@ class SourceHarmonics(SourceParent):
 
         # Source control info.
         if self.is_source_control_valid():
+            control = self.source_control.control
+            time = control.time_freq_support.time_frequencies
             str_source_control = (
-                f"{self.source_control.control.name}\n"
-                f"\tMin: {self.source_control.control.data.min()}\n"
-                f"\tMax: {self.source_control.control.data.max()}\n"
-                f"\tDuration: "
-                f"{self.source_control.control.time_freq_support.time_frequencies.data[-1]} s"
+                f"{control.name}\n"
+                f"\tMin: {control.data.min()} {control.unit}\n"
+                f"\tMax: {control.data.max()} {control.unit}\n"
+                f"\tDuration: {time.data[-1]} {time.unit}"
             )
         else:
             str_source_control = "Not set/valid"
@@ -375,12 +376,12 @@ class SourceHarmonics(SourceParent):
             )
         output = self.get_output()
 
-        time_data = output.time_freq_support.time_frequencies.data
+        time = output.time_freq_support.time_frequencies
 
-        plt.plot(time_data, output.data)
+        plt.plot(time.data, output.data)
         plt.title(output.name if len(output.name) > 0 else "Signal from harmonics source")
-        plt.xlabel("Time (s)")
-        plt.ylabel("Amplitude (Pa)")
+        plt.xlabel(f"Time ({time.unit})")
+        plt.ylabel(f"Amplitude ({output.unit})")
         plt.grid(True)
         plt.show()
 
@@ -392,16 +393,14 @@ class SourceHarmonics(SourceParent):
                 f"Use ``{__class__.__name__}.source_control``."
             )
 
-        data = self.source_control.control.data
-        time = self.source_control.control.time_freq_support.time_frequencies.data
-        unit = self.source_control.control.unit
-        name = self.source_control.control.name
-        unit_str = f" ({unit})" if len(unit) > 0 else ""
-        name_str = name if len(name) > 0 else "Amplitude"
-        plt.plot(time, data)
+        control = self.source_control.control
+        time = control.time_freq_support.time_frequencies
+        unit_str = f" ({control.unit})" if len(control.unit) > 0 else ""
+        name_str = control.name if len(control.name) > 0 else "Amplitude"
+        plt.plot(time.data, control.data)
         plt.title("Control profile 1")
         plt.ylabel(f"{name_str}{unit_str}")
-        plt.xlabel("Time (s)")
+        plt.xlabel(f"Time ({time.unit})")
         plt.grid(True)
 
         plt.tight_layout()

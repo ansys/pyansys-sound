@@ -103,7 +103,7 @@ print(sound_composer_project)
 # Let us have a closer look at the content of each individual track by printing it.
 
 for i, track in enumerate(sound_composer_project.tracks, start=1):
-    print(f"--- Track n. {i} ---\n {track}\n")
+    print(f"--- Track n. {i} ---\n{track}\n")
 
 # %%
 # For each track, you can see some details about the source content, the associated control profile,
