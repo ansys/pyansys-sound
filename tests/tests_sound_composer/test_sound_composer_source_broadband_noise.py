@@ -51,8 +51,8 @@ EXP_STR_ALL_SET = (
     "\tControl parameter: Speed of wind, m/s\n"
     "\t\t[ 1.   2.   5.3 10.5 27.8]"
     "\nSource control: \n"
-    "\tMin: 1.0\n"
-    "\tMax: 10.0\n"
+    "\tMin: 1.0 m/s\n"
+    "\tMax: 10.0 m/s\n"
     "\tDuration: 3.0 s"
 )
 EXP_STR_ALL_SET_40_VALUES = (
@@ -62,8 +62,8 @@ EXP_STR_ALL_SET_40_VALUES = (
     "\tControl parameter: Speed of wind, m/s\n"
     "\t\t[1. 2. 3. 4. 5. ... 36. 37. 38. 39. 40.]"
     "\nSource control: \n"
-    "\tMin: 1.0\n"
-    "\tMax: 10.0\n"
+    "\tMin: 1.0 m/s\n"
+    "\tMax: 10.0 m/s\n"
     "\tDuration: 3.0 s"
 )
 
@@ -97,9 +97,11 @@ def test_source_broadband_noise___str___all_set():
         num_entities=1, location=locations.time_freq
     )
     f_source_control.append([1, 3, 6, 10], 1)
+    f_source_control.unit = "m/s"
     support = TimeFreqSupport()
     f_time = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
     f_time.append([0, 1, 2, 3], 1)
+    f_time.unit = "s"
     support.time_frequencies = f_time
     f_source_control.time_freq_support = support
 

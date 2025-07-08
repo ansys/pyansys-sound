@@ -311,11 +311,13 @@ class TonalityAures(PsychoacousticsParent):
         wT = self.get_tonal_weighting_over_time()
         wGr = self.get_loudness_weighting_over_time()
         time_scale = self.get_time_scale()
+        tonality_unit = self.get_output()[1].unit
+        time_unit = self.get_output()[1].time_freq_support.time_frequencies.unit
 
         _, axes = plt.subplots(3, 1, sharex=True)
         axes[0].plot(time_scale, tonality)
         axes[0].set_title("Aures tonality over time")
-        axes[0].set_ylabel("T (tu)")
+        axes[0].set_ylabel(f"T ({tonality_unit})")
         axes[0].grid(True)
 
         axes[1].plot(time_scale, wT)
@@ -325,7 +327,7 @@ class TonalityAures(PsychoacousticsParent):
 
         axes[2].plot(time_scale, wGr)
         axes[2].set_title("Relative loudness weighting over time")
-        axes[2].set_xlabel("Time (s)")
+        axes[2].set_xlabel(f"Time ({time_unit})")
         axes[2].set_ylabel(r"$\mathregular{w_{Gr}}$")
         axes[2].grid(True)
 
