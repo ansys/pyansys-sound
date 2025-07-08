@@ -26,8 +26,6 @@ from functools import wraps
 
 from ansys.dpf.core import _global_server
 
-from ansys import dpf
-
 
 def version_requires(min_version):
     """Check that the method being called matches a certain DPF server version.
