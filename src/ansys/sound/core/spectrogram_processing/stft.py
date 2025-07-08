@@ -28,6 +28,8 @@ from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
 
+from ansys.sound.core.server_helpers._check_server_version import version_requires
+
 from . import SpectrogramProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
@@ -142,6 +144,7 @@ class Stft(SpectrogramProcessingParent):
 
         self.__window_overlap = window_overlap
 
+    @version_requires("11.0")
     def process(self):
         """Compute the STFT.
 
@@ -161,6 +164,7 @@ class Stft(SpectrogramProcessingParent):
         # Stores output in the variable
         self._output = self.__operator.get_output(0, "fields_container")
 
+    @version_requires("12.0")
     def get_output(self) -> FieldsContainer:
         """Get the STFT of the signal as a DPF fields container.
 
