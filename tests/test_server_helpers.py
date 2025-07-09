@@ -23,6 +23,7 @@
 from ansys.sound.core.server_helpers import (
     connect_to_or_start_server,
     validate_dpf_sound_connection,
+    version_requires,
 )
 
 
@@ -33,3 +34,35 @@ def test_validate_dpf_sound_connection():
 def test_connect_to_or_start_server():
     s = connect_to_or_start_server(port="6780", ip="127.0.0.1", use_license_context=True)
     print(s)
+
+
+def test_version_requires():
+    """Test the version_requires decorator."""
+
+    class DummyClass:
+        """A dummy class to test the version_requires decorator."""
+
+        def __init__(self):
+            self.__dummy = None
+
+        @version_requires("1.0")
+        def dummy_method_pass(self):
+            return "This function requires DPF version 1.0 or higher."
+
+        @version_requires("666.0")
+        def dummy_method_fail(self):
+            return "This function requires DPF version 666.0 or higher."
+
+    # This should not raise an exception if the server version is 1.0 or higher
+    DC = DummyClass()
+    result = DC.dummy_method_pass()
+    assert result == "This function requires DPF version 1.0 or higher."
+
+    # This should raise an exception if the server version is lower than 666.0
+    try:
+        DC.dummy_method_fail()
+    except Exception as e:
+        assert (
+            str(e) == "Function `dummy_method_fail` of class `DummyClass` requires DPF server"
+            " version 666.0 or higher."
+        )
