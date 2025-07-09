@@ -42,11 +42,21 @@ def test_connect_to_or_start_server():
 def test_version_requires():
     """Test the version_requires decorator."""
 
+    # This should raise an type error in the decorator
+    with pytest.raises(
+        TypeError,
+        match="version_requires decorator must be a string with a dot separator.",
+    ):
+
+        class DummyClass:
+            """A dummy class to test type error in the version_requires decorator."""
+
+            @version_requires(5.0)
+            def dummy_method_type_error(self):
+                pass
+
     class DummyClass:
         """A dummy class to test the version_requires decorator."""
-
-        def __init__(self):
-            self.__dummy = None
 
         @version_requires("1.0")
         def dummy_method_pass(self):
