@@ -125,8 +125,22 @@ def test_xtract_denoiser_process():
     assert xtract_denoiser.get_output_as_nparray()[0][99] == pytest.approx(-3.329021806551297e-15)
 
     assert xtract_denoiser.get_output_as_nparray()[0].shape == (156048,)
-    assert np.min(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(-0.7059202790260315)
-    assert np.max(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(0.8131743669509888)
+
+    if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+        # bug fix in DPF Sound 2026 R1 ID#1247009
+        assert np.min(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(
+            -0.7059202790260315
+        )
+        assert np.max(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(
+            0.8131743669509888
+        )
+    else:  # DPF Sound <= 2025 R2
+        assert np.min(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(
+            -0.6995288133621216
+        )
+        assert np.max(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(
+            0.8091265559196472
+        )
 
     # Get the noise signal
     assert xtract_denoiser.get_output_as_nparray()[1][0] == pytest.approx(-4.048184330747483e-15)
@@ -294,8 +308,23 @@ def test_xtract_denoiser_get_output_as_nparray():
     assert xtract_denoiser.get_output_as_nparray()[0][99] == pytest.approx(-3.329021806551297e-15)
 
     assert xtract_denoiser.get_output_as_nparray()[0].shape == (156048,)
-    assert np.min(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(-0.7059202790260315)
-    assert np.max(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(0.8131743669509888)
+
+    if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+        # bug fix in DPF Sound 2026 R1 ID#1247009
+        assert np.min(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(
+            -0.7059202790260315
+        )
+        assert np.max(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(
+            0.8131743669509888
+        )
+
+    else:  # DPF Sound <= 2025 R2
+        assert np.min(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(
+            -0.6995288133621216
+        )
+        assert np.max(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(
+            0.8091265559196472
+        )
 
     # Get the noise signal
     assert xtract_denoiser.get_output_as_nparray()[1][0] == pytest.approx(-4.048184330747483e-15)
