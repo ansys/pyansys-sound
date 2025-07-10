@@ -101,6 +101,7 @@ def connect_to_or_start_server(
         # Remote server => connect using gRPC
         server = connect_to_server(
             **connect_kwargs,
+            as_global=True,
         )
     else:  # pragma: no cover
         # Local server => start a local server
