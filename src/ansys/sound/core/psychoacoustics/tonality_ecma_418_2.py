@@ -20,14 +20,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Computes ECMA 418-2 tonality."""
+"""Computes ECMA-418-2 tonality."""
 import warnings
 
-from ansys.dpf.core import Field, Operator, types
+from ansys.dpf.core import Field, Operator, _global_server, types
 import matplotlib.pyplot as plt
 import numpy as np
 
-from . import PsychoacousticsParent
+from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 # Name of the DPF Sound operator used in this module.
@@ -35,23 +35,51 @@ ID_COMPUTE_TONALITY_ECMA_418_2 = "compute_tonality_ecma418_2"
 
 
 class TonalityECMA418_2(PsychoacousticsParent):
-    """Computes ECMA 418-2 tonality.
+    """Computes ECMA-418-2 tonality.
 
-    This class is used to compute the tonality according to the ECMA 418-2 standard (Hearing Model
+    This class is used to compute the tonality according to the ECMA-418-2 standard (Hearing Model
     of Sottek), formerly known as ECMA 74, annex G.
     """
 
-    def __init__(self, signal: Field = None):
+    def __init__(self, signal: Field = None, field_type: str = None, edition: str = None):
         """Class instantiation takes the following parameters.
 
         Parameters
         ----------
         signal: Field, default: None
             Signal in Pa on which to calculate the tonality.
+        field_type: str, default: None
+            Sound field type. Available options are `"Free"` and `"Diffuse"`.
+        edition: str, default: None
+            Edition of the ECMA-418-2 standard to use. Available options are `"1st"` and `"3rd"`,
+            which correspond to the 2020 and 2024 versions of the ECMA-418-2 standard, respectively.
+
+        .. note::
+            Prior to release 0.2 of PyAnsys Sound, only the 1st edition of ECMA-418-2 was proposed,
+            and the ``edition`` parameter was not implemented. Similarly, the calculation was only
+            available in free field. This means that older code using this class will need to be
+            updated. Specifically, if the class was instantiated in the form
+            ``TonalityECMA418_2(signal)``, it should now be instantiated with additional parameters
+            to reproduce the same results as before: ``TonalityECMA418_2(signal, "Free", "1st")``.
+
+        .. note::
+            Theoretically, the 1st and 3rd editions of ECMA-418-2 are supposed to describe the same
+            calculation. However, due to errors and ambiguities - allowing different
+            interpretations - in the 1st edition, as well as the absence of real verification data,
+            the two editions implemented here produce different results. The 3rd edition was
+            largerly improved in that regard, and now produces results that are more consistent
+            throughout distinct implementations of the standard. As a consequence, this 3rd edition
+            strongly recommended in most cases, while the 1st edition should only be used when
+            backward compatibility is required.
         """
         super().__init__()
         self.signal = signal
+        self.field_type = field_type
+        self.edition = edition
         self.__operator = Operator(ID_COMPUTE_TONALITY_ECMA_418_2)
+
+        # Determine if the server version is higher than or equal to 11.0
+        self.__server_meets_version_11 = _global_server().meet_version("11.0")
 
     def __str__(self):
         """Return the string representation of the object."""
@@ -63,7 +91,9 @@ class TonalityECMA418_2(PsychoacousticsParent):
         return (
             f"{__class__.__name__} object.\n"
             "Data\n"
-            f'Signal name: "{self.signal.name}"\n'
+            f'\tSignal name: "{self.signal.name}"\n'
+            f"\tField type: {self.field_type}\n"
+            f"\tEdition of the standard: {self.edition}\n"
             f"Tonality: {str_tonality}"
         )
 
@@ -79,18 +109,84 @@ class TonalityECMA418_2(PsychoacousticsParent):
             raise PyAnsysSoundException("Signal must be specified as a DPF field.")
         self.__signal = signal
 
+    @property
+    def field_type(self) -> str:
+        """Sound field type.
+
+        Available options are `"Free"` and `"Diffuse"`.
+        """
+        return self.__field_type
+
+    @field_type.setter
+    def field_type(self, field_type: str):
+        """Set the sound field type."""
+        if field_type is not None:
+            if field_type.lower() not in [FIELD_FREE.lower(), FIELD_DIFFUSE.lower()]:
+                raise PyAnsysSoundException(
+                    f'Invalid field type "{field_type}". Available options are "{FIELD_FREE}" and '
+                    f'"{FIELD_DIFFUSE}".'
+                )
+
+            if field_type.lower() == FIELD_DIFFUSE.lower() and not self.__server_meets_version_11:
+                # Until DPF Sound 2025 R2 (server version 10.0), ECMA-418-2 calculation is only
+                # available in free field.
+                raise PyAnsysSoundException(
+                    "Computing ECMA-418-2 tonality in diffuse field requires version 2026 R1 of "
+                    "DPF Sound or higher. Please use free field instead."
+                )
+
+        self.__field_type = field_type
+
+    @property
+    def edition(self) -> str:
+        """Edition of the ECMA-418-2 standard to use.
+
+        Available options are `"1st"` for the 2020 version, and `"3rd"` for the 2024 version.
+        """
+        return self.__edition
+
+    @edition.setter
+    def edition(self, edition: str):
+        """Set the edition of the ECMA-418-2 standard to use."""
+        if edition is not None:
+            if edition.lower() not in ["1st", "3rd"]:
+                raise PyAnsysSoundException(
+                    f'Invalid edition "{edition}". Available options are "1st" and "3rd".'
+                )
+
+            if edition.lower() == "3rd" and not self.__server_meets_version_11:
+                # Until DPF Sound 2025 R2 (server version 10.0), only the 1st edition of ECMA-418-2
+                # is available.
+                raise PyAnsysSoundException(
+                    "The 3rd edition of ECMA-418-2 tonality requires version 2026 R1 of DPF Sound "
+                    "or higher. Please use the 1st edition instead."
+                )
+
+        self.__edition = edition
+
     def process(self):
-        """Compute the ECMA 418-2 tonality.
+        """Compute the ECMA-418-2 tonality.
 
         This method calls the appropriate DPF Sound operator.
         """
-        if self.signal == None:
+        if self.signal is None:
             raise PyAnsysSoundException(
                 f"No input signal defined. Use ``{__class__.__name__}.signal``."
+            )
+        if self.field_type is None:
+            raise PyAnsysSoundException(
+                f"No field type specified. Use ``{__class__.__name__}.field_type``."
+            )
+        if self.field_type is None:
+            raise PyAnsysSoundException(
+                f"No edition of the standard specified. Use ``{__class__.__name__}.edition``."
             )
 
         # Connect the operator input(s).
         self.__operator.connect(0, self.signal)
+        if self.__server_meets_version_11:
+            self.__operator.connect(1, self.field_type)
+            self.__operator.connect(2, self.edition)
 
         # Run the operator.
         self.__operator.run()
@@ -103,16 +199,16 @@ class TonalityECMA418_2(PsychoacousticsParent):
         )
 
     def get_output(self) -> tuple[float, Field, Field]:
-        """Get the ECMA 418-2 tonality data, in a tuple containing data of various types.
+        """Get the ECMA-418-2 tonality data, in a tuple containing data of various types.
 
         Returns
         -------
         tuple
-            -   First element (float): ECMA 418-2 tonality, in tuHMS.
+            -   First element (float): ECMA-418-2 tonality, in tuHMS.
 
-            -   Second element (Field): ECMA 418-2 tonality over time, in tuHMS.
+            -   Second element (Field): ECMA-418-2 tonality over time, in tuHMS.
 
-            -   Third element (Field): ECMA 418-2 tone frequency over time, in Hz.
+            -   Third element (Field): ECMA-418-2 tone frequency over time, in Hz.
         """
         if self._output == None:
             warnings.warn(
@@ -125,16 +221,16 @@ class TonalityECMA418_2(PsychoacousticsParent):
         return self._output
 
     def get_output_as_nparray(self) -> tuple[float, np.ndarray, np.ndarray]:
-        """Get the ECMA 418-2 tonality data, in a tuple of NumPy arrays.
+        """Get the ECMA-418-2 tonality data, in a tuple of NumPy arrays.
 
         Returns
         -------
         tuple[numpy.ndarray]
-            -   First element: ECMA 418-2 tonality, in tuHMS.
+            -   First element: ECMA-418-2 tonality, in tuHMS.
 
-            -   Second element: ECMA 418-2 tonality over time, in tuHMS.
+            -   Second element: ECMA-418-2 tonality over time, in tuHMS.
 
-            -   Third element: ECMA 418-2 tone frequency over time, in Hz.
+            -   Third element: ECMA-418-2 tone frequency over time, in Hz.
 
             -   Fourth element: associated time scale for tonality, in s.
 
@@ -160,57 +256,57 @@ class TonalityECMA418_2(PsychoacousticsParent):
         )
 
     def get_tonality(self) -> float:
-        """Get the ECMA 418-2 tonality, in tuHMS.
+        """Get the ECMA-418-2 tonality, in tuHMS.
 
         Returns
         -------
         float
-            ECMA 418-2 tonality, in tuHMS.
+            ECMA-418-2 tonality, in tuHMS.
         """
         return self.get_output_as_nparray()[0]
 
     def get_tonality_over_time(self) -> np.ndarray:
-        """Get the ECMA 418-2 tonality over time, in tuHMS.
+        """Get the ECMA-418-2 tonality over time, in tuHMS.
 
         Returns
         -------
         numpy.ndarray
-            ECMA 418-2 tonality over time, in tuHMS.
+            ECMA-418-2 tonality over time, in tuHMS.
         """
         return self.get_output_as_nparray()[1]
 
     def get_tone_frequency_over_time(self) -> np.ndarray:
-        """Get the ECMA 418-2 tone frequency over time, in Hz.
+        """Get the ECMA-418-2 tone frequency over time, in Hz.
 
         Returns
         -------
         numpy.ndarray
-            ECMA 418-2 tone frequency over time, in Hz.
+            ECMA-418-2 tone frequency over time, in Hz.
         """
         return self.get_output_as_nparray()[2]
 
     def get_tonality_time_scale(self) -> np.ndarray:
-        """Get the ECMA 418-2 tonality time scale, in s.
+        """Get the ECMA-418-2 tonality time scale, in s.
 
         Returns
         -------
         numpy.ndarray
-            Time array, in seconds, of the ECMA 418-2 tonality over time.
+            Time array, in seconds, of the ECMA-418-2 tonality over time.
         """
         return self.get_output_as_nparray()[3]
 
     def get_tone_frequency_time_scale(self) -> np.ndarray:
-        """Get the ECMA 418-2 tone frequency time scale, in s.
+        """Get the ECMA-418-2 tone frequency time scale, in s.
 
         Returns
         -------
         numpy.ndarray
-            Time array, in seconds, of the ECMA 418-2 tone frequency over time.
+            Time array, in seconds, of the ECMA-418-2 tone frequency over time.
         """
         return self.get_output_as_nparray()[4]
 
     def plot(self):
-        """Plot the ECMA 418-2's tonality and tone frequency over time.
+        """Plot the ECMA-418-2's tonality and tone frequency over time.
 
         This method displays the tonality in dB and the tone frequency in Hz, over time.
         """
@@ -228,15 +324,15 @@ class TonalityECMA418_2(PsychoacousticsParent):
         time_unit = self.get_output()[1].time_freq_support.time_frequencies.unit
         frequency_unit = self.get_output()[2].unit
 
-        # Plot ECMA 418-2 parameters over time.
+        # Plot ECMA-418-2 parameters over time.
         _, axes = plt.subplots(2, 1, sharex=True)
         axes[0].plot(time_scale_tonality, tonality_over_time)
-        axes[0].set_title("ECMA418-2 psychoacoustic tonality")
+        axes[0].set_title("ECMA-418-2 psychoacoustic tonality")
         axes[0].set_ylabel(f"T ({tonality_unit})")
         axes[0].grid(True)
 
         axes[1].plot(time_scale_ft, ft_over_time)
-        axes[1].set_title("ECMA418-2 tone frequency")
+        axes[1].set_title("ECMA-418-2 tone frequency")
         axes[1].set_ylabel(r"$\mathregular{f_{ton}}$" + f" ({frequency_unit})")
         axes[1].grid(True)
         axes[1].set_xlabel(f"Time ({time_unit})")
