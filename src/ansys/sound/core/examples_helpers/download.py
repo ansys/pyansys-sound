@@ -74,15 +74,13 @@ def _get_example_file_url(filename):  # pragma no cover
     Parameters
     ----------
     filename : str
-        File in https://github.com/ansys/example-data/raw/master/pyansys-sound/
+        File in https://github.com/ansys/example-data/raw/main/pyansys-sound/
 
     Returns
     -------
     File url
     """
-    return (
-        f"https://github.com/ansys/example-data/raw/master/pyansys-sound/{filename}"  # noqa: E231
-    )
+    return f"https://github.com/ansys/example-data/raw/main/pyansys-sound/{filename}"  # noqa: E231
 
 
 @check_directory_exist(EXAMPLES_PATH)
@@ -309,4 +307,79 @@ def download_sound_composer_project_whatif(server=None):
     """
     return _download_example_file_to_server_tmp_folder(
         "SoundComposer-WhatIfScenario-Motor-Gear-HVAC-Noise.scn", server=server
+    )
+
+
+def download_sound_composer_source_eMotor(server=None):
+    """Download the ``eMotor - FEM - orders levels (harmonics source).txt`` file.
+
+    This file is a Sound Composer source of an eMotor.
+
+    Returns
+    -------
+    str
+        Path for the ``eMotor - FEM - orders levels (harmonics source).txt`` file.
+    """
+    return _download_example_file_to_server_tmp_folder(
+        "eMotor - FEM - orders levels (harmonics source).txt", server=server
+    )
+
+
+def download_sound_composer_source_control_eMotor(server=None):
+    """Download the ``eMotor - rpm evolution.txt`` file.
+
+    This file is an eMotor source control, from 250 to 5000 rpm, in 8 seconds.
+
+    Returns
+    -------
+    str
+        Path for the ``eMotor - rpm evolution.txt`` file.
+    """
+    return _download_example_file_to_server_tmp_folder("eMotor - rpm evolution.txt", server=server)
+
+
+def download_sound_composer_FRF_eMotor(server=None):
+    """Download the ``FRF - eMotor transfer.txt`` file.
+
+    This file is a Frequency Response Function that represents the transfer of the eMotor noise
+    to the receiver, to use in Sound Composer track.
+
+    Returns
+    -------
+    str
+        Path for the ``FRF - eMotor transfer.txt`` file.
+    """
+    return _download_example_file_to_server_tmp_folder("FRF - eMotor transfer.txt", server=server)
+
+
+def download_sound_composer_source_WindRoadNoise(server=None):
+    """Download the ``Wind and Road noise - spectrum vs vehicle speed (BBN source).txt`` file.
+
+    This file is the definition of a source of type broadband noise, which models the wind
+    and road noise of a vehicle as a function of the speed. This source is defined between 10 and
+    100 km/h, in 10 km/h steps. To be used in Sound Composer track.
+
+    Returns
+    -------
+    str
+        Path for the ``Wind and Road noise - spectrum vs vehicle speed (BBN source).txt`` file.
+    """
+    return _download_example_file_to_server_tmp_folder(
+        "Wind and Road noise - spectrum vs vehicle speed (BBN source).txt", server=server
+    )
+
+
+def download_sound_composer_source_control_WindRoadNoise(server=None):
+    """Download the ``WindRoadNoise - vehicle speed.txt`` file.
+
+    This file is a wind and noise source control, evolving from 10 to 100 kph, in 8 seconds.
+
+
+    Returns
+    -------
+    str
+        Path for the ``WindRoadNoise - vehicle speed.txt`` file.
+    """
+    return _download_example_file_to_server_tmp_folder(
+        "WindRoadNoise - vehicle speed.txt", server=server
     )

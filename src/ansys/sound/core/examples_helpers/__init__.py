@@ -33,7 +33,12 @@ from .download import (
     download_fan_wav,
     download_flute_psd,
     download_flute_wav,
+    download_sound_composer_FRF_eMotor,
     download_sound_composer_project_whatif,
+    download_sound_composer_source_control_eMotor,
+    download_sound_composer_source_control_WindRoadNoise,
+    download_sound_composer_source_eMotor,
+    download_sound_composer_source_WindRoadNoise,
     download_xtract_demo_signal_1_wav,
     download_xtract_demo_signal_2_wav,
 )
@@ -50,4 +55,9 @@ __all__ = (
     "download_aircraft_wav",
     "download_aircraft10kHz_wav",
     "download_sound_composer_project_whatif",
+    "download_sound_composer_source_eMotor",
+    "download_sound_composer_source_control_eMotor",
+    "download_sound_composer_FRF_eMotor",
+    "download_sound_composer_source_WindRoadNoise",
+    "download_sound_composer_source_control_WindRoadNoise",
 )
