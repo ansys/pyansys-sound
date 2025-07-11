@@ -39,6 +39,24 @@ class TonalityECMA418_2(PsychoacousticsParent):
 
     This class is used to compute the tonality according to the ECMA-418-2 standard (Hearing Model
     of Sottek), formerly known as ECMA 74, annex G.
+
+    .. note::
+        Prior to release 0.2 of PyAnsys Sound, only the 1st edition of ECMA-418-2 was proposed.
+        Similarly, the calculation was only available in free field. This means that older code
+        using this class needs be updated. Specifically, if the class was instantiated in the
+        form ``TonalityECMA418_2(signal)``, it should now be instantiated with additional
+        parameters to reproduce the same results as before:
+        ``TonalityECMA418_2(signal, "Free", "1st")``.
+
+    .. note::
+        Theoretically, the 1st and 3rd editions of ECMA-418-2 are supposed to describe the same
+        calculation. However, due to errors and ambiguities in the 1st edition - allowing
+        different interpretations -, as well as the absence of real verification data, the two
+        editions implemented here produce different results. The 3rd edition was largely
+        improved in that regard, and now produces results that are more consistent throughout
+        distinct implementations of the standard. As a consequence, this 3rd edition strongly
+        recommended in most cases, while the 1st edition should only be used when backward
+        compatibility is required.
     """
 
     def __init__(self, signal: Field = None, field_type: str = None, edition: str = None):
@@ -53,24 +71,6 @@ class TonalityECMA418_2(PsychoacousticsParent):
         edition: str, default: None
             Edition of the ECMA-418-2 standard to use. Available options are `"1st"` and `"3rd"`,
             which correspond to the 2020 and 2024 versions of the ECMA-418-2 standard, respectively.
-
-        .. note::
-            Prior to release 0.2 of PyAnsys Sound, only the 1st edition of ECMA-418-2 was proposed.
-            Similarly, the calculation was only available in free field. This means that older code
-            using this class needs be updated. Specifically, if the class was instantiated in the
-            form ``TonalityECMA418_2(signal)``, it should now be instantiated with additional
-            parameters to reproduce the same results as before:
-            ``TonalityECMA418_2(signal, "Free", "1st")``.
-
-        .. note::
-            Theoretically, the 1st and 3rd editions of ECMA-418-2 are supposed to describe the same
-            calculation. However, due to errors and ambiguities in the 1st edition - allowing
-            different interpretations -, as well as the absence of real verification data, the two
-            editions implemented here produce different results. The 3rd edition was largely
-            improved in that regard, and now produces results that are more consistent throughout
-            distinct implementations of the standard. As a consequence, this 3rd edition strongly
-            recommended in most cases, while the 1st edition should only be used when backward
-            compatibility is required.
         """
         super().__init__()
         self.signal = signal
