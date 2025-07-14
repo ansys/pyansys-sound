@@ -46,7 +46,7 @@ and the results are commented, compared, and discussed.
 # DPF server, and retrieving the example file.
 
 # Load required libraries.
-from ansys.sound.core.examples_helpers import download_turbo_whistle_wav
+from ansys.sound.core.examples_helpers import download_turbo_whistling_wav
 from ansys.sound.core.psychoacoustics import (
     TonalityAures,
     TonalityDIN45681,
@@ -67,7 +67,7 @@ from ansys.sound.core.spectrogram_processing.stft import Stft
 my_server, lic_context = connect_to_or_start_server(use_license_context=True)
 
 # Load example data from a WAV file: flyover noise of an aircraft.
-path_turbo_whistle_wav = download_turbo_whistle_wav(server=my_server)
+path_turbo_whistle_wav = download_turbo_whistling_wav(server=my_server)
 wav_loader = LoadWav(path_turbo_whistle_wav)
 wav_loader.process()
 signal_aircraft = wav_loader.get_output()[0]
