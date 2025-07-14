@@ -143,7 +143,7 @@ def test_tonality_ecma_418_2_setters_exceptions():
     pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0,
     reason="Server-version errors are only triggered prior to version 11.0",
 )
-def test_tonality_ecma_418_2_setters_exceptions_11_0():
+def test_tonality_ecma_418_2_setters_exceptions_lower_than_11_0():
     """Test TonalityECMA418_2 setters' exceptions related to diffuse field and 3rd edition."""
     tonality = TonalityECMA418_2()
 
