@@ -183,6 +183,14 @@ def test_tonality_ecma_418_2___str__():
 
     assert tonality.__str__() == EXP_STR_1ST_EDITION_FREE
 
+    # Case insensitivity
+    tonality.field_type = "fReE"
+    tonality.edition = "1ST"
+
+    tonality.process()
+
+    assert tonality.__str__() == EXP_STR_1ST_EDITION_FREE
+
 
 @pytest.mark.skipif(
     not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0,
