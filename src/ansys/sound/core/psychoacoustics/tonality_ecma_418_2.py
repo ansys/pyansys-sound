@@ -37,26 +37,30 @@ ID_COMPUTE_TONALITY_ECMA_418_2 = "compute_tonality_ecma418_2"
 class TonalityECMA418_2(PsychoacousticsParent):
     """Computes ECMA-418-2 tonality.
 
-    This class is used to compute the tonality according to the ECMA-418-2 standard (Hearing Model
-    of Sottek), formerly known as ECMA 74, annex G.
+    This class is used to compute the tonality according to the ECMA-418-2 standard (Sottek Hearing
+    Model), formerly known as ECMA-74, annex G.
 
     .. note::
-        Prior to release 0.2 of PyAnsys Sound, only the 1st edition of ECMA-418-2 was proposed.
-        Similarly, the calculation was only available in free field. This means that older code
-        using this class needs be updated. Specifically, if the class was instantiated in the
-        form ``TonalityECMA418_2(signal)``, it should now be instantiated with additional
-        parameters to reproduce the same results as before:
-        ``TonalityECMA418_2(signal, "Free", "1st")``.
+        The releases of DPF Sound 2026 R1 and PyAnsys Sound 0.3 introduce the 3rd edition of
+        ECMA-418-2, in addition to the 1st edition implemented in previous versions. Theoretically,
+        the 1st and 3rd editions of ECMA-418-2 are supposed to describe the same algorithm of
+        psychoacoustic tonality calculation. However, the standard does not include any real
+        verification data and its 1st edition noticeably included errors and unclear computation
+        details open to interpretation. The 3rd edition was largely improved in that regard, and
+        now allow producing consistent results throughout distinct implementations of the standard.
+        As a consequence, this 3rd edition is strongly recommended in most cases, while the 1st
+        edition should only be used when backward compatibility is required.
 
     .. note::
-        Theoretically, the 1st and 3rd editions of ECMA-418-2 are supposed to describe the same
-        calculation. However, due to errors and ambiguities in the 1st edition - allowing
-        different interpretations -, as well as the absence of real verification data, the two
-        editions implemented here produce different results. The 3rd edition was largely
-        improved in that regard, and now produces results that are more consistent throughout
-        distinct implementations of the standard. As a consequence, this 3rd edition strongly
-        recommended in most cases, while the 1st edition should only be used when backward
-        compatibility is required.
+        Prior to release 0.3 of PyAnsys Sound, only the 1st edition of ECMA-418-2 was proposed.
+        Similarly, the calculation was only available in free field. Release 0.3 includes the
+        possibility to use the 3rd edition of ECMA-418-2, and perform the calculation in diffuse
+        field (with either edition), using the two new attributes :attr:`edition` and
+        :attr:`field_type`. This means that older code using this class needs be updated with
+        values assigned to these two attributes. This can be done either when instantiating the
+        class:``my_tonality = TonalityECMA418_2(my_signal, my_field_type, my_edition)``, or later,
+        by setting the attributes: ``my_tonality.field_type = my_field_type`` and
+        ``my_tonality.edition = my_edition``.
     """
 
     def __init__(self, signal: Field = None, field_type: str = None, edition: str = None):
@@ -73,13 +77,14 @@ class TonalityECMA418_2(PsychoacousticsParent):
             which correspond to the 2020 and 2024 versions of the ECMA-418-2 standard, respectively.
         """
         super().__init__()
+
+        # Determine if the server version is higher than or equal to 11.0
+        self.__server_meets_version_11 = _global_server().meet_version("11.0")
+
         self.signal = signal
         self.field_type = field_type
         self.edition = edition
         self.__operator = Operator(ID_COMPUTE_TONALITY_ECMA_418_2)
-
-        # Determine if the server version is higher than or equal to 11.0
-        self.__server_meets_version_11 = _global_server().meet_version("11.0")
 
     def __str__(self):
         """Return the string representation of the object."""
@@ -88,10 +93,15 @@ class TonalityECMA418_2(PsychoacousticsParent):
         else:
             str_tonality = f"{self.get_tonality():.2f} tuHMS\n"
 
+        if self.signal is not None:
+            str_name = f'"{self.signal.name}"'
+        else:
+            str_name = "Signal not set"
+
         return (
             f"{__class__.__name__} object.\n"
             "Data\n"
-            f'\tSignal name: "{self.signal.name}"\n'
+            f"\tSignal name: {str_name}\n"
             f"\tField type: {self.field_type}\n"
             f"\tEdition of the standard: {self.edition}\n"
             f"Tonality: {str_tonality}"
@@ -177,7 +187,7 @@ class TonalityECMA418_2(PsychoacousticsParent):
             raise PyAnsysSoundException(
                 f"No field type specified. Use ``{__class__.__name__}.field_type``."
             )
-        if self.field_type is None:
+        if self.edition is None:
             raise PyAnsysSoundException(
                 f"No edition of the standard specified. Use ``{__class__.__name__}.edition``."
             )
@@ -186,7 +196,8 @@ class TonalityECMA418_2(PsychoacousticsParent):
         self.__operator.connect(0, self.signal)
         if self.__server_meets_version_11:
             self.__operator.connect(1, self.field_type)
-            self.__operator.connect(2, self.edition)
+            # 1st letter in self.edition is the value (as an int) expected by the operator.
+            self.__operator.connect(2, int(self.edition[0]))
 
         # Run the operator.
         self.__operator.run()

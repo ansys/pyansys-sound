@@ -295,6 +295,17 @@ def download_aircraft10kHz_wav(server=None):
     return _download_example_file_to_server_tmp_folder("Aircraft_FS10kHz.wav", server=server)
 
 
+def download_turbo_whistle_wav(server=None):
+    """Download the ``Turbo_Whistle.wav`` file.
+
+    Returns
+    -------
+    str
+        Path for the ``Turbo_Whistle.wav`` file.
+    """
+    return _download_example_file_to_server_tmp_folder("Turbo_Whistle.wav", server=server)
+
+
 def download_sound_composer_project_whatif(server=None):
     """Download the ``SoundComposer-WhatIfScenario-Motor-Gear-HVAC-Noise.scn`` file.
 
