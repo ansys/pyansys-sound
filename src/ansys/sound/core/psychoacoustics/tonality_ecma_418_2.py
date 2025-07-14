@@ -78,7 +78,7 @@ class TonalityECMA418_2(PsychoacousticsParent):
         """
         super().__init__()
 
-        # Determine if the server version is higher than or equal to 11.0
+        # Determine if the server version is higher than or equal to 11.0.
         self.__server_meets_version_11 = _global_server().meet_version("11.0")
 
         self.signal = signal
