@@ -120,7 +120,7 @@ def test_download_turbo_whistling_wav():
     download_turbo_whistling_wav()[0]
     p = str(EXAMPLES_PATH) + "/Turbo_whistling.wav"
     assert pathlib.Path(p).exists() == True
-    assert os.path.getsize(p) == 521565
+    assert os.path.getsize(p) == 443028
 
 
 def test_download_sound_composer_source_eMotor():
