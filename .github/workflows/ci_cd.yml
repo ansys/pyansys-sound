@@ -81,20 +81,6 @@ jobs:
           .\.venv\Scripts\Activate.ps1
           pytest -v
 
-      - name: "Upload Coverage Results"
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-html
-          path: .cov/html
-          retention-days: 7
-
-      - name: "Upload coverage reports to Codecov"
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: .cov/xml
-
-
       - name: "Stop the DPF-Sound service"
         if: always()
         run: |
