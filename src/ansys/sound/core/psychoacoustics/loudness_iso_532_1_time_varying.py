@@ -199,6 +199,16 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         """
         return self.get_output_as_nparray()[0]
 
+    def get_Nmax_sone(self) -> float:
+        """Get the maximum instantaneous loudness in sone.
+
+        Returns
+        -------
+        float
+            Maximum loudness in sone.
+        """
+        return np.max(self.get_loudness_sone_vs_time())
+
     def get_N5_sone(self) -> float:
         """Get the N5 percentile loudness.
 
@@ -232,6 +242,16 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             Instantaneous loudness level in phon.
         """
         return self.get_output_as_nparray()[3]
+
+    def get_Lmax_phon(self) -> float:
+        """Get the maximum instantaneous loudness level in phon.
+
+        Returns
+        -------
+        float
+            Maximum loudness level in phon.
+        """
+        return np.max(self.get_loudness_level_phon_vs_time())
 
     def get_L5_phon(self) -> float:
         """Get the L5 percentile loudness level.
