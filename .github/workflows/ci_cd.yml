@@ -18,6 +18,7 @@ env:
   MAIN_PYTHON_VERSION: '3.12'
   PACKAGE_NAME: 'ansys-sound-core'
   DOCUMENTATION_CNAME: 'sound.docs.pyansys.com'
+  TEST_DPF_SOUND_MATRIX: '["25.2", "latest"]' # Docker images to use for testing
   ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG: ghcr.io/ansys/ansys-sound:latest
   ANSRV_DPF_SOUND_PORT: 6780
   DPF_SOUND_CONT_NAME: ansys-sound-core
@@ -28,12 +29,28 @@ jobs:
 # vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv    RUNNING ON SELF-HOSTED RUNNER    vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 # =================================================================================================
 
+  setup-test-matrix:
+    name: "Retrieve test matrix of DPF Sound Docker images"
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: echo "matrix=${TEST_DPF_SOUND_MATRIX}" >> $GITHUB_OUTPUT
+        env:
+          TEST_DPF_SOUND_MATRIX: ${{ env.TEST_DPF_SOUND_MATRIX }}
+
   testing-windows:
     name: "Testing and coverage (Windows)"
+    needs: [setup-test-matrix]
     runs-on: [self-hosted, Windows, pyansys-sound]
     env:
       PYVISTA_OFF_SCREEN: true
       MPLBACKEND: Agg  # non-interactive mode ("headless backend") for matplotlib: no GUI is used when plotting
+    strategy:
+      fail-fast: false
+      matrix:
+        docker-image: ${{ fromJson(needs.setup-test-matrix.outputs.matrix) }}
 
     steps:
       - uses: actions/checkout@v4

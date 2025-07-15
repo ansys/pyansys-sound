@@ -20,11 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import warnings
+
 from ansys.dpf.core import (
     FieldsContainer,
     Operator,
 )
 import pytest
+
+from ansys.sound.core._pyansys_sound import PyAnsysSoundWarning
 
 REF_ACOUSTIC_POWER = 4e-10
 
@@ -58,6 +62,8 @@ EXP_STR_ALL_SET_40_VALUES = (
 def test_source_broadband_noise_set_from_generic_data_containers():
     """Test SourceBroadbandNoise set_from_generic_data_containers method."""
     for i in range(1, 1000):
+        if i % 100 == 0:
+            warnings.warn(PyAnsysSoundWarning(f"Loop iteration {i}"))
         print(i)
         op = Operator("sound_composer_load_source_bbn")
         op.connect(0, pytest.data_path_sound_composer_bbn_source_in_container)
