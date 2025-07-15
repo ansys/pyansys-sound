@@ -18,7 +18,8 @@ env:
   MAIN_PYTHON_VERSION: '3.12'
   PACKAGE_NAME: 'ansys-sound-core'
   DOCUMENTATION_CNAME: 'sound.docs.pyansys.com'
-  DOCUMENTATION_DPF_SOUND_VERSION: '25.2' # Version of DPF Sound to use for documentation
+  DOCUMENTATION_DPF_SOUND_TAG: 'latest' # DPF Sound image tag for doc building
+  TEST_DPF_SOUND_MATRIX: '["25.2", "latest"]' # List of DPF Sound image tags for testing (quotes and double quotes are important!!)
   ANSRV_DPF_SOUND_REPO: ghcr.io/ansys/ansys-sound # Docker repository for DPF Sound
   ANSRV_DPF_SOUND_PORT: 6780 # Port for DPF Sound Docker containers
   DPF_SOUND_CONT_NAME: ansys-sound-core
@@ -110,9 +111,20 @@ jobs:
 # vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv    RUNNING ON SELF-HOSTED RUNNER    vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 # =================================================================================================
 
+  retrieve-test-matrix:
+    name: "Retrieve test matrix of DPF Sound Docker images"
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: echo "matrix=${TEST_DPF_SOUND_MATRIX}" >> $GITHUB_OUTPUT
+        env:
+          TEST_DPF_SOUND_MATRIX: ${{ env.TEST_DPF_SOUND_MATRIX }}
+
   testing-windows:
     name: "Testing and coverage (Windows)"
-    needs: [smoke-tests]
+    needs: [smoke-tests, retrieve-test-matrix]
     runs-on: [self-hosted, Windows, pyansys-sound]
     env:
       PYVISTA_OFF_SCREEN: true
@@ -120,7 +132,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        docker-image: [25.2, latest]
+        docker-image: ${{ fromJson(needs.retrieve-test-matrix.outputs.matrix) }}
 
     steps:
       - uses: actions/checkout@v4
@@ -235,17 +247,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Download DPF-Sound service container for released documentation"
-        if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
-        run: docker pull ${{ env.ANSRV_DPF_SOUND_REPO }}:${{ env.DOCUMENTATION_DPF_SOUND_VERSION }}
-
-      - name: "Download DPF-Sound service container for development documentation"
-        if: github.event_name != 'push' || !contains(github.ref, 'refs/tags')
-        run: docker pull ${{ env.ANSRV_DPF_SOUND_REPO }}:latest
+        run: docker pull ${{ env.ANSRV_DPF_SOUND_REPO }}:${{ env.DOCUMENTATION_DPF_SOUND_TAG }}
 
       - name: "Start DPF-Sound service and verify start"
         run: |
           .\.venv\Scripts\Activate.ps1
-          docker run -d --name ${{ env.DPF_SOUND_CONT_NAME }} -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ secrets.LICENSE_SERVER }}" -p ${{ env.ANSRV_DPF_SOUND_PORT }}:50052 --dns '8.8.8.8' ${{ env.ANSRV_DPF_SOUND_REPO }}:latest
+          docker run -d --name ${{ env.DPF_SOUND_CONT_NAME }} -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ secrets.LICENSE_SERVER }}" -p ${{ env.ANSRV_DPF_SOUND_PORT }}:50052 --dns '8.8.8.8' ${{ env.ANSRV_DPF_SOUND_REPO }}:${{ env.DOCUMENTATION_DPF_SOUND_TAG }}
           python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
       - name: "Run Ansys documentation building action"
