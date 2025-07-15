@@ -57,9 +57,9 @@ EXP_STR_ALL_SET_40_VALUES = (
 
 def test_source_broadband_noise_set_from_generic_data_containers():
     """Test SourceBroadbandNoise set_from_generic_data_containers method."""
-    op = Operator("sound_composer_load_source_bbn")
-    op.connect(0, pytest.data_path_sound_composer_bbn_source_in_container)
-    op.run()
-    for i in range(1, 100):
+    for i in range(1, 1000):
         print(i)
+        op = Operator("sound_composer_load_source_bbn")
+        op.connect(0, pytest.data_path_sound_composer_bbn_source_in_container)
+        op.run()
         fc_data: FieldsContainer = op.get_output(0, "fields_container")
