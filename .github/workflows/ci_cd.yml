@@ -237,7 +237,7 @@ jobs:
       - name: "Download DPF-Sound service container for released documentation"
         if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
         run: docker pull ${{ env.ANSRV_DPF_SOUND_REPO }}:${{ env.DOCUMENTATION_DPF_SOUND_VERSION }}
-      
+
       - name: "Download DPF-Sound service container for development documentation"
         if: github.event_name != 'push' || !contains(github.ref, 'refs/tags')
         run: docker pull ${{ env.ANSRV_DPF_SOUND_REPO }}:latest
