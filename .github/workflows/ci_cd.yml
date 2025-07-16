@@ -111,6 +111,8 @@ jobs:
 # vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv    RUNNING ON SELF-HOSTED RUNNER    vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 # =================================================================================================
 
+  # Retrieve test matrix from the environment variable, as env variables are not directly available
+  # at matrix definition (in job testing-windows below).
   retrieve-test-matrix:
     name: "Retrieve test matrix of DPF Sound Docker images"
     runs-on: ubuntu-latest
@@ -132,6 +134,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # This matrix contains tags of all DPF Sound Docker images to test against.
+        # (see env.TEST_DPF_SOUND_MATRIX)
         docker-image: ${{ fromJson(needs.retrieve-test-matrix.outputs.matrix) }}
 
     steps:
