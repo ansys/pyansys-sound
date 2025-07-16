@@ -22,7 +22,7 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "ansys-dpf-core==0.13,
+    "ansys-dpf-core==0.13",
     "matplotlib>=3.8.2,<4",
     "platformdirs>=3.6.0",
     "requests>=2.30.0",
