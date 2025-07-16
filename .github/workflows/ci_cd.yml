@@ -250,7 +250,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Download DPF-Sound service container for released documentation"
+      - name: "Download DPF-Sound service container"
         run: docker pull ${{ env.ANSRV_DPF_SOUND_REPO }}:${{ env.DOCUMENTATION_DPF_SOUND_TAG }}
 
       - name: "Start DPF-Sound service and verify start"
