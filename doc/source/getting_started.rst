@@ -70,6 +70,8 @@ By default, a DPF server is started from the latest installed Ansys version.
      - ansys.sound.core version
    * - 8.0 (Ansys 2024 R2 pre0)
      - 0.1.0 and later
+   * - 10.0 (Ansys 2025 R2)
+     - 0.2.0 and later
 
 
 Examples
