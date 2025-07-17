@@ -327,6 +327,14 @@ jobs:
           packages-dir: ${{ env.PACKAGE_NAME }}-artifacts
           skip-existing: false
 
+      - name: "Release to GitHub"
+        uses: ansys/actions/release-github@v10
+        with:
+          library-name: ${{ env.PACKAGE_NAME }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          add-artifact-attestation-notes: true
+          changelog-release-notes: true
+
   doc-deploy-dev:
     name: "Upload developers documentation"
     runs-on: ubuntu-latest
