@@ -241,6 +241,25 @@ def test_loudness_iso_532_1_time_varying_get_loudness_vs_time_phon():
     assert instantaneous_loudness_level[100] == pytest.approx(63.505714416503906)
 
 
+def test_loudness_iso_532_1_time_varying_get_Nmax_sone():
+    """Test the get_Nmax_sone method of the LoudnessISO532_1_TimeVarying class."""
+    time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
+
+    # Get a signal
+    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader.process()
+    fc = wav_loader.get_output()
+
+    # Set signal
+    time_varying_loudness_computer.signal = fc[0]
+
+    # Compute
+    time_varying_loudness_computer.process()
+
+    Nmax = time_varying_loudness_computer.get_Nmax_sone()
+    assert Nmax == pytest.approx(46.718074798583984)
+
+
 def test_loudness_iso_532_1_time_varying_get_N5():
     """Test the get_N5_sone method of the LoudnessISO532_1_TimeVarying class."""
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
@@ -277,6 +296,25 @@ def test_loudness_iso_532_1_time_varying_get_N10():
 
     N10 = time_varying_loudness_computer.get_N10_sone()
     assert N10 == pytest.approx(44.12368392944336)
+
+
+def test_loudness_iso_532_1_time_varying_get_Lmax_phon():
+    """Test the get_Lmax_phon method of the LoudnessISO532_1_TimeVarying class."""
+    time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
+
+    # Get a signal
+    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader.process()
+    fc = wav_loader.get_output()
+
+    # Set signal
+    time_varying_loudness_computer.signal = fc[0]
+
+    # Compute
+    time_varying_loudness_computer.process()
+
+    Lmax = time_varying_loudness_computer.get_Lmax_phon()
+    assert Lmax == pytest.approx(95.45909118652344)
 
 
 def test_loudness_iso_532_1_time_varying_get_L5():

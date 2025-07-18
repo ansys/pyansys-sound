@@ -38,6 +38,7 @@ from ansys.sound.core.examples_helpers import (
     download_sound_composer_source_control_WindRoadNoise,
     download_sound_composer_source_eMotor,
     download_sound_composer_source_WindRoadNoise,
+    download_turbo_whistling_wav,
     download_xtract_demo_signal_1_wav,
     download_xtract_demo_signal_2_wav,
 )
@@ -113,6 +114,13 @@ def test_download_aircraft10kHz_wav():
     p = str(EXAMPLES_PATH) + "/Aircraft_FS10kHz.wav"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 521565
+
+
+def test_download_turbo_whistling_wav():
+    download_turbo_whistling_wav()[0]
+    p = str(EXAMPLES_PATH) + "/Turbo_whistling.wav"
+    assert pathlib.Path(p).exists() == True
+    assert os.path.getsize(p) == 443028
 
 
 def test_download_sound_composer_source_eMotor():
