@@ -265,6 +265,7 @@ jobs:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           skip-install: true
           sphinxopts: -j auto -W --keep-going
+          use-python-cache: false
 
       - name: "Stop the DPF-Sound service"
         if: always()
