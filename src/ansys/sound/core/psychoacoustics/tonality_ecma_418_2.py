@@ -41,7 +41,7 @@ class TonalityECMA418_2(PsychoacousticsParent):
     Model), formerly known as ECMA-74, annex G.
 
     .. note::
-        The releases of DPF Sound 2026 R1 and PyAnsys Sound 0.3 introduce the 3rd edition of
+        The releases of DPF Sound 2026 R1 and PyAnsys Sound 0.2 introduce the 3rd edition of
         ECMA-418-2, in addition to the 1st edition implemented in previous versions. Theoretically,
         the 1st and 3rd editions of ECMA-418-2 are supposed to describe the same algorithm of
         psychoacoustic tonality calculation. However, the standard does not include any real
@@ -52,8 +52,8 @@ class TonalityECMA418_2(PsychoacousticsParent):
         edition should only be used when backward compatibility is required.
 
     .. note::
-        Prior to release 0.3 of PyAnsys Sound, only the 1st edition of ECMA-418-2 was proposed.
-        Similarly, the calculation was only available in free field. Release 0.3 includes the
+        Prior to release 0.2 of PyAnsys Sound, only the 1st edition of ECMA-418-2 was proposed.
+        Similarly, the calculation was only available in free field. Release 0.2 includes the
         possibility to use the 3rd edition of ECMA-418-2, and perform the calculation in diffuse
         field (with either edition), using the two new attributes :attr:`edition` and
         :attr:`field_type`. This means that older code using this class needs be updated with
@@ -138,7 +138,7 @@ class TonalityECMA418_2(PsychoacousticsParent):
                 )
 
             if field_type.lower() == FIELD_DIFFUSE.lower() and not self.__server_meets_version_11:
-                # Until DPF Sound 2025 R2 (server version 10.0), ECMA-418-2 calculation is only
+                # Until DPF Sound 2025 R2 (server version 10), ECMA-418-2 calculation is only
                 # available in free field.
                 raise PyAnsysSoundException(
                     "Computing ECMA-418-2 tonality in diffuse field requires version 2026 R1 of "
@@ -165,7 +165,7 @@ class TonalityECMA418_2(PsychoacousticsParent):
                 )
 
             if edition.lower() == "3rd" and not self.__server_meets_version_11:
-                # Until DPF Sound 2025 R2 (server version 10.0), only the 1st edition of ECMA-418-2
+                # Until DPF Sound 2025 R2 (server version 10), only the 1st edition of ECMA-418-2
                 # is available.
                 raise PyAnsysSoundException(
                     "The 3rd edition of ECMA-418-2 tonality requires version 2026 R1 of DPF Sound "
