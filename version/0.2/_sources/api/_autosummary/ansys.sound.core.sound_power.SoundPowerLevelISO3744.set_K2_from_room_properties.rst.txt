@@ -1,0 +1,6 @@
+set\_K2\_from\_room\_properties
+===============================
+
+.. currentmodule:: ansys.sound.core.sound_power
+
+.. automethod:: SoundPowerLevelISO3744.set_K2_from_room_properties
