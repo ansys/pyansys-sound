@@ -55,11 +55,11 @@ class OverallLevel(StandardLevelsParent):
             The scale type of the output level. Available options are `"dB"` and `"RMS"`.
         reference_value : float, default: 1.0
             The reference value for the level computation. If the overall level is computed with a
-            signal in Pa, the reference value should be 2e-5.
+            signal in Pa, the reference value should be 2e-5 (Pa).
         frequency_weighting : str, default: ""
             The frequency weighting to apply to the signal before computing the level. Available
-            options are `""`, `"A"`, `"B"`,  and `"C"`, respectively to get level in dBSPL, dB(A),
-            dB(B), and dB(C). Note that the frequency weighting is only applied if the attribute
+            options are `""`, `"A"`, `"B"`,  and `"C"`, respectively to get level in dB (or dBSPL),
+            dBA, dBB, and dBC. Note that the frequency weighting is only applied if the attribute
             :attr:`scale` is set to `"dB"`.
         """
         super().__init__()
@@ -71,13 +71,14 @@ class OverallLevel(StandardLevelsParent):
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
-        output = self.get_output()
-
         str_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
-        str_frequency_weighting = (
-            self.frequency_weighting if len(self.frequency_weighting) > 0 else "None"
-        )
-        str_level = f"{output:.1f}" if output is not None else "Not processed"
+        if len(self.frequency_weighting) > 0:
+            str_frequency_weighting = self.frequency_weighting
+            unit = f"dB{self.frequency_weighting} (re {self.reference_value})"
+        else:
+            str_frequency_weighting = "None"
+            unit = f"dB (re {self.reference_value})"
+        str_level = f"{self._output:.1f} {unit}" if self._output is not None else "Not processed"
 
         return (
             f"{__class__.__name__} object.\n"
@@ -123,7 +124,7 @@ class OverallLevel(StandardLevelsParent):
         """Reference value for the level computation.
 
         If the overall level is computed with a sound pressure signal in Pa, the reference value
-        should be 2e-5.
+        should be 2e-5 (Pa).
         """
         return self.__reference_value
 
@@ -139,9 +140,9 @@ class OverallLevel(StandardLevelsParent):
         """Frequency weighting of the computed level.
 
         Available options are `""`, `"A"`, `"B"`, and `"C"`. If attribute :attr:`reference_value`
-        is 2e-5 Pa, these options allow level calculation in dBSPL, dB(A), dB(B), and dB(C),
-        respectively. Note that the frequency weighting is only applied if the attribute
-        :attr:`scale` is set to `"dB"`.
+        is 2e-5 Pa, these options allow level calculation in dBSPL, dBA, dBB, and dBC, respectively.
+        Note that the frequency weighting is only applied if the attribute :attr:`scale` is set to
+        `"dB"`.
         """
         return self.__frequency_weighting
 

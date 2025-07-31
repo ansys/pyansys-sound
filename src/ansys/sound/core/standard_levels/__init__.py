@@ -27,10 +27,14 @@ Helper classes related to the computation of standard levels.
 
 from ._standard_levels_parent import StandardLevelsParent
 from .level_over_time import LevelOverTime
+from .octave_levels_from_psd import OctaveLevelsFromPSD
+from .one_third_octave_levels_from_psd import OneThirdOctaveLevelsFromPSD
 from .overall_level import OverallLevel
 
 __all__ = (
     "StandardLevelsParent",
     "OverallLevel",
     "LevelOverTime",
+    "OctaveLevelsFromPSD",
+    "OneThirdOctaveLevelsFromPSD",
 )
