@@ -246,11 +246,11 @@ def test_octave_levels_from_psd_get_output_as_nparray(create_psd_from_txt_data):
     assert len(frequencies) == EXP_BAND_COUNT
 
 
-def test_octave_levels_from_psd_get_octave_levels(create_psd_from_txt_data):
-    """Test OctaveLevelsFromPSD get_octave_levels method."""
+def test_octave_levels_from_psd_get_band_levels(create_psd_from_txt_data):
+    """Test OctaveLevelsFromPSD get_band_levels method."""
     level_obj = OctaveLevelsFromPSD(psd=create_psd_from_txt_data)
     level_obj.process()
-    levels = level_obj.get_octave_levels()
+    levels = level_obj.get_band_levels()
     assert isinstance(levels, np.ndarray)
     assert len(levels) == EXP_BAND_COUNT
     assert levels[0] == pytest.approx(EXP_LEVEL_DEFAULT_0)
@@ -264,7 +264,7 @@ def test_octave_levels_from_psd_get_octave_levels(create_psd_from_txt_data):
     level_obj.reference_value = 2e-5
     level_obj.process()
 
-    levels = level_obj.get_octave_levels()
+    levels = level_obj.get_band_levels()
     assert levels[0] == pytest.approx(EXP_LEVEL_ANSI_A_PA_0)
     assert levels[3] == pytest.approx(EXP_LEVEL_ANSI_A_PA_3)
     assert levels[5] == pytest.approx(EXP_LEVEL_ANSI_A_PA_5)
@@ -274,7 +274,7 @@ def test_octave_levels_from_psd_get_octave_levels(create_psd_from_txt_data):
     level_obj.frequency_weighting = "B"
     level_obj.process()
 
-    levels = level_obj.get_octave_levels()
+    levels = level_obj.get_band_levels()
     assert levels[0] == pytest.approx(EXP_LEVEL_ANSI_B_PA_0)
     assert levels[3] == pytest.approx(EXP_LEVEL_ANSI_B_PA_3)
     assert levels[5] == pytest.approx(EXP_LEVEL_ANSI_B_PA_5)
@@ -284,7 +284,7 @@ def test_octave_levels_from_psd_get_octave_levels(create_psd_from_txt_data):
     level_obj.frequency_weighting = "C"
     level_obj.process()
 
-    levels = level_obj.get_octave_levels()
+    levels = level_obj.get_band_levels()
     assert levels[0] == pytest.approx(EXP_LEVEL_ANSI_C_PA_0)
     assert levels[3] == pytest.approx(EXP_LEVEL_ANSI_C_PA_3)
     assert levels[5] == pytest.approx(EXP_LEVEL_ANSI_C_PA_5)

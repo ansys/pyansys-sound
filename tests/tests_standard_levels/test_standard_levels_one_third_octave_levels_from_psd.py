@@ -269,11 +269,11 @@ def test_one_third_octave_levels_from_psd_get_output_as_nparray(create_psd_from_
     assert len(frequencies) == EXP_BAND_COUNT
 
 
-def test_one_third_octave_levels_from_psd_get_one_third_octave_levels(create_psd_from_txt_data):
-    """Test OneThirdOctaveLevelsFromPSD get_one_third_octave_levels method."""
+def test_one_third_octave_levels_from_psd_get_band_levels(create_psd_from_txt_data):
+    """Test OneThirdOctaveLevelsFromPSD get_band_levels method."""
     level_obj = OneThirdOctaveLevelsFromPSD(psd=create_psd_from_txt_data)
     level_obj.process()
-    levels = level_obj.get_one_third_octave_levels()
+    levels = level_obj.get_band_levels()
     assert isinstance(levels, np.ndarray)
     assert len(levels) == EXP_BAND_COUNT
     assert levels[16] == pytest.approx(EXP_LEVEL_DEFAULT_16)
@@ -287,7 +287,7 @@ def test_one_third_octave_levels_from_psd_get_one_third_octave_levels(create_psd
     level_obj.reference_value = 2e-5
     level_obj.process()
 
-    levels = level_obj.get_one_third_octave_levels()
+    levels = level_obj.get_band_levels()
     assert levels[16] == pytest.approx(EXP_LEVEL_ANSI_A_PA_16)
     assert levels[15] == pytest.approx(EXP_LEVEL_ANSI_A_PA_15)
     assert levels[17] == pytest.approx(EXP_LEVEL_ANSI_A_PA_17)
@@ -297,7 +297,7 @@ def test_one_third_octave_levels_from_psd_get_one_third_octave_levels(create_psd
     level_obj.frequency_weighting = "B"
     level_obj.process()
 
-    levels = level_obj.get_one_third_octave_levels()
+    levels = level_obj.get_band_levels()
     assert levels[16] == pytest.approx(EXP_LEVEL_ANSI_B_PA_16)
     assert levels[15] == pytest.approx(EXP_LEVEL_ANSI_B_PA_15)
     assert levels[17] == pytest.approx(EXP_LEVEL_ANSI_B_PA_17)
@@ -307,7 +307,7 @@ def test_one_third_octave_levels_from_psd_get_one_third_octave_levels(create_psd
     level_obj.frequency_weighting = "C"
     level_obj.process()
 
-    levels = level_obj.get_one_third_octave_levels()
+    levels = level_obj.get_band_levels()
     assert levels[16] == pytest.approx(EXP_LEVEL_ANSI_C_PA_16)
     assert levels[15] == pytest.approx(EXP_LEVEL_ANSI_C_PA_15)
     assert levels[17] == pytest.approx(EXP_LEVEL_ANSI_C_PA_17)
