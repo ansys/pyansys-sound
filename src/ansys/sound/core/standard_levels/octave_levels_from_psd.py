@@ -222,7 +222,7 @@ class OctaveLevelsFromPSD(StandardLevelsParent):
         if output is None:
             return (np.array([]), np.array([]))
 
-        return np.array(output.data), np.array([output.time_freq_support.time_frequencies.data])
+        return np.array(output.data), np.array(output.time_freq_support.time_frequencies.data)
 
     def get_octave_levels(self) -> np.ndarray:
         """Return the octave levels in dB as a numpy array.
