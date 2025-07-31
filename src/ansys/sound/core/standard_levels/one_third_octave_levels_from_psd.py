@@ -76,10 +76,10 @@ class OneThirdOctaveLevelsFromPSD(StandardLevelsParent):
         str_name = f'"{self.psd.name}"' if self.psd is not None else "Not set"
         if len(self.frequency_weighting) > 0:
             str_frequency_weighting = self.frequency_weighting
-            str_unit = f"dB{self.frequency_weighting}"
+            str_unit = f"dB{self.frequency_weighting} (re {self.reference_value})"
         else:
             str_frequency_weighting = "None"
-            str_unit = "dB"
+            str_unit = f"dB (re {self.reference_value})"
 
         if self._output is not None:
             str_levels = "\n\t"
@@ -259,10 +259,10 @@ class OneThirdOctaveLevelsFromPSD(StandardLevelsParent):
         if len(self.frequency_weighting) > 0:
             ylabel = (
                 f"{self.frequency_weighting}-weighted 1/3octave-band level "
-                f"(dB{self.frequency_weighting})"
+                f"(dB{self.frequency_weighting} re {self.reference_value})"
             )
         else:
-            ylabel = "1/3-octave-band level (dB)"
+            ylabel = f"1/3-octave-band level (dB re {self.reference_value})"
 
         plt.figure()
         plt.bar(freq_str, levels)
