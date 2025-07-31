@@ -103,8 +103,8 @@ class LevelOverTime(StandardLevelsParent):
         str_frequency_weighting = (
             self.frequency_weighting if len(self.frequency_weighting) > 0 else "None"
         )
-        max_level = self.get_level_max()
-        if max_level is not None:
+        if self._output is not None:
+            max_level = self.get_level_max()
             unit = self.get_output()[1].unit
             str_level = f"{max_level:.1f} {unit}"
         else:
