@@ -20,23 +20,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Standard level classes.
+import pytest
 
-Helper classes related to the computation of standard levels.
-"""
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException
+from ansys.sound.core.standard_levels import FractionalOctaveLevelsFromPSDParent
 
-from ._fractional_octave_levels_from_psd_parent import FractionalOctaveLevelsFromPSDParent
-from ._standard_levels_parent import StandardLevelsParent
-from .level_over_time import LevelOverTime
-from .octave_levels_from_psd import OctaveLevelsFromPSD
-from .one_third_octave_levels_from_psd import OneThirdOctaveLevelsFromPSD
-from .overall_level import OverallLevel
 
-__all__ = (
-    "StandardLevelsParent",
-    "FractionalOctaveLevelsFromPSDParent",
-    "OverallLevel",
-    "LevelOverTime",
-    "OctaveLevelsFromPSD",
-    "OneThirdOctaveLevelsFromPSD",
-)
+def test__fractional_octave_levels_from_psd_parent_process_exceptions():
+    """Test FractionalOctaveLevelsFromPSDParent process method exceptions.
+
+    This class' tests are covered by the tests of subclasses OctaveLevelsFromPSD and
+    OneThirdOctaveLevelsFromPSD. Here is only tested the single path that cannot be tested in these
+    subclasses, which is the exception thrown when calling process() from an instance of this
+    parent class.
+    """
+    level_obj = FractionalOctaveLevelsFromPSDParent()
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=(
+            "This method must only be called from a subclass of "
+            "FractionalOctaveLevelsFromPSDParent."
+        ),
+    ):
+        level_obj.process()

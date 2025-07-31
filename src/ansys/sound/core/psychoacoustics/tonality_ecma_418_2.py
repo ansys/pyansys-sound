@@ -47,7 +47,7 @@ class TonalityECMA418_2(PsychoacousticsParent):
         psychoacoustic tonality calculation. However, the standard does not include any real
         verification data and its 1st edition noticeably included errors and unclear computation
         details open to interpretation. The 3rd edition was largely improved in that regard, and
-        now allow producing consistent results throughout distinct implementations of the standard.
+        now allows producing consistent results throughout distinct implementations of the standard.
         As a consequence, this 3rd edition is strongly recommended in most cases, while the 1st
         edition should only be used when backward compatibility is required.
 
@@ -59,8 +59,8 @@ class TonalityECMA418_2(PsychoacousticsParent):
         :attr:`field_type`. This means that older code using this class needs be updated with
         values assigned to these two attributes. This can be done either when instantiating the
         class:``my_tonality = TonalityECMA418_2(my_signal, my_field_type, my_edition)``, or later,
-        by setting the attributes: ``my_tonality.field_type = my_field_type`` and
-        ``my_tonality.edition = my_edition``.
+        by setting the :attr:`field_type` and :attr:`edition` attributes:
+        ``my_tonality.field_type = my_field_type`` and ``my_tonality.edition = my_edition``.
     """
 
     def __init__(self, signal: Field = None, field_type: str = None, edition: str = None):
