@@ -58,12 +58,12 @@ class OctaveLevelsFromPSD(StandardLevelsParent):
             Whether to simulate the 1/3-octave filterbank as defined in ANSI S1.11-1986 and
             IEC 61260 standards.
         reference_value : float, default: 1.0
-            The reference value for the level computation. If the overall level is computed with a
-            signal in Pa, the reference value should be 2e-5.
+            The reference value for the levels' computation. If the levels are computed with a PSD
+            in Pa^2/Hz, the reference value should be 2e-5 (Pa).
         frequency_weighting : str, default: ""
-            The frequency weighting to apply to the signal before computing the level. Available
-            options are `""`, `"A"`, `"B"`,  and `"C"`, respectively to get level in dBSPL, dB(A),
-            dB(B), and dB(C).
+            The frequency weighting to apply to the signal before computing the levels. Available
+            options are `""`, `"A"`, `"B"`,  and `"C"`, to get levels in dB (or dBSPL), dBA, dBB,
+            and dBC, respectively.
         """
         super().__init__()
         self.psd = psd
@@ -73,22 +73,34 @@ class OctaveLevelsFromPSD(StandardLevelsParent):
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
-        output = self.get_output()
+        str_name = f'"{self.psd.name}"' if self.psd is not None else "Not set"
+        if len(self.frequency_weighting) > 0:
+            str_frequency_weighting = self.frequency_weighting
+            str_unit = f"dB{self.frequency_weighting}"
+        else:
+            str_frequency_weighting = "None"
+            str_unit = "dB"
 
-        str_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
-        str_frequency_weighting = (
-            self.frequency_weighting if len(self.frequency_weighting) > 0 else "None"
-        )
-        str_level = f"{output:.1f}" if output is not None else "Not processed"
+        if self._output is not None:
+            str_levels = "\n\t"
+            str_levels += "\n\t".join(
+                [
+                    f"{f:.1f} Hz:\t{l:.1f} {str_unit}"
+                    for (f, l) in zip(self.get_center_frequencies(), self.get_octave_levels())
+                ]
+            )
+        else:
+            str_levels = " Not processed"
 
         return (
             f"{__class__.__name__} object.\n"
             "Data\n"
-            f"\tSignal: {str_name}\n"
-            f"\tScale type: {self.scale}\n"
+            f"\tPSD: {str_name}\n"
+            f"\tANSI S1.11-1986 filterbank simulation: "
+            f"{'Yes' if self.use_ansi_s1_11_1986 else 'No'}\n"
             f"\tReference value: {self.reference_value}\n"
             f"\tFrequency weighting: {str_frequency_weighting}\n"
-            f"Output level value: {str_level}"
+            f"Output levels:{str_levels}"
         )
 
     @property
@@ -117,10 +129,9 @@ class OctaveLevelsFromPSD(StandardLevelsParent):
 
     @property
     def reference_value(self) -> float:
-        """Reference value for the level computation.
+        """Reference value for the levels' computation.
 
-        If the overall level is computed with a sound pressure signal in Pa, the reference value
-        should be 2e-5.
+        If the levels are computed with a PSD in Pa^2/Hz, the reference value should be 2e-5 (Pa).
         """
         return self.__reference_value
 
@@ -133,11 +144,10 @@ class OctaveLevelsFromPSD(StandardLevelsParent):
 
     @property
     def frequency_weighting(self) -> str:
-        """Frequency weighting of the computed level.
+        """Frequency weighting of the computed levels.
 
-        Available options are `""`, `"A"`, `"B"`, and `"C"`. If attribute :attr:`reference_value`
-        is 2e-5 Pa, these options allow level calculation in dBSPL, dB(A), dB(B), and dB(C),
-        respectively.
+        Available options are `""`, `"A"`, `"B"`, and `"C"`, allowing level calculation in dB (or
+        dBSPL), dBA, dBB, and dBC, respectively.
         """
         return self.__frequency_weighting
 
@@ -151,7 +161,7 @@ class OctaveLevelsFromPSD(StandardLevelsParent):
         self.__frequency_weighting = weighting
 
     def process(self):
-        """Compute the overall level."""
+        """Compute the octave-band levels."""
         if self.psd is None:
             raise PyAnsysSoundException(f"No input PSD is set. Use {__class__.__name__}.psd.")
 
@@ -164,16 +174,18 @@ class OctaveLevelsFromPSD(StandardLevelsParent):
         operator.run()
         levels: Field = operator.get_output(0, types.field)
 
-        if self.frequency_weighting != "":
+        if len(self.frequency_weighting) > 0:
             # Get and apply frequency weighting at the band center frequencies.
             operator = Operator(ID_GET_FREQUENCY_WEIGHTING)
             operator.connect(0, levels.time_freq_support.time_frequencies.data)
             operator.connect(1, self.frequency_weighting)
             operator.run()
-            levels.data = levels.data * operator.get_output(0, types.vec_double)
+            weights_dB = operator.get_output(0, types.vec_double)
+            weights = 10 ** (weights_dB / 10)
+            levels.data = levels.data * weights
 
         # Convert to dB.
-        levels.data = 10 * np.log10(levels.data / (self.reference_value**2))
+        levels.data = 10 * np.log10(levels.data / (self.reference_value**2) + 1e-12)
 
         self._output = levels
 
@@ -210,9 +222,9 @@ class OctaveLevelsFromPSD(StandardLevelsParent):
         if output is None:
             return (np.array([]), np.array([]))
 
-        return np.array(output.data), np.array([self.time_freq_support.time_frequencies.data])
+        return np.array(output.data), np.array([output.time_freq_support.time_frequencies.data])
 
-    def get_one_third_octave_levels(self) -> np.ndarray:
+    def get_octave_levels(self) -> np.ndarray:
         """Return the octave levels in dB as a numpy array.
 
         Returns
@@ -242,11 +254,20 @@ class OctaveLevelsFromPSD(StandardLevelsParent):
         else:
             title = "Octave-band levels"
 
+        if len(self.frequency_weighting) > 0:
+            ylabel = (
+                f"{self.frequency_weighting}-weighted octave-band level "
+                f"(dB{self.frequency_weighting})"
+            )
+        else:
+            ylabel = "Octave-band level (dB)"
+
         plt.figure()
         plt.bar(freq_str, levels)
         plt.title(title)
         plt.xlabel("Frequency (Hz)")
-        plt.ylabel("Octave-band level (dB)")
-        plt.grid(axis="y")
+        plt.ylabel(ylabel)
+        plt.xticks(rotation=90)
+        plt.grid()
         plt.gca().set_axisbelow(True)  # Ensure bars are in front of grid lines
         plt.show()
