@@ -270,4 +270,5 @@ class OctaveLevelsFromPSD(StandardLevelsParent):
         plt.xticks(rotation=90)
         plt.grid()
         plt.gca().set_axisbelow(True)  # Ensure bars are in front of grid lines
+        plt.tight_layout()
         plt.show()
