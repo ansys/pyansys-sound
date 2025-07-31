@@ -61,9 +61,9 @@ class OctaveLevelsFromPSD(StandardLevelsParent):
             The reference value for the levels' computation. If the levels are computed with a PSD
             in Pa^2/Hz, the reference value should be 2e-5 (Pa).
         frequency_weighting : str, default: ""
-            The frequency weighting to apply to the signal before computing the levels. Available
-            options are `""`, `"A"`, `"B"`,  and `"C"`, to get levels in dB (or dBSPL), dBA, dBB,
-            and dBC, respectively.
+            The frequency weighting to apply to the computed levels. Available options are `""`,
+            `"A"`, `"B"`,  and `"C"`, to get levels in dB (or dBSPL), dBA, dBB, and dBC,
+            respectively.
         """
         super().__init__()
         self.psd = psd
