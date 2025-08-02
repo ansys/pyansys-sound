@@ -1,0 +1,6 @@
+field\_type
+===========
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: LoudnessISO532_2.field_type
