@@ -29,7 +29,7 @@ from ._fractional_octave_levels_from_psd_parent import FractionalOctaveLevelsFro
 class OctaveLevelsFromPSD(FractionalOctaveLevelsFromPSDParent):
     """Compute octave levels from a PSD input.
 
-    This class converts a PSD input signal into octave levels.
+    This class converts a PSD input into octave levels.
     """
 
     # Override the operator IDs for octave levels computation
