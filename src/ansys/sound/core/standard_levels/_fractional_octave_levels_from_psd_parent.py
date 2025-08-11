@@ -38,9 +38,9 @@ class FractionalOctaveLevelsFromPSDParent(StandardLevelsParent):
     """
 
     # Class operator IDs defined as class attributes
-    operator_id_levels_computation = None  # This shall be set in subclasses
-    operator_id_levels_computation_ansi = None  # This shall be set in subclasses
-    operator_id_frequency_weighting = "get_frequency_weighting"
+    _operator_id_levels_computation = None  # This shall be set in subclasses
+    _operator_id_levels_computation_ansi = None  # This shall be set in subclasses
+    _operator_id_frequency_weighting = "get_frequency_weighting"
 
     def __init__(
         self,
@@ -165,8 +165,8 @@ class FractionalOctaveLevelsFromPSDParent(StandardLevelsParent):
         # the value of the class attributes operator_id_levels_computation and
         # operator_id_levels_computation_ansi.
         if (
-            self.operator_id_levels_computation is None
-            or self.operator_id_levels_computation_ansi is None
+            self._operator_id_levels_computation is None
+            or self._operator_id_levels_computation_ansi is None
         ):
             raise PyAnsysSoundException(
                 f"This method must only be called from a subclass of {__class__.__name__}."
@@ -176,9 +176,9 @@ class FractionalOctaveLevelsFromPSDParent(StandardLevelsParent):
             raise PyAnsysSoundException(f"No input PSD is set. Use {self.__class__.__name__}.psd.")
 
         if self.use_ansi_s1_11_1986:
-            operator = Operator(self.operator_id_levels_computation_ansi)
+            operator = Operator(self._operator_id_levels_computation_ansi)
         else:
-            operator = Operator(self.operator_id_levels_computation)
+            operator = Operator(self._operator_id_levels_computation)
 
         operator.connect(0, self.psd)
         operator.run()
@@ -186,7 +186,7 @@ class FractionalOctaveLevelsFromPSDParent(StandardLevelsParent):
 
         if len(self.frequency_weighting) > 0:
             # Get and apply frequency weighting at the band center frequencies.
-            operator = Operator(self.operator_id_frequency_weighting)
+            operator = Operator(self._operator_id_frequency_weighting)
             operator.connect(0, levels.time_freq_support.time_frequencies.data)
             operator.connect(1, self.frequency_weighting)
             operator.run()
@@ -205,8 +205,8 @@ class FractionalOctaveLevelsFromPSDParent(StandardLevelsParent):
         Returns
         -------
         Field
-            The band levels in dB (actual unit depends on specified reference value and frequency
-            weighting).
+            The band levels in dB (actual unit depends on :attr:`reference_value` and
+            :attr:`frequency_weighting` attributes' values).
         """
         if self._output is None:
             warnings.warn(
@@ -224,8 +224,8 @@ class FractionalOctaveLevelsFromPSDParent(StandardLevelsParent):
         Returns
         -------
         np.ndarray
-            The band levels in dB (actual unit depends on specified reference value and frequency
-            weighting).
+            The band levels in dB (actual unit depends on :attr:`reference_value` and
+            :attr:`frequency_weighting` attributes' values).
         np.ndarray
             The center frequencies in Hz of the band levels.
         """
@@ -242,8 +242,8 @@ class FractionalOctaveLevelsFromPSDParent(StandardLevelsParent):
         Returns
         -------
         np.ndarray
-            The band levels in dB (actual unit depends on specified reference value and frequency
-            weighting).
+            The band levels in dB (actual unit depends on :attr:`reference_value` and
+            :attr:`frequency_weighting` attributes' values).
         """
         return self.get_output_as_nparray()[0]
 

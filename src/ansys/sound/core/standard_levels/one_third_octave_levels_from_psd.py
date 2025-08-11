@@ -33,8 +33,10 @@ class OneThirdOctaveLevelsFromPSD(FractionalOctaveLevelsFromPSDParent):
     """
 
     # Override the operator IDs for 1/3-octave levels computation
-    operator_id_levels_computation = "compute_one_third_octave_levels_from_psd"
-    operator_id_levels_computation_ansi = "compute_one_third_octave_levels_from_psd_ansi_s1_11_1986"
+    _operator_id_levels_computation = "compute_one_third_octave_levels_from_psd"
+    _operator_id_levels_computation_ansi = (
+        "compute_one_third_octave_levels_from_psd_ansi_s1_11_1986"
+    )
 
     def plot(self):
         """Plot the 1/3-octave-band levels."""
