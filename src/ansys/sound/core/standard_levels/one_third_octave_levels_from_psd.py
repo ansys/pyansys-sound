@@ -38,7 +38,7 @@ ID_GET_FREQUENCY_WEIGHTING = "get_frequency_weighting"
 class OneThirdOctaveLevelsFromPSD(StandardLevelsParent):
     """Compute 1/3-octave levels from a PSD input.
 
-    This class converts a PSD input signal into 1/3-octave levels.
+    This class converts a PSD input into 1/3-octave levels.
     """
 
     def __init__(
