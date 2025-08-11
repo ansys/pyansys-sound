@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Compute octave levels from a PSD input."""
+"""Octave levels from a PSD input."""
 import warnings
 
 from ansys.dpf.core import Field, Operator, types
@@ -105,7 +105,7 @@ class OctaveLevelsFromPSD(StandardLevelsParent):
 
     @property
     def psd(self) -> Field:
-        """Input PSD."""
+        """Input power spectral density (PSD)."""
         return self.__psd
 
     @psd.setter
@@ -125,7 +125,6 @@ class OctaveLevelsFromPSD(StandardLevelsParent):
     def use_ansi_s1_11_1986(self, value: bool):
         """Set the use_ansi_s1_11_1986 flag."""
         self.__use_ansi_s1_11_1986 = value
-        return self.__use_ansi_s1_11_1986
 
     @property
     def reference_value(self) -> float:
@@ -195,7 +194,8 @@ class OctaveLevelsFromPSD(StandardLevelsParent):
         Returns
         -------
         Field
-            The octave levels in dB.
+            The octave levels in dB (actual unit depends on :attr:`reference_value` and
+            :attr:`frequency_weighting` attributes' values).
         """
         if self._output is None:
             warnings.warn(
@@ -208,14 +208,15 @@ class OctaveLevelsFromPSD(StandardLevelsParent):
         return self._output
 
     def get_output_as_nparray(self) -> tuple[np.ndarray]:
-        """Return the octave levels in dB and center frequencies as a tuple of numpy arrays.
+        """Return the octave levels in dB and center frequencies in Hz as numpy arrays.
 
         Returns
         -------
         np.ndarray
-            The octave levels in dB.
+            The octave levels in dB (actual unit depends on :attr:`reference_value` and
+            :attr:`frequency_weighting` attributes' values).
         np.ndarray
-            The center frequencies of the octave bands.
+            The center frequencies in Hz of the octave bands.
         """
         output = self.get_output()
 
@@ -230,17 +231,18 @@ class OctaveLevelsFromPSD(StandardLevelsParent):
         Returns
         -------
         np.ndarray
-            The octave levels in dB.
+            The octave levels in dB (actual unit depends on :attr:`reference_value` and
+            :attr:`frequency_weighting` attributes' values).
         """
         return self.get_output_as_nparray()[0]
 
     def get_center_frequencies(self) -> np.ndarray:
-        """Return the center frequencies of the octave bands as a numpy array.
+        """Return the center frequencies in Hz of the octave bands as a numpy array.
 
         Returns
         -------
         np.ndarray
-            The center frequencies of the octave bands.
+            The center frequencies in Hz of the octave bands.
         """
         return self.get_output_as_nparray()[1]
 
