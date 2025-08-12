@@ -1,3 +1,10 @@
+## [0.2.1](https://github.com/ansys/pyansys-sound/releases/tag/v0.2.1) - August 12, 2025
+
+
+### Dependencies
+
+- Fix: ``ansys-dpf-core`` version [#331](https://github.com/ansys/pyansys-sound/pull/331)
+
 ## [0.2.0](https://github.com/ansys/pyansys-sound/releases/tag/v0.2.0) - July 17, 2025
 
 
