@@ -33,12 +33,12 @@ EXP_STR_NOT_SET = (
     "\tFrequency weighting: None\nOutput level value: Not processed"
 )
 EXP_STR_ALL_SET = (
-    'OverallLevel object.\nData\n\tSignal: "flute"\n\tScale type: dB\n\tReference value: 1.0\n'
+    'OverallLevel object.\nData\n\tSignal: "flute"\n\tScale type: RMS\n\tReference value: 1.0\n'
     "\tFrequency weighting: None\nOutput level value: Not processed"
 )
 EXP_STR_ALL_PROCESSED = (
-    'OverallLevel object.\nData\n\tSignal: "flute"\n\tScale type: dB\n\tReference value: 1.0\n'
-    "\tFrequency weighting: None\nOutput level value: -5.8"
+    'OverallLevel object.\nData\n\tSignal: "flute"\n\tScale type: dB\n\tReference value: 2e-05\n'
+    "\tFrequency weighting: A\nOutput level value: 86.7 dBA (re 2e-05)"
 )
 EXP_LEVEL_DEFAULT = -5.76525
 EXP_LEVEL_RMS = 0.514917
@@ -97,23 +97,19 @@ def test_overall_level_properties_exceptions():
 def test_overall_level___str__():
     """Test OverallLevel __str__ method."""
     level_obj = OverallLevel()
-    with pytest.warns(
-        PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the OverallLevel.process\\(\\) method.",
-    ):
-        assert str(level_obj) == EXP_STR_NOT_SET
+    assert str(level_obj) == EXP_STR_NOT_SET
 
     loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
     loader.process()
     f_signal = loader.get_output()[0]
 
     level_obj.signal = f_signal
-    with pytest.warns(
-        PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the OverallLevel.process\\(\\) method.",
-    ):
-        assert str(level_obj) == EXP_STR_ALL_SET
+    level_obj.scale = "RMS"
+    assert str(level_obj) == EXP_STR_ALL_SET
 
+    level_obj.scale = "dB"
+    level_obj.reference_value = 2e-5
+    level_obj.frequency_weighting = "A"
     level_obj.process()
     assert str(level_obj) == EXP_STR_ALL_PROCESSED
 
