@@ -38,8 +38,8 @@ def test__fractional_octave_levels_from_psd_parent_process_exceptions():
     with pytest.raises(
         PyAnsysSoundException,
         match=(
-            "This method must only be called from a subclass of "
-            "FractionalOctaveLevelsFromPSDParent."
+            "This method cannot be called from class FractionalOctaveLevelsFromPSDParent. "
+            "This class is meant as an abstract class that should not be used directly."
         ),
     ):
         level_obj.process()

@@ -21,26 +21,26 @@
 # SOFTWARE.
 
 """Fractional octave levels from a PSD input."""
-import warnings
-
 from ansys.dpf.core import Field, Operator, types
-import numpy as np
 
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-from ._standard_levels_parent import DICT_FREQUENCY_WEIGHTING, StandardLevelsParent
+from .._pyansys_sound import PyAnsysSoundException
+from ._fractional_octave_levels_parent import FractionalOctaveLevelsParent
 
 
-class FractionalOctaveLevelsFromPSDParent(StandardLevelsParent):
+class FractionalOctaveLevelsFromPSDParent(FractionalOctaveLevelsParent):
     """Abstract base class for fractional octave levels from PSD.
 
-    This is the base class for all fractional octave level from PSD classes and should not be used
-    as is.
+    This is the base class for all fractional octave level classes using a PSD as input (namely
+    OctaveLevelsFromPSD and OneThirdOctaveLevelsFromPSD) and should not be used as is.
     """
 
-    # Class operator IDs defined as class attributes
-    _operator_id_levels_computation = None  # This shall be set in subclasses
-    _operator_id_levels_computation_ansi = None  # This shall be set in subclasses
-    _operator_id_frequency_weighting = "get_frequency_weighting"
+    # Class attributes (string) with the names of the DPF Sound operators allowing
+    # fractional-octave level computation from PSD, whether simulating ANSI S1.11-1986 filterbank
+    # or not.
+    # Attribute values shall be set in subclasses, as they depend on whether you compute octave- or
+    # one-third-octave-band levels.
+    _operator_id_levels_computation = None
+    _operator_id_levels_computation_ansi = None
 
     def __init__(
         self,
@@ -66,11 +66,9 @@ class FractionalOctaveLevelsFromPSDParent(StandardLevelsParent):
             options are `""`, `"A"`, `"B"`,  and `"C"`, to get levels in dB (or dBSPL), dBA, dBB,
             and dBC, respectively.
         """
-        super().__init__()
+        super().__init__(reference_value=reference_value, frequency_weighting=frequency_weighting)
         self.psd = psd
         self.use_ansi_s1_11_1986 = use_ansi_s1_11_1986
-        self.reference_value = reference_value
-        self.frequency_weighting = frequency_weighting
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
@@ -125,39 +123,6 @@ class FractionalOctaveLevelsFromPSDParent(StandardLevelsParent):
         """Set the use_ansi_s1_11_1986 flag."""
         self.__use_ansi_s1_11_1986 = value
 
-    @property
-    def reference_value(self) -> float:
-        """Reference value for the levels' computation.
-
-        If the levels are computed with a PSD in Pa^2/Hz, the reference value should be 2e-5 (Pa).
-        """
-        return self.__reference_value
-
-    @reference_value.setter
-    def reference_value(self, value: float):
-        """Set the reference value."""
-        if value <= 0:
-            raise PyAnsysSoundException("The reference value must be strictly positive.")
-        self.__reference_value = value
-
-    @property
-    def frequency_weighting(self) -> str:
-        """Frequency weighting of the computed levels.
-
-        Available options are `""`, `"A"`, `"B"`, and `"C"`, allowing level calculation in dB (or
-        dBSPL), dBA, dBB, and dBC, respectively.
-        """
-        return self.__frequency_weighting
-
-    @frequency_weighting.setter
-    def frequency_weighting(self, weighting: str):
-        """Set the frequency weighting."""
-        if weighting not in DICT_FREQUENCY_WEIGHTING.keys():
-            raise PyAnsysSoundException(
-                f"The frequency weighting must be one of {list(DICT_FREQUENCY_WEIGHTING.keys())}."
-            )
-        self.__frequency_weighting = weighting
-
     def process(self):
         """Compute the band levels."""
         # It is necessary to check that this is an instance of a subclass, not the superclass,
@@ -169,7 +134,8 @@ class FractionalOctaveLevelsFromPSDParent(StandardLevelsParent):
             or self._operator_id_levels_computation_ansi is None
         ):
             raise PyAnsysSoundException(
-                f"This method must only be called from a subclass of {__class__.__name__}."
+                f"This method cannot be called from class {self.__class__.__name__}. This class is "
+                "meant as an abstract class that should not be used directly."
             )
 
         if self.psd is None:
@@ -182,77 +148,7 @@ class FractionalOctaveLevelsFromPSDParent(StandardLevelsParent):
 
         operator.connect(0, self.psd)
         operator.run()
-        levels: Field = operator.get_output(0, types.field)
+        self._output = operator.get_output(0, types.field)
 
-        if len(self.frequency_weighting) > 0:
-            # Get and apply frequency weighting at the band center frequencies.
-            operator = Operator(self._operator_id_frequency_weighting)
-            operator.connect(0, levels.time_freq_support.time_frequencies.data)
-            operator.connect(1, self.frequency_weighting)
-            operator.run()
-            weights_dB = operator.get_output(0, types.vec_double)
-            weights = 10 ** (weights_dB / 10)
-            levels.data = levels.data * weights
-
-        # Convert to dB.
-        levels.data = 10 * np.log10(levels.data / (self.reference_value**2) + 1e-12)
-
-        self._output = levels
-
-    def get_output(self) -> Field:
-        """Return the band levels in dB.
-
-        Returns
-        -------
-        Field
-            The band levels in dB (actual unit depends on :attr:`reference_value` and
-            :attr:`frequency_weighting` attributes' values).
-        """
-        if self._output is None:
-            warnings.warn(
-                PyAnsysSoundWarning(
-                    f"Output is not processed yet. "
-                    f"Use the {self.__class__.__name__}.process() method."
-                )
-            )
-
-        return self._output
-
-    def get_output_as_nparray(self) -> tuple[np.ndarray]:
-        """Return the band levels in dB and center frequencies in Hz as a tuple of numpy arrays.
-
-        Returns
-        -------
-        np.ndarray
-            The band levels in dB (actual unit depends on :attr:`reference_value` and
-            :attr:`frequency_weighting` attributes' values).
-        np.ndarray
-            The center frequencies in Hz of the band levels.
-        """
-        output = self.get_output()
-
-        if output is None:
-            return (np.array([]), np.array([]))
-
-        return np.array(output.data), np.array(output.time_freq_support.time_frequencies.data)
-
-    def get_band_levels(self) -> np.ndarray:
-        """Return the band levels in dB as a numpy array.
-
-        Returns
-        -------
-        np.ndarray
-            The band levels in dB (actual unit depends on :attr:`reference_value` and
-            :attr:`frequency_weighting` attributes' values).
-        """
-        return self.get_output_as_nparray()[0]
-
-    def get_center_frequencies(self) -> np.ndarray:
-        """Return the center frequencies in Hz of the band levels as a numpy array.
-
-        Returns
-        -------
-        np.ndarray
-            The center frequencies in Hz of the band levels.
-        """
-        return self.get_output_as_nparray()[1]
+        self._convert_output_to_dB()
+        self._apply_frequency_weighting()
