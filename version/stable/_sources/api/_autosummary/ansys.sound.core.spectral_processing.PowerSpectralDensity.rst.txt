@@ -1,0 +1,63 @@
+﻿PowerSpectralDensity
+====================
+
+.. currentmodule:: ansys.sound.core.spectral_processing
+
+.. autoclass:: PowerSpectralDensity
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      PowerSpectralDensity.convert_fields_container_to_np_array
+      
+      
+      PowerSpectralDensity.get_PSD_dB
+      
+      
+      PowerSpectralDensity.get_PSD_dB_as_nparray
+      
+      
+      PowerSpectralDensity.get_PSD_squared_linear
+      
+      
+      PowerSpectralDensity.get_PSD_squared_linear_as_nparray
+      
+      
+      PowerSpectralDensity.get_frequencies
+      
+      
+      PowerSpectralDensity.get_output
+      
+      
+      PowerSpectralDensity.get_output_as_nparray
+      
+      
+      PowerSpectralDensity.plot
+      
+      
+      PowerSpectralDensity.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      PowerSpectralDensity.fft_size
+      PowerSpectralDensity.input_signal
+      PowerSpectralDensity.overlap
+      PowerSpectralDensity.window_length
+      PowerSpectralDensity.window_type
+   
+   
