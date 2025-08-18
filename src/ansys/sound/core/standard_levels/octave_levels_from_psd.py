@@ -23,9 +23,12 @@
 """Compute octave levels from a PSD input."""
 import matplotlib.pyplot as plt
 
+from ansys.sound.core.server_helpers._check_server_version import class_available_from_version
+
 from ._fractional_octave_levels_from_psd_parent import FractionalOctaveLevelsFromPSDParent
 
 
+@class_available_from_version("11.0")
 class OctaveLevelsFromPSD(FractionalOctaveLevelsFromPSDParent):
     """Compute octave levels from a PSD input.
 

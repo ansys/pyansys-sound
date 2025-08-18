@@ -25,6 +25,10 @@ import pytest
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.standard_levels import FractionalOctaveLevelsFromPSDParent
 
+# Skip entire test module if server < 11.0
+if not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    pytest.skip("Requires server version >= 11.0", allow_module_level=True)
+
 
 def test__fractional_octave_levels_from_psd_parent_process_exceptions():
     """Test FractionalOctaveLevelsFromPSDParent process method exceptions.
@@ -35,6 +39,10 @@ def test__fractional_octave_levels_from_psd_parent_process_exceptions():
     parent class.
     """
     level_obj = FractionalOctaveLevelsFromPSDParent()
+
+    assert level_obj._operator_id_levels_computation is None
+    assert level_obj._operator_id_levels_computation_ansi is None
+
     with pytest.raises(
         PyAnsysSoundException,
         match=(

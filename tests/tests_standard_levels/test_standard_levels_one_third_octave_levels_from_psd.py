@@ -29,6 +29,10 @@ import pytest
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.standard_levels import OneThirdOctaveLevelsFromPSD
 
+# Skip entire test module if server < 11.0
+if not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    pytest.skip("Requires server version >= 11.0", allow_module_level=True)
+
 EXP_STR_NOT_SET = (
     "OneThirdOctaveLevelsFromPSD object.\nData\n\tPSD: Not set\n"
     "\tANSI S1.11-1986 filterbank simulation: No\n\tReference value: 1.0\n"

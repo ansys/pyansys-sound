@@ -27,8 +27,8 @@ from functools import wraps
 from ansys.dpf.core import _global_server
 
 
-def version_requires(min_version):
-    """Check that the method being called matches a certain DPF server version.
+def method_available_from_version(min_version):
+    """Check that the method being called matches or is higher than a certain DPF server version.
 
     Parameters
     ----------
@@ -37,23 +37,26 @@ def version_requires(min_version):
         The version must be a string. Ex: "11.0"
 
     .. note::
-       The method must be used as a decorator.
+       This function must be used as a decorator.
     """
 
     def decorator(func):
         # first arg *must* be a tuple containing the version
         if not isinstance(min_version, str):
-            raise TypeError("version_requires decorator must be a string with a dot separator.")
+            raise TypeError(
+                "method_available_from_version decorator argument must be a string with a dot "
+                "separator."
+            )
 
         @wraps(func)
         def wrapper(self, *args, **kwargs):
-            """Call the original function."""
+            """Call the original method."""
             server = _global_server()
 
             server.check_version(
                 min_version,
                 (
-                    f"Function `{func.__name__}` of class `{self.__class__.__name__}` "
+                    f"Method `{func.__name__}` of class `{self.__class__.__name__}` "
                     f"requires DPF server version {min_version} or higher."
                 ),
             )
@@ -61,5 +64,46 @@ def version_requires(min_version):
             return func(self, *args, **kwargs)
 
         return wrapper
+
+    return decorator
+
+
+def class_available_from_version(min_version):
+    """Check that the instantiated class matches or is higher than a certain DPF server version.
+
+    Parameters
+    ----------
+    min_version : str, default: None
+        Minimum DPF server version required for the class to be instantiated.
+        The version must be a string. Ex: "11.0"
+
+    .. note::
+       This function must be used as a decorator.
+    """
+
+    def decorator(cls):
+        if not isinstance(min_version, str):
+            raise TypeError(
+                "class_available_from_version decorator argument must be a string with a dot "
+                "separator."
+            )
+
+        class WrappedClass(cls):
+            def __init__(self, *args, **kwargs):
+                server = _global_server()
+                server.check_version(
+                    min_version,
+                    (
+                        f"Class `{self.__class__.__name__}` requires DPF server version "
+                        f"{min_version} or higher.",
+                    ),
+                )
+                super().__init__(*args, **kwargs)
+
+        # Preserve class metadata.
+        WrappedClass.__name__ = cls.__name__
+        WrappedClass.__doc__ = cls.__doc__
+        WrappedClass.__module__ = cls.__module__
+        return WrappedClass
 
     return decorator
