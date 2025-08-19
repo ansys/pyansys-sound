@@ -11,4 +11,6 @@ This module provides functions to calculate standard levels from time-domain sig
     OverallLevel
     LevelOverTime
     OneThirdOctaveLevelsFromPSD
+    OneThirdOctaveLevelsFromSignal
     OctaveLevelsFromPSD
+    OctaveLevelsFromSignal
