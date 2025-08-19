@@ -160,7 +160,10 @@ def test_octave_levels_from_psd_properties():
 def test_octave_levels_from_psd_properties_exceptions():
     """Test OctaveLevelsFromPSD properties exceptions."""
     level_obj = OctaveLevelsFromPSD()
-    with pytest.raises(PyAnsysSoundException, match="The PSD must be provided as a DPF field."):
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="The input PSD must be provided as a DPF field.",
+    ):
         level_obj.psd = "InvalidType"
 
     with pytest.raises(
