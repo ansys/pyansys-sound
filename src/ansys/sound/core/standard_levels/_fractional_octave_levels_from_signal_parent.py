@@ -134,7 +134,6 @@ class FractionalOctaveLevelsFromSignalParent(FractionalOctaveLevelsParent):
         # Convert weights to squared unit, and apply them to computed 1/3-octave levels.
         weights = 10.0 ** (weights_dB / 10.0)
         levels *= weights
-        print(type(levels))
 
         return levels, center_frequencies
 
