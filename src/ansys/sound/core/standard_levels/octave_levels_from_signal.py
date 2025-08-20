@@ -22,7 +22,9 @@
 
 """Compute octave levels from a time-domain signal input."""
 import matplotlib.pyplot as plt
+import numpy as np
 
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.server_helpers._check_server_version import class_available_from_version
 
 from ._fractional_octave_levels_from_signal_parent import FractionalOctaveLevelsFromSignalParent
@@ -33,10 +35,43 @@ class OctaveLevelsFromSignal(FractionalOctaveLevelsFromSignalParent):
     """Compute octave levels from a time-domain signal input.
 
     This class converts a time-domain signal input into octave levels.
+
+    .. note::
+        Out of consistency with other Ansys Sound applications, octave-band levels are derived from
+        one-third-octave levels, and frequency weighting is applied before the conversion. In other
+        words, each octave-band level is obtained by summing the 3 one-third-octave levels within
+        (in squared units), each weightedwith the frequency weighting obtained at the
+        one-third-octave-band center frequency. Note that the highest-frequency octave band
+        (centered at 16000 Hz) is obtained by only summing the 2 highest one-third-octave bands
+        (since the 30th one-third-octave band centered at 20000 Hz is not considered).
     """
 
-    # Override the operator ID for octave levels computation
-    _operator_id_levels_computation = "compute_octave_levels_from_signal"
+    def process(self):
+        """Compute the octave-band levels."""
+        if self.signal is None:
+            raise PyAnsysSoundException(
+                f"No input signal is set. Use {self.__class__.__name__}.signal."
+            )
+
+        one_third_octave_levels, one_third_octave_center_frequencies = (
+            self._compute_weighted_one_third_octave_levels()
+        )
+
+        # Derive octave-levels from 1/3-octave levels:
+        # Squared-unit one-third-octave levels are summed 3 by 3, except for the last octave band
+        # where only 2 one-third-octave bands are available and summed.
+        octave_count = int(np.ceil(len(one_third_octave_levels) / 3))
+        octave_levels = np.zeros(octave_count)
+        octave_center_frequencies = np.zeros(octave_count)
+        for i in range(octave_count - 1):
+            octave_levels[i] = np.sum(one_third_octave_levels[i * 3 : (i + 1) * 3])
+            octave_center_frequencies[i] = one_third_octave_center_frequencies[i * 3 + 1]
+
+        octave_levels[-1] = np.sum(one_third_octave_levels[-2:])
+        octave_center_frequencies[-1] = one_third_octave_center_frequencies[-1]
+
+        # Set output field using computed levels and center frequencies.
+        self._set_output_field(octave_levels, octave_center_frequencies)
 
     def plot(self):
         """Plot the octave-band levels."""

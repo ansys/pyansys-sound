@@ -22,6 +22,7 @@
 
 """Fractional octave levels from a PSD input."""
 from ansys.dpf.core import Field, Operator, types
+import numpy as np
 
 from ansys.sound.core.server_helpers._check_server_version import class_available_from_version
 
@@ -128,10 +129,9 @@ class FractionalOctaveLevelsFromPSDParent(FractionalOctaveLevelsParent):
 
     def process(self):
         """Compute the band levels."""
-        # It is necessary to check that this is an instance of a subclass, not the superclass,
-        # otherwise the operator instantiation would raise an error. This check is done by testing
-        # the value of the class attributes operator_id_levels_computation and
-        # operator_id_levels_computation_ansi.
+        # It is necessary to check that `self` is an instance of a subclass, otherwise the operator
+        # instantiation would raise an error. This check is done by testing the values of the class
+        # attributes `_operator_id_levels_computation` and `_operator_id_levels_computation_ansi`.
         if (
             self._operator_id_levels_computation is None
             or self._operator_id_levels_computation_ansi is None
@@ -153,5 +153,9 @@ class FractionalOctaveLevelsFromPSDParent(FractionalOctaveLevelsParent):
         operator.run()
         self._output = operator.get_output(0, types.field)
 
-        self._convert_output_to_dB()
-        self._apply_frequency_weighting()
+        # Convert to dB
+        self._output.data = 10.0 * np.log10(self._output.data / (self.reference_value**2) + 1e-12)
+
+        # Apply frequency weighting
+        frequencies = self._output.time_freq_support.time_frequencies.data
+        self._output.data += self._get_frequency_weightings(frequencies)

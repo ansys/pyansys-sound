@@ -157,19 +157,30 @@ class FractionalOctaveLevelsParent(StandardLevelsParent):
         """
         return self.get_output_as_nparray()[1]
 
-    def _apply_frequency_weighting(self):
-        """Apply frequency weighting to the computed levels."""
-        if self._output is not None:
-            if len(self.frequency_weighting) > 0:
-                operator = Operator(self._operator_id_frequency_weighting)
-                operator.connect(0, self._output.time_freq_support.time_frequencies.data)
-                operator.connect(1, self.frequency_weighting)
-                operator.run()
-                weights_dB = operator.get_output(0, types.vec_double)
-                self._output.data = self._output.data + weights_dB
+    def _get_frequency_weightings(self, frequencies: np.ndarray) -> np.ndarray:
+        """Get frequency weighting gains in dB for specified frequencies.
 
-    def _convert_output_to_dB(self):
-        """Convert the output levels to dB."""
-        if self._output is not None:
-            self._output.data = self._output.data / (self.reference_value**2)
-            self._output.data = 10 * np.log10(self._output.data + 1e-12)
+        Retrieves the frequency weighting values for the specified frequencies, and the weighting
+        option (A, B, or C) specified in attribute :attr:`frequency_weighting`. If
+        :attr:`frequency_weighting` is `""`, an array of 0s is returned.
+
+        Parameters
+        ----------
+        frequencies : np.ndarray
+            The frequencies for which to retrieve the frequency weighting values, in Hz.
+
+        Returns
+        -------
+        np.ndarray
+            The frequency weighting gains in dB.
+        """
+        if len(self.frequency_weighting) > 0:
+            operator = Operator(self._operator_id_frequency_weighting)
+            operator.connect(0, list(map(float, frequencies)))
+            operator.connect(1, self.frequency_weighting)
+            operator.run()
+            weights_dB = np.array(operator.get_output(0, types.vec_double))
+        else:
+            weights_dB = np.zeros(len(frequencies))
+
+        return weights_dB

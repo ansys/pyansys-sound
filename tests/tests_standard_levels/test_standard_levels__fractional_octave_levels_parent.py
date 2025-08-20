@@ -20,7 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.dpf.core import TimeFreqSupport, fields_factory, locations
 import pytest
 
 from ansys.sound.core.standard_levels import FractionalOctaveLevelsParent
@@ -32,101 +31,56 @@ if not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
 # Note: This class' methods and properties are mostly tested in subclasses' tests. Here are only
 # tested the class' protected methods.
 
-EXP_A_WEIGHTED_LEVEL_100 = -9.145153
-EXP_A_WEIGHTED_LEVEL_1000 = 25.000000
-EXP_A_WEIGHTED_LEVEL_4000 = 50.964229
-EXP_A_WEIGHTED_LEVEL_10000 = 77.51167
-EXP_B_WEIGHTED_LEVEL_100 = 4.352209
-EXP_B_WEIGHTED_LEVEL_1000 = 25.000000
-EXP_B_WEIGHTED_LEVEL_4000 = 49.27570
-EXP_B_WEIGHTED_LEVEL_10000 = 75.70450
-EXP_C_WEIGHTED_LEVEL_100 = 9.700276
-EXP_C_WEIGHTED_LEVEL_1000 = 25.000000
-EXP_C_WEIGHTED_LEVEL_4000 = 49.174800
-EXP_C_WEIGHTED_LEVEL_10000 = 75.597800
-EXP_DB_LEVEL_0_01 = -20.000000
-EXP_DB_LEVEL_0_5 = -3.010300
-EXP_DB_LEVEL_1 = 4.343331e-12
-EXP_DB_LEVEL_5 = 6.989700
+EXP_A_WEIGHTS_100 = -19.14515
+EXP_A_WEIGHTS_1000 = 0.0
+EXP_A_WEIGHTS_4000 = 0.964229
+EXP_A_WEIGHTS_10000 = -2.488333
+EXP_B_WEIGHTS_100 = -5.647791
+EXP_B_WEIGHTS_1000 = 0.0
+EXP_B_WEIGHTS_4000 = -0.7242990
+EXP_B_WEIGHTS_10000 = -4.295534
+EXP_C_WEIGHTS_100 = -0.2997242
+EXP_C_WEIGHTS_1000 = 0.0
+EXP_C_WEIGHTS_4000 = -0.8252422
+EXP_C_WEIGHTS_10000 = -4.4022
 
 
-def test__fractional_octave_levels_parent__apply_frequency_weighting():
-    """Test FractionalOctaveLevelsParent _apply_frequency_weighting method."""
+def test__fractional_octave_levels_parent__get_frequency_weightings():
+    """Test FractionalOctaveLevelsParent _get_frequency_weightings method."""
     level_obj = FractionalOctaveLevelsParent()
 
     assert level_obj._operator_id_frequency_weighting == "get_frequency_weighting"
 
-    # Artificially create band levels
-    support = TimeFreqSupport()
-    center_frequencies = fields_factory.create_scalar_field(
-        num_entities=1, location=locations.time_freq
-    )
-    center_frequencies.append([100, 1000, 4000, 10000], 1)
-    support.time_frequencies = center_frequencies
-    levels_unweighted = fields_factory.create_scalar_field(
-        num_entities=1, location=locations.time_freq
-    )
-    levels_unweighted.append([10, 25, 50, 80], 1)
-    levels_unweighted.time_freq_support = support
+    frequencies = [100, 1000, 4000, 10000]
 
     # Check A-weighted levels
-    level_obj._output = levels_unweighted.deep_copy()
     level_obj.frequency_weighting = "A"
-    level_obj._apply_frequency_weighting()
-    assert level_obj._output.data[0] == pytest.approx(EXP_A_WEIGHTED_LEVEL_100)
-    assert level_obj._output.data[1] == pytest.approx(EXP_A_WEIGHTED_LEVEL_1000)
-    assert level_obj._output.data[2] == pytest.approx(EXP_A_WEIGHTED_LEVEL_4000)
-    assert level_obj._output.data[3] == pytest.approx(EXP_A_WEIGHTED_LEVEL_10000)
+    weights = level_obj._get_frequency_weightings(frequencies)
+    assert weights[0] == pytest.approx(EXP_A_WEIGHTS_100)
+    assert weights[1] == pytest.approx(EXP_A_WEIGHTS_1000)
+    assert weights[2] == pytest.approx(EXP_A_WEIGHTS_4000)
+    assert weights[3] == pytest.approx(EXP_A_WEIGHTS_10000)
 
     # Check B-weighted levels
-    level_obj._output = levels_unweighted.deep_copy()
     level_obj.frequency_weighting = "B"
-    level_obj._apply_frequency_weighting()
-    assert level_obj._output.data[0] == pytest.approx(EXP_B_WEIGHTED_LEVEL_100)
-    assert level_obj._output.data[1] == pytest.approx(EXP_B_WEIGHTED_LEVEL_1000)
-    assert level_obj._output.data[2] == pytest.approx(EXP_B_WEIGHTED_LEVEL_4000)
-    assert level_obj._output.data[3] == pytest.approx(EXP_B_WEIGHTED_LEVEL_10000)
+    weights = level_obj._get_frequency_weightings(frequencies)
+    assert weights[0] == pytest.approx(EXP_B_WEIGHTS_100)
+    assert weights[1] == pytest.approx(EXP_B_WEIGHTS_1000)
+    assert weights[2] == pytest.approx(EXP_B_WEIGHTS_4000)
+    assert weights[3] == pytest.approx(EXP_B_WEIGHTS_10000)
 
     # Check C-weighted levels
-    level_obj._output = levels_unweighted.deep_copy()
     level_obj.frequency_weighting = "C"
-    level_obj._apply_frequency_weighting()
-    assert level_obj._output.data[0] == pytest.approx(EXP_C_WEIGHTED_LEVEL_100)
-    assert level_obj._output.data[1] == pytest.approx(EXP_C_WEIGHTED_LEVEL_1000)
-    assert level_obj._output.data[2] == pytest.approx(EXP_C_WEIGHTED_LEVEL_4000)
-    assert level_obj._output.data[3] == pytest.approx(EXP_C_WEIGHTED_LEVEL_10000)
+    weights = level_obj._get_frequency_weightings(frequencies)
+    assert weights[0] == pytest.approx(EXP_C_WEIGHTS_100)
+    assert weights[1] == pytest.approx(EXP_C_WEIGHTS_1000)
+    assert weights[2] == pytest.approx(EXP_C_WEIGHTS_4000)
+    assert weights[3] == pytest.approx(EXP_C_WEIGHTS_10000)
 
     # Check unweighted levels
-    level_obj._output = levels_unweighted.deep_copy()
     level_obj.frequency_weighting = ""
-    level_obj._apply_frequency_weighting()
-    assert level_obj._output.data[0] == 10.0
-    assert level_obj._output.data[1] == 25.0
-    assert level_obj._output.data[2] == 50.0
-    assert level_obj._output.data[3] == 80.0
-
-
-def test__fractional_octave_levels_parent__convert_output_to_dB():
-    """Test FractionalOctaveLevelsParent _convert_output_to_dB method."""
-    level_obj = FractionalOctaveLevelsParent()
-
-    # Artificially create band levels
-    support = TimeFreqSupport()
-    center_frequencies = fields_factory.create_scalar_field(
-        num_entities=1, location=locations.time_freq
-    )
-    center_frequencies.append([100, 1000, 4000, 10000], 1)
-    support.time_frequencies = center_frequencies
-    levels_unweighted = fields_factory.create_scalar_field(
-        num_entities=1, location=locations.time_freq
-    )
-    levels_unweighted.append([0.01, 0.5, 1, 5], 1)
-    levels_unweighted.time_freq_support = support
-
-    # Check dB conversion
-    level_obj._output = levels_unweighted
-    level_obj._convert_output_to_dB()
-    assert level_obj._output.data[0] == pytest.approx(EXP_DB_LEVEL_0_01)
-    assert level_obj._output.data[1] == pytest.approx(EXP_DB_LEVEL_0_5)
-    assert level_obj._output.data[2] == pytest.approx(EXP_DB_LEVEL_1)
-    assert level_obj._output.data[3] == pytest.approx(EXP_DB_LEVEL_5)
+    weights = level_obj._get_frequency_weightings(frequencies)
+    assert weights[0] == 0.0
+    assert weights[1] == 0.0
+    assert weights[2] == 0.0
+    assert weights[3] == 0.0

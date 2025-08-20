@@ -23,6 +23,7 @@
 """Compute 1/3-octave levels from a time-domain signal input."""
 import matplotlib.pyplot as plt
 
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.server_helpers._check_server_version import class_available_from_version
 
 from ._fractional_octave_levels_from_signal_parent import FractionalOctaveLevelsFromSignalParent
@@ -35,8 +36,16 @@ class OneThirdOctaveLevelsFromSignal(FractionalOctaveLevelsFromSignalParent):
     This class converts a time-domain signal input into 1/3-octave levels.
     """
 
-    # Override the operator ID for 1/3-octave levels computation
-    _operator_id_levels_computation = "compute_one_third_octave_levels_from_signal"
+    def process(self):
+        """Compute the one-third-octave-band levels."""
+        if self.signal is None:
+            raise PyAnsysSoundException(
+                f"No input signal is set. Use {self.__class__.__name__}.signal."
+            )
+
+        levels, center_frequencies = self._compute_weighted_one_third_octave_levels()
+
+        self._set_output_field(levels, center_frequencies)
 
     def plot(self):
         """Plot the 1/3-octave-band levels."""

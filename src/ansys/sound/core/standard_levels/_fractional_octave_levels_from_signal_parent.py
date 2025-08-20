@@ -21,7 +21,8 @@
 # SOFTWARE.
 
 """Fractional octave levels from a time-domain signal input."""
-from ansys.dpf.core import Field, Operator, types
+from ansys.dpf.core import Field, Operator, TimeFreqSupport, fields_factory, locations, types
+import numpy as np
 
 from ansys.sound.core.server_helpers._check_server_version import class_available_from_version
 
@@ -38,11 +39,9 @@ class FractionalOctaveLevelsFromSignalParent(FractionalOctaveLevelsParent):
     as is.
     """
 
-    # Class attribute (string) with the name of the DPF Sound operator allowing fractional-octave
+    # Class attribute (string) with the name of the DPF Sound operator allowing one-third-octave
     # level computation from time-domain signal.
-    # Attribute value shall be set in subclasses, as it depends on whether you compute octave- or
-    # one-third-octave-band levels.
-    _operator_id_levels_computation = None
+    _operator_id_levels_computation = "compute_one_third_octave_levels_from_signal"
 
     def __init__(
         self,
@@ -108,27 +107,64 @@ class FractionalOctaveLevelsFromSignalParent(FractionalOctaveLevelsParent):
                 raise PyAnsysSoundException("The input signal must be provided as a DPF field.")
         self.__signal = signal
 
-    def process(self):
-        """Compute the band levels."""
-        # It is necessary to check that this is an instance of a subclass, not the superclass,
-        # otherwise the operator instantiation would raise an error. This check is done by testing
-        # the value of the class attribute operator_id_levels_computation.
-        if self._operator_id_levels_computation is None:
-            raise PyAnsysSoundException(
-                f"This method cannot be called from class {self.__class__.__name__}. This class is "
-                "meant as an abstract class that should not be used directly."
-            )
+    def _compute_weighted_one_third_octave_levels(self) -> tuple[np.ndarray, np.ndarray]:
+        """Compute 1/3-octave-band levels and apply frequency weighting.
 
-        if self.signal is None:
-            raise PyAnsysSoundException(
-                f"No input signal is set. Use {self.__class__.__name__}.signal."
-            )
+        Computes the 1/3-octave-band levels using :attr:`signal` as input and applies the frequency
+        weighting specified in :attr:`frequency_weighting`.
 
+        Returns
+        -------
+        numpy.ndarray
+            The weighted 1/3-octave-band levels in squared units.
+        numpy.ndarray
+            The 1/3-octave-band center frequencies in Hz.
+        """
         operator = Operator(self._operator_id_levels_computation)
-
         operator.connect(0, self.signal)
         operator.run()
-        self._output = operator.get_output(0, types.field)
+        field_levels = operator.get_output(0, types.field)
 
-        self._convert_output_to_dB()
-        self._apply_frequency_weighting()
+        center_frequencies = np.array(field_levels.time_freq_support.time_frequencies.data)
+        levels = np.array(field_levels.data)
+
+        # Retrieve frequency weighting at 1/3-octave-band center frequencies.
+        weights_dB = self._get_frequency_weightings(center_frequencies)
+
+        # Convert weights to squared unit, and apply them to computed 1/3-octave levels.
+        weights = 10.0 ** (weights_dB / 10.0)
+        levels *= weights
+        print(type(levels))
+
+        return levels, center_frequencies
+
+    def _set_output_field(self, levels: np.ndarray, center_frequencies: np.ndarray):
+        """Set the output field using the specified levels and center frequencies.
+
+        Populates the `_output` attribute with a DPF field built with the specified levels, after
+        conversion to dB, and the specified center frequencies as support.
+
+        Parameters
+        ----------
+        levels : numpy.ndarray
+            The computed levels to include in the output field, in squared unit. These will be
+            converted to dB in the set field.
+        center_frequencies : numpy.ndarray
+            The center frequencies corresponding to the computed levels, in Hz.
+        """
+        # Convert to dB.
+        octave_levels_dB = 10.0 * np.log10(levels / (self.reference_value**2) + 1e-12)
+
+        # Create output field.
+        field_center_frequencies = fields_factory.create_scalar_field(
+            num_entities=1, location=locations.time_freq
+        )
+        field_center_frequencies.append(center_frequencies, 1)
+        support = TimeFreqSupport()
+        support.time_frequencies = field_center_frequencies
+
+        self._output = fields_factory.create_scalar_field(
+            num_entities=1, location=locations.time_freq
+        )
+        self._output.append(octave_levels_dB, 1)
+        self._output.time_freq_support = support
