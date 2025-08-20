@@ -53,7 +53,7 @@ class OneThirdOctaveLevelsFromPSD(FractionalOctaveLevelsFromPSDParent):
 
         if len(self.frequency_weighting) > 0:
             ylabel = (
-                f"{self.frequency_weighting}-weighted 1/3octave-band level "
+                f"{self.frequency_weighting}-weighted 1/3-octave-band level "
                 f"(dB{self.frequency_weighting} re {self.reference_value})"
             )
         else:
