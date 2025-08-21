@@ -24,13 +24,13 @@
 from ansys.dpf.core import Field, Operator, types
 import numpy as np
 
-from ansys.sound.core.server_helpers._check_server_version import class_available_from_version
-
 from .._pyansys_sound import PyAnsysSoundException
 from ._fractional_octave_levels_parent import FractionalOctaveLevelsParent
 
+# from ansys.sound.core.server_helpers._check_server_version import class_available_from_version
 
-@class_available_from_version("11.0")
+
+# @class_available_from_version("11.0")
 class FractionalOctaveLevelsFromPSDParent(FractionalOctaveLevelsParent):
     """Abstract base class for fractional octave levels from PSD.
 
