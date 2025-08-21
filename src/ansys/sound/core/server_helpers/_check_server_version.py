@@ -128,19 +128,19 @@ def class_available_from_version(min_version):
 #         return super().__call__(*args, **kwargs)
 
 
-# class VersionRequired:
-#     """Mixin class to enforce minimum version requirements."""
+class VersionRequired:
+    """Mixin class to enforce minimum version requirements."""
 
-#     def __init_subclass__(cls, min_version: str = None):
-#         """Enforce minimum version requirements for subclasses."""
-#         if min_version is not None:
-#             if not isinstance(min_version, str):
-#                 raise TypeError(
-#                     f"In `{cls.__name__}`, _min_version must be a string with a dot separator."
-#                 )
-#             server = _global_server()
-#             server.check_version(
-#                 min_version,
-#                 f"Class `{cls.__name__}` requires DPF server version {min_version} or higher.",
-#             )
-#         super().__init_subclass__()
+    def __init_subclass__(cls, min_version: str = None):
+        """Enforce minimum version requirements for subclasses."""
+        if min_version is not None:
+            if not isinstance(min_version, str):
+                raise TypeError(
+                    f"In `{cls.__name__}`, _min_version must be a string with a dot separator."
+                )
+            server = _global_server()
+            server.check_version(
+                min_version,
+                f"Class `{cls.__name__}` requires DPF server version {min_version} or higher.",
+            )
+        super().__init_subclass__()

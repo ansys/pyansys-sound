@@ -26,6 +26,8 @@ import warnings
 from ansys.dpf.core import Field, Operator, types
 import numpy as np
 
+from ansys.sound.core.server_helpers._check_server_version import VersionRequired
+
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._standard_levels_parent import DICT_FREQUENCY_WEIGHTING, StandardLevelsParent
 
@@ -33,10 +35,7 @@ from ._standard_levels_parent import DICT_FREQUENCY_WEIGHTING, StandardLevelsPar
 # from ansys.sound.core.server_helpers._check_server_version import VersionRequiredMeta
 
 
-# from ansys.sound.core.server_helpers._check_server_version import VersionRequired
-
-
-class FractionalOctaveLevelsParent(StandardLevelsParent, min_version="12.0"):
+class FractionalOctaveLevelsParent(VersionRequired, StandardLevelsParent, min_version="12.0"):
     """Abstract base class for fractional octave levels, either from a PSD or a time-domain signal.
 
     This is the base class for all fractional octave level classes (namely OctaveLevelsFromPSD,
