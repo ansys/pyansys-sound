@@ -109,23 +109,23 @@ def class_available_from_version(min_version):
     return decorator
 
 
-# class VersionRequiredMeta(type):
-#     """Metaclass to enforce minimum version requirements."""
+class VersionRequiredMeta(type):
+    """Metaclass to enforce minimum version requirements."""
 
-#     def __call__(cls, *args, **kwargs):
-#         """Check DPF server version before instantiating the class."""
-#         min_version = getattr(cls, "_min_version", None)
-#         if min_version is not None:
-#             if not isinstance(min_version, str):
-#                 raise TypeError(
-#                     f"In `{cls.__name__}`, _min_version must be a string with a dot separator."
-#                 )
-#             server = _global_server()
-#             server.check_version(
-#                 min_version,
-#                 f"Class `{cls.__name__}` requires DPF server version {min_version} or higher.",
-#             )
-#         return super().__call__(*args, **kwargs)
+    def __call__(cls, *args, **kwargs):
+        """Check DPF server version before instantiating the class."""
+        min_version = getattr(cls, "_min_version", None)
+        if min_version is not None:
+            if not isinstance(min_version, str):
+                raise TypeError(
+                    f"In `{cls.__name__}`, _min_version must be a string with a dot separator."
+                )
+            server = _global_server()
+            server.check_version(
+                min_version,
+                f"Class `{cls.__name__}` requires DPF server version {min_version} or higher.",
+            )
+        return super().__call__(*args, **kwargs)
 
 
 # class VersionRequired:
