@@ -23,7 +23,7 @@
 """PyAnsys Sound interface."""
 import warnings
 
-from ansys.dpf.core import FieldsContainer
+from ansys.dpf.core import _global_server
 import numpy as np
 
 REFERENCE_ACOUSTIC_PRESSURE = 2e-5
@@ -35,6 +35,31 @@ class PyAnsysSound:
 
     This is the base class of all PyAnsys Sound classes and should not be used as is.
     """
+
+    def __init_subclass__(cls, min_version: str = None):
+        """Enforce minimum version requirements for subclasses.
+
+        Parameters
+        ----------
+        min_version : str, default: None
+            The minimum DPF server version required for the subclass, in the form "X.Y" ("11.0" for
+            example). If set to None, no check is done, but it is recommended to specify a version.
+        """
+        if min_version is not None:
+            if not isinstance(min_version, str):
+                raise TypeError(
+                    f"In `{cls.__name__}`, _min_version must be a string with a dot separator."
+                )
+            server = _global_server()
+            server.check_version(
+                min_version,
+                f"Class `{cls.__name__}` requires DPF server version {min_version} or higher.",
+            )
+            if isinstance(cls.__doc__, str):
+                cls.__doc__ += f"\n\n\t*Added in server version {min_version}.*\n"
+
+        cls._min_version = min_version  # Store required version for further use.
+        super().__init_subclass__()
 
     def __init__(self):
         """Init class PyAnsysSound.
@@ -55,24 +80,14 @@ class PyAnsysSound:
         """Process inputs.
 
         There is nothing to process.
-
-        Returns
-        -------
-        None
-                None.
         """
         warnings.warn(PyAnsysSoundWarning("There is nothing to process."))
         return None
 
-    def get_output(self) -> None | FieldsContainer:
+    def get_output(self):
         """Get output.
 
         There is nothing to output.
-
-        Returns
-        -------
-        FieldsContainer
-            Empty DPF fields container.
         """
         warnings.warn(PyAnsysSoundWarning("There is nothing to output."))
         return self._output
