@@ -45,19 +45,6 @@ class PyAnsysSound:
             The minimum DPF server version required for the subclass, in the form "X.Y" ("11.0" for
             example). If set to None, no check is done, but it is recommended to specify a version.
         """
-        if min_version is not None:
-            if not isinstance(min_version, str):
-                raise TypeError(
-                    f"In `{cls.__name__}`, _min_version must be a string with a dot separator."
-                )
-            server = _global_server()
-            server.check_version(
-                min_version,
-                f"Class `{cls.__name__}` requires DPF server version {min_version} or higher.",
-            )
-            if isinstance(cls.__doc__, str):
-                cls.__doc__ += f"\n\n\t*Added in server version {min_version}.*\n"
-
         cls._min_version = min_version  # Store required version for further use.
         super().__init_subclass__()
 
@@ -66,6 +53,23 @@ class PyAnsysSound:
 
         This function inits the class by filling its attributes.
         """
+        if self._min_version is not None:
+            if not isinstance(self._min_version, str):
+                raise TypeError(
+                    f"In `{self.__class__.__name__}`, _min_version must be a string with a dot "
+                    "separator."
+                )
+            server = _global_server()
+            server.check_version(
+                self._min_version,
+                (
+                    f"Class `{self.__class__.__name__}` requires DPF server version "
+                    f"{self._min_version} or higher."
+                ),
+            )
+            if isinstance(self.__doc__, str):
+                self.__doc__ += f"\n\n\t*Added in server version {self._min_version}.*\n"
+
         self._output = None
 
     def plot(self):
