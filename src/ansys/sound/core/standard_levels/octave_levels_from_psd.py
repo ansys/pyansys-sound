@@ -27,9 +27,9 @@ from ._fractional_octave_levels_from_psd_parent import FractionalOctaveLevelsFro
 
 
 class OctaveLevelsFromPSD(FractionalOctaveLevelsFromPSDParent, min_dpf_version="11.0"):
-    """Compute octave levels from a PSD input.
+    """Compute octave levels from a power spectral density (PSD) input.
 
-    This class converts a PSD input into octave levels.
+    This class computes octave levels from a PSD.
     """
 
     # Override the operator IDs for octave levels computation

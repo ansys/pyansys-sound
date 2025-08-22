@@ -27,9 +27,9 @@ from ._fractional_octave_levels_from_psd_parent import FractionalOctaveLevelsFro
 
 
 class OneThirdOctaveLevelsFromPSD(FractionalOctaveLevelsFromPSDParent, min_dpf_version="11.0"):
-    """Compute 1/3-octave levels from a PSD input.
+    """Compute 1/3-octave levels from a power spectral density (PSD) input.
 
-    This class converts a PSD input into 1/3-octave levels.
+    This class computes 1/3-octave levels from a PSD.
     """
 
     # Override the operator IDs for 1/3-octave levels computation

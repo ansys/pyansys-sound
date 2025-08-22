@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Helpers to check DPF version."""
+"""Helpers to check DPF server version."""
 
 from functools import wraps
 from typing import Any, Callable
@@ -46,7 +46,7 @@ def requires_dpf_version(min_dpf_version: str) -> Callable:
         The decorator.
 
     .. note::
-       This function must be used as a decorator.
+       This function must be used as a method decorator.
     """
 
     def decorator(func) -> Callable:

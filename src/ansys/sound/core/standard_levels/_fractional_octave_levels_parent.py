@@ -38,8 +38,8 @@ class FractionalOctaveLevelsParent(StandardLevelsParent, min_dpf_version="11.0")
     should not be used as is.
     """
 
-    # Class attribute with the name of the DPF Sound operators that computes A, B, or C frequency
-    # weightings for a set of frequencies.
+    # Class attribute (string) with the name of the DPF Sound operator that computes A, B, or C
+    # frequency weightings for a set of frequencies.
     _operator_id_frequency_weighting = "get_frequency_weighting"
 
     def __init__(

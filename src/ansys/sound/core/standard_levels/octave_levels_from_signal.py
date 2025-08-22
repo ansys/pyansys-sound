@@ -32,7 +32,7 @@ from ._fractional_octave_levels_from_signal_parent import FractionalOctaveLevels
 class OctaveLevelsFromSignal(FractionalOctaveLevelsFromSignalParent, min_dpf_version="11.0"):
     """Compute octave levels from a time-domain signal input.
 
-    This class converts a time-domain signal input into octave levels.
+    This class computes octave levels from a time-domain signal.
 
     Notes
     -----

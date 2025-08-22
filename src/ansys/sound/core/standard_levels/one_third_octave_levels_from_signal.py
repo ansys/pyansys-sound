@@ -33,7 +33,7 @@ class OneThirdOctaveLevelsFromSignal(
 ):
     """Compute 1/3-octave levels from a time-domain signal input.
 
-    This class converts a time-domain signal input into 1/3-octave levels.
+    This class computes 1/3-octave levels from a time-domain signal.
     """
 
     def process(self):
