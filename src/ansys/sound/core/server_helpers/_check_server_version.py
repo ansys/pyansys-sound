@@ -109,6 +109,39 @@ def class_available_from_version(min_version):
     return decorator
 
 
+def class_available_from_version_v2(min_version):
+    """Check that the instantiated class matches or is higher than a certain DPF server version.
+
+    Parameters
+    ----------
+    min_version : str, default: None
+        Minimum DPF server version required for the class to be instantiated.
+        The version must be a string. Ex: "11.0"
+
+    .. note::
+       This function must be used as a decorator.
+    """
+
+    def decorator(cls):
+        if not isinstance(min_version, str):
+            raise TypeError(
+                "class_available_from_version decorator argument must be a string with a dot "
+                "separator."
+            )
+
+        server = _global_server()
+        server.check_version(
+            min_version,
+            (
+                f"Class `{self.__class__.__name__}` requires DPF server version "
+                f"{min_version} or higher.",
+            ),
+        )
+        super().__init__(*args, **kwargs)
+
+    return decorator
+
+
 # class VersionRequiredMeta(type):
 #     """Metaclass to enforce minimum version requirements."""
 
