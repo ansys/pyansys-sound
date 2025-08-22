@@ -36,16 +36,16 @@ class PyAnsysSound:
     This is the base class of all PyAnsys Sound classes and should not be used as is.
     """
 
-    def __init_subclass__(cls, min_version: str = None):
+    def __init_subclass__(cls, min_dpf_version: str = None):
         """Enforce minimum version requirements for subclasses.
 
         Parameters
         ----------
-        min_version : str, default: None
+        min_dpf_version : str, default: None
             The minimum DPF server version required for the subclass, in the form "X.Y" ("11.0" for
             example). If set to None, no check is done, but it is recommended to specify a version.
         """
-        cls._min_version = min_version  # Store required version for further use.
+        cls._min_dpf_version = min_dpf_version  # Store required version for further use.
         super().__init_subclass__()
 
     def __init__(self):
@@ -53,22 +53,22 @@ class PyAnsysSound:
 
         This function inits the class by filling its attributes.
         """
-        if self._min_version is not None:
-            if not isinstance(self._min_version, str):
+        if self._min_dpf_version is not None:
+            if not isinstance(self._min_dpf_version, str):
                 raise TypeError(
-                    f"In `{self.__class__.__name__}`, _min_version must be a string with a dot "
+                    f"In `{self.__class__.__name__}`, _min_dpf_version must be a string with a dot "
                     "separator."
                 )
             server = _global_server()
             server.check_version(
-                self._min_version,
+                self._min_dpf_version,
                 (
                     f"Class `{self.__class__.__name__}` requires DPF server version "
-                    f"{self._min_version} or higher."
+                    f"{self._min_dpf_version} or higher."
                 ),
             )
             if isinstance(self.__doc__, str):
-                self.__doc__ += f"\n\n\t*Added in server version {self._min_version}.*\n"
+                self.__doc__ += f"\n\n\t*Added in server version {self._min_dpf_version}.*\n"
 
         self._output = None
 
