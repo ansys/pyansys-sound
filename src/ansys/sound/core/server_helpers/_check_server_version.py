@@ -132,12 +132,9 @@ def class_available_from_version_v2(min_version):
         server = _global_server()
         server.check_version(
             min_version,
-            (
-                f"Class `{self.__class__.__name__}` requires DPF server version "
-                f"{min_version} or higher.",
-            ),
+            (f"Class `{cls.__name__}` requires DPF server version " f"{min_version} or higher.",),
         )
-        super().__init__(*args, **kwargs)
+        return cls
 
     return decorator
 
