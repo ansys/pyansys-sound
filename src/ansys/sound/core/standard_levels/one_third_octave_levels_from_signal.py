@@ -24,13 +24,13 @@
 import matplotlib.pyplot as plt
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException
-from ansys.sound.core.server_helpers._check_server_version import class_available_from_version
 
 from ._fractional_octave_levels_from_signal_parent import FractionalOctaveLevelsFromSignalParent
 
 
-@class_available_from_version("11.0")
-class OneThirdOctaveLevelsFromSignal(FractionalOctaveLevelsFromSignalParent):
+class OneThirdOctaveLevelsFromSignal(
+    FractionalOctaveLevelsFromSignalParent, min_dpf_version="11.0"
+):
     """Compute 1/3-octave levels from a time-domain signal input.
 
     This class converts a time-domain signal input into 1/3-octave levels.

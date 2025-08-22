@@ -24,14 +24,11 @@
 from ansys.dpf.core import Field, Operator, TimeFreqSupport, fields_factory, locations, types
 import numpy as np
 
-from ansys.sound.core.server_helpers._check_server_version import class_available_from_version
-
 from .._pyansys_sound import PyAnsysSoundException
 from ._fractional_octave_levels_parent import FractionalOctaveLevelsParent
 
 
-@class_available_from_version("11.0")
-class FractionalOctaveLevelsFromSignalParent(FractionalOctaveLevelsParent):
+class FractionalOctaveLevelsFromSignalParent(FractionalOctaveLevelsParent, min_dpf_version="11.0"):
     """Abstract base class for fractional octave levels from time-domain signal.
 
     This is the base class for all fractional octave level classes using a time-domain signal as

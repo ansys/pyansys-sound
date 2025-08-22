@@ -23,8 +23,9 @@
 """PyAnsys Sound interface."""
 import warnings
 
-from ansys.dpf.core import FieldsContainer
 import numpy as np
+
+from ansys.sound.core.server_helpers._check_server_version import _check_dpf_version
 
 REFERENCE_ACOUSTIC_PRESSURE = 2e-5
 
@@ -36,11 +37,62 @@ class PyAnsysSound:
     This is the base class of all PyAnsys Sound classes and should not be used as is.
     """
 
-    def __init__(self):
-        """Init class PyAnsysSound.
+    # Declare minimum DPF version class attribute.
+    _min_dpf_version = None
 
-        This function inits the class by filling its attributes.
+    def __init_subclass__(cls, *, min_dpf_version: str = None, **kwargs):
+        """Store minimum DPF version requirement for subclasses.
+
+        This is executed at subclass creation time. It stores the specified minimum DPF version
+        requirement for the created subclass as a class attribute. It also adds the version
+        requirement in the class docstring.
+
+        .. note::
+            The specified version is not tested against the current DPF server version just yet,
+            because the server might not yet exist, and because doing this check at class creation
+            time might affect other class creations with different version requirements. The actual
+            check is done at class instantiation time.
+
+        Parameters
+        ----------
+        min_dpf_version : str, optional
+            Minimum DPF version required for the subclass.
+            The version must be a string with the form MAJOR.MINOR, for example "11.0".
         """
+        if min_dpf_version is not None:
+            # Check version specifier validity.
+            if not isinstance(min_dpf_version, str):
+                raise TypeError(
+                    "In class definition, `min_dpf_version` argument must be a string with the "
+                    'form MAJOR.MINOR, for example "11.0".'
+                )
+
+            # Append version requirement to subclass docstring.
+            if isinstance(cls.__doc__, str):
+                cls.__doc__ += f"Added in DPF server version {cls._min_dpf_version}."
+
+        # Update the subclass's class attribute (to later check compliance, at class instantiation).
+        cls._min_dpf_version = min_dpf_version
+
+        # Proceed with the subclass creation.
+        super().__init_subclass__(**kwargs)
+
+    def __init__(self):
+        """Initialize the class.
+
+        Checks DPF version compliance (if specified in class definition), and initialize necessary
+        attributes.
+        """
+        # Check current DPF server version against class minimum requirement (if specified).
+        _check_dpf_version(
+            self._min_dpf_version,
+            (
+                f"Class `{self.__class__.__name__}` requires DPF server version "
+                f"{self._min_dpf_version} or higher."
+            ),
+        )
+
+        # Initialize output attribute.
         self._output = None
 
     def plot(self):
@@ -55,29 +107,24 @@ class PyAnsysSound:
         """Process inputs.
 
         There is nothing to process.
-
-        Returns
-        -------
-        None
-                None.
         """
         warnings.warn(PyAnsysSoundWarning("There is nothing to process."))
         return None
 
-    def get_output(self) -> None | FieldsContainer:
+    def get_output(self) -> None:
         """Get output.
 
         There is nothing to output.
 
         Returns
         -------
-        FieldsContainer
-            Empty DPF fields container.
+        None
+            None
         """
         warnings.warn(PyAnsysSoundWarning("There is nothing to output."))
         return self._output
 
-    def get_output_as_nparray(self) -> np.ndarray | tuple[np.ndarray]:
+    def get_output_as_nparray(self) -> np.ndarray:
         """Get output as a NumPy array.
 
         There is nothing to output.

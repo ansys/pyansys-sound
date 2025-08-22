@@ -23,44 +23,67 @@
 """Helpers to check DPF version."""
 
 from functools import wraps
+from typing import Any, Callable
 
 from ansys.dpf.core import _global_server
 
 
-def method_available_from_version(min_version):
-    """Check that the method being called matches or is higher than a certain DPF server version.
+def requires_dpf_version(min_dpf_version: str) -> Callable:
+    """Check that the current DPF server matches or is higher than a certain version.
+
+    This decorator ensures that the decorated method can only be used if the current DPF server
+    version allows it.
 
     Parameters
     ----------
-    min_version : str, default: None
-        Minimum DPF server version required for the method to be called.
-        The version must be a string. Ex: "11.0"
+    min_dpf_version : str, default: None
+        Minimum DPF server version required for the decorated method.
+        The version must be specified as a string with the form MAJOR.MINOR, for example "11.0".
+
+    Returns
+    -------
+    callable
+        The decorator.
 
     .. note::
        This function must be used as a decorator.
     """
 
-    def decorator(func):
-        # first arg *must* be a tuple containing the version
-        if not isinstance(min_version, str):
+    def decorator(func) -> Callable:
+        """Wrap the original method to include DPF version check.
+
+        Parameters
+        ----------
+        func : callable
+            The decorated method.
+
+        Returns
+        -------
+        callable
+            The wrapped method.
+        """
+        if not isinstance(min_dpf_version, str):
             raise TypeError(
-                "method_available_from_version decorator argument must be a string with a dot "
-                "separator."
+                "requires_dpf_version decorator argument must be a string with the form "
+                "MAJOR.MINOR, for example '11.0'."
             )
 
         @wraps(func)
-        def wrapper(self, *args, **kwargs):
-            """Call the original method."""
-            server = _global_server()
+        def wrapper(self, *args, **kwargs) -> Any:
+            """Check DPF server version before calling the original method.
 
-            server.check_version(
-                min_version,
+            Returns
+            -------
+            Any
+                The original method's output.
+            """
+            _check_dpf_version(
+                min_dpf_version,
                 (
-                    f"Method `{func.__name__}` of class `{self.__class__.__name__}` "
-                    f"requires DPF server version {min_version} or higher."
+                    f"Method `{func.__name__}` of class `{self.__class__.__name__}` requires DPF "
+                    f"server version {min_dpf_version} or higher."
                 ),
             )
-
             return func(self, *args, **kwargs)
 
         return wrapper
@@ -68,42 +91,20 @@ def method_available_from_version(min_version):
     return decorator
 
 
-def class_available_from_version(min_version):
-    """Check that the instantiated class matches or is higher than a certain DPF server version.
+def _check_dpf_version(min_dpf_version: str, error_msg: str):
+    """Check the current DPF server and raise an exception if does not meet the specified version.
 
     Parameters
     ----------
-    min_version : str, default: None
-        Minimum DPF server version required for the class to be instantiated.
-        The version must be a string. Ex: "11.0"
-
-    .. note::
-       This function must be used as a decorator.
+    min_dpf_version : str
+        Minimum DPF version required.
+    error_msg : str
+        Error message to display if the version check fails.
     """
+    if min_dpf_version is not None:
+        # Retrieve the current server.
+        server = _global_server()
 
-    def decorator(cls):
-        if not isinstance(min_version, str):
-            raise TypeError(
-                "class_available_from_version decorator argument must be a string with a dot "
-                "separator."
-            )
-
-        class WrappedClass(cls):
-            def __init__(self, *args, **kwargs):
-                server = _global_server()
-                server.check_version(
-                    min_version,
-                    (
-                        f"Class `{self.__class__.__name__}` requires DPF server version "
-                        f"{min_version} or higher.",
-                    ),
-                )
-                super().__init__(*args, **kwargs)
-
-        # Preserve class metadata.
-        WrappedClass.__name__ = cls.__name__
-        WrappedClass.__doc__ = cls.__doc__
-        WrappedClass.__module__ = cls.__module__
-        return WrappedClass
-
-    return decorator
+        # This raises an exception if the current DPF server version is lower than
+        # min_dpf_version.
+        server.check_version(min_dpf_version, error_msg)
