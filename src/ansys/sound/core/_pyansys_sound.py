@@ -69,7 +69,7 @@ class PyAnsysSound:
 
             # Append version requirement to subclass docstring.
             if isinstance(cls.__doc__, str):
-                cls.__doc__ += f"Added in DPF server version {cls._min_dpf_version}."
+                cls.__doc__ += f"\n\t*Added in DPF server version {cls._min_dpf_version}.*"
 
         # Update the subclass's class attribute (to later check compliance, at class instantiation).
         cls._min_dpf_version = min_dpf_version
