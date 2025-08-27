@@ -70,7 +70,7 @@ html_context = {
     "github_repo": REPOSITORY_NAME,
     "github_version": BRANCH,
     "doc_path": "doc/source",
-    "pyansys_tags": ['Acoustics'],
+    "pyansys_tags": ["Acoustics"],
 }
 
 # Sphinx extensions
