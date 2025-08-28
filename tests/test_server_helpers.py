@@ -24,9 +24,10 @@ from ansys.dpf.gate.errors import DpfVersionNotSupported
 import pytest
 
 from ansys.sound.core.server_helpers import (
+    _check_dpf_version,
     connect_to_or_start_server,
+    requires_dpf_version,
     validate_dpf_sound_connection,
-    version_requires,
 )
 
 
@@ -39,44 +40,61 @@ def test_connect_to_or_start_server():
     print(s)
 
 
-def test_version_requires():
-    """Test the version_requires decorator."""
+def test_requires_dpf_version():
+    """Test the requires_dpf_version decorator."""
 
-    # This should raise an type error in the decorator
+    # Wrong version specifier type => type error (at definition).
     with pytest.raises(
         TypeError,
-        match="version_requires decorator must be a string with a dot separator.",
+        match=(
+            "requires_dpf_version decorator argument must be a string with the form MAJOR.MINOR, "
+            "for example '11.0'."
+        ),
     ):
 
         class DummyClass:
-            """A dummy class to test type error in the version_requires decorator."""
+            """A dummy class to test type error in the requires_dpf_version decorator."""
 
-            @version_requires(5.0)
+            @requires_dpf_version(5.0)
             def dummy_method_type_error(self):
                 pass
 
     class DummyClass:
-        """A dummy class to test the version_requires decorator."""
+        """A dummy class to test the requires_dpf_version decorator."""
 
-        @version_requires("1.0")
+        @requires_dpf_version("1.0")
         def dummy_method_pass(self):
-            return "This function requires DPF version 1.0 or higher."
+            return "This method requires DPF version 1.0 or higher."
 
-        @version_requires("666.0")
+        @requires_dpf_version("666.0")
         def dummy_method_fail(self):
-            return "This function requires DPF version 666.0 or higher."
+            return "This method requires DPF version 666.0 or higher."
 
     # This should NOT raise an exception if the server version is 1.0 or higher
     DC = DummyClass()
     result = DC.dummy_method_pass()
-    assert result == "This function requires DPF version 1.0 or higher."
+    assert result == "This method requires DPF version 1.0 or higher."
 
     # This should raise an exception if the server version is lower than 666.0
     with pytest.raises(
         DpfVersionNotSupported,
         match=(
-            "Function `dummy_method_fail` of class `DummyClass` requires DPF server"
-            " version 666.0 or higher."
+            "Method `dummy_method_fail` of class `DummyClass` requires DPF server version 666.0 or "
+            "higher."
         ),
     ):
         DC.dummy_method_fail()
+
+
+def test__check_dpf_version():
+    """Test the _check_dpf_version function."""
+
+    # This should NOT raise an exception if the server version is 1.0 or higher
+    _check_dpf_version("1.0", "Test error message.")
+
+    # This should raise an exception if the server version is lower than 666.0
+    with pytest.raises(
+        DpfVersionNotSupported,
+        match=("Test error message."),
+    ):
+        _check_dpf_version("666.0", "Test error message.")

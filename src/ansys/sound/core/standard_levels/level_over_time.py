@@ -67,12 +67,12 @@ class LevelOverTime(StandardLevelsParent):
             The scale type of the output level. Available options are `"dB"` and `"RMS"`.
         reference_value : float, default: 1.0
             The reference value for the level computation. If the overall level is computed with a
-            signal in Pa, the reference value should be 2e-5.
+            signal in Pa, the reference value should be 2e-5 (Pa).
         frequency_weighting : str, default: ""
             The frequency weighting to apply to the signal before computing the level. Available
-            options are `""`, `"A"`, `"B"`,  and `"C"`, respectively to get level in dBSPL, dB(A),
-            dB(B), and dB(C). Note that the frequency weighting is only applied if the attribute
-            :attr:`scale` is set to `"dB"`.
+            options are `""`, `"A"`, `"B"`,  and `"C"`, to get level in dB (or dBSPL), dBA, dBB,
+            and dBC, respectively. Note that the frequency weighting is only applied if the
+            attribute :attr:`scale` is set to `"dB"`.
         time_weighting : str, default: "Fast"
             The time weighting to use when computing the level over time. Available options are
             `"Fast"`, `"Slow"`, `"Impulse"`, and `"Custom"`. When `"Custom"` is selected, the user
@@ -103,8 +103,8 @@ class LevelOverTime(StandardLevelsParent):
         str_frequency_weighting = (
             self.frequency_weighting if len(self.frequency_weighting) > 0 else "None"
         )
-        max_level = self.get_level_max()
-        if max_level is not None:
+        if self._output is not None:
+            max_level = self.get_level_max()
             unit = self.get_output()[1].unit
             str_level = f"{max_level:.1f} {unit}"
         else:
@@ -155,7 +155,7 @@ class LevelOverTime(StandardLevelsParent):
         """Reference value for the level computation.
 
         If the overall level is computed with a sound pressure signal in Pa, the reference value
-        should be 2e-5.
+        should be 2e-5 (Pa).
         """
         return self.__reference_value
 
@@ -171,9 +171,9 @@ class LevelOverTime(StandardLevelsParent):
         """Frequency weighting of the computed level.
 
         Available options are `""`, `"A"`, `"B"`, and `"C"`. If attribute :attr:`reference_value`
-        is 2e-5 Pa, these options allow level calculation in dBSPL, dB(A), dB(B), and dB(C),
-        respectively. Note that the frequency weighting is only applied if the attribute
-        :attr:`scale` is set to `"dB"`.
+        is 2e-5 Pa, these options allow level calculation in dBSPL, dBA, dBB, and dBC, respectively.
+        Note that the frequency weighting is only applied if the attribute :attr:`scale` is set to
+        `"dB"`.
         """
         return self.__frequency_weighting
 
