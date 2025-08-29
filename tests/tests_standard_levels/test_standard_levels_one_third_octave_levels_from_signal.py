@@ -46,7 +46,7 @@ EXP_STR_ALL_PROCESSED = (
     'OneThirdOctaveLevelsFromSignal object.\nData\n\tSignal: "Name of the signal"\n'
     "\tReference value: 2e-05\n\tFrequency weighting: A\nOutput levels:\n"
     "\t25.0 Hz:\t-39.9 dBA (re 2e-05)\n"
-    "\t31.0 Hz:\t-31.2 dBA (re 2e-05)\n"
+    "\t31.5 Hz:\t-30.9 dBA (re 2e-05)\n"
     "\t40.0 Hz:\t-18.7 dBA (re 2e-05)\n"
     "\t50.0 Hz:\t-10.6 dBA (re 2e-05)\n"
     "\t63.0 Hz:\t-4.4 dBA (re 2e-05)\n"
