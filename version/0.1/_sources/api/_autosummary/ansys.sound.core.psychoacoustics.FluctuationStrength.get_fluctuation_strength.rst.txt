@@ -1,0 +1,6 @@
+get\_fluctuation\_strength
+==========================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: FluctuationStrength.get_fluctuation_strength
