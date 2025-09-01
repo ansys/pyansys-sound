@@ -36,7 +36,7 @@ tests = [
     "pytest-cov==6.2.1",
     "pytest-dependency==0.6.0",
     "platformdirs==4.3.8",
-    "regex==2025.7.34",
+    "regex==2025.8.29",
 ]
 
 doc = [
