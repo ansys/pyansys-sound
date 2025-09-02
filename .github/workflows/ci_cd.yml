@@ -34,7 +34,7 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: ansys/actions/doc-deploy-changelog@1096998b81f7ebdea116b683e11f3a8bda759ca6 # v10.0.14
+      - uses: ansys/actions/doc-deploy-changelog@d93d46bd89025d3c78a0d18a68a9f16434c74382 # v10.0.15
         with:
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
           bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
@@ -45,7 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Running documentation style checks"
-        uses: ansys/actions/doc-style@1096998b81f7ebdea116b683e11f3a8bda759ca6 # v10.0.14
+        uses: ansys/actions/doc-style@d93d46bd89025d3c78a0d18a68a9f16434c74382 # v10.0.15
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check pull-request name
-        uses: ansys/actions/check-pr-title@1096998b81f7ebdea116b683e11f3a8bda759ca6 # v10.0.14
+        uses: ansys/actions/check-pr-title@d93d46bd89025d3c78a0d18a68a9f16434c74382 # v10.0.15
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -74,7 +74,7 @@ jobs:
             os: macos-latest
     steps:
       - name: "Build wheelhouse and perform smoke test"
-        uses: ansys/actions/build-wheelhouse@1096998b81f7ebdea116b683e11f3a8bda759ca6 # v10.0.14
+        uses: ansys/actions/build-wheelhouse@d93d46bd89025d3c78a0d18a68a9f16434c74382 # v10.0.15
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
@@ -85,7 +85,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Check library vulnerabilities with default mode"
-        uses: ansys/actions/check-vulnerabilities@1096998b81f7ebdea116b683e11f3a8bda759ca6 # v10.0.14
+        uses: ansys/actions/check-vulnerabilities@d93d46bd89025d3c78a0d18a68a9f16434c74382 # v10.0.15
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
@@ -245,7 +245,7 @@ jobs:
           python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
       - name: "Run Ansys documentation building action"
-        uses: ansys/actions/doc-build@1096998b81f7ebdea116b683e11f3a8bda759ca6 # v10.0.14
+        uses: ansys/actions/doc-build@d93d46bd89025d3c78a0d18a68a9f16434c74382 # v10.0.15
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           skip-install: true
@@ -283,7 +283,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Build library source and wheel artifacts
-        uses: ansys/actions/build-library@1096998b81f7ebdea116b683e11f3a8bda759ca6 # v10.0.14
+        uses: ansys/actions/build-library@d93d46bd89025d3c78a0d18a68a9f16434c74382 # v10.0.15
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
@@ -314,7 +314,7 @@ jobs:
           skip-existing: false
 
       - name: "Release to GitHub"
-        uses: ansys/actions/release-github@1096998b81f7ebdea116b683e11f3a8bda759ca6 # v10.0.14
+        uses: ansys/actions/release-github@d93d46bd89025d3c78a0d18a68a9f16434c74382 # v10.0.15
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -328,7 +328,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - name: "Deploy the latest documentation"
-        uses: ansys/actions/doc-deploy-dev@1096998b81f7ebdea116b683e11f3a8bda759ca6 # v10.0.14
+        uses: ansys/actions/doc-deploy-dev@d93d46bd89025d3c78a0d18a68a9f16434c74382 # v10.0.15
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
@@ -342,7 +342,7 @@ jobs:
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     steps:
       - name: "Deploy the latest documentation"
-        uses: ansys/actions/doc-deploy-stable@1096998b81f7ebdea116b683e11f3a8bda759ca6 # v10.0.14
+        uses: ansys/actions/doc-deploy-stable@d93d46bd89025d3c78a0d18a68a9f16434c74382 # v10.0.15
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
