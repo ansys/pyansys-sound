@@ -1,0 +1,6 @@
+get\_decisive\_frequency\_over\_time
+====================================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: TonalityISOTS20065.get_decisive_frequency_over_time
