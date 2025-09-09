@@ -19,7 +19,7 @@ env:
   PACKAGE_NAME: 'ansys-sound-core'
   DOCUMENTATION_CNAME: 'sound.docs.pyansys.com'
   DOCUMENTATION_DPF_SOUND_TAG: 'latest' # DPF Sound image tag for doc building
-  TEST_DPF_SOUND_MATRIX: '["25.2", "latest"]' # List of DPF Sound image tags for testing (quotes and double quotes are important!!)
+  TEST_DPF_SOUND_MATRIX: '["25.2", "26.1-pre0", "latest"]' # List of DPF Sound image tags for testing (quotes and double quotes are important!!)
   ANSRV_DPF_SOUND_REPO: ghcr.io/ansys/ansys-sound # Docker repository for DPF Sound
   ANSRV_DPF_SOUND_PORT: 6780 # Port for DPF Sound Docker containers
   DPF_SOUND_CONT_NAME: ansys-sound-core
