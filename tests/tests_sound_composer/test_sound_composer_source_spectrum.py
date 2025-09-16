@@ -42,6 +42,8 @@ from ansys.sound.core.spectral_processing import PowerSpectralDensity
 REF_ACOUSTIC_POWER = 4e-10
 
 EXP_SPECTRUM_DATA3 = 9.75124494289048e-05
+EXP_SPECTRUM_DATA3_DBA = 4.882796e-06
+EXP_SPECTRUM_DATA3_DBAPERHZ = 3.813463e-05
 EXP_LEVEL_BAND_3RD_250_Hz = 69.10828
 EXP_LEVEL_BAND_3RD_500_Hz = 66.06081
 EXP_LEVEL_BAND_3RD_1000_Hz = 62.85511
@@ -186,6 +188,18 @@ def test_source_specrum_load_source():
     )
     assert isinstance(source_spectrum.source_spectrum_data, Field)
     assert source_spectrum.source_spectrum_data.data[3] == pytest.approx(EXP_SPECTRUM_DATA3)
+    source_spectrum.load_source_spectrum(
+        pytest.data_path_sound_composer_spectrum_v4_dBA_source_in_container
+    )
+    assert isinstance(source_spectrum.source_spectrum_data, Field)
+    assert source_spectrum.source_spectrum_data.data[3] == pytest.approx(EXP_SPECTRUM_DATA3_DBA)
+    source_spectrum.load_source_spectrum(
+        pytest.data_path_sound_composer_spectrum_v4_dBAPerHz_source_in_container
+    )
+    assert isinstance(source_spectrum.source_spectrum_data, Field)
+    assert source_spectrum.source_spectrum_data.data[3] == pytest.approx(
+        EXP_SPECTRUM_DATA3_DBAPERHZ
+    )
 
 
 def test_source_spectrum_set_from_generic_data_containers():

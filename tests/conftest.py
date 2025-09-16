@@ -139,6 +139,16 @@ def pytest_configure(config):
         base_dir,
         server=server,
     )
+    pytest.data_path_sound_composer_spectrum_v4_dBA_source_in_container = get_test_file_path(
+        "AnsysSound Spectrum v4 - nominal - dBA_2026R1_20250829.txt",
+        base_dir,
+        server=server,
+    )
+    pytest.data_path_sound_composer_spectrum_v4_dBAPerHz_source_in_container = get_test_file_path(
+        "AnsysSound Spectrum v4 - nominal - dBAPerHz_2026R1_20250829.txt",
+        base_dir,
+        server=server,
+    )
     pytest.data_path_sound_composer_harmonics_source_2p_in_container = get_test_file_path(
         "AnsysSound_Orders_MultipleParameters dBSPL_2024R2_20241205.txt",
         base_dir,
