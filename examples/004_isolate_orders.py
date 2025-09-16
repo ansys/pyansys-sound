@@ -182,7 +182,7 @@ plot_stft(stft, max_stft)
 
 # %%
 # Isolate orders
-# ~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~
 # Isolate orders 2, 4, and 6 with the ``IsolateOrders`` class.
 
 field_wav, field_rpm = wav_loader.get_output()

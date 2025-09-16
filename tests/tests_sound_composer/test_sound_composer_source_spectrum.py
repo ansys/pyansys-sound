@@ -180,7 +180,7 @@ def test_source_spectrum_is_source_control_valid():
     assert source_spectrum.is_source_control_valid() is True
 
 
-def test_source_specrum_load_source():
+def test_source_spectrum_load_source():
     """Test SourceSpectrum load_source method."""
     source_spectrum = SourceSpectrum()
     source_spectrum.load_source_spectrum(
@@ -188,6 +188,15 @@ def test_source_specrum_load_source():
     )
     assert isinstance(source_spectrum.source_spectrum_data, Field)
     assert source_spectrum.source_spectrum_data.data[3] == pytest.approx(EXP_SPECTRUM_DATA3)
+
+
+@pytest.mark.skipif(
+    not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0,
+    reason="AnsysSound_Spectrum v4 files require at least server version 11.0",
+)
+def test_source_spectrum_load_source_with_v4():
+    """Test SourceSpectrum load_source method with v4 AnsysSound_Spectrum files."""
+    source_spectrum = SourceSpectrum()
     source_spectrum.load_source_spectrum(
         pytest.data_path_sound_composer_spectrum_v4_dBA_source_in_container
     )
