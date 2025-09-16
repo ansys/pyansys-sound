@@ -52,8 +52,8 @@ server, lic_context = connect_to_or_start_server(use_license_context=True)
 # Load a signal
 # ~~~~~~~~~~~~~
 # Load a signal from a WAV file using the ``LoadWav`` class. It is returned as a DPF
-# fields container. For more information, see `fields_container
-# <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_
+# fields container. For more information, see module `fields_container
+# <https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/fields_container/index.html>`_
 # in the DPF-Core API documentation.
 
 # Return the input data of the example file
