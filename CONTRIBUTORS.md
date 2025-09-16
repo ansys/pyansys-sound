@@ -2,12 +2,11 @@
 
 ## Project Lead
 
-* [Alexandre Bouthéon](https://github.com/a-bouth)
+* [Antoine Minard](https://github.com/ansaminard)
 * [Stéphane Molla](https://github.com/anssmolla)
 
 ## Individual Contributors
 
-* [Antoine Minard](https://github.com/ansaminard)
 * [Camille Latapie](https://github.com/clatapie)
 * [Cyrille Quesson](https://github.com/anscquesson)
 * [Hélène Lachambre](https://github.com/anshlachamb)
