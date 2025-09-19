@@ -14,11 +14,12 @@ such Docker image.
 .. note::
 
   The provided version of the Dockerfile works with:
-  * Windows 11 host. If you want to use a different Windows host, modify the `BASE_IMAGE` argument
+
+  - Windows 11 host. If you want to use a different Windows host, modify the `BASE_IMAGE` argument
     at the top of the file.
-  * DPF Server and DPF Sound version 2025.2.pre0. If you want to use a different DPF Server and DPF
-  Sound version, modify the `DPF_PACKAGE_VERSION` and `DPF_PACKAGE_VERSION_NO_DOTS` arguments at
-  the top of the file.
+  - DPF Server and DPF Sound version 2025.2.pre0. If you want to use a different DPF Server and DPF
+    Sound version, modify the `DPF_PACKAGE_VERSION` and `DPF_PACKAGE_VERSION_NO_DOTS` arguments at
+    the top of the file.
 
 Build the Ansys Sound Docker image
 ----------------------------------
