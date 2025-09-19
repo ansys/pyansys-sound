@@ -2,16 +2,17 @@
 Create your own Ansys Sound Docker container
 ============================================
 
-The Ansys Sound service is based on the Ansys DPF server, and its DPF Sound plugin. It is
+The Ansys Sound service is based on the Ansys DPF Server, and its DPF Sound plugin. It is
 noticeably used by `PyAnsys Sound <https://sound.docs.pyansys.com/version/dev/index.html>`_
 (``ansys-sound-core`` package).
 
-You can create your own service using a Docker container image that includes both the DPF server
-and the DPF Sound plugin. This example `Dockerfile.windows
+You can create your own service using a Docker container image that includes both the DPF Server
+and the DPF Sound plugin. The provided example file `Dockerfile.windows
 <https://github.com/ansys/pyansys-sound/blob/main/docker/Dockerfile.windows>`_ shows how to create
 such Docker image.
 
 .. note::
+
   The provided version of the Dockerfile works with:
   - Windows 11 host. If you want to use a different Windows host, modify the `BASE_IMAGE` argument
     at the top of the file.
