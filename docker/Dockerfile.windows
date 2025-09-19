@@ -1,9 +1,15 @@
 # syntax=docker/dockerfile:1
 # escape=`
 
-ARG BASE_IMAGE=mcr.microsoft.com/windows:ltsc2019
-ARG DPF_PACKAGE_VERSION=24.2.pre0
-ARG DPF_PACKAGE_VERSION_NO_DOTS=2024_2_pre0
+# LTSC2022 base image works only with Windows 11 and Windows Server 2022 hosts
+# For Windows 10 hosts, use another base image, for example:
+# mcr.microsoft.com/windows/servercore:ltsc2019
+ARG BASE_IMAGE=mcr.microsoft.com/windows/servercore:ltsc2022
+
+# DPF server and DPF Sound plugin version to use
+# Adjust for a different version if needed
+ARG DPF_PACKAGE_VERSION=2025.2.pre0
+ARG DPF_PACKAGE_VERSION_NO_DOTS=2025_2_pre0
 
 ##########################################
 #     BASE WITH VISUAL STUDIO TOOLS      #
@@ -12,14 +18,12 @@ FROM $BASE_IMAGE AS libraries_installer
 
 ARG BASE_IMAGE
 
-# Set LABEL org.opencontainers.image.created with the command line, use:
-# Powershell : Get-Date -Format o | ForEach-Object { $_ -replace ":", "." }
-# bash: $(date --utc +%FT%TZ)
-LABEL org.opencontainers.image.title="ANSYS DPF Sound"
-LABEL org.opencontainers.image.description="Windows container image with ANSYS DPF and ANSYS DPF Sound plugin."
+# Set image properties
+LABEL org.opencontainers.image.title="Ansys DPF Sound"
+LABEL org.opencontainers.image.description="Windows container image with Ansys DPF server and its DPF Sound plugin."
 LABEL org.opencontainers.image.base.name=$BASE_IMAGE
 
-# Set the default Windows shell for correct batch processing.
+# Set the default Windows shell
 SHELL ["cmd", "/S", "/C"]
 
 WORKDIR C:\\
@@ -45,20 +49,21 @@ ARG DPF_PACKAGE_VERSION_NO_DOTS
 
 LABEL com.ansys/dpf.version=$DPF_PACKAGE_VERSION
 
+# Expose port 50052 for connection with the client
 EXPOSE 50052
 
+# Set the default Windows shell
 SHELL ["cmd", "/S", "/C"]
 
-# Setting DPF Sound folder path in the environment variables
-ENV DPF_PACKAGE_VERSION_NO_DOTS=$DPF_PACKAGE_VERSION_NO_DOTS
+# Set Path variable for DPF Sound in the container
 RUN setx /m PATH "%PATH%;C:\\ansys\\dpf\\server_%DPF_PACKAGE_VERSION_NO_DOTS%\\Acoustics\\SAS\\ads"
 
-# Copying all the files from ansys to C:\ansys in the container
-COPY ansys C:\\ansys
+# Copy the DPF Sound and DPF Server files from the host to the container
+# Only works with relative host paths!
+COPY .\ansys C:\\ansys
 
-# Working directory
+# Set working directory in container
 WORKDIR C:\\ansys\\dpf\\server_${DPF_PACKAGE_VERSION_NO_DOTS}\\aisol\\bin\\winx64\\
 
-# Define the entry point for the docker container.
-# This entry point starts the developer command prompt and launches the PowerShell shell.
-ENTRYPOINT ["cmd", "/S", "/C", ".\\Ans.Dpf.Grpc.bat"]
+# Define the entry point for the container, which, when the container is run, starts the DPF server.
+ENTRYPOINT ["cmd", "/S", "/C", ".\\Ans.Dpf.Grpc.bat --port 50052"]
