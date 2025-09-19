@@ -39,11 +39,11 @@ For building the image, follow these steps:
    the ``ansys`` folder
 #. Build the Docker image with the following command:
 
-``docker build --file Dockerfile.windows . --tag <your_image_name> -m 2GB --no-cache``
+   ``docker build --file Dockerfile.windows . --tag <your_image_name> -m 2GB --no-cache``
 
    Replace ``<your_image_name>`` with a name of your choice, for example, run
 
-``docker build --file Dockerfile.windows . --tag dpf_sound_image -m 2GB --no-cache``
+   ``docker build --file Dockerfile.windows . --tag dpf_sound_image -m 2GB --no-cache``
 
 #. After the build is done, run the container with the following command:
      ``docker run -d -p <host_port>:50052 --name <your_container_name> <your_image_name>``
