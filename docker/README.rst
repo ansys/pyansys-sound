@@ -25,11 +25,13 @@ Build the Ansys Sound Docker image
 For building the image, follow these steps:
 
 #. Get the DPF Server and the DPF Sound plugin:
+
    #. For standard DPF releases (that is, DPF releases released along with other Ansys Sound
       product releases). Download and run the **Ansys Sound Analysis and Specifications** installer
       from the `Ansys Customer Portal <https://support.ansys.com/Home/HomePage>`.
    #. For pre releases of DPF, download them from the `Ansys Developer Portal
       <https://download.ansys.com/Others/DPF%20Pre-Releases>`_.
+
 #. Extract the 2 downloaded zip files to a local folder, and merge together the ``ansys`` folders
    within
 #. Move the provided ``Dockerfile.windows`` file next to the merged folder ``ansys``
