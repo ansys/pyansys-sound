@@ -85,10 +85,11 @@ def connect_to_or_start_server(
     the ``ansys_path`` parameter is ignored. If no parameters are set, a local server from the
     latest available Ansys installation is started.
     """
-    # Collect the port to connect to the server
-    port_in_env = os.environ.get("ANSRV_DPF_SOUND_PORT")
-    if port_in_env is not None:
-        port = int(port_in_env)
+    # Collect the port to connect to the server (if unspecified in arguments)
+    if port is None:
+        port_in_env = os.environ.get("ANSRV_DPF_SOUND_PORT")
+        if port_in_env is not None:
+            port = int(port_in_env)
 
     connect_kwargs: dict[str, Union[int, str]] = {}
     if port is not None:
