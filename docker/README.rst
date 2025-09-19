@@ -46,16 +46,23 @@ For building the image, follow these steps:
    ``docker build --file Dockerfile.windows . --tag dpf_sound_image -m 2GB --no-cache``
 
 #. After the build is done, run the container with the following command:
-     ``docker run -d -p <host_port>:50052 --name <your_container_name> <your_image_name>``
+
+   ``docker run -d -p <host_port>:50052 --name <your_container_name> <your_image_name>``
+
    Replace ``<host_port>`` with a suitable localhost port number, ``<your_container_name>`` with a name
    of your choice, and ``<your_image_name>`` with the name you used in step 5, for example, run
-     ``docker run -d -p 6780:50052 --name dpf_sound_container dpf_sound_image``
+
+   ``docker run -d -p 6780:50052 --name dpf_sound_container dpf_sound_image``
+
 #. The container is now running, and you can connect to it, for example, in Python with:
-     ``from ansys.dpf.core.server import connect_to_server
-     server = connect_to_server(port=6780)``
+
+   ``from ansys.dpf.core.server import connect_to_server
+   server = connect_to_server(port=6780)``
+
    or, with **PyAnsys Sound**:
-     ``from ansys.sound.core.server_helpers import connect_to_or_start_server
-     server = connect_to_or_start_server(port=6780)``
+
+   ``from ansys.sound.core.server_helpers import connect_to_or_start_server
+   server = connect_to_or_start_server(port=6780)``
 
 
 VPN note
