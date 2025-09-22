@@ -3,13 +3,13 @@ Create your own Ansys Sound Docker container
 ============================================
 
 The Ansys Sound service is based on the Ansys **DPF Server**, and its **DPF Sound plugin**. It is
-noticeably used by `PyAnsys Sound <https://sound.docs.pyansys.com/version/dev/index.html>`_
+notably used by `PyAnsys Sound <https://sound.docs.pyansys.com/version/dev/index.html>`_
 (``ansys-sound-core`` package).
 
 You can create your own service using a Docker container image that includes both the **DPF Server**
 and the **DPF Sound plugin**. The provided example file `Dockerfile.windows
 <https://github.com/ansys/pyansys-sound/blob/main/docker/Dockerfile.windows>`_ shows how to create
-such Docker image.
+such a Docker image.
 
 Note that the provided version of the Dockerfile works with:
 
@@ -28,10 +28,10 @@ For building the image, follow these steps:
 #. Get the **DPF Server** and the **DPF Sound plugin** from the `Ansys Developer Portal
    <https://download.ansys.com/Others/DPF%20Pre-Releases>`_.
 #. Extract the 2 downloaded zip files to a local folder, and merge together the ``ansys`` folders
-   within
-#. Move the provided ``Dockerfile.windows`` file next to the merged folder ``ansys``
+   within.
+#. Move the provided ``Dockerfile.windows`` file next to the merged folder ``ansys``.
 #. Open a command prompt, and navigate to the folder containing the ``Dockerfile.windows`` file and
-   the ``ansys`` folder
+   the ``ansys`` folder.
 #. Build the Docker image with the following command:
 
    ``docker build --file Dockerfile.windows . --tag <your_image_name> -m 2GB --no-cache``
