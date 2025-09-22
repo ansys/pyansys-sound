@@ -285,18 +285,33 @@ def test_xtract_get_output():
     ## Collecting outputs as Field
     noise, tonal, transient, remainder = xtract.get_output()
 
-    # Check numerical apps.
-    assert np.min(noise.data) == pytest.approx(-0.2635681)
-    assert np.max(noise.data) == pytest.approx(0.30395156)
+    # Check numerical values
+    if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+        # bug fix in DPF Sound 2026 R1 ID#1247009
+        assert np.min(noise.data) == pytest.approx(-0.2724415361881256)
+        assert np.max(noise.data) == pytest.approx(0.30289316177368164)
 
-    assert np.min(tonal.data) == pytest.approx(-0.67513376)
-    assert np.max(tonal.data) == pytest.approx(0.79357791)
+        assert np.min(tonal.data) == pytest.approx(-0.6827592849731445)
+        assert np.max(tonal.data) == pytest.approx(0.8007676005363464)
 
-    assert np.min(transient.data) == pytest.approx(-0.20801553)
-    assert np.max(transient.data) == pytest.approx(0.21244156)
+        assert np.min(transient.data) == pytest.approx(-0.20742443203926086)
+        assert np.max(transient.data) == pytest.approx(0.2130335420370102)
 
-    assert np.min(remainder.data) == pytest.approx(-7.95791721e-07)
-    assert np.max(remainder.data) == pytest.approx(7.01886734e-07)
+        assert np.min(remainder.data) == pytest.approx(-7.95791721e-07)
+        assert np.max(remainder.data) == pytest.approx(7.01886734e-07)
+
+    else:  # DPF Sound <= 2025 R2
+        assert np.min(noise.data) == pytest.approx(-0.2635681)
+        assert np.max(noise.data) == pytest.approx(0.30395156)
+
+        assert np.min(tonal.data) == pytest.approx(-0.67513376)
+        assert np.max(tonal.data) == pytest.approx(0.79357791)
+
+        assert np.min(transient.data) == pytest.approx(-0.20801553)
+        assert np.max(transient.data) == pytest.approx(0.21244156)
+
+        assert np.min(remainder.data) == pytest.approx(-7.95791721e-07)
+        assert np.max(remainder.data) == pytest.approx(7.01886734e-07)
 
 
 def test_xtract_get_output_noprocess():
@@ -384,26 +399,48 @@ def test_xtract_get_output_fc():
     assert len(fc_transient) == 2
     assert len(fc_remainder) == 2
 
-    # Check numerical apps.
-    assert np.min(fc_noise[0].data) == pytest.approx(-0.2635681)
-    assert np.min(fc_tonal[0].data) == pytest.approx(-0.67513376)
-    assert np.min(fc_transient[0].data) == pytest.approx(-0.20801553)
-    assert np.min(fc_remainder[0].data) == pytest.approx(-7.95791721e-07)
+    # Check numerical values
+    if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+        # bug fix in DPF Sound 2026 R1 ID#1247009
+        assert np.min(fc_noise[0].data) == pytest.approx(-0.2724415361881256)
+        assert np.min(fc_tonal[0].data) == pytest.approx(-0.6827592849731445)
+        assert np.min(fc_transient[0].data) == pytest.approx(-0.20742443203926086)
+        assert np.min(fc_remainder[0].data) == pytest.approx(-7.95791721e-07)
 
-    assert np.min(fc_noise[1].data) == pytest.approx(-0.2635681)
-    assert np.min(fc_tonal[1].data) == pytest.approx(-0.67513376)
-    assert np.min(fc_transient[1].data) == pytest.approx(-0.20801553)
-    assert np.min(fc_remainder[1].data) == pytest.approx(-7.95791721e-07)
+        assert np.min(fc_noise[1].data) == pytest.approx(-0.2724415361881256)
+        assert np.min(fc_tonal[1].data) == pytest.approx(-0.6827592849731445)
+        assert np.min(fc_transient[1].data) == pytest.approx(-0.20742443203926086)
+        assert np.min(fc_remainder[1].data) == pytest.approx(-7.95791721e-07)
 
-    assert np.max(fc_noise[0].data) == pytest.approx(0.30395156)
-    assert np.max(fc_tonal[0].data) == pytest.approx(0.79357791)
-    assert np.max(fc_transient[0].data) == pytest.approx(0.21244156)
-    assert np.max(fc_remainder[0].data) == pytest.approx(7.01886734e-07)
+        assert np.max(fc_noise[0].data) == pytest.approx(0.30289316177368164)
+        assert np.max(fc_tonal[0].data) == pytest.approx(0.8007676005363464)
+        assert np.max(fc_transient[0].data) == pytest.approx(0.2130335420370102)
+        assert np.max(fc_remainder[0].data) == pytest.approx(7.01886734e-07)
 
-    assert np.max(fc_noise[1].data) == pytest.approx(0.30395156)
-    assert np.max(fc_tonal[1].data) == pytest.approx(0.79357791)
-    assert np.max(fc_transient[1].data) == pytest.approx(0.21244156)
-    assert np.max(fc_remainder[1].data) == pytest.approx(7.01886734e-07)
+        assert np.max(fc_noise[1].data) == pytest.approx(0.30289316177368164)
+        assert np.max(fc_tonal[1].data) == pytest.approx(0.8007676005363464)
+        assert np.max(fc_transient[1].data) == pytest.approx(0.2130335420370102)
+        assert np.max(fc_remainder[1].data) == pytest.approx(7.01886734e-07)
+    else:  # DPF Sound <= 2025 R2
+        assert np.min(fc_noise[0].data) == pytest.approx(-0.2635681)
+        assert np.min(fc_tonal[0].data) == pytest.approx(-0.67513376)
+        assert np.min(fc_transient[0].data) == pytest.approx(-0.20801553)
+        assert np.min(fc_remainder[0].data) == pytest.approx(-7.95791721e-07)
+
+        assert np.min(fc_noise[1].data) == pytest.approx(-0.2635681)
+        assert np.min(fc_tonal[1].data) == pytest.approx(-0.67513376)
+        assert np.min(fc_transient[1].data) == pytest.approx(-0.20801553)
+        assert np.min(fc_remainder[1].data) == pytest.approx(-7.95791721e-07)
+
+        assert np.max(fc_noise[0].data) == pytest.approx(0.30395156)
+        assert np.max(fc_tonal[0].data) == pytest.approx(0.79357791)
+        assert np.max(fc_transient[0].data) == pytest.approx(0.21244156)
+        assert np.max(fc_remainder[0].data) == pytest.approx(7.01886734e-07)
+
+        assert np.max(fc_noise[1].data) == pytest.approx(0.30395156)
+        assert np.max(fc_tonal[1].data) == pytest.approx(0.79357791)
+        assert np.max(fc_transient[1].data) == pytest.approx(0.21244156)
+        assert np.max(fc_remainder[1].data) == pytest.approx(7.01886734e-07)
 
 
 def test_xtract_get_output_as_nparray():
@@ -448,18 +485,33 @@ def test_xtract_get_output_as_nparray():
     assert type(np_transient) == np.ndarray
     assert type(np_remainder) == np.ndarray
 
-    # Check numerical apps.
-    assert np.min(np_noise) == pytest.approx(-0.2635681)
-    assert np.max(np_noise) == pytest.approx(0.30395156)
+    # Check numerical values
+    if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+        # bug fix in DPF Sound 2026 R1 ID#1247009
+        assert np.min(np_noise) == pytest.approx(-0.2724415361881256)
+        assert np.max(np_noise) == pytest.approx(0.30289316177368164)
 
-    assert np.min(np_tonal) == pytest.approx(-0.67513376)
-    assert np.max(np_tonal) == pytest.approx(0.79357791)
+        assert np.min(np_tonal) == pytest.approx(-0.6827592849731445)
+        assert np.max(np_tonal) == pytest.approx(0.8007676005363464)
 
-    assert np.min(np_transient) == pytest.approx(-0.20801553)
-    assert np.max(np_transient) == pytest.approx(0.21244156)
+        assert np.min(np_transient) == pytest.approx(-0.20742443203926086)
+        assert np.max(np_transient) == pytest.approx(0.2130335420370102)
 
-    assert np.min(np_remainder) == pytest.approx(-7.95791721e-07)
-    assert np.max(np_remainder) == pytest.approx(7.01886734e-07)
+        assert np.min(np_remainder) == pytest.approx(-7.95791721e-07)
+        assert np.max(np_remainder) == pytest.approx(7.01886734e-07)
+
+    else:  # DPF Sound <= 2025 R2
+        assert np.min(np_noise) == pytest.approx(-0.2635681)
+        assert np.max(np_noise) == pytest.approx(0.30395156)
+
+        assert np.min(np_tonal) == pytest.approx(-0.67513376)
+        assert np.max(np_tonal) == pytest.approx(0.79357791)
+
+        assert np.min(np_transient) == pytest.approx(-0.20801553)
+        assert np.max(np_transient) == pytest.approx(0.21244156)
+
+        assert np.min(np_remainder) == pytest.approx(-7.95791721e-07)
+        assert np.max(np_remainder) == pytest.approx(7.01886734e-07)
 
 
 def test_xtract_get_output_fc_as_nparray():
@@ -523,26 +575,48 @@ def test_xtract_get_output_fc_as_nparray():
     assert np_fc_transient[1] is not None
     assert np_fc_remainder[1] is not None
 
-    # Check numerical apps.
-    assert np.min(np_fc_noise[0][:]) == pytest.approx(-0.2635681)
-    assert np.min(np_fc_tonal[0][:]) == pytest.approx(-0.6751337647438049)
-    assert np.min(np_fc_transient[0][:]) == pytest.approx(-0.20801553)
-    assert np.min(np_fc_remainder[0][:]) == pytest.approx(-7.957917205203557e-07)
+    # Check numerical values
+    if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+        # bug fix in DPF Sound 2026 R1 ID#1247009
+        assert np.min(np_fc_noise[0][:]) == pytest.approx(-0.2724415361881256)
+        assert np.min(np_fc_tonal[0][:]) == pytest.approx(-0.6827592849731445)
+        assert np.min(np_fc_transient[0][:]) == pytest.approx(-0.20742443203926086)
+        assert np.min(np_fc_remainder[0][:]) == pytest.approx(-7.957917205203557e-07)
 
-    assert np.min(np_fc_noise[1][:]) == pytest.approx(-0.2635681)
-    assert np.min(np_fc_tonal[1][:]) == pytest.approx(-0.67513376)
-    assert np.min(np_fc_transient[1][:]) == pytest.approx(-0.20801553)
-    assert np.min(np_fc_remainder[1][:]) == pytest.approx(-7.95791721e-07)
+        assert np.min(np_fc_noise[1][:]) == pytest.approx(-0.2724415361881256)
+        assert np.min(np_fc_tonal[1][:]) == pytest.approx(-0.6827592849731445)
+        assert np.min(np_fc_transient[1][:]) == pytest.approx(-0.20742443203926086)
+        assert np.min(np_fc_remainder[1][:]) == pytest.approx(-7.95791721e-07)
 
-    assert np.max(np_fc_noise[0][:]) == pytest.approx(0.30395156)
-    assert np.max(np_fc_tonal[0][:]) == pytest.approx(0.79357791)
-    assert np.max(np_fc_transient[0][:]) == pytest.approx(0.21244156)
-    assert np.max(np_fc_remainder[0][:]) == pytest.approx(7.01886734e-07)
+        assert np.max(np_fc_noise[0][:]) == pytest.approx(0.30289316177368164)
+        assert np.max(np_fc_tonal[0][:]) == pytest.approx(0.8007676005363464)
+        assert np.max(np_fc_transient[0][:]) == pytest.approx(0.2130335420370102)
+        assert np.max(np_fc_remainder[0][:]) == pytest.approx(7.01886734e-07)
 
-    assert np.max(np_fc_noise[1][:]) == pytest.approx(0.30395156)
-    assert np.max(np_fc_tonal[1][:]) == pytest.approx(0.79357791)
-    assert np.max(np_fc_transient[1][:]) == pytest.approx(0.21244156)
-    assert np.max(np_fc_remainder[1][:]) == pytest.approx(7.01886734e-07)
+        assert np.max(np_fc_noise[1][:]) == pytest.approx(0.30289316177368164)
+        assert np.max(np_fc_tonal[1][:]) == pytest.approx(0.8007676005363464)
+        assert np.max(np_fc_transient[1][:]) == pytest.approx(0.2130335420370102)
+        assert np.max(np_fc_remainder[1][:]) == pytest.approx(7.01886734e-07)
+    else:  # DPF Sound <= 2025 R2
+        assert np.min(np_fc_noise[0].data) == pytest.approx(-0.2635681)
+        assert np.min(np_fc_tonal[0].data) == pytest.approx(-0.67513376)
+        assert np.min(np_fc_transient[0].data) == pytest.approx(-0.20801553)
+        assert np.min(np_fc_remainder[0].data) == pytest.approx(-7.95791721e-07)
+
+        assert np.min(np_fc_noise[1].data) == pytest.approx(-0.2635681)
+        assert np.min(np_fc_tonal[1].data) == pytest.approx(-0.67513376)
+        assert np.min(np_fc_transient[1].data) == pytest.approx(-0.20801553)
+        assert np.min(np_fc_remainder[1].data) == pytest.approx(-7.95791721e-07)
+
+        assert np.max(np_fc_noise[0].data) == pytest.approx(0.30395156)
+        assert np.max(np_fc_tonal[0].data) == pytest.approx(0.79357791)
+        assert np.max(np_fc_transient[0].data) == pytest.approx(0.21244156)
+        assert np.max(np_fc_remainder[0].data) == pytest.approx(7.01886734e-07)
+
+        assert np.max(np_fc_noise[1].data) == pytest.approx(0.30395156)
+        assert np.max(np_fc_tonal[1].data) == pytest.approx(0.79357791)
+        assert np.max(np_fc_transient[1].data) == pytest.approx(0.21244156)
+        assert np.max(np_fc_remainder[1].data) == pytest.approx(7.01886734e-07)
 
 
 def test_xtract_setters():

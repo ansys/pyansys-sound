@@ -65,22 +65,40 @@ from ansys.sound.core.spectrogram_processing import IsolateOrders, Stft
 # sphinx_gallery_end_ignore
 
 # Connect to a remote or start a local server
-my_server = connect_to_or_start_server(use_license_context=True)
+my_server, lic_context = connect_to_or_start_server(use_license_context=True)
 
 
 # %%
-# Define a custom function for STFT plots
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Defining a custom function for STFT plots lets you have
-# more control over what you are displaying.
-# While you could use the ``Stft.plot()`` method, the custom function
-# defined here restricts the frequency range of the plot.
-def plot_stft(stft_class, vmax):
-    out = stft_class.get_output_as_nparray()
+# Define custom STFT plot function
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Define a custom function for STFT plots. It differs from the ``Stft.plot()`` method in that it
+# does not display the phase and allows setting custom title, maximum SPL, and maximum frequency.
+def plot_stft(
+    stft: Stft,
+    SPLmax: float,
+    title: str = "STFT",
+    maximum_frequency: float = MAX_FREQUENCY_PLOT_STFT,
+) -> None:
+    """Plot a short-term Fourier transform (STFT) into a figure window.
 
-    # Extract first half of the STFT (second half is symmetrical)
-    half_nfft = int(out.shape[0] / 2) + 1
-    magnitude = stft_class.get_stft_magnitude_as_nparray()
+    Parameters
+    ----------
+    stft: Stft
+        Object containing the STFT.
+    SPLmax: float
+        Maximum value (here in dB SPL) for the colormap.
+    title: str, default: "STFT"
+        Title of the figure.
+    maximum_frequency: float, default: MAX_FREQUENCY_PLOT_STFT
+        Maximum frequency in Hz to display.
+    """
+    magnitude = stft.get_stft_magnitude_as_nparray()
+    magnitude_unit = stft.get_output()[0].unit
+    frequency_unit = stft.get_output()[0].time_freq_support.time_frequencies.unit
+    time_unit = stft.get_output().time_freq_support.time_frequencies.unit
+
+    # Only extract the first half of the STFT, as it is symmetrical
+    half_nfft = int(magnitude.shape[0] / 2) + 1
 
     # Voluntarily ignore a numpy warning
     np.seterr(divide="ignore")
@@ -88,33 +106,30 @@ def plot_stft(stft_class, vmax):
     np.seterr(divide="warn")
 
     # Obtain sampling frequency, time steps, and number of time samples
-    fs = 1.0 / (
-        stft_class.signal.time_freq_support.time_frequencies.data[1]
-        - stft_class.signal.time_freq_support.time_frequencies.data[0]
-    )
-    time_step = np.floor(stft_class.fft_size * (1.0 - stft_class.window_overlap) + 0.5) / fs
-    num_time_index = len(stft_class.get_output().get_available_ids_for_label("time"))
+    time_data_signal = stft.signal.time_freq_support.time_frequencies.data
+    time_step = time_data_signal[1] - time_data_signal[0]
+    fs = 1.0 / time_step
+    time_data_spectrogram = stft.get_output().time_freq_support.time_frequencies.data
 
     # Define boundaries of the plot
-    extent = [0, time_step * num_time_index, 0.0, fs / 2.0]
+    extent = [time_data_spectrogram[0], time_data_spectrogram[-1], 0.0, fs / 2.0]
 
     # Plot
+    plt.figure()
     plt.imshow(
         magnitude,
         origin="lower",
         aspect="auto",
         cmap="jet",
         extent=extent,
-        vmin=vmax - 70.0,
-        vmax=vmax,
+        vmax=SPLmax,
+        vmin=SPLmax - 70.0,
     )
-    plt.colorbar(label="Amplitude (dB SPL)")
-    plt.ylabel("Frequency (Hz)")
-    plt.xlabel("Time (s)")
-    plt.ylim(
-        [0.0, MAX_FREQUENCY_PLOT_STFT]
-    )  # Change the value of MAX_FREQUENCY_PLOT_STFT if needed
-    plt.title("STFT")
+    plt.colorbar(label=f"Magnitude ({magnitude_unit})")
+    plt.ylabel(f"Frequency ({frequency_unit})")
+    plt.xlabel(f"Time ({time_unit})")
+    plt.ylim([0.0, maximum_frequency])  # Change the value of MAX_FREQUENCY_PLOT_STFT if needed
+    plt.title(title)
     plt.show()
 
 
@@ -140,19 +155,19 @@ fc_signal = wav_loader.get_output()
 wav_signal, rpm_signal = wav_loader.get_output_as_nparray()
 
 # Extract time support associated with the signal
-time_support = fc_signal[0].time_freq_support.time_frequencies.data
+time_support = fc_signal[0].time_freq_support.time_frequencies
 
 # Plot the signal and its associated RPM profile
 fig, ax = plt.subplots(nrows=2, sharex=True)
-ax[0].plot(time_support, wav_signal)
+ax[0].plot(time_support.data, wav_signal)
 ax[0].set_title("Audio Signal")
-ax[0].set_ylabel("Amplitude (Pa)")
+ax[0].set_ylabel(f"Amplitude ({fc_signal[0].unit})")
 ax[0].grid(True)
-ax[1].plot(time_support, rpm_signal, color="red")
+ax[1].plot(time_support.data, rpm_signal, color="red")
 ax[1].set_title("RPM profile")
-ax[1].set_ylabel("rpm")
+ax[1].set_ylabel(f"RPM ({fc_signal[1].unit})")
 ax[1].grid(True)
-plt.xlabel("Time (s)")
+plt.xlabel(f"Time ({time_support.unit})")
 plt.show()
 
 # %%
@@ -167,13 +182,12 @@ plot_stft(stft, max_stft)
 
 # %%
 # Isolate orders
-# ~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~
 # Isolate orders 2, 4, and 6 with the ``IsolateOrders`` class.
 
 field_wav, field_rpm = wav_loader.get_output()
 
 # Define parameters for order isolation
-field_wav.unit = "Pa"
 order_to_isolate = [2, 4, 6]  # Orders indexes to isolate as a list
 fft_size = 8192  # FFT Size (in samples)
 window_type = "HANN"  # Window type
@@ -230,16 +244,16 @@ input_loudness.unit = "Pa"
 loudness = LoudnessISO532_1_Stationary(signal=input_loudness)
 loudness.process()
 
-loudness_isolated_signal = loudness.get_loudness_level_phon()
+loudness_level_isolated_signal = loudness.get_loudness_level_phon()
 
 # Compute the loudness for the original signal
 loudness.signal = field_wav
 loudness.process()
 
-loudness_original_signal = loudness.get_loudness_level_phon()
+loudness_level_original_signal = loudness.get_loudness_level_phon()
 
-print(f"Loudness of the original signal is {loudness_original_signal: .1f} phons.")
-print(f"Loudness of the isolated signal is {loudness_isolated_signal: .1f} phons.")
+print(f"The loudness level of the original signal is {loudness_level_original_signal:.1f} phons.")
+print(f"The loudness level of the isolated signal is {loudness_level_isolated_signal:.1f} phons.")
 
 # %%
 # Isolate orders of several signals in a loop

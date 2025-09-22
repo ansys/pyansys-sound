@@ -18,8 +18,10 @@ env:
   MAIN_PYTHON_VERSION: '3.12'
   PACKAGE_NAME: 'ansys-sound-core'
   DOCUMENTATION_CNAME: 'sound.docs.pyansys.com'
-  ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG: ghcr.io/ansys/ansys-sound:latest
-  ANSRV_DPF_SOUND_PORT: 6780
+  DOCUMENTATION_DPF_SOUND_TAG: 'latest' # DPF Sound image tag for doc building
+  TEST_DPF_SOUND_MATRIX: '["25.2", "latest"]' # List of DPF Sound image tags for testing (quotes and double quotes are important!!)
+  ANSRV_DPF_SOUND_REPO: ghcr.io/ansys/ansys-sound # Docker repository for DPF Sound
+  ANSRV_DPF_SOUND_PORT: 6780 # Port for DPF Sound Docker containers
   DPF_SOUND_CONT_NAME: ansys-sound-core
 
 jobs:
@@ -32,7 +34,7 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: ansys/actions/doc-deploy-changelog@v9
+      - uses: ansys/actions/doc-deploy-changelog@ed773aba3478d311decff2d4313e0cd19a945dd8 # v10.1.0
         with:
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
           bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
@@ -43,7 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Running documentation style checks"
-        uses: ansys/actions/doc-style@v9
+        uses: ansys/actions/doc-style@ed773aba3478d311decff2d4313e0cd19a945dd8 # v10.1.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -53,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check pull-request name
-        uses: ansys/actions/check-pr-title@v9
+        uses: ansys/actions/check-pr-title@ed773aba3478d311decff2d4313e0cd19a945dd8 # v10.1.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -72,55 +74,60 @@ jobs:
             os: macos-latest
     steps:
       - name: "Build wheelhouse and perform smoke test"
-        uses: ansys/actions/build-wheelhouse@v9
+        uses: ansys/actions/build-wheelhouse@ed773aba3478d311decff2d4313e0cd19a945dd8 # v10.1.0
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
           python-version: ${{ matrix.python-version }}
 
-
-  check-vulnerabilities-dev:
-    name: "Check library vulnerabilities (development mode)"
-    if: github.ref != 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Check library vulnerabilities with development mode"
-        uses: ansys/actions/check-vulnerabilities@main
-        with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
-          python-package-name: ${{ env.PACKAGE_NAME }}
-          dev-mode: true
-
-
-  check-vulnerabilities-main:
-    name: "Check library vulnerabilities (default mode - only on main)"
-    if: github.ref == 'refs/heads/main'
+  vulnerabilities:
+    name: "Check library vulnerabilities"
     runs-on: ubuntu-latest
     steps:
       - name: "Check library vulnerabilities with default mode"
-        uses: ansys/actions/check-vulnerabilities@v9
+        uses: ansys/actions/check-vulnerabilities@ed773aba3478d311decff2d4313e0cd19a945dd8 # v10.1.0
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
           python-package-name: ${{ env.PACKAGE_NAME }}
+          dev-mode: ${{ github.ref != 'refs/heads/main' }}
 
 # =================================================================================================
 # vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv    RUNNING ON SELF-HOSTED RUNNER    vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 # =================================================================================================
 
+  # Retrieve test matrix from the environment variable, as env variables are not directly available
+  # at matrix definition (in job testing-windows below).
+  retrieve-test-matrix:
+    name: "Retrieve test matrix of DPF Sound Docker images"
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: echo "matrix=${TEST_DPF_SOUND_MATRIX}" >> $GITHUB_OUTPUT
+        env:
+          TEST_DPF_SOUND_MATRIX: ${{ env.TEST_DPF_SOUND_MATRIX }}
+
   testing-windows:
     name: "Testing and coverage (Windows)"
-    needs: [smoke-tests]
+    needs: [smoke-tests, retrieve-test-matrix]
     runs-on: [self-hosted, Windows, pyansys-sound]
     env:
       PYVISTA_OFF_SCREEN: true
+      MPLBACKEND: Agg  # non-interactive mode ("headless backend") for matplotlib: no GUI is used when plotting
+    strategy:
+      fail-fast: false
+      matrix:
+        # This matrix contains tags of all DPF Sound Docker images to test against.
+        # (see env.TEST_DPF_SOUND_MATRIX)
+        docker-image: ${{ fromJson(needs.retrieve-test-matrix.outputs.matrix) }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: "Set up Python"
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -149,12 +156,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download DPF-Sound service container
-        run: docker pull $env:ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG
+        run: docker pull ${{ env.ANSRV_DPF_SOUND_REPO }}:${{ matrix.docker-image }}
 
       - name: "Start DPF-Sound service and verify start"
         run: |
           .\.venv\Scripts\Activate.ps1
-          docker run -d --name ${{ env.DPF_SOUND_CONT_NAME }} -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ secrets.LICENSE_SERVER }}" -p ${{ env.ANSRV_DPF_SOUND_PORT }}:50052 --dns '8.8.8.8' ${{ env.ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG }}
+          docker run -d --name ${{ env.DPF_SOUND_CONT_NAME }} -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ secrets.LICENSE_SERVER }}" -p ${{ env.ANSRV_DPF_SOUND_PORT }}:50052 --dns '8.8.8.8' ${{ env.ANSRV_DPF_SOUND_REPO }}:${{ matrix.docker-image }}
           python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
       - name: "Testing"
@@ -165,7 +172,7 @@ jobs:
       - name: "Upload Coverage Results"
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-html
+          name: coverage-html-${{ matrix.docker-image }}
           path: .cov/html
           retention-days: 7
 
@@ -174,7 +181,6 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: .cov/xml
-
 
       - name: "Stop the DPF-Sound service"
         if: always()
@@ -203,10 +209,10 @@ jobs:
     needs: doc-style
     steps:
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: "Set up Python"
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -230,20 +236,21 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Download DPF-Sound service container"
-        run: docker pull $env:ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG
+        run: docker pull ${{ env.ANSRV_DPF_SOUND_REPO }}:${{ env.DOCUMENTATION_DPF_SOUND_TAG }}
 
       - name: "Start DPF-Sound service and verify start"
         run: |
           .\.venv\Scripts\Activate.ps1
-          docker run -d --name ${{ env.DPF_SOUND_CONT_NAME }} -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ secrets.LICENSE_SERVER }}" -p ${{ env.ANSRV_DPF_SOUND_PORT }}:50052 --dns '8.8.8.8' ${{ env.ANSRV_DPF_SOUND_IMAGE_WINDOWS_TAG }}
+          docker run -d --name ${{ env.DPF_SOUND_CONT_NAME }} -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@${{ secrets.LICENSE_SERVER }}" -p ${{ env.ANSRV_DPF_SOUND_PORT }}:50052 --dns '8.8.8.8' ${{ env.ANSRV_DPF_SOUND_REPO }}:${{ env.DOCUMENTATION_DPF_SOUND_TAG }}
           python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
       - name: "Run Ansys documentation building action"
-        uses: ansys/actions/doc-build@v9
+        uses: ansys/actions/doc-build@ed773aba3478d311decff2d4313e0cd19a945dd8 # v10.1.0
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           skip-install: true
           sphinxopts: -j auto -W --keep-going
+          use-python-cache: false
 
       - name: "Stop the DPF-Sound service"
         if: always()
@@ -276,7 +283,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Build library source and wheel artifacts
-        uses: ansys/actions/build-library@v9
+        uses: ansys/actions/build-library@ed773aba3478d311decff2d4313e0cd19a945dd8 # v10.1.0
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
@@ -293,27 +300,35 @@ jobs:
       contents: write
     steps:
       - name: "Download the library artifacts from build-library step"
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
         with:
           name: ${{ env.PACKAGE_NAME }}-artifacts
           path: ${{ env.PACKAGE_NAME }}-artifacts
 
       - name: "Upload artifacts to PyPI using trusted publisher"
-        uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc # v1.12.4
+        uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
         with:
           repository-url: "https://upload.pypi.org/legacy/"
           print-hash: true
           packages-dir: ${{ env.PACKAGE_NAME }}-artifacts
           skip-existing: false
 
+      - name: "Release to GitHub"
+        uses: ansys/actions/release-github@ed773aba3478d311decff2d4313e0cd19a945dd8 # v10.1.0
+        with:
+          library-name: ${{ env.PACKAGE_NAME }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          add-artifact-attestation-notes: true
+          changelog-release-notes: true
+
   doc-deploy-dev:
     name: "Upload developers documentation"
     runs-on: ubuntu-latest
-    needs: [check-vulnerabilities-main, package]
+    needs: [vulnerabilities, package]
     if: github.ref == 'refs/heads/main'
     steps:
       - name: "Deploy the latest documentation"
-        uses: ansys/actions/doc-deploy-dev@v9
+        uses: ansys/actions/doc-deploy-dev@ed773aba3478d311decff2d4313e0cd19a945dd8 # v10.1.0
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
@@ -327,7 +342,7 @@ jobs:
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     steps:
       - name: "Deploy the latest documentation"
-        uses: ansys/actions/doc-deploy-stable@v9
+        uses: ansys/actions/doc-deploy-stable@ed773aba3478d311decff2d4313e0cd19a945dd8 # v10.1.0
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}

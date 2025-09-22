@@ -23,14 +23,13 @@
 """Helpers to connect to or start a DPF server with the DPF Sound plugin."""
 
 import os
-from typing import Any, Optional, Union
+from typing import Optional, Union
 
 from ansys.dpf.core import (
     LicenseContextManager,
-    ServerConfig,
     connect_to_server,
     load_library,
-    server_factory,
+    server_types,
     start_local_server,
 )
 
@@ -40,14 +39,9 @@ def connect_to_or_start_server(
     ip: Optional[str] = None,
     ansys_path: Optional[str] = None,
     use_license_context: Optional[bool] = False,
-) -> Any:
+    license_increment_name: Optional[str] = "avrxp_snd_level1",
+) -> tuple[server_types.InProcessServer | server_types.GrpcServer, LicenseContextManager]:
     r"""Connect to or start a DPF server with the DPF Sound plugin loaded.
-
-    .. note::
-
-        If a port or IP address is set, this method tries to connect to the server specified
-        and the ``ansys_path`` parameter is ignored. If no parameters are set, a local server
-        from the latest available Ansys installation is started.
 
     Parameters
     ----------
@@ -56,19 +50,40 @@ def connect_to_or_start_server(
     ip : str, default: None
         IP address for the DPF server.
     ansys_path : str, default: None
-        Root path for the Ansys installation. For example, ``C:\\Program Files\\ANSYS Inc\\v242``.
+        Root path for the Ansys installation. For example, `"C:\\Program Files\\ANSYS Inc\\v242"`.
         This parameter is ignored if either the port or IP address is set.
     use_license_context : bool, default: False
-        Whether to check out the DPF Sound license increment (``avrxp_snd_level1``) before using
-        PyAnsys Sound. Checking out the license increment improves performance if you are doing
-        multiple calls to DPF Sound operators because they require licensing. This parameter
-        can also be used to force check out before running a script when few DPF Sound license
-        increments are available. The license is checked in when the server object is deleted.
+        Whether to check out the DPF Sound license increment before using PyAnsys Sound (see
+        parameter ``license_increment_name``). If set to :obj:`True`, the function returns a
+        :class:`LicenseContextManager <ansys.dpf.core.server_context.LicenseContextManager>` object
+        (:obj:`None` otherwise) in addition to the server object.
+
+        This improves performance if you are doing multiple calls to DPF Sound operators, as it
+        allows a single check out of the license increment, rather than requiring a check out for
+        each operator call. The license is checked back in (that is, released) when the
+        :class:`LicenseContextManager <ansys.dpf.core.server_context.LicenseContextManager>` object
+        is deleted.
+
+        This parameter can also be used to force check out before running a script when only few
+        DPF Sound license increments are available.
+    license_increment_name : str, default: "avrxp_snd_level1"
+        Name of the license increment to check out. Only taken into account if
+        ``use_license_context`` is :obj:`True`. The default value is `"avrxp_snd_level1"`, which
+        corresponds to the license required by Ansys Sound Pro.
 
     Returns
     -------
-    Any
-        server : server.ServerBase
+    InProcessServer | GrpcServer
+        Server object started or connected to.
+    LicenseContextManager
+        Licensing context object. Retains the licence increment until the object is deleted.
+        :obj:`None` if ``use_license_context`` is set to :obj:`False`.
+
+    Notes
+    -----
+    If a port or IP address is set, this method tries to connect to the server specified and
+    the ``ansys_path`` parameter is ignored. If no parameters are set, a local server from the
+    latest available Ansys installation is started.
     """
     # Collect the port to connect to the server
     port_in_env = os.environ.get("ANSRV_DPF_SOUND_PORT")
@@ -81,17 +96,16 @@ def connect_to_or_start_server(
     if ip is not None:
         connect_kwargs["ip"] = ip
 
-    # Decide whether we start a local server or a remote server
     full_path_dll = ""
     if len(list(connect_kwargs.keys())) > 0:
+        # Remote server => connect using gRPC
         server = connect_to_server(
             **connect_kwargs,
+            as_global=True,
         )
     else:  # pragma: no cover
-        grpc_config = ServerConfig(
-            protocol=server_factory.CommunicationProtocols.gRPC, legacy=False
-        )
-        server = start_local_server(config=grpc_config, ansys_path=ansys_path, as_global=True)
+        # Local server => start a local server
+        server = start_local_server(ansys_path=ansys_path, as_global=True)
         full_path_dll = os.path.join(server.ansys_path, "Acoustics\\SAS\\ads\\")
 
     required_version = "8.0"
@@ -106,10 +120,6 @@ def connect_to_or_start_server(
     # if required, check out the DPF Sound license once and for all for this session
     lic_context = None
     if use_license_context == True:
-        lic_context = LicenseContextManager(increment_name="avrxp_snd_level1", server=server)
+        lic_context = LicenseContextManager(license_increment_name, server=server)
 
-    # "attach" the license context to the server as a member so that they have the same
-    # life duration
-    server.license_context_manager = lic_context
-
-    return server
+    return server, lic_context

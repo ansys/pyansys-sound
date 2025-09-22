@@ -76,10 +76,10 @@ class LoudnessISO532_2(PsychoacousticsParent):
     def __str__(self):
         """Return the string representation of the class."""
         if self.signal is not None:
+            str_assumption = "Diotic" if isinstance(self.signal, Field) else "Dichotic"
             signal_str = (
                 f'\tSignal name: "{self.signal.name}"\n'
-                "\tListening assumption: "
-                f"{"Diotic" if type(self.signal) is Field else "Dichotic"}\n"
+                f"\tListening assumption: {str_assumption}\n"
             )
         else:
             signal_str = "\tSignal name: Not set\n"
@@ -386,10 +386,11 @@ class LoudnessISO532_2(PsychoacousticsParent):
 
         center_frequency = self.get_erb_center_frequencies()
         specific_loudness = self.get_binaural_specific_loudness()
+        unit = self.get_output()[4].unit
 
         plt.plot(center_frequency, specific_loudness)
         plt.title("Binaural specific loudness")
-        plt.xlabel("ERB center frequency (Hz)")
-        plt.ylabel("N' (sone/Cam)")
+        plt.xlabel(f"ERB center frequency (Hz)")
+        plt.ylabel(f"N' ({unit})")
         plt.grid(True)
         plt.show()

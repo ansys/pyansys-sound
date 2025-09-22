@@ -100,11 +100,14 @@ class Track(SoundComposerParent):
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
-        source_str = f"\n{self.source.__str__()}" if self.source is not None else " Not set"
+        str_source = f"{self.source.__str__()}" if self.source is not None else "Source not set"
+        str_name = self.name if len(self.name) > 0 else "Unnamed track"
+        str_filter = "Set" if self.filter is not None else "Not set"
         return (
-            f"{self.name if len(self.name) > 0 else 'Unnamed track'}\n"
-            f"\tSource:{source_str}\n"
-            f"\tFilter: {'Set' if self.filter is not None else 'Not set'}"
+            f"{str_name}\n"
+            f"{str_source}\n"
+            f"Gain: {np.round(self.gain, 1):+} dB\n"
+            f"Filter: {str_filter}"
         )
 
     @property
@@ -320,17 +323,14 @@ class Track(SoundComposerParent):
             )
         output = self.get_output()
 
-        output_time = output.time_freq_support.time_frequencies.data
+        time = output.time_freq_support.time_frequencies
+        str_unit = f" ({output.unit})" if len(output.unit) > 0 else ""
+        str_title = self.name if len(self.name) > 0 else "Generated signal"
 
-        plt.plot(output_time, output.data)
-        plt.title(
-            f"{self.name if len(self.name) > 0 else 'Generated signal'} "
-            f"({type(self.source).__name__})"
-        )
-        plt.xlabel("Time (s)")
-        plt.ylabel(f"Amplitude{f' ({output.unit})' if len(output.unit) > 0 else ''}")
+        plt.plot(time.data, output.data)
+        plt.title(f"{str_title} ({type(self.source).__name__})")
+        plt.xlabel(f"Time ({time.unit})")
+        plt.ylabel(f"Amplitude{str_unit}")
         plt.grid(True)
         plt.tight_layout()
         plt.show()
-
-        self.source.plot_control()

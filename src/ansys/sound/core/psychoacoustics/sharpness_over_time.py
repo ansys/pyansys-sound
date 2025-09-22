@@ -65,10 +65,12 @@ class SharpnessOverTime(PsychoacousticsParent):
         else:
             str_sharpness = f"{self.get_max_sharpness():.2f} acums"
 
+        str_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
+
         return (
             f"{__class__.__name__} object\n"
             "Data:\n"
-            f'\tSignal name: {f'"{self.signal.name}"' if self.signal is not None else "Not set"}\n'
+            f"\tSignal name: {str_name}\n"
             f"Max sharpness: {str_sharpness}"
         )
 
@@ -206,11 +208,13 @@ class SharpnessOverTime(PsychoacousticsParent):
 
         sharpness_over_time = self.get_sharpness_over_time()
         time_scale = self.get_time_scale()
+        sharpness_unit = self.get_output()[1].unit
+        time_unit = self.get_output()[1].time_freq_support.time_frequencies.unit
 
         plt.figure()
         plt.plot(time_scale, sharpness_over_time)
-        plt.xlabel("Time (s)")
-        plt.ylabel("S (acum)")
+        plt.xlabel(f"Time ({time_unit})")
+        plt.ylabel(f"S ({sharpness_unit})")
         plt.title("Sharpness (Zwicker & Fastl)")
         plt.grid()
         plt.show()

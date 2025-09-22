@@ -31,7 +31,7 @@ The list of indicators covered in this example is:
 
 - Annex C of ISO1996-2
 - DIN45681
-- ECMA418-2
+- ECMA-418-2
 - ISO/TS 20065
 - Aures
 
@@ -46,7 +46,7 @@ and the results are commented, compared, and discussed.
 # DPF server, and retrieving the example file.
 
 # Load required libraries.
-from ansys.sound.core.examples_helpers import download_aircraft10kHz_wav
+from ansys.sound.core.examples_helpers import download_turbo_whistling_wav
 from ansys.sound.core.psychoacoustics import (
     TonalityAures,
     TonalityDIN45681,
@@ -59,12 +59,16 @@ from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectrogram_processing.stft import Stft
 
+# sphinx_gallery_start_ignore
+# sphinx_gallery_thumbnail_path = '_static/_image/example009_thumbnail.png'
+# sphinx_gallery_end_ignore
+
 # Connect to a remote server or start a local server.
-my_server = connect_to_or_start_server(use_license_context=True)
+my_server, lic_context = connect_to_or_start_server(use_license_context=True)
 
 # Load example data from a WAV file: flyover noise of an aircraft.
-path_aircraft_wav = download_aircraft10kHz_wav(server=my_server)
-wav_loader = LoadWav(path_aircraft_wav)
+path_turbo_whistle_wav = download_turbo_whistling_wav(server=my_server)
+wav_loader = LoadWav(path_turbo_whistle_wav)
 wav_loader.process()
 signal_aircraft = wav_loader.get_output()[0]
 
@@ -227,13 +231,13 @@ tonality_Aures.plot()
 # multiplicative parameters used to calculate the tonality.
 
 # %%
-# ECMA 418-2
+# ECMA-418-2
 # ~~~~~~~~~~
-# In this section, we calculate, print out, and plot the tonality according to the ECMA 418-2
-# standard using  the same signal and the class :class:`.TonalityECMA418_2`.
+# In this section, we calculate, print out, and plot the tonality according to the ECMA-418-2
+# standard (3rd edition, 2024) using the same signal and the class :class:`.TonalityECMA418_2`.
 
-# Calculate the ECMA 418-2 tonality.
-tonality_ECMA418_2 = TonalityECMA418_2(signal=signal_aircraft)
+# Calculate the ECMA-418-2 tonality.
+tonality_ECMA418_2 = TonalityECMA418_2(signal=signal_aircraft, field_type="Free", edition="3rd")
 tonality_ECMA418_2.process()
 
 # Display the overall results in the console.
@@ -243,7 +247,7 @@ print(
 )
 
 # %%
-# As with the Aures tonality, the ECMA 418-2 standard uses a perceptual scale, with a specific unit
+# As with the Aures tonality, the ECMA-418-2 standard uses a perceptual scale, with a specific unit
 # called tuHMS (tonality unit, hearing model of Sottek). The hearing model of Sottek is a
 # perceptual model of sound, where the tonality is computed based on autocorrelation functions
 # calculated in each critical band. A value of 1 tuHMS corresponds to the tonality of a 1-kHz pure

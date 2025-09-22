@@ -42,7 +42,7 @@ EXP_STR_ALL_SET = (
 EXP_STR_ALL_PROCESSED = (
     'LevelOverTime object.\nData\n\tSignal: "flute"\n\tScale type: dB\n\tReference value: 2e-05\n'
     "\tFrequency weighting: None\n\tTime weighting: Custom\n\tTime step: 100.0 ms\n"
-    "\tWindow size: 5000.0 ms\n\tAnalysis window: HANN\nMaximum level: 89.2"
+    "\tWindow size: 5000.0 ms\n\tAnalysis window: HANN\nMaximum level: 89.2 dB"
 )
 
 EXP_LEVEL_MAX_DEFAULT = -3.72917
@@ -117,11 +117,7 @@ def test_level_over_time_properties_exceptions():
 def test_level_over_time___str__():
     """Test LevelOverTime __str__ method."""
     level_obj = LevelOverTime()
-    with pytest.warns(
-        PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the LevelOverTime.process\\(\\) method.",
-    ):
-        assert str(level_obj) == EXP_STR_NOT_SET
+    assert str(level_obj) == EXP_STR_NOT_SET
 
     loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
     loader.process()
@@ -129,11 +125,7 @@ def test_level_over_time___str__():
 
     level_obj.signal = f_signal
     level_obj.set_custom_parameters(time_step=100.0, window_size=5000.0, analysis_window="HANN")
-    with pytest.warns(
-        PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the LevelOverTime.process\\(\\) method.",
-    ):
-        assert str(level_obj) == EXP_STR_ALL_SET
+    assert str(level_obj) == EXP_STR_ALL_SET
 
     level_obj.reference_value = 2e-5
     level_obj.process()

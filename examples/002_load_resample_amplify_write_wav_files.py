@@ -46,14 +46,14 @@ from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import ApplyGain, LoadWav, Resample, WriteWav
 
 # Connect to a remote server or start a local server
-server = connect_to_or_start_server(use_license_context=True)
+server, lic_context = connect_to_or_start_server(use_license_context=True)
 
 # %%
 # Load a signal
 # ~~~~~~~~~~~~~
 # Load a signal from a WAV file using the ``LoadWav`` class. It is returned as a DPF
-# fields container. For more information, see `fields_container
-# <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_
+# fields container. For more information, see module `fields_container
+# <https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/fields_container/index.html>`_
 # in the DPF-Core API documentation.
 
 # Return the input data of the example file
@@ -96,22 +96,25 @@ fc_signal_modified = gain_applier.get_output()
 
 # Get the signals as NumPy arrays
 data_original = wav_loader.get_output_as_nparray()
+unit_original = wav_loader.get_output()[0].unit
 data_modified = gain_applier.get_output_as_nparray()
+unit_modified = gain_applier.get_output()[0].unit
+gain_unit = " dB" if gain_applier.gain_in_db else "(linear)"
 
 # Prepare the figure
 fig, axs = plt.subplots(2)
 fig.suptitle("Signals")
 
 axs[0].plot(t1, data_original, color="g", label=f"original signal, sf={int(sf1)} Hz")
-axs[0].set_ylabel("Pa")
+axs[0].set_ylabel(f"Amplitude ({unit_original})")
 axs[0].legend(loc="upper right")
 axs[0].set_ylim([-3, 3])
 
 axs[1].plot(
-    t2, data_modified, color="r", label=f"modified signal, sf={int(sf2)} Hz, gain={gain} dBSPL"
+    t2, data_modified, color="r", label=f"modified signal, sf={int(sf2)} Hz, gain={gain}{gain_unit}"
 )
-axs[1].set_xlabel("Time(s)")
-axs[1].set_ylabel("Amplitude(Pa)")
+axs[1].set_xlabel("Time (s)")
+axs[1].set_ylabel(f"Amplitude ({unit_modified})")
 axs[1].legend(loc="upper right")
 axs[1].set_ylim([-3, 3])
 

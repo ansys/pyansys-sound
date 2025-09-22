@@ -27,7 +27,7 @@ from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
-from .._pyansys_sound import REFERENCE_ACOUSTIC_PRESSURE, PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._standard_levels_parent import DICT_FREQUENCY_WEIGHTING, DICT_SCALE, StandardLevelsParent
 
 DICT_TIME_WEIGHTING = {"Fast": 1, "Slow": 0, "Impulse": 2, "Custom": 3}
@@ -67,12 +67,12 @@ class LevelOverTime(StandardLevelsParent):
             The scale type of the output level. Available options are `"dB"` and `"RMS"`.
         reference_value : float, default: 1.0
             The reference value for the level computation. If the overall level is computed with a
-            signal in Pa, the reference value should be 2e-5.
+            signal in Pa, the reference value should be 2e-5 (Pa).
         frequency_weighting : str, default: ""
             The frequency weighting to apply to the signal before computing the level. Available
-            options are `""`, `"A"`, `"B"`,  and `"C"`, respectively to get level in dBSPL, dB(A),
-            dB(B), and dB(C). Note that the frequency weighting is only applied if the attribute
-            :attr:`scale` is set to `"dB"`.
+            options are `""`, `"A"`, `"B"`,  and `"C"`, to get level in dB (or dBSPL), dBA, dBB,
+            and dBC, respectively. Note that the frequency weighting is only applied if the
+            attribute :attr:`scale` is set to `"dB"`.
         time_weighting : str, default: "Fast"
             The time weighting to use when computing the level over time. Available options are
             `"Fast"`, `"Slow"`, `"Impulse"`, and `"Custom"`. When `"Custom"` is selected, the user
@@ -99,18 +99,26 @@ class LevelOverTime(StandardLevelsParent):
                 f"\tAnalysis window: {self.__analysis_window}\n"
             )
 
-        max_level = self.get_level_max()
+        str_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
+        str_frequency_weighting = (
+            self.frequency_weighting if len(self.frequency_weighting) > 0 else "None"
+        )
+        if self._output is not None:
+            max_level = self.get_level_max()
+            unit = self.get_output()[1].unit
+            str_level = f"{max_level:.1f} {unit}"
+        else:
+            str_level = "Not processed"
 
         return (
             f"{__class__.__name__} object.\n"
             "Data\n"
-            f"\tSignal: {f'"{self.signal.name}"' if self.signal is not None else "Not set"}\n"
+            f"\tSignal: {str_name}\n"
             f"\tScale type: {self.scale}\n"
             f"\tReference value: {self.reference_value}\n"
-            f"\tFrequency weighting: "
-            f"{self.frequency_weighting if len(self.frequency_weighting) > 0 else "None"}\n"
+            f"\tFrequency weighting: {str_frequency_weighting}\n"
             f"\tTime weighting: {self.time_weighting}\n{str_custom_param}"
-            f"Maximum level: {f"{max_level:.1f}" if max_level is not None else 'Not processed'}"
+            f"Maximum level: {str_level}"
         )
 
     @property
@@ -147,7 +155,7 @@ class LevelOverTime(StandardLevelsParent):
         """Reference value for the level computation.
 
         If the overall level is computed with a sound pressure signal in Pa, the reference value
-        should be 2e-5.
+        should be 2e-5 (Pa).
         """
         return self.__reference_value
 
@@ -163,9 +171,9 @@ class LevelOverTime(StandardLevelsParent):
         """Frequency weighting of the computed level.
 
         Available options are `""`, `"A"`, `"B"`, and `"C"`. If attribute :attr:`reference_value`
-        is 2e-5 Pa, these options allow level calculation in dBSPL, dB(A), dB(B), and dB(C),
-        respectively. Note that the frequency weighting is only applied if the attribute
-        :attr:`scale` is set to `"dB"`.
+        is 2e-5 Pa, these options allow level calculation in dBSPL, dBA, dBB, and dBC, respectively.
+        Note that the frequency weighting is only applied if the attribute :attr:`scale` is set to
+        `"dB"`.
         """
         return self.__frequency_weighting
 
@@ -340,19 +348,12 @@ class LevelOverTime(StandardLevelsParent):
 
         level_over_time = self.get_level_over_time()
         time_scale = self.get_time_scale()
-        if self.scale == "RMS":
-            str_unit = ""
-        elif self.reference_value == REFERENCE_ACOUSTIC_PRESSURE:
-            if self.frequency_weighting == "":
-                str_unit = " (dBSPL)"
-            else:
-                str_unit = f" (dB{self.frequency_weighting})"
-        else:
-            str_unit = " (dB)"
+        unit = self.get_output()[1].unit
+        time_unit = self.get_output()[1].time_freq_support.time_frequencies.unit
 
         plt.plot(time_scale, level_over_time)
-        plt.xlabel("Time (s)")
-        plt.ylabel(f"Level{str_unit}")
+        plt.xlabel(f"Time ({time_unit})")
+        plt.ylabel(f"Level ({unit})")
         plt.title("Level over time")
         plt.grid()
         plt.show()

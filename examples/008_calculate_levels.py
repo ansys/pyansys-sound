@@ -67,7 +67,7 @@ from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.standard_levels import LevelOverTime, OverallLevel
 
 # Connect to a remote server or start a local server.
-my_server = connect_to_or_start_server(use_license_context=True)
+my_server, lic_context = connect_to_or_start_server(use_license_context=True)
 
 
 # %%
@@ -119,7 +119,7 @@ for file_path in (path_fan_wav, path_aircraft_wav):
     # Print the results.
     file_name = os.path.basename(file_path)
     print(
-        f"\nThe RMS level of sound file {file_name} is {rms:.1f} Pa, its dBSPL level is"
+        f"\nThe RMS level of sound file {file_name} is {rms:.1f} {signal.unit}, its dBSPL level is"
         f" {dBSPL:.1f} dBSPL and its dBA level is {dBA:.1f} dBA."
     )
 
@@ -135,8 +135,8 @@ filepath_overall_results.close()
 # Initialize empty lists to store the levels in order to plot them.
 time = []
 rms_levels = []
-dBSPL_levels = []
-dBA_levels = []
+SPL_levels = []
+A_weighted_levels = []
 
 # %%
 # For each sound, create a :class:`.LevelOverTime` object, set its signals, compute and plot the
@@ -158,50 +158,56 @@ for file_path in (path_fan_wav, path_aircraft_wav):
     signal = wav_loader.get_output()[0]
 
     # Calculate RMS over time and get the time steps.
-    rms_time_varying = LevelOverTime(
+    rms_level_time_varying = LevelOverTime(
         signal=signal, scale="RMS", frequency_weighting="", time_weighting="Fast"
     )
-    rms_time_varying.process()
-    rms = rms_time_varying.get_level_over_time()
-    time_steps = rms_time_varying.get_time_scale()
+    rms_level_time_varying.process()
+    rms_level_over_time = rms_level_time_varying.get_level_over_time()
+    rms_level_unit = rms_level_time_varying.get_output()[1].unit
+    time_steps = rms_level_time_varying.get_time_scale()
     time.append(time_steps.tolist())
+    time_unit = rms_level_time_varying.get_output()[1].time_freq_support.time_frequencies.unit
 
     # Calculate dBSPL over time.
-    dBSPL_time_varying = LevelOverTime(
+    SPL_time_varying = LevelOverTime(
         signal=signal,
         scale="dB",
         reference_value=2e-5,
         frequency_weighting="",
         time_weighting="Fast",
     )
-    dBSPL_time_varying.process()
-    dBSPL = dBSPL_time_varying.get_level_over_time()
+    SPL_time_varying.process()
+    SPL_over_time = SPL_time_varying.get_level_over_time()
+    SPL_unit = SPL_time_varying.get_output()[1].unit
 
     # Calculate dBA over time.
-    dBA_time_varying = LevelOverTime(
+    A_weighted_level_time_varying = LevelOverTime(
         signal=signal,
         scale="dB",
         reference_value=2e-5,
         frequency_weighting="A",
         time_weighting="Fast",
     )
-    dBA_time_varying.process()
-    dBA = dBA_time_varying.get_level_over_time()
+    A_weighted_level_time_varying.process()
+    A_weighted_level_over_time = A_weighted_level_time_varying.get_level_over_time()
+    A_weighted_level_unit = A_weighted_level_time_varying.get_output()[1].unit
 
     # Append all the results to the lists previously created.
-    rms_levels.append(rms.tolist())
-    dBSPL_levels.append(dBSPL.tolist())
-    dBA_levels.append(dBA.tolist())
+    rms_levels.append(rms_level_over_time.tolist())
+    SPL_levels.append(SPL_over_time.tolist())
+    A_weighted_levels.append(A_weighted_level_over_time.tolist())
 
     # Write the results in the .csv files.
     for i in range(len(time_steps)):
-        csv_writer_results_vs_time.writerow([time_steps[i], rms[i], dBSPL[i], dBA[i]])
+        csv_writer_results_vs_time.writerow(
+            [time_steps[i], rms_level_over_time[i], SPL_over_time[i], A_weighted_level_over_time[i]]
+        )
 
 # %%
 # Use the object's ``plot()`` method to plot the level over time (here, level in dBA, for the
 # second signal).
 
-dBA = dBA_time_varying.plot()
+A_weighted_level_over_time = A_weighted_level_time_varying.plot()
 
 # %%
 # Alternatively, plot the results over time for both signals into three graphs.
@@ -211,18 +217,18 @@ fig.suptitle("Time varying RMS, dBSPL and dBA levels")
 
 axs[0].plot(time[0], rms_levels[0], color="b", label="Fan")
 axs[0].plot(time[1], rms_levels[1], color="r", label="Airplane")
-axs[0].set_ylabel("RMS (Pa)")
+axs[0].set_ylabel(f"RMS level ({rms_level_unit})")
 axs[0].legend(loc="upper right")
 
-axs[1].plot(time[0], dBSPL_levels[0], color="b", label="Fan")
-axs[1].plot(time[1], dBSPL_levels[1], color="r", label="Airplane")
-axs[1].set_ylabel("dBSPL")
+axs[1].plot(time[0], SPL_levels[0], color="b", label="Fan")
+axs[1].plot(time[1], SPL_levels[1], color="r", label="Airplane")
+axs[1].set_ylabel(f"Level ({SPL_unit})")
 axs[1].legend(loc="upper right")
 
-axs[2].plot(time[0], dBA_levels[0], color="b", label="Fan")
-axs[2].plot(time[1], dBA_levels[1], color="r", label="Airplane")
-axs[2].set_ylabel("dBA")
+axs[2].plot(time[0], A_weighted_levels[0], color="b", label="Fan")
+axs[2].plot(time[1], A_weighted_levels[1], color="r", label="Airplane")
+axs[2].set_ylabel(f"Level ({A_weighted_level_unit})")
 axs[2].legend(loc="upper right")
-axs[2].set_xlabel("Time (s)")
+axs[2].set_xlabel(f"Time ({time_unit})")
 
 plt.show()

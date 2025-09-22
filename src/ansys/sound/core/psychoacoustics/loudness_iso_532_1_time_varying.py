@@ -199,6 +199,16 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         """
         return self.get_output_as_nparray()[0]
 
+    def get_Nmax_sone(self) -> float:
+        """Get the maximum instantaneous loudness in sone.
+
+        Returns
+        -------
+        float
+            Maximum loudness in sone.
+        """
+        return np.max(self.get_loudness_sone_vs_time())
+
     def get_N5_sone(self) -> float:
         """Get the N5 percentile loudness.
 
@@ -232,6 +242,16 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
             Instantaneous loudness level in phon.
         """
         return self.get_output_as_nparray()[3]
+
+    def get_Lmax_phon(self) -> float:
+        """Get the maximum instantaneous loudness level in phon.
+
+        Returns
+        -------
+        float
+            Maximum loudness level in phon.
+        """
+        return np.max(self.get_loudness_level_phon_vs_time())
 
     def get_L5_phon(self) -> float:
         """Get the L5 percentile loudness level.
@@ -284,16 +304,18 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         _, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
 
         # Plot loudness in sone
+        unit = self.get_output()[0].unit
         ax1.plot(time, self.get_loudness_sone_vs_time())
         ax1.set_title("Instantaneous loudness")
-        ax1.set_ylabel("N (sone)")
+        ax1.set_ylabel(f"N ({unit})")
         ax1.grid(True)
 
         # Plot loudness level in phon
+        unit = self.get_output()[3].unit
         ax2.plot(time, self.get_loudness_level_phon_vs_time())
         ax2.set_title("Instantaneous loudness level")
         ax2.set_xlabel("Time (s)")
-        ax2.set_ylabel(r"$\mathregular{L_N}$ (phon)")
+        ax2.set_ylabel(r"$\mathregular{L_N}$" + f" ({unit})")
         ax2.grid(True)
 
         plt.show()

@@ -20,10 +20,43 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from ansys.dpf.gate.errors import DpfVersionNotSupported
 import numpy as np
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSound, PyAnsysSoundWarning
+
+
+def test_pyansys_sound_init_subclass():
+    """Test PyAnsySound subclass initialization with DPF version."""
+
+    # Define a subclass requiring DPF server version 1.0 or higher => no error.
+    class TestClass(PyAnsysSound, min_dpf_version="1.0"):
+        pass
+
+    assert TestClass._min_dpf_version == "1.0"
+
+    # Wrong version specifier type => type error (at definition).
+    with pytest.raises(
+        TypeError,
+        match=(
+            "In class definition, `min_dpf_version` argument must be a string with the form "
+            'MAJOR.MINOR, for example "11.0".'
+        ),
+    ):
+
+        class TestClass(PyAnsysSound, min_dpf_version=1.0):
+            pass
+
+    # Define a subclass requiring DPF server version 666.0 or higher => error (at instantiation).
+    class TestClass(PyAnsysSound, min_dpf_version="666.0"):
+        pass
+
+    with pytest.raises(
+        DpfVersionNotSupported,
+        match="Class `TestClass` requires DPF server version 666.0 or higher.",
+    ):
+        TestClass()
 
 
 @pytest.mark.dependency()

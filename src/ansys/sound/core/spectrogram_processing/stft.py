@@ -190,19 +190,18 @@ class Stft(SpectrogramProcessingParent):
         """
         output = self.get_output()
 
-        num_time_index = len(output.get_available_ids_for_label("time"))
+        time_indexes = output.get_available_ids_for_label("time")
+        Ntime = len(time_indexes)
+        Nfft = output.get_field({"complex": 0, "time": 0, "channel_number": 0}).data.shape[0]
 
-        f1 = output.get_field({"complex": 0, "time": 0, "channel_number": 0})
-        f2 = output.get_field({"complex": 1, "time": 0, "channel_number": 0})
+        # Pre-allocate memory for the output array.
+        out_as_np_array = np.empty((Ntime, Nfft), dtype=np.complex128)
 
-        out_as_np_array = f1.data + 1j * f2.data
-        for i in range(1, num_time_index):
+        for i in time_indexes:
             f1 = output.get_field({"complex": 0, "time": i, "channel_number": 0})
             f2 = output.get_field({"complex": 1, "time": i, "channel_number": 0})
-            tmp_arr = f1.data + 1j * f2.data
-            out_as_np_array = np.vstack((out_as_np_array, tmp_arr))
+            out_as_np_array[i] = f1.data + 1j * f2.data
 
-        # return out_as_np_array
         return np.transpose(out_as_np_array)
 
     def get_stft_magnitude_as_nparray(self) -> np.ndarray:
@@ -232,38 +231,43 @@ class Stft(SpectrogramProcessingParent):
 
         This method plots the STFT amplitude and the associated phase.
         """
-        out = self.get_output_as_nparray()
-
-        # Extracting first half of the STFT (second half is symmetrical)
-        half_nfft = int(np.shape(out)[0] / 2) + 1
+        if self._output is None:
+            raise PyAnsysSoundException(
+                f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
+            )
         magnitude = self.get_stft_magnitude_as_nparray()
+        mag_unit = self.get_output()[0].unit
+        freq_unit = self.get_output()[0].time_freq_support.time_frequencies.unit
+        time_unit = self.get_output().time_freq_support.time_frequencies.unit
+
+        # Only extract the first half of the STFT, as it is symmetrical
+        half_nfft = int(np.shape(magnitude)[0] / 2) + 1
 
         np.seterr(divide="ignore")
         magnitude = 20 * np.log10(magnitude[0:half_nfft, :])
         np.seterr(divide="warn")
         phase = self.get_stft_phase_as_nparray()
         phase = phase[0:half_nfft, :]
-        fs = 1.0 / (
-            self.signal.time_freq_support.time_frequencies.data[1]
-            - self.signal.time_freq_support.time_frequencies.data[0]
-        )
-        time_step = np.floor(self.fft_size * (1.0 - self.window_overlap) + 0.5) / fs
-        num_time_index = len(self.get_output().get_available_ids_for_label("time"))
+        time_data_signal = self.signal.time_freq_support.time_frequencies.data
+        time_step = time_data_signal[1] - time_data_signal[0]
+        fs = 1.0 / time_step
+
+        time_data_spectrogram = self.get_output().time_freq_support.time_frequencies.data
 
         # Boundaries of the plot
-        extent = [0, time_step * num_time_index, 0.0, fs / 2.0]
+        extent = [time_data_spectrogram[0], time_data_spectrogram[-1], 0.0, fs / 2.0]
 
         # Plotting
         f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
         p = ax1.imshow(magnitude, origin="lower", aspect="auto", cmap="jet", extent=extent)
-        f.colorbar(p, ax=ax1, label="dB")
+        f.colorbar(p, ax=ax1, label=f"Amplitude ({mag_unit})")
         ax1.set_title("Amplitude")
-        ax1.set_ylabel("Frequency (Hz)")
+        ax1.set_ylabel(f"Frequency ({freq_unit})")
         p = ax2.imshow(phase, origin="lower", aspect="auto", cmap="jet", extent=extent)
-        f.colorbar(p, ax=ax2, label="rad")
+        f.colorbar(p, ax=ax2, label="Phase (rad)")
         ax2.set_title("Phase")
-        ax2.set_xlabel("Time (s)")
-        ax2.set_ylabel("Frequency (Hz)")
+        ax2.set_xlabel(f"Time ({time_unit})")
+        ax2.set_ylabel(f"Frequency ({freq_unit})")
 
         f.suptitle("STFT")
         plt.show()
