@@ -7,6 +7,7 @@
 
 ## Individual Contributors
 
+* [Alexandre Bouthéon](https://github.com/a-bouth)
 * [Camille Latapie](https://github.com/clatapie)
 * [Cyrille Quesson](https://github.com/anscquesson)
 * [Hélène Lachambre](https://github.com/anshlachamb)
