@@ -51,7 +51,7 @@ For building the image, follow these steps:
    your choice, and ``<your_image_name>`` with the name set previously. Note the
    ``--name <your_container_name>`` part is optional. For example, run:
 
-   ``docker run -d -p 6780:50052 --name dpf_sound_container dpf_sound_image``
+   ``docker run -d -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@<license_server_url>" -p 6780:50052 --name dpf_sound_container dpf_sound_image``
 
 #. The container is now running, and you can connect to it, for example, in Python with (using the
    port number set previously):
