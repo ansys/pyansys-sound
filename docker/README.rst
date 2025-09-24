@@ -26,7 +26,7 @@ For building the image, follow these steps:
 
 #. Make sure Docker is installed on your machine.
 #. Get the **DPF Server** and the **DPF Sound plugin** from the `Ansys Developer Portal
-   <https://download.ansys.com/Others/DPF%20Pre-Releases>`_.
+   <https://download.ansys.com/Others/DPF%20Pre-Release>`_.
 #. Extract the 2 downloaded zip files to a local folder, and merge together the ``ansys`` folders
    within.
 #. Move the provided ``Dockerfile.windows`` file next to the merged folder ``ansys``.
