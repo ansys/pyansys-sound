@@ -42,10 +42,14 @@ For building the image, follow these steps:
 
 #. After the build is done, run the container with the following command:
 
-   ``docker run -d -p <host_port>:50052 --name <your_container_name> <your_image_name>``
+   ``docker run -d -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=<your_license_info>" -p <host_port>:50052 --name <your_container_name> <your_image_name>``
 
-   Replace ``<host_port>`` with a suitable localhost port number, ``<your_container_name>`` with a
-   name of your choice, and ``<your_image_name>`` with the name set previously.
+   Replace ``<your_license_info>`` with your actual license information (license file or license
+   server info, see `Licensing
+   <https://dpf.docs.pyansys.com/version/stable/getting_started/licensing.html>`_ for details),
+   ``<host_port>`` with a suitable localhost port number, ``<your_container_name>`` with a name of
+   your choice, and ``<your_image_name>`` with the name set previously. Note the ``--name
+   <your_container_name>`` part is optional.
    For example, run:
 
    ``docker run -d -p 6780:50052 --name dpf_sound_container dpf_sound_image``
