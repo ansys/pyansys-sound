@@ -48,9 +48,8 @@ For building the image, follow these steps:
    server info, see `Licensing
    <https://dpf.docs.pyansys.com/version/stable/getting_started/licensing.html>`_ for details),
    ``<host_port>`` with a suitable localhost port number, ``<your_container_name>`` with a name of
-   your choice, and ``<your_image_name>`` with the name set previously. Note the ``--name
-   <your_container_name>`` part is optional.
-   For example, run:
+   your choice, and ``<your_image_name>`` with the name set previously. Note the
+   ``--name <your_container_name>`` part is optional. For example, run:
 
    ``docker run -d -p 6780:50052 --name dpf_sound_container dpf_sound_image``
 
