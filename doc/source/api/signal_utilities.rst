@@ -11,6 +11,7 @@ reading and writing WAV files, resampling, cropping, zero-padding, and applying 
 
     ApplyGain
     CreateSoundField
+    CreateSoundFieldsContainer
     CropSignal
     LoadWav
     Resample

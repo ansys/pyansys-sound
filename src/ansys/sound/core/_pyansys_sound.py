@@ -100,7 +100,11 @@ class PyAnsysSound:
 
         There is nothing to plot.
         """
-        warnings.warn(PyAnsysSoundWarning("There is nothing to plot."))
+        warnings.warn(
+            PyAnsysSoundWarning(
+                f"This method is not implemented for class {self.__class__.__name__}."
+            )
+        )
         return None
 
     def process(self):
@@ -108,7 +112,11 @@ class PyAnsysSound:
 
         There is nothing to process.
         """
-        warnings.warn(PyAnsysSoundWarning("There is nothing to process."))
+        warnings.warn(
+            PyAnsysSoundWarning(
+                f"This method is not implemented for class {self.__class__.__name__}."
+            )
+        )
         return None
 
     def get_output(self) -> None:
@@ -121,7 +129,11 @@ class PyAnsysSound:
         None
             None
         """
-        warnings.warn(PyAnsysSoundWarning("There is nothing to output."))
+        warnings.warn(
+            PyAnsysSoundWarning(
+                f"This method is not implemented for class {self.__class__.__name__}."
+            )
+        )
         return self._output
 
     def get_output_as_nparray(self) -> np.ndarray:
@@ -134,7 +146,11 @@ class PyAnsysSound:
         numpy.ndarray
             Empty NumPy array.
         """
-        warnings.warn(PyAnsysSoundWarning("There is nothing to output."))
+        warnings.warn(
+            PyAnsysSoundWarning(
+                f"This method is not implemented for class {self.__class__.__name__}."
+            )
+        )
         return np.empty(0)
 
     def convert_fields_container_to_np_array(self, fc) -> np.ndarray:
