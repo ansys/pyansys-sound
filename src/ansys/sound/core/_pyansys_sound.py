@@ -23,6 +23,7 @@
 """PyAnsys Sound interface."""
 import warnings
 
+from ansys.dpf.core import FieldsContainer
 import numpy as np
 
 from ansys.sound.core.server_helpers._check_server_version import _check_dpf_version
@@ -137,33 +138,6 @@ class PyAnsysSound:
         warnings.warn(PyAnsysSoundWarning("There is nothing to output."))
         return np.empty(0)
 
-    def convert_fields_container_to_np_array(self, fc) -> np.ndarray:
-        """Convert a DPF fields container to a NumPy array.
-
-        This method converts a DPF fields container that contains several signals into a
-        NumPy array.
-
-        Parameters
-        ----------
-        fc : FieldsContainer
-            DPF fields container to convert into a NumPy array.
-
-        Returns
-        -------
-        numpy.ndarray
-            DPF fields container in a NumPy array.
-            Data in each field of the fields container is converted to a NumPy array and vertically
-            stacked into another NumPy array.
-        """
-        num_channels = len(fc)
-        np_array = np.array(fc[0].data)
-
-        if num_channels > 1:
-            for i in range(1, num_channels):
-                np_array = np.vstack((np_array, fc[i].data))
-
-        return np_array
-
 
 class PyAnsysSoundException(Exception):
     """Provides the PyAnsys Sound exception."""
@@ -179,3 +153,37 @@ class PyAnsysSoundWarning(Warning):
     def __init__(self, *args: object) -> None:
         """Init method."""
         super().__init__(*args)
+
+
+def convert_fields_container_to_np_array(fields_container: FieldsContainer) -> np.ndarray:
+    """Convert a DPF fields container to a NumPy array.
+
+    This method converts a DPF fields container that contains several signals into a
+    NumPy array.
+
+    Parameters
+    ----------
+    fc : FieldsContainer
+        DPF fields container to convert into a NumPy array.
+
+    Returns
+    -------
+    numpy.ndarray
+        DPF fields container in a NumPy array.
+        Data in each field of the fields container is converted to a NumPy array and vertically
+        stacked into another NumPy array.
+    """
+    if not isinstance(fields_container, FieldsContainer):
+        raise PyAnsysSoundException("Input must be a DPF fields container.")
+
+    num_channels = len(fields_container)
+    if num_channels == 0:
+        return np.empty(0)
+
+    np_array = np.array(fields_container[0].data)
+
+    if num_channels > 1:
+        for i in range(1, num_channels):
+            np_array = np.vstack((np_array, fields_container[i].data))
+
+    return np_array
