@@ -1,0 +1,117 @@
+# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+"""Creates a PyAnsys Sound fields container."""
+import warnings
+
+from ansys.dpf.core import Field, FieldsContainer
+import numpy as np
+
+from . import SignalUtilitiesParent
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+
+
+class CreateSoundFieldsContainer(SignalUtilitiesParent):
+    """Creates a PyAnsys Sound fields container.
+
+    This class creates a DPF fields container with correct PyAnsys Sound metadata from a list of
+    DPF fields.
+    """
+
+    def __init__(
+        self,
+        fields: list[Field] | tuple[Field] | np.ndarray[Field] = None,
+    ):
+        """Class instantiation takes the following parameters.
+
+        Parameters
+        ----------
+        fields : list[Field] | tuple[Field] | np.ndarray[Field], default: None
+            DPF fields to include in the fields container.
+        """
+        super().__init__()
+        self.fields = fields
+
+    def __str__(self):
+        """Return the string representation of the object."""
+        if self._output is None:
+            str_output = " None"
+        else:
+            str_output = f"\n{self._output}"
+
+        return (
+            f"{self.__class__.__name__} object with "
+            f"{len(self.fields) if self.fields is not None else 0} field(s).\n"
+            f"Output:{str_output}"
+        )
+
+    @property
+    def fields(self) -> np.ndarray:
+        """Data to store in the created DPF field."""
+        return self.__fields
+
+    @fields.setter
+    def fields(self, fields: list[Field] | tuple[Field] | np.ndarray[Field]):
+        """Set the fields."""
+        if fields is not None:
+            valid = True
+            if not isinstance(fields, (list, tuple, np.ndarray)):
+                valid = False
+            else:
+                for field in fields:
+                    if not isinstance(field, Field):
+                        valid = False
+                        break
+
+            if not valid:
+                raise PyAnsysSoundException(
+                    "Attribute `fields` must be provided as a list, tuple, or numpy array of DPF "
+                    "fields."
+                )
+
+        self.__fields = fields
+
+    def process(self):
+        """Create the PyAnsys Sound fields container."""
+        self._output = FieldsContainer()
+        self._output.labels = ["channel"]
+        if self.fields is not None:
+            for ifield, field in enumerate(self.fields):
+                self._output.add_field({"channel": ifield + 1}, field)
+
+    def get_output(self) -> FieldsContainer:
+        """Get the DPF fields container.
+
+        Returns
+        -------
+        FieldsContainer
+            DPF fields container.
+        """
+        if self._output is None:
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    f"Output is not processed yet. "
+                    f"Use the `{self.__class__.__name__}.process()` method."
+                )
+            )
+
+        return self._output
