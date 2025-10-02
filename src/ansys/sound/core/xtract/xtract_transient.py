@@ -29,7 +29,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from . import XtractParent, XtractTransientParameters
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import (
+    PyAnsysSoundException,
+    PyAnsysSoundWarning,
+    convert_fields_container_to_np_array,
+)
 
 
 class XtractTransient(XtractParent):
@@ -180,8 +184,8 @@ class XtractTransient(XtractParent):
                 return np.array([]), np.array([])
             else:
                 return (
-                    self.convert_fields_container_to_np_array(l_output_transient_signals),
-                    self.convert_fields_container_to_np_array(l_output_non_transient_signals),
+                    convert_fields_container_to_np_array(l_output_transient_signals),
+                    convert_fields_container_to_np_array(l_output_non_transient_signals),
                 )
 
     def plot(self):

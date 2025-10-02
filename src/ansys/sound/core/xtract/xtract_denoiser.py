@@ -29,7 +29,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from . import XtractDenoiserParameters, XtractParent
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import (
+    PyAnsysSoundException,
+    PyAnsysSoundWarning,
+    convert_fields_container_to_np_array,
+)
 
 
 class XtractDenoiser(XtractParent):
@@ -170,9 +174,9 @@ class XtractDenoiser(XtractParent):
             if self.output_denoised_signals is None or self.output_noise_signals is None:
                 return np.array([]), np.array([])
             else:
-                return self.convert_fields_container_to_np_array(
+                return convert_fields_container_to_np_array(
                     l_output_denoised_signals
-                ), self.convert_fields_container_to_np_array(l_output_noise_signals)
+                ), convert_fields_container_to_np_array(l_output_noise_signals)
 
     def plot(self):
         """Plot signals.

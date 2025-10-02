@@ -27,7 +27,11 @@ from ansys.dpf.core import Field, FieldsContainer, Operator
 import numpy as np
 
 from . import SignalUtilitiesParent
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import (
+    PyAnsysSoundException,
+    PyAnsysSoundWarning,
+    convert_fields_container_to_np_array,
+)
 
 
 class ZeroPad(SignalUtilitiesParent):
@@ -127,4 +131,4 @@ class ZeroPad(SignalUtilitiesParent):
         if type(output) == Field:
             return output.data
 
-        return self.convert_fields_container_to_np_array(output)
+        return convert_fields_container_to_np_array(output)

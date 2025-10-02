@@ -29,7 +29,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from . import XtractParent, XtractTonalParameters
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import (
+    PyAnsysSoundException,
+    PyAnsysSoundWarning,
+    convert_fields_container_to_np_array,
+)
 
 
 class XtractTonal(XtractParent):
@@ -179,8 +183,8 @@ class XtractTonal(XtractParent):
                 return np.array([]), np.array([])
             else:
                 return (
-                    self.convert_fields_container_to_np_array(l_output_tonal_signals),
-                    self.convert_fields_container_to_np_array(l_output_non_tonal_signals),
+                    convert_fields_container_to_np_array(l_output_tonal_signals),
+                    convert_fields_container_to_np_array(l_output_non_tonal_signals),
                 )
 
     def plot(self):
