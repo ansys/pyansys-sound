@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.dpf.core import Field, FieldsContainer
+from ansys.dpf.core import Field, FieldsContainer, fields_container_factory
 from ansys.dpf.gate.errors import DpfVersionNotSupported
 import numpy as np
 import pytest
@@ -31,7 +31,6 @@ from ansys.sound.core._pyansys_sound import (
     PyAnsysSoundWarning,
     convert_fields_container_to_np_array,
 )
-from ansys.sound.core.signal_utilities import CreateSoundFieldsContainer
 
 
 def test_pyansys_sound_init_subclass():
@@ -125,9 +124,7 @@ def test_convert_fields_container_to_np_array():
     assert len(np_array) == 0
 
     # Fields container with one field.
-    fc_creator = CreateSoundFieldsContainer([Field(), Field()])
-    fc_creator.process()
-    fc = fc_creator.get_output()
+    fc = fields_container_factory.over_time_freq_fields_container([Field(), Field()])
     np_array = convert_fields_container_to_np_array(fc)
     assert isinstance(np_array, np.ndarray)
     assert len(np_array) == 2
