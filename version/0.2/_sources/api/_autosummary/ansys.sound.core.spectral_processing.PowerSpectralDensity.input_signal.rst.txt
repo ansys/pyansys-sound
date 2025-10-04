@@ -1,0 +1,6 @@
+input\_signal
+=============
+
+.. currentmodule:: ansys.sound.core.spectral_processing
+
+.. autoproperty:: PowerSpectralDensity.input_signal

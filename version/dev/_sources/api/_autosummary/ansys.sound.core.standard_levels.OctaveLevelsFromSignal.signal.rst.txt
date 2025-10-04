@@ -1,0 +1,6 @@
+signal
+======
+
+.. currentmodule:: ansys.sound.core.standard_levels
+
+.. autoproperty:: OctaveLevelsFromSignal.signal
