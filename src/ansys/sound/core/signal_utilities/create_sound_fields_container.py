@@ -33,8 +33,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 class CreateSoundFieldsContainer(SignalUtilitiesParent):
     """Creates a PyAnsys Sound fields container.
 
-    This class creates a DPF fields container with correct PyAnsys Sound metadata from a list of
-    DPF fields.
+    This class creates a DPF fields container from a list, tuple, or array of DPF fields.
     """
 
     def __init__(
