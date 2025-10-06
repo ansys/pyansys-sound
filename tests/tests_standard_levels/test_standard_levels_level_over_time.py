@@ -39,11 +39,21 @@ EXP_STR_ALL_SET = (
     "\tFrequency weighting: None\n\tTime weighting: Custom\n\tTime step: 100.0 ms\n"
     "\tWindow size: 5000.0 ms\n\tAnalysis window: HANN\nMaximum level: Not processed"
 )
-EXP_STR_ALL_PROCESSED = (
-    'LevelOverTime object.\nData\n\tSignal: "flute"\n\tScale type: dB\n\tReference value: 2e-05\n'
-    "\tFrequency weighting: None\n\tTime weighting: Custom\n\tTime step: 100.0 ms\n"
-    "\tWindow size: 5000.0 ms\n\tAnalysis window: HANN\nMaximum level: 89.2 dB"
-)
+if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    # bug fix in DPF Sound 2026 R1 ID#1288971
+    EXP_STR_ALL_PROCESSED = (
+        'LevelOverTime object.\nData\n\tSignal: "flute"\n\tScale type: dB\n'
+        "\tReference value: 2e-05\n\tFrequency weighting: None\n\tTime weighting: Custom\n"
+        "\tTime step: 100.0 ms\n\tWindow size: 5000.0 ms\n\tAnalysis window: HANN\n"
+        "Maximum level: 89.2 dB (re. 2e-05 Pa)"
+    )
+else:
+    EXP_STR_ALL_PROCESSED = (
+        'LevelOverTime object.\nData\n\tSignal: "flute"\n\tScale type: dB\n'
+        "\tReference value: 2e-05\n\tFrequency weighting: None\n\tTime weighting: Custom\n"
+        "\tTime step: 100.0 ms\n\tWindow size: 5000.0 ms\n\tAnalysis window: HANN\n"
+        "Maximum level: 89.2 dB"
+    )
 
 EXP_LEVEL_MAX_DEFAULT = -3.72917
 EXP_LEVEL_12 = -16.7062
