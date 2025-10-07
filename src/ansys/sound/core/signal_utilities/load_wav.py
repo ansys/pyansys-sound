@@ -28,7 +28,11 @@ from ansys.dpf.core import DataSources, FieldsContainer, Operator
 import numpy as np
 
 from . import SignalUtilitiesParent
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import (
+    PyAnsysSoundException,
+    PyAnsysSoundWarning,
+    convert_fields_container_to_np_array,
+)
 
 
 class LoadWav(SignalUtilitiesParent):
@@ -111,4 +115,4 @@ class LoadWav(SignalUtilitiesParent):
         """
         fc = self.get_output()
 
-        return self.convert_fields_container_to_np_array(fc)
+        return convert_fields_container_to_np_array(fc)

@@ -28,7 +28,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import (
+    PyAnsysSoundException,
+    PyAnsysSoundWarning,
+    convert_fields_container_to_np_array,
+)
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_LOUDNESS_ISO_532_2 = "compute_loudness_iso532_2"
@@ -266,7 +270,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
             np.array(output[2]),
             np.array(output[3]),
             np.array(output[4].data),
-            self.convert_fields_container_to_np_array(output[5]),
+            convert_fields_container_to_np_array(output[5]),
             np.array(output[4].time_freq_support.time_frequencies.data),
         )
 
