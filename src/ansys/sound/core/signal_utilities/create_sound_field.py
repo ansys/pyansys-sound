@@ -31,9 +31,10 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class CreateSoundField(SignalUtilitiesParent):
-    """Creates a PyAnsys Sound field.
+    """Creates a PyAnsys Sound field containing a time-domain signal.
 
-    This class creates a DPF field with correct PyAnsys Sound metadata from a vector.
+    This class creates a DPF field with correct PyAnsys Sound metadata from a series of time-domain
+    - typically acoustic - signal samples.
     """
 
     def __init__(
@@ -47,7 +48,7 @@ class CreateSoundField(SignalUtilitiesParent):
         Parameters
         ----------
         data : numpy.ndarray, default: np.empty(0)
-            Data to use to create the PyAnsys Sound field as a 1D NumPy array.
+            Time-domain signal data in the form of a 1D NumPy array.
         sampling_frequency : float, default: 44100.0
             Sampling frequency of the data.
         unit : str, default: "Pa"
@@ -61,7 +62,7 @@ class CreateSoundField(SignalUtilitiesParent):
 
     @property
     def data(self) -> np.ndarray:
-        """Data to store in the created DPF field."""
+        """Time-domain signal data in the form of a 1D NumPy array."""
         return self.__data
 
     @data.setter
@@ -112,12 +113,12 @@ class CreateSoundField(SignalUtilitiesParent):
         self._output = self.__operator.get_output(0, "field")
 
     def get_output(self) -> Field:
-        """Get the data as a DPF field.
+        """Get the created time-domain signal DPF field.
 
         Returns
         -------
         Field
-            Data in a DPF field.
+            Time-domain signal DPF field.
         """
         if self._output == None:
             # Computing output if needed
@@ -130,12 +131,12 @@ class CreateSoundField(SignalUtilitiesParent):
         return self._output
 
     def get_output_as_nparray(self) -> np.ndarray:
-        """Get the data as a NumPy array.
+        """Get the time-domain signal data as a NumPy array.
 
         Returns
         -------
         numpy.ndarray
-            Data in a NumPy array.
+            Time-domain signal data in a NumPy array.
         """
         output = self.get_output()
         return output.data
