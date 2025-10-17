@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.dpf.core import Field, FieldsContainer, fields_container_factory
+from ansys.dpf.core import FieldsContainer, field_from_array, fields_container_factory
 from ansys.dpf.gate.errors import DpfVersionNotSupported
 import numpy as np
 import pytest
@@ -124,9 +124,14 @@ def test_convert_fields_container_to_np_array():
     assert len(np_array) == 0
 
     # Fields container with one field.
-    fc = fields_container_factory.over_time_freq_fields_container([Field(), Field()])
+    f1 = field_from_array([5.0, 48.0])
+    f2 = field_from_array([12.0, 34.0])
+
+    fc = fields_container_factory.over_time_freq_fields_container([f1, f2])
     np_array = convert_fields_container_to_np_array(fc)
     assert isinstance(np_array, np.ndarray)
     assert len(np_array) == 2
     assert isinstance(np_array[0], np.ndarray)
+    assert np_array[0].tolist() == [5.0, 48.0]
     assert isinstance(np_array[1], np.ndarray)
+    assert np_array[1].tolist() == [12.0, 34.0]

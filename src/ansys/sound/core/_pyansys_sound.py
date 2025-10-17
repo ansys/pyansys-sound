@@ -179,10 +179,7 @@ def convert_fields_container_to_np_array(fields_container: FieldsContainer) -> n
     if num_channels == 0:
         return np.empty(0)
 
-    np_array = np.array(fields_container[0].data)
-
-    if num_channels > 1:
-        for i in range(1, num_channels):
-            np_array = np.vstack((np_array, fields_container[i].data))
+    arrays = [np.array(field.data) for field in fields_container]
+    np_array = np.vstack(arrays)
 
     return np_array
