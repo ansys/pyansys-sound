@@ -123,15 +123,21 @@ def test_convert_fields_container_to_np_array():
     assert isinstance(np_array, np.ndarray)
     assert len(np_array) == 0
 
-    # Fields container with one field.
-    f1 = field_from_array([5.0, 48.0])
-    f2 = field_from_array([12.0, 34.0])
+    # Fields container with one field => 1D NumPy array.
+    f1 = field_from_array([5.0, 48.0, 27.0])
+    fc = fields_container_factory.over_time_freq_fields_container([f1])
+    np_array = convert_fields_container_to_np_array(fc)
+    assert isinstance(np_array, np.ndarray)
+    assert len(np_array) == 3
+    assert np_array.tolist() == [5.0, 48.0, 27.0]
 
+    # Fields container with two fields => 2D NumPy array.
+    f2 = field_from_array([12.0, 34.0, 49.0])
     fc = fields_container_factory.over_time_freq_fields_container([f1, f2])
     np_array = convert_fields_container_to_np_array(fc)
     assert isinstance(np_array, np.ndarray)
     assert len(np_array) == 2
     assert isinstance(np_array[0], np.ndarray)
-    assert np_array[0].tolist() == [5.0, 48.0]
+    assert np_array[0].tolist() == [5.0, 48.0, 27.0]
     assert isinstance(np_array[1], np.ndarray)
-    assert np_array[1].tolist() == [12.0, 34.0]
+    assert np_array[1].tolist() == [12.0, 34.0, 49.0]

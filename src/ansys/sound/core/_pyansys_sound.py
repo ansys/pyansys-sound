@@ -175,11 +175,13 @@ def convert_fields_container_to_np_array(fields_container: FieldsContainer) -> n
     if not isinstance(fields_container, FieldsContainer):
         raise PyAnsysSoundException("Input must be a DPF fields container.")
 
-    num_channels = len(fields_container)
-    if num_channels == 0:
-        return np.empty(0)
-
-    arrays = [np.array(field.data) for field in fields_container]
-    np_array = np.vstack(arrays)
-
-    return np_array
+    match len(fields_container):
+        case 0:
+            # Empty fields container => empty NumPy array
+            return np.empty(0)
+        case 1:
+            # Single field => 1D NumPy array
+            return np.array(fields_container[0].data)
+        case _:
+            # Multiple fields => 2D NumPy array
+            return np.vstack([np.array(field.data) for field in fields_container])
