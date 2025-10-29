@@ -29,6 +29,20 @@ import pytest
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.signal_utilities import LoadWav, Resample
 
+EXP_SIZE = 311743
+
+if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    # Third-party update (IPP) in DPF Sound 2026 R1
+    EXP_1000 = 2.9065033686492825e-06
+    EXP_3456 = -0.0007385587086901069
+    EXP_30000 = 0.02302781119942665
+    EXP_60000 = -0.4175410866737366
+else:  # DPF Sound <= 2025 R2
+    EXP_1000 = 2.9065033686492825e-06
+    EXP_3456 = -0.0007385587086901069
+    EXP_30000 = 0.02302781119942665
+    EXP_60000 = -0.4175410866737366
+
 
 def test_resample_instantiation():
     resampler = Resample()
@@ -78,11 +92,11 @@ def test_resample_get_output():
     resampler.process()
     f_out = resampler.get_output()
 
-    assert len(f_out.data) == 311743
-    assert f_out.data[1000] == 2.9065033686492825e-06
-    assert f_out.data[3456] == -0.0007385587086901069
-    assert f_out.data[30000] == 0.02302781119942665
-    assert f_out.data[60000] == -0.4175410866737366
+    assert len(f_out.data) == EXP_SIZE
+    assert f_out.data[1000] == EXP_1000
+    assert f_out.data[3456] == EXP_3456
+    assert f_out.data[30000] == EXP_30000
+    assert f_out.data[60000] == EXP_60000
 
 
 def test_resample_get_output_as_np_array():
@@ -93,21 +107,21 @@ def test_resample_get_output_as_np_array():
     resampler.process()
     out_arr = resampler.get_output_as_nparray()
 
-    assert len(out_arr) == 311743
-    assert out_arr[1000] == 2.9065033686492825e-06
-    assert out_arr[3456] == -0.0007385587086901069
-    assert out_arr[30000] == 0.02302781119942665
-    assert out_arr[60000] == -0.4175410866737366
+    assert len(out_arr) == EXP_SIZE
+    assert out_arr[1000] == EXP_1000
+    assert out_arr[3456] == EXP_3456
+    assert out_arr[30000] == EXP_30000
+    assert out_arr[60000] == EXP_60000
 
     resampler.signal = fc_signal
     resampler.process()
     out_arr = resampler.get_output_as_nparray()
 
-    assert len(out_arr) == 311743
-    assert out_arr[1000] == 2.9065033686492825e-06
-    assert out_arr[3456] == -0.0007385587086901069
-    assert out_arr[30000] == 0.02302781119942665
-    assert out_arr[60000] == -0.4175410866737366
+    assert len(out_arr) == EXP_SIZE
+    assert out_arr[1000] == EXP_1000
+    assert out_arr[3456] == EXP_3456
+    assert out_arr[30000] == EXP_30000
+    assert out_arr[60000] == EXP_60000
 
 
 def test_resample_set_get_signal():

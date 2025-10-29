@@ -30,6 +30,18 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectrogram_processing import IsolateOrders
 
+EXP_SIZE = 909956
+
+if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    # Third-party update (IPP) in DPF Sound 2026 R1
+    EXP_100 = -0.11279940605163574
+    EXP_1000 = -0.016805129125714302
+    EXP_10000 = 0.0740051195025444
+else:  # DPF Sound <= 2025 R2
+    EXP_100 = -0.11279940605163574
+    EXP_1000 = -0.016805129125714302
+    EXP_10000 = 0.0740051195025444
+
 
 def test_isolate_orders_instantiation():
     isolate_orders = IsolateOrders()
@@ -97,7 +109,7 @@ def test_isolate_orders_get_output():
     isolate_orders.process()
     fc_out = isolate_orders.get_output()
 
-    assert len(fc_out) == 909956
+    assert len(fc_out) == EXP_SIZE
 
     fc_bis = FieldsContainer()
     fc_bis.add_label("channel_number")
@@ -108,7 +120,7 @@ def test_isolate_orders_get_output():
     fc_out = isolate_orders.get_output()
 
     assert len(fc_out) == 1
-    assert len(fc_out[0].data) == 909956
+    assert len(fc_out[0].data) == EXP_SIZE
 
 
 def test_isolate_orders_get_output_as_np_array():
@@ -123,9 +135,9 @@ def test_isolate_orders_get_output_as_np_array():
     isolate_orders.process()
     arr = isolate_orders.get_output_as_nparray()
 
-    assert arr[100] == -0.11279940605163574
-    assert arr[1000] == -0.016805129125714302
-    assert arr[10000] == -0.04283715412020683
+    assert arr[100] == EXP_100
+    assert arr[1000] == EXP_1000
+    assert arr[10000] == EXP_10000
 
     fc_bis = FieldsContainer()
     fc_bis.add_label("channel_number")
@@ -135,9 +147,9 @@ def test_isolate_orders_get_output_as_np_array():
     isolate_orders.process()
     arr = isolate_orders.get_output_as_nparray()
 
-    assert arr[100] == -0.11279940605163574
-    assert arr[1000] == -0.016805129125714302
-    assert arr[10000] == -0.04283715412020683
+    assert arr[100] == EXP_100
+    assert arr[1000] == EXP_1000
+    assert arr[10000] == EXP_10000
 
 
 def test_isolate_orders_set_get_signal():
