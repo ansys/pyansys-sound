@@ -49,55 +49,55 @@ EXP_STR_ALL_PROCESSED = (
     "\tFrequency weighting: A\nOutput levels:\n"
     "\t25.0 Hz:\t-45.7 dBA (re 2e-05)\n"
     "\t31.5 Hz:\t-36.6 dBA (re 2e-05)\n"
-    "\t40.0 Hz:\t-24.6 dBA (re 2e-05)\n"
-    "\t50.0 Hz:\t-16.4 dBA (re 2e-05)\n"
-    "\t63.0 Hz:\t-10.2 dBA (re 2e-05)\n"
-    "\t80.0 Hz:\t-0.2 dBA (re 2e-05)\n"
+    "\t40.0 Hz:\t-24.7 dBA (re 2e-05)\n"
+    "\t50.0 Hz:\t-16.5 dBA (re 2e-05)\n"
+    "\t63.0 Hz:\t-10.3 dBA (re 2e-05)\n"
+    "\t80.0 Hz:\t-0.3 dBA (re 2e-05)\n"
     "\t100.0 Hz:\t6.2 dBA (re 2e-05)\n"
     "\t125.0 Hz:\t13.3 dBA (re 2e-05)\n"
-    "\t160.0 Hz:\t20.3 dBA (re 2e-05)\n"
-    "\t200.0 Hz:\t37.0 dBA (re 2e-05)\n"
+    "\t160.0 Hz:\t20.2 dBA (re 2e-05)\n"
+    "\t200.0 Hz:\t36.8 dBA (re 2e-05)\n"
     "\t250.0 Hz:\t62.4 dBA (re 2e-05)\n"
-    "\t315.0 Hz:\t50.9 dBA (re 2e-05)\n"
-    "\t400.0 Hz:\t51.1 dBA (re 2e-05)\n"
+    "\t315.0 Hz:\t51.2 dBA (re 2e-05)\n"
+    "\t400.0 Hz:\t50.9 dBA (re 2e-05)\n"
     "\t500.0 Hz:\t76.0 dBA (re 2e-05)\n"
-    "\t630.0 Hz:\t64.6 dBA (re 2e-05)\n"
+    "\t630.0 Hz:\t64.7 dBA (re 2e-05)\n"
     "\t800.0 Hz:\t76.1 dBA (re 2e-05)\n"
-    "\t1000.0 Hz:\t68.4 dBA (re 2e-05)\n"
+    "\t1000.0 Hz:\t68.5 dBA (re 2e-05)\n"
     "\t1250.0 Hz:\t63.7 dBA (re 2e-05)\n"
-    "\t1600.0 Hz:\t71.6 dBA (re 2e-05)\n"
-    "\t2000.0 Hz:\t73.5 dBA (re 2e-05)\n"
+    "\t1600.0 Hz:\t71.5 dBA (re 2e-05)\n"
+    "\t2000.0 Hz:\t73.6 dBA (re 2e-05)\n"
     "\t2500.0 Hz:\t59.7 dBA (re 2e-05)\n"
     "\t3150.0 Hz:\t51.9 dBA (re 2e-05)\n"
     "\t4000.0 Hz:\t50.7 dBA (re 2e-05)\n"
-    "\t5000.0 Hz:\t44.5 dBA (re 2e-05)\n"
+    "\t5000.0 Hz:\t44.6 dBA (re 2e-05)\n"
     "\t6300.0 Hz:\t42.6 dBA (re 2e-05)\n"
     "\t8000.0 Hz:\t39.4 dBA (re 2e-05)\n"
     "\t10000.0 Hz:\t36.8 dBA (re 2e-05)\n"
     "\t12500.0 Hz:\t33.2 dBA (re 2e-05)\n"
-    "\t16000.0 Hz:\t21.4 dBA (re 2e-05)"
+    "\t16000.0 Hz:\t21.5 dBA (re 2e-05)"
 )
 EXP_BAND_COUNT = 29
-EXP_LEVEL_DEFAULT_16 = -25.79320
-EXP_LEVEL_DEFAULT_15 = -17.04215
-EXP_LEVEL_DEFAULT_17 = -31.90580
-EXP_LEVEL_DEFAULT_9 = -66.79136
-EXP_LEVEL_DEFAULT_21 = -43.38078
-EXP_LEVEL_ANSI_A_PA_16 = 68.44873
-EXP_LEVEL_ANSI_A_PA_15 = 76.14687
-EXP_LEVEL_ANSI_A_PA_17 = 63.72639
-EXP_LEVEL_ANSI_A_PA_9 = 36.97804
-EXP_LEVEL_ANSI_A_PA_21 = 51.93572
-EXP_LEVEL_ANSI_B_PA_16 = 68.44873
-EXP_LEVEL_ANSI_B_PA_15 = 76.90100
-EXP_LEVEL_ANSI_B_PA_17 = 63.15748
-EXP_LEVEL_ANSI_B_PA_9 = 45.78420
-EXP_LEVEL_ANSI_B_PA_21 = 50.33163
-EXP_LEVEL_ANSI_C_PA_16 = 68.44873
-EXP_LEVEL_ANSI_C_PA_15 = 76.96046
-EXP_LEVEL_ANSI_C_PA_17 = 63.11899
-EXP_LEVEL_ANSI_C_PA_9 = 47.79314
-EXP_LEVEL_ANSI_C_PA_21 = 50.23485
+EXP_LEVEL_DEFAULT_16 = -25.79326
+EXP_LEVEL_DEFAULT_15 = -17.04219
+EXP_LEVEL_DEFAULT_17 = -31.90556
+EXP_LEVEL_DEFAULT_9 = -66.85459
+EXP_LEVEL_DEFAULT_21 = -43.37958
+EXP_LEVEL_ANSI_A_PA_16 = 68.45362
+EXP_LEVEL_ANSI_A_PA_15 = 76.14678
+EXP_LEVEL_ANSI_A_PA_17 = 63.74951
+EXP_LEVEL_ANSI_A_PA_9 = 36.77381
+EXP_LEVEL_ANSI_A_PA_21 = 51.94006
+EXP_LEVEL_ANSI_B_PA_16 = 68.45362
+EXP_LEVEL_ANSI_B_PA_15 = 76.90092
+EXP_LEVEL_ANSI_B_PA_17 = 63.18060
+EXP_LEVEL_ANSI_B_PA_9 = 45.57998
+EXP_LEVEL_ANSI_B_PA_21 = 50.33597
+EXP_LEVEL_ANSI_C_PA_16 = 68.45362
+EXP_LEVEL_ANSI_C_PA_15 = 76.96037
+EXP_LEVEL_ANSI_C_PA_17 = 63.14211
+EXP_LEVEL_ANSI_C_PA_9 = 47.58892
+EXP_LEVEL_ANSI_C_PA_21 = 50.23919
 EXP_FREQUENCY_16 = 1000.0
 EXP_FREQUENCY_15 = 800.0
 EXP_FREQUENCY_17 = 1250.0

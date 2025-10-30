@@ -43,7 +43,6 @@ EXP_SPECTRUM1_DECISIVE_FREQUENCY = 16359.85
 EXP_SPECTRUM1_TONE_NUMBER = 4
 EXP_SPECTRUM1_TONE3_DIFFERENCE = 4.705133
 EXP_SPECTRUM1_TONE3_TYPE = ""
-EXP_SPECTRUM1_TONE3_MASKING_NOISE_LEVEL = 0.6313946
 EXP_STR = (
     "TonalityISOTS20065 object.\n"
     "Data\n"
@@ -52,6 +51,12 @@ EXP_STR = (
     f"\tOverlap: 0.0 %\n"
     f"Mean tonality (audibility DL): 9.7 (+/-0.9) dB"
 )
+
+if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    # Third-party update (IPP) in DPF Sound 2026 R1
+    EXP_SPECTRUM1_TONE3_MASKING_NOISE_LEVEL = 0.6313894
+else:  # DPF Sound <= 2025 R2
+    EXP_SPECTRUM1_TONE3_MASKING_NOISE_LEVEL = 0.6313946
 
 
 def test_tonality_iso_ts_20065_instantiation():

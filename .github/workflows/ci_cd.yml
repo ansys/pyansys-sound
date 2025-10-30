@@ -110,7 +110,7 @@ jobs:
           TEST_DPF_SOUND_MATRIX: ${{ env.TEST_DPF_SOUND_MATRIX }}
 
   testing-windows:
-    name: "Testing and coverage (Windows)"
+    name: "Testing"
     needs: [smoke-tests, retrieve-test-matrix]
     runs-on: [self-hosted, Windows, pyansys-sound]
     env:

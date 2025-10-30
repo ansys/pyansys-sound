@@ -30,6 +30,18 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectrogram_processing import Istft, Stft
 
+EXP_SIZE = 156048
+
+if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    # Third-party update (IPP) in DPF Sound 2026 R1
+    EXP_100 = 8.265356715025929e-13
+    EXP_2000 = -0.001495360629633069
+    EXP_30000 = 0.0740051418542862
+else:  # DPF Sound <= 2025 R2
+    EXP_100 = -3.790271482090324e-12
+    EXP_2000 = -0.0014953609788790345
+    EXP_30000 = 0.0740051195025444
+
 
 def test_istft_instantiation():
     stft = Istft()
@@ -74,10 +86,10 @@ def test_istft_get_output():
     istft.process()
     f_out = istft.get_output()
 
-    assert len(f_out) == 156048
-    assert f_out.data[100] == -3.790271482090324e-12
-    assert f_out.data[2000] == -0.0014953609788790345
-    assert f_out.data[30000] == 0.0740051195025444
+    assert len(f_out) == EXP_SIZE
+    assert f_out.data[100] == EXP_100
+    assert f_out.data[2000] == EXP_2000
+    assert f_out.data[30000] == EXP_30000
 
 
 def test_istft_get_output_as_np_array():
@@ -90,10 +102,10 @@ def test_istft_get_output_as_np_array():
     istft.process()
     arr = istft.get_output_as_nparray()
 
-    assert len(arr) == 156048
-    assert arr[100] == -3.790271482090324e-12
-    assert arr[2000] == -0.0014953609788790345
-    assert arr[30000] == 0.0740051195025444
+    assert len(arr) == EXP_SIZE
+    assert arr[100] == EXP_100
+    assert arr[2000] == EXP_2000
+    assert arr[30000] == EXP_30000
 
 
 def test_istft_set_get_signal():

@@ -31,6 +31,19 @@ from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.xtract.xtract_tonal import XtractTonal
 from ansys.sound.core.xtract.xtract_tonal_parameters import XtractTonalParameters
 
+EXP_SIZE = 156048
+EXP_0_MIN = -0.6828306913375854
+EXP_0_MAX = 0.794617772102356
+EXP_0_0 = 3.6770161386812106e-06
+if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    # Third-party update (IPP) slightly changed the output values (ID #884424)
+    EXP_0_1 = 1.855125219663023e-06
+else:
+    EXP_0_1 = 1.8551201037553255e-06
+EXP_0_99 = -1.8362156879447866e-06
+EXP_1_0 = -3.6770161386812106e-06
+EXP_1_99 = 1.8362156879447866e-06
+
 
 def test_xtract_tonal_instantiation():
     xtract_tonal = XtractTonal()
@@ -122,16 +135,16 @@ def test_xtract_tonal_process():
     assert type(xtract_tonal.get_output_as_nparray()[0]) == np.ndarray
     assert type(xtract_tonal.get_output_as_nparray()[1]) == np.ndarray
 
-    assert xtract_tonal.get_output_as_nparray()[0].shape == (156048,)
-    assert np.min(xtract_tonal.get_output_as_nparray()[0]) == pytest.approx(-0.6828306913375854)
-    assert np.max(xtract_tonal.get_output_as_nparray()[0]) == pytest.approx(0.794617772102356)
+    assert xtract_tonal.get_output_as_nparray()[0].shape == (EXP_SIZE,)
+    assert np.min(xtract_tonal.get_output_as_nparray()[0]) == pytest.approx(EXP_0_MIN)
+    assert np.max(xtract_tonal.get_output_as_nparray()[0]) == pytest.approx(EXP_0_MAX)
 
-    assert xtract_tonal.get_output_as_nparray()[0][0] == pytest.approx(3.6770161386812106e-06)
-    assert xtract_tonal.get_output_as_nparray()[0][1] == pytest.approx(1.8551201037553255e-06)
+    assert xtract_tonal.get_output_as_nparray()[0][0] == pytest.approx(EXP_0_0)
+    assert xtract_tonal.get_output_as_nparray()[0][1] == pytest.approx(EXP_0_1)
 
-    assert xtract_tonal.get_output_as_nparray()[1].shape == (156048,)
-    assert xtract_tonal.get_output_as_nparray()[1][0] == pytest.approx(-3.6770161386812106e-06)
-    assert xtract_tonal.get_output_as_nparray()[1][99] == pytest.approx(1.8362156879447866e-06)
+    assert xtract_tonal.get_output_as_nparray()[1].shape == (EXP_SIZE,)
+    assert xtract_tonal.get_output_as_nparray()[1][0] == pytest.approx(EXP_1_0)
+    assert xtract_tonal.get_output_as_nparray()[1][99] == pytest.approx(EXP_1_99)
 
 
 def test_xtract_tonal_get_output_warns():
@@ -173,11 +186,11 @@ def test_xtract_tonal_get_output():
     assert type(xtract_tonal.output_non_tonal_signals) == Field
 
     # Type of output tonal signals. As Field
-    assert xtract_tonal.get_output()[0].data[0] == pytest.approx(3.6770161386812106e-06)
-    assert xtract_tonal.get_output()[0].data[1] == pytest.approx(1.8551201037553255e-06)
+    assert xtract_tonal.get_output()[0].data[0] == pytest.approx(EXP_0_0)
+    assert xtract_tonal.get_output()[0].data[1] == pytest.approx(EXP_0_1)
 
-    assert xtract_tonal.get_output()[1].data[0] == pytest.approx(-3.6770161386812106e-06)
-    assert xtract_tonal.get_output()[1].data[99] == pytest.approx(1.8362156879447866e-06)
+    assert xtract_tonal.get_output()[1].data[0] == pytest.approx(EXP_1_0)
+    assert xtract_tonal.get_output()[1].data[99] == pytest.approx(EXP_1_99)
 
 
 def test_xtract_tonal_get_output_noprocess():
@@ -231,19 +244,19 @@ def test_xtract_tonal_get_output_fc():
 
     # Verify numerical app. of the denoiser.
     # Get the denoised signal - signal1
-    assert xtract_tonal.get_output()[0][0].data[0] == pytest.approx(3.6770161386812106e-06)
-    assert xtract_tonal.get_output()[0][0].data[99] == pytest.approx(-1.8362156879447866e-06)
+    assert xtract_tonal.get_output()[0][0].data[0] == pytest.approx(EXP_0_0)
+    assert xtract_tonal.get_output()[0][0].data[99] == pytest.approx(EXP_0_99)
 
     # Get the denoised signal - signal2
-    assert xtract_tonal.get_output()[0][1].data[0] == pytest.approx(3.6770161386812106e-06)
-    assert xtract_tonal.get_output()[0][1].data[99] == pytest.approx(-1.8362156879447866e-06)
+    assert xtract_tonal.get_output()[0][1].data[0] == pytest.approx(EXP_0_0)
+    assert xtract_tonal.get_output()[0][1].data[99] == pytest.approx(EXP_0_99)
 
     # Get the noise signal - signal1
-    assert xtract_tonal.get_output()[1][0].data[0] == pytest.approx(-3.6770161386812106e-06)
-    assert xtract_tonal.get_output()[1][0].data[99] == pytest.approx(1.8362156879447866e-06)
+    assert xtract_tonal.get_output()[1][0].data[0] == pytest.approx(EXP_1_0)
+    assert xtract_tonal.get_output()[1][0].data[99] == pytest.approx(EXP_1_99)
     # Get the noise signal - signal2
-    assert xtract_tonal.get_output()[1][0].data[0] == pytest.approx(-3.6770161386812106e-06)
-    assert xtract_tonal.get_output()[1][0].data[99] == pytest.approx(1.8362156879447866e-06)
+    assert xtract_tonal.get_output()[1][0].data[0] == pytest.approx(EXP_1_0)
+    assert xtract_tonal.get_output()[1][0].data[99] == pytest.approx(EXP_1_99)
 
 
 def test_xtract_tonal_get_output_as_nparray():
@@ -269,15 +282,15 @@ def test_xtract_tonal_get_output_as_nparray():
     assert type(xtract_tonal.get_output_as_nparray()[1]) == np.ndarray
 
     assert xtract_tonal.get_output_as_nparray()[0].shape == (156048,)
-    assert np.min(xtract_tonal.get_output_as_nparray()[0]) == pytest.approx(-0.6828306913375854)
-    assert np.max(xtract_tonal.get_output_as_nparray()[0]) == pytest.approx(0.794617772102356)
+    assert np.min(xtract_tonal.get_output_as_nparray()[0]) == pytest.approx(EXP_0_MIN)
+    assert np.max(xtract_tonal.get_output_as_nparray()[0]) == pytest.approx(EXP_0_MAX)
 
-    assert xtract_tonal.get_output_as_nparray()[0][0] == pytest.approx(3.6770161386812106e-06)
-    assert xtract_tonal.get_output_as_nparray()[0][1] == pytest.approx(1.8551201037553255e-06)
+    assert xtract_tonal.get_output_as_nparray()[0][0] == pytest.approx(EXP_0_0)
+    assert xtract_tonal.get_output_as_nparray()[0][1] == pytest.approx(EXP_0_1)
 
     assert xtract_tonal.get_output_as_nparray()[1].shape == (156048,)
-    assert xtract_tonal.get_output_as_nparray()[1][0] == pytest.approx(-3.6770161386812106e-06)
-    assert xtract_tonal.get_output_as_nparray()[1][99] == pytest.approx(1.8362156879447866e-06)
+    assert xtract_tonal.get_output_as_nparray()[1][0] == pytest.approx(EXP_1_0)
+    assert xtract_tonal.get_output_as_nparray()[1][99] == pytest.approx(EXP_1_99)
 
 
 def test_xtract_tonal_get_output_fc_as_nparray():
