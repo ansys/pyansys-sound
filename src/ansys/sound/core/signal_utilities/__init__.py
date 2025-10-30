@@ -27,8 +27,8 @@ Helper functions related to signal management.
 
 from ._signal_utilities_parent import SignalUtilitiesParent  # isort:skip
 from .apply_gain import ApplyGain
-from .create_sound_field import CreateSoundField
-from .create_sound_fields_container import CreateSoundFieldsContainer
+from .create_signal_field import CreateSignalField
+from .create_signal_fields_container import CreateSignalFieldsContainer
 from .crop_signal import CropSignal
 from .load_wav import LoadWav
 from .resample import Resample
@@ -45,6 +45,6 @@ __all__ = (
     "ApplyGain",
     "SumSignals",
     "CropSignal",
-    "CreateSoundField",
-    "CreateSoundFieldsContainer",
+    "CreateSignalField",
+    "CreateSignalFieldsContainer",
 )

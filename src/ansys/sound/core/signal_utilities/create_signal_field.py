@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Creates a PyAnsys Sound field."""
+"""PyAnsys Sound signal field creation."""
 import warnings
 
 from ansys.dpf.core import Field, Operator
@@ -30,11 +30,11 @@ from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
-class CreateSoundField(SignalUtilitiesParent):
-    """Creates a PyAnsys Sound field containing a time-domain signal.
+class CreateSignalField(SignalUtilitiesParent):
+    """Create a PyAnsys Sound field containing a time-domain signal.
 
-    This class creates a DPF field with correct PyAnsys Sound metadata from a series of time-domain
-    - typically acoustic - signal samples.
+    This class creates a DPF field from a series of time-domain - typically acoustic - signal
+    samples.
     """
 
     def __init__(
@@ -50,7 +50,7 @@ class CreateSoundField(SignalUtilitiesParent):
         data : numpy.ndarray, default: np.empty(0)
             Time-domain signal data in the form of a 1D NumPy array.
         sampling_frequency : float, default: 44100.0
-            Sampling frequency of the data.
+            Sampling frequency of the data, in Hz.
         unit : str, default: "Pa"
             Unit of the data.
         """
@@ -93,13 +93,13 @@ class CreateSoundField(SignalUtilitiesParent):
         self.__sampling_frequency = new_sampling_frequency
 
     def process(self):
-        """Create the PyAnsys Sound field.
+        """Create the PyAnsys Sound signal field.
 
-        This method calls the appropriate DPF Sound operator to create the PyAnsys Sound field.
+        This method calls the appropriate DPF Sound operator to create the signalfield.
         """
         if np.size(self.data) == 0:
             raise PyAnsysSoundException(
-                "No data to use. Use the 'CreateSoundField.set_data()' method."
+                "No data to use. Use the 'CreateSignalField.set_data()' method."
             )
 
         self.__operator.connect(0, self.data.tolist())
@@ -124,7 +124,7 @@ class CreateSoundField(SignalUtilitiesParent):
             # Computing output if needed
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the 'CreateSoundField.process()' method."
+                    "Output is not processed yet. Use the 'CreateSignalField.process()' method."
                 )
             )
 

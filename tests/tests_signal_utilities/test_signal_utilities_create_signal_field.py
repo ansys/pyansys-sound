@@ -24,39 +24,39 @@ import numpy as np
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-from ansys.sound.core.signal_utilities import CreateSoundField
+from ansys.sound.core.signal_utilities import CreateSignalField
 
 
-def test_create_sound_field_instantiation():
-    sound_field_creator = CreateSoundField()
-    assert sound_field_creator != None
+def test_create_signal_field_instantiation():
+    signal_field_creator = CreateSignalField()
+    assert signal_field_creator != None
 
 
-def test_create_sound_field_process():
-    sound_field_creator = CreateSoundField()
+def test_create_signal_field_process():
+    signal_field_creator = CreateSignalField()
 
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
-        sound_field_creator.process()
-    assert str(excinfo.value) == "No data to use. Use the 'CreateSoundField.set_data()' method."
+        signal_field_creator.process()
+    assert str(excinfo.value) == "No data to use. Use the 'CreateSignalField.set_data()' method."
 
     # No error
     arr = np.ones(100)
-    sound_field_creator.data = arr
-    sound_field_creator.process()
+    signal_field_creator.data = arr
+    signal_field_creator.process()
 
 
-def test_create_sound_field_get_output():
-    sound_field_creator = CreateSoundField(data=np.ones(100))
+def test_create_signal_field_get_output():
+    signal_field_creator = CreateSignalField(data=np.ones(100))
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the 'CreateSoundField.process\\(\\)' method.",
+        match="Output is not processed yet. Use the 'CreateSignalField.process\\(\\)' method.",
     ):
-        f_out = sound_field_creator.get_output()
+        f_out = signal_field_creator.get_output()
 
-    sound_field_creator.process()
-    f_out = sound_field_creator.get_output()
+    signal_field_creator.process()
+    f_out = signal_field_creator.get_output()
 
     assert len(f_out) == 100
     assert f_out.data[0] == 1.0
@@ -64,10 +64,10 @@ def test_create_sound_field_get_output():
     assert f_out.data[99] == 1.0
 
 
-def test_create_sound_field_get_output_as_np_array():
-    sound_field_creator = CreateSoundField(data=np.ones(100))
-    sound_field_creator.process()
-    out_arr = sound_field_creator.get_output_as_nparray()
+def test_create_signal_field_get_output_as_np_array():
+    signal_field_creator = CreateSignalField(data=np.ones(100))
+    signal_field_creator.process()
+    out_arr = signal_field_creator.get_output_as_nparray()
 
     assert len(out_arr) == 100
     assert out_arr[0] == 1.0
@@ -75,30 +75,30 @@ def test_create_sound_field_get_output_as_np_array():
     assert out_arr[99] == 1.0
 
 
-def test_create_sound_field_set_get_data():
-    sound_field_creator = CreateSoundField()
-    sound_field_creator.data = np.ones(100)
-    data = sound_field_creator.data
+def test_create_signal_field_set_get_data():
+    signal_field_creator = CreateSignalField()
+    signal_field_creator.data = np.ones(100)
+    data = signal_field_creator.data
     assert len(data) == 100
     assert data[0] == 1.0
     assert data[50] == 1.0
     assert data[99] == 1.0
 
 
-def test_create_sound_field_set_get_sampling_frequency():
-    sound_field_creator = CreateSoundField()
+def test_create_signal_field_set_get_sampling_frequency():
+    signal_field_creator = CreateSignalField()
 
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
-        sound_field_creator.sampling_frequency = -1234.0
+        signal_field_creator.sampling_frequency = -1234.0
     assert str(excinfo.value) == "Sampling frequency must be greater than or equal to 0.0."
 
-    sound_field_creator.sampling_frequency = 1234.0
-    assert sound_field_creator.sampling_frequency == 1234.0
+    signal_field_creator.sampling_frequency = 1234.0
+    assert signal_field_creator.sampling_frequency == 1234.0
 
 
-def test_create_sound_field_set_get_unit():
-    sound_field_creator = CreateSoundField()
+def test_create_signal_field_set_get_unit():
+    signal_field_creator = CreateSignalField()
 
-    sound_field_creator.unit = "MyUnit"
-    assert sound_field_creator.unit == "MyUnit"
+    signal_field_creator.unit = "MyUnit"
+    assert signal_field_creator.unit == "MyUnit"

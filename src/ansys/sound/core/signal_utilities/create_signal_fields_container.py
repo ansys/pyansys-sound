@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Creates a PyAnsys Sound fields container."""
+"""PyAnsys Sound signal fields container creation."""
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer
@@ -29,11 +29,13 @@ import numpy as np
 from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
+FIELDCONTAINER_LABELSPACE_ID = "channel"
 
-class CreateSoundFieldsContainer(SignalUtilitiesParent):
-    """Creates a PyAnsys Sound fields container.
 
-    This class creates a DPF fields container from a list, tuple, or array of DPF fields.
+class CreateSignalFieldsContainer(SignalUtilitiesParent):
+    """Create a PyAnsys Sound fields container containing signal fields.
+
+    This class creates a DPF fields container from a list, tuple, or array of signal fields.
     """
 
     def __init__(
@@ -45,7 +47,7 @@ class CreateSoundFieldsContainer(SignalUtilitiesParent):
         Parameters
         ----------
         fields : list[Field] | tuple[Field] | np.ndarray[Field], default: None
-            DPF fields to include in the fields container.
+            Signal fields to include in the fields container.
         """
         super().__init__()
         self.fields = fields
@@ -92,10 +94,10 @@ class CreateSoundFieldsContainer(SignalUtilitiesParent):
     def process(self):
         """Create the PyAnsys Sound fields container."""
         self._output = FieldsContainer()
-        self._output.labels = ["channel"]
+        self._output.labels = [FIELDCONTAINER_LABELSPACE_ID]
         if self.fields is not None:
             for ifield, field in enumerate(self.fields):
-                self._output.add_field({"channel": ifield + 1}, field)
+                self._output.add_field({FIELDCONTAINER_LABELSPACE_ID: ifield + 1}, field)
 
     def get_output(self) -> FieldsContainer:
         """Get the DPF fields container.
