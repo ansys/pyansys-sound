@@ -95,7 +95,7 @@ class CreateSignalField(SignalUtilitiesParent):
     def process(self):
         """Create the PyAnsys Sound signal field.
 
-        This method calls the appropriate DPF Sound operator to create the signalfield.
+        This method calls the appropriate DPF Sound operator to create the signal field.
         """
         if np.size(self.data) == 0:
             raise PyAnsysSoundException(

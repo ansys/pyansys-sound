@@ -112,6 +112,7 @@ def test_create_signal_fields_container_process():
 
 
 def test_create_signal_fields_container_get_output():
+    """Test CreateSignalFieldsContainer get_output method."""
     signal_fields_container_creator = CreateSignalFieldsContainer([Field(), Field()])
 
     with pytest.warns(

@@ -66,13 +66,13 @@ class CreateSignalFieldsContainer(SignalUtilitiesParent):
         )
 
     @property
-    def fields(self) -> np.ndarray:
-        """Data to store in the created DPF field."""
+    def fields(self) -> list[Field] | tuple[Field] | np.ndarray[Field]:
+        """List, tuple, or NumPy array of signal fields to store."""
         return self.__fields
 
     @fields.setter
     def fields(self, fields: list[Field] | tuple[Field] | np.ndarray[Field]):
-        """Set the fields."""
+        """Set the signal fields."""
         if fields is not None:
             valid = True
             if not isinstance(fields, (list, tuple, np.ndarray)):
@@ -85,14 +85,14 @@ class CreateSignalFieldsContainer(SignalUtilitiesParent):
 
             if not valid:
                 raise PyAnsysSoundException(
-                    "Attribute `fields` must be provided as a list, tuple, or numpy array of DPF "
+                    "Attribute `fields` must be provided as a list, tuple, or NumPy array of DPF "
                     "fields."
                 )
 
         self.__fields = fields
 
     def process(self):
-        """Create the PyAnsys Sound fields container."""
+        """Create the signal fields container."""
         self._output = FieldsContainer()
         self._output.labels = [FIELDCONTAINER_LABELSPACE_ID]
         if self.fields is not None:
@@ -100,12 +100,12 @@ class CreateSignalFieldsContainer(SignalUtilitiesParent):
                 self._output.add_field({FIELDCONTAINER_LABELSPACE_ID: ifield + 1}, field)
 
     def get_output(self) -> FieldsContainer:
-        """Get the DPF fields container.
+        """Get the signal fields container.
 
         Returns
         -------
         FieldsContainer
-            DPF fields container.
+            Signal fields container.
         """
         if self._output is None:
             warnings.warn(
