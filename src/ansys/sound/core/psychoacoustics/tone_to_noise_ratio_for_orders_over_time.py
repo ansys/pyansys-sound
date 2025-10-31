@@ -28,7 +28,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from . import PsychoacousticsParent
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import (
+    PyAnsysSoundException,
+    PyAnsysSoundWarning,
+    convert_fields_container_to_np_array,
+)
 
 
 class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
@@ -188,7 +192,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
             return (np.array([]), np.array([]), np.array([]))
 
         return (
-            self.convert_fields_container_to_np_array(tnr_container[0]),
+            convert_fields_container_to_np_array(tnr_container[0]),
             np.array(tnr_container[0][0].time_freq_support.time_frequencies.data),
             np.array(tnr_container[1].data),
         )
