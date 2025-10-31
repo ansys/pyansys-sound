@@ -72,7 +72,7 @@ def test_create_signal_fields_container_properties_exceptions():
     with pytest.raises(
         PyAnsysSoundException,
         match=(
-            "Attribute `fields` must be provided as a list, tuple, or numpy array of DPF fields."
+            "Attribute `fields` must be provided as a list, tuple, or NumPy array of DPF fields."
         ),
     ):
         signal_fields_container_creator.fields = "WrongType"
