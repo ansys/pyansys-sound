@@ -27,6 +27,8 @@ import warnings
 from ansys.dpf.core import DataSources, FieldsContainer, Operator, types
 import numpy as np
 
+from ansys.sound.core.server_helpers import requires_dpf_version
+
 from . import SignalUtilitiesParent
 from .._pyansys_sound import (
     PyAnsysSoundException,
@@ -121,6 +123,7 @@ class LoadWav(SignalUtilitiesParent):
         """
         return convert_fields_container_to_np_array(self.get_output())
 
+    @requires_dpf_version("11.0")
     def get_sampling_frequency(self) -> float:
         """Get the sampling frequency in Hz of the loaded signal.
 
@@ -139,6 +142,7 @@ class LoadWav(SignalUtilitiesParent):
 
         return self._fs
 
+    @requires_dpf_version("11.0")
     def get_format(self) -> str:
         """Get the format of the loaded WAV file.
 

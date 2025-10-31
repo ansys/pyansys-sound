@@ -111,6 +111,10 @@ def test_load_wav_get_set_path():
     assert wav_loader.path_to_wav == pytest.data_path_flute_in_container
 
 
+@pytest.mark.skipif(
+    not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0,
+    reason="Sampling frequency and format outputs require DPF server version 11.0 or higher.",
+)
 def test_load_wav_get_sampling_frequency():
     """Test getting the sampling frequency output of LoadWav class."""
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
@@ -128,6 +132,10 @@ def test_load_wav_get_sampling_frequency():
     assert fs == pytest.approx(44100.0)
 
 
+@pytest.mark.skipif(
+    not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0,
+    reason="Sampling frequency and format outputs require DPF server version 11.0 or higher.",
+)
 def test_load_wav_get_format():
     """Test getting the format output of LoadWav class."""
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
