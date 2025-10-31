@@ -20,11 +20,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from ansys.dpf.core import FieldsContainer, field_from_array, fields_container_factory
 from ansys.dpf.gate.errors import DpfVersionNotSupported
 import numpy as np
 import pytest
 
-from ansys.sound.core._pyansys_sound import PyAnsysSound, PyAnsysSoundWarning
+from ansys.sound.core._pyansys_sound import (
+    PyAnsysSound,
+    PyAnsysSoundException,
+    PyAnsysSoundWarning,
+    convert_fields_container_to_np_array,
+)
 
 
 def test_pyansys_sound_init_subclass():
@@ -32,6 +38,8 @@ def test_pyansys_sound_init_subclass():
 
     # Define a subclass requiring DPF server version 1.0 or higher => no error.
     class TestClass(PyAnsysSound, min_dpf_version="1.0"):
+        """Some docstring to test version addition to documentation."""
+
         pass
 
     assert TestClass._min_dpf_version == "1.0"
@@ -108,3 +116,36 @@ def test_pyansys_sound_get_output_as_nparray():
     assert type(out) == type(np.empty(0))
     assert np.size(out) == 0
     assert np.shape(out) == (0,)
+
+
+def test_convert_fields_container_to_np_array():
+    """Test conversion of DPF fields container to NumPy array."""
+
+    # Wrong input type => exception.
+    with pytest.raises(PyAnsysSoundException, match="Input must be a DPF fields container."):
+        convert_fields_container_to_np_array(None)
+
+    # Empty fields container => empty NumPy array.
+    fc = FieldsContainer()
+    np_array = convert_fields_container_to_np_array(fc)
+    assert isinstance(np_array, np.ndarray)
+    assert len(np_array) == 0
+
+    # Fields container with one field => 1D NumPy array.
+    f1 = field_from_array([5.0, 48.0, 27.0])
+    fc = fields_container_factory.over_time_freq_fields_container([f1])
+    np_array = convert_fields_container_to_np_array(fc)
+    assert isinstance(np_array, np.ndarray)
+    assert len(np_array) == 3
+    assert np_array.tolist() == [5.0, 48.0, 27.0]
+
+    # Fields container with two fields => 2D NumPy array.
+    f2 = field_from_array([12.0, 34.0, 49.0])
+    fc = fields_container_factory.over_time_freq_fields_container([f1, f2])
+    np_array = convert_fields_container_to_np_array(fc)
+    assert isinstance(np_array, np.ndarray)
+    assert len(np_array) == 2
+    assert isinstance(np_array[0], np.ndarray)
+    assert np_array[0].tolist() == [5.0, 48.0, 27.0]
+    assert isinstance(np_array[1], np.ndarray)
+    assert np_array[1].tolist() == [12.0, 34.0, 49.0]
