@@ -53,10 +53,6 @@ class LoadWav(SignalUtilitiesParent):
         self.path_to_wav = path_to_wav
         self.__operator = Operator("load_wav_sas")
 
-        # Instantiate additional output attributes
-        self._fs = None
-        self._format = None
-
     @property
     def path_to_wav(self) -> str:
         """Path to the WAV file."""
@@ -92,8 +88,9 @@ class LoadWav(SignalUtilitiesParent):
 
         # Store outputs
         self._output = self.__operator.get_output(0, types.fields_container)
-        self._fs = self.__operator.get_output(1, types.double)
-        self._format = self.__operator.get_output(2, types.string)
+        # Note: sampling frequency and format are retrieved within their respective getter methods,
+        # because, their availabilility depends on the server version (which is managed by these
+        # methods' `requires_dpf_version` decorator).
 
     def get_output(self) -> FieldsContainer:
         """Get the signal loaded from the WAV file as a DPF fields container.
@@ -132,7 +129,7 @@ class LoadWav(SignalUtilitiesParent):
         float
             Sampling frequency in Hz of the loaded signal.
         """
-        if self._fs is None:
+        if self._output is None:
             warnings.warn(
                 PyAnsysSoundWarning(
                     f"Output is not processed yet. Use the `{self.__class__.__name__}.process()` "
@@ -140,7 +137,7 @@ class LoadWav(SignalUtilitiesParent):
                 )
             )
 
-        return self._fs
+        return self.__operator.get_output(1, types.double)
 
     @requires_dpf_version("11.0")
     def get_format(self) -> str:
@@ -151,7 +148,7 @@ class LoadWav(SignalUtilitiesParent):
         str
             Format of the loaded WAV file. Can be either "float32", "int32", "int16", or "int8".
         """
-        if self._format is None:
+        if self._output is None:
             warnings.warn(
                 PyAnsysSoundWarning(
                     f"Output is not processed yet. Use the `{self.__class__.__name__}.process()` "
@@ -159,4 +156,4 @@ class LoadWav(SignalUtilitiesParent):
                 )
             )
 
-        return self._format
+        return self.__operator.get_output(2, types.string)
