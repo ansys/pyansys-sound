@@ -30,11 +30,13 @@ from ansys.sound.core.signal_utilities import LoadWav
 
 
 def test_load_wav_instantiation():
+    """Test the instantiation of LoadWav class."""
     wav_loader = LoadWav()
-    assert wav_loader != None
+    assert isinstance(wav_loader, LoadWav)
 
 
 def test_load_wav_process():
+    """Test the process method of LoadWav class."""
     # Should not return an error
     wav_loader_good = LoadWav(pytest.data_path_flute_in_container)
     wav_loader_good.process()
@@ -42,21 +44,21 @@ def test_load_wav_process():
     # Should return an error
     wav_loader_bad = LoadWav()
 
-    with pytest.raises(PyAnsysSoundException) as excinfo:
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Path for loading WAV file is not specified. Use `LoadWav.path_to_wav`.",
+    ):
         wav_loader_bad.process()
-    assert (
-        str(excinfo.value) == "Path for loading WAV file is not specified. Use 'LoadWav.set_path'."
-    )
 
 
 def test_load_wav_get_output():
+    """Test the get_output method of LoadWav class."""
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
 
     # Loading a wav signal using LoadWav class
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. \
-                        Use the 'LoadWav.process\\(\\)' method.",
+        match="Output is not processed yet. Use the `LoadWav.process\\(\\)` method.",
     ):
         fc = wav_loader.get_output()
 
@@ -75,6 +77,7 @@ def test_load_wav_get_output():
 
 
 def test_load_wav_get_output_as_nparray():
+    """Test the get_output_as_nparray method of LoadWav class."""
     wav_loader = LoadWav(pytest.data_path_flute_in_container)
     wav_loader.process()
 
@@ -102,13 +105,49 @@ def test_load_wav_get_output_as_nparray():
 
 
 def test_load_wav_get_set_path():
+    """Test the path setter of LoadWav class."""
     wav_loader = LoadWav()
     wav_loader.path_to_wav = pytest.data_path_flute_in_container
     assert wav_loader.path_to_wav == pytest.data_path_flute_in_container
 
 
+def test_load_wav_get_sampling_frequency():
+    """Test getting the sampling frequency output of LoadWav class."""
+    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. Use the `LoadWav.process\\(\\)` method.",
+    ):
+        fs = wav_loader.get_sampling_frequency()
+    assert fs is None
+
+    wav_loader.process()
+    fs = wav_loader.get_sampling_frequency()
+
+    assert fs == pytest.approx(44100.0)
+
+
+def test_load_wav_get_format():
+    """Test getting the format output of LoadWav class."""
+    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. Use the `LoadWav.process\\(\\)` method.",
+    ):
+        fmt = wav_loader.get_format()
+    assert fmt is None
+
+    wav_loader.process()
+    fmt = wav_loader.get_format()
+
+    assert fmt == "int16"
+
+
 @patch("matplotlib.pyplot.show")
 def test_load_wav_plot(mock_show):
+    """Test the plot method of LoadWav class."""
     wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
     with pytest.raises(
         PyAnsysSoundException,
