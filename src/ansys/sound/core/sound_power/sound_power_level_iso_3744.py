@@ -23,9 +23,13 @@
 """Computes ISO 3744 sound power level."""
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
+from ansys.dpf.core import Field, Operator
 import matplotlib.pyplot as plt
 import numpy as np
+
+from ansys.sound.core.signal_utilities.create_signal_fields_container import (
+    CreateSignalFieldsContainer,
+)
 
 from . import SoundPowerParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -389,10 +393,9 @@ class SoundPowerLevelISO3744(SoundPowerParent):
             )
 
         # Create a fields container containing all microphone signals.
-        fc_signals = FieldsContainer()
-        fc_signals.labels = ["index"]
-        for isig in range(len(self.__signals)):
-            fc_signals.add_field({"index": isig}, self.__signals[isig])
+        fc_creator = CreateSignalFieldsContainer(self.__signals)
+        fc_creator.process()
+        fc_signals = fc_creator.get_output()
 
         # Set operator inputs.
         self.__operator_compute.connect(0, self.surface_shape)

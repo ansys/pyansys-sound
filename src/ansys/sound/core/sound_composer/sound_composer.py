@@ -24,11 +24,14 @@
 import os
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, GenericDataContainersCollection, Operator
+from ansys.dpf.core import Field, GenericDataContainersCollection, Operator
 from matplotlib import pyplot as plt
 import numpy as np
 
 from ansys.sound.core.signal_utilities import SumSignals
+from ansys.sound.core.signal_utilities.create_signal_fields_container import (
+    CreateSignalFieldsContainer,
+)
 from ansys.sound.core.sound_composer._sound_composer_parent import SoundComposerParent
 from ansys.sound.core.sound_composer.track import Track
 
@@ -188,18 +191,19 @@ class SoundComposer(SoundComposerParent):
             )
             self._output = None
         else:
-            track_signals = FieldsContainer()
-            track_signals.labels = ["index"]
-            for index, track in enumerate(self.tracks):
+            track_signals = []
+            for track in self.tracks:
                 track.process(sampling_frequency)
                 track_signal = track.get_output()
-
-                # Make sure all tracks have the same unit, otherwise an error will be raied in
-                # SumSignals.
+                # Make sure all tracks have the same unit to avoid raising an error in SumSignals.
                 track_signal.unit = ""
-                track_signals.add_field({"index": index}, track_signal)
+                track_signals.append(track_signal)
 
-            track_sum = SumSignals(signals=track_signals)
+            fc_creator = CreateSignalFieldsContainer(track_signals)
+            fc_creator.process()
+            track_signals_fc = fc_creator.get_output()
+
+            track_sum = SumSignals(signals=track_signals_fc)
             track_sum.process()
 
             self._output = track_sum.get_output()
