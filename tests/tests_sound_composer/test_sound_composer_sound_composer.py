@@ -42,7 +42,6 @@ from ansys.sound.core.spectral_processing.power_spectral_density import PowerSpe
 REF_ACOUSTIC_POWER = 4e-10
 
 EXP_LEVEL_OCTAVE_BAND = [71.9, 78.7, 66.2]
-
 EXP_STR_NOT_SET = 'SoundComposer object: "Unnamed" (0 track(s))'
 EXP_STR_ALL_SET = (
     'SoundComposer object: "Beethoven" (8 track(s))\n'
