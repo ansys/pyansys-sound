@@ -79,6 +79,7 @@ my_server, lic_context = connect_to_or_start_server(use_license_context=True)
 # does not display the phase and allows setting custom title, maximum SPL, and maximum frequency.
 def plot_stft(
     stft: Stft,
+    fs: float,
     SPLmax: float,
     title: str = "STFT",
     maximum_frequency: float = MAX_FREQUENCY_PLOT_STFT,
@@ -89,6 +90,8 @@ def plot_stft(
     ----------
     stft: Stft
         Object containing the STFT.
+    fs: float
+        Sampling frequency of the signal in Hz.
     SPLmax: float
         Maximum value (here in dB SPL) for the colormap.
     title: str, default: "STFT"
@@ -110,13 +113,10 @@ def plot_stft(
     np.seterr(divide="warn")
 
     # Obtain sampling frequency, time steps, and number of time samples
-    time_data = stft.signal.time_freq_support.time_frequencies.data
-    time_step = time_data[1] - time_data[0]
-    fs = 1.0 / time_step
-    num_time_index = len(stft.get_output().get_available_ids_for_label("time"))
+    time_data_spectrogram = stft.get_output().time_freq_support.time_frequencies.data
 
     # Define boundaries of the plot
-    extent = [0, time_step * num_time_index, 0.0, fs / 2.0]
+    extent = [time_data_spectrogram[0], time_data_spectrogram[-1], 0.0, fs / 2.0]
 
     # Plot
     plt.figure()
@@ -152,6 +152,7 @@ wav_loader.process()
 
 # Plot the signal in time domain
 time_domain_signal = wav_loader.get_output()[0]
+fs = wav_loader.get_sampling_frequency()
 time = time_domain_signal.time_freq_support.time_frequencies
 time_vector = time.data
 time_unit = time.unit
@@ -163,11 +164,11 @@ plt.ylabel(f"Amplitude ({time_domain_signal.unit})")
 plt.show()
 
 # Compute the spectrogram of the signal and plot it
-stft_original = Stft(signal=wav_loader.get_output()[0], fft_size=1024, window_overlap=0.9)
+stft_original = Stft(signal=time_domain_signal, fft_size=1024, window_overlap=0.9)
 stft_original.process()
 max_stft = 20 * np.log10(np.max(stft_original.get_stft_magnitude_as_nparray()))
 
-plot_stft(stft_original, SPLmax=max_stft, maximum_frequency=20000.0)
+plot_stft(stft_original, fs, SPLmax=max_stft, maximum_frequency=20000.0)
 
 # %%
 # Use individual extraction features
@@ -188,7 +189,7 @@ cropped_signal = signal_cropper.get_output()
 # Then use the 'XtractDenoiserParameters' class to create the noise pattern.
 xtract_denoiser_params = XtractDenoiserParameters()
 xtract_denoiser_params.noise_psd = xtract_denoiser_params.create_noise_psd_from_noise_samples(
-    signal=cropped_signal, sampling_frequency=44100.0, window_length=100
+    signal=cropped_signal, sampling_frequency=fs, window_length=100
 )
 
 # Denoise the signal using the 'XtractDenoiser' class.
@@ -236,10 +237,10 @@ stft_modified_signal.process()
 print("Plot of the spectrograms with tonal extraction parameters that do not work.")
 
 ## Spectrogram of the original signal
-plot_stft(stft_original, SPLmax=max_stft, title="Original Signal")
+plot_stft(stft_original, fs, SPLmax=max_stft, title="Original Signal")
 
 ## Spectrogram of the modified signal
-plot_stft(stft_modified_signal, SPLmax=max_stft, title="Extracted Tones")
+plot_stft(stft_modified_signal, fs, SPLmax=max_stft, title="Extracted Tones")
 # You can see from the obtained plot that the tones are not properly extracted.
 
 # %%
@@ -249,12 +250,12 @@ xtract_tonal.process()
 
 # Recheck the plots
 print("Plot of the spectrograms with the right tonal extraction parameters.")
-plot_stft(stft_original, SPLmax=max_stft, title="Original Signal")
+plot_stft(stft_original, fs, SPLmax=max_stft, title="Original Signal")
 
 # Spectrogram of the modified signal
 stft_modified_signal.signal = xtract_tonal.get_output()[0]
 stft_modified_signal.process()
-plot_stft(stft_modified_signal, SPLmax=max_stft, title="Extracted Tones")
+plot_stft(stft_modified_signal, fs, SPLmax=max_stft, title="Extracted Tones")
 
 # %%
 # Transient extraction
@@ -317,6 +318,7 @@ for p in paths:
     wav_loader.path_to_wav = p
     wav_loader.process()
     time_domain_signal = wav_loader.get_output()[0]
+    fs = wav_loader.get_sampling_frequency()
 
     # Plot the time domain signal
     ylims = [-3.0, 3.0]
@@ -333,7 +335,7 @@ for p in paths:
     # Compute and plot the STFT
     stft_original.signal = time_domain_signal
     stft_original.process()
-    plot_stft(stft=stft_original, SPLmax=max_stft, title=f"STFT for signal {signal_name}")
+    plot_stft(stft=stft_original, fs=fs, SPLmax=max_stft, title=f"STFT for signal {signal_name}")
 
     # Use Xtract with the loaded signal
     xtract.input_signal = time_domain_signal
