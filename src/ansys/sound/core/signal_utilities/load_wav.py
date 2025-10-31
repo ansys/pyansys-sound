@@ -89,7 +89,7 @@ class LoadWav(SignalUtilitiesParent):
         # Store outputs
         self._output = self.__operator.get_output(0, types.fields_container)
         # Note: sampling frequency and format are retrieved within their respective getter methods,
-        # because, their availabilility depends on the server version (which is managed by these
+        # because their availabilility depends on the server version (which is managed by these
         # methods' `requires_dpf_version` decorator).
 
     def get_output(self) -> FieldsContainer:
