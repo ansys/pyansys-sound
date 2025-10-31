@@ -136,6 +136,7 @@ class LoadWav(SignalUtilitiesParent):
                     "method."
                 )
             )
+            return None
 
         return self.__operator.get_output(1, types.double)
 
@@ -155,5 +156,6 @@ class LoadWav(SignalUtilitiesParent):
                     "method."
                 )
             )
+            return None
 
         return self.__operator.get_output(2, types.string)
