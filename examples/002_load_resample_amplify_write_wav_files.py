@@ -64,8 +64,7 @@ wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
 fc_signal_original = wav_loader.get_output()
 
-t1 = fc_signal_original[0].time_freq_support.time_frequencies.data
-sf1 = 1.0 / (t1[1] - t1[0])
+sf1 = wav_loader.get_sampling_frequency()
 print(f"The sampling frequency of the original signal is {int(sf1)} Hz.")
 
 # %%
@@ -105,6 +104,7 @@ gain_unit = " dB" if gain_applier.gain_in_db else "(linear)"
 fig, axs = plt.subplots(2)
 fig.suptitle("Signals")
 
+t1 = fc_signal_original[0].time_freq_support.time_frequencies.data
 axs[0].plot(t1, data_original, color="g", label=f"original signal, sf={int(sf1)} Hz")
 axs[0].set_ylabel(f"Amplitude ({unit_original})")
 axs[0].legend(loc="upper right")
