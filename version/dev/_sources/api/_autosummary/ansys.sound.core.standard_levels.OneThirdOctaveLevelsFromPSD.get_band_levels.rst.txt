@@ -1,0 +1,6 @@
+get\_band\_levels
+=================
+
+.. currentmodule:: ansys.sound.core.standard_levels
+
+.. automethod:: OneThirdOctaveLevelsFromPSD.get_band_levels
