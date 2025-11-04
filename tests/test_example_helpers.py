@@ -29,9 +29,12 @@ from ansys.sound.core.examples_helpers import (
     download_accel_with_rpm_wav,
     download_aircraft10kHz_wav,
     download_aircraft_wav,
+    download_all_carHVAC_wav,
     download_fan_wav,
     download_flute_psd,
     download_flute_wav,
+    download_HVAC_test_wav,
+    download_JLT_CE_data_csv,
     download_sound_composer_FRF_eMotor,
     download_sound_composer_project_whatif,
     download_sound_composer_source_control_eMotor,
@@ -156,3 +159,25 @@ def test_download_sound_composer_sourcecontrol_WindRoadNoise():
     p = str(EXAMPLES_PATH) + "/WindRoadNoise - vehicle speed.txt"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 80
+
+
+def test_download_JLT_CE_data_csv():
+    download_JLT_CE_data_csv()
+    p = str(EXAMPLES_PATH) + "/JLT_CE_data.csv"
+    assert pathlib.Path(p).exists() == True
+    assert os.path.getsize(p) == 1155
+
+
+def test_download_all_carHVAC_wav():
+    download_all_carHVAC_wav()
+    for i in range(20):
+        p = str(EXAMPLES_PATH) + f"/carHVAC{i+1}.wav"
+        assert pathlib.Path(p).exists() == True
+        assert os.path.getsize(p) == 1920247
+
+
+def test_download_HVAC_test_wav():
+    download_HVAC_test_wav()
+    p = str(EXAMPLES_PATH) + "/HVAC_test.wav"
+    assert pathlib.Path(p).exists() == True
+    assert os.path.getsize(p) == 930005
