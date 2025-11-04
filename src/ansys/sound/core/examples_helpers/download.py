@@ -394,3 +394,45 @@ def download_sound_composer_source_control_WindRoadNoise(server=None):
     return _download_example_file_to_server_tmp_folder(
         "WindRoadNoise - vehicle speed.txt", server=server
     )
+
+
+def download_HVAC_test_wav(server=None):
+    """Download the ``HVAC_test.wav`` file.
+
+    This file is a stationary automotive HVAC noise.
+
+    Returns
+    -------
+    str
+        Path for the ``HVAC_test.wav`` file.
+    """
+    return _download_example_file_to_server_tmp_folder("HVAC_test.wav", server=server)
+
+
+def download_JLT_CE_data_csv(server=None) -> str:
+    """Download a CSV file containing JLT results.
+
+    This file contains the statistics table of the ratings obtained in a listening test conducted
+    with Ansys Sound - Jury Listening Test, with the Comparative Evaluation method.
+
+    Returns
+    -------
+    str
+        Path for the ``JLT_CE_data.csv`` file.
+    """
+    return _download_example_file_to_server_tmp_folder("JLT_CE_data.csv", server=server)
+
+
+def download_all_carHVAC_wav(server=None) -> str:
+    """Download all the ``carHVAC<i>.wav`` files.
+
+    This function downloads 20 WAV files named ``carHVAC1.wav`` to ``carHVAC20.wav``.
+
+    Returns
+    -------
+    str
+        Path where the ``carHVAC<i>.wav`` files are located.
+    """
+    for i in range(20):
+        filepath = _download_example_file_to_server_tmp_folder(f"carHVAC{i+1}.wav", server=server)
+    return os.path.dirname(filepath)
