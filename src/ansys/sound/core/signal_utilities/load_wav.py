@@ -147,7 +147,8 @@ class LoadWav(SignalUtilitiesParent):
         Returns
         -------
         str
-            Format of the loaded WAV file. Can be either "float32", "int32", "int16", or "int8".
+            Format of the loaded WAV file. Can be either "float32", "int32", "int24", "int16", or
+            "int8".
         """
         if self._output is None:
             warnings.warn(

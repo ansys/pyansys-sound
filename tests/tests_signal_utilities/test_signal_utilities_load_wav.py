@@ -149,8 +149,27 @@ def test_load_wav_get_format():
 
     wav_loader.process()
     fmt = wav_loader.get_format()
-
     assert fmt == "int16"
+
+    wav_loader.path_to_wav = pytest.data_path_flute_int8_in_container
+    wav_loader.process()
+    fmt = wav_loader.get_format()
+    assert fmt == "int8"
+
+    wav_loader.path_to_wav = pytest.data_path_flute_int24_in_container
+    wav_loader.process()
+    fmt = wav_loader.get_format()
+    assert fmt == "int24"
+
+    wav_loader.path_to_wav = pytest.data_path_flute_int32_in_container
+    wav_loader.process()
+    fmt = wav_loader.get_format()
+    assert fmt == "int32"
+
+    wav_loader.path_to_wav = pytest.data_path_flute_float32_in_container
+    wav_loader.process()
+    fmt = wav_loader.get_format()
+    assert fmt == "float32"
 
 
 @patch("matplotlib.pyplot.show")
