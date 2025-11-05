@@ -75,6 +75,7 @@ my_server, lic_context = connect_to_or_start_server(use_license_context=True)
 # does not display the phase and allows setting custom title, maximum SPL, and maximum frequency.
 def plot_stft(
     stft: Stft,
+    fs: float,
     SPLmax: float,
     title: str = "STFT",
     maximum_frequency: float = MAX_FREQUENCY_PLOT_STFT,
@@ -85,6 +86,8 @@ def plot_stft(
     ----------
     stft: Stft
         Object containing the STFT.
+    fs: float
+        Sampling frequency of the signal in Hz.
     SPLmax: float
         Maximum value (here in dB SPL) for the colormap.
     title: str, default: "STFT"
@@ -106,9 +109,6 @@ def plot_stft(
     np.seterr(divide="warn")
 
     # Obtain sampling frequency, time steps, and number of time samples
-    time_data_signal = stft.signal.time_freq_support.time_frequencies.data
-    time_step = time_data_signal[1] - time_data_signal[0]
-    fs = 1.0 / time_step
     time_data_spectrogram = stft.get_output().time_freq_support.time_frequencies.data
 
     # Define boundaries of the plot
@@ -150,6 +150,7 @@ path_accel_wav = download_accel_with_rpm_wav(server=my_server)
 wav_loader = LoadWav(path_accel_wav)
 wav_loader.process()
 fc_signal = wav_loader.get_output()
+fs = wav_loader.get_sampling_frequency()
 
 # Extract the audio signal and the RPM profile
 wav_signal, rpm_signal = wav_loader.get_output_as_nparray()
@@ -178,7 +179,7 @@ plt.show()
 stft = Stft(signal=fc_signal[0], window_overlap=0.9, fft_size=8192)
 stft.process()
 max_stft = 20 * np.log10(np.max(stft.get_stft_magnitude_as_nparray()))
-plot_stft(stft, max_stft)
+plot_stft(stft, fs, max_stft)
 
 # %%
 # Isolate orders
@@ -211,7 +212,7 @@ isolate_orders.process()
 # Plot the spectrogram of the isolated orders
 stft.signal = isolate_orders.get_output()
 stft.process()
-plot_stft(stft, max_stft)
+plot_stft(stft, fs, max_stft)
 
 # %%
 # Isolate different orders
@@ -225,11 +226,11 @@ isolate_orders.window_type = "BLACKMAN"
 # Reprocess (Must be called explicitly. Otherwise, the output won't be updated.)
 isolate_orders.process()
 
-
 # Plot the spectrogram of the isolated orders
 stft.signal = isolate_orders.get_output()
 stft.process()
-plot_stft(stft, max_stft)
+plot_stft(stft, fs, max_stft)
+
 # %%
 # Work with the isolated signal
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
