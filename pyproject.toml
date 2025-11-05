@@ -55,7 +55,7 @@ doc = [
     "jupyter-sphinx==0.5.3",
     "sphinx-autobuild==2024.10.3",
     "platformdirs==4.5.0",
-    "sklearn==1.7.0"
+    "scikit-learn==1.7.0"
 ]
 
 [tool.flit.module]
