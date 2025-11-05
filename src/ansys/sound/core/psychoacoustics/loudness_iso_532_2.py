@@ -23,13 +23,16 @@
 """Computes ISO 532-2:2017 loudness."""
 import warnings
 
+from ansys.dpf.core import Field, FieldsContainer, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
-from ansys.dpf.core import Field, FieldsContainer, Operator, types
 
-from .._pyansys_sound import (PyAnsysSoundException, PyAnsysSoundWarning,
-                              convert_fields_container_to_np_array)
 from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
+from .._pyansys_sound import (
+    PyAnsysSoundException,
+    PyAnsysSoundWarning,
+    convert_fields_container_to_np_array,
+)
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_LOUDNESS_ISO_532_2 = "compute_loudness_iso532_2"

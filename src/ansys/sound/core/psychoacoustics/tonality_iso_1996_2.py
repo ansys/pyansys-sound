@@ -23,11 +23,11 @@
 """Computes ISO 1996-2 tonality."""
 import warnings
 
-import numpy as np
 from ansys.dpf.core import DataTree, Field, Operator, types
+import numpy as np
 
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from . import PsychoacousticsParent
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_TONALITY_ISO1996_2 = "compute_tonality_iso1996_2"

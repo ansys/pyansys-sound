@@ -47,11 +47,14 @@ and the results are commented, compared, and discussed.
 
 # Load required libraries.
 from ansys.sound.core.examples_helpers import download_turbo_whistling_wav
-from ansys.sound.core.psychoacoustics import (TonalityAures, TonalityDIN45681,
-                                              TonalityECMA418_2,
-                                              TonalityISO1996_2,
-                                              TonalityISO1996_2_OverTime,
-                                              TonalityISOTS20065)
+from ansys.sound.core.psychoacoustics import (
+    TonalityAures,
+    TonalityDIN45681,
+    TonalityECMA418_2,
+    TonalityISO1996_2,
+    TonalityISO1996_2_OverTime,
+    TonalityISOTS20065,
+)
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectrogram_processing.stft import Stft

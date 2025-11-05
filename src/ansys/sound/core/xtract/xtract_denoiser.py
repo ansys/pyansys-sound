@@ -24,13 +24,16 @@
 
 import warnings
 
+from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
-from ansys.dpf.core import Field, FieldsContainer, Operator
 
-from .._pyansys_sound import (PyAnsysSoundException, PyAnsysSoundWarning,
-                              convert_fields_container_to_np_array)
 from . import XtractDenoiserParameters, XtractParent
+from .._pyansys_sound import (
+    PyAnsysSoundException,
+    PyAnsysSoundWarning,
+    convert_fields_container_to_np_array,
+)
 
 
 class XtractDenoiser(XtractParent):

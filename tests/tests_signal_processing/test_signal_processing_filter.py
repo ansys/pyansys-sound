@@ -22,12 +22,10 @@
 
 from unittest.mock import patch
 
+from ansys.dpf.core import Field, Operator, TimeFreqSupport, fields_factory, locations
 import pytest
-from ansys.dpf.core import (Field, Operator, TimeFreqSupport, fields_factory,
-                            locations)
 
-from ansys.sound.core._pyansys_sound import (PyAnsysSoundException,
-                                             PyAnsysSoundWarning)
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.signal_processing import Filter
 from ansys.sound.core.signal_utilities import LoadWav
 

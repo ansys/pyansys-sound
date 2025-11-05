@@ -22,9 +22,9 @@
 
 import os
 
-import pytest
 from ansys.dpf.core import upload_file_in_tmp_folder
 from ansys.dpf.core.check_version import get_server_version, meets_version
+import pytest
 
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 

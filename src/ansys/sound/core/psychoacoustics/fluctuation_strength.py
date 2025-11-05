@@ -23,12 +23,12 @@
 """Compute the fluctuation strength."""
 import warnings
 
+from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
-from ansys.dpf.core import Field, Operator, types
 
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from . import PsychoacousticsParent
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_FLUCTUATION_STRENGTH = "compute_fluctuation_strength"

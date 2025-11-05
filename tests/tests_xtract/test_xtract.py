@@ -22,20 +22,16 @@
 
 from unittest.mock import patch
 
+from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer
 import numpy as np
 import pytest
-from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer
 
-from ansys.sound.core._pyansys_sound import (PyAnsysSoundException,
-                                             PyAnsysSoundWarning)
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.xtract.xtract import Xtract
-from ansys.sound.core.xtract.xtract_denoiser_parameters import \
-    XtractDenoiserParameters
-from ansys.sound.core.xtract.xtract_tonal_parameters import \
-    XtractTonalParameters
-from ansys.sound.core.xtract.xtract_transient_parameters import \
-    XtractTransientParameters
+from ansys.sound.core.xtract.xtract_denoiser_parameters import XtractDenoiserParameters
+from ansys.sound.core.xtract.xtract_tonal_parameters import XtractTonalParameters
+from ansys.sound.core.xtract.xtract_transient_parameters import XtractTransientParameters
 
 
 def test_xtract_instantiation():

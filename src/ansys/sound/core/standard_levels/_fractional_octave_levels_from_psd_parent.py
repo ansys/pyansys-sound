@@ -21,8 +21,8 @@
 # SOFTWARE.
 
 """Fractional octave levels from a PSD input."""
-import numpy as np
 from ansys.dpf.core import Field, Operator, types
+import numpy as np
 
 from .._pyansys_sound import PyAnsysSoundException
 from ._fractional_octave_levels_parent import FractionalOctaveLevelsParent

@@ -22,12 +22,11 @@
 
 from unittest.mock import patch
 
+from ansys.dpf.core import Field, TimeFreqSupport, fields_factory, locations
 import numpy as np
 import pytest
-from ansys.dpf.core import Field, TimeFreqSupport, fields_factory, locations
 
-from ansys.sound.core._pyansys_sound import (PyAnsysSoundException,
-                                             PyAnsysSoundWarning)
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.standard_levels import OneThirdOctaveLevelsFromPSD
 
 # Skip entire test module if server < 11.0

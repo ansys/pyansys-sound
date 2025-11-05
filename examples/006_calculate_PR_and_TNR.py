@@ -40,16 +40,21 @@ orders, when the input signal is associated with an RPM profile.
 # Setting up the analysis consists of loading Ansys libraries, connecting to the
 # DPF server, and retrieving the example files.
 
-import numpy as np
 # Load Ansys libraries.
 from ansys.dpf.core import TimeFreqSupport, fields_factory, locations
+import numpy as np
 
-from ansys.sound.core.examples_helpers import (download_accel_with_rpm_wav,
-                                               download_flute_psd,
-                                               download_flute_wav)
+from ansys.sound.core.examples_helpers import (
+    download_accel_with_rpm_wav,
+    download_flute_psd,
+    download_flute_wav,
+)
 from ansys.sound.core.psychoacoustics import (
-    ProminenceRatio, ProminenceRatioForOrdersOverTime, ToneToNoiseRatio,
-    ToneToNoiseRatioForOrdersOverTime)
+    ProminenceRatio,
+    ProminenceRatioForOrdersOverTime,
+    ToneToNoiseRatio,
+    ToneToNoiseRatioForOrdersOverTime,
+)
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectral_processing import PowerSpectralDensity

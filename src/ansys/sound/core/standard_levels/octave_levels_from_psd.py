@@ -23,8 +23,7 @@
 """Compute octave levels from a PSD input."""
 import matplotlib.pyplot as plt
 
-from ._fractional_octave_levels_from_psd_parent import \
-    FractionalOctaveLevelsFromPSDParent
+from ._fractional_octave_levels_from_psd_parent import FractionalOctaveLevelsFromPSDParent
 
 
 class OctaveLevelsFromPSD(FractionalOctaveLevelsFromPSDParent, min_dpf_version="11.0"):

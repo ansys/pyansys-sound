@@ -21,14 +21,14 @@
 # SOFTWARE.
 
 """Functions to download sample datasets from the PyAnsys Sound examples repository."""
+from functools import wraps
 import os
 import shutil
-from functools import wraps
 
-import platformdirs
-import requests
 from ansys.dpf.core import server as server_module
 from ansys.dpf.core import upload_file_in_tmp_folder
+import platformdirs
+import requests
 
 # Setup data directory
 USER_DATA_PATH = platformdirs.user_data_dir(appname="ansys_sound_core", appauthor="Ansys")

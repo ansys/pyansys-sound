@@ -23,8 +23,7 @@
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException
-from ansys.sound.core.standard_levels import \
-    FractionalOctaveLevelsFromPSDParent
+from ansys.sound.core.standard_levels import FractionalOctaveLevelsFromPSDParent
 
 # Skip entire test module if server < 11.0
 if not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:

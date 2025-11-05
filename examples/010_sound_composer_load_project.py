@@ -57,8 +57,7 @@ The example shows how to perform these operations:
 # and connecting to the DPF server.
 
 # Load Ansys libraries.
-from ansys.sound.core.examples_helpers import \
-    download_sound_composer_project_whatif
+from ansys.sound.core.examples_helpers import download_sound_composer_project_whatif
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.sound_composer import SoundComposer
 from ansys.sound.core.spectrogram_processing import Stft

@@ -24,17 +24,27 @@ import os
 import pathlib
 
 from ansys.sound.core.examples_helpers import (
-    download_accel_with_rpm_2_wav, download_accel_with_rpm_3_wav,
-    download_accel_with_rpm_wav, download_aircraft10kHz_wav,
-    download_aircraft_wav, download_all_carHVAC_wav, download_fan_wav,
-    download_flute_psd, download_flute_wav, download_HVAC_test_wav,
-    download_JLT_CE_data_csv, download_sound_composer_FRF_eMotor,
+    download_accel_with_rpm_2_wav,
+    download_accel_with_rpm_3_wav,
+    download_accel_with_rpm_wav,
+    download_aircraft10kHz_wav,
+    download_aircraft_wav,
+    download_all_carHVAC_wav,
+    download_fan_wav,
+    download_flute_psd,
+    download_flute_wav,
+    download_HVAC_test_wav,
+    download_JLT_CE_data_csv,
+    download_sound_composer_FRF_eMotor,
     download_sound_composer_project_whatif,
     download_sound_composer_source_control_eMotor,
     download_sound_composer_source_control_WindRoadNoise,
     download_sound_composer_source_eMotor,
-    download_sound_composer_source_WindRoadNoise, download_turbo_whistling_wav,
-    download_xtract_demo_signal_1_wav, download_xtract_demo_signal_2_wav)
+    download_sound_composer_source_WindRoadNoise,
+    download_turbo_whistling_wav,
+    download_xtract_demo_signal_1_wav,
+    download_xtract_demo_signal_2_wav,
+)
 from ansys.sound.core.examples_helpers.download import EXAMPLES_PATH
 
 

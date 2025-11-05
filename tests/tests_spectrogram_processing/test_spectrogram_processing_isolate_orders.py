@@ -22,12 +22,11 @@
 
 from unittest.mock import patch
 
+from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
-from ansys.dpf.core import Field, FieldsContainer
 
-from ansys.sound.core._pyansys_sound import (PyAnsysSoundException,
-                                             PyAnsysSoundWarning)
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectrogram_processing import IsolateOrders
 
