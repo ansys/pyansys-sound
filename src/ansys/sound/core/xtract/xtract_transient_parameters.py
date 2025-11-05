@@ -24,8 +24,8 @@
 
 from ansys.dpf.core import GenericDataContainer
 
-from .._pyansys_sound import PyAnsysSoundException
 from . import XtractParent
+from .._pyansys_sound import PyAnsysSoundException
 
 ID_TRANSIENT_PARAMETERS_CLASS = "Xtract_transient_parameters"
 ID_LOWER_THRESHOLD = "lower_threshold"

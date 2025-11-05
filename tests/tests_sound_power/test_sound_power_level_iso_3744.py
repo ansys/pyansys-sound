@@ -22,12 +22,11 @@
 
 from unittest.mock import patch
 
+from ansys.dpf.core import Field
 import numpy as np
 import pytest
-from ansys.dpf.core import Field
 
-from ansys.sound.core._pyansys_sound import (PyAnsysSoundException,
-                                             PyAnsysSoundWarning)
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.sound_power import SoundPowerLevelISO3744
 
 if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:

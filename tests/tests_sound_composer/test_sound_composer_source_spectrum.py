@@ -22,16 +22,20 @@
 
 from unittest.mock import patch
 
+from ansys.dpf.core import (
+    Field,
+    GenericDataContainer,
+    Operator,
+    TimeFreqSupport,
+    fields_factory,
+    locations,
+)
 import numpy as np
 import pytest
-from ansys.dpf.core import (Field, GenericDataContainer, Operator,
-                            TimeFreqSupport, fields_factory, locations)
 
-from ansys.sound.core._pyansys_sound import (PyAnsysSoundException,
-                                             PyAnsysSoundWarning)
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.signal_utilities.load_wav import LoadWav
-from ansys.sound.core.sound_composer import (SourceControlSpectrum,
-                                             SourceSpectrum)
+from ansys.sound.core.sound_composer import SourceControlSpectrum, SourceSpectrum
 from ansys.sound.core.sound_composer import SpectrumSynthesisMethods as Methods
 from ansys.sound.core.spectral_processing import PowerSpectralDensity
 

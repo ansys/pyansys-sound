@@ -23,12 +23,11 @@
 """Compute the overall level."""
 import warnings
 
-import numpy as np
 from ansys.dpf.core import Field, Operator, types
+import numpy as np
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-from ._standard_levels_parent import (DICT_FREQUENCY_WEIGHTING, DICT_SCALE,
-                                      StandardLevelsParent)
+from ._standard_levels_parent import DICT_FREQUENCY_WEIGHTING, DICT_SCALE, StandardLevelsParent
 
 ID_COMPUTE_OVERALL_LEVEL = "compute_overall_level"
 

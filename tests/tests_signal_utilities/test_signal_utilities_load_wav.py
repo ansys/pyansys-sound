@@ -25,8 +25,7 @@ from unittest.mock import patch
 import numpy as np
 import pytest
 
-from ansys.sound.core._pyansys_sound import (PyAnsysSoundException,
-                                             PyAnsysSoundWarning)
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.signal_utilities import LoadWav
 
 

@@ -52,21 +52,25 @@ C:/Users/Public/Documents/Ansys/Acoustics/JLT/CE - Automotive HVAC
 
 # Load standard libraries.
 import csv
-import os
 from itertools import islice
 from math import sqrt
+import os
 
 import matplotlib.pyplot as plt
 from sklearn import linear_model
 
 # Load Ansys libraries.
-from ansys.sound.core.examples_helpers import (download_all_carHVAC_wav,
-                                               download_HVAC_test_wav,
-                                               download_JLT_CE_data_csv)
-from ansys.sound.core.psychoacoustics import (FluctuationStrength,
-                                              LoudnessISO532_1_Stationary,
-                                              SharpnessDIN45692,
-                                              TonalityECMA418_2)
+from ansys.sound.core.examples_helpers import (
+    download_all_carHVAC_wav,
+    download_HVAC_test_wav,
+    download_JLT_CE_data_csv,
+)
+from ansys.sound.core.psychoacoustics import (
+    FluctuationStrength,
+    LoudnessISO532_1_Stationary,
+    SharpnessDIN45692,
+    TonalityECMA418_2,
+)
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 

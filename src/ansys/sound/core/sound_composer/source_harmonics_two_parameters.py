@@ -23,10 +23,9 @@
 """Sound Composer's harmonics source with two parameters."""
 import warnings
 
-import numpy as np
-from ansys.dpf.core import (Field, FieldsContainer, GenericDataContainer,
-                            Operator)
+from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operator
 from matplotlib import pyplot as plt
+import numpy as np
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._source_parent import SourceParent

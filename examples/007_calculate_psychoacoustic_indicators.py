@@ -59,15 +59,18 @@ The example shows how to perform these operations:
 import os
 
 # Load Ansys libraries.
-from ansys.sound.core.examples_helpers import (download_accel_with_rpm_wav,
-                                               download_flute_wav)
-from ansys.sound.core.psychoacoustics import (FluctuationStrength,
-                                              LoudnessISO532_1_Stationary,
-                                              LoudnessISO532_1_TimeVarying,
-                                              LoudnessISO532_2, Roughness,
-                                              Sharpness, SharpnessDIN45692,
-                                              SharpnessDIN45692OverTime,
-                                              SharpnessOverTime)
+from ansys.sound.core.examples_helpers import download_accel_with_rpm_wav, download_flute_wav
+from ansys.sound.core.psychoacoustics import (
+    FluctuationStrength,
+    LoudnessISO532_1_Stationary,
+    LoudnessISO532_1_TimeVarying,
+    LoudnessISO532_2,
+    Roughness,
+    Sharpness,
+    SharpnessDIN45692,
+    SharpnessDIN45692OverTime,
+    SharpnessOverTime,
+)
 from ansys.sound.core.psychoacoustics.roughness import Roughness
 from ansys.sound.core.psychoacoustics.sharpness import Sharpness
 from ansys.sound.core.server_helpers import connect_to_or_start_server

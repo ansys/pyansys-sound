@@ -22,8 +22,8 @@
 
 from unittest.mock import patch
 
-import pytest
 from ansys.dpf.core import Field
+import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.signal_utilities.load_wav import LoadWav

@@ -22,21 +22,31 @@
 
 from unittest.mock import patch
 
+from ansys.dpf.core import (
+    Field,
+    GenericDataContainer,
+    Operator,
+    TimeFreqSupport,
+    fields_factory,
+    locations,
+)
 import numpy as np
 import pytest
-from ansys.dpf.core import (Field, GenericDataContainer, Operator,
-                            TimeFreqSupport, fields_factory, locations)
 
-from ansys.sound.core._pyansys_sound import (PyAnsysSoundException,
-                                             PyAnsysSoundWarning)
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.signal_processing.filter import Filter
-from ansys.sound.core.sound_composer import (SourceAudio, SourceBroadbandNoise,
-                                             SourceControlSpectrum,
-                                             SourceControlTime, SourceSpectrum)
+from ansys.sound.core.sound_composer import (
+    SourceAudio,
+    SourceBroadbandNoise,
+    SourceControlSpectrum,
+    SourceControlTime,
+    SourceSpectrum,
+)
+from ansys.sound.core.sound_composer import (
+    Track,
+)
 from ansys.sound.core.sound_composer import SpectrumSynthesisMethods as Methods
-from ansys.sound.core.sound_composer import Track
-from ansys.sound.core.spectral_processing.power_spectral_density import \
-    PowerSpectralDensity
+from ansys.sound.core.spectral_processing.power_spectral_density import PowerSpectralDensity
 
 REF_ACOUSTIC_POWER = 4e-10
 

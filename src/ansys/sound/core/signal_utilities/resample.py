@@ -24,12 +24,15 @@
 
 import warnings
 
-import numpy as np
 from ansys.dpf.core import Field, FieldsContainer, Operator
+import numpy as np
 
-from .._pyansys_sound import (PyAnsysSoundException, PyAnsysSoundWarning,
-                              convert_fields_container_to_np_array)
 from . import SignalUtilitiesParent
+from .._pyansys_sound import (
+    PyAnsysSoundException,
+    PyAnsysSoundWarning,
+    convert_fields_container_to_np_array,
+)
 
 
 class Resample(SignalUtilitiesParent):

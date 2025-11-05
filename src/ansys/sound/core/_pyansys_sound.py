@@ -23,11 +23,10 @@
 """PyAnsys Sound interface."""
 import warnings
 
-import numpy as np
 from ansys.dpf.core import FieldsContainer
+import numpy as np
 
-from ansys.sound.core.server_helpers._check_server_version import \
-    _check_dpf_version
+from ansys.sound.core.server_helpers._check_server_version import _check_dpf_version
 
 REFERENCE_ACOUSTIC_PRESSURE = 2e-5
 

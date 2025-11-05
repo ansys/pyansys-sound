@@ -20,15 +20,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from ansys.dpf.core import FieldsContainer, field_from_array, fields_container_factory
+from ansys.dpf.gate.errors import DpfVersionNotSupported
 import numpy as np
 import pytest
-from ansys.dpf.core import (FieldsContainer, field_from_array,
-                            fields_container_factory)
-from ansys.dpf.gate.errors import DpfVersionNotSupported
 
 from ansys.sound.core._pyansys_sound import (
-    PyAnsysSound, PyAnsysSoundException, PyAnsysSoundWarning,
-    convert_fields_container_to_np_array)
+    PyAnsysSound,
+    PyAnsysSoundException,
+    PyAnsysSoundWarning,
+    convert_fields_container_to_np_array,
+)
 
 
 def test_pyansys_sound_init_subclass():

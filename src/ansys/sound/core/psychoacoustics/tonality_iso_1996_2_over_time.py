@@ -23,14 +23,19 @@
 """Computes the tonality according to the standard ISO 1996-2:2007, annex C, over time."""
 import warnings
 
+from ansys.dpf.core import (
+    Field,
+    GenericDataContainer,
+    GenericDataContainersCollection,
+    Operator,
+    types,
+)
+from ansys.dpf.core.collection import Collection
 import matplotlib.pyplot as plt
 import numpy as np
-from ansys.dpf.core import (Field, GenericDataContainer,
-                            GenericDataContainersCollection, Operator, types)
-from ansys.dpf.core.collection import Collection
 
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from . import PsychoacousticsParent
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_TONALITY_ISO_1996_2_OVER_TIME = "compute_tonality_iso1996_2_over_time"
