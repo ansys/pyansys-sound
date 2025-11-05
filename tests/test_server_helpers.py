@@ -20,15 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.dpf.gate.errors import DpfVersionNotSupported
 import pytest
+from ansys.dpf.gate.errors import DpfVersionNotSupported
 
-from ansys.sound.core.server_helpers import (
-    _check_dpf_version,
-    connect_to_or_start_server,
-    requires_dpf_version,
-    validate_dpf_sound_connection,
-)
+from ansys.sound.core.server_helpers import (_check_dpf_version,
+                                             connect_to_or_start_server,
+                                             requires_dpf_version,
+                                             validate_dpf_sound_connection)
 
 
 def test_validate_dpf_sound_connection():

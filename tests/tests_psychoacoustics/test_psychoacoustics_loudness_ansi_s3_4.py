@@ -20,10 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.dpf.core import Field
 import pytest
+from ansys.dpf.core import Field
 
-from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core._pyansys_sound import (PyAnsysSoundException,
+                                             PyAnsysSoundWarning)
 from ansys.sound.core.psychoacoustics import LoudnessANSI_S3_4
 from ansys.sound.core.signal_utilities import LoadWav
 

@@ -23,11 +23,11 @@
 """Computes ANSI S3.4-2007 loudness."""
 import warnings
 
-from ansys.dpf.core import Field, Operator, types
 import numpy as np
+from ansys.dpf.core import Field, Operator, types
 
-from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_LOUDNESS_ANSI_S3_4 = "compute_loudness_ansi_s3_4"

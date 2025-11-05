@@ -23,11 +23,12 @@
 """Fractional octave levels from a PSD input."""
 import warnings
 
-from ansys.dpf.core import Field, Operator, types
 import numpy as np
+from ansys.dpf.core import Field, Operator, types
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-from ._standard_levels_parent import DICT_FREQUENCY_WEIGHTING, StandardLevelsParent
+from ._standard_levels_parent import (DICT_FREQUENCY_WEIGHTING,
+                                      StandardLevelsParent)
 
 
 class FractionalOctaveLevelsParent(StandardLevelsParent, min_dpf_version="11.0"):

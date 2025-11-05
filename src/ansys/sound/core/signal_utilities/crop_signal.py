@@ -23,15 +23,12 @@
 """Crops a signal."""
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
 import numpy as np
+from ansys.dpf.core import Field, FieldsContainer, Operator
 
+from .._pyansys_sound import (PyAnsysSoundException, PyAnsysSoundWarning,
+                              convert_fields_container_to_np_array)
 from . import SignalUtilitiesParent
-from .._pyansys_sound import (
-    PyAnsysSoundException,
-    PyAnsysSoundWarning,
-    convert_fields_container_to_np_array,
-)
 
 
 class CropSignal(SignalUtilitiesParent):

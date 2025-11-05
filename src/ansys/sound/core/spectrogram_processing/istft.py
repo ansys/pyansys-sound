@@ -24,12 +24,12 @@
 
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
+from ansys.dpf.core import Field, FieldsContainer, Operator
 
-from . import SpectrogramProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from . import SpectrogramProcessingParent
 
 
 class Istft(SpectrogramProcessingParent):

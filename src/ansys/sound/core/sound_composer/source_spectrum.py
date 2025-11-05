@@ -23,9 +23,9 @@
 """Sound Composer's spectrum source."""
 import warnings
 
+import numpy as np
 from ansys.dpf.core import Field, GenericDataContainer, Operator
 from matplotlib import pyplot as plt
-import numpy as np
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._source_control_parent import SpectrumSynthesisMethods as Methods

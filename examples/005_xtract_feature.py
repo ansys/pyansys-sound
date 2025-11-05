@@ -48,21 +48,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from ansys.sound.core.examples_helpers import (
-    download_xtract_demo_signal_1_wav,
-    download_xtract_demo_signal_2_wav,
-)
+    download_xtract_demo_signal_1_wav, download_xtract_demo_signal_2_wav)
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import CropSignal, LoadWav
 from ansys.sound.core.spectrogram_processing import Stft
-from ansys.sound.core.xtract import (
-    Xtract,
-    XtractDenoiser,
-    XtractDenoiserParameters,
-    XtractTonal,
-    XtractTonalParameters,
-    XtractTransient,
-    XtractTransientParameters,
-)
+from ansys.sound.core.xtract import (Xtract, XtractDenoiser,
+                                     XtractDenoiserParameters, XtractTonal,
+                                     XtractTonalParameters, XtractTransient,
+                                     XtractTransientParameters)
 
 # sphinx_gallery_start_ignore
 # sphinx_gallery_thumbnail_path = '_static/_image/example005_thumbnail.png'

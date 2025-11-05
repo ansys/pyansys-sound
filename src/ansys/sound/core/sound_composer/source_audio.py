@@ -23,9 +23,9 @@
 """Sound Composer's audio source."""
 import warnings
 
+import numpy as np
 from ansys.dpf.core import Field, GenericDataContainer, Operator
 from matplotlib import pyplot as plt
-import numpy as np
 
 from ansys.sound.core.signal_utilities import LoadWav, Resample
 

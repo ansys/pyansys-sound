@@ -23,7 +23,8 @@
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException
-from ansys.sound.core.xtract.xtract_transient_parameters import XtractTransientParameters
+from ansys.sound.core.xtract.xtract_transient_parameters import \
+    XtractTransientParameters
 
 
 def test_xtract_transient_parameters_instantiation():

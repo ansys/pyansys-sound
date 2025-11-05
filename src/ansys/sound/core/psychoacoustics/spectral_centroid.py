@@ -23,11 +23,11 @@
 """Computes the spectral centroid of the signal."""
 import warnings
 
-from ansys.dpf.core import Field, Operator
 import numpy as np
+from ansys.dpf.core import Field, Operator
 
-from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from . import PsychoacousticsParent
 
 
 class SpectralCentroid(PsychoacousticsParent):

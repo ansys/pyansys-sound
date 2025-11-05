@@ -21,15 +21,15 @@
 # SOFTWARE.
 
 """Computes the ECMA 418-1/ISO 7779 prominence ratio (PR)."""
-from math import log10
 import warnings
+from math import log10
 
-from ansys.dpf.core import Field, GenericDataContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
+from ansys.dpf.core import Field, GenericDataContainer, Operator
 
-from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from . import PsychoacousticsParent
 
 
 class ProminenceRatio(PsychoacousticsParent):

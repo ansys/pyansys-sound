@@ -23,12 +23,13 @@
 """Compute the level over time."""
 import warnings
 
-from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
+from ansys.dpf.core import Field, Operator, types
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-from ._standard_levels_parent import DICT_FREQUENCY_WEIGHTING, DICT_SCALE, StandardLevelsParent
+from ._standard_levels_parent import (DICT_FREQUENCY_WEIGHTING, DICT_SCALE,
+                                      StandardLevelsParent)
 
 DICT_TIME_WEIGHTING = {"Fast": 1, "Slow": 0, "Impulse": 2, "Custom": 3}
 DICT_ANALYSIS_WINDOW = {
