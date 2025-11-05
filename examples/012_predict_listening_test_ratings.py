@@ -51,7 +51,6 @@ C:/Users/Public/Documents/Ansys/Acoustics/JLT/CE - Automotive HVAC
 # setting up the working directory.
 
 # Load standard libraries.
-import csv
 import os
 
 # Load Ansys libraries.
@@ -196,6 +195,9 @@ filenames = []
 ratings = []
 
 with open(JLT_ratings_path) as f:
-    reader = csv.reader(f, delimiter=";")
-    for row in reader:
-        print(row, len(row))
+    lines = f.readlines()
+    lines = lines[7:]
+    for line in lines:
+        print(line)
+        # parts = line.split(";")
+        # print(parts[0], parts[1])
