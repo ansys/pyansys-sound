@@ -409,20 +409,6 @@ def download_HVAC_test_wav(server=None):
     return _download_example_file_to_server_tmp_folder("HVAC_test.wav", server=server)
 
 
-def download_JLT_CE_data_csv(server=None) -> str:
-    """Download a CSV file containing JLT results.
-
-    This file contains the statistics table of the ratings obtained in a listening test conducted
-    with Ansys Sound - Jury Listening Test, with the Comparative Evaluation method.
-
-    Returns
-    -------
-    str
-        Path for the ``JLT_CE_data.csv`` file.
-    """
-    return _download_example_file_to_server_tmp_folder("JLT_CE_data.csv", server=server)
-
-
 def download_all_carHVAC_wav(server=None) -> str:
     """Download all the ``carHVAC<i>.wav`` files.
 
@@ -436,3 +422,36 @@ def download_all_carHVAC_wav(server=None) -> str:
     for i in range(20):
         filepath = _download_example_file_to_server_tmp_folder(f"carHVAC{i+1}.wav", server=server)
     return os.path.dirname(filepath)
+
+
+def download_JLT_CE_data_csv():
+    """Download the ``JLT_CE_data.csv`` file.
+
+    As JLT_CE_data.csv file is opened using Python's `csv` package, we need the local path of the
+    file.
+
+    Examples
+    --------
+    >>> from ansys.sound.core.examples_helpers import download_JLT_CE_data_csv
+    >>> filename = print(download_JLT_CE_data_csv()[0])
+
+    Returns
+    -------
+    str
+        Local path for the ``JLT_CE_data.csv`` file.
+    """
+    url = _get_example_file_url("JLT_CE_data.csv")
+    try:
+        # download file locally
+        local_path = _download_file_in_local_tmp_folder(url, "JLT_CE_data.csv")
+    except Exception as e:  # Generate exception # pragma no cover
+        raise RuntimeError(
+            "For the reason that follows, retrieving the file failed.\n"
+            "You can download this file from:\n"
+            f"{url}\n"
+            "\n"
+            "The reported error message is:\n"
+            f"{str(e)}"
+        )
+
+    return local_path
