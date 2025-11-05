@@ -23,16 +23,13 @@
 """Computes the ECMA 418-1/ISO 7779 prominence ratio (PR) for specific orders."""
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
+from ansys.dpf.core import Field, FieldsContainer, Operator, types
 
+from .._pyansys_sound import (PyAnsysSoundException, PyAnsysSoundWarning,
+                              convert_fields_container_to_np_array)
 from . import PsychoacousticsParent
-from .._pyansys_sound import (
-    PyAnsysSoundException,
-    PyAnsysSoundWarning,
-    convert_fields_container_to_np_array,
-)
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_PR_FOR_ORDERS_OVER_TIME = "compute_prominence_ratio_for_orders_over_time"

@@ -43,7 +43,8 @@ import matplotlib.pyplot as plt
 
 from ansys.sound.core.examples_helpers import download_flute_wav
 from ansys.sound.core.server_helpers import connect_to_or_start_server
-from ansys.sound.core.signal_utilities import ApplyGain, LoadWav, Resample, WriteWav
+from ansys.sound.core.signal_utilities import (ApplyGain, LoadWav, Resample,
+                                               WriteWav)
 
 # Connect to a remote server or start a local server
 server, lic_context = connect_to_or_start_server(use_license_context=True)

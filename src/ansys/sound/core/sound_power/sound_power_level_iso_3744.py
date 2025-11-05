@@ -23,12 +23,12 @@
 """Computes ISO 3744 sound power level."""
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
+from ansys.dpf.core import Field, FieldsContainer, Operator
 
-from . import SoundPowerParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from . import SoundPowerParent
 
 ID_COMPUTE_SOUND_POWER_LEVEL = "compute_sound_power_level_iso3744"
 ID_LOAD_SOUND_POWER_LEVEL = "load_project_sound_power_level_iso3744"

@@ -21,25 +21,25 @@
 # SOFTWARE.
 
 """Sound Composer's track."""
-from typing import Union
 import warnings
+from typing import Union
 
+import numpy as np
 from ansys.dpf.core import Field, GenericDataContainer
 from matplotlib import pyplot as plt
-import numpy as np
 
 from ansys.sound.core.signal_processing import Filter
 from ansys.sound.core.signal_utilities import ApplyGain
-from ansys.sound.core.sound_composer._sound_composer_parent import SoundComposerParent
+from ansys.sound.core.sound_composer._sound_composer_parent import \
+    SoundComposerParent
 from ansys.sound.core.sound_composer.source_audio import SourceAudio
-from ansys.sound.core.sound_composer.source_broadband_noise import SourceBroadbandNoise
-from ansys.sound.core.sound_composer.source_broadband_noise_two_parameters import (
-    SourceBroadbandNoiseTwoParameters,
-)
+from ansys.sound.core.sound_composer.source_broadband_noise import \
+    SourceBroadbandNoise
+from ansys.sound.core.sound_composer.source_broadband_noise_two_parameters import \
+    SourceBroadbandNoiseTwoParameters
 from ansys.sound.core.sound_composer.source_harmonics import SourceHarmonics
-from ansys.sound.core.sound_composer.source_harmonics_two_parameters import (
-    SourceHarmonicsTwoParameters,
-)
+from ansys.sound.core.sound_composer.source_harmonics_two_parameters import \
+    SourceHarmonicsTwoParameters
 from ansys.sound.core.sound_composer.source_spectrum import SourceSpectrum
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning

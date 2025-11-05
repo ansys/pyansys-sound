@@ -22,12 +22,13 @@
 
 from unittest.mock import patch
 
-from ansys.dpf.core import Field
-from ansys.dpf.core.collection import Collection
 import numpy as np
 import pytest
+from ansys.dpf.core import Field
+from ansys.dpf.core.collection import Collection
 
-from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core._pyansys_sound import (PyAnsysSoundException,
+                                             PyAnsysSoundWarning)
 from ansys.sound.core.psychoacoustics import TonalityISO1996_2_OverTime
 from ansys.sound.core.signal_utilities import LoadWav
 

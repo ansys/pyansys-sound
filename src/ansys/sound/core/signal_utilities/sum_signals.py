@@ -23,11 +23,11 @@
 """Sums signals."""
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
 import numpy as np
+from ansys.dpf.core import Field, FieldsContainer, Operator
 
-from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from . import SignalUtilitiesParent
 
 
 class SumSignals(SignalUtilitiesParent):

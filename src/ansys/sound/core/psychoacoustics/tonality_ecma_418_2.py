@@ -23,12 +23,12 @@
 """Computes ECMA-418-2 tonality."""
 import warnings
 
-from ansys.dpf.core import Field, Operator, _global_server, types
 import matplotlib.pyplot as plt
 import numpy as np
+from ansys.dpf.core import Field, Operator, _global_server, types
 
-from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_TONALITY_ECMA_418_2 = "compute_tonality_ecma418_2"

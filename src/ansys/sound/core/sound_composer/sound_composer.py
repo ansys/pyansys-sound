@@ -24,12 +24,14 @@
 import os
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, GenericDataContainersCollection, Operator
-from matplotlib import pyplot as plt
 import numpy as np
+from ansys.dpf.core import (Field, FieldsContainer,
+                            GenericDataContainersCollection, Operator)
+from matplotlib import pyplot as plt
 
 from ansys.sound.core.signal_utilities import SumSignals
-from ansys.sound.core.sound_composer._sound_composer_parent import SoundComposerParent
+from ansys.sound.core.sound_composer._sound_composer_parent import \
+    SoundComposerParent
 from ansys.sound.core.sound_composer.track import Track
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning

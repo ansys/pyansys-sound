@@ -26,7 +26,8 @@ import numpy as np
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException
 
-from ._fractional_octave_levels_from_signal_parent import FractionalOctaveLevelsFromSignalParent
+from ._fractional_octave_levels_from_signal_parent import \
+    FractionalOctaveLevelsFromSignalParent
 
 
 class OctaveLevelsFromSignal(FractionalOctaveLevelsFromSignalParent, min_dpf_version="11.0"):

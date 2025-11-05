@@ -23,9 +23,10 @@
 """Sound Composer's broadband noise source."""
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operator
-from matplotlib import pyplot as plt
 import numpy as np
+from ansys.dpf.core import (Field, FieldsContainer, GenericDataContainer,
+                            Operator)
+from matplotlib import pyplot as plt
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._source_parent import SourceParent

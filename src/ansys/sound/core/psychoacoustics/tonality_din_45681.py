@@ -23,12 +23,13 @@
 """Computes DIN 45681 tonality."""
 import warnings
 
-from ansys.dpf.core import Field, GenericDataContainersCollection, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
+from ansys.dpf.core import (Field, GenericDataContainersCollection, Operator,
+                            types)
 
-from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from . import PsychoacousticsParent
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_TONALITY_DIN_45681 = "compute_tonality_din45681"

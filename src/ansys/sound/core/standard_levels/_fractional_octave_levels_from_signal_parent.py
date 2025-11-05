@@ -21,8 +21,9 @@
 # SOFTWARE.
 
 """Fractional octave levels from a time-domain signal input."""
-from ansys.dpf.core import Field, Operator, TimeFreqSupport, fields_factory, locations, types
 import numpy as np
+from ansys.dpf.core import (Field, Operator, TimeFreqSupport, fields_factory,
+                            locations, types)
 
 from .._pyansys_sound import PyAnsysSoundException
 from ._fractional_octave_levels_parent import FractionalOctaveLevelsParent

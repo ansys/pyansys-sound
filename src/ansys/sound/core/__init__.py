@@ -30,17 +30,9 @@ import importlib.metadata as importlib_metadata
 __version__ = importlib_metadata.version(__name__.replace(".", "-"))
 """PyAnsys Sound version."""
 
-from . import (
-    examples_helpers,
-    psychoacoustics,
-    server_helpers,
-    signal_utilities,
-    sound_composer,
-    sound_power,
-    spectral_processing,
-    spectrogram_processing,
-    xtract,
-)
+from . import (examples_helpers, psychoacoustics, server_helpers,
+               signal_utilities, sound_composer, sound_power,
+               spectral_processing, spectrogram_processing, xtract)
 
 __all__ = (
     "examples_helpers",

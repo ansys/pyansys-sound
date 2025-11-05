@@ -24,10 +24,11 @@
 
 import warnings
 
-from ansys.dpf.core import Field, Operator, TimeFreqSupport, fields_factory, locations
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy
+from ansys.dpf.core import (Field, Operator, TimeFreqSupport, fields_factory,
+                            locations)
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ..signal_processing import SignalProcessingParent

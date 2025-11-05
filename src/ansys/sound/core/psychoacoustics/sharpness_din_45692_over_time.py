@@ -23,12 +23,12 @@
 """Computes the sharpness according to the DIN 45692 standard, over time."""
 import warnings
 
-from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
+from ansys.dpf.core import Field, Operator, types
 
-from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_SHARPNESS_DIN = "compute_sharpness_din45692"
