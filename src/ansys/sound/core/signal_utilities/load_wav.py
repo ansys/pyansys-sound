@@ -24,8 +24,10 @@
 
 import warnings
 
-from ansys.dpf.core import DataSources, FieldsContainer, Operator
+from ansys.dpf.core import DataSources, FieldsContainer, Operator, types
 import numpy as np
+
+from ansys.sound.core.server_helpers import requires_dpf_version
 
 from . import SignalUtilitiesParent
 from .._pyansys_sound import (
@@ -36,7 +38,7 @@ from .._pyansys_sound import (
 
 
 class LoadWav(SignalUtilitiesParent):
-    """Loads a signal from a WAV file."""
+    """Load a signal, and its sampling frequency and format from a WAV file."""
 
     def __init__(self, path_to_wav: str = ""):
         """Class instantiation takes the following parameters.
@@ -45,7 +47,7 @@ class LoadWav(SignalUtilitiesParent):
         ----------
         path_to_wav : str, default: ""
             Path to the WAV file to load. The path can be set during the instantiation
-            of the object or with the ``LoadWav.set_path()`` method.
+            of the object or with the ``LoadWav.path_to_wav`` attribute.
         """
         super().__init__()
         self.path_to_wav = path_to_wav
@@ -68,7 +70,8 @@ class LoadWav(SignalUtilitiesParent):
         """
         if self.path_to_wav == "":
             raise PyAnsysSoundException(
-                "Path for loading WAV file is not specified. Use 'LoadWav.set_path'."
+                "Path for loading WAV file is not specified. Use "
+                f"`{self.__class__.__name__}.path_to_wav`."
             )
 
         # Load a WAV file
@@ -83,8 +86,11 @@ class LoadWav(SignalUtilitiesParent):
         # Run the operator
         self.__operator.run()
 
-        # Store output in the variable
-        self._output = self.__operator.get_output(0, "fields_container")
+        # Store outputs
+        self._output = self.__operator.get_output(0, types.fields_container)
+        # Note: sampling frequency and format are retrieved within their respective getter methods,
+        # because their availabilility depends on the server version (which is managed by these
+        # methods' `requires_dpf_version` decorator).
 
     def get_output(self) -> FieldsContainer:
         """Get the signal loaded from the WAV file as a DPF fields container.
@@ -94,12 +100,11 @@ class LoadWav(SignalUtilitiesParent):
         FieldsContainer
             Signal loaded from the WAV file in a DPF fields container.
         """
-        if self._output == None:
-            # Computing output if needed
+        if self._output is None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. \
-                        Use the 'LoadWav.process()' method."
+                    f"Output is not processed yet. Use the `{self.__class__.__name__}.process()` "
+                    "method."
                 )
             )
 
@@ -113,6 +118,45 @@ class LoadWav(SignalUtilitiesParent):
         numpy.ndarray
             Signal loaded from the WAV file in a NumPy array.
         """
-        fc = self.get_output()
+        return convert_fields_container_to_np_array(self.get_output())
 
-        return convert_fields_container_to_np_array(fc)
+    @requires_dpf_version("11.0")
+    def get_sampling_frequency(self) -> float:
+        """Get the sampling frequency in Hz of the loaded signal.
+
+        Returns
+        -------
+        float
+            Sampling frequency in Hz of the loaded signal.
+        """
+        if self._output is None:
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    f"Output is not processed yet. Use the `{self.__class__.__name__}.process()` "
+                    "method."
+                )
+            )
+            return None
+
+        return self.__operator.get_output(1, types.double)
+
+    @requires_dpf_version("11.0")
+    def get_format(self) -> str:
+        """Get the format of the loaded WAV file.
+
+        Returns
+        -------
+        str
+            Format of the loaded WAV file. Can be either "float32", "int32", "int24", "int16", or
+            "int8".
+        """
+        if self._output is None:
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    f"Output is not processed yet. Use the `{self.__class__.__name__}.process()` "
+                    "method."
+                )
+            )
+            return None
+
+        return self.__operator.get_output(2, types.string)
