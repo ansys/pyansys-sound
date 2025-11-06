@@ -51,7 +51,13 @@ C:/Users/Public/Documents/Ansys/Acoustics/JLT/CE - Automotive HVAC
 # setting up the working directory.
 
 # Load standard libraries.
+import csv
+from itertools import islice
+from math import sqrt
 import os
+
+import matplotlib.pyplot as plt
+from sklearn import linear_model
 
 # Load Ansys libraries.
 from ansys.sound.core.examples_helpers import (
@@ -195,9 +201,85 @@ filenames = []
 ratings = []
 
 with open(JLT_ratings_path) as f:
-    lines = f.readlines()
-    lines = lines[7:]
-    for line in lines:
-        print(line)
-        # parts = line.split(";")
-        # print(parts[0], parts[1])
+    reader = csv.reader(f, delimiter=";")
+
+    # Skip the first 7 lines of the CSV file (general info, and table header).
+    reader = islice(reader, 7, None)
+
+    for row in reader:
+        # First column is the filename, second column is the mean rating.
+        filenames.append(row[0])
+        ratings.append(float(row[1]))
+
+# %%
+# Calculate the psychoacoustic indicators
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Compute the psychoacoustic indicators for each sound file. The following indicators are computed:
+# - Loudness (ISO 532-1),
+# - Sharpness (DIN 45692),
+# - Fluctuation strength (Sontacchi method),
+# - Tonality (ECMA 418-2).
+
+# Initialize a list to store the indicators for each file. The list will contain sublists, each
+# sublist containing the values of the selected indicators for each sound.
+indicators = []
+
+# Process each sound file one by one.
+# Note that this step is quite long, as some indicators (Fluctuation Strength, and more
+# importantly, Tonality) are quite heavy to compute.
+# Note also that, although the sounds of the test are stereo (binaural recordings), we are
+# using the left channel only. You get similar results if you use the right channel of the
+# average of the two.
+for file_name in filenames:
+    print(f"Calculating indicators for file: {file_name} ...")
+    wav_file_path = os.path.join(model_wav_files_path, file_name + ".wav")
+
+    # Append the indicator values for the current sound to the list.
+    indicators.append(compute_indicators(wav_file_path))
+
+# %%
+# Calculate the multiple linear regression
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Use package scikit-learn (https://scikit-learn.org/) to create a multiple linear regression model,
+# to predict the ratings based on the computed psychoacoustic indicators.
+
+# Create and compute the model.
+regression = linear_model.LinearRegression()
+regression.fit(indicators, ratings)
+
+# Compute the predicted ratings using the regression model.
+ratings_hat = regression.predict(indicators)
+
+# Display the model coefficients and the correlation coefficient.
+print(f"Linear regression model coefficients: {regression.coef_}")
+print(f"Correlation coefficient: {sqrt(regression.score(indicators, ratings)):.3f}")
+
+# Plot the predicted ratings against the actual ratings.
+plt.plot([0, 100], [0, 100], "k--")
+plt.scatter(ratings_hat, ratings)
+plt.xlabel("Predicted ratings")
+plt.ylabel("Actual ratings")
+plt.title("Predicted vs Actual ratings")
+plt.xlim(0, 100)
+plt.ylim(0, 100)
+plt.grid()
+plt.show()
+
+# %%
+# Use the regression coefficients for prediction
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Use the model coefficients to estimate the rating of a new sound file. Using the model
+# coefficients consists in computing the indicators and applying the formula:
+# rating = a0 + a1 * LN + a2 * S + a3 * FS + a4 * T, where a0 is the intercept and a1, a2, a3, and
+# a4 are the coefficients of the model.
+# The coefficients of the model are stored in the regression object, and can be accessed using the
+# `coef_` attribute. The intercept is stored in the `intercept_` attribute of the regression object.
+
+# Apply the regression formula to predict the rating of the sound file.
+# Note: the intercept (offset) must be added to the coefficients list.
+coefficients = [regression.intercept_] + list(regression.coef_)
+rating_hat = apply_prediction_formula(test_wav_file_path, coefficients)
+
+print(
+    f"\nPredicted rating (0-100) for file {os.path.split(test_wav_file_path)[-1]}: {rating_hat:.2f}"
+)
