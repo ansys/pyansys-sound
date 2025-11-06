@@ -35,7 +35,8 @@ FIELDCONTAINER_LABELSPACE_ID = "channel"
 class CreateSignalFieldsContainer(SignalUtilitiesParent):
     """Create a PyAnsys Sound fields container containing signal fields.
 
-    This class creates a DPF fields container from a list, tuple, or array of signal fields.
+    This class creates a DPF fields container from a list, tuple, or array of signal fields. To
+    create signal fields from signal data, use the class :class:`CreateSignalField`.
     """
 
     def __init__(
