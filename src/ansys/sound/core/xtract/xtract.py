@@ -34,7 +34,11 @@ from . import (
     XtractTonalParameters,
     XtractTransientParameters,
 )
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import (
+    PyAnsysSoundException,
+    PyAnsysSoundWarning,
+    convert_fields_container_to_np_array,
+)
 
 
 class Xtract(XtractParent):
@@ -322,10 +326,10 @@ class Xtract(XtractParent):
                 return np.array([]), np.array([]), np.array([]), np.array([])
             else:
                 return (
-                    self.convert_fields_container_to_np_array(l_output_noise_signal),
-                    self.convert_fields_container_to_np_array(l_output_tonal_signal),
-                    self.convert_fields_container_to_np_array(l_output_transient_signal),
-                    self.convert_fields_container_to_np_array(l_output_remainder_signal),
+                    convert_fields_container_to_np_array(l_output_noise_signal),
+                    convert_fields_container_to_np_array(l_output_tonal_signal),
+                    convert_fields_container_to_np_array(l_output_transient_signal),
+                    convert_fields_container_to_np_array(l_output_remainder_signal),
                 )
 
     def plot(self):

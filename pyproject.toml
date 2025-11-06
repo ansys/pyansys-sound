@@ -36,7 +36,7 @@ tests = [
     "pytest-cov==7.0.0",
     "pytest-dependency==0.6.0",
     "platformdirs==4.5.0",
-    "regex==2025.9.18",
+    "regex==2025.10.23",
 ]
 
 doc = [
@@ -50,7 +50,7 @@ doc = [
     "vtk==9.5.2",
     "trame==3.12.0",
     "trame_vtk==2.10.0",
-    "pyvista==0.46.3",
+    "pyvista==0.46.4",
     "pypandoc==1.15",
     "jupyter-sphinx==0.5.3",
     "sphinx-autobuild==2024.10.3",
