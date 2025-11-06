@@ -107,8 +107,6 @@ def compute_indicators(wav_file_path: str = None) -> list:
     """
     if not (isinstance(wav_file_path, str)) or len(wav_file_path) == 0:
         raise TypeError("wav_file_path must be a non-empty string.")
-    elif not (os.path.isfile(wav_file_path)):
-        raise FileNotFoundError(f"File {wav_file_path} not found.")
 
     # Load the sound file.
     wav_loader = LoadWav(wav_file_path)
