@@ -52,6 +52,7 @@ C:/Users/Public/Documents/Ansys/Acoustics/JLT/CE - Automotive HVAC
 
 # Load standard libraries.
 import csv
+from dataclasses import Field
 from itertools import islice
 from math import sqrt
 import os
@@ -73,6 +74,7 @@ from ansys.sound.core.psychoacoustics import (
 )
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
+from ansys.sound.core.signal_utilities.crop_signal import CropSignal
 
 # Connect to a DPF Sound server (remote or local).
 my_server = connect_to_or_start_server(use_license_context=True)
@@ -89,15 +91,13 @@ test_wav_file_path = download_HVAC_test_wav()
 # wave file path.
 
 
-def compute_indicators(wav_file_path: str = None) -> list:
+def compute_indicators(signal: Field) -> list:
     """Compute psychoacoustic indicators for a given wav file.
-
-    Note: Only the first channel is considered for the computation of the indicators.
 
     Parameters
     ----------
-    wav_file_path : str, optional
-        Path to the wav file to analyze.
+    signal : Field
+        Audio signal to analyze.
 
     Returns
     -------
@@ -105,14 +105,6 @@ def compute_indicators(wav_file_path: str = None) -> list:
         List of psychoacoustic indicator values: loudness level in phon, sharpness in acum,
         fluctuation strength in vacil, and tonality in tuHMS.
     """
-    if not (isinstance(wav_file_path, str)) or len(wav_file_path) == 0:
-        raise TypeError("wav_file_path must be a non-empty string.")
-
-    # Load the sound file.
-    wav_loader = LoadWav(wav_file_path)
-    wav_loader.process()
-    signal = wav_loader.get_output()[0]
-
     # Compute the psychoacoustic indicators.
     indicator = LoudnessISO532_1_Stationary(signal=signal)
     indicator.process()
@@ -140,7 +132,7 @@ def compute_indicators(wav_file_path: str = None) -> list:
 # coefficients.
 
 
-def apply_prediction_formula(wav_file_path: str, coefficients: list = None) -> float:
+def apply_prediction_formula(signal: Field, coefficients: list = None) -> float:
     r"""Apply the regression formula to predict the rating of a sound file.
 
     Computes a linear combination of the following psychoacoustic indicators:
@@ -158,8 +150,8 @@ def apply_prediction_formula(wav_file_path: str, coefficients: list = None) -> f
 
     Parameters
     ----------
-    wav_file_path : str
-        Path to the wav file to analyze.
+    signal : Field
+        Audio signal to analyze.
 
     coefficients : list, default: None.
         List of regression coefficients (including the intercept): a0, a1, a2, a3, and a4. If None,
@@ -176,7 +168,7 @@ def apply_prediction_formula(wav_file_path: str, coefficients: list = None) -> f
         raise TypeError("coefficients must be a list of 5 elements.")
 
     # Compute the psychoacoustic indicators for the sound file.
-    indicators = compute_indicators(wav_file_path)
+    indicators = compute_indicators(signal)
 
     # Apply the formula to compute the rating.
     return (
@@ -225,15 +217,27 @@ indicators = []
 # Process each sound file one by one.
 # Note that this step is quite long, as some indicators (Fluctuation Strength, and more
 # importantly, Tonality) are quite heavy to compute.
-# Note also that, although the sounds of the test are stereo (binaural recordings), we are
-# using the left channel only. You get similar results if you use the right channel of the
-# average of the two.
+# Note also that, although the sounds of the test are stereo (binaural recordings) and 5 seconds
+# long, we are using the first 2 seconds of the left channel only. You get similar results if you
+# use the right channel of the average of the two, and the full signal duration.
 for file_name in filenames:
     print(f"Calculating indicators for file: {file_name} ...")
     wav_file_path = os.path.join(model_wav_files_path, file_name + ".wav")
 
-    # Append the indicator values for the current sound to the list.
-    indicators.append(compute_indicators(wav_file_path))
+    # Load the sound file.
+    wav_loader = LoadWav(wav_file_path)
+    wav_loader.process()
+
+    # Keep the first channel only.
+    signal = wav_loader.get_output()[0]
+
+    # Keep the first 2 seconds of signal only.
+    cropper = CropSignal(signal=signal, start_time=0.0, end_time=2.0)
+    cropper.process()
+    signal = cropper.get_output()
+
+    # Compute and append the indicator values for the current sound to the list.
+    indicators.append(compute_indicators(signal))
 
 # %%
 # Calculate the multiple linear regression
@@ -273,10 +277,17 @@ plt.show()
 # The coefficients of the model are stored in the regression object, and can be accessed using the
 # `coef_` attribute. The intercept is stored in the `intercept_` attribute of the regression object.
 
+# Load the sound file for which to predict the rating.
+wav_loader = LoadWav(test_wav_file_path)
+wav_loader.process()
+
+# Keep the first channel only.
+signal = wav_loader.get_output()[0]
+
 # Apply the regression formula to predict the rating of the sound file.
 # Note: the intercept (offset) must be added to the coefficients list.
 coefficients = [regression.intercept_] + list(regression.coef_)
-rating_hat = apply_prediction_formula(test_wav_file_path, coefficients)
+rating_hat = apply_prediction_formula(signal, coefficients)
 
 print(
     f"\nPredicted rating (0-100) for file {os.path.split(test_wav_file_path)[-1]}: {rating_hat:.2f}"
