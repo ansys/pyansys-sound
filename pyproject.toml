@@ -24,6 +24,7 @@ classifiers = [
 dependencies = [
     "ansys-dpf-core@git+https://github.com/ansys/pydpf-core.git",
     "matplotlib>=3.8.2,<4",
+    "platformdirs>=3.6.0",
 ]
 
 [project.optional-dependencies]
