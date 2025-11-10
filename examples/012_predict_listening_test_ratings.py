@@ -41,22 +41,20 @@ are typically used for this kind of sounds (HVAC):
 The sound ratings used here were obtained in a listening test designed and conducted with Ansys
 Sound JLT, from which the analyzed data were exported into a CSV file. The corresponding test
 project and data should be located here:
-C:/Users/Public/Documents/Ansys/Acoustics/JLT/CE - Automotive HVAC
+`C:/Users/Public/Documents/Ansys/Acoustics/JLT/CE - Automotive HVAC`.
 """
 
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
 # Setting up the analysis consists of loading Ansys libraries, connecting to the DPF server, and
-# setting up the working directory.
+# downloading the necessary data files.
 
 # Load standard libraries.
-import csv
-from dataclasses import Field
-from itertools import islice
 from math import sqrt
 import os
 
+from ansys.dpf.core import Field
 import matplotlib.pyplot as plt
 from sklearn import linear_model
 
@@ -87,8 +85,8 @@ test_wav_file_path = download_HVAC_test_wav()
 # %%
 # Define indicator computation function
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Here we define a function that calculate the 4 psychoacoustic indicators of interest, given a
-# wave file path.
+# Here we define a function that calculates the 4 psychoacoustic indicators of interest (listed at
+# at the beginning of the example), given an input audio signal as a DPF field.
 
 
 def compute_indicators(signal: Field) -> list:
@@ -105,19 +103,22 @@ def compute_indicators(signal: Field) -> list:
         List of psychoacoustic indicator values: loudness level in phon, sharpness in acum,
         fluctuation strength in vacil, and tonality in tuHMS.
     """
-    # Compute the psychoacoustic indicators.
+    # Loudness level (ISO 532-1)
     indicator = LoudnessISO532_1_Stationary(signal=signal)
     indicator.process()
     LN = indicator.get_loudness_level_phon()
 
+    # Sharpness (DIN 45692)
     indicator = SharpnessDIN45692(signal=signal)
     indicator.process()
     S = indicator.get_sharpness()
 
+    # Fluctuation strength (Sontacchi method)
     indicator = FluctuationStrength(signal=signal)
     indicator.process()
     FS = indicator.get_fluctuation_strength()
 
+    # Tonality (ECMA 418-2)
     indicator = TonalityECMA418_2(signal=signal, field_type="Free", edition="3rd")
     indicator.process()
     T = indicator.get_tonality()
@@ -129,24 +130,19 @@ def compute_indicators(signal: Field) -> list:
 # Define prediction function
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Here we define a function that predicts the rating for a given wave file, and a set of regression
-# coefficients.
+# coefficients. The function computes the psychoacoustic indicators listed previously for the sound
+# file, and then applies the regression formula to obtain the predicted rating:
+#
+# .. math::
+#        rating = a_0 + a_1 \cdot LN + a_2 \cdot S + a_3 \cdot FS + a_4 \cdot T
+#
+# where :math:`a_0` is the intercept and :math:`a_1`, :math:`a_2`, :math:`a_3`, and :math:`a_4` are
+# the coefficients of the model, and :math:`LN`, :math:`S`, :math:`FS`, and :math:`T` are the
+# loudness level, sharpness, fluctuation strength, and tonality, respectively.
 
 
 def apply_prediction_formula(signal: Field, coefficients: list = None) -> float:
-    r"""Apply the regression formula to predict the rating of a sound file.
-
-    Computes a linear combination of the following psychoacoustic indicators:
-    - Loudness (ISO 532-1): LN,
-    - Sharpness (DIN 45692): S,
-    - Fluctuation strength (Sontacchi method): FS,
-    - Tonality (ECMA 418-2): T,
-    using the regression coefficients provided in the coefficients list.
-    The formula is:
-
-    ..math::
-        rating = a0 + a1 \cdot LN + a2 \cdot S + a3 \cdot FS + a4 \cdot T
-
-    where a0 is the intercept and a1, a2, a3, and a4 are the coefficients of the model.
+    """Apply the regression formula to predict the rating of a sound file.
 
     Parameters
     ----------
@@ -190,14 +186,19 @@ def apply_prediction_formula(signal: Field, coefficients: list = None) -> float:
 filenames = []
 ratings = []
 
-with open(JLT_ratings_path) as f:
-    reader = csv.reader(f, delimiter=";")
+# Print the file content for information.
+with open(JLT_ratings_path, encoding="utf-8-sig") as f:
+    print(f.read())
 
-    # Skip the first 7 lines of the CSV file (general info, and table header).
-    reader = islice(reader, 7, None)
+# %%
+# Extract filenames and mean ratings from the file.
+with open(JLT_ratings_path, encoding="utf-8-sig") as f:
+    lines = f.readlines()
+    lines = lines[7:]  # Skip the first 7 lines (general info, and table header).
 
-    for row in reader:
-        # First column is the filename, second column is the mean rating.
+    # Store file names and mean ratings (first and second columns).
+    for line in lines:
+        row = line.split(";")
         filenames.append(row[0])
         ratings.append(float(row[1]))
 
@@ -205,21 +206,24 @@ with open(JLT_ratings_path) as f:
 # Calculate the psychoacoustic indicators
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Compute the psychoacoustic indicators for each sound file. The following indicators are computed:
+#
 # - Loudness (ISO 532-1),
 # - Sharpness (DIN 45692),
 # - Fluctuation strength (Sontacchi method),
 # - Tonality (ECMA 418-2).
+#
+# .. note::
+#    This step is quite long, as some indicators (fluctuation strength, and more importantly,
+#    tonality) are quite heavy to compute. Note also that, although the sounds of the test are
+#    stereo (binaural recordings) and 5 seconds long, we are using the first second of the left
+#    channel only. You get similar results if you use the right channel of the average of the two,
+#    and the full signal duration.
 
 # Initialize a list to store the indicators for each file. The list will contain sublists, each
 # sublist containing the values of the selected indicators for each sound.
 indicators = []
 
 # Process each sound file one by one.
-# Note that this step is quite long, as some indicators (Fluctuation Strength, and more
-# importantly, Tonality) are quite heavy to compute.
-# Note also that, although the sounds of the test are stereo (binaural recordings) and 5 seconds
-# long, we are using the first second of the left channel only. You get similar results if you
-# use the right channel of the average of the two, and the full signal duration.
 for file_name in filenames:
     print(f"Calculating indicators for file: {file_name} ...")
     wav_file_path = os.path.join(model_wav_files_path, file_name + ".wav")
@@ -242,8 +246,8 @@ for file_name in filenames:
 # %%
 # Calculate the multiple linear regression
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Use package scikit-learn (https://scikit-learn.org/) to create a multiple linear regression model,
-# to predict the ratings based on the computed psychoacoustic indicators.
+# Use package :mod:`sklearn` (https://scikit-learn.org/) to create a multiple linear
+# regression model, to predict the ratings based on the computed psychoacoustic indicators.
 
 # Create and compute the model.
 regression = linear_model.LinearRegression()
@@ -256,7 +260,9 @@ ratings_hat = regression.predict(indicators)
 print(f"Linear regression model coefficients: {regression.coef_}")
 print(f"Correlation coefficient: {sqrt(regression.score(indicators, ratings)):.3f}")
 
+# %%
 # Plot the predicted ratings against the actual ratings.
+
 plt.plot([0, 100], [0, 100], "k--")
 plt.scatter(ratings_hat, ratings)
 plt.xlabel("Predicted ratings")
@@ -272,10 +278,17 @@ plt.show()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Use the model coefficients to estimate the rating of a new sound file. Using the model
 # coefficients consists in computing the indicators and applying the formula:
-# rating = a0 + a1 * LN + a2 * S + a3 * FS + a4 * T, where a0 is the intercept and a1, a2, a3, and
-# a4 are the coefficients of the model.
+#
+# .. math::
+#        rating = a_0 + a_1 \cdot LN + a_2 \cdot S + a_3 \cdot FS + a_4 \cdot T
+#
+# where :math:`a_0` is the intercept and :math:`a_1`, :math:`a_2`, :math:`a_3`, and :math:`a_4` are
+# the coefficients of the model, and :math:`LN`, :math:`S`, :math:`FS`, and :math:`T` are the
+# loudness level, sharpness, fluctuation strength, and tonality, respectively.
+#
 # The coefficients of the model are stored in the regression object, and can be accessed using the
-# `coef_` attribute. The intercept is stored in the `intercept_` attribute of the regression object.
+# ``coef_`` attribute. The intercept is stored in the ``intercept_`` attribute of the regression
+# object.
 
 # Load the sound file for which to predict the rating.
 wav_loader = LoadWav(test_wav_file_path)
