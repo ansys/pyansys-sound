@@ -32,7 +32,7 @@ dependencies = [
 [project.optional-dependencies]
 tests = [
     "matplotlib==3.10.7",
-    "pytest==8.4.2",
+    "pytest==9.0.0",
     "pytest-cov==7.0.0",
     "pytest-dependency==0.6.0",
     "platformdirs==4.5.0",
