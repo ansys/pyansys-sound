@@ -26,21 +26,23 @@
 Predict listening test ratings
 ------------------------------
 
-This example shows how to predict the mean ratings of automative HVAC sounds based on
-psychoacoustic indicators, using listening test data obtained with Ansys Sound - Jury Listening
-Test.
+This example shows how to predict the mean ratings of automotive HVAC sounds based on
+psychoacoustic indicators, using the data from a real listening test conducted with Ansys Sound
+ - Jury Listening Test (JLT).
 
-Here, we try to predict the mean sound ratings on the basis of 4 psychoacoustic indicators that
-are typically used for this kind of sounds (HVAC):
+Here, we demonstrate how to build a function that will help to predict the mean sound ratings,
+on the basis of 4 psychoacoustic indicators that are typically used for this kind of sounds
+(HVAC noise):
 
 - Loudness (ISO 532-1),
 - Sharpness (DIN 45692),
 - Fluctuation strength (Sontacchi method),
 - Tonality (ECMA 418-2).
 
-The sound ratings used here were obtained in a listening test designed and conducted with Ansys
-Sound JLT, from which the analyzed data were exported into a CSV file. The corresponding test
-project and data should be located here:
+The sound ratings used in this example were obtained from a listening test designed with Ansys
+Sound JLT. This test contains 20 sounds, and 29 participants answered to it.
+This example uses the analyzed data exported from JLT into a CSV file. The corresponding listening
+test project is located here (if you have installed Ansys Sound JLT):
 `C:/Users/Public/Documents/Ansys/Acoustics/JLT/CE - Automotive HVAC`.
 """
 
@@ -86,16 +88,16 @@ test_wav_file_path = download_HVAC_test_wav()
 # Define indicator computation function
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Here we define a function that calculates the 4 psychoacoustic indicators of interest (listed at
-# at the beginning of the example), given an input audio signal as a DPF field.
+# at the beginning of the example), given an input sound signal as a DPF field.
 
 
 def compute_indicators(signal: Field) -> list:
-    """Compute psychoacoustic indicators for a given wav file.
+    """Compute psychoacoustic indicators for a given sound signal.
 
     Parameters
     ----------
     signal : Field
-        Audio signal to analyze.
+        Sound signal to analyze.
 
     Returns
     -------
@@ -129,9 +131,9 @@ def compute_indicators(signal: Field) -> list:
 # %%
 # Define prediction function
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Here we define a function that predicts the rating for a given wave file, and a set of regression
-# coefficients. The function computes the psychoacoustic indicators listed previously for the sound
-# file, and then applies the regression formula to obtain the predicted rating:
+# Here we define a function that predicts the rating for a given sound signal, given a set of
+# regression coefficients. The function computes four relevant psychoacoustic indicators
+# for the sound signal, and then applies the regression formula to obtain the predicted rating:
 #
 # .. math::
 #        rating = a_0 + a_1 \cdot LN + a_2 \cdot S + a_3 \cdot FS + a_4 \cdot T
@@ -142,12 +144,12 @@ def compute_indicators(signal: Field) -> list:
 
 
 def apply_prediction_formula(signal: Field, coefficients: list = None) -> float:
-    """Apply the regression formula to predict the rating of a sound file.
+    """Apply the regression formula to predict the rating of a sound signal.
 
     Parameters
     ----------
     signal : Field
-        Audio signal to analyze.
+        Sound signal to evaluate.
 
     coefficients : list, default: None.
         List of regression coefficients (including the intercept): a0, a1, a2, a3, and a4. If None,
@@ -156,7 +158,7 @@ def apply_prediction_formula(signal: Field, coefficients: list = None) -> float:
     Returns
     -------
     float
-        Predicted rating.
+        Predicted rating of the input sound signal.
     """
     if coefficients is None:
         coefficients = [1, 0, 0, 0, 0]
@@ -179,8 +181,8 @@ def apply_prediction_formula(signal: Field, coefficients: list = None) -> float:
 # %%
 # Read the Ansys Sound JLT data
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Read the CSV file produced with Ansys Sound JLT and containing the mean ratings of the sounds of
-# the test.
+# Read the CSV file produced with Ansys Sound JLT. This file contains the mean ratings given
+# by the participants of the listening test to the different automotive HVAC noises.
 
 # Initialize lists to store filenames and ratings.
 filenames = []
@@ -191,12 +193,12 @@ with open(JLT_ratings_path, encoding="utf-8-sig") as f:
     print(f.read())
 
 # %%
-# Extract filenames and mean ratings from the file.
+# Extract HVAC noise filenames and mean ratings from the CSV file.
 with open(JLT_ratings_path, encoding="utf-8-sig") as f:
     lines = f.readlines()
     lines = lines[7:]  # Skip the first 7 lines (general info, and table header).
 
-    # Store file names and mean ratings (first and second columns).
+    # Store filenames and mean ratings (first and second columns).
     for line in lines:
         row = line.split(";")
         filenames.append(row[0])
@@ -213,10 +215,10 @@ with open(JLT_ratings_path, encoding="utf-8-sig") as f:
 # - Tonality (ECMA 418-2).
 #
 # .. note::
-#    This step is quite long, as some indicators (fluctuation strength, and more importantly,
+#    This step may be quite consuming, as some indicators (fluctuation strength, and
 #    tonality) are quite heavy to compute. Note also that, although the sounds of the test are
 #    stereo (binaural recordings) and 5 seconds long, we are using the first second of the left
-#    channel only. You get similar results if you use the right channel of the average of the two,
+#    channel only. You get similar results if you use the right channel or the average of the two,
 #    and the full signal duration.
 
 # Initialize a list to store the indicators for each file. The list will contain sublists, each
@@ -240,7 +242,7 @@ for file_name in filenames:
     cropper.process()
     signal = cropper.get_output()
 
-    # Compute and append the indicator values for the current sound to the list.
+    # Compute and append the indicators values for the current sound to the list.
     indicators.append(compute_indicators(signal))
 
 # %%
