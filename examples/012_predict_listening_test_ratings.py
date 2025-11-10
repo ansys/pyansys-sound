@@ -27,12 +27,12 @@ Predict listening test ratings
 ------------------------------
 
 This example shows how to predict the mean ratings of automotive HVAC sounds based on
-psychoacoustic indicators, using the data from a real listening test conducted with Ansys Sound
- - Jury Listening Test (JLT).
+psychoacoustic indicators, using the data from a listening test conducted with Ansys Sound - Jury
+Listening Test (JLT).
 
-Here, we demonstrate how to build a function that will help to predict the mean sound ratings,
-on the basis of 4 psychoacoustic indicators that are typically used for this kind of sounds
-(HVAC noise):
+Here, we demonstrate how to build an objective indicator to help predict automotive HVAC sound
+ratings, on the basis of 4 psychoacoustic indicators that are typically used for this kind of
+sounds:
 
 - Loudness (ISO 532-1),
 - Sharpness (DIN 45692),
@@ -40,9 +40,9 @@ on the basis of 4 psychoacoustic indicators that are typically used for this kin
 - Tonality (ECMA 418-2).
 
 The sound ratings used in this example were obtained from a listening test designed with Ansys
-Sound JLT. This test contains 20 sounds, and 29 participants answered to it.
-This example uses the analyzed data exported from JLT into a CSV file. The corresponding listening
-test project is located here (if you have installed Ansys Sound JLT):
+Sound JLT. In this test, 29 participants evaluated 20 automotive HVAC sounds. This example uses the
+data obtained when exporting, in JLT, the analyzed results into a CSV file. With a standard
+installation of JLT, the corresponding listening test project should be located here:
 `C:/Users/Public/Documents/Ansys/Acoustics/JLT/CE - Automotive HVAC`.
 """
 
@@ -131,9 +131,9 @@ def compute_indicators(signal: Field) -> list:
 # %%
 # Define prediction function
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Here we define a function that predicts the rating for a given sound signal, given a set of
-# regression coefficients. The function computes four relevant psychoacoustic indicators
-# for the sound signal, and then applies the regression formula to obtain the predicted rating:
+# Here we define a function that predicts the rating for an automotive HVAC sound signal, given a
+# set of regression coefficients. The function computes 4 relevant psychoacoustic indicators for
+# automotive HVAC sounds, and then applies the regression formula to obtain the predicted rating:
 #
 # .. math::
 #        rating = a_0 + a_1 \cdot LN + a_2 \cdot S + a_3 \cdot FS + a_4 \cdot T
@@ -181,10 +181,11 @@ def apply_prediction_formula(signal: Field, coefficients: list = None) -> float:
 # %%
 # Read the Ansys Sound JLT data
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Read the CSV file produced with Ansys Sound JLT. This file contains the mean ratings given
-# by the participants of the listening test to the different automotive HVAC noises.
+# Read the CSV file produced with Ansys Sound JLT. This file contains descriptive statistics of the
+# sound ratings obtained during the listening test conduction. Most notably, it contains the
+# rating of each sound averaged over the test participants.
 
-# Initialize lists to store filenames and ratings.
+# Initialize lists to store file names and ratings.
 filenames = []
 ratings = []
 
@@ -193,12 +194,12 @@ with open(JLT_ratings_path, encoding="utf-8-sig") as f:
     print(f.read())
 
 # %%
-# Extract HVAC noise filenames and mean ratings from the CSV file.
+# Extract HVAC sound file names and mean ratings from the CSV file.
 with open(JLT_ratings_path, encoding="utf-8-sig") as f:
     lines = f.readlines()
     lines = lines[7:]  # Skip the first 7 lines (general info, and table header).
 
-    # Store filenames and mean ratings (first and second columns).
+    # Store file names and mean ratings (first and second columns).
     for line in lines:
         row = line.split(";")
         filenames.append(row[0])
@@ -215,11 +216,11 @@ with open(JLT_ratings_path, encoding="utf-8-sig") as f:
 # - Tonality (ECMA 418-2).
 #
 # .. note::
-#    This step may be quite consuming, as some indicators (fluctuation strength, and
-#    tonality) are quite heavy to compute. Note also that, although the sounds of the test are
-#    stereo (binaural recordings) and 5 seconds long, we are using the first second of the left
-#    channel only. You get similar results if you use the right channel or the average of the two,
-#    and the full signal duration.
+#    This computation step may be long, as some indicators (fluctuation strength, and tonality) are
+#    quite heavy to compute. Note also that, although the sounds of the test are stereo (binaural
+#    recordings) and 5 seconds long, we are using the first second of the left channel only. You
+#    get similar results if you use the right channel or the average of the two, and the full
+#    signal duration.
 
 # Initialize a list to store the indicators for each file. The list will contain sublists, each
 # sublist containing the values of the selected indicators for each sound.
@@ -242,7 +243,7 @@ for file_name in filenames:
     cropper.process()
     signal = cropper.get_output()
 
-    # Compute and append the indicators values for the current sound to the list.
+    # Compute and append the indicator values for the current sound to the list.
     indicators.append(compute_indicators(signal))
 
 # %%
@@ -276,6 +277,11 @@ plt.grid()
 plt.show()
 
 # %%
+# The correlation coefficient (0.983) is very close to 1, and the points in the plot are
+# well aligned. This shows that the rating prediction model is quite accurate for the sounds of
+# the listening test.
+
+# %%
 # Use the regression coefficients for prediction
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Use the model coefficients to estimate the rating of a new sound file. Using the model
@@ -307,3 +313,8 @@ rating_hat = apply_prediction_formula(signal, coefficients)
 print(
     f"\nPredicted rating (0-100) for file {os.path.split(test_wav_file_path)[-1]}: {rating_hat:.2f}"
 )
+
+# %%
+# This predicted rating (28.52) tells us that the sound is not very pleasant in comparison with the
+# other sounds of the listening test, and that it would have probably ranked poorly, had it been
+# included during the test conduction.
