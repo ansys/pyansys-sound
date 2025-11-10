@@ -218,7 +218,7 @@ indicators = []
 # Note that this step is quite long, as some indicators (Fluctuation Strength, and more
 # importantly, Tonality) are quite heavy to compute.
 # Note also that, although the sounds of the test are stereo (binaural recordings) and 5 seconds
-# long, we are using the first 2 seconds of the left channel only. You get similar results if you
+# long, we are using the first second of the left channel only. You get similar results if you
 # use the right channel of the average of the two, and the full signal duration.
 for file_name in filenames:
     print(f"Calculating indicators for file: {file_name} ...")
@@ -231,8 +231,8 @@ for file_name in filenames:
     # Keep the first channel only.
     signal = wav_loader.get_output()[0]
 
-    # Keep the first 2 seconds of signal only.
-    cropper = CropSignal(signal=signal, start_time=0.0, end_time=2.0)
+    # Keep the first second of signal only.
+    cropper = CropSignal(signal=signal, start_time=0.0, end_time=1.0)
     cropper.process()
     signal = cropper.get_output()
 
