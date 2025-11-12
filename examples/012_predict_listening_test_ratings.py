@@ -31,8 +31,7 @@ psychoacoustic indicators, using the data from a listening test conducted with A
 Listening Test (JLT).
 
 Here, we demonstrate how to build an objective indicator to help predict automotive HVAC sound
-ratings, on the basis of 4 psychoacoustic indicators that are typically used for this kind of
-sounds:
+ratings, on the basis of 4 psychoacoustic indicators that are typically used for such sounds:
 
 - Loudness (ISO 532-1),
 - Sharpness (DIN 45692),
@@ -41,7 +40,7 @@ sounds:
 
 The sound ratings used in this example were obtained from a listening test designed with Ansys
 Sound JLT. In this test, 29 participants evaluated 20 automotive HVAC sounds. This example uses the
-data obtained when exporting, in JLT, the analyzed results into a CSV file. With a standard
+data obtained when exporting, in JLT, the analyzed results to a CSV file. With a standard
 installation of JLT, the corresponding listening test project should be located here:
 `C:/Users/Public/Documents/Ansys/Acoustics/JLT/CE - Automotive HVAC`.
 """
@@ -285,7 +284,7 @@ plt.show()
 # Use the regression coefficients for prediction
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Use the model coefficients to estimate the rating of a new sound file. Using the model
-# coefficients consists in computing the indicators and applying the formula:
+# coefficients consists of computing the indicators and applying the formula:
 #
 # .. math::
 #        rating = a_0 + a_1 \cdot LN + a_2 \cdot S + a_3 \cdot FS + a_4 \cdot T
