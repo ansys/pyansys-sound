@@ -37,6 +37,8 @@ tests = [
     "pytest-dependency==0.6.0",
     "platformdirs==4.5.0",
     "regex==2025.11.3",
+    "requests==2.30.0",
+    "scipy==1.15.2",
 ]
 
 doc = [
@@ -54,7 +56,9 @@ doc = [
     "pypandoc==1.16",
     "jupyter-sphinx==0.5.3",
     "sphinx-autobuild==2024.10.3",
-    "platformdirs==4.5.0"
+    "platformdirs==4.5.0",
+    "requests==2.30.0",
+    "scikit-learn==1.7.0",
 ]
 
 [tool.flit.module]
