@@ -29,6 +29,14 @@ import pytest
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.sound_power import SoundPowerLevelISO3744
 
+if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    # bug fix in DPF Sound 2026 R1 ID#1325159
+    EXP_LW_OCT_5_CALIB = 137.0859
+    EXP_LW_3_10_CALIB = 89.9082
+else:
+    EXP_LW_OCT_5_CALIB = 137.0898
+    EXP_LW_3_10_CALIB = 89.9006
+
 EXP_SHAPE = "Hemisphere"
 EXP_K2 = 1.1463640629030585
 EXP_C1 = -0.10519597099301761
@@ -67,8 +75,6 @@ EXP_STR = (
 )
 EXP_LW_CALIB = 151.41583251953125
 EXP_LWA_CALIB = 152.14
-EXP_LW_OCT_5_CALIB = 137.08978271484375
-EXP_LW_3_10_CALIB = 89.90057373046875
 
 
 def test_sound_power_level_iso_3744_instantiation():

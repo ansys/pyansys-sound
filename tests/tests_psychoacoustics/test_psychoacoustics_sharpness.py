@@ -28,10 +28,18 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.psychoacoustics import Sharpness
 from ansys.sound.core.signal_utilities import LoadWav
 
-EXP_SHARPNESS_1_FREE = 1.660957
-EXP_SHARPNESS_2_FREE = 2.497200
-EXP_SHARPNESS_1_DIFFUSE = 1.747762
-EXP_SHARPNESS_2_DIFFUSE = 2.628972
+if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    # Bug fix (ID#1325159) & third-party update (IPP) in DPF Sound 2026 R1
+    EXP_SHARPNESS_1_FREE = 1.661001
+    EXP_SHARPNESS_1_DIFFUSE = 1.747807
+    EXP_SHARPNESS_2_FREE = 2.497226
+    EXP_SHARPNESS_2_DIFFUSE = 2.629008
+else:
+    EXP_SHARPNESS_1_FREE = 1.660957
+    EXP_SHARPNESS_1_DIFFUSE = 1.747762
+    EXP_SHARPNESS_2_FREE = 2.497200
+    EXP_SHARPNESS_2_DIFFUSE = 2.628972
+
 EXP_STR_DEFAULT = "Sharpness object\nData:\n\tSignal name: Not set\nSharpness: Not processed"
 EXP_STR = 'Sharpness object\nData:\n\tSignal name: ""\nSharpness: 1.66 acums'
 

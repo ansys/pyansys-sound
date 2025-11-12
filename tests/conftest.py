@@ -70,6 +70,18 @@ def pytest_configure(config):
     ## Construct the paths of the different test files after uploading them on the server.
     # Audio samples
     pytest.data_path_flute_in_container = get_test_file_path("flute.wav", base_dir, server=server)
+    pytest.data_path_flute_int8_in_container = get_test_file_path(
+        "flute_int8.wav", base_dir, server=server
+    )
+    pytest.data_path_flute_int24_in_container = get_test_file_path(
+        "flute_int24.wav", base_dir, server=server
+    )
+    pytest.data_path_flute_int32_in_container = get_test_file_path(
+        "flute_int32.wav", base_dir, server=server
+    )
+    pytest.data_path_flute_float32_in_container = get_test_file_path(
+        "flute_float32.wav", base_dir, server=server
+    )
     pytest.data_path_flute_nonUnitaryCalib_in_container = get_test_file_path(
         "flute_nonUnitaryCalib.wav", base_dir, server=server
     )
@@ -136,6 +148,16 @@ def pytest_configure(config):
     # Sound composer files (including spectrum, harmonics, etc. data files)
     pytest.data_path_sound_composer_spectrum_source_in_container = get_test_file_path(
         "AnsysSound_Spectrum_v3_-_nominal_-_dBSPLperHz_2024R2_20241121.txt",
+        base_dir,
+        server=server,
+    )
+    pytest.data_path_sound_composer_spectrum_v4_dBA_source_in_container = get_test_file_path(
+        "AnsysSound Spectrum v4 - nominal - dBA_2026R1_20250829.txt",
+        base_dir,
+        server=server,
+    )
+    pytest.data_path_sound_composer_spectrum_v4_dBAPerHz_source_in_container = get_test_file_path(
+        "AnsysSound Spectrum v4 - nominal - dBAPerHz_2026R1_20250829.txt",
         base_dir,
         server=server,
     )

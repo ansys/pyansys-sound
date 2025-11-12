@@ -28,7 +28,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from . import PsychoacousticsParent
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import (
+    PyAnsysSoundException,
+    PyAnsysSoundWarning,
+    convert_fields_container_to_np_array,
+)
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_PR_FOR_ORDERS_OVER_TIME = "compute_prominence_ratio_for_orders_over_time"
@@ -191,7 +195,7 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
             return (np.array([]), np.array([]), np.array([]))
 
         return (
-            self.convert_fields_container_to_np_array(pr_container[0]),
+            convert_fields_container_to_np_array(pr_container[0]),
             np.array(pr_container[0][0].time_freq_support.time_frequencies.data),
             np.array(pr_container[1].data),
         )

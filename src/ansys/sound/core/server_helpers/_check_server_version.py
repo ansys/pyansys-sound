@@ -55,7 +55,7 @@ def requires_dpf_version(min_dpf_version: str) -> Callable:
         Parameters
         ----------
         func : callable
-            The decorated method.
+            The original method next to which the decorator is used.
 
         Returns
         -------
@@ -92,7 +92,7 @@ def requires_dpf_version(min_dpf_version: str) -> Callable:
 
 
 def _check_dpf_version(min_dpf_version: str, error_msg: str):
-    """Check the current DPF server and raise an exception if does not meet the specified version.
+    """Check the current DPF server and raise an exception if the specified version is higher.
 
     Parameters
     ----------

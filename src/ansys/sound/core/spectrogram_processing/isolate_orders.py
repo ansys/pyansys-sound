@@ -29,7 +29,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from . import SpectrogramProcessingParent
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import (
+    PyAnsysSoundException,
+    PyAnsysSoundWarning,
+    convert_fields_container_to_np_array,
+)
 
 
 class IsolateOrders(SpectrogramProcessingParent):
@@ -259,7 +263,7 @@ class IsolateOrders(SpectrogramProcessingParent):
         if type(output) == Field:
             return output.data
 
-        return self.convert_fields_container_to_np_array(output)
+        return convert_fields_container_to_np_array(output)
 
     def plot(self):
         """Plot the signal after order isolation."""
