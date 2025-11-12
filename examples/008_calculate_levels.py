@@ -58,10 +58,7 @@ import os
 import matplotlib.pyplot as plt
 
 # Load Ansys libraries.
-from ansys.sound.core.examples_helpers import (
-    download_aircraft_wav,
-    download_fan_wav,
-)
+from ansys.sound.core.examples_helpers import download_aircraft_wav, download_fan_wav
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.standard_levels import LevelOverTime, OverallLevel
