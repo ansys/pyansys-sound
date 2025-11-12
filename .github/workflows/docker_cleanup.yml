@@ -8,9 +8,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: write
-  packages: write
+permissions: {}
 
 jobs:
   cleanup:
@@ -18,9 +16,11 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PACKAGE_DELETION_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      contents: write
+      packages: write
 
     steps:
-
     - name: "Perform docker image cleanup - except certain tags"
       uses: ansys/actions/hk-package-clean-except@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
       with:
