@@ -10,7 +10,8 @@ reading and writing WAV files, resampling, cropping, zero-padding, and applying 
     :toctree: _autosummary
 
     ApplyGain
-    CreateSoundField
+    CreateSignalField
+    CreateSignalFieldsContainer
     CropSignal
     LoadWav
     Resample
