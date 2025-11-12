@@ -59,10 +59,7 @@ The example shows how to perform these operations:
 import os
 
 # Load Ansys libraries.
-from ansys.sound.core.examples_helpers import (
-    download_accel_with_rpm_wav,
-    download_flute_wav,
-)
+from ansys.sound.core.examples_helpers import download_accel_with_rpm_wav, download_flute_wav
 from ansys.sound.core.psychoacoustics import (
     FluctuationStrength,
     LoudnessISO532_1_Stationary,
