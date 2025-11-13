@@ -266,7 +266,7 @@ jobs:
           ANSRV_DPF_SOUND_REPO: ${{ env.ANSRV_DPF_SOUND_REPO }}
           DOCUMENTATION_DPF_SOUND_TAG: ${{ env.DOCUMENTATION_DPF_SOUND_TAG }}
         run: |
-          IMAGE="$ANSRV_DPF_SOUND_REPO`:$DOCUMENTATION_DPF_SOUND_TAG"
+          IMAGE="${ANSRV_DPF_SOUND_REPO}:${DOCUMENTATION_DPF_SOUND_TAG}"
           echo "Image: $IMAGE"
           docker pull $IMAGE
 
