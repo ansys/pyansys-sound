@@ -68,41 +68,49 @@ def test_pyansys_sound_init_subclass():
 
 
 @pytest.mark.dependency()
-def test_pyansys_sound_instanciate():
+def test_pyansys_sound_instantiate():
     pyansys_sound = PyAnsysSound()
     assert pyansys_sound != None
 
 
-@pytest.mark.dependency(depends=["test_pyansys_sound_instanciate"])
+@pytest.mark.dependency(depends=["test_pyansys_sound_instantiate"])
 def test_pyansys_sound_process():
     pyansys_sound = PyAnsysSound()
-    with pytest.warns(PyAnsysSoundWarning, match="There is nothing to process."):
+    with pytest.warns(
+        PyAnsysSoundWarning, match="This method is not implemented for class PyAnsysSound."
+    ):
         pyansys_sound.process()
     assert pyansys_sound.process() == None
 
 
-@pytest.mark.dependency(depends=["test_pyansys_sound_instanciate"])
+@pytest.mark.dependency(depends=["test_pyansys_sound_instantiate"])
 def test_pyansys_sound_plot():
     pyansys_sound = PyAnsysSound()
-    with pytest.warns(PyAnsysSoundWarning, match="There is nothing to plot."):
+    with pytest.warns(
+        PyAnsysSoundWarning, match="This method is not implemented for class PyAnsysSound."
+    ):
         pyansys_sound.plot()
 
     assert pyansys_sound.plot() == None
 
 
-@pytest.mark.dependency(depends=["test_pyansys_sound_instanciate"])
+@pytest.mark.dependency(depends=["test_pyansys_sound_instantiate"])
 def test_pyansys_sound_get_output():
     pyansys_sound = PyAnsysSound()
-    with pytest.warns(PyAnsysSoundWarning, match="There is nothing to output."):
+    with pytest.warns(
+        PyAnsysSoundWarning, match="This method is not implemented for class PyAnsysSound."
+    ):
         pyansys_sound.get_output()
     out = pyansys_sound.get_output()
     assert out == None
 
 
-@pytest.mark.dependency(depends=["test_pyansys_sound_instanciate"])
+@pytest.mark.dependency(depends=["test_pyansys_sound_instantiate"])
 def test_pyansys_sound_get_output_as_nparray():
     pyansys_sound = PyAnsysSound()
-    with pytest.warns(PyAnsysSoundWarning, match="There is nothing to output."):
+    with pytest.warns(
+        PyAnsysSoundWarning, match="This method is not implemented for class PyAnsysSound."
+    ):
         pyansys_sound.get_output_as_nparray()
     out = pyansys_sound.get_output_as_nparray()
     assert type(out) == type(np.empty(0))
