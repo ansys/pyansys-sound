@@ -231,8 +231,11 @@ jobs:
     name: "Building library documentation"
     runs-on: [self-hosted, Windows, pyansys-sound]
     needs: doc-style
-    steps:
+    permissions:
+      contents: read
+      packages: read
 
+    steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: "Set up Python"
@@ -260,7 +263,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Download DPF-Sound service container"
-        run: docker pull "$($env:ANSRV_DPF_SOUND_REPO):$($env:DOCUMENTATION_DPF_SOUND_TAG)"
+        env:
+          ANSRV_DPF_SOUND_IMAGE: "${{ env.ANSRV_DPF_SOUND_REPO }}:${{ env.DOCUMENTATION_DPF_SOUND_TAG }}"
+        run: docker pull $env:ANSRV_DPF_SOUND_IMAGE
 
       - name: "Start DPF-Sound service and verify start"
         env:
