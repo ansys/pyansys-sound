@@ -24,7 +24,7 @@
 import os
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, GenericDataContainersCollection, Operator, types
+from ansys.dpf.core import Field, GenericDataContainersCollection, Operator, types
 from matplotlib import pyplot as plt
 import numpy as np
 
