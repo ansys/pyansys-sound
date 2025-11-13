@@ -23,9 +23,9 @@ env:
   DOCUMENTATION_DPF_SOUND_TAG: 'latest' # DPF Sound image tag for doc building
   TEST_DPF_SOUND_MATRIX: '["25.2", "latest"]' # List of DPF Sound image tags for testing (quotes and double quotes are important!!)
   ANSRV_DPF_SOUND_REPO: ghcr.io/ansys/ansys-sound # Docker repository for DPF Sound
-  ANSRV_DPF_SOUND_PORT: 6780 # Port for DPF Sound Docker containers
+  ANSRV_DPF_SOUND_PORT: 6780 # Port to connect to DPF Sound Docker container
+  ANSRV_DPF_SOUND_PORT_IN_CONTAINER: 50052 # Port inside DPF Sound Docker container
   DPF_SOUND_CONT_NAME: ansys-sound-core
-
 jobs:
 
   update-changelog:
@@ -177,13 +177,11 @@ jobs:
 
       - name: "Start DPF-Sound service and verify start"
         env:
-          ANSRV_DPF_SOUND_IMAGE: "${{ env.ANSRV_DPF_SOUND_REPO }}:${{ matrix.docker-image }}"
-          ANSRV_DPF_SOUND_PORT: ${{ env.ANSRV_DPF_SOUND_PORT }}
-          DPF_SOUND_CONT_NAME: ${{ env.DPF_SOUND_CONT_NAME }}
+          PORT_MAPPING: "${{ env.ANSRV_DPF_SOUND_PORT }}:${{ env.ANSRV_DPF_SOUND_PORT_IN_CONTAINER }}"
           LICENSE_SERVER: ${{ secrets.LICENSE_SERVER }}
         run: |
           .\.venv\Scripts\Activate.ps1
-          docker run -d --name $env:DPF_SOUND_CONT_NAME -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@$env:LICENSE_SERVER" -p $env:ANSRV_DPF_SOUND_PORT:50052 --dns '8.8.8.8' $env:ANSRV_DPF_SOUND_IMAGE
+          docker run -d --name $env:DPF_SOUND_CONT_NAME -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@$env:LICENSE_SERVER" -p $env:PORT_MAPPING --dns '8.8.8.8' $env:ANSRV_DPF_SOUND_IMAGE
           python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
       - name: "Testing"
@@ -272,10 +270,11 @@ jobs:
           # ANSRV_DPF_SOUND_IMAGE: "${{ env.ANSRV_DPF_SOUND_REPO }}:${{ env.DOCUMENTATION_DPF_SOUND_TAG }}"
           # ANSRV_DPF_SOUND_PORT: ${{ env.ANSRV_DPF_SOUND_PORT }}
           # DPF_SOUND_CONT_NAME: ${{ env.DPF_SOUND_CONT_NAME }}
+          PORT_MAPPING: "${{ env.ANSRV_DPF_SOUND_PORT }}:${{ env.ANSRV_DPF_SOUND_PORT_IN_CONTAINER }}"
           LICENSE_SERVER: ${{ secrets.LICENSE_SERVER }}
         run: |
           .\.venv\Scripts\Activate.ps1
-          docker run -d --name $env:DPF_SOUND_CONT_NAME -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@$env:LICENSE_SERVER" -p $env:ANSRV_DPF_SOUND_PORT:50052 --dns '8.8.8.8' $env:ANSRV_DPF_SOUND_IMAGE
+          docker run -d --name $env:DPF_SOUND_CONT_NAME -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@$env:LICENSE_SERVER" -p $env:PORT_MAPPING --dns '8.8.8.8' $env:ANSRV_DPF_SOUND_IMAGE
           python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
       - name: "Run Ansys documentation building action"
