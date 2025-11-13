@@ -272,8 +272,6 @@ jobs:
       - name: "Start DPF-Sound service and verify start"
         env:
           ANSRV_DPF_SOUND_IMAGE: "${{ env.ANSRV_DPF_SOUND_REPO }}:${{ env.DOCUMENTATION_DPF_SOUND_TAG }}"
-          # ANSRV_DPF_SOUND_PORT: ${{ env.ANSRV_DPF_SOUND_PORT }}
-          # DPF_SOUND_CONT_NAME: ${{ env.DPF_SOUND_CONT_NAME }}
           PORT_MAPPING: "${{ env.ANSRV_DPF_SOUND_PORT }}:${{ env.ANSRV_DPF_SOUND_PORT_IN_CONTAINER }}"
           LICENSE_SERVER: ${{ secrets.LICENSE_SERVER }}
         run: |
