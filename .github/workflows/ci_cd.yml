@@ -262,9 +262,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Download DPF-Sound service container"
-        env:
-          ANSRV_DPF_SOUND_REPO: ${{ env.ANSRV_DPF_SOUND_REPO }}
-          DOCUMENTATION_DPF_SOUND_TAG: ${{ env.DOCUMENTATION_DPF_SOUND_TAG }}
         run: |
           $IMAGE="$($env:ANSRV_DPF_SOUND_REPO):$($env:DOCUMENTATION_DPF_SOUND_TAG)"
           echo "Image: $IMAGE"
