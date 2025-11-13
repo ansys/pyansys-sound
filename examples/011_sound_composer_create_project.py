@@ -110,6 +110,10 @@ path_sound_composer_sourcecontrol_WindRoadNoise = (
 sound_composer_project = SoundComposer()
 
 # %%
+# Let us give the new project a name.
+sound_composer_project.name = "Electric vehicle interior sound"
+
+# %%
 # Create track #1 for the e-motor source
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # To model the noise of the e-motor, we create a track with a harmonics source, which contains the
