@@ -264,7 +264,7 @@ jobs:
       - name: "Download DPF-Sound service container"
         env:
           ANSRV_DPF_SOUND_REPO: ${{ env.ANSRV_DPF_SOUND_REPO }}
-          ANSRV_DPF_SOUND_IMAGE: "${{ env.ANSRV_DPF_SOUND_REPO }}:${{ env.DOCUMENTATION_DPF_SOUND_TAG }}"
+          ANSRV_DPF_SOUND_IMAGE: ${{ env.ANSRV_DPF_SOUND_REPO }}:${{ env.DOCUMENTATION_DPF_SOUND_TAG }}
           DOCUMENTATION_DPF_SOUND_TAG: ${{ env.DOCUMENTATION_DPF_SOUND_TAG }}
         run: |
           echo "Image: $ANSRV_DPF_SOUND_IMAGE"
