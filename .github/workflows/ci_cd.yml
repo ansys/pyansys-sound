@@ -126,6 +126,9 @@ jobs:
     name: "Testing"
     needs: [smoke-tests, retrieve-test-matrix]
     runs-on: [self-hosted, Windows, pyansys-sound]
+    permissions:
+      contents: read
+      packages: read
     env:
       PYVISTA_OFF_SCREEN: true
       MPLBACKEND: Agg  # non-interactive mode ("headless backend") for matplotlib: no GUI is used when plotting
