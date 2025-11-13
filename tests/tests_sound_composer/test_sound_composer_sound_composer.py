@@ -42,9 +42,9 @@ from ansys.sound.core.spectral_processing.power_spectral_density import PowerSpe
 REF_ACOUSTIC_POWER = 4e-10
 
 EXP_LEVEL_OCTAVE_BAND = [71.9, 78.7, 66.2]
-EXP_STR_NOT_SET = "Sound Composer object (0 track(s))"
+EXP_STR_NOT_SET = 'SoundComposer object: "Unnamed" (0 track(s))'
 EXP_STR_ALL_SET = (
-    "Sound Composer object (8 track(s))\n"
+    'SoundComposer object: "Beethoven" (8 track(s))\n'
     '\tTrack 1: SourceBroadbandNoise, "BBN", gain = +0.0 dB\n'
     '\tTrack 2: SourceSpectrum, "Spectrum", gain = +0.0 dB\n'
     '\tTrack 3: SourceAudio, "Audio", gain = +10.0 dB\n'
@@ -72,6 +72,7 @@ def test_sound_composer_instantiation_all_args():
     )
 
     assert isinstance(sound_composer, SoundComposer)
+    assert sound_composer.name == "Beethoven"
     assert len(sound_composer.tracks) == 8
     assert isinstance(sound_composer.tracks[0].source, SourceBroadbandNoise)
     assert sound_composer.tracks[0].name == "BBN"
@@ -130,6 +131,10 @@ def test_sound_composer_properties():
     assert len(sound_composer.tracks) == 1
     assert isinstance(sound_composer.tracks[0], Track)
 
+    # Test name property.
+    sound_composer.name = "MySoundProject"
+    assert sound_composer.name == "MySoundProject"
+
 
 def test_sound_composer_properties_exception():
     """Test SoundComposer properties' exception."""
@@ -162,6 +167,7 @@ def test_sound_composer_load():
     sound_composer.load(project_path=pytest.data_path_sound_composer_project_in_container)
 
     assert isinstance(sound_composer, SoundComposer)
+    assert sound_composer.name == "Beethoven"
     assert len(sound_composer.tracks) == 8
     assert isinstance(sound_composer.tracks[0].source, SourceBroadbandNoise)
     assert sound_composer.tracks[0].name == "BBN"
@@ -203,10 +209,12 @@ def test_sound_composer_save():
         project_path=pytest.data_path_sound_composer_project_in_container
     )
     path_to_save = pytest.temporary_folder + "/test_sound_composer_save.scn"
+    sound_composer.name = "TestProjectName"
     sound_composer.save(project_path=path_to_save)
 
     # Check saved project's content against original project.
     sound_composer_check = SoundComposer(project_path=path_to_save)
+    assert sound_composer_check.name == "TestProjectName"
     assert len(sound_composer_check.tracks) == len(sound_composer.tracks)
     assert isinstance(sound_composer_check.tracks[0], Track)
     assert isinstance(sound_composer_check.tracks[0].source, type(sound_composer.tracks[0].source))

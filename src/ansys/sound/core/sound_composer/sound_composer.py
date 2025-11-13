@@ -24,7 +24,7 @@
 import os
 import warnings
 
-from ansys.dpf.core import Field, GenericDataContainersCollection, Operator
+from ansys.dpf.core import Field, GenericDataContainersCollection, Operator, types
 from matplotlib import pyplot as plt
 import numpy as np
 
@@ -65,6 +65,7 @@ class SoundComposer(SoundComposerParent):
         self.__operator_save = Operator(ID_OPERATOR_SAVE)
 
         self.tracks = []
+        self.name = "Unnamed"
 
         if len(project_path) > 0:
             self.load(project_path)
@@ -82,7 +83,7 @@ class SoundComposer(SoundComposerParent):
                 f"gain = {np.round(track.gain, 1):+} dB"
             )
 
-        return f"Sound Composer object ({len(self.tracks)} track(s)){str_tracks}"
+        return f'SoundComposer object: "{self.name}" ({len(self.tracks)} track(s)){str_tracks}'
 
     @property
     def tracks(self) -> list[Track]:
@@ -101,6 +102,16 @@ class SoundComposer(SoundComposerParent):
             if not isinstance(track, Track):
                 raise PyAnsysSoundException("Each item in the track list must be of type `Track`.")
         self.__tracks = tracks
+
+    @property
+    def name(self) -> str:
+        """Name of the Sound Composer project."""
+        return self.__name
+
+    @name.setter
+    def name(self, name: str):
+        """Set the name of the Sound Composer project."""
+        self.__name = name
 
     def add_track(self, track: Track):
         """Add a track to the project.
@@ -128,6 +139,7 @@ class SoundComposer(SoundComposerParent):
         self.__operator_load.run()
 
         track_collection = self.__operator_load.get_output(0, GenericDataContainersCollection)
+        self.name = self.__operator_load.get_output(1, types.string)
 
         if len(track_collection) == 0:
             warnings.warn(
@@ -169,6 +181,7 @@ class SoundComposer(SoundComposerParent):
         # Save the Sound Composer project.
         self.__operator_save.connect(0, project_path)
         self.__operator_save.connect(1, track_collection)
+        self.__operator_save.connect(2, self.name)
 
         self.__operator_save.run()
 
