@@ -276,7 +276,6 @@ jobs:
           LICENSE_SERVER: ${{ secrets.LICENSE_SERVER }}
         run: |
           .\.venv\Scripts\Activate.ps1
-          echo "docker run -d --name $env:DPF_SOUND_CONT_NAME -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@$env:LICENSE_SERVER" -p $env:PORT_MAPPING --dns '8.8.8.8' $env:ANSRV_DPF_SOUND_IMAGE"
           docker run -d --name $env:DPF_SOUND_CONT_NAME -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@$env:LICENSE_SERVER" -p $env:PORT_MAPPING --dns '8.8.8.8' $env:ANSRV_DPF_SOUND_IMAGE
           python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
