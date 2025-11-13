@@ -267,9 +267,8 @@ jobs:
           ANSRV_DPF_SOUND_IMAGE: "${{ env.ANSRV_DPF_SOUND_REPO }}:${{ env.DOCUMENTATION_DPF_SOUND_TAG }}"
           DOCUMENTATION_DPF_SOUND_TAG: ${{ env.DOCUMENTATION_DPF_SOUND_TAG }}
         run: |
-          echo 'docker pull ${env:ANSRV_DPF_SOUND_REPO}:${env:DOCUMENTATION_DPF_SOUND_TAG}'
-          echo 'docker pull ${env:ANSRV_DPF_SOUND_IMAGE}'
-          docker pull ${env:ANSRV_DPF_SOUND_IMAGE}
+          echo "Image: $ANSRV_DPF_SOUND_REPO:$DOCUMENTATION_DPF_SOUND_TAG"
+          docker pull $ANSRV_DPF_SOUND_REPO:$DOCUMENTATION_DPF_SOUND_TAG
 
       - name: "Start DPF-Sound service and verify start"
         env:
