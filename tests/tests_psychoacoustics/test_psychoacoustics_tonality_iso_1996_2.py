@@ -316,5 +316,7 @@ def test_tonality_iso_1996_2_get_computation_details_unprocessed():
 def test_tonality_iso_1996_2_plot():
     """Test plot method."""
     tonality = TonalityISO1996_2()
-    with pytest.warns(PyAnsysSoundWarning, match=("There is nothing to plot.")):
+    with pytest.warns(
+        PyAnsysSoundWarning, match="This method is not implemented for class TonalityISO1996_2."
+    ):
         tonality.plot()

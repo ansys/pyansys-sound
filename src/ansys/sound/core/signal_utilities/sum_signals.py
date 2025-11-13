@@ -39,7 +39,10 @@ class SumSignals(SignalUtilitiesParent):
         Parameters
         ----------
         signals : FieldsContainer, default: None
-            Input signals to sum. Each field of the signal is summed.
+            Input signals, in a ``FieldsContainer`` where each ``Field`` contains a signal to sum
+            with the others. If necessary, the classes :class:`CreateSignalField` (for
+            single-channel signals) and :class:`CreateSignalFieldsContainer` (for single- or
+            multi-channel signals) can help create such input from signal data.
         """
         super().__init__()
         self.signals = signals
