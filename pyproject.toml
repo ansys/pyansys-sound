@@ -58,7 +58,7 @@ doc = [
     "sphinx-autobuild==2024.10.3",
     "platformdirs==4.5.0",
     "requests==2.30.0",
-    "scikit-learn==1.7.0",
+    "scikit-learn==1.7.2",
 ]
 
 [tool.flit.module]
