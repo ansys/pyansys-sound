@@ -37,7 +37,7 @@ tests = [
     "pytest-dependency==0.6.0",
     "platformdirs==4.5.0",
     "regex==2025.11.3",
-    "requests==2.30.0",
+    "requests==2.32.5",
     "scipy==1.15.3",
 ]
 
@@ -57,7 +57,7 @@ doc = [
     "jupyter-sphinx==0.5.3",
     "sphinx-autobuild==2024.10.3",
     "platformdirs==4.5.0",
-    "requests==2.30.0",
+    "requests==2.32.5",
     "scikit-learn==1.7.2",
 ]
 
