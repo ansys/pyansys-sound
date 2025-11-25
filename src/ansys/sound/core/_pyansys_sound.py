@@ -21,6 +21,8 @@
 # SOFTWARE.
 
 """PyAnsys Sound interface."""
+from functools import wraps
+from typing import Any, Callable
 import warnings
 
 from ansys.dpf.core import FieldsContainer
@@ -201,3 +203,74 @@ def convert_fields_container_to_np_array(fields_container: FieldsContainer) -> n
         case _:
             # Multiple fields => 2D NumPy array
             return np.vstack([np.array(field.data) for field in fields_container])
+
+
+def scipy_required(func: Callable) -> Callable:
+    """Decorate a function or method to ensure that SciPy is available.
+
+    Parameters
+    ----------
+    func : Callable
+        The method to which the decorator applies.
+
+    Returns
+    -------
+    Callable
+        The decorated method.
+    """
+    return _package_required(func, "SciPy")
+
+
+def graphics_required(func: Callable) -> Callable:
+    """Decorate a function or method to ensure that Matplotlib is available.
+
+    Parameters
+    ----------
+    func : Callable
+        The method to which the decorator applies.
+
+    Returns
+    -------
+    Callable
+        The decorated method.
+    """
+    return _package_required(func, "Matplotlib")
+
+
+def _package_required(func: Callable, package: str):
+    """Decorate a function or method to ensure that the specified package is available.
+
+    Parameters
+    ----------
+    func : Callable
+        The method to which the decorator applies.
+    package : str
+        Name of the package required by the decorated method.
+
+    Returns
+    -------
+    Callable
+        The decorated method.
+    """
+
+    @wraps(func)
+    def wrapper(self, *args, **kwargs) -> Any:
+        """Check package availability before calling the original method.
+
+        Returns
+        -------
+        Any
+            The original method's output.
+        """
+        package_lowercase = package.lower()
+        try:
+            __import__(package_lowercase)
+        except ImportError:
+            raise PyAnsysSoundException(
+                f"The method `{func.__name__}` of class `{self.__class__.__name__}` requires "
+                f"the {package} Python library to be installed. You can install {package} by "
+                f"running `pip install {package_lowercase}`, for example."
+            )
+        return func(self, *args, **kwargs)
+
+    return wrapper

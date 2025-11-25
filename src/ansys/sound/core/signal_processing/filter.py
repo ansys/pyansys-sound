@@ -27,9 +27,8 @@ import warnings
 from ansys.dpf.core import Field, Operator, TimeFreqSupport, fields_factory, locations
 import matplotlib.pyplot as plt
 import numpy as np
-import scipy
 
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning, scipy_required
 from ..signal_processing import SignalProcessingParent
 
 ID_OPERATOR_DESIGN = "filter_design_minimum_phase_FIR_filter_from_FRF"
@@ -398,6 +397,7 @@ class Filter(SignalProcessingParent):
                 map(float, self.__operator_design.get_output(1, "vec_double"))
             )
 
+    @scipy_required
     def __compute_FRF_from_coefficients(self):
         """Compute the frequency response function (FRF) from the filter coefficients.
 
@@ -417,6 +417,8 @@ class Filter(SignalProcessingParent):
         ):
             self.__frf = None
         else:
+            import scipy
+
             freq, complex_response = scipy.signal.freqz(
                 b=self.b_coefficients,
                 a=self.a_coefficients,
