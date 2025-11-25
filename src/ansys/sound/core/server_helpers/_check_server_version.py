@@ -55,7 +55,7 @@ def requires_dpf_version(min_dpf_version: str) -> Callable:
         Parameters
         ----------
         func : callable
-            The original method next to which the decorator is used.
+            The method to which the decorator applies.
 
         Returns
         -------

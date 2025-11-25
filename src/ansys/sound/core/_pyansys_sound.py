@@ -237,7 +237,7 @@ def graphics_required(func: Callable) -> Callable:
     return _package_required(func, "Matplotlib")
 
 
-def _package_required(func: Callable, package: str):
+def _package_required(func: Callable, package: str) -> Callable:
     """Decorate a function or method to ensure that the specified package is available.
 
     Parameters
