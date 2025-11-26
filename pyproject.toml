@@ -29,6 +29,15 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+full = [
+    "ansys-dpf-core==0.14.2",
+    "matplotlib==3.10.7",
+    "platformdirs==4.5.0",
+    "requests==2.32.5",
+    "scipy==1.15.3",
+    "scikit-learn==1.7.2",
+]
+
 tests = [
     "ansys-dpf-core==0.14.2",
     "matplotlib==3.10.7",
