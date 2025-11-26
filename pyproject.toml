@@ -22,13 +22,15 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "ansys-dpf-core@git+https://github.com/ansys/pydpf-core.git",
+    "ansys-dpf-core>=0.13.8,<1",
+    "matplotlib>=3.8.2,<4",
     "platformdirs>=3.6.0",
     "requests>=2.30.0",
 ]
 
 [project.optional-dependencies]
 tests = [
+    "ansys-dpf-core==0.14.2",
     "matplotlib==3.10.7",
     "pytest==9.0.1",
     "pytest-cov==7.0.0",
@@ -40,6 +42,7 @@ tests = [
 ]
 
 doc = [
+    "ansys-dpf-core==0.14.2",
     "Sphinx==8.2.3",
     "ansys-sphinx-theme==1.6.3",
     "numpydoc==1.9.0",
