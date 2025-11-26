@@ -100,18 +100,14 @@ def _download_file_in_local_tmp_folder(url, filename):  # pragma no cover
     -------
     Local path of the downloaded file.
     """
-    # First check if file has already been downloaded
-    local_path = os.path.join(EXAMPLES_PATH, os.path.basename(filename))
-    local_path_no_zip = local_path.replace(".zip", "")
-    if os.path.isfile(local_path_no_zip) or os.path.isdir(local_path_no_zip):
-        return local_path_no_zip
-
-    # Perform download
+    # Download content
     try:
         file_content = requests.get(url, timeout=10).content  # 10 seconds
     except requests.exceptions.Timeout:
         print("Timed out")
 
+    # Copy to local file
+    local_path = os.path.join(EXAMPLES_PATH, os.path.basename(filename))
     with open(local_path, "wb") as f:
         f.write(file_content)
     return local_path
