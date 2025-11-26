@@ -79,7 +79,8 @@ def test_requires_dpf_version():
     with pytest.raises(
         DpfVersionNotSupported,
         match=(
-            "Function or method `dummy_method_fail()` requires DPF server version 666.0 or higher."
+            "Function or method `dummy_method_fail\(\)` requires DPF server version 666.0 or "
+            "higher."
         ),
     ):
         DC.dummy_method_fail()
