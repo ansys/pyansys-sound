@@ -24,11 +24,10 @@
 import warnings
 
 from ansys.dpf.core import Field, Operator, types
-import matplotlib.pyplot as plt
 import numpy as np
 
 from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning, graphics_required
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_SHARPNESS_OVER_TIME = "compute_sharpness_over_time"
@@ -199,8 +198,11 @@ class SharpnessOverTime(PsychoacousticsParent):
         """
         return self.get_output_as_nparray()[2]
 
+    @graphics_required
     def plot(self):
         """Plot the sharpness over time."""
+        import matplotlib.pyplot as plt
+
         if self._output == None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."

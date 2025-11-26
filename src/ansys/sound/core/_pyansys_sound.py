@@ -265,7 +265,7 @@ def _package_required(func: Callable, package: str) -> Callable:
         package_lowercase = package.lower()
         try:
             __import__(package_lowercase)
-        except ImportError:
+        except (ModuleNotFoundError, ImportError):
             raise PyAnsysSoundException(
                 f"The method `{func.__name__}` of class `{self.__class__.__name__}` requires "
                 f"the {package} Python library to be installed. You can install {package} by "
