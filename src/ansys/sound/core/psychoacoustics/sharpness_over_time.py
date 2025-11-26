@@ -24,7 +24,7 @@
 import warnings
 
 from ansys.dpf.core import Field, Operator, types
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
 import numpy as np
 
 from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
