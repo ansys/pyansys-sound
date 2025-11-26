@@ -169,9 +169,8 @@ def test_pyansys_sound_scipy_required():
         with pytest.raises(
             PyAnsysSoundException,
             match=(
-                "The method `test_method` of class `TestClass` requires the SciPy Python library "
-                "to be installed. You can install SciPy by running `pip install scipy`, for "
-                "example."
+                "The function or method `test_method()` requires the SciPy Python library to be "
+                "installed. You can install SciPy by running `pip install scipy`, for example."
             ),
         ):
             test_instance.test_method()

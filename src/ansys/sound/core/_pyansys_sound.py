@@ -211,12 +211,12 @@ def scipy_required(func: Callable) -> Callable:
     Parameters
     ----------
     func : Callable
-        The method to which the decorator applies.
+        The function or method to which the decorator applies.
 
     Returns
     -------
     Callable
-        The decorated method.
+        The decorated function or method.
     """
     return _package_required(func, "SciPy")
 
@@ -227,34 +227,34 @@ def _package_required(func: Callable, package: str) -> Callable:
     Parameters
     ----------
     func : Callable
-        The method to which the decorator applies.
+        The function or method to which the decorator applies.
     package : str
-        Name of the package required by the decorated method.
+        Name of the package required by the decorated function or method.
 
     Returns
     -------
     Callable
-        The decorated method.
+        The decorated function or method.
     """
 
     @wraps(func)
-    def wrapper(self, *args, **kwargs) -> Any:
-        """Check package availability before calling the original method.
+    def wrapper(*args, **kwargs) -> Any:
+        """Check package availability before calling the original function or method.
 
         Returns
         -------
         Any
-            The original method's output.
+            The original function's or method's output.
         """
         package_lowercase = package.lower()
         try:
             __import__(package_lowercase)
         except (ModuleNotFoundError, ImportError):
             raise PyAnsysSoundException(
-                f"The method `{func.__name__}` of class `{self.__class__.__name__}` requires "
-                f"the {package} Python library to be installed. You can install {package} by "
-                f"running `pip install {package_lowercase}`, for example."
+                f"The function or method `{func.__name__}()` requires the {package} Python library "
+                f"to be installed. You can install {package} by running `pip install "
+                f"{package_lowercase}`, for example."
             )
-        return func(self, *args, **kwargs)
+        return func(*args, **kwargs)
 
     return wrapper
