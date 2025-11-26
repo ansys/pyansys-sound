@@ -221,22 +221,6 @@ def scipy_required(func: Callable) -> Callable:
     return _package_required(func, "SciPy")
 
 
-def graphics_required(func: Callable) -> Callable:
-    """Decorate a function or method to ensure that Matplotlib is available.
-
-    Parameters
-    ----------
-    func : Callable
-        The method to which the decorator applies.
-
-    Returns
-    -------
-    Callable
-        The decorated method.
-    """
-    return _package_required(func, "Matplotlib")
-
-
 def _package_required(func: Callable, package: str) -> Callable:
     """Decorate a function or method to ensure that the specified package is available.
 

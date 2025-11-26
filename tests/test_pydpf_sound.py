@@ -32,7 +32,6 @@ from ansys.sound.core._pyansys_sound import (
     PyAnsysSoundException,
     PyAnsysSoundWarning,
     convert_fields_container_to_np_array,
-    graphics_required,
     scipy_required,
 )
 
@@ -178,32 +177,5 @@ def test_pyansys_sound_scipy_required():
             test_instance.test_method()
 
     # Now test again when SciPy is installed.
-    result = test_instance.test_method()
-    assert result == "Package found"
-
-
-def test_pyansys_sound_graphics_required():
-    """Test the graphics_required decorator."""
-
-    class TestClass(PyAnsysSound):
-        @graphics_required
-        def test_method(self):
-            return "Package found"
-
-    test_instance = TestClass()
-
-    # Simulate Matplotlib not being installed to test exception raised.
-    with mock.patch.dict("sys.modules", {"matplotlib": None}):
-        with pytest.raises(
-            PyAnsysSoundException,
-            match=(
-                "The method `test_method` of class `TestClass` requires the Matplotlib Python "
-                "library to be installed. You can install Matplotlib by running `pip install "
-                "matplotlib`, for example."
-            ),
-        ):
-            test_instance.test_method()
-
-    # Now test again when Matplotlib is installed.
     result = test_instance.test_method()
     assert result == "Package found"
