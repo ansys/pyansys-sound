@@ -206,7 +206,9 @@ def convert_fields_container_to_np_array(fields_container: FieldsContainer) -> n
 
 
 def scipy_required(func: Callable) -> Callable:
-    """Decorate a function or method to ensure that SciPy is available.
+    """Decorate a function or method to ensure that SciPy is installed.
+
+    If it is not installed, an exception is raised suggesting to install it.
 
     Parameters
     ----------
@@ -222,7 +224,9 @@ def scipy_required(func: Callable) -> Callable:
 
 
 def _package_required(func: Callable, package: str) -> Callable:
-    """Decorate a function or method to ensure that the specified package is available.
+    """Decorate a function or method to ensure that the specified package is installed.
+
+    If it is not installed, an exception is raised suggesting to install it.
 
     Parameters
     ----------
