@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from unittest import mock
+
 from ansys.dpf.core import FieldsContainer, field_from_array, fields_container_factory
 from ansys.dpf.gate.errors import DpfVersionNotSupported
 import numpy as np
@@ -30,6 +32,7 @@ from ansys.sound.core._pyansys_sound import (
     PyAnsysSoundException,
     PyAnsysSoundWarning,
     convert_fields_container_to_np_array,
+    scipy_required,
 )
 
 
@@ -149,3 +152,29 @@ def test_convert_fields_container_to_np_array():
     assert np_array[0].tolist() == [5.0, 48.0, 27.0]
     assert isinstance(np_array[1], np.ndarray)
     assert np_array[1].tolist() == [12.0, 34.0, 49.0]
+
+
+def test_pyansys_sound_scipy_required():
+    """Test the scipy_required decorator."""
+
+    class TestClass(PyAnsysSound):
+        @scipy_required
+        def test_method(self):
+            return "Package found"
+
+    test_instance = TestClass()
+
+    # Simulate SciPy not being installed to test exception raised.
+    with mock.patch.dict("sys.modules", {"scipy": None}):
+        with pytest.raises(
+            PyAnsysSoundException,
+            match=(
+                "The function or method `test_method\(\)` requires the SciPy Python library to be "
+                "installed. You can install SciPy by running `pip install scipy`, for example."
+            ),
+        ):
+            test_instance.test_method()
+
+    # Now test again when SciPy is installed.
+    result = test_instance.test_method()
+    assert result == "Package found"

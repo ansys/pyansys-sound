@@ -21,6 +21,8 @@
 # SOFTWARE.
 
 """PyAnsys Sound interface."""
+from functools import wraps
+from typing import Any, Callable
 import warnings
 
 from ansys.dpf.core import FieldsContainer
@@ -201,3 +203,62 @@ def convert_fields_container_to_np_array(fields_container: FieldsContainer) -> n
         case _:
             # Multiple fields => 2D NumPy array
             return np.vstack([np.array(field.data) for field in fields_container])
+
+
+def scipy_required(func: Callable) -> Callable:
+    """Decorate a function or method to ensure that SciPy is installed.
+
+    If it is not installed, an exception is raised suggesting to install it.
+
+    Parameters
+    ----------
+    func : Callable
+        The function or method to which the decorator applies.
+
+    Returns
+    -------
+    Callable
+        The decorated function or method.
+    """
+    return _package_required(func, "SciPy")
+
+
+def _package_required(func: Callable, package: str) -> Callable:
+    """Decorate a function or method to ensure that the specified package is installed.
+
+    If it is not installed, an exception is raised suggesting to install it.
+
+    Parameters
+    ----------
+    func : Callable
+        The function or method to which the decorator applies.
+    package : str
+        Name of the package required by the decorated function or method.
+
+    Returns
+    -------
+    Callable
+        The decorated function or method.
+    """
+
+    @wraps(func)
+    def wrapper(*args, **kwargs) -> Any:
+        """Check package availability before calling the original function or method.
+
+        Returns
+        -------
+        Any
+            The original function's or method's output.
+        """
+        package_lowercase = package.lower()
+        try:
+            __import__(package_lowercase)
+        except (ModuleNotFoundError, ImportError):
+            raise PyAnsysSoundException(
+                f"The function or method `{func.__name__}()` requires the {package} Python library "
+                f"to be installed. You can install {package} by running `pip install "
+                f"{package_lowercase}`, for example."
+            )
+        return func(*args, **kwargs)
+
+    return wrapper

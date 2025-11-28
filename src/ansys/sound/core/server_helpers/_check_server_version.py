@@ -31,13 +31,13 @@ from ansys.dpf.core import _global_server
 def requires_dpf_version(min_dpf_version: str) -> Callable:
     """Check that the current DPF server matches or is higher than a certain version.
 
-    This decorator ensures that the decorated method can only be used if the current DPF server
-    version allows it.
+    This decorator ensures that the decorated function or method can only be used if the current
+    DPF server version allows it.
 
     Parameters
     ----------
     min_dpf_version : str, default: None
-        Minimum DPF server version required for the decorated method.
+        Minimum DPF server version required for the decorated function or method.
         The version must be specified as a string with the form MAJOR.MINOR, for example "11.0".
 
     Returns
@@ -46,21 +46,21 @@ def requires_dpf_version(min_dpf_version: str) -> Callable:
         The decorator.
 
     .. note::
-       This function must be used as a method decorator.
+       This function must be used as a function or method decorator.
     """
 
     def decorator(func) -> Callable:
-        """Wrap the original method to include DPF version check.
+        """Wrap the original function or method to include DPF version check.
 
         Parameters
         ----------
         func : callable
-            The original method next to which the decorator is used.
+            The function or method to which the decorator applies.
 
         Returns
         -------
         callable
-            The wrapped method.
+            The wrapped function or method.
         """
         if not isinstance(min_dpf_version, str):
             raise TypeError(
@@ -69,22 +69,22 @@ def requires_dpf_version(min_dpf_version: str) -> Callable:
             )
 
         @wraps(func)
-        def wrapper(self, *args, **kwargs) -> Any:
-            """Check DPF server version before calling the original method.
+        def wrapper(*args, **kwargs) -> Any:
+            """Check DPF server version before calling the original function or method.
 
             Returns
             -------
             Any
-                The original method's output.
+                The original function's or method's output.
             """
             _check_dpf_version(
                 min_dpf_version,
                 (
-                    f"Method `{func.__name__}` of class `{self.__class__.__name__}` requires DPF "
-                    f"server version {min_dpf_version} or higher."
+                    f"Function or method `{func.__name__}()` requires DPF server version "
+                    f"{min_dpf_version} or higher."
                 ),
             )
-            return func(self, *args, **kwargs)
+            return func(*args, **kwargs)
 
         return wrapper
 
