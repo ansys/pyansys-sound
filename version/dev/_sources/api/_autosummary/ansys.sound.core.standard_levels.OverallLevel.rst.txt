@@ -1,0 +1,47 @@
+﻿OverallLevel
+============
+
+.. currentmodule:: ansys.sound.core.standard_levels
+
+.. autoclass:: OverallLevel
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      OverallLevel.get_level
+      
+      
+      OverallLevel.get_output
+      
+      
+      OverallLevel.get_output_as_nparray
+      
+      
+      OverallLevel.plot
+      
+      
+      OverallLevel.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      OverallLevel.frequency_weighting
+      OverallLevel.reference_value
+      OverallLevel.scale
+      OverallLevel.signal
+   
+   
