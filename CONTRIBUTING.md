@@ -18,5 +18,5 @@ We absolutely welcome any code contributions and we hope that this guide
 will facilitate an understanding of the PyAnsys Sound code repository.
 Although any submission will be thoroughly reviewed by Ansys before merging,
 we still seek to foster a strong community of users and contributors to make
-this software as useful as possible. For this reason, we welcome and
-encourage any question or submission to this repository.
+this software as useful as possible. For this reason, we encourage any
+question or submission to this repository.
