@@ -10,7 +10,7 @@ The following contribution information is specific to PyAnsys Sound.
 [Contributing]: https://dev.docs.pyansys.com/how-to/contributing.html
 
 For more information on how to contribute to PyAnsys Sound specifically,
-please refer to [this package's Contribute] section.
+please refer to [PyAnsys Sound's Contribute] section.
 
 [this package's Contribute]: https://sound.docs.pyansys.com/version/stable/contribute.html
 
