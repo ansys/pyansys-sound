@@ -12,7 +12,7 @@ The following contribution information is specific to PyAnsys Sound.
 For more information on how to contribute to PyAnsys Sound specifically,
 please refer to [PyAnsys Sound's Contribute] section.
 
-[this package's Contribute]: https://sound.docs.pyansys.com/version/stable/contribute.html
+[PyAnsys Sound's Contribute]: https://sound.docs.pyansys.com/version/stable/contribute.html
 
 We absolutely welcome any code contributions and we hope that this guide
 will facilitate an understanding of the PyAnsys Sound code repository.
