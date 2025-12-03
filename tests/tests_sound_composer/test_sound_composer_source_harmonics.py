@@ -273,36 +273,86 @@ def test_source_harmonics_is_source_control_valid():
     assert source_harmonics_obj.is_source_control_valid() is True
 
 
-def test_source_harmonics_load_source_harmonics():
-    """Test SourceHarmonics load_source_harmonics method."""
+@pytest.mark.parametrize(
+    "file_path,control_value_idx,order_idx,expected_value",
+    [
+        pytest.param(
+            pytest.data_path_sound_composer_harmonics_source_in_container,
+            0,
+            3,
+            EXP_ORDER_LEVEL03_REF,
+            id="dBSPL_reference",
+        ),
+        pytest.param(
+            pytest.data_path_sound_composer_harmonics_source_Pa_in_container,
+            0,
+            3,
+            EXP_ORDER_LEVEL03_PA,
+            id="Pa_container",
+        ),
+        pytest.param(
+            pytest.data_path_sound_composer_harmonics_source_xml_in_container,
+            0,
+            3,
+            EXP_ORDER_LEVEL03_XML,
+            id="xml_container",
+        ),
+        pytest.param(
+            pytest.data_path_sound_composer_harmonics_source_order_vs_freq_db_spl,
+            300,
+            0,
+            0.0015561805799771224,
+            id="order_vs_freq_db_spl",
+        ),
+        pytest.param(
+            pytest.data_path_sound_composer_harmonics_source_order_vs_freq_db_a,
+            300,
+            0,
+            0.0021398365497589111,
+            id="order_vs_freq_db_a",
+        ),
+    ],
+)
+def test_source_harmonics_load_valid_files(file_path, control_value_idx, order_idx, expected_value):
+    """Test SourceHarmonics load_source_harmonics method with valid files."""
     source_harmonics_obj = SourceHarmonics()
 
-    # Load reference source file (dBSPL).
-    source_harmonics_obj.load_source_harmonics(
-        pytest.data_path_sound_composer_harmonics_source_in_container
-    )
-    assert isinstance(source_harmonics_obj.source_harmonics, FieldsContainer)
-    assert source_harmonics_obj.source_harmonics[0].data[3] == pytest.approx(EXP_ORDER_LEVEL03_REF)
+    # Load the source file
+    source_harmonics_obj.load_source_harmonics(file_path)
 
-    # Load source file in Pa.
-    source_harmonics_obj.load_source_harmonics(
-        pytest.data_path_sound_composer_harmonics_source_Pa_in_container
-    )
+    # Assert that source_harmonics is a FieldsContainer
     assert isinstance(source_harmonics_obj.source_harmonics, FieldsContainer)
-    assert source_harmonics_obj.source_harmonics[0].data[3] == pytest.approx(EXP_ORDER_LEVEL03_PA)
 
-    # Load wrong-header file (DPF error).
+    # Assert the expected data value at the specified index
+    assert source_harmonics_obj.source_harmonics[control_value_idx].data[
+        order_idx
+    ] == pytest.approx(expected_value)
+
+
+@pytest.mark.parametrize(
+    "file_path",
+    [
+        pytest.param(
+            pytest.data_path_sound_composer_harmonics_source_order_vs_freq_nok_rpm,
+            id="invalid_rpm",
+        ),
+        pytest.param(
+            pytest.data_path_sound_composer_harmonics_source_wrong_type_in_container,
+            id="wrong_header",
+        ),
+        pytest.param(
+            pytest.data_path_sound_composer_harmonics_source_order_vs_freq_nok_several_orders,
+            id="invalid_several_orders",
+        ),
+    ],
+)
+def test_source_harmonics_load_invalid_files(file_path):
+    """Test SourceHarmonics load_source_harmonics method with invalid files."""
+    source_harmonics_obj = SourceHarmonics()
+
+    # Assert that loading invalid files raises an exception
     with pytest.raises(Exception):
-        source_harmonics_obj.load_source_harmonics(
-            pytest.data_path_sound_composer_harmonics_source_wrong_type_in_container
-        )
-
-    # Load xml file.
-    source_harmonics_obj.load_source_harmonics(
-        pytest.data_path_sound_composer_harmonics_source_xml_in_container
-    )
-    assert isinstance(source_harmonics_obj.source_harmonics, FieldsContainer)
-    assert source_harmonics_obj.source_harmonics[0].data[3] == pytest.approx(EXP_ORDER_LEVEL03_XML)
+        source_harmonics_obj.load_source_harmonics(file_path)
 
 
 def test_source_harmonics_set_from_generic_data_containers():
