@@ -200,6 +200,22 @@ def pytest_configure(config):
     pytest.data_path_sound_composer_harmonics_source_Pa_in_container = get_test_file_path(
         "AnsysSound_Orders Pa v1_2024R2_20241203.txt", base_dir, server=server
     )
+    pytest.data_path_sound_composer_harmonics_source_order_vs_freq_db_spl = get_test_file_path(
+        "AnsysSound_OrderFreq dBSPL v1_26R1_20251021.txt", base_dir, server=server
+    )
+    pytest.data_path_sound_composer_harmonics_source_order_vs_freq_db_a = get_test_file_path(
+        "AnsysSound_OrderFreq dBA v1_26R1_20251021.txt", base_dir, server=server
+    )
+    pytest.data_path_sound_composer_harmonics_source_order_vs_freq_nok_rpm = get_test_file_path(
+        "AnsysSound_OrderFreq dBSPL v1_nok_rpm_26R1_20251021.txt", base_dir, server=server
+    )
+    pytest.data_path_sound_composer_harmonics_source_order_vs_freq_nok_several_orders = (
+        get_test_file_path(
+            "AnsysSound_OrderFreq dBSPL v1_nok_several_orders_26R1_20251021.txt",
+            base_dir,
+            server=server,
+        )
+    )
     pytest.data_path_sound_composer_harmonics_source_wrong_type_in_container = get_test_file_path(
         "AnsysSound_Orders V2_2024R2_20241203.txt", base_dir, server=server
     )
