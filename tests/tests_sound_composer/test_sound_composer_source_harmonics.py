@@ -58,6 +58,8 @@ else:  # DPF Sound <= 2025 R2
     EXP_ORDER_LEVEL03_PA = 3.041734453290701e-05
 
 EXP_ORDER_LEVEL03_XML = 5.632353957971172e-19
+EXP_ORDER_LEVEL3000_DBSPL = 0.0015561805799771224
+EXP_ORDER_LEVEL3000_DBA = 0.0021398365497589111
 EXP_STR_NOT_SET = "Harmonics source: Not set\nSource control: Not set/valid"
 EXP_STR_ALL_SET = (
     "Harmonics source: ''\n"
@@ -301,18 +303,18 @@ def test_source_harmonics_is_source_control_valid():
             pytest.data_path_sound_composer_harmonics_source_order_vs_freq_db_spl,
             300,
             0,
-            0.0015561805799771224,
+            EXP_ORDER_LEVEL3000_DBSPL,
             id="order_vs_freq_db_spl",
             marks=pytest.mark.skipif(
-                True,  # Add your specific condition here
-                reason="Skipping order_vs_freq_db_spl test case",
+                not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0,
+                reason="Requires servers version 11.0 or higher",
             ),
         ),
         pytest.param(
             pytest.data_path_sound_composer_harmonics_source_order_vs_freq_db_a,
             300,
             0,
-            0.0021398365497589111,
+            EXP_ORDER_LEVEL3000_DBA,
             id="order_vs_freq_db_a",
             marks=pytest.mark.skipif(
                 not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0,
