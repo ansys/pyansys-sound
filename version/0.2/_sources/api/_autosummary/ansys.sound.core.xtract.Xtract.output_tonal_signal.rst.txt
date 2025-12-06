@@ -1,0 +1,6 @@
+output\_tonal\_signal
+=====================
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoproperty:: Xtract.output_tonal_signal
