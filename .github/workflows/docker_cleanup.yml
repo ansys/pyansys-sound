@@ -17,8 +17,7 @@ jobs:
     env:
       PACKAGE_DELETION_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     permissions:
-      contents: write
-      packages: write
+      packages: write  # Required to delete images
 
     steps:
     - name: "Perform docker image cleanup - except certain tags"
