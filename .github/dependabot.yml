@@ -2,9 +2,10 @@ version: 2
 updates:
   - package-ecosystem: "pip" # See documentation for possible values
     directory: "/" # Location of package manifests
-    insecure-external-code-execution: allow
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 5 # Fallback cooldown if no specific rule applies
     labels:
       - "maintenance"
       - "dependencies"
@@ -15,6 +16,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 7 # semver-* options are not applicable for GitHub Actions
+      exclude:
+        - "ansys/actions/*"
     labels:
       - "maintenance"
     commit-message:
