@@ -33,8 +33,8 @@ jobs:
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write  # Required to modify changelog
+      pull-requests: write  # Required to update changelog in PR
     steps:
       - uses: ansys/actions/doc-deploy-changelog@eb7d0fc873deeee6d4740774675ce1741cb6f154 # v10.2.2
         with:
@@ -127,8 +127,8 @@ jobs:
     needs: [smoke-tests, retrieve-test-matrix]
     runs-on: [self-hosted, Windows, pyansys-sound]
     permissions:
-      contents: read
-      packages: read
+      contents: read  # Required to access test code
+      packages: read  # Required to use the DPF Sound Docker image
     env:
       PYVISTA_OFF_SCREEN: true
       MPLBACKEND: Agg  # non-interactive mode ("headless backend") for matplotlib: no GUI is used when plotting
@@ -232,8 +232,8 @@ jobs:
     runs-on: [self-hosted, Windows, pyansys-sound]
     needs: doc-style
     permissions:
-      contents: read
-      packages: read
+      contents: read  # Required to create documentation
+      packages: read  # Required to use the DPF Sound Docker image
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -331,8 +331,8 @@ jobs:
     # Specifying a GitHub environment is optional, but strongly encouraged
     environment: release
     permissions:
-      id-token: write
-      contents: write
+      id-token: write  # Required for Github release
+      contents: write  # Required for Github release
     steps:
       - name: "Download the library artifacts from build-library step"
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
