@@ -1,0 +1,6 @@
+get\_max\_sharpness
+===================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: SharpnessOverTime.get_max_sharpness

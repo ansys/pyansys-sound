@@ -1,0 +1,43 @@
+﻿WriteWav
+========
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoclass:: WriteWav
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      WriteWav.get_output
+      
+      
+      WriteWav.get_output_as_nparray
+      
+      
+      WriteWav.plot
+      
+      
+      WriteWav.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      WriteWav.bit_depth
+      WriteWav.path_to_write
+      WriteWav.signal
+   
+   
