@@ -337,19 +337,3 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         ax2.grid(True)
 
         plt.show()
-
-    def colourmap(self):
-        """Display time-varying specific loudness as a colourmap."""
-        plt.figure()
-        plt.imshow(
-            self.get_output_as_nparray()[0].reshape(-1, 1).T,
-            aspect="auto",
-            origin="lower",
-            extent=[
-                0,
-                self.get_time_scale()[-1],
-                0,
-                24,
-            ],
-            cmap="viridis",
-        )
