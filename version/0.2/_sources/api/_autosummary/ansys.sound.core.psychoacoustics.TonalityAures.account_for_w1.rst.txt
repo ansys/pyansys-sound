@@ -1,0 +1,6 @@
+account\_for\_w1
+================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: TonalityAures.account_for_w1
