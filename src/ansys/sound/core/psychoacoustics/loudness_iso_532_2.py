@@ -46,6 +46,41 @@ class LoudnessISO532_2(PsychoacousticsParent):
 
     This class computes the binaural and monaural loudness of a signal according to the
     ISO 532-2:2017 standard, corresponding to the "Moore-Glasberg method".
+
+    Examples
+    --------
+    Compute the binaural loudness a single-microphone signal in free field, presented
+    diotically (same signal at both ears), and display the binaural specific loudness.
+
+    >>> from ansys.sound.core.psychoacoustics import LoudnessISO532_2
+    >>> loudness_computer = LoudnessISO532_2(
+    ...     signal=my_microphone_signal,
+    ...     field_type="Free",
+    ...     recording_type="Mic"
+    ... )
+    >>> loudness_computer.process()
+    >>> binaural_loudness = loudness_computer.get_binaural_loudness_sone()
+    >>> binaural_loudness_level = loudness_computer.get_binaural_loudness_level_phon()
+    >>> loudness_computer.plot()
+
+    Compute the binaural loudness a head-and-torso-simulator or binaural-microphone signal in free
+    field, presented dichotically (different signal at each ear), and display the binaural specific
+    loudness.
+
+    >>> from ansys.sound.core.psychoacoustics import LoudnessISO532_2
+    >>> loudness_computer = LoudnessISO532_2(
+    ...     signal=my_binaual_signal,
+    ...     field_type="Free",
+    ...     recording_type="Head"
+    ... )
+    >>> loudness_computer.process()
+    >>> monaural_loudness = loudness_computer.get_monaural_loudness_sone()
+    >>> monaural_loudness_level = loudness_computer.get_monaural_loudness_level_phon()
+    >>> loudness_computer.plot()
+
+    See also example script `Calculate psychoacoustic indicators`_
+
+    .. _Calculate psychoacoustic indicators: ../../examples/gallery_examples/007_calculate_psychoacoustic_indicators.html  # noqa: E501
     """
 
     def __init__(

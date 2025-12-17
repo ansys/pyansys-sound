@@ -42,6 +42,30 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     """Computes ISO 3744 sound power level.
 
     This class computes the sound power level according to the ISO 3744 standard.
+
+    Examples
+    --------
+    Create a sound power level object from microphone signals recorded on a hemispherical surface.
+
+    >>> from ansys.sound.core.sound_power import SoundPowerLevelISO3744
+    >>> swl = SoundPowerLevelISO3744(
+    ...     surface_shape="Hemisphere",
+    ...     surface_radius=2.0,
+    ... )
+    >>> swl.add_microphone_signal(signal1)
+    >>> swl.add_microphone_signal(signal2)
+    >>> ... # etc. for all microphone signals.
+
+    Alternatively, load all sound power level data from a project file created in Ansys Sound SAS.
+
+    >>> swl.load_project("path/to/project_file.spw")
+
+    Get and display the output sound power level.
+
+    >>> swl.process()
+    >>> Lw_dB = swl.get_Lw()
+    >>> Lw_dBA = swl.get_Lw_A()
+    >>> swl.plot()
     """
 
     def __init__(

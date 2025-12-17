@@ -48,6 +48,25 @@ class Xtract(XtractParent):
     and Specification (SAS). This operator chains a denoising step, followed by a
     tonal extraction step, and then a transient extraction step. It returns the
     individual signals processed at each step, as well as the remainder.
+
+    Examples
+    --------
+    Extract and display the different signal components using Xtract processing.
+
+    >>> from ansys.sound.core import Xtract
+    >>> xtract = Xtract(
+    ...     input_signal=my_signal,
+    ...     parameters_denoiser=my_denoiser_params,
+    ...     parameters_tonal=my_tonal_params,
+    ...     parameters_transient=my_transient_params,
+    ... )
+    >>> xtract.process()
+    >>> noise_signal, tonal_signal, transient_signal, remainder_signal = xtract.get_output()
+    >>> xtract.plot()
+
+    See also example script `Use the Xtract feature`_
+
+    .. _Use the Xtract feature: ../../examples/gallery_examples/005_xtract_feature.html
     """
 
     def __init__(

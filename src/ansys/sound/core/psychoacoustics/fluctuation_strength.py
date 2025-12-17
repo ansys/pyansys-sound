@@ -42,6 +42,20 @@ class FluctuationStrength(PsychoacousticsParent):
 
     Reference: "Entwicklung eines Modulkonzeptes fur die psychoakustische Gerauschanalyse under
     MATLAB". Master thesis, Technischen Universitat Graz, pp. 1-112 (1998).
+
+    Examples
+    --------
+    Compute the fluctuation strength of a signal, and display the specific fluctuation strength.
+
+    >>> from ansys.sound.core.psychoacoustics import FluctuationStrength
+    >>> fs_computer = FluctuationStrength(signal=my_signal)
+    >>> fs_computer.process()
+    >>> fluctuation_strength = fs_computer.get_fluctuation_strength()
+    >>> fs_computer.plot()
+
+    See also example script `Calculate psychoacoustic indicators`_
+
+    .. _Calculate psychoacoustic indicators: ../../examples/gallery_examples/007_calculate_psychoacoustic_indicators.html  # noqa: E501
     """
 
     def __init__(

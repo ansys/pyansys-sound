@@ -69,6 +69,31 @@ class Track(SoundComposerParent):
 
     A track allows the generation of the sound corresponding to the source, optionally filtered
     with the associated filter.
+
+    Examples
+    --------
+    Create a track with an audio source and a filter.
+
+    >>> from ansys.sound.core.sound_composer import SourceAudio, Track
+    >>> from ansys.sound.core.signal_processing import Filter
+    >>> audio_source = SourceAudio(
+    ...     file_path="path/to/audio/file.wav",
+    ... )
+    >>> track_filter = Filter(sampling_frequency=44100.0)
+    >>> track = Track(
+    ...     name="Audio Track",
+    ...     gain=-3.0,
+    ...     source=audio_source,
+    ...     filter=track_filter
+    ... )
+
+    See also example scripts:
+
+    - `Use an existing Sound Composer project file`_
+    - `Create and work with a Sound Composer project`_
+
+    .. _Use an existing Sound Composer project file: ../../examples/gallery_examples/010_sound_composer_load_project.html  # noqa: E501
+    .. _Create and work with a Sound Composer project: ../../examples/gallery_examples/011_sound_composer_create_project.html  # noqa: E501
     """
 
     def __init__(

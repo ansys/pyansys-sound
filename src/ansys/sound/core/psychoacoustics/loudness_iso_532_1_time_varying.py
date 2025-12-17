@@ -39,6 +39,24 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
 
     This class computes the loudness of a signal according to the ISO 532-1:2017 standard,
     corresponding to the "Zwicker method", for time-varying sounds.
+
+    Examples
+    --------
+    Compute the percentile loudness of a time-varying signal in free field, and display its
+    loudness over time.
+
+    >>> from ansys.sound.core.psychoacoustics import LoudnessISO532_1_TimeVarying
+    >>> loudness_computer = LoudnessISO532_1_TimeVarying(signal=my_signal, field_type="Free")
+    >>> loudness_computer.process()
+    >>> N5 = loudness_computer.get_N5_sone()
+    >>> N10 = loudness_computer.get_N10_sone()
+    >>> L5 = loudness_computer.get_L5_phon()
+    >>> L10 = loudness_computer.get_L10_phon()
+    >>> loudness_computer.plot()
+
+    See also example script `Calculate psychoacoustic indicators`_
+
+    .. _Calculate psychoacoustic indicators: ../../examples/gallery_examples/007_calculate_psychoacoustic_indicators.html  # noqa: E501
     """
 
     def __init__(
@@ -319,3 +337,19 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         ax2.grid(True)
 
         plt.show()
+
+    def colourmap(self):
+        """Display time-varying specific loudness as a colourmap."""
+        plt.figure()
+        plt.imshow(
+            self.get_output_as_nparray()[0].reshape(-1, 1).T,
+            aspect="auto",
+            origin="lower",
+            extent=[
+                0,
+                self.get_time_scale()[-1],
+                0,
+                24,
+            ],
+            cmap="viridis",
+        )
