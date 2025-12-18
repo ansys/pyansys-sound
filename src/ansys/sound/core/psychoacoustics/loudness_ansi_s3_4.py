@@ -43,10 +43,10 @@ class LoudnessANSI_S3_4(PsychoacousticsParent):
     Compute the loudness of a signal in free field.
 
     >>> from ansys.sound.core.psychoacoustics import LoudnessANSI_S3_4
-    >>> loudness_computer = LoudnessANSI_S3_4(signal=my_signal, field_type="Free")
-    >>> loudness_computer.process()
-    >>> loudness = loudness_computer.get_loudness_sone()
-    >>> loudness_level = loudness_computer.get_loudness_level_phon()
+    >>> loudness_helper = LoudnessANSI_S3_4(signal=my_signal, field_type="Free")
+    >>> loudness_helper.process()
+    >>> loudness = loudness_helper.get_loudness_sone()
+    >>> loudness_level = loudness_helper.get_loudness_level_phon()
     """
 
     def __init__(self, signal: Field = None, field_type: str = FIELD_FREE):

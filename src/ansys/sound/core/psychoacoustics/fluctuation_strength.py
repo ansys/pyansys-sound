@@ -48,10 +48,10 @@ class FluctuationStrength(PsychoacousticsParent):
     Compute the fluctuation strength of a signal, and display the specific fluctuation strength.
 
     >>> from ansys.sound.core.psychoacoustics import FluctuationStrength
-    >>> fs_computer = FluctuationStrength(signal=my_signal)
-    >>> fs_computer.process()
-    >>> fluctuation_strength = fs_computer.get_fluctuation_strength()
-    >>> fs_computer.plot()
+    >>> fs_helper = FluctuationStrength(signal=my_signal)
+    >>> fs_helper.process()
+    >>> fluctuation_strength = fs_helper.get_fluctuation_strength()
+    >>> fs_helper.plot()
 
     See also example script `Calculate psychoacoustic indicators`_
 

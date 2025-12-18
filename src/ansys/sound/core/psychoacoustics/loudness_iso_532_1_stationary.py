@@ -45,11 +45,11 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
     Compute the loudness of a signal in free field, and display its specific loudness.
 
     >>> from ansys.sound.core.psychoacoustics import LoudnessISO532_1_Stationary
-    >>> loudness_computer = LoudnessISO532_1_Stationary(signal=my_signal, field_type="Free")
-    >>> loudness_computer.process()
-    >>> loudness = loudness_computer.get_loudness_sone()
-    >>> loudness_level = loudness_computer.get_loudness_level_phon()
-    >>> loudness_computer.plot()
+    >>> loudness_helper = LoudnessISO532_1_Stationary(signal=my_signal, field_type="Free")
+    >>> loudness_helper.process()
+    >>> loudness = loudness_helper.get_loudness_sone()
+    >>> loudness_level = loudness_helper.get_loudness_level_phon()
+    >>> loudness_helper.plot()
 
     See also example script `Calculate psychoacoustic indicators`_
 

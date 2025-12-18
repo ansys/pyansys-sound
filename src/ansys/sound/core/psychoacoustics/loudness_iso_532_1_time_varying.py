@@ -46,13 +46,13 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
     loudness over time.
 
     >>> from ansys.sound.core.psychoacoustics import LoudnessISO532_1_TimeVarying
-    >>> loudness_computer = LoudnessISO532_1_TimeVarying(signal=my_signal, field_type="Free")
-    >>> loudness_computer.process()
-    >>> N5 = loudness_computer.get_N5_sone()
-    >>> N10 = loudness_computer.get_N10_sone()
-    >>> L5 = loudness_computer.get_L5_phon()
-    >>> L10 = loudness_computer.get_L10_phon()
-    >>> loudness_computer.plot()
+    >>> loudness_helper = LoudnessISO532_1_TimeVarying(signal=my_signal, field_type="Free")
+    >>> loudness_helper.process()
+    >>> N5 = loudness_helper.get_N5_sone()
+    >>> N10 = loudness_helper.get_N10_sone()
+    >>> L5 = loudness_helper.get_L5_phon()
+    >>> L10 = loudness_helper.get_L10_phon()
+    >>> loudness_helper.plot()
 
     See also example script `Calculate psychoacoustic indicators`_
 
