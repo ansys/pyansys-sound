@@ -62,7 +62,7 @@ def get_ext(filename):  # pragma no cover
 
 
 def delete_downloads():  # pragma no cover
-    """Delete all downloaded examples to free space or update the files."""
+    """Delete all downloaded examples to free up space."""
     if os.path.exists(EXAMPLES_PATH):
         shutil.rmtree(EXAMPLES_PATH)
     return True

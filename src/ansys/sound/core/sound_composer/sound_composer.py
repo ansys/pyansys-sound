@@ -47,6 +47,23 @@ class SoundComposer(SoundComposerParent):
     This class creates a Sound Composer project. A project is made of several tracks, each
     containing a source, to generate the sound, and an optional filter, to model the transfer
     between the source and the receiver.
+
+    Examples
+    --------
+    Load a Sound Composer project created in Ansys Sound SAS, and plot the generated signal.
+
+    >>> from ansys.sound.core.sound_composer import SoundComposer
+    >>> sound_composer = SoundComposer(project_path="path/to/project.scn")
+    >>> sound_composer.process(sampling_frequency=48000.0)
+    >>> sound_composer.plot()
+
+    See also example scripts:
+
+    - `Use an existing Sound Composer project file`_
+    - `Create and work with a Sound Composer project`_
+
+    .. _Use an existing Sound Composer project file: ../../examples/gallery_examples/010_sound_composer_load_project.html  # noqa: E501
+    .. _Create and work with a Sound Composer project: ../../examples/gallery_examples/011_sound_composer_create_project.html  # noqa: E501
     """
 
     def __init__(
