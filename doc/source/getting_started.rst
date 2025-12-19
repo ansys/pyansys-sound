@@ -72,6 +72,8 @@ By default, a DPF server is started from the latest installed Ansys version.
      - 0.1.0 and later
    * - 10.0 (Ansys 2025 R2 pre0)
      - 0.2.0 and later
+   * - 11.0 (Ansys 2026 R1 pre0)
+     - 0.3.0 and later
 
 
 Examples
