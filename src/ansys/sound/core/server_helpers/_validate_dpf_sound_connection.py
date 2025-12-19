@@ -38,6 +38,9 @@ def validate_dpf_sound_connection(port=None) -> None:
         Port that the DPF server is listening to.
     """
     port = port if port is not None else DEFAULT_PORT
+    print("toto")
+    print(os.environ.get("ANSYSLMD_LICENSE_FILE", "lic file not retrieved"))
+    print(os.environ.get("ANSYS_DPF_ACCEPT_LA", "accept mode not retrieved"))
     print(os.environ.get("DPF_DEFAULT_GRPC_MODE", "grpc mode not retrieved"))
     connect_to_server(port=port)
     load_library("dpf_sound.dll", "dpf_sound")
