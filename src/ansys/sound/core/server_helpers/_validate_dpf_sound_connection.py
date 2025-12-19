@@ -24,7 +24,9 @@
 
 import os
 
-from ansys.dpf.core import Operator, connect_to_server, load_library
+from ansys.dpf.core import Operator, load_library
+
+from ansys.sound.core.server_helpers import connect_to_or_start_server
 
 DEFAULT_PORT: int = int(os.environ.get("ANSRV_DPF_SOUND_PORT", 6780))
 
@@ -38,11 +40,7 @@ def validate_dpf_sound_connection(port=None) -> None:
         Port that the DPF server is listening to.
     """
     port = port if port is not None else DEFAULT_PORT
-    print("toto")
-    print(os.environ.get("ANSYSLMD_LICENSE_FILE", "lic file not retrieved"))
-    print(os.environ.get("ANSYS_DPF_ACCEPT_LA", "accept mode not retrieved"))
-    print(os.environ.get("DPF_DEFAULT_GRPC_MODE", "grpc mode not retrieved"))
-    connect_to_server(port=port)
+    connect_to_or_start_server(port=port)
     load_library("dpf_sound.dll", "dpf_sound")
     Operator("load_wav_sas")
     print("DPF Sound is available and running.")
