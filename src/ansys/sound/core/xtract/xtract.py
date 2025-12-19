@@ -64,9 +64,9 @@ class Xtract(XtractParent):
     >>> noise_signal, tonal_signal, transient_signal, remainder_signal = xtract.get_output()
     >>> xtract.plot()
 
-    See also example script `Use the Xtract feature`_
+    See also example script `Extract tonal, transient, and noise components (Xtract)`_
 
-    .. _Use the Xtract feature: ../../examples/gallery_examples/005_xtract_feature.html
+    .. _Extract tonal, transient, and noise components (Xtract): ../../examples/gallery_examples/005_xtract_feature.html # noqa: E501
     """
 
     def __init__(

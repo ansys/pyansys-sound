@@ -49,9 +49,9 @@ class XtractTonal(XtractParent):
     >>> tonal_signals, non_tonal_signals = xtract_tonal.get_output()
     >>> xtract_tonal.plot()
 
-    See also example script `Use the Xtract feature`_
+    See also example script `Extract tonal, transient, and noise components (Xtract)`_
 
-    .. _Use the Xtract feature: ../../examples/gallery_examples/005_xtract_feature.html
+    .. _Extract tonal, transient, and noise components (Xtract): ../../examples/gallery_examples/005_xtract_feature.html # noqa: E501
     """
 
     def __init__(

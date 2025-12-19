@@ -62,7 +62,7 @@ AnySourceType = Union[tuple(DICT_SOURCE_TYPE.values())]
 
 
 class Track(SoundComposerParent):
-    """Sound Composer's track class.
+    """Sound Composer track class.
 
     This class creates a track for the Sound Composer. A track is made of a source (including its
     source control) and an optional filter (which models the transfer from source to receiver).

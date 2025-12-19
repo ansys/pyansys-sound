@@ -45,7 +45,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
     Examples
     --------
-    Create a sound power level object from microphone signals recorded on a hemispherical surface.
+    Compute and display sound power level following the ISO 3744 standard.
 
     >>> from ansys.sound.core.sound_power import SoundPowerLevelISO3744
     >>> swl = SoundPowerLevelISO3744(
@@ -53,18 +53,17 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     ...     surface_radius=2.0,
     ... )
     >>> swl.add_microphone_signal(signal1)
-    >>> swl.add_microphone_signal(signal2)
-    >>> ... # etc. for all microphone signals.
-
-    Alternatively, load all sound power level data from a project file created in Ansys Sound SAS.
-
-    >>> swl.load_project("path/to/project_file.spw")
-
-    Get and display the output sound power level.
-
+    >>> # Repeat for all microphone signals.
     >>> swl.process()
-    >>> Lw_dB = swl.get_Lw()
-    >>> Lw_dBA = swl.get_Lw_A()
+    >>> Lw = swl.get_Lw()
+    >>> swl.plot()
+
+    Alternatively, load sound power level data from a project file created in Ansys Sound SAS.
+
+    >>> swl = SoundPowerLevelISO3744()
+    >>> swl.load_project("path/to/project_file.spw")
+    >>> swl.process()
+    >>> Lw = swl.get_Lw()
     >>> swl.plot()
     """
 
@@ -275,21 +274,21 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         else:
             self.__signals.pop(index)
 
-    def get_all_signal_names(self) -> tuple[tuple]:
+    def get_all_signal_names(self) -> dict[int, str]:
         """Get all signal names.
 
-        Gets the list of the names of all signals that were added.
+        Gets all added signal names in a dictionary.
 
         Returns
         -------
-        tuple[tuple]
-            List of all signal names, preceded by their indexes in the list.
+        dict[int, str]
+            Dictionary of all signal indexes and names.
         """
-        all_signals = []
+        signal_names = {}
         for isig in range(len(self.__signals)):
-            all_signals.append([isig, self.__signals[isig].name])
+            signal_names[isig] = self.__signals[isig].name
 
-        return all_signals
+        return signal_names
 
     def set_K2_from_room_properties(
         self, length: float, width: float, height: float, alpha: float

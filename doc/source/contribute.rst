@@ -45,13 +45,19 @@ Perform these steps to install PyAnsys Sound in developer mode:
       # Activate it in Windows Powershell
       .venv\Scripts\Activate.ps1
 
-#. Install dependencies:
+#. Install with minimum requirements, to cover core functionality:
 
    .. code:: bash
 
        pip install -e .
 
-#. Install additional requirements for tests and documentation (if needed):
+#. Alternatively, install the full requirements, allowing to access all available features:
+
+    .. code:: bash
+
+         pip install -e.[full]
+
+#. If needed, install additional requirements for testing and documentation-building:
 
    .. code:: bash
 
@@ -63,7 +69,7 @@ Test
 There are different ways to run the PyAnsys Sound tests, depending on how the DPF
 server is started.
 
-- Run tests with a Docker container.
+- Run tests with an existing Docker container.
 
   For information on getting and running the DPF Server Docker image, see :ref:`DPF Server Docker image`.
   Run the tests with this command:
@@ -72,7 +78,7 @@ server is started.
 
       pytest .
 
-- Run tests with a Docker container from GitHub with these commands:
+- Run tests with the latest Docker container from GitHub with these commands:
 
   .. code:: bash
 

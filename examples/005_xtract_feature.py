@@ -23,11 +23,11 @@
 """
 .. _xtract_feature_example:
 
-Use the Xtract feature
-----------------------
+Extract tonal, transient, and noise components (Xtract)
+-------------------------------------------------------
 
 This example shows how to use the Xtract feature in PyAnsys Sound.
-It demonstrates different capabilities of this feature, such as
+It demonstrates the different capabilities of this feature, namely,
 noise extraction, tonal extraction, and transient extraction.
 
 """
