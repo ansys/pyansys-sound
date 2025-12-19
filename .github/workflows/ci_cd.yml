@@ -20,12 +20,13 @@ env:
   MAIN_PYTHON_VERSION: '3.12'
   PACKAGE_NAME: 'ansys-sound-core'
   DOCUMENTATION_CNAME: 'sound.docs.pyansys.com'
-  DOCUMENTATION_DPF_SOUND_TAG: 'dpf-core-20251215.1_dpf-sound-2026.1.0.4416' # DPF Sound image tag for doc building
-  TEST_DPF_SOUND_MATRIX: '["dpf-core-20251215.1_dpf-sound-2026.1.0.4416"]' # List of DPF Sound image tags for testing (quotes and double quotes are important!!)
+  DOCUMENTATION_DPF_SOUND_TAG: '26.1' # DPF Sound image tag for doc building
+  TEST_DPF_SOUND_MATRIX: '["26.1"]' # List of DPF Sound image tags for testing (quotes and double quotes are important!!)
   ANSRV_DPF_SOUND_REPO: ghcr.io/ansys/ansys-sound # Docker repository for DPF Sound
   ANSRV_DPF_SOUND_PORT: 6780 # Port to connect to DPF Sound Docker container
   ANSRV_DPF_SOUND_PORT_IN_CONTAINER: 50052 # Port inside DPF Sound Docker container
   DPF_SOUND_CONT_NAME: ansys-sound-core
+  DPF_DEFAULT_GRPC_MODE: insecure
 jobs:
 
   # update-changelog:
