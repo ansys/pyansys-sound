@@ -29,83 +29,6 @@ env:
   DPF_DEFAULT_GRPC_MODE: insecure
 jobs:
 
-  # update-changelog:
-  #   name: "Update CHANGELOG for new tag"
-  #   if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     contents: write  # Required to modify changelog
-  #     pull-requests: write  # Required to update changelog in PR
-  #   steps:
-  #     - uses: ansys/actions/doc-deploy-changelog@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
-  #       with:
-  #         token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
-  #         bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
-  #         bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
-
-  # doc-style:
-  #   name: "Running documentation style checks"
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: "Running documentation style checks"
-  #       uses: ansys/actions/doc-style@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
-  #       with:
-  #         token: ${{ secrets.GITHUB_TOKEN }}
-
-  # pull-request-name:
-  #   if: github.event_name == 'pull_request'
-  #   name: Check the name of the pull-request
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Check pull-request name
-  #       uses: ansys/actions/check-pr-title@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
-  #       with:
-  #         token: ${{ secrets.GITHUB_TOKEN }}
-
-  # smoke-tests:
-  #   name: "Build and Smoke tests"
-  #   runs-on: ${{ matrix.os }}
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       os: [windows-latest, ubuntu-latest, macos-latest]
-  #       python-version: ['3.10', '3.11', '3.12', '3.13']
-  #       should-release:
-  #         - ${{ github.event_name == 'push' && contains(github.ref, 'refs/tags') }}
-  #       exclude:
-  #         - should-release: false
-  #           os: macos-latest
-  #   steps:
-  #     - name: "Build wheelhouse and perform smoke test"
-  #       uses: ansys/actions/build-wheelhouse@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
-  #       with:
-  #         library-name: ${{ env.PACKAGE_NAME }}
-  #         operating-system: ${{ matrix.os }}
-  #         python-version: ${{ matrix.python-version }}
-
-  # vulnerabilities:
-  #   name: "Check library vulnerabilities"
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: "Check library vulnerabilities with default mode"
-  #       uses: ansys/actions/check-vulnerabilities@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
-  #       with:
-  #         python-version: ${{ env.MAIN_PYTHON_VERSION }}
-  #         token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
-  #         python-package-name: ${{ env.PACKAGE_NAME }}
-  #         dev-mode: ${{ github.ref != 'refs/heads/main' }}
-
-  # actions-security:
-  #   name: "Check actions security"
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: ansys/actions/check-actions-security@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
-  #       with:
-  #         generate-summary: true
-  #         token: ${{ secrets.GITHUB_TOKEN }}
-  #         auditing-level: 'high'
-  #         trust-ansys-actions: true
-
 # =================================================================================================
 # vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv    RUNNING ON SELF-HOSTED RUNNER    vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 # =================================================================================================
@@ -186,7 +109,7 @@ jobs:
           LICENSE_SERVER: ${{ secrets.LICENSE_SERVER }}
         run: |
           .\.venv\Scripts\Activate.ps1
-          docker run -d --name $env:DPF_SOUND_CONT_NAME -e DPF_DEFAULT_GRPC_MODE=insecure -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@$env:LICENSE_SERVER" -p $env:PORT_MAPPING --dns '8.8.8.8' $env:ANSRV_DPF_SOUND_IMAGE
+          docker run -d --restart always --name $env:DPF_SOUND_CONT_NAME -e DPF_DEFAULT_GRPC_MODE=insecure -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@$env:LICENSE_SERVER" -p $env:PORT_MAPPING --dns '8.8.8.8' $env:ANSRV_DPF_SOUND_IMAGE
 
       - name: "Testing"
         run: |
@@ -275,7 +198,7 @@ jobs:
           LICENSE_SERVER: ${{ secrets.LICENSE_SERVER }}
         run: |
           .\.venv\Scripts\Activate.ps1
-          docker run -d --name $env:DPF_SOUND_CONT_NAME -e DPF_DEFAULT_GRPC_MODE=insecure -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@$env:LICENSE_SERVER" -p $env:PORT_MAPPING --dns '8.8.8.8' $env:ANSRV_DPF_SOUND_IMAGE
+          docker run -d --restart always --name $env:DPF_SOUND_CONT_NAME -e DPF_DEFAULT_GRPC_MODE=insecure -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@$env:LICENSE_SERVER" -p $env:PORT_MAPPING --dns '8.8.8.8' $env:ANSRV_DPF_SOUND_IMAGE
 
       - name: "Run Ansys documentation building action"
         uses: ansys/actions/doc-build@41f86da4c9ead510db9135e428e33df9cc6f92e1 # v10.2.3
