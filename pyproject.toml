@@ -23,6 +23,9 @@ classifiers = [
 ]
 dependencies = [
     "ansys-dpf-core>=0.13.8,<1",
+    "matplotlib>=3.8.2,<4",
+    "platformdirs>=3.6.0",
+    "requests>=2.30.0",
 ]
 
 [project.optional-dependencies]
