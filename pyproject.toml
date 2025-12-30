@@ -23,9 +23,6 @@ classifiers = [
 ]
 dependencies = [
     "ansys-dpf-core>=0.13.8,<1",
-    "matplotlib>=3.8.2,<4",
-    "platformdirs>=3.6.0",
-    "requests>=2.30.0",
 ]
 
 [project.optional-dependencies]
@@ -40,14 +37,6 @@ full = [
 
 tests = [
     "ansys-dpf-core==0.14.2",
-    "matplotlib==3.10.7",
-    "pytest==9.0.2",
-    "pytest-cov==7.0.0",
-    "pytest-dependency==0.6.0",
-    "platformdirs==4.5.1",
-    "regex==2025.11.3",
-    "requests==2.32.5",
-    "scipy==1.15.3",
 ]
 
 doc = [

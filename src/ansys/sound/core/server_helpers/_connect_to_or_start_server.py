@@ -26,7 +26,6 @@ import os
 from typing import Any, Optional, Union
 
 from ansys.dpf.core import (
-    AvailableServerConfigs,
     LicenseContextManager,
     connect_to_server,
     load_library,
@@ -105,15 +104,15 @@ def connect_to_or_start_server(
     if ip is not None:
         connect_kwargs["ip"] = ip
 
-    default_grpc_mode = os.environ.get("DPF_DEFAULT_GRPC_MODE")
-    if default_grpc_mode is not None:
-        # manually pass config and set certificates_dir for mTLS
-        if "config" in kwargs:
-            kwargs["config"].grpc_mode = default_grpc_mode
-        else:
-            config = AvailableServerConfigs.GrpcServer
-            config.grpc_mode = default_grpc_mode
-            kwargs["config"] = config
+    # default_grpc_mode = os.environ.get("DPF_DEFAULT_GRPC_MODE")
+    # if default_grpc_mode is not None:
+    #     # manually pass config and set certificates_dir for mTLS
+    #     if "config" in kwargs:
+    #         kwargs["config"].grpc_mode = default_grpc_mode
+    #     else:
+    #         config = AvailableServerConfigs.GrpcServer
+    #         config.grpc_mode = default_grpc_mode
+    #         kwargs["config"] = config
 
     full_path_dll = ""
     if len(list(connect_kwargs.keys())) > 0:
