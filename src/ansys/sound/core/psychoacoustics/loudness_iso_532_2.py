@@ -49,8 +49,8 @@ class LoudnessISO532_2(PsychoacousticsParent):
 
     Examples
     --------
-    Compute the binaural loudness a single-microphone signal in free field, presented
-    diotically (same signal at both ears), and display the binaural specific loudness.
+    Compute the binaural loudness of a single-microphone signal in free field, presented diotically
+    (same signal at both ears), and display the binaural specific loudness.
 
     >>> from ansys.sound.core.psychoacoustics import LoudnessISO532_2
     >>> loudness = LoudnessISO532_2(
@@ -63,9 +63,9 @@ class LoudnessISO532_2(PsychoacousticsParent):
     >>> binaural_loudness_level_value = loudness.get_binaural_loudness_level_phon()
     >>> loudness.plot()
 
-    Compute the binaural loudness a head-and-torso-simulator or binaural-microphone signal in free
-    field, presented dichotically (different signal at each ear), and display the binaural specific
-    loudness.
+    Compute the monaural loudness at each ear of a head-and-torso-simulator or binaural-microphone
+    signal in free field, presented dichotically (different signal at each ear), and display the
+    binaural specific loudness.
 
     >>> from ansys.sound.core.psychoacoustics import LoudnessISO532_2
     >>> loudness = LoudnessISO532_2(

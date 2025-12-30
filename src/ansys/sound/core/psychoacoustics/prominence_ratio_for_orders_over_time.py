@@ -43,6 +43,26 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
 
     This class computes the PR, as defined in ECMA 418-1 and ISO 7779 standards, following
     specific orders over time in a given time-domain signal.
+
+    Examples
+    --------
+    Compute and display the prominence ratio over time of a signal, for orders 2 and 4.
+
+    >>> from ansys.sound.core.psychoacoustics import ProminenceRatioForOrdersOverTime
+    >>> prominence_ratio = ProminenceRatioForOrdersOverTime(
+    ...     signal=my_signal,
+    ...     profile=my_rpm_profile,
+    ...     order_list=[2, 4],
+    ... )
+    >>> prominence_ratio.process()
+    >>> pr_value_over_time_order_2 = prominence_ratio.get_order_prominence_ratio_over_time(0)
+    >>> pr_value_over_time_order_4 = prominence_ratio.get_order_prominence_ratio_over_time(1)
+    >>> time_scale = prominence_ratio.get_time_scale()
+    >>> prominence_ratio.plot()
+
+    See also example script `Calculate TNR and PR`_
+
+    .. _Calculate TNR and PR: ../../examples/gallery_examples/006_calculate_PR_and_TNR.html
     """
 
     def __init__(self, signal: Field = None, profile: Field = None, order_list: list = None):

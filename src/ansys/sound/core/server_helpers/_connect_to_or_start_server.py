@@ -84,6 +84,20 @@ def connect_to_or_start_server(
     If a port or IP address is set, this method tries to connect to the server specified and
     the ``ansys_path`` parameter is ignored. If no parameters are set, a local server from the
     latest available Ansys installation is started.
+
+    Examples
+    --------
+    Start a local DPF server with DPF Sound plugin from the latest Ansys installation folder.
+
+    >>> from ansys.sound.core.server_helpers import connect_to_or_start_server
+    >>> server, lic_context = connect_to_or_start_server(
+    ...     ansys_path="C:/Program Files/ANSYS Inc/v261",
+    ... )
+
+    Connect to a remote DPF server with DPF Sound plugin, through a given communication port.
+
+    >>> from ansys.sound.core.server_helpers import connect_to_or_start_server
+    >>> server, lic_context = connect_to_or_start_server(port=6780)
     """
     # Collect the port to connect to the server (if unspecified in arguments)
     if port is None:

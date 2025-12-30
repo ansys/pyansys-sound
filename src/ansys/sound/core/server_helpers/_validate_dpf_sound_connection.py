@@ -30,12 +30,20 @@ DEFAULT_PORT: int = int(os.environ.get("ANSRV_DPF_SOUND_PORT", 6780))
 
 
 def validate_dpf_sound_connection(port=None) -> None:
-    """Validate that the DPF Sound plugin is available.
+    """Validate the DPF server connection and the DPF Sound plugin availability.
 
     Parameters
     ----------
     port : int, default None
         Port on which the DPF server is listening.
+
+    Examples
+    --------
+    Validate the DPF server connection and the DPF Sound plugin availability, for a given port of
+    communication.
+
+    >>> from ansys.sound.core.server_helpers import validate_dpf_sound_connection
+    >>> validate_dpf_sound_connection(port=6780)
     """
     port = port if port is not None else DEFAULT_PORT
     connect_to_server(port=port)

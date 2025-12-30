@@ -41,6 +41,19 @@ class SharpnessDIN45692(PsychoacousticsParent):
         the loudness model for stationary sounds defined in the ISO 532-1 standard.
         This is the same loudness model used in the
         :class:`LoudnessISO532_1_Stationary` class.
+
+    Examples
+    --------
+    Compute the sharpness of a signal according to the DIN 45692 standard.
+
+    >>> from ansys.sound.core.psychoacoustics import SharpnessDIN45692
+    >>> sharpness = SharpnessDIN45692(signal=my_signal)
+    >>> sharpness.process()
+    >>> sharpness_value = sharpness.get_sharpness()
+
+    See also example script `Calculate psychoacoustic indicators`_
+
+    .. _Calculate psychoacoustic indicators: ../../examples/gallery_examples/007_calculate_psychoacoustic_indicators.html  # noqa: E501
     """
 
     def __init__(self, signal: Field = None, field_type: str = FIELD_FREE):

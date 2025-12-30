@@ -45,7 +45,7 @@ Perform these steps to install PyAnsys Sound in developer mode:
       # Activate it in Windows Powershell
       .venv\Scripts\Activate.ps1
 
-#. Install with minimum requirements, to cover core functionality:
+#. Install with minimum requirements, to cover core capability:
 
    .. code:: bash
 

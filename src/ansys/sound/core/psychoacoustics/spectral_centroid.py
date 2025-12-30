@@ -35,6 +35,15 @@ class SpectralCentroid(PsychoacousticsParent):
 
     The spectral centroid is the center of gravity of the spectrum. It is a measure of the
     distribution of the spectral energy of a signal.
+
+    Examples
+    --------
+    Compute the spectral centroid of a signal.
+
+    >>> from ansys.sound.core.psychoacoustics import SpectralCentroid
+    >>> spectral_centroid = SpectralCentroid(signal=my_signal)
+    >>> spectral_centroid.process()
+    >>> spectral_centroid_value = spectral_centroid.get_spectral_centroid()
     """
 
     def __init__(self, signal: Field = None):

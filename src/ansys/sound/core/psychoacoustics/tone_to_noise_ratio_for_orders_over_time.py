@@ -40,6 +40,26 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
 
     This class computes the TNR, as defined in ECMA 418-1 and ISO 7779 standards, following
     specific orders over time in a given time-domain signal and its RPM signal.
+
+    Examples
+    --------
+    Compute and display the tone-to-noise ratio over time of a signal, for orders 2 and 4.
+
+    >>> from ansys.sound.core.psychoacoustics import ToneToNoiseRatioForOrdersOverTime
+    >>> tone_to_noise_ratio = ToneToNoiseRatioForOrdersOverTime(
+    ...     signal=my_signal,
+    ...     profile=my_rpm_profile,
+    ...     order_list=[2, 4],
+    ... )
+    >>> tone_to_noise_ratio.process()
+    >>> tnr_over_time_order_2 = tone_to_noise_ratio.get_order_tone_to_noise_ratio_over_time(0)
+    >>> tnr_over_time_order_4 = tone_to_noise_ratio.get_order_tone_to_noise_ratio_over_time(1)
+    >>> time_scale = tone_to_noise_ratio.get_time_scale()
+    >>> tone_to_noise_ratio.plot()
+
+    See also example script `Calculate TNR and PR`_
+
+    .. _Calculate TNR and PR: ../../examples/gallery_examples/006_calculate_PR_and_TNR.html
     """
 
     def __init__(self, signal: Field = None, profile: Field = None, order_list: list = None):

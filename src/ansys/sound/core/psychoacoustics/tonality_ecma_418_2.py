@@ -61,6 +61,20 @@ class TonalityECMA418_2(PsychoacousticsParent):
         class:``my_tonality = TonalityECMA418_2(my_signal, my_field_type, my_edition)``, or later,
         by setting the :attr:`field_type` and :attr:`edition` attributes:
         ``my_tonality.field_type = my_field_type`` and ``my_tonality.edition = my_edition``.
+
+    Examples
+    --------
+    Compute and display the tonality of a signal according to the ECMA-418-2 standard.
+
+    >>> from ansys.sound.core.psychoacoustics import TonalityECMA418_2
+    >>> tonality = TonalityECMA418_2(signal=my_signal, field_type="Free", edition="3rd")
+    >>> tonality.process()
+    >>> tonality_value = tonality.get_tonality()
+    >>> tonality.plot()
+
+    See also example script `Calculate tonality indicators`_
+
+    .. _Calculate tonality indicators: ../../examples/gallery_examples/009_calculate_tonality_indicators.html  # noqa: E501
     """
 
     def __init__(self, signal: Field = None, field_type: str = None, edition: str = None):

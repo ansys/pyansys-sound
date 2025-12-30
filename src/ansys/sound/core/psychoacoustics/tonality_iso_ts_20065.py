@@ -41,6 +41,20 @@ class TonalityISOTS20065(PsychoacousticsParent):
 
     This class is used to compute the tonality (mean audibility) of a signal according to the
     ISO/TS 20065:2022 standard.
+
+    Examples
+    --------
+    Compute and display the tonality of a signal according to the ISO/TS 20065:2022 standard.
+
+    >>> from ansys.sound.core.psychoacoustics import TonalityISOTS20065
+    >>> tonality = TonalityISOTS20065(signal=my_signal)
+    >>> tonality.process()
+    >>> mean_audibility = tonality.get_mean_audibility()
+    >>> tonality.plot()
+
+    See also example script `Calculate tonality indicators`_
+
+    .. _Calculate tonality indicators: ../../examples/gallery_examples/009_calculate_tonality_indicators.html  # noqa: E501
     """
 
     def __init__(self, signal: Field = None, window_length: float = 3.0, overlap: float = 0.0):

@@ -37,6 +37,30 @@ class ProminenceRatio(PsychoacousticsParent):
 
     This class computes the PR from a power spectral density (PSD), according to the ECMA 418-1 and
     ISO 7779 standards.
+
+    Examples
+    --------
+    Compute and display the prominence ratio of all identified peaks in a given power spectral
+    density.
+
+    >>> from ansys.sound.core.psychoacoustics import ProminenceRatio
+    >>> prominence_ratio = ProminenceRatio(psd=my_psd)
+    >>> prominence_ratio.process()
+    >>> pr_values = prominence_ratio.get_PR_values()
+    >>> frequencies = prominence_ratio.get_peaks_frequencies()
+    >>> max_pr = prominence_ratio.get_max_PR_value()
+    >>> prominence_ratio.plot()
+
+    Compute the prominence ratio at specific frequencies.
+
+    >>> from ansys.sound.core.psychoacoustics import ProminenceRatio
+    >>> prominence_ratio = ProminenceRatio(psd=my_psd, frequency_list=[500, 1000, 2000])
+    >>> prominence_ratio.process()
+    >>> pr_values = prominence_ratio.get_PR_values()
+
+    See also example script `Calculate TNR and PR`_
+
+    .. _Calculate TNR and PR: ../../examples/gallery_examples/006_calculate_PR_and_TNR.html
     """
 
     def __init__(self, psd: Field = None, frequency_list: list = None):
