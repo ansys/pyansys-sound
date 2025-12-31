@@ -22,7 +22,7 @@
 
 """Sound Composer's track."""
 from functools import reduce
-from typing import TYPE_CHECKING, Union
+from typing import Union
 import warnings
 
 from ansys.dpf.core import Field, GenericDataContainer
@@ -59,10 +59,7 @@ DICT_SOURCE_TYPE = {
 }
 
 # Define the typing Union of all possible source types, as a global variable (for typing only).
-if TYPE_CHECKING:
-    AnySourceType = Union[*DICT_SOURCE_TYPE.values()]
-else:
-    AnySourceType = reduce(lambda x, y: Union[x, y], DICT_SOURCE_TYPE.values())
+AnySourceType = reduce(lambda x, y: Union[x, y], DICT_SOURCE_TYPE.values())
 
 
 class Track(SoundComposerParent):
@@ -105,7 +102,7 @@ class Track(SoundComposerParent):
         self,
         name: str = "",
         gain: float = 0.0,
-        source: AnySourceType = None,
+        source: AnySourceType = None,  # pyright: ignore[reportInvalidTypeForm]
         filter: Filter = None,
     ):
         """Class instantiation takes the following parameters.
@@ -164,7 +161,7 @@ class Track(SoundComposerParent):
         self.__gain = value
 
     @property
-    def source(self) -> AnySourceType:
+    def source(self) -> AnySourceType:  # pyright: ignore[reportInvalidTypeForm]
         """Source object associated with the track.
 
         The source of the track is used to generate the corresponding signal. Its type can be
@@ -175,7 +172,7 @@ class Track(SoundComposerParent):
         return self.__source
 
     @source.setter
-    def source(self, obj: AnySourceType):
+    def source(self, obj: AnySourceType):  # pyright: ignore[reportInvalidTypeForm]
         """Set the source in the track."""
         if (obj is not None) and (not (isinstance(obj, AnySourceType))):
             raise PyAnsysSoundException(
