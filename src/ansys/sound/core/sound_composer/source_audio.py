@@ -38,11 +38,22 @@ ID_LOAD_FROM_TEXT = "load_sound_samples_from_txt"
 class SourceAudio(SourceParent):
     """Sound Composer's audio source class.
 
-    This class creates an audio source for the Sound Composer.
+    This class creates an audio source for the Sound Composer. An audio source simply consists of a
+    time-domain - typically audio - signal. Unlike other source types, it requires no `source
+    control`.
 
-    An audio source simply consists of a sound signal (sound samples in Pa over time).
+    See Also
+    --------
+    :class:`SoundComposer`, :class:`Track`
 
-    It has no source control.
+    Examples
+    --------
+    Create an audio source from a sound signal stored in a WAV file.
+
+    >>> from ansys.sound.core.sound_composer import SourceAudio
+    >>> source_audio = SourceAudio(file="path/to/audio.wav")
+    >>> source_audio.process(sampling_frequency=48000.0)
+    >>> source_audio.plot()
     """
 
     def __init__(self, file: str = ""):

@@ -44,9 +44,13 @@ ID_OPERATOR_SAVE = "sound_composer_save_project"
 class SoundComposer(SoundComposerParent):
     """Sound Composer project class.
 
-    This class creates a Sound Composer project. A project is made of several tracks, each
-    containing a source, to generate the sound, and an optional filter, to model the transfer
-    between the source and the receiver.
+    This class creates a Sound Composer project. A project is made of several tracks
+    (:class:`Track`), each containing a source, to generate the sound, and an optional filter, to
+    model the transfer between the source and the receiver.
+
+    See Also
+    --------
+    :class:`Track`
 
     Examples
     --------
@@ -57,14 +61,15 @@ class SoundComposer(SoundComposerParent):
     >>> sound_composer.process(sampling_frequency=48000.0)
     >>> sound_composer.plot()
 
-    See also example scripts:
+    .. seealso::
+        `Use an existing Sound Composer project file`_
+            Example demonstrating how to load and work with an existing Sound Composer project.
+        `Create a Sound Composer project`_
+            Example demonstrating how to create a Sound Composer project from scratch.
 
-    - `Use an existing Sound Composer project file`_
-    - `Create and work with a Sound Composer project`_
-
-    .. _Use an existing Sound Composer project file: ../../examples/gallery_examples/010_sound_composer_load_project.html  # noqa: E501
-    .. _Create and work with a Sound Composer project: ../../examples/gallery_examples/011_sound_composer_create_project.html  # noqa: E501
-    """
+    .. _Use an existing Sound Composer project file: ../../examples/gallery_examples/010_sound_composer_load_project.html
+    .. _Create a Sound Composer project: ../../examples/gallery_examples/011_sound_composer_create_project.html
+    """  # noqa: E501
 
     def __init__(
         self,

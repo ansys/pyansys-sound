@@ -51,6 +51,24 @@ class SourceHarmonicsTwoParameters(SourceParent):
 
     .. note::
         The first control parameter must correspond to RPM over time.
+
+    See Also
+    --------
+    :class:`SoundComposer`, :class:`Track`, :class:`SourceControlTime`, :class:`SourceHarmonics`
+
+    Examples
+    --------
+    Create a harmonics source with two parameters from a source data file and two source
+    controls, and display the generated signal.
+
+    >>> from ansys.sound.core.sound_composer import SourceHarmonicsTwoParameters
+    >>> source_harmonics_two_params = SourceHarmonicsTwoParameters(
+    >>>     file="path/to/source_data.txt",
+    >>>     source_control1=source_control1,
+    >>>     source_control2=source_control2,
+    >>> )
+    >>> source_harmonics_two_params.process(sampling_frequency=48000.0)
+    >>> source_harmonics_two_params.plot()
     """
 
     def __init__(

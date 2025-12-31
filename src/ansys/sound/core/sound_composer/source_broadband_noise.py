@@ -45,7 +45,30 @@ class SourceBroadbandNoise(SourceParent):
     control parameter value.
 
     The source control contains the control parameter values over time.
-    """
+
+    See Also
+    --------
+    :class:`SoundComposer`, :class:`Track`, :class:`SourceControlTime`, :class:`SourceBraodbandNoiseTwoParameters`
+
+    Examples
+    --------
+    Create a broadband noise source from a source data file and a source control, and display the
+    generated signal.
+
+    >>> from ansys.sound.core.sound_composer import SourceBroadbandNoise
+    >>> bbn_source = SourceBroadbandNoise(
+    ...     file="path/to/source_data.txt",
+    ...     source_control=source_control_time
+    ... )
+    >>> bbn_source.process(sampling_frequency=48000.0)
+    >>> bbn_source.plot()
+
+    .. seealso::
+        `Create a Sound Composer project`_
+            Example demonstrating how to create a Sound Composer project from scratch.
+
+    .. _Create a Sound Composer project: ../../examples/gallery_examples/011_sound_composer_create_project.html
+    """  # noqa: E501
 
     def __init__(self, file: str = "", source_control: SourceControlTime = None):
         """Class instantiation takes the following parameters.
