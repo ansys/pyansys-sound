@@ -21,7 +21,8 @@
 # SOFTWARE.
 
 """Sound Composer's track."""
-from typing import Union
+from functools import reduce
+from typing import TYPE_CHECKING, Union
 import warnings
 
 from ansys.dpf.core import Field, GenericDataContainer
@@ -58,7 +59,10 @@ DICT_SOURCE_TYPE = {
 }
 
 # Define the typing Union of all possible source types, as a global variable (for typing only).
-AnySourceType = Union[*DICT_SOURCE_TYPE.values()]
+if TYPE_CHECKING:
+    AnySourceType = Union[*DICT_SOURCE_TYPE.values()]
+else:
+    AnySourceType = reduce(lambda x, y: Union[x, y], DICT_SOURCE_TYPE.values())
 
 
 class Track(SoundComposerParent):

@@ -2,6 +2,7 @@
 
 from datetime import datetime
 import os
+import warnings
 
 from ansys_sphinx_theme import ansys_favicon, get_version_match
 from ansys_sphinx_theme import pyansys_logo_black as logo
@@ -153,6 +154,8 @@ sphinx_gallery_conf = {
 }
 
 suppress_warnings = ["config.cache"]
+# Suppress sphinx_autodoc_typehints deprecation warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning, module="sphinx_autodoc_typehints")
 
 exclude_patterns = [
     "_build",
