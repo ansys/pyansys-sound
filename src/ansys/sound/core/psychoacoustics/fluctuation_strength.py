@@ -53,10 +53,12 @@ class FluctuationStrength(PsychoacousticsParent):
     >>> fluctuation_strength_value = fluctuation_strength.get_fluctuation_strength()
     >>> fluctuation_strength.plot()
 
-    See also example script `Calculate psychoacoustic indicators`_
+    .. seealso::
+        `Calculate psychoacoustic indicators`_
+            Example demonstrating how to compute various psychoacoustic indicators.
 
-    .. _Calculate psychoacoustic indicators: ../../examples/gallery_examples/007_calculate_psychoacoustic_indicators.html  # noqa: E501
-    """
+    .. _Calculate psychoacoustic indicators: ../../examples/gallery_examples/007_calculate_psychoacoustic_indicators.html
+    """  # noqa: E501
 
     def __init__(
         self,

@@ -47,6 +47,10 @@ class LoudnessISO532_2(PsychoacousticsParent):
     This class computes the binaural and monaural loudness of a signal according to the
     ISO 532-2:2017 standard, corresponding to the "Moore-Glasberg method".
 
+    See Also
+    --------
+    :class:`LoudnessISO532_1_Stationary`, :class:`LoudnessISO532_1_TimeVarying`
+
     Examples
     --------
     Compute the binaural loudness of a single-microphone signal in free field, presented diotically
@@ -78,10 +82,12 @@ class LoudnessISO532_2(PsychoacousticsParent):
     >>> monaural_loudness_level_value = loudness.get_monaural_loudness_level_phon()
     >>> loudness.plot()
 
-    See also example script `Calculate psychoacoustic indicators`_
+    .. seealso::
+        `Calculate psychoacoustic indicators`_
+            Example demonstrating how to compute various psychoacoustic indicators.
 
-    .. _Calculate psychoacoustic indicators: ../../examples/gallery_examples/007_calculate_psychoacoustic_indicators.html  # noqa: E501
-    """
+    .. _Calculate psychoacoustic indicators: ../../examples/gallery_examples/007_calculate_psychoacoustic_indicators.html
+    """  # noqa: E501
 
     def __init__(
         self,

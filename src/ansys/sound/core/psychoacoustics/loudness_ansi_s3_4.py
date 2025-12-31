@@ -36,7 +36,12 @@ ID_COMPUTE_LOUDNESS_ANSI_S3_4 = "compute_loudness_ansi_s3_4"
 class LoudnessANSI_S3_4(PsychoacousticsParent):
     """Computes ANSI S3.4-2007 loudness.
 
-    This class computes the loudness of a signal according to the ANSI S3.4-2007 standard.
+    This class computes the loudness of a signal according to the ANSI S3.4-2007 standard. The
+    scope of this standard is now covered by the ISO 532-2:2017 standard.
+
+    See Also
+    --------
+    :class:`LoudnessISO532_2`
 
     Examples
     --------

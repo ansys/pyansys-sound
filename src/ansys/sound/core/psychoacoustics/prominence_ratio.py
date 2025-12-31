@@ -38,6 +38,10 @@ class ProminenceRatio(PsychoacousticsParent):
     This class computes the PR from a power spectral density (PSD), according to the ECMA 418-1 and
     ISO 7779 standards.
 
+    See Also
+    --------
+    :class:`ToneToNoiseRatio`, :class:`ProminenceRatioForOrdersOverTime`
+
     Examples
     --------
     Compute and display the prominence ratio of all identified peaks in a given power spectral
@@ -58,7 +62,9 @@ class ProminenceRatio(PsychoacousticsParent):
     >>> prominence_ratio.process()
     >>> pr_values = prominence_ratio.get_PR_values()
 
-    See also example script `Calculate TNR and PR`_
+    .. seealso::
+        `Calculate TNR and PR`_
+            Example demonstrating how to compute tone-to-noise ratio and prominence ratio.
 
     .. _Calculate TNR and PR: ../../examples/gallery_examples/006_calculate_PR_and_TNR.html
     """

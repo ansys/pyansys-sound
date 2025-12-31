@@ -44,6 +44,10 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
     This class computes the PR, as defined in ECMA 418-1 and ISO 7779 standards, following
     specific orders over time in a given time-domain signal.
 
+    See Also
+    --------
+    :class:`ProminenceRatio`, :class:`ToneToNoiseRatioForOrdersOverTime`
+
     Examples
     --------
     Compute and display the prominence ratio over time of a signal, for orders 2 and 4.
@@ -60,7 +64,9 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
     >>> time_scale = prominence_ratio.get_time_scale()
     >>> prominence_ratio.plot()
 
-    See also example script `Calculate TNR and PR`_
+    .. seealso::
+        `Calculate TNR and PR`_
+            Example demonstrating how to compute tone-to-noise ratio and prominence ratio.
 
     .. _Calculate TNR and PR: ../../examples/gallery_examples/006_calculate_PR_and_TNR.html
     """

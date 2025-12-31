@@ -41,6 +41,10 @@ class Sharpness(PsychoacousticsParent):
         defined in the standard ISO 532-1. It is the loudness model of the class
         :class:`LoudnessISO532_1_Stationary`.
 
+    See Also
+    --------
+    :class:`SharpnessDIN45692`, :class:`SharpnessOverTime`, :class:`LoudnessISO532_1_Stationary`
+
     Examples
     --------
     Compute the sharpness of a signal according to Zwicker & Fastl's model.
@@ -50,10 +54,12 @@ class Sharpness(PsychoacousticsParent):
     >>> sharpness.process()
     >>> sharpness_value = sharpness.get_sharpness()
 
-    See also example script `Calculate psychoacoustic indicators`_
+    .. seealso::
+        `Calculate psychoacoustic indicators`_
+            Example demonstrating how to compute various psychoacoustic indicators.
 
-    .. _Calculate psychoacoustic indicators: ../../examples/gallery_examples/007_calculate_psychoacoustic_indicators.html  # noqa: E501
-    """
+    .. _Calculate psychoacoustic indicators: ../../examples/gallery_examples/007_calculate_psychoacoustic_indicators.html
+    """  # noqa: E501
 
     def __init__(self, signal: Field = None, field_type: str = FIELD_FREE):
         """Class instantiation takes the following parameters.

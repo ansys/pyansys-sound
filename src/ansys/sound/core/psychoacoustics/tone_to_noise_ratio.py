@@ -38,6 +38,10 @@ class ToneToNoiseRatio(PsychoacousticsParent):
     This class computes the TNR from a power spectral density (PSD), according to the ECMA 418-1
     and ISO 7779 standards.
 
+    See Also
+    --------
+    :class:`ProminenceRatio`, :class:`ToneToNoiseRatioForOrdersOverTime`
+
     Examples
     --------
     Compute and display the tone-to-noise ratio of all identified peaks in a given power spectral
@@ -58,7 +62,9 @@ class ToneToNoiseRatio(PsychoacousticsParent):
     >>> tone_to_noise_ratio.process()
     >>> tnr_values = tone_to_noise_ratio.get_TNR_values()
 
-    See also example script `Calculate TNR and PR`_
+    .. seealso::
+        `Calculate TNR and PR`_
+            Example demonstrating how to compute tone-to-noise ratio and prominence ratio.
 
     .. _Calculate TNR and PR: ../../examples/gallery_examples/006_calculate_PR_and_TNR.html
     """
