@@ -92,10 +92,6 @@ This example shows how to compute 1/3-octave and octave levels, shows and explai
 # download the necessary data files.
 
 # Load standard libraries.
-from math import sqrt
-import os
-
-from ansys.dpf.core import Field
 import matplotlib.pyplot as plt
 
 # Load Ansys libraries.
@@ -106,7 +102,6 @@ from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectral_processing import PowerSpectralDensity
 from ansys.sound.core.standard_levels import (
-    OctaveLevelsFromPSD,
     OctaveLevelsFromSignal,
     OneThirdOctaveLevelsFromPSD,
     OneThirdOctaveLevelsFromSignal,
@@ -355,7 +350,8 @@ plt.legend()
 plt.show()
 
 # %%
-# Results computed with ANSI weighting are far less sensitive to the frequency resolution of the PSD, especially when it contains peaks.
+# Results computed with ANSI weighting are far less sensitive to the frequency resolution of the 
+# PSD, especially when it contains peaks.
 
 # %%
 # .. _Theory:
@@ -367,9 +363,9 @@ plt.show()
 # The computation using :class:`OneThirdOctaveLevelsFromSignal` or :class:`OctaveLevelsFromSignal`
 # follows the ANSI S1.11-1986 and IEC 61260:1995 standards.
 #
-# When computing levels from a temporal signal, the signal is first filtered using band-pass filters.
-# Each band-pass filter corresponds to one octave or one 1/3-octave band defined in the standards.
-# Then, the level is computed in each band from the filtered signal.
+# When computing levels from a temporal signal, the signal is first filtered using band-pass 
+# filters. Each band-pass filter corresponds to one octave or one 1/3-octave band defined in the 
+# standards. Then, the level is computed in each band from the filtered signal.
 #
 # .. image:: ../../_static/_image/example013_method1.png
 #
@@ -389,8 +385,8 @@ plt.show()
 # Levels from PSD with ANSI weighting
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# The computation using :class:`OneThirdOctaveLevelsFromPSD` or :class:`OctaveLevelsFromPSD` with the
-# parameter ``use_ansi_s1_11_1986=True`` applies frequency weighting defined in the ANSI
+# The computation using :class:`OneThirdOctaveLevelsFromPSD` or :class:`OctaveLevelsFromPSD` with 
+# the parameter ``use_ansi_s1_11_1986=True`` applies frequency weighting defined in the ANSI
 # S1.11-1986, in order to approximate the results obtained from a temporal signal.
 #
 # This may for example allow comparing simulation results with measurements.
