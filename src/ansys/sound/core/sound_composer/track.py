@@ -58,7 +58,7 @@ DICT_SOURCE_TYPE = {
 }
 
 # Define the typing Union of all possible source types, as a global variable (for typing only).
-AnySourceType = Union[tuple(DICT_SOURCE_TYPE.values())]
+AnySourceType = Union[*DICT_SOURCE_TYPE.values()]
 
 
 class Track(SoundComposerParent):
