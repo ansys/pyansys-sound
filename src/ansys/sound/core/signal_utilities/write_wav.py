@@ -50,11 +50,9 @@ class WriteWav(SignalUtilitiesParent):
     >>> write_wav.process()
 
     .. seealso::
-        `Basic operations on a signal from a WAV file`_
+        :ref:`load_resample_amplify_write_wav_files_example`
             Example demonstrating how to load, resample, amplify, and write WAV files.
-
-    .. _Basic operations on a signal from a WAV file: ../../examples/gallery_examples/002_load_resample_amplify_write_wav_files.html
-    """  # noqa: E501
+    """
 
     def __init__(
         self,

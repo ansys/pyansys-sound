@@ -63,10 +63,8 @@ class ToneToNoiseRatio(PsychoacousticsParent):
     >>> tnr_values = tone_to_noise_ratio.get_TNR_values()
 
     .. seealso::
-        `Calculate TNR and PR`_
+        :ref:`calculate_PR_and_TNR`
             Example demonstrating how to compute tone-to-noise ratio and prominence ratio.
-
-    .. _Calculate TNR and PR: ../../examples/gallery_examples/006_calculate_PR_and_TNR.html
     """
 
     def __init__(self, psd: Field = None, frequency_list: list = None):

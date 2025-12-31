@@ -34,6 +34,10 @@ class OctaveLevelsFromSignal(FractionalOctaveLevelsFromSignalParent, min_dpf_ver
 
     This class computes octave levels from a time-domain signal.
 
+    See Also
+    --------
+    :class:`OctaveLevelsFromPSD`, :class:`OneThirdOctaveLevelsFromSignal`
+
     Notes
     -----
     For consistency with other Ansys Sound applications, octave-band levels are derived from
@@ -43,6 +47,17 @@ class OctaveLevelsFromSignal(FractionalOctaveLevelsFromSignalParent, min_dpf_ver
     one-third-octave-band center frequency. Note that the highest-frequency octave band
     (centered at 16000 Hz) is obtained by only summing the 2 highest one-third-octave bands
     (since the 30th one-third-octave band centered at 20000 Hz is not considered).
+
+    Examples
+    --------
+    Compute and plot the octave-band levels from a time-domainsignal.
+
+    >>> from ansys.sound.core.standard_levels import OctaveLevelsFromSignal
+    >>> octave_levels_from_signal = OctaveLevelsFromSignal(signal=my_signal, reference_value=2e-5)
+    >>> octave_levels_from_signal.process()
+    >>> band_levels = octave_levels_from_signal.get_band_levels()
+    >>> band_center_frequencies = octave_levels_from_signal.get_frequencies()
+    >>> octave_levels_from_signal.plot()
     """
 
     def process(self):

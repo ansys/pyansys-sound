@@ -76,10 +76,8 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
     >>> tonality.plot()
 
     .. seealso::
-        `Calculate tonality indicators`_
+        :ref:`calculate_tonality_indicators`
             Example demonstrating how to compute various tonality indicators.
-
-    .. _Calculate tonality indicators: ../../examples/gallery_examples/009_calculate_tonality_indicators.html
     """  # noqa: E501
 
     def __init__(

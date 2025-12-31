@@ -38,7 +38,21 @@ class PowerSpectralDensity(SpectralProcessingParent):
     """Power Spectral Density (PSD) class.
 
     This class allows the calculation of Power Spectral Density (PSD) for a given signal,
-    using Welch's method
+    using Welch's method.
+
+    See Also
+    --------
+    :class:`.Stft`
+
+    Examples
+    --------
+    Compute and display the Power Spectral Density (PSD) of an acoustic signal (in Pa).
+
+    >>> from ansys.sound.core.spectral_processing import PowerSpectralDensity
+    >>> power_spectral_density = PowerSpectralDensity(input_signal=signal)
+    >>> power_spectral_density.process()
+    >>> psd_dB = power_spectral_density.get_PSD_dB(ref_value=2e-5)
+    >>> power_spectral_density.plot(display_in_dB=True, ref_value=2e-5)
     """
 
     def __init__(
@@ -306,7 +320,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
         return l_frequencies
 
-    def plot(self, display_in_dB: bool = False):
+    def plot(self, display_in_dB: bool = False, ref_value: float = 1.0):
         """Plot the PSD.
 
         Parameters
@@ -314,6 +328,9 @@ class PowerSpectralDensity(SpectralProcessingParent):
         display_in_dB : bool, default: False
             Parameter that specifies whether the PSD should be plotted in dB/Hz (True)
             or unit^2/Hz (False).
+        ref_value : float, default: 1.0
+            The reference value for the dB level computation. For an input acoustic signal, in Pa,
+            the reference value should be 2e-5 (Pa).
         """
         if self._output is None:
             raise PyAnsysSoundException(
@@ -328,11 +345,11 @@ class PowerSpectralDensity(SpectralProcessingParent):
             plt.ylabel(f"Amplitude ({psd.unit})")
         else:
             # Get the output in dB/Hz.
-            psd_dB_values = self.get_PSD_dB_as_nparray()
+            psd_dB_values = self.get_PSD_dB_as_nparray(ref_value=ref_value)
 
             # Plot the PSD in dB/Hz.
             plt.plot(frequencies.data, psd_dB_values)
             plt.title("Power Spectral Density (PSD)")
-            plt.ylabel("Level (dB/Hz)")
+            plt.ylabel(f"Level (dB/Hz re {ref_value})")
         plt.xlabel(f"Frequency ({frequencies.unit})")
         plt.show()

@@ -89,13 +89,10 @@ class Track(SoundComposerParent):
     ... )
 
     .. seealso::
-        `Use an existing Sound Composer project file`_
+        :ref:`sound_composer_load_project`
             Example demonstrating how to load and work with an existing Sound Composer project.
-        `Create a Sound Composer project`_
+        :ref:`sound_composer_create_project`
             Example demonstrating how to create a Sound Composer project from scratch.
-
-    .. _Use an existing Sound Composer project file: ../../examples/gallery_examples/010_sound_composer_load_project.html
-    .. _Create a Sound Composer project: ../../examples/gallery_examples/011_sound_composer_create_project.html
     """  # noqa: E501
 
     def __init__(

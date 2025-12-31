@@ -52,10 +52,8 @@ class SourceControlTime(SourceControlParent):
     >>> source_control.description = "Source control data from text file."
 
     .. seealso::
-        `Create a Sound Composer project`_
+        :ref:`sound_composer_create_project`
             Example demonstrating how to create a Sound Composer project from scratch.
-
-    .. _Create a Sound Composer project: ../../examples/gallery_examples/011_sound_composer_create_project.html
     """  # noqa: E501
 
     def __init__(self, file_str: str = ""):

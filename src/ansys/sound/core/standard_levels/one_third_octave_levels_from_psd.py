@@ -30,6 +30,24 @@ class OneThirdOctaveLevelsFromPSD(FractionalOctaveLevelsFromPSDParent, min_dpf_v
     """Compute 1/3-octave levels from a power spectral density (PSD) input.
 
     This class computes 1/3-octave levels from a PSD.
+
+    See Also
+    --------
+    :class:`OneThirdOctaveLevelsFromSignal`, :class:`OctaveLevelsFromPSD`
+
+    Examples
+    --------
+    Compute and plot the one-third-octave-band levels from a PSD.
+
+    >>> from ansys.sound.core.standard_levels import OneThirdOctaveLevelsFromPSD
+    >>> one_third_octave_levels_from_psd = OneThirdOctaveLevelsFromPSD(
+    ...     psd=my_psd,
+    ...     reference_value=2e-5
+    ... )
+    >>> one_third_octave_levels_from_psd.process()
+    >>> band_levels = one_third_octave_levels_from_psd.get_band_levels()
+    >>> band_center_frequencies = one_third_octave_levels_from_psd.get_frequencies()
+    >>> one_third_octave_levels_from_psd.plot()
     """
 
     # Override the operator IDs for 1/3-octave levels computation

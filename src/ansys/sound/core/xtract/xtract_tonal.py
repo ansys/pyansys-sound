@@ -37,11 +37,15 @@ from .._pyansys_sound import (
 
 
 class XtractTonal(XtractParent):
-    """Performs signal tonal analysis using the Xtract algorithm.
+    """Extract tonal components using the Xtract algorithm.
+
+    See Also
+    --------
+    :class:`Xtract`, :class:`XtractTonalParameters`
 
     Examples
     --------
-    Extract tonal components from a signal.
+    Extract tonal components from a signal, and display the tonal and non-tonal components.
 
     >>> from ansys.sound.core.xtract import XtractTonal
     >>> xtract_tonal = XtractTonal(input_signal=my_signal_field, input_parameters=my_parameters)
@@ -49,9 +53,9 @@ class XtractTonal(XtractParent):
     >>> tonal_signals, non_tonal_signals = xtract_tonal.get_output()
     >>> xtract_tonal.plot()
 
-    See also example script `Extract tonal, transient, and noise components (Xtract)`_
-
-    .. _Extract tonal, transient, and noise components (Xtract): ../../examples/gallery_examples/005_xtract_feature.html # noqa: E501
+    .. seealso::
+        :ref:`xtract_feature_example`
+            Example demonstrating how to use Xtract to extract the various components of a signal.
     """
 
     def __init__(

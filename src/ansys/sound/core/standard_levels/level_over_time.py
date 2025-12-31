@@ -47,6 +47,25 @@ class LevelOverTime(StandardLevelsParent):
     """Compute the level over time.
 
     This class computes the level over time of a signal.
+
+    See Also
+    --------
+    :class:`OverallLevel`
+
+    Examples
+    --------
+    Compute and display the SPL over time of an acoustic signal.
+
+    >>> from ansys.sound.core.standard_levels import LevelOverTime
+    >>> level_over_time = LevelOverTime(signal=signal, reference_value=2e-5, scale="dB")
+    >>> level_over_time.process()
+    >>> level_max = level_over_time.get_level_max()
+    >>> instantaneous_level = level_over_time.get_level_over_time()
+    >>> level_over_time.plot()
+
+    .. seealso::
+        :ref:`calculate_levels`
+            Example demonstrating how to calculate standard levels.
     """
 
     def __init__(

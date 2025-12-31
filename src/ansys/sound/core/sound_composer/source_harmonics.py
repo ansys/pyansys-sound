@@ -63,10 +63,8 @@ class SourceHarmonics(SourceParent):
     >>> harmonics_source.plot()
 
     .. seealso::
-        `Create a Sound Composer project`_
+        :ref:`sound_composer_create_project`
             Example demonstrating how to create a Sound Composer project from scratch.
-
-    .. _Create a Sound Composer project: ../../examples/gallery_examples/011_sound_composer_create_project.html
     """  # noqa: E501
 
     def __init__(self, file: str = "", source_control: SourceControlTime = None):

@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from os import path
+
 from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
@@ -43,7 +45,7 @@ def test_write_wav_process():
     ):
         wav_writer.process()
 
-    wav_writer.path_to_write = pytest.temporary_folder + r"\flute_modified.wav"
+    wav_writer.path_to_write = path.join(pytest.output_folder, "flute_modified.wav")
 
     # Error 2
     with pytest.raises(PyAnsysSoundException) as excinfo:

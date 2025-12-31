@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import os
 from unittest.mock import patch
 
 from ansys.dpf.core import Field
@@ -208,7 +209,7 @@ def test_sound_composer_save():
     sound_composer = SoundComposer(
         project_path=pytest.data_path_sound_composer_project_in_container
     )
-    path_to_save = pytest.temporary_folder + "/test_sound_composer_save.scn"
+    path_to_save = os.path.join(pytest.output_folder, "test_sound_composer_save.scn")
     sound_composer.name = "TestProjectName"
     sound_composer.save(project_path=path_to_save)
 
@@ -232,13 +233,17 @@ def test_sound_composer_save_load_warnings():
             "`SoundComposer.load\\(\\)`."
         ),
     ):
-        sound_composer.save(project_path=pytest.temporary_folder + "/test_sound_composer_save.scn")
+        sound_composer.save(
+            project_path=os.path.join(pytest.output_folder, "test_sound_composer_save.scn")
+        )
 
     with pytest.warns(
         PyAnsysSoundWarning,
         match="The project file `test_sound_composer_save.scn` does not contain any track.",
     ):
-        sound_composer.load(project_path=pytest.temporary_folder + "/test_sound_composer_save.scn")
+        sound_composer.load(
+            project_path=os.path.join(pytest.output_folder, "test_sound_composer_save.scn")
+        )
     assert len(sound_composer.tracks) == 0
 
 

@@ -32,7 +32,45 @@ ID_NOISE_PSD = "noise_levels"
 
 
 class XtractDenoiserParameters(XtractParent):
-    """Contains denoiser parameters for use in Xtract processing or signal denoising."""
+    """Store denoiser parameters for Xtract signal denoising.
+
+    See Also
+    --------
+    :class:`Xtract`, :class:`XtractDenoiser`
+
+    Examples
+    --------
+    Create a set of Xtract denoiser parameters from a PSD.
+
+    >>> from ansys.sound.core.xtract import XtractDenoiserParameters
+    >>> denoiser_parameters = XtractDenoiserParameters(noise_psd=my_noise_psd)
+
+    Create a set of Xtract denoiser parameters from a white noise level.
+
+    >>> from ansys.sound.core.xtract import XtractDenoiserParameters
+    >>> denoiser_parameters = XtractDenoiserParameters()
+    >>> noise_psd = denoiser_parameters.create_noise_psd_from_white_noise_level(
+    ...     white_noise_level=30.0,
+    ...     sampling_frequency=48000.0,
+    ...     window_length=50,
+    ... )
+    >>> denoiser_parameters.noise_psd = noise_psd
+
+    Create a set of Xtract denoiser parameters from noise samples.
+
+    >>> from ansys.sound.core.xtract import XtractDenoiserParameters
+    >>> denoiser_parameters = XtractDenoiserParameters()
+    >>> noise_psd = denoiser_parameters.create_noise_psd_from_noise_samples(
+    ...     signal=my_noise_signal,
+    ...     sampling_frequency=48000.0,
+    ...     window_length=50,
+    ... )
+    >>> denoiser_parameters.noise_psd = noise_psd
+
+    .. seealso::
+        :ref:`xtract_feature_example`
+            Example demonstrating how to use Xtract to extract the various components of a signal.
+    """
 
     def __init__(self, noise_psd: Field = None):
         """Class instantiation takes the following parameters.

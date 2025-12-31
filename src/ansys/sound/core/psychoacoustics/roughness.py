@@ -51,11 +51,9 @@ class Roughness(PsychoacousticsParent):
     >>> roughness.plot()
 
     .. seealso::
-        `Calculate psychoacoustic indicators`_
+        :ref:`calculate_psychoacoustic_indicators`
             Example demonstrating how to compute various psychoacoustic indicators.
-
-    .. _Calculate psychoacoustic indicators: ../../examples/gallery_examples/007_calculate_psychoacoustic_indicators.html
-    """  # noqa: E501
+    """
 
     def __init__(self, signal: Field = None):
         """Class instantiation takes the following parameters.

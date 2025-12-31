@@ -42,16 +42,20 @@ from .._pyansys_sound import (
 
 
 class Xtract(XtractParent):
-    """Provides Xtract processing.
+    """Signal component extraction using the Xtract algorithm.
 
-    PyAnsys Sound performs Xtract processing in the same way as Ansys Sound Analysis
-    and Specification (SAS). This operator chains a denoising step, followed by a
-    tonal extraction step, and then a transient extraction step. It returns the
-    individual signals processed at each step, as well as the remainder.
+    This operator chains a denoising step, a tonal extraction step, and a transient extraction step.
+    It allows separating the noise, tonal, transient, and remainder components of a signal. The
+    Xtract algorithm is the same as that which is implemented in Ansys Sound Analysis and
+    Specification (SAS).
+
+    See Also
+    --------
+    :class:`XtractDenoiser`, :class:`XtractDenoiserParameters`, :class:`XtractTonal`, :class:`XtractTonalParameters`, :class:`XtractTransient`, :class:`XtractTransientParameters`
 
     Examples
     --------
-    Extract and display the different signal components using Xtract processing.
+    Extract and display the different signal components using the Xtract algorithm.
 
     >>> from ansys.sound.core import Xtract
     >>> xtract = Xtract(
@@ -64,10 +68,10 @@ class Xtract(XtractParent):
     >>> noise_signal, tonal_signal, transient_signal, remainder_signal = xtract.get_output()
     >>> xtract.plot()
 
-    See also example script `Extract tonal, transient, and noise components (Xtract)`_
-
-    .. _Extract tonal, transient, and noise components (Xtract): ../../examples/gallery_examples/005_xtract_feature.html # noqa: E501
-    """
+    .. seealso::
+        :ref:`xtract_feature_example`
+            Example demonstrating how to use Xtract to extract the various components of a signal.
+    """  # noqa: E501
 
     def __init__(
         self,

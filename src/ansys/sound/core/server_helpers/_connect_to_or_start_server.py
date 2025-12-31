@@ -98,6 +98,10 @@ def connect_to_or_start_server(
 
     >>> from ansys.sound.core.server_helpers import connect_to_or_start_server
     >>> server, lic_context = connect_to_or_start_server(port=6780)
+
+    .. seealso::
+        :ref:`initialize_server_and_deal_with_license`
+            Example demonstrating how to connect to or start a DPF server with the DPF Sound plugin.
     """
     # Collect the port to connect to the server (if unspecified in arguments)
     if port is None:

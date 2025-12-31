@@ -60,10 +60,8 @@ class TonalityAures(PsychoacousticsParent):
     >>> tonality.plot()
 
     .. seealso::
-        `Calculate tonality indicators`_
-            Example demonstrating how to compute various tonality indicators.
-
-    .. _Calculate tonality indicators: ../../examples/gallery_examples/009_calculate_tonality_indicators.html
+        :ref:`calculate_tonality_indicators`
+            Example demonstrating how to compute various psychoacoustic indicators.
     """  # noqa: E501
 
     def __init__(
