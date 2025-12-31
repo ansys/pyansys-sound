@@ -35,6 +35,19 @@ class CreateSignalField(SignalUtilitiesParent):
 
     This class creates a DPF field from a series of time-domain - typically acoustic - signal
     samples.
+
+    Examples
+    --------
+    Create a PyAnsys Sound field containing a time-domain signal from signal data.
+
+    >>> from ansys.sound.core.signal_utilities import CreateSignalField
+    >>> create_signal_field = CreateSignalField(
+    ...     data=my_signal_data,
+    ...     sampling_frequency=44100.0,
+    ...     unit="Pa",
+    ... )
+    >>> create_signal_field.process()
+    >>> signal_as_a_field = create_signal_field.get_output()
     """
 
     def __init__(

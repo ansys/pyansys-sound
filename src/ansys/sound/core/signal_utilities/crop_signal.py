@@ -35,7 +35,19 @@ from .._pyansys_sound import (
 
 
 class CropSignal(SignalUtilitiesParent):
-    """Crops a signal."""
+    """Crop a signal.
+
+    This class allows cropping a signal, that is, extracting a segment of it.
+
+    Examples
+    --------
+    Crop a signal between 1.0 s and 3.0 s.
+
+    >>> from ansys.sound.core.signal_utilities import CropSignal
+    >>> crop_signal = CropSignal(signal=my_signal, start_time=1.0, end_time=3.0)
+    >>> crop_signal.process()
+    >>> signal_segment = crop_signal.get_output()
+    """
 
     def __init__(
         self, signal: Field | FieldsContainer = None, start_time: float = 0.0, end_time: float = 0.0

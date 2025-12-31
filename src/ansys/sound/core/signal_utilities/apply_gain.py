@@ -36,7 +36,21 @@ from .._pyansys_sound import (
 
 
 class ApplyGain(SignalUtilitiesParent):
-    """Applies a gain to a signal."""
+    """Apply a gain to a signal.
+
+    Examples
+    --------
+    Amplify a signal by applying a gain of 5 dB.
+
+    >>> from ansys.sound.core.signal_utilities import ApplyGain
+    >>> apply_gain = ApplyGain(signal=my_signal, gain=5.0, gain_in_db=True)
+    >>> apply_gain.process()
+    >>> amplified_signal = apply_gain.get_output()
+
+    See also example script `Basic operations on a signal from a WAV file`_
+
+    .. _Basic operations on a signal from a WAV file: ../../examples/gallery_examples/002_load_resample_amplify_write_wav_files.html  # noqa: E501
+    """
 
     def __init__(
         self, signal: Field | FieldsContainer = None, gain: float = 0.0, gain_in_db: bool = True

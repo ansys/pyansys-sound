@@ -23,8 +23,8 @@
 """
 .. _load_resample_amplify_write_wav_files_example:
 
-Load a signal from a WAV file
------------------------------
+Basic operations on a signal from a WAV file
+--------------------------------------------
 
 This example shows how to load a signal from a WAV file, modify the signal's
 sampling frequency, and amplify it. It also shows how to access the corresponding
