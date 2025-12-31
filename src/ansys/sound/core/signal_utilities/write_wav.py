@@ -33,6 +33,10 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 class WriteWav(SignalUtilitiesParent):
     """Write a signal into a WAV file.
 
+    See Also
+    --------
+    :class:`LoadWav`
+
     Examples
     --------
     Write a signal to a standard 16-bit WAV file.
@@ -45,10 +49,12 @@ class WriteWav(SignalUtilitiesParent):
     ... )
     >>> write_wav.process()
 
-    See also example script `Basic operations on a signal from a WAV file`_
+    .. seealso::
+        `Basic operations on a signal from a WAV file`_
+            Example demonstrating how to load, resample, amplify, and write WAV files.
 
-    .. _Basic operations on a signal from a WAV file: ../../examples/gallery_examples/002_load_resample_amplify_write_wav_files.html  # noqa: E501
-    """
+    .. _Basic operations on a signal from a WAV file: ../../examples/gallery_examples/002_load_resample_amplify_write_wav_files.html
+    """  # noqa: E501
 
     def __init__(
         self,

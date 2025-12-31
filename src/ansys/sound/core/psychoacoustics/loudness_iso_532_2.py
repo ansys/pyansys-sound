@@ -49,7 +49,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
 
     See Also
     --------
-    :class:`LoudnessISO532_1_Stationary`, :class:`LoudnessISO532_1_TimeVarying`
+    :class:`LoudnessISO532_1_Stationary`
 
     Examples
     --------

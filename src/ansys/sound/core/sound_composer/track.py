@@ -72,7 +72,7 @@ class Track(SoundComposerParent):
 
     See Also
     --------
-    :class:`SoundComposer`, :class:`~ansys.sound.core.signal_processing.filter.Filter`, :class:`SourceSpectrum`, :class:`SourceBroadbandNoise`, :class:`SourceBroadbandNoiseTwoParameters`, :class:`SourceHarmonics`, :class:`SourceHarmonicsTwoParameters`, :class:`SourceAudio`
+    :class:`SoundComposer`, :class:`.Filter`, :class:`SourceSpectrum`, :class:`SourceBroadbandNoise`, :class:`SourceBroadbandNoiseTwoParameters`, :class:`SourceHarmonics`, :class:`SourceHarmonicsTwoParameters`, :class:`SourceAudio`
 
     Examples
     --------

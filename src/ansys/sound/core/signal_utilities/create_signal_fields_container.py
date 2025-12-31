@@ -38,6 +38,10 @@ class CreateSignalFieldsContainer(SignalUtilitiesParent):
     This class creates a DPF fields container from a list, tuple, or array of signal fields. To
     create signal fields from signal data, use the class :class:`CreateSignalField`.
 
+    See Also
+    --------
+    :class:`CreateSignalField`
+
     Examples
     --------
     Create a fields container from a list of signal fields.

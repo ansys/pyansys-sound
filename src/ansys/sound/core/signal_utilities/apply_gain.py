@@ -47,10 +47,12 @@ class ApplyGain(SignalUtilitiesParent):
     >>> apply_gain.process()
     >>> amplified_signal = apply_gain.get_output()
 
-    See also example script `Basic operations on a signal from a WAV file`_
+    .. seealso::
+        `Basic operations on a signal from a WAV file`_
+            Example demonstrating how to load, resample, amplify, and write WAV files.
 
-    .. _Basic operations on a signal from a WAV file: ../../examples/gallery_examples/002_load_resample_amplify_write_wav_files.html  # noqa: E501
-    """
+    .. _Basic operations on a signal from a WAV file: ../../examples/gallery_examples/002_load_resample_amplify_write_wav_files.html
+    """  # noqa: E501
 
     def __init__(
         self, signal: Field | FieldsContainer = None, gain: float = 0.0, gain_in_db: bool = True
