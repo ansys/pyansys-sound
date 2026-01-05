@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -21,7 +21,6 @@
 # SOFTWARE.
 
 """Sound Composer's track."""
-from functools import reduce
 from typing import Union
 import warnings
 
@@ -59,7 +58,7 @@ DICT_SOURCE_TYPE = {
 }
 
 # Define the typing Union of all possible source types, as a global variable (for typing only).
-AnySourceType = reduce(lambda x, y: Union[x, y], DICT_SOURCE_TYPE.values())
+AnySourceType = Union[tuple(DICT_SOURCE_TYPE.values())]
 
 
 class Track(SoundComposerParent):

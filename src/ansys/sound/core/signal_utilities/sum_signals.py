@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -37,10 +37,10 @@ class SumSignals(SignalUtilitiesParent):
 
     Examples
     --------
-        >>> from ansys.sound.core.signal_utilities import SumSignals
-        >>> sum_signals = SumSignals(signals=my_signals)
-        >>> sum_signals.process()
-        >>> summed_signal = sum_signals.get_output()
+    >>> from ansys.sound.core.signal_utilities import SumSignals
+    >>> sum_signals = SumSignals(signals=my_signals)
+    >>> sum_signals.process()
+    >>> summed_signal = sum_signals.get_output()
     """
 
     def __init__(self, signals: FieldsContainer = None):
