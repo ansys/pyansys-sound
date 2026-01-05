@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -59,7 +59,7 @@ It presents the different available methods and explains their differences.
 #
 # :class:`OctaveLevelsFromSignal`
 #     Use this class to calculate octave levels from a time-domain signal.
-#     It follows  the ANSI S1.11-1986 and IEC 61260:1995 standards, and can 
+#     It follows  the ANSI S1.11-1986 and IEC 61260:1995 standards, and can
 #     therefore be used when a standard result is needed.
 #
 # :class:`OctaveLevelsFromPSD`
@@ -233,17 +233,17 @@ plt.legend()
 plt.show()
 
 # %%
-# The red curve represents the levels calculated from the time-domain signal, it is the standard  
-# way to do when working with test data.  
-#  
-# The blue curve represents the levels calculated from the PSD of the signal. It is highly dependent  
-# on the frequency resolution of the PSD, as it only sums up the levels that are exactly in each  
-# 1/3-octave band to calculte their respective levels.  
-#  
-# The green curve represents the levels calculated from the PSD, with a correction added to  
-# be closer to the calculation that would be done with the first method. You can notice that the  
-# levels obtained with the third method are closer to the first method's ones, because of this  
-# correction. However some differences still appear, mainly because of the influence of the frequency  
+# The red curve represents the levels calculated from the time-domain signal, it is the standard
+# way to do when working with test data.
+#
+# The blue curve represents the levels calculated from the PSD of the signal. It is highly dependent
+# on the frequency resolution of the PSD, as it only sums up the levels that are exactly in each
+# 1/3-octave band to calculte their respective levels.
+#
+# The green curve represents the levels calculated from the PSD, with a correction added to
+# be closer to the calculation that would be done with the first method. You can notice that the
+# levels obtained with the third method are closer to the first method's ones, because of this
+# correction. However some differences still appear, mainly because of the influence of the frequency
 # resolution of the PSD.
 
 # %%
@@ -362,7 +362,7 @@ plt.show()
 
 # %%
 # .. _Theory:
-# 
+#
 # Theory
 # ~~~~~~
 #
@@ -374,15 +374,15 @@ plt.show()
 # The computation using :class:`OneThirdOctaveLevelsFromSignal` or :class:`OctaveLevelsFromSignal`
 # follows the ANSI S1.11-1986 and IEC 61260:1995 standards.
 #
-# 1. the signal is filtered using octave (or one-third-octave) band-pass filters, resulting in 
+# 1. the signal is filtered using octave (or one-third-octave) band-pass filters, resulting in
 #    as many band-filtered signals as the number of octave (or one-third-octaves).
 #    Each band-pass filter has a bandwith of 1 octave (or 1 one-third-octave), and is centered at the
 #    standardized center frequencies of the bands.
 # 2. for each band filtered signal, the level is calculated by averaging the sum of the squares of the
 #    samples. This level is the level of the band.
-# 
+#
 # The figure below illustrates this process.
-# 
+#
 # .. image:: ../../_static/_image/example013_method1.png
 #
 # Levels from PSD
@@ -390,7 +390,7 @@ plt.show()
 #
 # The computation using :class:`OneThirdOctaveLevelsFromPSD` or :class:`OctaveLevelsFromPSD` with
 # parameter ``use_ansi_s1_11_1986=False`` (default value) is done using the Power Spectral Density
-# (PSD) as input. 
+# (PSD) as input.
 #
 # The level in each octave or one-third-octave band is calculated by integrating the PSD over
 # the frequency range corresponding to a each octave or one-third-octave band.
@@ -405,7 +405,7 @@ plt.show()
 # The computation using :class:`OneThirdOctaveLevelsFromPSD` or :class:`OctaveLevelsFromPSD` with
 # the parameter ``use_ansi_s1_11_1986=True`` is done using a Power Spectral Density (PSD) as input.
 # For each band, it applies a frequency weighting based on the frequency response of the band-pass
-# filters defined in the ANSI S1.11-1986 standard, in order to approximate the results obtained from 
+# filters defined in the ANSI S1.11-1986 standard, in order to approximate the results obtained from
 # a time-domain signal following ANSI S1.11-1986.
 #
 # This may, for example, allow comparing simulation results with measurements.
