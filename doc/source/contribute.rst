@@ -143,13 +143,14 @@ Follow these steps to create new examples to demonstrate PyAnsys Sound workflows
 .. _build_documentation:
 Build documentation
 -------------------
-
+.. vale off # The term "dev" below triggers a false positive in Vale.
 .. note::
     To view the current development documentation, go to
     `PyAnsys Sound Documentation <https://sound.docs.pyansys.com>`_. By default, the displayed
     documentation is that of the latest stable release. To switch to the current development
     version, select *dev* from the dropdown menu in the upper right corner of the documentation
     page.
+.. vale on
 
 .. note::
     Building the documentation requires access to a DPF Server with the DPF Sound plugin. See
