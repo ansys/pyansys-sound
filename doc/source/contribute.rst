@@ -71,7 +71,7 @@ server is started.
 
 - Run tests with an existing Docker container.
 
-  For information on getting and running the DPF Server Docker image, see :ref:`DPF Server Docker image`.
+  For information on getting and running the DPF Server Docker image, see :ref:`DPF Docker containerization`.
   Run the tests with this command:
 
   .. code:: bash
@@ -106,7 +106,7 @@ Build documentation
 -------------------
 
 Before you can build the documentation, you must get and run the DPF Server Docker image.
-For more information, see :ref:`DPF Server Docker image`.
+For more information, see :ref:`DPF Docker containerization`.
 
 On Windows, build the documentation with this command:
 
