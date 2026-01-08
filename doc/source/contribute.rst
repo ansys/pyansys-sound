@@ -1,7 +1,8 @@
 .. _ref_contribute:
 
+==========
 Contribute
-----------
+==========
 Overall guidance on contributing to a PyAnsys library appears in the
 `Contributing <https://dev.docs.pyansys.com/how-to/contributing.html>`_ topic
 in the *PyAnsys developer's guide*. Ensure that you are thoroughly familiar
@@ -11,15 +12,15 @@ The following contribution information is specific to PyAnsys Sound.
 
 
 Install in development mode
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------
 
 Installing PyAnsys Sound in development mode allows you to modify and enhance
-the source.
+the source codebase and documentation.
 
 .. note::
   For information on prerequisites, see :ref:`prerequisistes`.
 
-Perform these steps to install PyAnsys Sound in developer mode:
+Follow these steps to install PyAnsys Sound in development mode:
 
 #. Clone the repository:
 
@@ -33,80 +34,127 @@ Perform these steps to install PyAnsys Sound in developer mode:
 
    .. code:: bash
 
-       # Create a virtual environment
+       # Create a virtual environment.
        python -m venv .venv
 
-      # Activate it in a POSIX system
+      # Activate it in a POSIX system.
       source .venv/bin/activate
 
-      # Activate it in Windows CMD environment
-      .venv\Scripts\activate.bat
+      # Activate it in Windows CMD environment.
+      .venv/Scripts/activate.bat
 
-      # Activate it in Windows Powershell
-      .venv\Scripts\Activate.ps1
+      # Activate it in Windows Powershell.
+      .venv/Scripts/Activate.ps1
 
 #. Install with minimum requirements, to cover core capability:
 
    .. code:: bash
 
-       pip install -e .
+        pip install -e .
 
-#. Alternatively, install the full requirements, allowing to access all available features:
+#. Alternatively, install the full requirements, allowing access all available features:
 
-    .. code:: bash
+   .. code:: bash
 
-         pip install -e.[full]
+        pip install -e.[full]
 
 #. If needed, install additional requirements for testing and documentation-building:
 
    .. code:: bash
 
-       pip install -e.[doc,tests]
+        pip install -e.[doc,tests]
 
-Test
-----
+Adhere to code style
+--------------------
 
-There are different ways to run the PyAnsys Sound tests, depending on how the DPF
-server is started.
+PyAnsys Sound follows the PEP8 standard as outlined in
+`PEP 8 <https://dev.docs.pyansys.com/coding-style/pep8.html>`_ in
+the *PyAnsys Developer's Guide* and implements style checking using
+`pre-commit <https://pre-commit.com/>`_.
 
-- Run tests with an existing Docker container.
+To ensure your code meets minimum code styling standards, run these commands::
 
-  For information on getting and running the DPF Server Docker image, see :ref:`DPF Docker containerization`.
-  Run the tests with this command:
+  pip install pre-commit
+  pre-commit run --all-files
 
-  .. code:: bash
+You can also install this as a pre-commit hook by running this command::
 
-      pytest .
+  pre-commit install
 
-- Run tests with the latest Docker container from GitHub with these commands:
+This way, it's not possible for you to push code that fails the style checks::
 
-  .. code:: bash
+  $ pre-commit install
+  $ git commit -am "added my cool feature"
+    black....................................................................Passed
+    isort....................................................................Passed
+    flake8...................................................................Passed
+    codespell................................................................Passed
+    pydocstyle...............................................................Passed
+    check for merge conflicts................................................Passed
+    trim trailing whitespace.................................................Passed
+    Add License Headers......................................................Passed
+    Validate GitHub Workflows................................................Passed
 
-      docker pull ghcr.io/ansys/ansys-sound:latest
-      pytest .
+Add examples
+------------
 
+Follow these steps to create new examples to demonstrate PyAnsys Sound workflows:
 
-Run style checks
-----------------
+#. Create a new branch of the PyAnsys Sound repository.
+#. Create a new Python script in the ``examples/`` folder.
+#. Follow the structure of existing examples in the ``examples/`` folder.
+   Ensure that your example includes descriptive comments and docstrings
+   to explain the workflow.
+#. If your example requires specific input files, use local paths while developing the example.
+   These local paths will be replaced at a later step, once the example is complete.
+#. Make sure your example runs properly and produces the expected results.
+#. Build documentation locally to verify that your example is correctly integrated into the
+   documentation. See :ref:`build_documentation`. As long as the example file is in the
+   ``examples/`` folder, it will be automatically included in the documentation.
+#. Once the example is complete, upload the input files to the PyAnsys Sound example data
+   repository by submitting a `pull request
+   <https://github.com/ansys/example-data/upload/main/pyansys-sound>`_:
 
-The style checks use `pre-commit`_, which can be run from a Powershell terminal:
+   - Drag-and-drop the files in the dedicated field.
+   - Add a title for the file upload, and, optionally, a description.
+   - Click *Propose changes* to submit the pull request.
+   - Wait for the approval of the pull request.
 
-.. code:: bash
+#. Define a new download function in module ``src/ansys/sound/core/example_helpers/download.py``
+   to fetch the necessary files from the PyAnsys Sound example data repository. Refer to existing
+   download functions in this module for guidance.
 
-    pre-commit run --all-files
+   .. note::
+        If your input data files require a licensed DPF operator to load (typically WAV files, for
+        example), they need to be made available to the server (which might be remote). In such case,
+        use the function :func:`_download_example_file_to_server_tmp_folder`. Otherwise, when the files
+        are loaded with Python built-in libraries or third-party libraries (text files, CSV files, for
+        example), use the function :func:`_download_file_in_local_tmp_folder`.
 
+#. Add your new download function to the ``src/ansys/sound/core/example_helpers`` package's
+   initialization file ``__init__.py``.
+#. Create a test function for your new download function in ``tests/test_example_helpers.py``, run
+   this test module, and make sure the tests pass (see :ref:`run_tests`).
+#. In your example script, replace the local input file paths with the new download function.
+#. If your example uses libraries that are not already included in the project's dependencies in
+   ``pyproject.toml`` at the root of cloned repository, make sure to add them in the *full* and
+   *doc* dependency groups
+#. Submit your changes in a `pull request` to the PyAnsys Sound repository and wait for review.
 
-You can also install this as a Git pre-commit hook by running this command:
-
-.. code:: bash
-
-    pre-commit install
-
+.. _build_documentation:
 Build documentation
 -------------------
 
-Before you can build the documentation, you must get and run the DPF Server Docker image.
-For more information, see :ref:`DPF Docker containerization`.
+.. note::
+    To view the current development documentation, go to
+    `PyAnsys Sound Documentation <https://sound.docs.pyansys.com>`_. By default, the displayed
+    documentation is that of the latest stable release. To switch to the current development
+    version, select *dev* from the dropdown menu in the upper right corner of the documentation
+    page.
+
+.. note::
+    Building the documentation requires access to a DPF Server with the DPF Sound plugin. See
+    `prerequisites`_.
 
 On Windows, build the documentation with this command:
 
@@ -114,14 +162,55 @@ On Windows, build the documentation with this command:
 
     .\doc\make.bat html
 
-You can use the latest container from GitHub to build it with the following command:
+The documentation is built in the cloned repository, under ``docs/_build/html``.
+
+You can clean the documentation build with this command:
 
 .. code:: powershell
 
-    docker pull ghcr.io/ansys/ansys-dpf-sound:latest
-    docker run -d -p 6780:50052 -e ANSYSLMD_LICENSE_FILE=1055@mylicserver -e ANSYS_DPF_ACCEPT_LA=Y ghcr.io/ansys/ansys-sound:latest
-    docker run -d -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@mylicserver" -v $env:LOCALAPPDATA\Ansys\ansys_sound_core\examples:C:\data  -p 6780:50052 ghcr.io/ansys/ansys-dpf-sound:latest
-    .\doc\make.bat html
+    .\doc\make.bat clean
+
+.. _run_tests:
+Run tests
+---------
+
+.. note::
+    Running the tests requires access to a DPF Server with the DPF Sound plugin. See
+    `prerequisites`_.
+
+To run all tests locally, use this commands:
+
+.. code:: bash
+
+    pytest .
+
+To run tests for all modules of a specific package, use the following command:
+
+.. code:: bash
+
+    pytest ./tests/tests_package_name/
+
+To run tests for a specific module only, use the following command:
+
+.. code:: bash
+
+    pytest ./tests/tests_package_name/test_module_name.py
+
+Post issues
+-----------
+
+Use the `PyAnsys Sound Issues <https://github.com/ansys/pyansys-sound/issues>`_
+page to submit questions, report bugs, and request new features. When possible, you
+should use these issue templates:
+
+* Bug, problem, error: For filing a bug report
+* Documentation error: For requesting modifications to the documentation
+* Adding an example: For proposing a new example
+* New feature: For requesting enhancements to the code
+
+If your issue does not fit into one of these template categories, select Blank issue.
+
+To reach the PyAnsys project support team, email `pyansys.core@ansys.com <pyansys.core@ansys.com>`_.
 
 
 .. LINKS AND REFERENCES
