@@ -103,8 +103,7 @@ Follow these steps to create new examples to demonstrate PyAnsys Sound workflows
 #. Create a new branch of the PyAnsys Sound repository.
 #. Create a new Python script in the ``examples/`` folder.
 #. Follow the structure of existing examples in the ``examples/`` folder.
-   Ensure that your example includes descriptive comments and docstring
-   to explain the workflow.
+   Ensure that your example includes descriptive comments to explain the workflow.
 #. If your example requires specific input files, use local paths while developing the example.
    These local paths shall be replaced at a later step, once the example is complete.
 #. Make sure your example runs properly and produces the expected results.
