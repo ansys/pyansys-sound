@@ -52,7 +52,7 @@ Follow these steps to install PyAnsys Sound in development mode:
 
         pip install -e .
 
-#. Alternatively, install the full requirements, allowing access all available features:
+#. Alternatively, install the full requirements, allowing access to all available features:
 
    .. code:: bash
 
