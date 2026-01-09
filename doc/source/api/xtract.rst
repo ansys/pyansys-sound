@@ -1,7 +1,7 @@
 Xtract
 ------
 
-This package provides access to Xtract. Xtract is a feature designed for denoising and extracting
+This subpackage provides access to Xtract. Xtract is a feature designed for denoising and extracting
 components from time-domain signals.
 
 Based on 3 extraction algorithms, Xtract lets you split a time-domain signal into 4 components:

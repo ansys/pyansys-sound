@@ -1,7 +1,7 @@
 Signal processing
 -----------------
 
-This package provides useful functions to process time-domain signals, such as filtering.
+This subpackage provides useful functions to process time-domain signals, such as filtering.
 
 .. module:: ansys.sound.core.signal_processing
 

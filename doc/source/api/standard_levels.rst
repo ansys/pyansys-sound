@@ -1,7 +1,7 @@
 Standard levels
 ---------------
 
-This package provides functions to calculate standard levels from time-domain signals.
+This subpackage provides functions to calculate standard levels from time-domain signals.
 
 .. module:: ansys.sound.core.standard_levels
 
