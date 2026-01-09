@@ -128,6 +128,7 @@ plt.show()
 
 # %%
 # .. _FromSignal_vs_FromPSD:
+#
 # Comparing octave and one-third-octave levels from signal and from PSD
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Let us now consider a scenario where we wish to compare one-third-octave levels between
