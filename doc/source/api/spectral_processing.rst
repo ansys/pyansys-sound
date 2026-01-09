@@ -1,7 +1,7 @@
 Spectral processing
 -------------------
 
-This subpackage provides functions to process signals in the frequency domain,
+This sub-package provides functions to process signals in the frequency domain,
 such as the calculation of the Power Spectral Density (PSD).
 
 .. module:: ansys.sound.core.spectral_processing

@@ -1,7 +1,7 @@
 Psychoacoustics
 ---------------
 
-This subpackage provides functions to compute psychoacoustic indicators,
+This sub-package provides functions to compute psychoacoustic indicators,
 which are useful to study and assess sound quality.
 
 .. module:: ansys.sound.core.psychoacoustics
