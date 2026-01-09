@@ -40,9 +40,8 @@ from .._pyansys_sound import (
 class LoadWav(SignalUtilitiesParent):
     """Load a signal, and its sampling frequency and format from a WAV file.
 
-    See Also
-    --------
-    :class:`WriteWav`
+    .. seealso::
+        :class:`WriteWav`
 
     Examples
     --------

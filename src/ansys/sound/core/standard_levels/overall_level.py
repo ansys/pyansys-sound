@@ -37,9 +37,9 @@ class OverallLevel(StandardLevelsParent):
 
     This class computes the overall level of a signal.
 
-    See Also
-    --------
-    :class:`LevelOverTime`, :class:`OctaveLevelsFromSignal`, :class:`OneThirdOctaveLevelsFromSignal`
+    .. seealso::
+        :class:`LevelOverTime`, :class:`OctaveLevelsFromSignal`,
+        :class:`OneThirdOctaveLevelsFromSignal`
 
     Examples
     --------

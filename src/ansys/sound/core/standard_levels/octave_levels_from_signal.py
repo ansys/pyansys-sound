@@ -34,9 +34,8 @@ class OctaveLevelsFromSignal(FractionalOctaveLevelsFromSignalParent, min_dpf_ver
 
     This class computes octave levels from a time-domain signal.
 
-    See Also
-    --------
-    :class:`OctaveLevelsFromPSD`, :class:`OneThirdOctaveLevelsFromSignal`
+    .. seealso::
+        :class:`OctaveLevelsFromPSD`, :class:`OneThirdOctaveLevelsFromSignal`
 
     Notes
     -----

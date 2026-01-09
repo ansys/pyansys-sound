@@ -41,9 +41,8 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
     This class computes the TNR, as defined in ECMA 418-1 and ISO 7779 standards, following
     specific orders over time in a given time-domain signal and its RPM signal.
 
-    See Also
-    --------
-    :class:`ToneToNoiseRatio`, :class:`ProminenceRatioForOrdersOverTime`
+    .. seealso::
+        :class:`ToneToNoiseRatio`, :class:`ProminenceRatioForOrdersOverTime`
 
     Examples
     --------

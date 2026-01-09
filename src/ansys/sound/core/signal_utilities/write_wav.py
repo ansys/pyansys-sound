@@ -33,9 +33,8 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 class WriteWav(SignalUtilitiesParent):
     """Write a signal into a WAV file.
 
-    See Also
-    --------
-    :class:`LoadWav`
+    .. seealso::
+        :class:`LoadWav`
 
     Examples
     --------

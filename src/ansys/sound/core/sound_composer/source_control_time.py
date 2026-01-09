@@ -39,9 +39,9 @@ class SourceControlTime(SourceControlParent):
     the Sound Composer to generate a sound from sources of types broadband noise and harmonics
     (with one or two control parameters).
 
-    See Also
-    --------
-    :class:`SourceBroadbandNoise`, :class:`SourceBroadbandNoiseTwoParameters`, :class:`SourceHarmonics`, :class:`SourceHarmonicsTwoParameters`
+    .. seealso::
+        :class:`SourceBroadbandNoise`, :class:`SourceBroadbandNoiseTwoParameters`,
+        :class:`SourceHarmonics`, :class:`SourceHarmonicsTwoParameters`
 
     Examples
     --------
@@ -54,7 +54,7 @@ class SourceControlTime(SourceControlParent):
     .. seealso::
         :ref:`sound_composer_create_project`
             Example demonstrating how to create a Sound Composer project from scratch.
-    """  # noqa: E501
+    """
 
     def __init__(self, file_str: str = ""):
         """Class instantiation takes the following parameters.

@@ -35,9 +35,8 @@ ID_UPPER_THRESHOLD = "upper_threshold"
 class XtractTransientParameters(XtractParent):
     """Store transient parameters for Xtract transient extraction.
 
-    See Also
-    --------
-    :class:`Xtract`, :class:`XtractTransient`
+    .. seealso::
+        :class:`Xtract`, :class:`XtractTransient`
 
     Examples
     --------

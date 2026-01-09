@@ -62,9 +62,9 @@ class TonalityECMA418_2(PsychoacousticsParent):
         by setting the :attr:`field_type` and :attr:`edition` attributes:
         ``my_tonality.field_type = my_field_type`` and ``my_tonality.edition = my_edition``.
 
-    See Also
-    --------
-    :class:`TonalityDIN45681`, :class:`TonalityISOTS20065`, :class:`TonalityISO1996_2`, :class:`TonalityISO1996_2_OverTime`, :class:`TonalityAures`
+    .. seealso::
+        :class:`TonalityDIN45681`, :class:`TonalityISOTS20065`, :class:`TonalityISO1996_2`,
+        :class:`TonalityISO1996_2_OverTime`, :class:`TonalityAures`
 
     Examples
     --------
@@ -79,7 +79,7 @@ class TonalityECMA418_2(PsychoacousticsParent):
     .. seealso::
         :ref:`calculate_tonality_indicators`
             Example demonstrating how to compute various tonality indicators.
-    """  # noqa: E501
+    """
 
     def __init__(self, signal: Field = None, field_type: str = None, edition: str = None):
         """Class instantiation takes the following parameters.

@@ -36,9 +36,8 @@ class SpectralCentroid(PsychoacousticsParent):
     The spectral centroid is the center of gravity of the spectrum. It is a measure of the
     distribution of the spectral energy of a signal.
 
-    See Also
-    --------
-    :class:`Sharpness`, :class:`SharpnessDIN45692`
+    .. seealso::
+        :class:`Sharpness`, :class:`SharpnessDIN45692`
 
     Examples
     --------

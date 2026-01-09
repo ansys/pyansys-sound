@@ -39,9 +39,8 @@ class LoudnessANSI_S3_4(PsychoacousticsParent):
     This class computes the loudness of a signal according to the ANSI S3.4-2007 standard. The
     scope of this standard is now covered by the ISO 532-2:2017 standard.
 
-    See Also
-    --------
-    :class:`LoudnessISO532_2`
+    .. seealso::
+        :class:`LoudnessISO532_2`
 
     Examples
     --------

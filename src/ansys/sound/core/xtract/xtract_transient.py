@@ -39,9 +39,8 @@ from .._pyansys_sound import (
 class XtractTransient(XtractParent):
     """Extracts the transient components of a signal using the Xtract algorithm.
 
-    See Also
-    --------
-    :class:`Xtract`, :class:`XtractTransientParameters`
+    .. seealso::
+        :class:`Xtract`, :class:`XtractTransientParameters`
 
     Examples
     --------

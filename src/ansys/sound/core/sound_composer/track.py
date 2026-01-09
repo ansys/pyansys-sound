@@ -70,9 +70,10 @@ class Track(SoundComposerParent):
     A track allows the generation of the sound corresponding to the source, optionally filtered
     with the associated filter.
 
-    See Also
-    --------
-    :class:`SoundComposer`, :class:`.Filter`, :class:`SourceSpectrum`, :class:`SourceBroadbandNoise`, :class:`SourceBroadbandNoiseTwoParameters`, :class:`SourceHarmonics`, :class:`SourceHarmonicsTwoParameters`, :class:`SourceAudio`
+    .. seealso::
+        :class:`SoundComposer`, :class:`.Filter`, :class:`SourceSpectrum`,
+        :class:`SourceBroadbandNoise`, :class:`SourceBroadbandNoiseTwoParameters`,
+        :class:`SourceHarmonics`, :class:`SourceHarmonicsTwoParameters`, :class:`SourceAudio`
 
     Examples
     --------
@@ -92,7 +93,7 @@ class Track(SoundComposerParent):
             Example demonstrating how to load and work with an existing Sound Composer project.
         :ref:`sound_composer_create_project`
             Example demonstrating how to create a Sound Composer project from scratch.
-    """  # noqa: E501
+    """
 
     def __init__(
         self,

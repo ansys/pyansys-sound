@@ -48,9 +48,8 @@ class SoundComposer(SoundComposerParent):
     (:class:`Track`), each containing a source, to generate the sound, and an optional filter, to
     model the transfer between the source and the receiver.
 
-    See Also
-    --------
-    :class:`Track`
+    .. seealso::
+        :class:`Track`
 
     Examples
     --------

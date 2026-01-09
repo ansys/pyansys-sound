@@ -40,6 +40,9 @@ class Roughness(PsychoacousticsParent):
     Reference: Daniel and Weber, "Psychoacoustical roughness: implementation of an
     optimized model." Acta Acustica united with Acustica, 83, pp. 113-123 (1997).
 
+    .. seealso::
+        :class:`FluctuationStrength`
+
     Examples
     --------
     Compute the roughness of a signal, and display the specific roughness and roughness over time.

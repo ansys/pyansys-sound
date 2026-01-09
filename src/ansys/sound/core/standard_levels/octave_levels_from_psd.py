@@ -31,9 +31,9 @@ class OctaveLevelsFromPSD(FractionalOctaveLevelsFromPSDParent, min_dpf_version="
 
     This class computes octave levels from a PSD.
 
-    See Also
-    --------
-    :class:`OctaveLevelsFromSignal`, :class:`OneThirdOctaveLevelsFromPSD`, :class:`PowerSpectralDensity`
+    .. seealso::
+        :class:`OctaveLevelsFromSignal`, :class:`OneThirdOctaveLevelsFromPSD`,
+        :class:`PowerSpectralDensity`
 
     Examples
     --------
@@ -45,7 +45,7 @@ class OctaveLevelsFromPSD(FractionalOctaveLevelsFromPSDParent, min_dpf_version="
     >>> band_levels = octave_levels_from_psd.get_band_levels()
     >>> band_center_frequencies = octave_levels_from_psd.get_frequencies()
     >>> octave_levels_from_psd.plot()
-    """  # noqa: E501
+    """
 
     # Override the operator IDs for octave levels computation
     _operator_id_levels_computation = "compute_octave_levels_from_psd"

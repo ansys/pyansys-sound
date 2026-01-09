@@ -40,9 +40,8 @@ class SourceControlSpectrum(SourceControlParent):
         are detected in the input spectrum, they are generated as pure tones (sine waves). The rest
         is synthesized using the IFFT method.
 
-    See Also
-    --------
-    :class:`SourceSpectrum`
+    .. seealso::
+        :class:`SourceSpectrum`
 
     Examples
     --------

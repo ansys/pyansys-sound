@@ -35,9 +35,8 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 class Stft(SpectrogramProcessingParent):
     """Compute the short-time Fourier transform (STFT) of a signal.
 
-    See Also
-    --------
-    :class:`Istft`
+    .. seealso::
+        :class:`Istft`, :class:`PowerSpectralDensity`
 
     Examples
     --------

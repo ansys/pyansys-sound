@@ -39,9 +39,8 @@ from .._pyansys_sound import (
 class XtractDenoiser(XtractParent):
     """Denoise a signal using the Xtract algorithm.
 
-    See Also
-    --------
-    :class:`Xtract`, :class:`XtractDenoiserParameters`
+    .. seealso::
+        :class:`Xtract`, :class:`XtractDenoiserParameters`
 
     Examples
     --------

@@ -43,6 +43,9 @@ class FluctuationStrength(PsychoacousticsParent):
     Reference: "Entwicklung eines Modulkonzeptes fur die psychoakustische Gerauschanalyse under
     MATLAB". Master thesis, Technischen Universitat Graz, pp. 1-112 (1998).
 
+    .. seealso::
+        :class:`Roughness`
+
     Examples
     --------
     Compute the fluctuation strength of a signal, and display the specific fluctuation strength.

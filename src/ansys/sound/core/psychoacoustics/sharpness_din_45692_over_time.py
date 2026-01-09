@@ -45,9 +45,9 @@ class SharpnessDIN45692OverTime(PsychoacousticsParent):
         in the standard ISO 532-1. It is the loudness model of the class
         :class:`LoudnessISO532_1_TimeVarying`.
 
-    See Also
-    --------
-    :class:`SharpnessDIN45692`, :class:`SharpnessOverTime`, :class:`LoudnessISO532_1_TimeVarying`
+    .. seealso::
+        :class:`SharpnessDIN45692`, :class:`SharpnessOverTime`,
+        :class:`LoudnessISO532_1_TimeVarying`
 
     Examples
     --------

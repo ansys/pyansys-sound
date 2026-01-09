@@ -46,9 +46,9 @@ class SourceBroadbandNoise(SourceParent):
 
     The source control contains the control parameter values over time.
 
-    See Also
-    --------
-    :class:`SoundComposer`, :class:`Track`, :class:`SourceControlTime`, :class:`SourceBraodbandNoiseTwoParameters`
+    .. seealso::
+        :class:`SoundComposer`, :class:`Track`, :class:`SourceControlTime`,
+        :class:`SourceBroadbandNoiseTwoParameters`
 
     Examples
     --------
@@ -66,7 +66,7 @@ class SourceBroadbandNoise(SourceParent):
     .. seealso::
         :ref:`sound_composer_create_project`
             Example demonstrating how to create a Sound Composer project from scratch.
-    """  # noqa: E501
+    """
 
     def __init__(self, file: str = "", source_control: SourceControlTime = None):
         """Class instantiation takes the following parameters.

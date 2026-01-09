@@ -39,9 +39,8 @@ ID_FFT_SIZE = "fft_size"
 class XtractTonalParameters(XtractParent):
     """Store tonal parameters for Xtract tonal extraction.
 
-    See Also
-    --------
-    :class:`Xtract`, :class:`XtractTonal`
+    .. seealso::
+        :class:`Xtract`, :class:`XtractTonal`
 
     Examples
     --------

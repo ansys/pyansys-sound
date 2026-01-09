@@ -44,9 +44,8 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
     This class computes the PR, as defined in ECMA 418-1 and ISO 7779 standards, following
     specific orders over time in a given time-domain signal.
 
-    See Also
-    --------
-    :class:`ProminenceRatio`, :class:`ToneToNoiseRatioForOrdersOverTime`
+    .. seealso::
+        :class:`ProminenceRatio`, :class:`ToneToNoiseRatioForOrdersOverTime`
 
     Examples
     --------

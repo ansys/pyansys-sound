@@ -45,9 +45,9 @@ class SourceHarmonics(SourceParent):
 
     The source control contains the RPM values over time.
 
-    See Also
-    --------
-    :class:`SoundComposer`, :class:`Track`, :class:`SourceControlTime`, :class:`SourceHarmonicsTwoParameters`
+    .. seealso::
+        :class:`SoundComposer`, :class:`Track`, :class:`SourceControlTime`,
+        :class:`SourceHarmonicsTwoParameters`
 
     Examples
     --------
@@ -65,7 +65,7 @@ class SourceHarmonics(SourceParent):
     .. seealso::
         :ref:`sound_composer_create_project`
             Example demonstrating how to create a Sound Composer project from scratch.
-    """  # noqa: E501
+    """
 
     def __init__(self, file: str = "", source_control: SourceControlTime = None):
         """Class instantiation takes the following parameters.

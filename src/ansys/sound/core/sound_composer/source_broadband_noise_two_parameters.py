@@ -47,9 +47,9 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
 
     Each of the two source controls contains one control parameter's values over time.
 
-    See Also
-    --------
-    :class:`SoundComposer`, :class:`Track`, :class:`SourceControlTime`, :class:`SourceBroadbandNoise`
+    .. seealso::
+        :class:`SoundComposer`, :class:`Track`, :class:`SourceControlTime`,
+        :class:`SourceBroadbandNoise`
 
     Examples
     --------
@@ -64,7 +64,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
     >>> )
     >>> source_bbn_two_params.process(sampling_frequency=48000.0)
     >>> source_bbn_two_params.plot()
-    """  # noqa: E501
+    """
 
     def __init__(
         self,

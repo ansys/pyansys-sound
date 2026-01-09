@@ -47,9 +47,8 @@ class SourceSpectrum(SourceParent):
 
     The source control contains the duration of the sound and the generation method to use.
 
-    See Also
-    --------
-    :class:`SoundComposer`, :class:`Track`, :class:`SourceControlSpectrum`
+    .. seealso::
+        :class:`SoundComposer`, :class:`Track`, :class:`SourceControlSpectrum`
 
     Examples
     --------

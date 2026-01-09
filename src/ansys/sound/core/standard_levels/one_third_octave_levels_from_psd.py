@@ -31,9 +31,8 @@ class OneThirdOctaveLevelsFromPSD(FractionalOctaveLevelsFromPSDParent, min_dpf_v
 
     This class computes 1/3-octave levels from a PSD.
 
-    See Also
-    --------
-    :class:`OneThirdOctaveLevelsFromSignal`, :class:`OctaveLevelsFromPSD`
+    .. seealso::
+        :class:`OneThirdOctaveLevelsFromSignal`, :class:`OctaveLevelsFromPSD`
 
     Examples
     --------

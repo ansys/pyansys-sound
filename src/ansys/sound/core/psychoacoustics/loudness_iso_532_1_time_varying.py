@@ -40,9 +40,8 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
     This class computes the loudness of a signal according to the ISO 532-1:2017 standard,
     corresponding to the "Zwicker method", for time-varying sounds.
 
-    See Also
-    --------
-    :class:`LoudnessISO532_1_Stationary`
+    .. seealso::
+        :class:`LoudnessISO532_1_Stationary`
 
     Examples
     --------

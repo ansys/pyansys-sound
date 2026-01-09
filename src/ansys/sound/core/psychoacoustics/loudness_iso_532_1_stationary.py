@@ -40,9 +40,8 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
     This class computes the loudness of a signal according to the ISO 532-1:2017 standard,
     corresponding to the "Zwicker method", for stationary sounds.
 
-    See Also
-    --------
-    :class:`LoudnessISO532_1_TimeVarying`, :class:`LoudnessISO532_2`
+    .. seealso::
+        :class:`LoudnessISO532_1_TimeVarying`, :class:`LoudnessISO532_2`
 
     Examples
     --------

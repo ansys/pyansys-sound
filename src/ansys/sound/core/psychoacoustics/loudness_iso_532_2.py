@@ -47,9 +47,8 @@ class LoudnessISO532_2(PsychoacousticsParent):
     This class computes the binaural and monaural loudness of a signal according to the
     ISO 532-2:2017 standard, corresponding to the "Moore-Glasberg method".
 
-    See Also
-    --------
-    :class:`LoudnessISO532_1_Stationary`
+    .. seealso::
+        :class:`LoudnessISO532_1_Stationary`
 
     Examples
     --------

@@ -38,9 +38,8 @@ class ProminenceRatio(PsychoacousticsParent):
     This class computes the PR from a power spectral density (PSD), according to the ECMA 418-1 and
     ISO 7779 standards.
 
-    See Also
-    --------
-    :class:`ToneToNoiseRatio`, :class:`ProminenceRatioForOrdersOverTime`
+    .. seealso::
+        :class:`ToneToNoiseRatio`, :class:`ProminenceRatioForOrdersOverTime`
 
     Examples
     --------

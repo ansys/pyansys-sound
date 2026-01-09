@@ -48,9 +48,8 @@ class LevelOverTime(StandardLevelsParent):
 
     This class computes the level over time of a signal.
 
-    See Also
-    --------
-    :class:`OverallLevel`
+    .. seealso::
+        :class:`OverallLevel`
 
     Examples
     --------

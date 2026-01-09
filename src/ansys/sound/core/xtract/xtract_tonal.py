@@ -39,9 +39,8 @@ from .._pyansys_sound import (
 class XtractTonal(XtractParent):
     """Extract tonal components using the Xtract algorithm.
 
-    See Also
-    --------
-    :class:`Xtract`, :class:`XtractTonalParameters`
+    .. seealso::
+        :class:`Xtract`, :class:`XtractTonalParameters`
 
     Examples
     --------

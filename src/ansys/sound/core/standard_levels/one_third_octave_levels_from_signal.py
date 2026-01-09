@@ -35,9 +35,8 @@ class OneThirdOctaveLevelsFromSignal(
 
     This class computes 1/3-octave levels from a time-domain signal.
 
-    See Also
-    --------
-    :class:`OneThirdOctaveLevelsFromPSD`, :class:`OctaveLevelsFromSignal`
+    .. seealso::
+        :class:`OneThirdOctaveLevelsFromPSD`, :class:`OctaveLevelsFromSignal`
 
     Examples
     --------

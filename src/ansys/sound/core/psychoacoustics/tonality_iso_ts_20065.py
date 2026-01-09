@@ -42,9 +42,9 @@ class TonalityISOTS20065(PsychoacousticsParent):
     This class is used to compute the tonality (mean audibility) of a signal according to the
     ISO/TS 20065:2022 standard.
 
-    See Also
-    --------
-    :class:`TonalityDIN45681`, :class:`TonalityECMA418_2`, :class:`TonalityISO1996_2`, :class:`TonalityISO1996_2_OverTime`, :class:`TonalityAures`
+    .. seealso::
+        :class:`TonalityDIN45681`, :class:`TonalityECMA418_2`, :class:`TonalityISO1996_2`,
+        :class:`TonalityISO1996_2_OverTime`, :class:`TonalityAures`
 
     Examples
     --------
@@ -59,7 +59,7 @@ class TonalityISOTS20065(PsychoacousticsParent):
     .. seealso::
         :ref:`calculate_tonality_indicators`
             Example demonstrating how to compute various tonality indicators.
-    """  # noqa: E501
+    """
 
     def __init__(self, signal: Field = None, window_length: float = 3.0, overlap: float = 0.0):
         """Class instantiation takes the following parameters.

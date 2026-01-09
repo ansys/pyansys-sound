@@ -49,9 +49,9 @@ class Xtract(XtractParent):
     Xtract algorithm is the same as that which is implemented in Ansys Sound Analysis and
     Specification (SAS).
 
-    See Also
-    --------
-    :class:`XtractDenoiser`, :class:`XtractDenoiserParameters`, :class:`XtractTonal`, :class:`XtractTonalParameters`, :class:`XtractTransient`, :class:`XtractTransientParameters`
+    .. seealso::
+        :class:`XtractDenoiser`, :class:`XtractDenoiserParameters`, :class:`XtractTonal`,
+        :class:`XtractTonalParameters`, :class:`XtractTransient`, :class:`XtractTransientParameters`
 
     Examples
     --------
@@ -71,7 +71,7 @@ class Xtract(XtractParent):
     .. seealso::
         :ref:`xtract_feature_example`
             Example demonstrating how to use Xtract to extract the various components of a signal.
-    """  # noqa: E501
+    """
 
     def __init__(
         self,

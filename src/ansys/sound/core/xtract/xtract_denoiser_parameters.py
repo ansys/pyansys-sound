@@ -34,9 +34,8 @@ ID_NOISE_PSD = "noise_levels"
 class XtractDenoiserParameters(XtractParent):
     """Store denoiser parameters for Xtract signal denoising.
 
-    See Also
-    --------
-    :class:`Xtract`, :class:`XtractDenoiser`
+    .. seealso::
+        :class:`Xtract`, :class:`XtractDenoiser`
 
     Examples
     --------

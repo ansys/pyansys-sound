@@ -42,9 +42,8 @@ class SourceAudio(SourceParent):
     time-domain - typically audio - signal. Unlike other source types, it requires no `source
     control`.
 
-    See Also
-    --------
-    :class:`SoundComposer`, :class:`Track`
+    .. seealso::
+        :class:`SoundComposer`, :class:`Track`
 
     Examples
     --------

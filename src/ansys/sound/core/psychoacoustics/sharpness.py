@@ -41,9 +41,9 @@ class Sharpness(PsychoacousticsParent):
         defined in the standard ISO 532-1. It is the loudness model of the class
         :class:`LoudnessISO532_1_Stationary`.
 
-    See Also
-    --------
-    :class:`SharpnessDIN45692`, :class:`SharpnessOverTime`, :class:`LoudnessISO532_1_Stationary`
+    .. seealso::
+        :class:`SharpnessDIN45692`, :class:`SharpnessOverTime`,
+        :class:`LoudnessISO532_1_Stationary`
 
     Examples
     --------

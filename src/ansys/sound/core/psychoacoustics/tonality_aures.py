@@ -37,9 +37,9 @@ ID_COMPUTE_TONALITY_AURES = "compute_tonality_aures"
 class TonalityAures(PsychoacousticsParent):
     r"""Computes the tonality of the signal according to Aures model.
 
-    See Also
-    --------
-    :class:`TonalityDIN45681`, :class:`TonalityISOTS20065`, :class:`TonalityECMA418_2`, :class:`TonalityISO1996_2`, :class:`TonalityISO1996_2_OverTime`
+    .. seealso::
+        :class:`TonalityDIN45681`, :class:`TonalityISOTS20065`, :class:`TonalityECMA418_2`,
+        :class:`TonalityISO1996_2`, :class:`TonalityISO1996_2_OverTime`
 
     References
     ----------
@@ -62,7 +62,7 @@ class TonalityAures(PsychoacousticsParent):
     .. seealso::
         :ref:`calculate_tonality_indicators`
             Example demonstrating how to compute various psychoacoustic indicators.
-    """  # noqa: E501
+    """
 
     def __init__(
         self,

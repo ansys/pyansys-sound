@@ -40,9 +40,8 @@ class PowerSpectralDensity(SpectralProcessingParent):
     This class allows the calculation of Power Spectral Density (PSD) for a given signal,
     using Welch's method.
 
-    See Also
-    --------
-    :class:`.Stft`
+    .. seealso::
+        :class:`.Stft`
 
     Examples
     --------

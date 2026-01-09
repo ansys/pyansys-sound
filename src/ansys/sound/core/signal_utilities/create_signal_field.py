@@ -36,9 +36,8 @@ class CreateSignalField(SignalUtilitiesParent):
     This class creates a DPF field from a series of time-domain - typically acoustic - signal
     samples.
 
-    See Also
-    --------
-    :class:`CreateSignalFieldsContainer`
+    .. seealso::
+        :class:`CreateSignalFieldsContainer`
 
     Examples
     --------

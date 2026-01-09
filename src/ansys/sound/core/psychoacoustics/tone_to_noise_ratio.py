@@ -38,9 +38,8 @@ class ToneToNoiseRatio(PsychoacousticsParent):
     This class computes the TNR from a power spectral density (PSD), according to the ECMA 418-1
     and ISO 7779 standards.
 
-    See Also
-    --------
-    :class:`ProminenceRatio`, :class:`ToneToNoiseRatioForOrdersOverTime`
+    .. seealso::
+        :class:`ProminenceRatio`, :class:`ToneToNoiseRatioForOrdersOverTime`
 
     Examples
     --------

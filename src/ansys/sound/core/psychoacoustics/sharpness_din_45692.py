@@ -42,9 +42,9 @@ class SharpnessDIN45692(PsychoacousticsParent):
         This is the same loudness model used in the
         :class:`LoudnessISO532_1_Stationary` class.
 
-    See Also
-    --------
-    :class:`Sharpness`, :class:`SharpnessDIN45692OverTime`, :class:`LoudnessISO532_1_Stationary`
+    .. seealso::
+        :class:`Sharpness`, :class:`SharpnessDIN45692OverTime`,
+        :class:`LoudnessISO532_1_Stationary`
 
     Examples
     --------

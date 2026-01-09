@@ -64,9 +64,8 @@ class Filter(SignalProcessingParent):
         filter :attr:`signal` must have the same sampling frequency. If necessary, use the
         :class:`.Resample` class to resample the signal prior to using the ``Filter`` class.
 
-    See Also
-    --------
-    :class:`.Resample`
+    .. seealso::
+        :class:`.Resample`
 
     Examples
     --------

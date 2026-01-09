@@ -52,9 +52,9 @@ class SourceHarmonicsTwoParameters(SourceParent):
     .. note::
         The first control parameter must correspond to RPM over time.
 
-    See Also
-    --------
-    :class:`SoundComposer`, :class:`Track`, :class:`SourceControlTime`, :class:`SourceHarmonics`
+    .. seealso::
+        :class:`SoundComposer`, :class:`Track`, :class:`SourceControlTime`,
+        :class:`SourceHarmonics`
 
     Examples
     --------
