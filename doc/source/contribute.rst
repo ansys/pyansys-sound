@@ -213,7 +213,7 @@ should use these issue templates:
 
 If your issue does not fit into one of these template categories, select Blank issue.
 
-To reach the PyAnsys project support team, email `pyansys.core@ansys.com <pyansys.core@ansys.com>`_.
+To reach out to the PyAnsys project support team, email `pyansys.core@ansys.com <pyansys.core@ansys.com>`_.
 
 
 .. LINKS AND REFERENCES
