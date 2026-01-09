@@ -54,12 +54,9 @@ computed from time-domain signals. See section :ref:`FromSignal_vs_FromPSD` for 
 # Load standard libraries.
 import matplotlib.pyplot as plt
 
-from ansys.sound.core import REFERENCE_ACOUSTIC_PRESSURE
-
 # Load Ansys libraries.
-from ansys.sound.core.examples_helpers import (
-    download_flute_wav,
-)
+from ansys.sound.core import REFERENCE_ACOUSTIC_PRESSURE
+from ansys.sound.core.examples_helpers import download_flute_wav
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectral_processing import PowerSpectralDensity
