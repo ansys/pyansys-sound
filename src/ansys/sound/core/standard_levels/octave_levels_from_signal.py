@@ -34,18 +34,17 @@ class OctaveLevelsFromSignal(FractionalOctaveLevelsFromSignalParent, min_dpf_ver
 
     This class computes octave levels from a time-domain signal.
 
+    .. note::
+        For consistency with other Ansys Sound applications, octave-band levels are derived from
+        one-third-octave levels, and frequency weighting is applied before the conversion. In other
+        words, each octave-band level is obtained by summing the 3 one-third-octave levels within
+        (in squared units), each weighted with the frequency weighting obtained at the
+        one-third-octave-band center frequency. Note that the highest-frequency octave band
+        (centered at 16000 Hz) is obtained by only summing the 2 highest one-third-octave bands
+        (since the 30th one-third-octave band centered at 20000 Hz is not considered).
+
     .. seealso::
         :class:`OctaveLevelsFromPSD`, :class:`OneThirdOctaveLevelsFromSignal`
-
-    Notes
-    -----
-    For consistency with other Ansys Sound applications, octave-band levels are derived from
-    one-third-octave levels, and frequency weighting is applied before the conversion. In other
-    words, each octave-band level is obtained by summing the 3 one-third-octave levels within
-    (in squared units), each weighted with the frequency weighting obtained at the
-    one-third-octave-band center frequency. Note that the highest-frequency octave band
-    (centered at 16000 Hz) is obtained by only summing the 2 highest one-third-octave bands
-    (since the 30th one-third-octave band centered at 20000 Hz is not considered).
 
     Examples
     --------

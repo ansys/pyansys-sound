@@ -11,6 +11,7 @@ with this guide before attempting to contribute to PyAnsys Sound.
 The following contribution information is specific to PyAnsys Sound.
 
 .. _dev_install:
+
 Install in development mode
 ---------------------------
 
@@ -65,6 +66,7 @@ Follow these steps to install PyAnsys Sound in development mode:
         pip install -e.[doc,tests]
 
 .. _code_style:
+
 Adhere to code style
 --------------------
 
@@ -144,6 +146,7 @@ Follow these steps to create new examples to demonstrate PyAnsys Sound workflows
 #. Submit your changes in a `pull request` to the PyAnsys Sound repository and wait for review.
 
 .. _build_documentation:
+
 Build documentation
 -------------------
 
@@ -179,6 +182,7 @@ You can clean the documentation build with this command:
     .\doc\make.bat clean
 
 .. _run_tests:
+
 Run tests
 ---------
 

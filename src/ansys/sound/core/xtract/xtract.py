@@ -42,11 +42,11 @@ from .._pyansys_sound import (
 
 
 class Xtract(XtractParent):
-    """Signal component extraction using the Xtract algorithm.
+    """Extract signal components using the Xtract algorithm.
 
-    This operator chains a denoising step, a tonal extraction step, and a transient extraction step.
-    It allows separating the noise, tonal, transient, and remainder components of a signal. The
-    Xtract algorithm is the same as that which is implemented in Ansys Sound Analysis and
+    This algorithm chains a denoising step, a tonal extraction step, and a transient extraction
+    step. It allows separating the noise, tonal, transient, and remainder components of a signal.
+    The Xtract algorithm is the same as that which is implemented in Ansys Sound Analysis and
     Specification (SAS).
 
     .. seealso::

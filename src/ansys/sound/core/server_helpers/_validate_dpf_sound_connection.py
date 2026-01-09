@@ -37,13 +37,13 @@ def validate_dpf_sound_connection(port=None) -> None:
 
     Examples
     --------
-    Validate a global DPF server (whether local or remote) is available and has the DPF Sound
+    Validate that a global DPF server (whether local or remote) is available and has the DPF Sound
     plugin.
 
     >>> from ansys.sound.core.server_helpers import validate_dpf_sound_connection
     >>> validate_dpf_sound_connection()
 
-    Validate a remote DPF server on a specific port is available and has the DPF Sound plugin.
+    Validate that a remote DPF server on a specific port is available and has the DPF Sound plugin.
 
     >>> from ansys.sound.core.server_helpers import validate_dpf_sound_connection
     >>> validate_dpf_sound_connection(port=6780)
