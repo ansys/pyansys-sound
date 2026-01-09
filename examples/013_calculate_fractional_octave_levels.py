@@ -267,7 +267,7 @@ plt.show()
 # computation parameters have a significant influence on the computed band levels, notably in the
 # narrower, low-frequency bands.
 #
-# The table below summarizes the different approaches, and their pros and cons (for the case of
+# The table below summarizes the different approaches, and their specificities (for the case of
 # octave levels only, but it equally applies for the case of one-third-octave levels).
 #
 # .. list-table::
