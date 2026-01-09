@@ -5,7 +5,7 @@ Contribute
 ==========
 Overall guidance on contributing to a PyAnsys library appears in the
 `Contributing <https://dev.docs.pyansys.com/how-to/contributing.html>`_ topic
-in the *PyAnsys developer's guide*. Ensure that you are thoroughly familiar
+in the `PyAnsys developer's guide`_. Ensure that you are thoroughly familiar
 with this guide before attempting to contribute to PyAnsys Sound.
 
 The following contribution information is specific to PyAnsys Sound.
@@ -69,8 +69,8 @@ Adhere to code style
 
 PyAnsys Sound follows the PEP8 standard as outlined in
 `PEP 8 <https://dev.docs.pyansys.com/coding-style/pep8.html>`_ in
-the *PyAnsys Developer's Guide* and implements style checking using
-`pre-commit <https://pre-commit.com/>`_.
+the `PyAnsys Developer's Guide`_
+and implements style checking using `pre-commit <https://pre-commit.com/>`_.
 
 To ensure your code meets minimum code styling standards, run these commands::
 
@@ -103,7 +103,9 @@ Follow these steps to create new examples to demonstrate PyAnsys Sound workflows
 #. Create a new branch of the PyAnsys Sound repository.
 #. Create a new Python script in the ``examples/`` folder.
 #. Follow the structure of existing examples in the ``examples/`` folder.
-   Ensure that your example includes descriptive comments to explain the workflow.
+   Ensure that your example includes descriptive comments to explain the workflow and that it is
+   properly formatted to follow the adopted code style. See :ref:`Adhere to code style` and
+   :doc:`examples/index` for reference.
 #. If your example requires specific input files, use local paths while developing the example.
    These local paths shall be replaced at a later step, once the example is complete.
 #. Make sure your example runs properly and produces the expected results.
@@ -157,7 +159,8 @@ Build documentation
 
 .. note::
     Building the documentation requires access to a DPF Server with the DPF Sound plugin. See
-    `prerequisites`_.
+    `prerequisites`_. It also requires the installation of the documentation-building dependencies.
+    See :ref:`Install_in_development_mode`.
 
 On Windows, build the documentation with this command:
 
@@ -179,7 +182,8 @@ Run tests
 
 .. note::
     Running the tests requires access to a DPF Server with the DPF Sound plugin. See
-    `prerequisites`_.
+    `prerequisites`_. It also requires the installation of the testing dependencies. See
+    :ref:`Install_in_development_mode`.
 
 To run all tests locally, use this commands:
 
@@ -217,16 +221,6 @@ To reach out to the PyAnsys project support team, email `pyansys.core@ansys.com 
 
 
 .. LINKS AND REFERENCES
-.. _black: https://github.com/psf/black
-.. _flake8: https://flake8.pycqa.org/en/latest/
-.. _isort: https://github.com/PyCQA/isort
 .. _PyAnsys Developer's guide: https://dev.docs.pyansys.com/
 .. _pre-commit: https://pre-commit.com/
-.. _pytest: https://docs.pytest.org/en/stable/
-.. _Sphinx: https://www.sphinx-doc.org/en/master/
-.. _pip: https://pypi.org/project/pip/
-.. _tox: https://tox.wiki/en/stable/
-.. _venv: https://docs.python.org/3/library/venv.html
-.. _Getting the DPF Server Docker image: https://sound.docs.pyansys.com/version/stable/getting_started.html#getting-the-dpf-server-docker-image
-.. _Examples: https://sound.docs.pyansys.com/version/stable/examples/index.html
-.. _Ansys DPF: https://dpf.docs.pyansys.com/version/stable/
+.. _virtual environment: https://docs.python.org/3/library/venv.html
