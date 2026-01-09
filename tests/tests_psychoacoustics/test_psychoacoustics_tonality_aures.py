@@ -70,7 +70,7 @@ def test_tonality_aures___str__():
     tonality = TonalityAures()
     assert str(tonality) == EXP_STR_DEFAULT
 
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -123,7 +123,7 @@ def test_tonality_aures_process():
     """Test TonalityAures process method."""
     tonality = TonalityAures()
 
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -147,7 +147,7 @@ def test_tonality_aures_get_output():
     """Test TonalityAures get_output method."""
     tonality = TonalityAures()
 
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -190,7 +190,7 @@ def test_tonality_aures_get_output_as_nparray():
     assert len(output[3]) == 0
     assert len(output[4]) == 0
 
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -226,7 +226,7 @@ def test_tonality_aures_get_tonality():
         output = tonality.get_tonality()
     assert np.isnan(output)
 
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -241,7 +241,7 @@ def test_tonality_aures_get_tonality_over_time():
     """Test TonalityAures get_tonality_over_time method."""
     tonality = TonalityAures()
 
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -257,7 +257,7 @@ def test_tonality_aures_get_tonal_weighting_over_time():
     """Test TonalityAures get_tonal_weighting_over_time method."""
     tonality = TonalityAures()
 
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -273,7 +273,7 @@ def test_tonality_aures_get_loudness_weighting_over_time():
     """Test TonalityAures get_loudness_weighting_over_time method."""
     tonality = TonalityAures()
 
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -289,7 +289,7 @@ def test_tonality_aures_get_time_scale():
     """Test TonalityAures get_time_scale method."""
     tonality = TonalityAures()
 
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -306,7 +306,7 @@ def test_tonality_aures_plot(mock_show):
     """Test TonalityAures plot method."""
     tonality = TonalityAures()
 
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 

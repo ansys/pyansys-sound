@@ -65,7 +65,7 @@ def test_fs_process():
         fs_computer.process()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_fluctuating_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -80,7 +80,7 @@ def test_fs_get_output():
     """Test the get_output method of the FluctuationStrength class."""
     fs_computer = FluctuationStrength()
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_fluctuating_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -111,7 +111,7 @@ def test_fs_get_fluctuation_strength():
     """Test the get_fluctuation_strength method of the FluctuationStrength class."""
     fs_computer = FluctuationStrength()
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_fluctuating_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -131,7 +131,7 @@ def test_fs_get_specific_fluctuation_strength():
     fs_computer = FluctuationStrength()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_fluctuating_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -155,7 +155,7 @@ def test_fs_get_bark_band_indexes():
     fs_computer = FluctuationStrength()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_fluctuating_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -178,7 +178,7 @@ def test_fs_get_bark_band_frequencies():
     fs_computer = FluctuationStrength()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_fluctuating_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -201,7 +201,7 @@ def test_fs_get_output_as_nparray():
     fs_computer = FluctuationStrength()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_fluctuating_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -242,7 +242,7 @@ def test_fs_plot(mock_show):
     fs_computer = FluctuationStrength()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_fluctuating_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_fluctuating_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 

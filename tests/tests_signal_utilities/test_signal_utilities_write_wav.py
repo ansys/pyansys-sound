@@ -56,7 +56,7 @@ def test_write_wav_process():
                     Use `WriteWav.signal`."
     )
 
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
 
     # Test process with FieldsContainer

@@ -51,7 +51,7 @@ def test_resample_instantiation():
 
 def test_resample_process():
     resampler = Resample()
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
 
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
@@ -71,7 +71,7 @@ def test_resample_process():
 
 
 def test_resample_get_output():
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
     resampler = Resample(signal=fc_signal, new_sampling_frequency=88100.0)
@@ -100,7 +100,7 @@ def test_resample_get_output():
 
 
 def test_resample_get_output_as_np_array():
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
     resampler = Resample(signal=fc_signal[0], new_sampling_frequency=88100.0)
@@ -154,7 +154,7 @@ def test_resample_set_get_sampling_frequency():
 
 @patch("matplotlib.pyplot.show")
 def test_resample_plot(mock_show):
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
     resampler = Resample(signal=fc_signal, new_sampling_frequency=88100.0)

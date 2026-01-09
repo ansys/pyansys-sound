@@ -46,7 +46,7 @@ def test_power_spectral_density_setters():
     """Test PowerSpectralDensity setters."""
     # Test setters.
     psd = PowerSpectralDensity(Field())
-    input_signal = LoadWav(pytest.data_path_flute_in_container)
+    input_signal = LoadWav(pytest.data_path_flute)
     psd.input_signal = input_signal
     assert psd.input_signal is not None
     assert psd.input_signal == input_signal
@@ -135,7 +135,7 @@ def test_power_spectral_density_noprocess():
 
 def test_power_spectral_density_process():
     # Test process with input signal.
-    op_load_wav = LoadWav(pytest.data_path_flute_in_container)
+    op_load_wav = LoadWav(pytest.data_path_flute)
     op_load_wav.process()
     input_signal = op_load_wav.get_output()[0]
 
@@ -148,7 +148,7 @@ def test_power_spectral_density_process():
 def test_power_spectral_density_get_output():
     """Test PowerSpectralDensity get_output."""
     # Test get_output.
-    op_load_wav = LoadWav(pytest.data_path_flute_in_container)
+    op_load_wav = LoadWav(pytest.data_path_flute)
     op_load_wav.process()
     input_signal = op_load_wav.get_output()[0]
 
@@ -177,7 +177,7 @@ def test_power_spectral_density_get_output():
 
 def test_power_spectral_density_get_output_as_nparray():
     """Test PowerSpectralDensity get_output_as_nparray."""
-    op_load_wav = LoadWav(pytest.data_path_flute_in_container)
+    op_load_wav = LoadWav(pytest.data_path_flute)
     op_load_wav.process()
     input_signal = op_load_wav.get_output()[0]
 
@@ -193,7 +193,7 @@ def test_power_spectral_density_get_output_as_nparray():
 def test_get_PSD_squared_linear():
     """Test PowerSpectralDensity get_PSD_squared_linear."""
     # Test get_PSD_as_square_linear.
-    op_load_wav = LoadWav(pytest.data_path_flute_in_container)
+    op_load_wav = LoadWav(pytest.data_path_flute)
     op_load_wav.process()
     input_signal = op_load_wav.get_output()[0]
 
@@ -222,7 +222,7 @@ def test_get_PSD_squared_linear():
 
 def test_get_PSD_squared_linear_as_nparray():
     """Test PowerSpectralDensity get_PSD_squared_linear_as_nparray."""
-    op_load_wav = LoadWav(pytest.data_path_flute_in_container)
+    op_load_wav = LoadWav(pytest.data_path_flute)
     op_load_wav.process()
     input_signal = op_load_wav.get_output()[0]
 
@@ -236,7 +236,7 @@ def test_get_PSD_squared_linear_as_nparray():
 
 
 def test_get_PSD_dB():
-    op_load_wav = LoadWav(pytest.data_path_flute_in_container)
+    op_load_wav = LoadWav(pytest.data_path_flute)
     op_load_wav.process()
     input_signal = op_load_wav.get_output()[0]
 
@@ -261,7 +261,7 @@ def test_get_PSD_dB():
 
 
 def test_get_PSD_dB_as_nparray():
-    op_load_wav = LoadWav(pytest.data_path_flute_in_container)
+    op_load_wav = LoadWav(pytest.data_path_flute)
     op_load_wav.process()
     input_signal = op_load_wav.get_output()[0]
 
@@ -279,7 +279,7 @@ def test_get_PSD_dB_as_nparray():
 
 
 def test_get_frequencies():
-    op_load_wav = LoadWav(pytest.data_path_flute_in_container)
+    op_load_wav = LoadWav(pytest.data_path_flute)
     op_load_wav.process()
     input_signal = op_load_wav.get_output()[0]
 
@@ -297,7 +297,7 @@ def test_get_frequencies():
 @patch("matplotlib.pyplot.show")
 def test_power_spectral_density_plot(mock_show):
     """Test PowerSpectralDensity plot."""
-    op_load_wav = LoadWav(pytest.data_path_flute_in_container)
+    op_load_wav = LoadWav(pytest.data_path_flute)
     op_load_wav.process()
     input_signal = op_load_wav.get_output()[0]
 

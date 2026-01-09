@@ -69,46 +69,32 @@ def pytest_configure(config):
 
     ## Construct the paths of the different test files after uploading them on the server.
     # Audio samples
-    pytest.data_path_flute_in_container = get_test_file_path("flute.wav", base_dir, server=server)
-    pytest.data_path_flute_int8_in_container = get_test_file_path(
-        "flute_int8.wav", base_dir, server=server
-    )
-    pytest.data_path_flute_int24_in_container = get_test_file_path(
-        "flute_int24.wav", base_dir, server=server
-    )
-    pytest.data_path_flute_int32_in_container = get_test_file_path(
-        "flute_int32.wav", base_dir, server=server
-    )
-    pytest.data_path_flute_float32_in_container = get_test_file_path(
+    pytest.data_path_flute = get_test_file_path("flute.wav", base_dir, server=server)
+    pytest.data_path_flute_int8 = get_test_file_path("flute_int8.wav", base_dir, server=server)
+    pytest.data_path_flute_int24 = get_test_file_path("flute_int24.wav", base_dir, server=server)
+    pytest.data_path_flute_int32 = get_test_file_path("flute_int32.wav", base_dir, server=server)
+    pytest.data_path_flute_float32 = get_test_file_path(
         "flute_float32.wav", base_dir, server=server
     )
-    pytest.data_path_flute_nonUnitaryCalib_in_container = get_test_file_path(
+    pytest.data_path_flute_nonUnitaryCalib = get_test_file_path(
         "flute_nonUnitaryCalib.wav", base_dir, server=server
     )
-    pytest.data_path_flute_nonUnitaryCalib_as_txt_in_container = get_test_file_path(
+    pytest.data_path_flute_nonUnitaryCalib_as_txt = get_test_file_path(
         "flute_nonUnitaryCalib_as_text_2024R2_20241125.txt",
         base_dir,
         server=server,
     )
-    pytest.data_path_sharp_noise_in_container = get_test_file_path(
-        "sharp_noise.wav", base_dir, server=server
-    )
-    pytest.data_path_sharper_noise_in_container = get_test_file_path(
+    pytest.data_path_sharp_noise = get_test_file_path("sharp_noise.wav", base_dir, server=server)
+    pytest.data_path_sharper_noise = get_test_file_path(
         "sharper_noise.wav", base_dir, server=server
     )
-    pytest.data_path_rough_noise_in_container = get_test_file_path(
-        "rough_noise.wav", base_dir, server=server
-    )
-    pytest.data_path_rough_tone_in_container = get_test_file_path(
-        "rough_tone.wav", base_dir, server=server
-    )
-    pytest.data_path_fluctuating_noise_in_container = get_test_file_path(
+    pytest.data_path_rough_noise = get_test_file_path("rough_noise.wav", base_dir, server=server)
+    pytest.data_path_rough_tone = get_test_file_path("rough_tone.wav", base_dir, server=server)
+    pytest.data_path_fluctuating_noise = get_test_file_path(
         "fluctuating_noise.wav", base_dir, server=server
     )
-    pytest.data_path_white_noise_in_container = get_test_file_path(
-        "white_noise.wav", base_dir, server=server
-    )
-    pytest.data_path_aircraft_nonUnitaryCalib_in_container = get_test_file_path(
+    pytest.data_path_white_noise = get_test_file_path("white_noise.wav", base_dir, server=server)
+    pytest.data_path_aircraft_nonUnitaryCalib = get_test_file_path(
         "Aircraft-App2_nonUnitaryCalib.wav", base_dir, server=server
     )
     pytest.data_path_Acceleration_stereo_nonUnitaryCalib = get_test_file_path(
@@ -116,7 +102,7 @@ def pytest_configure(config):
         base_dir,
         server=server,
     )
-    pytest.data_path_accel_with_rpm_in_container = get_test_file_path(
+    pytest.data_path_accel_with_rpm = get_test_file_path(
         "accel_with_rpm.wav", base_dir, server=server
     )
     pytest.data_path_Acceleration_with_Tacho_nonUnitaryCalib = get_test_file_path(
@@ -126,78 +112,70 @@ def pytest_configure(config):
     )
 
     # RPM profiles
-    pytest.data_path_rpm_profile_as_wav_in_container = get_test_file_path(
+    pytest.data_path_rpm_profile_as_wav = get_test_file_path(
         "RPM_profile_2024R2_20241126.wav", base_dir, server=server
     )
-    pytest.data_path_rpm_profile_as_txt_in_container = get_test_file_path(
+    pytest.data_path_rpm_profile_as_txt = get_test_file_path(
         "RPM_profile_2024R2_20241126.txt", base_dir, server=server
     )
 
     # Sound power level projects
-    pytest.data_path_swl_project_file_in_container = get_test_file_path(
+    pytest.data_path_swl_project_file = get_test_file_path(
         "SoundPowerLevelProject_hemisphere_2025R1_20243008.spw",
         base_dir,
         server=server,
     )
-    pytest.data_path_swl_project_file_with_calibration_in_container = get_test_file_path(
+    pytest.data_path_swl_project_file_with_calibration = get_test_file_path(
         "SoundPowerLevelProject_hemisphere_signalsWithCalibration_2025R1_20240919.spw",
         base_dir,
         server=server,
     )
 
     # Sound composer files (including spectrum, harmonics, etc. data files)
-    pytest.data_path_sound_composer_spectrum_source_in_container = get_test_file_path(
+    pytest.data_path_sound_composer_spectrum_source = get_test_file_path(
         "AnsysSound_Spectrum_v3_-_nominal_-_dBSPLperHz_2024R2_20241121.txt",
         base_dir,
         server=server,
     )
-    pytest.data_path_sound_composer_spectrum_v4_dBA_source_in_container = get_test_file_path(
+    pytest.data_path_sound_composer_spectrum_v4_dBA_source = get_test_file_path(
         "AnsysSound Spectrum v4 - nominal - dBA_2026R1_20250829.txt",
         base_dir,
         server=server,
     )
-    pytest.data_path_sound_composer_spectrum_v4_dBAPerHz_source_in_container = get_test_file_path(
+    pytest.data_path_sound_composer_spectrum_v4_dBAPerHz_source = get_test_file_path(
         "AnsysSound Spectrum v4 - nominal - dBAPerHz_2026R1_20250829.txt",
         base_dir,
         server=server,
     )
-    pytest.data_path_sound_composer_harmonics_source_2p_in_container = get_test_file_path(
+    pytest.data_path_sound_composer_harmonics_source_2p = get_test_file_path(
         "AnsysSound_Orders_MultipleParameters dBSPL_2024R2_20241205.txt",
         base_dir,
         server=server,
     )
-    pytest.data_path_sound_composer_harmonics_source_2p_many_values_in_container = (
-        get_test_file_path(
-            "AnsysSound_Orders_MultipleParameters dBSPL_many_values_2024R2_20241205.txt",
-            base_dir,
-            server=server,
-        )
+    pytest.data_path_sound_composer_harmonics_source_2p_many_values = get_test_file_path(
+        "AnsysSound_Orders_MultipleParameters dBSPL_many_values_2024R2_20241205.txt",
+        base_dir,
+        server=server,
     )
-    pytest.data_path_sound_composer_harmonics_source_in_container = get_test_file_path(
+    pytest.data_path_sound_composer_harmonics_source = get_test_file_path(
         "AnsysSound_Orders dBSPL v1_2024R2_20241203.txt", base_dir, server=server
     )
-    pytest.data_path_sound_composer_harmonics_source_10rpm_40orders_in_container = (
-        get_test_file_path(
-            "AnsysSound_Orders dBSPL v1_10_rpm_values_40_orders_2024R2_20241203.txt",
-            base_dir,
-            server=server,
-        )
+    pytest.data_path_sound_composer_harmonics_source_10rpm_40orders = get_test_file_path(
+        "AnsysSound_Orders dBSPL v1_10_rpm_values_40_orders_2024R2_20241203.txt",
+        base_dir,
+        server=server,
     )
-    pytest.data_path_sound_composer_harmonics_source_2p_inverted_controls_in_container = (
-        get_test_file_path(
-            "AnsysSound_Orders_MultipleParameters dBSPL - InvertedContols_2024R2_20241205.txt",
-            base_dir,
-            server=server,
-        )
+    pytest.data_path_sound_composer_harmonics_source_2p_inverted_controls = get_test_file_path(
+        "AnsysSound_Orders_MultipleParameters dBSPL - InvertedContols_2024R2_20241205.txt",
+        base_dir,
+        server=server,
     )
-    pytest.data_path_sound_composer_harmonics_source_2p_from_accel_in_container = (
-        get_test_file_path(
-            "AnsysSound_Orders_MultipleParameters_FromAccelWithTacho_2024R2_20241205.txt",
-            base_dir,
-            server=server,
-        )
+    pytest.data_path_sound_composer_harmonics_source_2p_from_accel = get_test_file_path(
+        "AnsysSound_Orders_MultipleParameters_FromAccelWithTacho_2024R2_20241205.txt",
+        base_dir,
+        server=server,
     )
-    pytest.data_path_sound_composer_harmonics_source_Pa_in_container = get_test_file_path(
+    pytest.data_path_sound_composer_harmonics_source_Pa = get_test_file_path(
         "AnsysSound_Orders Pa v1_2024R2_20241203.txt", base_dir, server=server
     )
     pytest.data_path_sound_composer_harmonics_source_order_vs_freq_db_spl = get_test_file_path(
@@ -216,31 +194,31 @@ def pytest_configure(config):
             server=server,
         )
     )
-    pytest.data_path_sound_composer_harmonics_source_wrong_type_in_container = get_test_file_path(
+    pytest.data_path_sound_composer_harmonics_source_wrong_type = get_test_file_path(
         "AnsysSound_Orders V2_2024R2_20241203.txt", base_dir, server=server
     )
-    pytest.data_path_sound_composer_harmonics_source_xml_in_container = get_test_file_path(
+    pytest.data_path_sound_composer_harmonics_source_xml = get_test_file_path(
         "VRX_Waterfall_2024R2_20241203.xml", base_dir, server=server
     )
-    pytest.data_path_sound_composer_bbn_source_in_container = get_test_file_path(
+    pytest.data_path_sound_composer_bbn_source = get_test_file_path(
         "AnsysSound_BBN dBSPL OCTAVE Constants.txt", base_dir, server=server
     )
-    pytest.data_path_sound_composer_bbn_source_40_values_in_container = get_test_file_path(
+    pytest.data_path_sound_composer_bbn_source_40_values = get_test_file_path(
         "AnsysSound_BBN dBSPLperHz NARROWBAND v2_40values_2024R2_20241128.txt",
         base_dir,
         server=server,
     )
-    pytest.data_path_sound_composer_bbn_source_2p_in_container = get_test_file_path(
+    pytest.data_path_sound_composer_bbn_source_2p = get_test_file_path(
         "AnsysSound_BBN_MultipleParameters Pa2PerHz Narrowband v2_2024R2_20240418.txt",
         base_dir,
         server=server,
     )
-    pytest.data_path_sound_composer_bbn_source_2p_octave_in_container = get_test_file_path(
+    pytest.data_path_sound_composer_bbn_source_2p_octave = get_test_file_path(
         "AnsysSound_BBN_MultipleParameters dBSPL Octave v2_2024R2_20240418.txt",
         base_dir,
         server=server,
     )
-    pytest.data_path_sound_composer_project_in_container = get_test_file_path(
+    pytest.data_path_sound_composer_project = get_test_file_path(
         "20250130_SoundComposerProjectForDpfSoundTesting_valid.scn",
         base_dir,
         server=server,
@@ -262,12 +240,12 @@ def pytest_configure(config):
 
     # Define the output folder where the output files are saved.
     if server.has_client():
-        # Remote server => the output folder does not exist within the temporary folder used for
-        # input file upload => we use the same folder path for input and output
-        pytest.output_folder = os.path.dirname(pytest.data_path_flute_in_container)
+        # Remote server => the "output" folder does not exist within the temporary folder where
+        # input data are uploaded => we use the same folder path for input and output
+        pytest.output_folder = os.path.dirname(pytest.data_path_flute)
     else:
         # Local server => we use the repository folder structure where the output folder exists
         pytest.output_folder = os.path.join(
-            os.path.dirname(pytest.data_path_flute_in_container),
+            os.path.dirname(pytest.data_path_flute),
             "output",
         )
