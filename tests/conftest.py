@@ -260,8 +260,14 @@ def pytest_configure(config):
     # `open()` to read this file and not a DPF operator
     pytest.data_path_flute_psd_locally = os.path.join(base_dir, "flute_psd.txt")
 
-    # The output folder is the temporary folder in the server where the output files are saved.
-    pytest.output_folder = os.path.join(
-        os.path.dirname(pytest.data_path_flute_in_container),
-        "output",
-    )
+    # Define the output folder where the output files are saved.
+    if server.has_client():
+        # Remote server => the output folder does not exist within the temporary folder used for
+        # input file upload => we use the same folder path for input and output
+        pytest.output_folder = os.path.dirname(pytest.data_path_flute_in_container)
+    else:
+        # Local server => we use the repository folder structure where the output folder exists
+        pytest.output_folder = os.path.join(
+            os.path.dirname(pytest.data_path_flute_in_container),
+            "output",
+        )
