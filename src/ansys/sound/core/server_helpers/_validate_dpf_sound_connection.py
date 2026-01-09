@@ -22,8 +22,9 @@
 
 """Test if a DPF server with DPF Sound plugin is available."""
 
+from ansys.dpf.core import Operator
+
 from ansys.sound.core.server_helpers import connect_to_or_start_server
-from ansys.sound.core.signal_utilities import LoadWav
 
 
 def validate_dpf_sound_connection(port=None) -> None:
@@ -48,5 +49,5 @@ def validate_dpf_sound_connection(port=None) -> None:
     >>> validate_dpf_sound_connection(port=6780)
     """
     connect_to_or_start_server(port=port)
-    LoadWav()
+    Operator("load_wav_sas")
     print("DPF Server with DPF Sound plugin is available and running.")
