@@ -34,8 +34,8 @@ Follow these steps to install PyAnsys Sound in development mode:
 
    .. code:: bash
 
-       # Create a virtual environment.
-       python -m venv .venv
+      # Create a virtual environment.
+      python -m venv .venv
 
       # Activate it in a POSIX system.
       source .venv/bin/activate
@@ -82,7 +82,7 @@ You can also install this as a pre-commit hook by running this command::
 
   pre-commit install
 
-This will flag style check issues whenever attempting to commit changes::
+This flags style check issues whenever attempting to commit changes::
 
   $ pre-commit install
   $ git commit -am "added my cool feature"
@@ -147,7 +147,7 @@ Follow these steps to create new examples to demonstrate PyAnsys Sound workflows
 Build documentation
 -------------------
 
-.. vale off
+.. vale off  .. "dev" in the note below triggers a vale error in the documentation style check.
 
 .. note::
     To view the current development documentation, go to
