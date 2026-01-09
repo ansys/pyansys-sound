@@ -44,6 +44,24 @@ class SharpnessDIN45692OverTime(PsychoacousticsParent):
         step, the specific loudness calculated according the loudness model for time-varying sounds
         in the standard ISO 532-1. It is the loudness model of the class
         :class:`LoudnessISO532_1_TimeVarying`.
+
+    .. seealso::
+        :class:`SharpnessDIN45692`, :class:`SharpnessOverTime`,
+        :class:`LoudnessISO532_1_TimeVarying`
+
+    Examples
+    --------
+    Compute and display the sharpness of a signal according to the DIN 45692 standard, over time.
+
+    >>> from ansys.sound.core.psychoacoustics import SharpnessDIN45692OverTime
+    >>> sharpness = SharpnessDIN45692OverTime(signal=my_signal)
+    >>> sharpness.process()
+    >>> max_sharpness_value = sharpness.get_max_sharpness()
+    >>> sharpness.plot()
+
+    .. seealso::
+        :ref:`calculate_psychoacoustic_indicators`
+            Example demonstrating how to compute various psychoacoustic indicators.
     """
 
     def __init__(self, signal: Field = None, field_type: str = FIELD_FREE):

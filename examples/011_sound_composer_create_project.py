@@ -23,8 +23,8 @@
 """
 .. _sound_composer_create_project:
 
-Create and work with a Sound Composer project
----------------------------------------------
+Create a Sound Composer project
+-------------------------------
 
 The Sound Composer is a tool that allows you to generate the sound of a system by combining the
 sounds of its components, which we call sources here. Each source can be made of data coming from

@@ -50,7 +50,7 @@ def test_isolate_orders_instantiation():
 
 def test_isolate_orders_process():
     isolate_orders = IsolateOrders()
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
 
     fc = wav_loader.get_output()
@@ -91,7 +91,7 @@ def test_isolate_orders_process():
 
 
 def test_isolate_orders_get_output():
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
     signal = fc[0]
@@ -124,7 +124,7 @@ def test_isolate_orders_get_output():
 
 
 def test_isolate_orders_get_output_as_np_array():
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
     signal = fc[0]
@@ -242,7 +242,7 @@ def test_isolate_orders_set_get_width_selection():
 
 @patch("matplotlib.pyplot.show")
 def test_isolate_orders_plot(mock_show):
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
     signal = fc[0]

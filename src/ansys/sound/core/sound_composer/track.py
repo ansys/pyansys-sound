@@ -62,20 +62,44 @@ AnySourceType = Union[tuple(DICT_SOURCE_TYPE.values())]
 
 
 class Track(SoundComposerParent):
-    """Sound Composer's track class.
+    """Sound Composer track class.
 
     This class creates a track for the Sound Composer. A track is made of a source (including its
     source control) and an optional filter (which models the transfer from source to receiver).
 
     A track allows the generation of the sound corresponding to the source, optionally filtered
     with the associated filter.
+
+    .. seealso::
+        :class:`SoundComposer`, :class:`.Filter`, :class:`SourceSpectrum`,
+        :class:`SourceBroadbandNoise`, :class:`SourceBroadbandNoiseTwoParameters`,
+        :class:`SourceHarmonics`, :class:`SourceHarmonicsTwoParameters`, :class:`SourceAudio`
+
+    Examples
+    --------
+    Create a track with an audio source and a filter.
+
+    >>> from ansys.sound.core.sound_composer import Track
+    >>> track_filter = Filter(sampling_frequency=48000.0)
+    >>> track = Track(
+    ...     name="Sound Composer track",
+    ...     gain=-3.0,
+    ...     source=my_source,
+    ...     filter=my_filter
+    ... )
+
+    .. seealso::
+        :ref:`sound_composer_load_project`
+            Example demonstrating how to load and work with an existing Sound Composer project.
+        :ref:`sound_composer_create_project`
+            Example demonstrating how to create a Sound Composer project from scratch.
     """
 
     def __init__(
         self,
         name: str = "",
         gain: float = 0.0,
-        source: AnySourceType = None,
+        source: AnySourceType = None,  # pyright: ignore[reportInvalidTypeForm]
         filter: Filter = None,
     ):
         """Class instantiation takes the following parameters.
@@ -134,7 +158,7 @@ class Track(SoundComposerParent):
         self.__gain = value
 
     @property
-    def source(self) -> AnySourceType:
+    def source(self) -> AnySourceType:  # pyright: ignore[reportInvalidTypeForm]
         """Source object associated with the track.
 
         The source of the track is used to generate the corresponding signal. Its type can be
@@ -145,7 +169,7 @@ class Track(SoundComposerParent):
         return self.__source
 
     @source.setter
-    def source(self, obj: AnySourceType):
+    def source(self, obj: AnySourceType):  # pyright: ignore[reportInvalidTypeForm]
         """Set the source in the track."""
         if (obj is not None) and (not (isinstance(obj, AnySourceType))):
             raise PyAnsysSoundException(

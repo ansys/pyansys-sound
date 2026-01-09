@@ -35,7 +35,7 @@ def test_zero_pad_instantiation():
 
 def test_zero_pad_process():
     zero_pad = ZeroPad()
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
 
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
@@ -59,7 +59,7 @@ def test_zero_pad_process():
 
 
 def test_zero_pad_get_output():
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
     zero_pad = ZeroPad(signal=fc_signal, duration_zeros=12.0)
@@ -90,7 +90,7 @@ def test_zero_pad_get_output():
 
 
 def test_zero_pad_get_output_as_np_array():
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
     zero_pad = ZeroPad(signal=fc_signal[0], duration_zeros=12.0)

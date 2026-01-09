@@ -41,6 +41,24 @@ class TonalityDIN45681(PsychoacousticsParent):
 
     This class is used to compute the tonality (mean difference) and tonal adjustment of
     a signal according to the DIN 45681 standard.
+
+    .. seealso::
+        :class:`TonalityISOTS20065`, :class:`TonalityECMA418_2`, :class:`TonalityISO1996_2`,
+        :class:`TonalityISO1996_2_OverTime`, :class:`TonalityAures`
+
+    Examples
+    --------
+    Compute and display the tonality of a signal according to the DIN 45681 standard.
+
+    >>> from ansys.sound.core.psychoacoustics import TonalityDIN45681
+    >>> tonality = TonalityDIN45681(signal=my_signal)
+    >>> tonality.process()
+    >>> mean_difference = tonality.get_mean_difference()
+    >>> tonality.plot()
+
+    .. seealso::
+        :ref:`calculate_tonality_indicators`
+            Example demonstrating how to compute various tonality indicators.
     """
 
     def __init__(self, signal: Field = None, window_length: float = 3.0, overlap: float = 0.0):

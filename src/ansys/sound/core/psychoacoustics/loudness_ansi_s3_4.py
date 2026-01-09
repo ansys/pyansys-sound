@@ -36,7 +36,21 @@ ID_COMPUTE_LOUDNESS_ANSI_S3_4 = "compute_loudness_ansi_s3_4"
 class LoudnessANSI_S3_4(PsychoacousticsParent):
     """Computes ANSI S3.4-2007 loudness.
 
-    This class computes the loudness of a signal according to the ANSI S3.4-2007 standard.
+    This class computes the loudness of a signal according to the ANSI S3.4-2007 standard. The
+    scope of this standard is now covered by the ISO 532-2:2017 standard.
+
+    .. seealso::
+        :class:`LoudnessISO532_2`
+
+    Examples
+    --------
+    Compute the loudness of a signal in free field.
+
+    >>> from ansys.sound.core.psychoacoustics import LoudnessANSI_S3_4
+    >>> loudness = LoudnessANSI_S3_4(signal=my_signal, field_type="Free")
+    >>> loudness.process()
+    >>> loudness_value = loudness.get_loudness_sone()
+    >>> loudness_level_value = loudness.get_loudness_level_phon()
     """
 
     def __init__(self, signal: Field = None, field_type: str = FIELD_FREE):

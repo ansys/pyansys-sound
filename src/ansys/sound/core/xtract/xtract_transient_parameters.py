@@ -33,7 +33,22 @@ ID_UPPER_THRESHOLD = "upper_threshold"
 
 
 class XtractTransientParameters(XtractParent):
-    """Contains transient parameters for use in Xtract processing or signal denoising."""
+    """Store transient parameters for Xtract transient extraction.
+
+    .. seealso::
+        :class:`Xtract`, :class:`XtractTransient`
+
+    Examples
+    --------
+    Create a set of Xtract transient extraction parameters.
+
+    >>> from ansys.sound.core.xtract import XtractTransientParameters
+    >>> transient_parameters = XtractTransientParameters(lower_threshold=20.0, upper_threshold=80.0)
+
+    .. seealso::
+        :ref:`xtract_feature_example`
+            Example demonstrating how to use Xtract to extract the various components of a signal.
+    """
 
     def __init__(self, lower_threshold: float = 0.0, upper_threshold: float = 100.0):
         """Class instantiation takes the following parameters.

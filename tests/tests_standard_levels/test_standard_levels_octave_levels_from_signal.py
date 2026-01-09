@@ -131,7 +131,7 @@ def test_octave_levels_from_signal___str__():
     level_obj = OctaveLevelsFromSignal()
     assert str(level_obj) == EXP_STR_NOT_SET
 
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     signal = loader.get_output()[0]
     signal.name = "Name of the signal"
@@ -147,7 +147,7 @@ def test_octave_levels_from_signal___str__():
 
 def test_octave_levels_from_signal_process():
     """Test OctaveLevelsFromSignal process method."""
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     signal = loader.get_output()[0]
 
@@ -168,7 +168,7 @@ def test_octave_levels_from_signal_process_exceptions():
 
 def test_octave_levels_from_signal_get_output():
     """Test OctaveLevelsFromSignal get_output method."""
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     signal = loader.get_output()[0]
 
@@ -191,7 +191,7 @@ def test_octave_levels_from_signal_get_output_warnings():
 
 def test_octave_levels_from_signal_get_output_as_nparray():
     """Test OctaveLevelsFromSignal get_output_as_nparray method."""
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     signal = loader.get_output()[0]
 
@@ -216,7 +216,7 @@ def test_octave_levels_from_signal_get_output_as_nparray():
 
 def test_octave_levels_from_signal_get_band_levels():
     """Test OctaveLevelsFromSignal get_band_levels method."""
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     signal = loader.get_output()[0]
 
@@ -265,7 +265,7 @@ def test_octave_levels_from_signal_get_band_levels():
 
 def test_octave_levels_from_signal_get_frequencies():
     """Test OctaveLevelsFromSignal get_frequencies method."""
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     signal = loader.get_output()[0]
 
@@ -284,7 +284,7 @@ def test_octave_levels_from_signal_get_frequencies():
 @patch("matplotlib.pyplot.show")
 def test_octave_levels_from_signal_plot(mock_show):
     """Test OctaveLevelsFromSignal plot method."""
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     signal = loader.get_output()[0]
 

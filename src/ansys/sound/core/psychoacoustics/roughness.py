@@ -39,6 +39,23 @@ class Roughness(PsychoacousticsParent):
 
     Reference: Daniel and Weber, "Psychoacoustical roughness: implementation of an
     optimized model." Acta Acustica united with Acustica, 83, pp. 113-123 (1997).
+
+    .. seealso::
+        :class:`FluctuationStrength`
+
+    Examples
+    --------
+    Compute the roughness of a signal, and display the specific roughness and roughness over time.
+
+    >>> from ansys.sound.core.psychoacoustics import Roughness
+    >>> roughness = Roughness(signal=my_signal)
+    >>> roughness.process()
+    >>> roughness_value = roughness.get_roughness()
+    >>> roughness.plot()
+
+    .. seealso::
+        :ref:`calculate_psychoacoustic_indicators`
+            Example demonstrating how to compute various psychoacoustic indicators.
     """
 
     def __init__(self, signal: Field = None):

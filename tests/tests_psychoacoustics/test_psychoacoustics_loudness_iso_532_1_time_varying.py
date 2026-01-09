@@ -53,7 +53,7 @@ def test_loudness_iso_532_1_time_varying_process():
     )
 
     # get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -70,7 +70,7 @@ def test_loudness_iso_532_1_time_varying_get_output():
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -112,7 +112,7 @@ def test_loudness_iso_532_1_time_varying_get_output_as_nparray():
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -200,7 +200,7 @@ def test_loudness_iso_532_1_time_varying_get_loudness_vs_time_sone():
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -223,7 +223,7 @@ def test_loudness_iso_532_1_time_varying_get_loudness_vs_time_phon():
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -246,7 +246,7 @@ def test_loudness_iso_532_1_time_varying_get_Nmax_sone():
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -265,7 +265,7 @@ def test_loudness_iso_532_1_time_varying_get_N5():
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -284,7 +284,7 @@ def test_loudness_iso_532_1_time_varying_get_N10():
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -303,7 +303,7 @@ def test_loudness_iso_532_1_time_varying_get_Lmax_phon():
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -322,7 +322,7 @@ def test_loudness_iso_532_1_time_varying_get_L5():
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -341,7 +341,7 @@ def test_loudness_iso_532_1_time_varying_get_L10():
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -360,7 +360,7 @@ def test_loudness_iso_532_1_time_varying_get_time_scale():
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -385,7 +385,7 @@ def test_loudness_iso_532_1_time_varying_plot(mock_show):
     time_varying_loudness_computer = LoudnessISO532_1_TimeVarying()
 
     # Load a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 

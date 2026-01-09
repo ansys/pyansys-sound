@@ -44,6 +44,27 @@ class SourceHarmonics(SourceParent):
     The harmonics source data consists of a series of orders whose levels depend on RPM.
 
     The source control contains the RPM values over time.
+
+    .. seealso::
+        :class:`SoundComposer`, :class:`Track`, :class:`SourceControlTime`,
+        :class:`SourceHarmonicsTwoParameters`
+
+    Examples
+    --------
+    Create a harmonics source from a source data file and a source control, and display the
+    generated signal.
+
+    >>> from ansys.sound.core.sound_composer import SourceHarmonics
+    >>> harmonics_source = SourceHarmonics(
+    ...     file="path/to/source_data.txt",
+    ...     source_control=source_control_time
+    ... )
+    >>> harmonics_source.process(sampling_frequency=48000.0)
+    >>> harmonics_source.plot()
+
+    .. seealso::
+        :ref:`sound_composer_create_project`
+            Example demonstrating how to create a Sound Composer project from scratch.
     """
 
     def __init__(self, file: str = "", source_control: SourceControlTime = None):

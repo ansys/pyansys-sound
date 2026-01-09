@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import os
 from unittest.mock import patch
 
 from ansys.dpf.core import Field
@@ -67,9 +68,7 @@ def test_sound_composer_instantiation_no_arg():
 def test_sound_composer_instantiation_all_args():
     """Test SoundComposer instantiation with all arguments."""
     # Test instantiation.
-    sound_composer = SoundComposer(
-        project_path=pytest.data_path_sound_composer_project_in_container
-    )
+    sound_composer = SoundComposer(project_path=pytest.data_path_sound_composer_project)
 
     assert isinstance(sound_composer, SoundComposer)
     assert sound_composer.name == "Beethoven"
@@ -116,9 +115,7 @@ def test_sound_composer___str___not_set():
 
 def test_sound_composer___str___all_set():
     """Test SoundComposer __str__ method when all data are set."""
-    sound_composer = SoundComposer(
-        project_path=pytest.data_path_sound_composer_project_in_container
-    )
+    sound_composer = SoundComposer(project_path=pytest.data_path_sound_composer_project)
     assert str(sound_composer) == EXP_STR_ALL_SET
 
 
@@ -164,7 +161,7 @@ def test_sound_composer_add_track_exception():
 def test_sound_composer_load():
     """Test SoundComposer load method."""
     sound_composer = SoundComposer()
-    sound_composer.load(project_path=pytest.data_path_sound_composer_project_in_container)
+    sound_composer.load(project_path=pytest.data_path_sound_composer_project)
 
     assert isinstance(sound_composer, SoundComposer)
     assert sound_composer.name == "Beethoven"
@@ -205,10 +202,8 @@ def test_sound_composer_load():
 
 def test_sound_composer_save():
     """Test SoundComposer save method."""
-    sound_composer = SoundComposer(
-        project_path=pytest.data_path_sound_composer_project_in_container
-    )
-    path_to_save = pytest.temporary_folder + "/test_sound_composer_save.scn"
+    sound_composer = SoundComposer(project_path=pytest.data_path_sound_composer_project)
+    path_to_save = os.path.join(pytest.output_folder, "test_sound_composer_save.scn")
     sound_composer.name = "TestProjectName"
     sound_composer.save(project_path=path_to_save)
 
@@ -232,21 +227,23 @@ def test_sound_composer_save_load_warnings():
             "`SoundComposer.load\\(\\)`."
         ),
     ):
-        sound_composer.save(project_path=pytest.temporary_folder + "/test_sound_composer_save.scn")
+        sound_composer.save(
+            project_path=os.path.join(pytest.output_folder, "test_sound_composer_save.scn")
+        )
 
     with pytest.warns(
         PyAnsysSoundWarning,
         match="The project file `test_sound_composer_save.scn` does not contain any track.",
     ):
-        sound_composer.load(project_path=pytest.temporary_folder + "/test_sound_composer_save.scn")
+        sound_composer.load(
+            project_path=os.path.join(pytest.output_folder, "test_sound_composer_save.scn")
+        )
     assert len(sound_composer.tracks) == 0
 
 
 def test_sound_composer_process():
     """Test SoundComposer process method (resample needed)."""
-    sound_composer = SoundComposer(
-        project_path=pytest.data_path_sound_composer_project_in_container
-    )
+    sound_composer = SoundComposer(project_path=pytest.data_path_sound_composer_project)
     sound_composer.process()
     assert sound_composer._output is not None
 
@@ -267,9 +264,7 @@ def test_sound_composer_process_warning():
 
 def test_sound_composer_get_output():
     """Test SoundComposer get_output method."""
-    sound_composer = SoundComposer(
-        project_path=pytest.data_path_sound_composer_project_in_container
-    )
+    sound_composer = SoundComposer(project_path=pytest.data_path_sound_composer_project)
     sound_composer.process()
     output = sound_composer.get_output()
     assert isinstance(output, Field)
@@ -320,9 +315,7 @@ def test_sound_composer_get_output_warning():
 
 def test_sound_composer_get_output_as_nparray():
     """Test SoundComposer get_output_as_nparray method."""
-    sound_composer = SoundComposer(
-        project_path=pytest.data_path_sound_composer_project_in_container
-    )
+    sound_composer = SoundComposer(project_path=pytest.data_path_sound_composer_project)
     sound_composer.process()
     output = sound_composer.get_output_as_nparray()
     assert isinstance(output, np.ndarray)
@@ -342,9 +335,7 @@ def test_sound_composer_get_output_as_nparray_warning():
 @patch("matplotlib.pyplot.show")
 def test_sound_composer_plot(mock_show):
     """Test SoundComposer plot method."""
-    sound_composer = SoundComposer(
-        project_path=pytest.data_path_sound_composer_project_in_container
-    )
+    sound_composer = SoundComposer(project_path=pytest.data_path_sound_composer_project)
     sound_composer.process()
     sound_composer.plot()
 

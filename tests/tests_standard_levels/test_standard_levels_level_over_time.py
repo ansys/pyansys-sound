@@ -129,7 +129,7 @@ def test_level_over_time___str__():
     level_obj = LevelOverTime()
     assert str(level_obj) == EXP_STR_NOT_SET
 
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     f_signal = loader.get_output()[0]
 
@@ -178,7 +178,7 @@ def test_level_over_time_set_custom_parameters_exceptions():
 
 def test_level_over_time_process():
     """Test LevelOverTime process method."""
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     f_signal = loader.get_output()[0]
 
@@ -199,7 +199,7 @@ def test_level_over_time_process_exceptions():
 
 def test_level_over_time_get_output():
     """Test LevelOverTime get_output method."""
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     f_signal = loader.get_output()[0]
 
@@ -224,7 +224,7 @@ def test_level_over_time_get_output_warnings():
 
 def test_level_over_time_get_output_as_nparray():
     """Test LevelOverTime get_output_as_nparray method."""
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     f_signal = loader.get_output()[0]
 
@@ -248,7 +248,7 @@ def test_level_over_time_get_output_as_nparray():
 
 def test_level_over_time_get_level_max():
     """Test LevelOverTime get_level_max method."""
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     f_signal = loader.get_output()[0]
 
@@ -295,7 +295,7 @@ def test_level_over_time_get_level_max():
 
 def test_level_over_time_get_level_over_time():
     """Test LevelOverTime get_level_over_time method."""
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     f_signal = loader.get_output()[0]
 
@@ -308,7 +308,7 @@ def test_level_over_time_get_level_over_time():
 
 def test_level_over_time_get_time_scale():
     """Test LevelOverTime get_time_scale method."""
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     f_signal = loader.get_output()[0]
 
@@ -322,7 +322,7 @@ def test_level_over_time_get_time_scale():
 @patch("matplotlib.pyplot.show")
 def test_level_over_time_plot(mock_show):
     """Test LevelOverTime plot method."""
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     f_signal = loader.get_output()[0]
 
@@ -349,7 +349,7 @@ def test_level_over_time_plot(mock_show):
 
 def test_level_over_time_plot_exceptions():
     """Test LevelOverTime plot method exceptions."""
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     f_signal = loader.get_output()[0]
 

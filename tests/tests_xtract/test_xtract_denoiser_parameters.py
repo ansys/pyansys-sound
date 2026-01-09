@@ -68,7 +68,7 @@ def test_xtract_denoiser_parameters_generate_noise_psd_from_white_noise_level():
 
 
 def test_xtract_denoiser_parameters_generate_noise_psd_from_automatic_estimation():
-    wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_white_noise)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
     xtract_denoiser_parameters = XtractDenoiserParameters()
@@ -87,7 +87,7 @@ def test_xtract_denoiser_parameters_generate_noise_psd_from_automatic_estimation
 
 
 def test_xtract_denoiser_parameters_generate_noise_psd_from_noise_samples():
-    wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_white_noise)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
     xtract_denoiser_parameters = XtractDenoiserParameters()

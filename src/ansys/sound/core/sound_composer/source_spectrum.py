@@ -46,6 +46,22 @@ class SourceSpectrum(SourceParent):
     specified in unit^2/Hz (for example Pa^2/Hz).
 
     The source control contains the duration of the sound and the generation method to use.
+
+    .. seealso::
+        :class:`SoundComposer`, :class:`Track`, :class:`SourceControlSpectrum`
+
+    Examples
+    --------
+    Create a spectrum source from a source data file and a source control, and display the
+    generated signal.
+
+    >>> from ansys.sound.core.sound_composer import SourceSpectrum
+    >>> spectrum_source = SourceSpectrum(
+    ...     file="path/to/source_data.txt",
+    ...     source_control=source_control_spectrum
+    ... )
+    >>> spectrum_source.process(sampling_frequency=48000.0)
+    >>> spectrum_source.plot()
     """
 
     def __init__(self, file_source: str = "", source_control: SourceControlSpectrum = None):

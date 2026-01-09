@@ -35,7 +35,17 @@ from .._pyansys_sound import (
 
 
 class ZeroPad(SignalUtilitiesParent):
-    """Adds zeros to the end of a signal."""
+    """Add zeros to the end of a signal.
+
+    Examples
+    --------
+    Add 1 second worth of zeros to the end of a signal.
+
+    >>> from ansys.sound.core.signal_utilities import ZeroPad
+    >>> zero_pad = ZeroPad(signal=my_signal, duration_zeros=1.0)
+    >>> zero_pad.process()
+    >>> zero_padded_signal = zero_pad.get_output()
+    """
 
     def __init__(self, signal: Field | FieldsContainer = None, duration_zeros: float = 0.0):
         """Class instantiation takes the following parameters.

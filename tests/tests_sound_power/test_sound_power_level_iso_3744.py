@@ -49,7 +49,7 @@ EXP_K1_FROM_PROJECT = 1.0
 EXP_K2_FROM_PROJECT = 2.0
 EXP_C1_FROM_PROJECT = 3.0
 EXP_C2_FROM_PROJECT = 4.0
-EXP_SIGNAL_LIST_FROM_PROJECT = [[0, "flute.wav"], [1, "flute.wav"]]
+EXP_SIGNAL_LIST_FROM_PROJECT = {0: "flute.wav", 1: "flute.wav"}
 EXP_LW = 103.73870086669922
 EXP_LWA = 102.26373291015625
 EXP_LW_OCT_5 = 98.7566909790039
@@ -152,7 +152,7 @@ def test_sound_power_level_iso_3744_get_all_signal_names():
     swl.add_microphone_signal(Field())
 
     names = swl.get_all_signal_names()
-    assert names == [[0, ""], [1, ""]]
+    assert names == {0: "", 1: ""}
 
 
 def test_sound_power_level_iso_3744_get_microphone_signal():
@@ -182,7 +182,7 @@ def test_sound_power_level_iso_3744_delete_microphone_signal():
     swl.add_microphone_signal(Field())
 
     swl.delete_microphone_signal(0)
-    assert swl.get_all_signal_names() == [[0, ""]]
+    assert swl.get_all_signal_names() == {0: ""}
 
 
 def test_sound_power_level_iso_3744_delete_microphone_signal_warning():
@@ -258,7 +258,7 @@ def test_sound_power_level_iso_3744_set_K2_from_room_properties_exception_alpha_
 def test_sound_power_level_iso_3744_load_project():
     """Test load_project method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(pytest.data_path_swl_project_file_in_container)
+    swl.load_project(pytest.data_path_swl_project_file)
 
     assert swl.surface_shape == EXP_SHAPE_FROM_PROJECT
     assert swl.surface_radius == pytest.approx(EXP_RADIUS_FROM_PROJECT)
@@ -275,7 +275,7 @@ def test_sound_power_level_iso_3744_load_project():
 def test_sound_power_level_iso_3744_process():
     """Test process method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(pytest.data_path_swl_project_file_in_container)
+    swl.load_project(pytest.data_path_swl_project_file)
     swl.process()
 
 
@@ -294,7 +294,7 @@ def test_sound_power_level_iso_3744_process_exception():
 def test_sound_power_level_iso_3744_get_output():
     """Test get_output method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(pytest.data_path_swl_project_file_in_container)
+    swl.load_project(pytest.data_path_swl_project_file)
     swl.process()
 
     output = swl.get_output()
@@ -317,7 +317,7 @@ def test_sound_power_level_iso_3744_get_output_unprocessed():
 def test_sound_power_level_iso_3744_get_output_as_nparray():
     """Test get_output_as_nparray method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(pytest.data_path_swl_project_file_in_container)
+    swl.load_project(pytest.data_path_swl_project_file)
     swl.process()
 
     Lw, LwA, Lw_oct, fc_oct, Lw_3, fc_3 = swl.get_output_as_nparray()
@@ -350,7 +350,7 @@ def test_sound_power_level_iso_3744_get_output_as_nparray_unprocessed():
 def test_sound_power_level_iso_3744_get_Lw():
     """Test get_Lw method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(pytest.data_path_swl_project_file_in_container)
+    swl.load_project(pytest.data_path_swl_project_file)
     swl.process()
 
     Lw = swl.get_Lw()
@@ -360,7 +360,7 @@ def test_sound_power_level_iso_3744_get_Lw():
 def test_sound_power_level_iso_3744_get_Lw_A():
     """Test get_Lw_A method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(pytest.data_path_swl_project_file_in_container)
+    swl.load_project(pytest.data_path_swl_project_file)
     swl.process()
 
     LwA = swl.get_Lw_A()
@@ -370,7 +370,7 @@ def test_sound_power_level_iso_3744_get_Lw_A():
 def test_sound_power_level_iso_3744_get_Lw_octave():
     """Test get_Lw_octave method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(pytest.data_path_swl_project_file_in_container)
+    swl.load_project(pytest.data_path_swl_project_file)
     swl.process()
 
     Lw_oct = swl.get_Lw_octave()
@@ -380,7 +380,7 @@ def test_sound_power_level_iso_3744_get_Lw_octave():
 def test_sound_power_level_iso_3744_get_octave_center_frequencies():
     """Test get_octave_center_frequencies method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(pytest.data_path_swl_project_file_in_container)
+    swl.load_project(pytest.data_path_swl_project_file)
     swl.process()
 
     fc_oct = swl.get_octave_center_frequencies()
@@ -390,7 +390,7 @@ def test_sound_power_level_iso_3744_get_octave_center_frequencies():
 def test_sound_power_level_iso_3744_get_Lw_thirdoctave():
     """Test get_Lw_thirdoctave method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(pytest.data_path_swl_project_file_in_container)
+    swl.load_project(pytest.data_path_swl_project_file)
     swl.process()
 
     Lw_3 = swl.get_Lw_thirdoctave()
@@ -400,7 +400,7 @@ def test_sound_power_level_iso_3744_get_Lw_thirdoctave():
 def test_sound_power_level_iso_3744_get_thirdoctave_center_frequencies():
     """Test get_thirdoctave_center_frequencies method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(pytest.data_path_swl_project_file_in_container)
+    swl.load_project(pytest.data_path_swl_project_file)
     swl.process()
 
     fc_3 = swl.get_thirdoctave_center_frequencies()
@@ -410,7 +410,7 @@ def test_sound_power_level_iso_3744_get_thirdoctave_center_frequencies():
 def test_sound_power_level_iso_3744_load_project_with_calibrations():
     """Test loading swl project created with signals with calibrations."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(pytest.data_path_swl_project_file_with_calibration_in_container)
+    swl.load_project(pytest.data_path_swl_project_file_with_calibration)
     swl.process()
 
     Lw, LwA, Lw_oct, fc_oct, Lw_3, fc_3 = swl.get_output_as_nparray()
@@ -426,7 +426,7 @@ def test_sound_power_level_iso_3744_load_project_with_calibrations():
 def test_sound_power_level_iso_3744_plot(mock_show):
     """Test plot method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(pytest.data_path_swl_project_file_in_container)
+    swl.load_project(pytest.data_path_swl_project_file)
     swl.process()
 
     swl.plot()
@@ -435,7 +435,7 @@ def test_sound_power_level_iso_3744_plot(mock_show):
 def test_sound_power_level_iso_3744_plot_exception():
     """Test plot method's exception."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(pytest.data_path_swl_project_file_in_container)
+    swl.load_project(pytest.data_path_swl_project_file)
 
     with pytest.raises(
         PyAnsysSoundException,
@@ -459,7 +459,7 @@ def test_sound_power_level_iso_3744___get_surface_area():
 def test_sound_power_level_iso_3744___str__():
     """Test __str__ method."""
     swl = SoundPowerLevelISO3744()
-    swl.load_project(pytest.data_path_swl_project_file_in_container)
+    swl.load_project(pytest.data_path_swl_project_file)
     swl.process()
 
     assert swl.__str__() == EXP_STR

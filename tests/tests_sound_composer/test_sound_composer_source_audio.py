@@ -47,7 +47,7 @@ def test_source_audio_instantiation_no_arg():
 def test_source_audio_instantiation_wav_file():
     """Test SourceAudio instantiation with file argument."""
     # Test instantiation.
-    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib)
     assert isinstance(source_audio, SourceAudio)
     assert source_audio.source_audio_data is not None
 
@@ -55,7 +55,7 @@ def test_source_audio_instantiation_wav_file():
 def test_source_audio_instantiation_txt_file():
     """Test SourceAudio instantiation with file argument."""
     # Test instantiation.
-    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_as_txt_in_container)
+    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_as_txt)
     assert isinstance(source_audio, SourceAudio)
     assert source_audio.source_audio_data is not None
 
@@ -68,13 +68,13 @@ def test_source_audio___str___not_set():
 
 def test_source_audio___str___all_set():
     """Test SourceAudio __str__ method when all data are set."""
-    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib)
     assert str(source_audio) == EXP_STR_ALL_SET
 
 
 def test_source_audio___str___empty_audio():
     """Test SourceAudio __str__ method when all data are set."""
-    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib)
     source_audio.source_audio_data.data = []
     source_audio.source_audio_data.time_freq_support.time_frequencies.data = []
     assert str(source_audio) == EXP_STR_EMPTY_AUDIO
@@ -103,7 +103,7 @@ def test_source_audio_propertiess_exceptions():
 def test_source_audio_load_from_wave_file():
     """Test SourceAudio load_source_audio_from_text method."""
     source_audio = SourceAudio()
-    source_audio.load_from_wave_file(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    source_audio.load_from_wave_file(pytest.data_path_flute_nonUnitaryCalib)
     assert isinstance(source_audio.source_audio_data, Field)
     assert source_audio.source_audio_data.data[17640] == pytest.approx(
         EXP_AUDIO_DATA17640, rel=1e-3
@@ -113,7 +113,7 @@ def test_source_audio_load_from_wave_file():
 def test_source_audio_load_from_text_file():
     """Test SourceAudio load_source_audio_from_text method."""
     source_audio = SourceAudio()
-    source_audio.load_from_text_file(pytest.data_path_flute_nonUnitaryCalib_as_txt_in_container)
+    source_audio.load_from_text_file(pytest.data_path_flute_nonUnitaryCalib_as_txt)
     assert isinstance(source_audio.source_audio_data, Field)
     assert source_audio.source_audio_data.data[17640] == pytest.approx(
         EXP_AUDIO_DATA17640, rel=1e-3
@@ -122,7 +122,7 @@ def test_source_audio_load_from_text_file():
 
 def test_source_audio_set_from_generic_data_containers():
     """Test SourceAudio set_from_generic_data_containers method."""
-    loader = LoadWav(path_to_wav=pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(path_to_wav=pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     f_data: Field = loader.get_output()[0]
 
@@ -149,7 +149,7 @@ def test_source_audio_get_as_generic_data_containers():
 
     # Source data is defined.
     source_audio.load_from_wave_file(
-        pytest.data_path_flute_nonUnitaryCalib_in_container,
+        pytest.data_path_flute_nonUnitaryCalib,
     )
     source_data, source_control_data = source_audio.get_as_generic_data_containers()
 
@@ -160,14 +160,14 @@ def test_source_audio_get_as_generic_data_containers():
 
 def test_source_audio_process_no_resample():
     """Test SourceAudio process method (no resample needed)."""
-    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib)
     source_audio.process()
     assert source_audio._output is not None
 
 
 def test_source_audio_process_resample():
     """Test SourceAudio process method (resample)."""
-    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib)
     source_audio.process(48000)
     assert source_audio._output is not None
 
@@ -195,7 +195,7 @@ def test_source_audio_process_exceptions():
 
 def test_source_audio_get_output():
     """Test SourceAudio get_output method."""
-    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib)
     source_audio.process(sampling_frequency=44100.0)
 
     output_signal = source_audio.get_output()
@@ -219,7 +219,7 @@ def test_source_audio_get_output_unprocessed():
 
 def test_source_audio_get_output_as_nparray():
     """Test SourceAudio get_output_as_nparray method."""
-    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib)
     source_audio.process(sampling_frequency=44100.0)
 
     output_signal = source_audio.get_output_as_nparray()
@@ -241,7 +241,7 @@ def test_source_audio_get_output_as_nparray_unprocessed():
 @patch("matplotlib.pyplot.show")
 def test_source_audio_plot(mock_show):
     """Test SourceAudio plot method."""
-    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib)
     source_audio.process()
     source_audio.plot()
 
@@ -249,7 +249,7 @@ def test_source_audio_plot(mock_show):
 @patch("matplotlib.pyplot.show")
 def test_source_audio_plot_no_name(mock_show):
     """Test SourceAudio plot method."""
-    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    source_audio = SourceAudio(pytest.data_path_flute_nonUnitaryCalib)
     source_audio.source_audio_data.name = ""
     source_audio.process()
     source_audio.plot()

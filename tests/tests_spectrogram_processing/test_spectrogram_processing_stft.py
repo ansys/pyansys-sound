@@ -60,7 +60,7 @@ def test_stft_instantiation():
 
 def test_stft_process():
     stft = Stft()
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
 
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
@@ -80,7 +80,7 @@ def test_stft_process():
 
 
 def test_stft_get_output():
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
     stft = Stft(signal=fc_signal)
@@ -103,7 +103,7 @@ def test_stft_get_output():
 
 
 def test_stft_get_output_as_np_array():
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
     stft = Stft(signal=fc_signal)
@@ -191,7 +191,7 @@ def test_stft_set_get_window_type():
 
 @patch("matplotlib.pyplot.show")
 def test_stft_plot(mock_show):
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
     stft = Stft(signal=fc_signal)

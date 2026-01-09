@@ -47,7 +47,7 @@ def test_spectral_centroid_process():
         spectral_centroid_computer.process()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -62,7 +62,7 @@ def test_spectral_centroid_get_output():
     spectral_centroid_computer = SpectralCentroid()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -89,7 +89,7 @@ def test_spectral_centroid_get_output():
 def test_spectral_centroid_get_spectral_centroid():
     spectral_centroid_computer = SpectralCentroid()
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -107,7 +107,7 @@ def test_spectral_centroid_get_spectral_centroid():
 def test_spectral_centroid_get_output_as_nparray():
     spectral_centroid_computer = SpectralCentroid()
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -140,7 +140,7 @@ def test_spectral_centroid_set_get_signal():
 def test_spectral_centroid_print():
     spectral_centroid_computer = SpectralCentroid()
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 

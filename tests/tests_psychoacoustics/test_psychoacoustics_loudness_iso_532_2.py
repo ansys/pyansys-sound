@@ -190,7 +190,7 @@ def test_loudness_iso_532_2___str__():
 
     assert loudness_computer.__str__() == EXP_STR_DEFAULT
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -206,7 +206,7 @@ def test_loudness_iso_532_2_process():
     """Test the process method of the LoudnessISO532_2 class."""
     loudness_computer = LoudnessISO532_2()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -231,7 +231,7 @@ def test_loudness_iso_532_2_get_output_diotic_case():
     """Test the get_output method of the LoudnessISO532_2 class, in the diotic case."""
     loudness_computer = LoudnessISO532_2()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -375,7 +375,7 @@ def test_loudness_iso_532_2_get_output_warning():
     """Test the get_output method's warning of the LoudnessISO532_2 class."""
     loudness_computer = LoudnessISO532_2()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -394,7 +394,7 @@ def test_loudness_iso_532_2_get_output_as_nparray():
     """Test the get_output_as_nparray method of the LoudnessISO532_2 class."""
     loudness_computer = LoudnessISO532_2()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     ERBn = wav_loader.get_output()
 
@@ -445,7 +445,7 @@ def test_loudness_iso_532_2_get_binaural_loudness_sone():
     """Test the get_binaural_loudness_sone method of the LoudnessISO532_2 class."""
     loudness_computer = LoudnessISO532_2()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -461,7 +461,7 @@ def test_loudness_iso_532_2_get_binaural_loudness_level_phon():
     """Test the get_binaural_loudness_level_phon method of the LoudnessISO532_2 class."""
     loudness_computer = LoudnessISO532_2()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -477,7 +477,7 @@ def test_loudness_iso_532_2_get_monaural_loudness_sone():
     """Test the get_monaural_loudness_sone method of the LoudnessISO532_2 class."""
     loudness_computer = LoudnessISO532_2()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -508,7 +508,7 @@ def test_loudness_iso_532_2_get_monaural_loudness_level_phon():
     """Test the get_monaural_loudness_level_phon method of the LoudnessISO532_2 class."""
     loudness_computer = LoudnessISO532_2()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -539,7 +539,7 @@ def test_loudness_iso_532_2_get_binaural_specific_loudness():
     """Test the get_binaural_specific_loudness method of the LoudnessISO532_2 class."""
     loudness_computer = LoudnessISO532_2()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -558,7 +558,7 @@ def test_loudness_iso_532_2_get_monaural_specific_loudness():
     """Test the get_specific_loudness_sone method of the LoudnessISO532_2 class."""
     loudness_computer = LoudnessISO532_2()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -597,7 +597,7 @@ def test_loudness_iso_532_2_get_erb_center_frequencies():
     """Test the get_erb_center_frequencies method of the LoudnessISO532_2 class."""
     loudness_computer = LoudnessISO532_2()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -616,7 +616,7 @@ def test_loudness_iso_532_2_get_erbn_numbers():
     """Test the get_erbn_numbers method of the LoudnessISO532_2 class."""
     loudness_computer = LoudnessISO532_2()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -636,7 +636,7 @@ def test_loudness_iso_532_2_plot(mock_show):
     """Test the plot method of the LoudnessISO532_2 class."""
     loudness_computer = LoudnessISO532_2()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 

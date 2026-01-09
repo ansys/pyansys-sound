@@ -56,7 +56,7 @@ def test_sharpness___str__():
     assert str(sharpness_computer) == EXP_STR_DEFAULT
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_sharp_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -81,7 +81,7 @@ def test_sharpness_process():
         sharpness_computer.process()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_sharp_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -98,7 +98,7 @@ def test_sharpness_get_output():
     sharpness_computer = Sharpness()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_sharp_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -128,7 +128,7 @@ def test_sharpness_get_output():
     assert sharpness == pytest.approx(EXP_SHARPNESS_1_DIFFUSE)
 
     # Test another signal
-    wav_loader.path_to_wav = pytest.data_path_sharper_noise_in_container
+    wav_loader.path_to_wav = pytest.data_path_sharper_noise
     wav_loader.process()
     fc = wav_loader.get_output()
     sharpness_computer.signal = fc[0]
@@ -152,7 +152,7 @@ def test_sharpness_get_sharpness():
     """Test the get_sharpness method of the Sharpness class."""
     sharpness_computer = Sharpness()
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_sharp_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -178,7 +178,7 @@ def test_sharpness_get_output_as_nparray():
     """Test the get_output_as_nparray method of the Sharpness class."""
     sharpness_computer = Sharpness()
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_sharp_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 

@@ -37,6 +37,18 @@ class CreateSignalFieldsContainer(SignalUtilitiesParent):
 
     This class creates a DPF fields container from a list, tuple, or array of signal fields. To
     create signal fields from signal data, use the class :class:`CreateSignalField`.
+
+    .. seealso::
+        :class:`CreateSignalField`
+
+    Examples
+    --------
+    Create a fields container from a list of signal fields.
+
+    >>> from ansys.sound.core.signal_utilities import CreateSignalFieldsContainer
+    >>> create_fields_container = CreateSignalFieldsContainer(fields=my_signal_fields)
+    >>> create_fields_container.process()
+    >>> signals_in_a_fields_container = create_fields_container.get_output()
     """
 
     def __init__(

@@ -66,4 +66,4 @@ COPY .\ansys C:\\ansys
 WORKDIR C:\\ansys\\dpf\\server_${DPF_PACKAGE_VERSION_NO_DOTS}\\aisol\\bin\\winx64\\
 
 # Define the entry point for the container, which, when the container is run, starts the DPF server.
-ENTRYPOINT ["cmd", "/S", "/C", ".\\Ans.Dpf.Grpc.bat --port 50052"]
+ENTRYPOINT ["cmd", "/S", "/C", ".\\Ans.Dpf.Grpc.bat --port 50052 --address 0.0.0.0"]

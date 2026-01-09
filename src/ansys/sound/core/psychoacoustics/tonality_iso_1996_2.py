@@ -44,6 +44,24 @@ class TonalityISO1996_2(PsychoacousticsParent):
 
     This class is used to compute the tonal audibility and tonal adjustment of a signal according
     to the annex C of the ISO 1996-2:2007 standard.
+
+    .. seealso::
+        :class:`TonalityISO1996_2_OverTime`, :class:`TonalityDIN45681`, :class:`TonalityISOTS20065`,
+        :class:`TonalityECMA418_2`, :class:`TonalityAures`
+
+    Examples
+    --------
+    Compute the tonality of a signal according to the 2007 version of the ISO 1996-2 standard,
+    annex C.
+
+    >>> from ansys.sound.core.psychoacoustics import TonalityISO1996_2
+    >>> tonality = TonalityISO1996_2(signal=my_signal)
+    >>> tonality.process()
+    >>> tonal_audibility = tonality.get_tonal_audibility()
+
+    .. seealso::
+        :ref:`calculate_tonality_indicators`
+            Example demonstrating how to compute various tonality indicators.
     """
 
     def __init__(

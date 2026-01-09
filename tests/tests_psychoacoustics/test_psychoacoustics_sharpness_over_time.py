@@ -73,7 +73,7 @@ def test_sharpness_over_time___str__():
     sharpness_obj = SharpnessOverTime()
     assert str(sharpness_obj) == EXP_STR_DEFAULT
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_sharp_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -86,7 +86,7 @@ def test_sharpness_over_time_properties():
     """Test the properties of the SharpnessOverTime class."""
     sharpness_obj = SharpnessOverTime()
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_sharp_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -115,7 +115,7 @@ def test_sharpness_over_time_process():
     """Test the process method of the SharpnessOverTime class."""
     sharpness_obj = SharpnessOverTime()
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_sharp_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -141,7 +141,7 @@ def test_sharpness_over_time_get_output():
     """Test the get_output method of the SharpnessOverTime class."""
     sharpness_obj = SharpnessOverTime()
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_sharp_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -193,7 +193,7 @@ def test_sharpness_over_time_get_output_as_nparray():
     assert len(sharpness_over_time) == 0
     assert len(time_scale) == 0
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_sharp_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -228,7 +228,7 @@ def test_sharpness_over_time_get_max_sharpness():
     """Test the get_max_sharpness method of the SharpnessOverTime class."""
     sharpness_obj = SharpnessOverTime()
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_sharp_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -251,7 +251,7 @@ def test_sharpness_over_time_get_sharpness_over_time():
     """Test the get_sharpness_over_time method of the SharpnessOverTime class."""
     sharpness_obj = SharpnessOverTime()
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_sharp_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -280,7 +280,7 @@ def test_sharpness_over_time_get_time_scale():
     """Test the get_time_scale method of the SharpnessOverTime class."""
     sharpness_obj = SharpnessOverTime()
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_sharp_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -299,7 +299,7 @@ def test_sharpness_over_time_plot(mock_show):
     """Test the plot method of the SharpnessOverTime class."""
     sharpness_obj = SharpnessOverTime()
 
-    wav_loader = LoadWav(pytest.data_path_sharp_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_sharp_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 

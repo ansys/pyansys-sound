@@ -35,7 +35,7 @@ def test_apply_gain_instantiation():
 
 def test_apply_gain_process():
     gain_applier = ApplyGain()
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
 
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
@@ -57,7 +57,7 @@ def test_apply_gain_process():
 
 
 def test_apply_gain_get_output():
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
     gain_applier = ApplyGain(signal=fc_signal, gain=12.0, gain_in_db=True)
@@ -85,7 +85,7 @@ def test_apply_gain_get_output():
 
 
 def test_apply_gain_get_output_as_np_array():
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
     gain_applier = ApplyGain(signal=fc_signal[0], gain=12.0, gain_in_db=True)

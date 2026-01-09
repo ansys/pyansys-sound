@@ -85,7 +85,7 @@ def test_tonality_iso_1996_2_over_time___str__():
     tonality = TonalityISO1996_2_OverTime()
     assert tonality.__str__() == EXP_STR_UNPROCESSED
 
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -157,7 +157,7 @@ def test_tonality_iso_1996_2_over_time_setters_exceptions():
 
 def test_tonality_iso_1996_2_over_time_process():
     """Test process method."""
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -178,7 +178,7 @@ def test_tonality_iso_1996_2_over_time_process_exception():
 
 def test_tonality_iso_1996_2_over_time_get_output():
     """Test get_output method."""
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -208,7 +208,7 @@ def test_tonality_iso_1996_2_over_time_get_output_unprocessed():
 
 def test_tonality_iso_1996_2_over_time_get_output_as_nparray():
     """Test get_output_as_nparray method."""
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -239,7 +239,7 @@ def test_tonality_iso_1996_2_over_time_get_output_as_nparray_unprocessed():
 
 def test_tonality_iso_1996_2_over_time_get_tonal_audibility_over_time():
     """Test get_tonal_audibility_over_time method."""
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -251,7 +251,7 @@ def test_tonality_iso_1996_2_over_time_get_tonal_audibility_over_time():
 
 def test_tonality_iso_1996_2_over_time_get_tonal_adjustment_over_time():
     """Test get_tonal_adjustment_over_time method."""
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -263,7 +263,7 @@ def test_tonality_iso_1996_2_over_time_get_tonal_adjustment_over_time():
 
 def test_tonality_iso_1996_2_over_time_get_time_scale():
     """Test get_time_scale method."""
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -275,7 +275,7 @@ def test_tonality_iso_1996_2_over_time_get_time_scale():
 
 def test_tonality_iso_1996_2_over_time_get_segment_count():
     """Test get_segment_count method."""
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -287,7 +287,7 @@ def test_tonality_iso_1996_2_over_time_get_segment_count():
 
 def test_tonality_iso_1996_2_over_time_get_segment_details():
     """Test get_segment_details method."""
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -305,7 +305,7 @@ def test_tonality_iso_1996_2_over_time_get_segment_details():
 
 def test_tonality_iso_1996_2_over_time_get_segment_details_exceptions():
     """Test get_segment_details method's exception."""
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -338,7 +338,7 @@ def test_tonality_iso_1996_2_over_time_get_segment_details_exceptions():
 @patch("matplotlib.pyplot.show")
 def test_tonality_iso_1996_2_over_time_plot(mock_show):
     """Test plot method."""
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -350,7 +350,7 @@ def test_tonality_iso_1996_2_over_time_plot(mock_show):
 
 def test_tonality_iso_1996_2_over_time_plot_exception():
     """Test plot method's exception."""
-    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_aircraft_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 

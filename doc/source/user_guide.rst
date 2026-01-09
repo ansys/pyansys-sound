@@ -1,17 +1,19 @@
+.. _ref_user_guide:
+
 ==========
 User guide
 ==========
 
-This section explains how to start a DPF server, load a signal from a WAV file, and perform operations
-on this signal.
+This section explains the basics of how to use PyAnsys Sound. Specifically, it shows how to start
+PyAnsys Sound, run a basic example consisting of loading a signal from a WAV file, and it explains
+the common methods available in all PyAnsys Sound classes.
 
-Start a DPF server
-------------------
+Start PyAnsys Sound
+-------------------
 
-You use the :func:`connect_to_or_start_server() <ansys.sound.core.server_helpers._connect_to_or_start_server.connect_to_or_start_server>`
-function to start either a remote or local DPF server, which is required to run PyAnsys Sound.
-
-You can start the server with this code:
+Use the :func:`connect_to_or_start_server() <ansys.sound.core.server_helpers._connect_to_or_start_server.connect_to_or_start_server>`
+function to either connect to a remote DPF Server or start a local DPF Server, which is required to
+run PyAnsys Sound.
 
 .. code:: python
 
@@ -20,48 +22,63 @@ You can start the server with this code:
     my_server = connect_to_or_start_server()
 
 If the ``ANSRV_DPF_SOUND_PORT`` environment variable is set, PyAnsys Sound
-attempts to connect to a server located in a Docker container. The default port is ``6780``.
+attempts to connect to a remote server (in a Docker container, for example). The default port is
+``6780``. You can also explicitly specify the port by passing the port number to the
+:func:`connect_to_or_start_server() <ansys.sound.core.server_helpers._connect_to_or_start_server.connect_to_or_start_server>`
+function.
 
-If this environment variable is not set, PyAnsys Sound tries to start a local server.
+.. code:: python
 
-For more information on local and remote DPF servers, see `Install DPF Server`_ in the PyDPF-Core documentation.
+    from ansys.sound.core.server_helpers import connect_to_or_start_server
 
-Load a signal
--------------
+    my_server = connect_to_or_start_server(port=6780)
 
-Most of the processing done by PyAnsys Sound relies on temporal sound signals that are saved as WAV files.
+Otherwise, PyAnsys Sound attempts to locate and start a local server, following the priority order
+specified in `Manage multiple DPF Server installations`_.
 
-To load a WAV file, you must use the :class:`LoadWav <ansys.sound.core.signal_utilities.LoadWav>` class.
-Once your signal is loaded, you can use all other PyAnsys Sound classes on this signal.
+For more information on local and remote DPF servers, see `DPF Server`_ in the `PyDPF-Core`_
+documentation.
+
+Basic PyAnsys Sound usage example
+---------------------------------
+
+In this basic example, you can load and plot a signal contained in a WAV file. Time-domain signals
+are the primary type of data used in PyAnsys Sound. These signals are typically stored in WAV files.
+PyAnsys Sound provides WAV file loading capabilities through the
+:class:`LoadWav <ansys.sound.core.signal_utilities.LoadWav>` class. Once the signal is loaded, you
+can use other PyAnsys Sound features to analyze and/or transform it.
 
 .. code:: python
 
     from ansys.sound.core.signal_utilities import LoadWav
 
-    # Load a WAV file and plot it
+    # Load a WAV file.
     wav_loader = LoadWav(r"C:\path\to\my\wav\file.wav)
     wav_loader.process()
 
-    # Obtain the output as a DPF fields container
-    fc_wav_signal = wav_loader.get_output()
+    # Get the signal data.
+    signal = wav_loader.get_output()
 
-    # Plot the signal
+    # Plot the signal.
     wav_loader.plot()
 
-For descriptions of all PyAnsys Sound classes and helpers, see :doc:`api/index`. These classes
-have four methods in common:
+For descriptions of all available PyAnsys Sound features, see :doc:`api/index`. Most features are
+implemented as classes that all share these four basic methods:
 
-- ``process()``: Performs the operation that the class was made for. This method must be called explicitly
-  every time an input parameter is changed.
-- ``plot()``: Plots the output of the class. Depending on the nature of the output, the plot might be different.
-- ``get_output()``: Gets the outputs as a DPF object (either a ``Field`` or a ``FieldsContainer`` object).
-- ``get_output_as_nparray()``: Gets the output as a NumPy array.
+- ``process()``: Performs the operation intended for this class. This method must be explicitly
+  called every time an input parameter is changed.
+- ``plot()``: Plots the output of the class. Depending on the nature of the output, the plot might
+  be different.
+- ``get_output()``: Gets the outputs as DPF objects (:class:`Field <ansys.dpf.core.field.Field>` or
+  :class:`FieldsContainer <ansys.dpf.core.fields_container.FieldsContainer>`, for example).
+- ``get_output_as_nparray()``: Gets the output as `NumPy arrays`_.
 
-A class might also have some additional methods.
+Usually, PyAnsys Sound classes also have additional class-specific methods.
 
-For comprehensive information on using PyAnsys Sound classes and helpers, see :doc:`examples/index`.
+You can also find relevant PyAnsys Sound workflow examples in :doc:`examples/index`.
 
 .. LINKS AND REFERENCES
-.. _Ansys DPF: https://dpf.docs.pyansys.com/version/stable/
-.. _Ansys Sound: https://www.ansys.com/sound
-.. _Install DPF Server: https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#install-dpf-server
+.. _PyDPF-Core: https://dpf.docs.pyansys.com/version/stable/
+.. _DPF Server: https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#
+.. _Manage multiple DPF Server installations: https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#manage-multiple-dpf-server-installations
+.. _NumPy arrays: https://numpy.org/doc/stable/reference/generated/numpy.array.html

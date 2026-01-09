@@ -36,7 +36,21 @@ from .._pyansys_sound import (
 
 
 class Resample(SignalUtilitiesParent):
-    """Resamples a signal."""
+    """Resample a signal.
+
+    Examples
+    --------
+    Resample a signal to a new sampling frequency.
+
+    >>> from ansys.sound.core.signal_utilities import Resample
+    >>> resample = Resample(signal=my_signal, new_sampling_frequency=48000.0)
+    >>> resample.process()
+    >>> resampled_signal = resample.get_output()
+
+    .. seealso::
+        :ref:`load_resample_amplify_write_wav_files_example`
+            Example demonstrating how to load, resample, amplify, and write WAV files.
+    """
 
     def __init__(
         self, signal: Field | FieldsContainer = None, new_sampling_frequency: float = 44100.0

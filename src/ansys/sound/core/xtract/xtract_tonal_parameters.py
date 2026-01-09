@@ -37,7 +37,29 @@ ID_FFT_SIZE = "fft_size"
 
 
 class XtractTonalParameters(XtractParent):
-    """Contains tonal parameters for use in Xtract processing or signal denoising."""
+    """Store tonal parameters for Xtract tonal extraction.
+
+    .. seealso::
+        :class:`Xtract`, :class:`XtractTonal`
+
+    Examples
+    --------
+    Create a set of Xtract tonal extraction parameters.
+
+    >>> from ansys.sound.core.xtract import XtractTonalParameters
+    >>> tonal_parameters = XtractTonalParameters(
+    ...     regularity=0.8,
+    ...     maximum_slope=500.0,
+    ...     minimum_duration=0.5,
+    ...     intertonal_gap=30.0,
+    ...     local_emergence=2.0,
+    ...     fft_size=4096,
+    ... )
+
+    .. seealso::
+        :ref:`xtract_feature_example`
+            Example demonstrating how to use Xtract to extract the various components of a signal.
+    """
 
     def __init__(
         self,

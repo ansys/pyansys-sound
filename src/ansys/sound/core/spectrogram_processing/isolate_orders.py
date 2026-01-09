@@ -37,9 +37,23 @@ from .._pyansys_sound import (
 
 
 class IsolateOrders(SpectrogramProcessingParent):
-    """Isolates the orders of a signal.
+    """Isolate the orders of a signal.
 
     This class isolates the order of a signal that has an associated RPM profile.
+
+    Examples
+    --------
+    Isolate orders 2 and 4 from a signal, and display the resulting signal.
+
+    >>> from ansys.sound.core.spectrogram_processing import IsolateOrders
+    >>> isolate_orders = IsolateOrders(signal=signal, rpm_profile=rpm_profile, orders=[2, 4])
+    >>> isolate_orders.process()
+    >>> isolated_orders_signal = isolate_orders.get_output()
+    >>> isolate_orders.plot()
+
+    .. seealso::
+        :ref:`isolate_orders_example`
+            Example demonstrating how to isolate orders.
     """
 
     def __init__(

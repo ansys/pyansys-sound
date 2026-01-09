@@ -347,7 +347,7 @@ def test_filter_design_FIR_from_FRF_file():
 
 def test_filter_process():
     """Test Filter process method."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
 
@@ -372,7 +372,7 @@ def test_filter_process_exceptions():
     ):
         filter.process()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
     filter.signal = fc_signal[0]
@@ -414,7 +414,7 @@ def test_filter_get_output():
         output = filter.get_output()
     assert output is None
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
 
@@ -438,7 +438,7 @@ def test_filter_get_output_as_nparray():
         output = filter.get_output_as_nparray()
     assert len(output) == 0
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
 
@@ -455,7 +455,7 @@ def test_filter_get_output_as_nparray():
 @patch("matplotlib.pyplot.show")
 def test_filter_plot(mock_show):
     """Test Filter plot method."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
 
@@ -466,7 +466,7 @@ def test_filter_plot(mock_show):
 
 def test_filter_plot_exception():
     """Test Filter plot method's exception."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
 

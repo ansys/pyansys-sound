@@ -33,7 +33,25 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Istft(SpectrogramProcessingParent):
-    """Computes the inverse short-time Fourier transform (ISTFT) of a signal."""
+    """Compute the inverse short-time Fourier transform (ISTFT) of a signal.
+
+    .. seealso::
+        :class:`Stft`
+
+    Examples
+    --------
+    Compute and display the signal resulting from the ISTFT.
+
+    >>> from ansys.sound.core.spectrogram_processing import Istft
+    >>> istft = Istft(stft=stft)
+    >>> istft.process()
+    >>> signal = istft.get_output()
+    >>> istft.plot()
+
+    .. seealso::
+        :ref:`compute_stft_example`
+            Example demonstrating how to compute the STFT and ISTFT.
+    """
 
     def __init__(self, stft: FieldsContainer = None):
         """Class instantiation takes the following parameters.

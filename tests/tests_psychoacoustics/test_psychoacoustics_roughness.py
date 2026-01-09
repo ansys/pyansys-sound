@@ -66,7 +66,7 @@ def test_roughness___str__():
     assert str(roughness_computer) == EXP_STR_DEFAULT
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_rough_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_rough_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -91,7 +91,7 @@ def test_roughness_process():
         roughness_computer.process()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_rough_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_rough_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -106,7 +106,7 @@ def test_roughness_get_output():
     """Test the get_output method of the Roughness class."""
     roughness_computer = Roughness()
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_rough_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_rough_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -140,7 +140,7 @@ def test_roughness_get_roughness():
     """Test the get_roughness method of the Roughness class."""
     roughness_computer = Roughness()
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_rough_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_rough_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -167,7 +167,7 @@ def test_roughness_get_specific_roughness():
     """Test the get_specific_roughness method of the Roughness class."""
     roughness_computer = Roughness()
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_rough_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_rough_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -197,7 +197,7 @@ def test_roughness_get_bark_band_indexes():
     """Test the get_bark_band_indexes method of the Roughness class."""
     roughness_computer = Roughness()
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_rough_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_rough_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -227,7 +227,7 @@ def test_roughness_get_bark_band_frequencies():
     """Test the get_bark_band_frequencies method of the Roughness class."""
     roughness_computer = Roughness()
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_rough_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_rough_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -249,7 +249,7 @@ def test_roughness_get_roughness_over_time():
     """Test the get_roughness_over_time method of the Roughness class."""
     roughness_computer = Roughness()
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_rough_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_rough_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -279,7 +279,7 @@ def test_roughness_get_time_scale():
     """Test the get_time_scale method of the Roughness class."""
     roughness_computer = Roughness()
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_rough_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_rough_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -301,7 +301,7 @@ def test_roughness_get_output_as_nparray():
     """Test the get_output_as_nparray method of the Roughness class."""
     roughness_computer = Roughness()
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_rough_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_rough_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -352,7 +352,7 @@ def test_roughness_plot(mock_show):
     """Test the plot method."""
     roughness_computer = Roughness()
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_rough_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_rough_noise)
     wav_loader.process()
     fc = wav_loader.get_output()
 

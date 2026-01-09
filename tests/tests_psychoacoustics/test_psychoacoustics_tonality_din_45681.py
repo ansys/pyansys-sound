@@ -88,7 +88,7 @@ def test_tonality_din45681_properties():
 
 def test_tonality_din45681___str__():
     """Test __str__ method."""
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -123,7 +123,7 @@ def test_tonality_din45681_setters_exceptions():
 
 def test_tonality_din45681_process():
     """Test process method."""
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -144,7 +144,7 @@ def test_tonality_din45681_process_exception():
 
 def test_tonality_din45681_get_output():
     """Test get_output method."""
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -169,7 +169,7 @@ def test_tonality_din45681_get_output_unprocessed():
 
 def test_tonality_din45681_get_output_as_nparray():
     """Test get_output_as_nparray method."""
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -208,7 +208,7 @@ def test_tonality_din45681_get_output_as_nparray_unprocessed():
 
 def test_tonality_din45681_get_mean_difference():
     """Test get_mean_difference method."""
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -221,7 +221,7 @@ def test_tonality_din45681_get_mean_difference():
 
 def test_tonality_din45681_get_uncertainty():
     """Test get_uncertainty method."""
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -234,7 +234,7 @@ def test_tonality_din45681_get_uncertainty():
 
 def test_tonality_din45681_get_tonal_adjustment():
     """Test get_tonal_adjustment method."""
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -247,7 +247,7 @@ def test_tonality_din45681_get_tonal_adjustment():
 
 def test_tonality_din45681_get_decisive_difference_over_time():
     """Test get_decisive_difference_over_time method."""
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -260,7 +260,7 @@ def test_tonality_din45681_get_decisive_difference_over_time():
 
 def test_tonality_din45681_get_uncertainty_over_time():
     """Test get_uncertainty_over_time method."""
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -273,7 +273,7 @@ def test_tonality_din45681_get_uncertainty_over_time():
 
 def test_tonality_din45681_get_tonal_adjustment_over_time():
     """Test get_tonal_adjustment_over_time method."""
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -286,7 +286,7 @@ def test_tonality_din45681_get_tonal_adjustment_over_time():
 
 def test_tonality_din45681_get_time_scale():
     """Test get_time_scale method."""
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -299,7 +299,7 @@ def test_tonality_din45681_get_time_scale():
 
 def test_tonality_din45681_get_spectrum_number():
     """Test get_spectrum_number method."""
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -312,7 +312,7 @@ def test_tonality_din45681_get_spectrum_number():
 
 def test_tonality_din45681_get_spectrum_details():
     """Test get_spectrum_details method."""
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -329,7 +329,7 @@ def test_tonality_din45681_get_spectrum_details():
 
 def test_tonality_din45681_get_tone_number():
     """Test get_tone_number method."""
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -342,7 +342,7 @@ def test_tonality_din45681_get_tone_number():
 
 def test_tonality_din45681_get_tone_details():
     """Test get_tone_details method."""
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -357,7 +357,7 @@ def test_tonality_din45681_get_tone_details():
 
 def test_tonality_din45681_get_tone_details_exception():
     """Test get_tone_details method's exception."""
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -374,7 +374,7 @@ def test_tonality_din45681_get_tone_details_exception():
 @patch("matplotlib.pyplot.show")
 def test_tonality_din45681_plot(mock_show):
     """Test plot method."""
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -386,7 +386,7 @@ def test_tonality_din45681_plot(mock_show):
 
 def test_tonality_din45681_plot_exception():
     """Test plot method's exception."""
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -401,7 +401,7 @@ def test_tonality_din45681_plot_exception():
 
 def test_tonality_din45681___check_spectrum_index():
     """Test __check_spectrum_index method."""
-    wav_loader = LoadWav(pytest.data_path_accel_with_rpm_in_container)
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
 

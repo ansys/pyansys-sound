@@ -67,7 +67,7 @@ def test_source_spectrum_instantiation_no_arg():
 def test_source_spectrum_instantiation_file_arg():
     """Test SourceSpectrum instantiation with file argument."""
     # Test instantiation.
-    source_spectrum = SourceSpectrum(pytest.data_path_sound_composer_spectrum_source_in_container)
+    source_spectrum = SourceSpectrum(pytest.data_path_sound_composer_spectrum_source)
     assert isinstance(source_spectrum, SourceSpectrum)
     assert source_spectrum.source_spectrum_data is not None
 
@@ -81,7 +81,7 @@ def test_source_spectrum___str___not_set():
 def test_source_spectrum___str___all_set():
     """Test SourceSpectrum __str__ method when all data are set."""
     source_spectrum = SourceSpectrum(
-        pytest.data_path_sound_composer_spectrum_source_in_container,
+        pytest.data_path_sound_composer_spectrum_source,
         SourceControlSpectrum(duration=1.0),
     )
     assert str(source_spectrum) == EXP_STR_ALL_SET
@@ -90,7 +90,7 @@ def test_source_spectrum___str___all_set():
 def test_source_spectrum___str___all_set_deltaf_not_applicable():
     """Test SourceSpectrum __str__ method when all data are set."""
     source_spectrum = SourceSpectrum(
-        pytest.data_path_sound_composer_spectrum_source_in_container,
+        pytest.data_path_sound_composer_spectrum_source,
         SourceControlSpectrum(duration=1.0),
     )
 
@@ -108,7 +108,7 @@ def test_source_spectrum_properties():
     assert isinstance(source_spectrum.source_control, SourceControlSpectrum)
 
     # Compute a signal's power spectral density to check source_spectrum_data property.
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     psd = PowerSpectralDensity(
         input_signal=wav_loader.get_output()[0],
@@ -142,7 +142,7 @@ def test_source_spectrum_properties_exceptions():
         source_spectrum.source_spectrum_data = "InvalidType"
 
     # Compute a signal's power spectral density to check source_spectrum_data property exception 2.
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     psd = PowerSpectralDensity(
         input_signal=wav_loader.get_output()[0],
@@ -183,9 +183,7 @@ def test_source_spectrum_is_source_control_valid():
 def test_source_spectrum_load_source():
     """Test SourceSpectrum load_source method."""
     source_spectrum = SourceSpectrum()
-    source_spectrum.load_source_spectrum(
-        pytest.data_path_sound_composer_spectrum_source_in_container
-    )
+    source_spectrum.load_source_spectrum(pytest.data_path_sound_composer_spectrum_source)
     assert isinstance(source_spectrum.source_spectrum_data, Field)
     assert source_spectrum.source_spectrum_data.data[3] == pytest.approx(EXP_SPECTRUM_DATA3)
 
@@ -197,13 +195,11 @@ def test_source_spectrum_load_source():
 def test_source_spectrum_load_source_with_v4():
     """Test SourceSpectrum load_source method with v4 AnsysSound_Spectrum files."""
     source_spectrum = SourceSpectrum()
-    source_spectrum.load_source_spectrum(
-        pytest.data_path_sound_composer_spectrum_v4_dBA_source_in_container
-    )
+    source_spectrum.load_source_spectrum(pytest.data_path_sound_composer_spectrum_v4_dBA_source)
     assert isinstance(source_spectrum.source_spectrum_data, Field)
     assert source_spectrum.source_spectrum_data.data[3] == pytest.approx(EXP_SPECTRUM_DATA3_DBA)
     source_spectrum.load_source_spectrum(
-        pytest.data_path_sound_composer_spectrum_v4_dBAPerHz_source_in_container
+        pytest.data_path_sound_composer_spectrum_v4_dBAPerHz_source
     )
     assert isinstance(source_spectrum.source_spectrum_data, Field)
     assert source_spectrum.source_spectrum_data.data[3] == pytest.approx(
@@ -214,7 +210,7 @@ def test_source_spectrum_load_source_with_v4():
 def test_source_spectrum_set_from_generic_data_containers():
     """Test SourceSpectrum set_from_generic_data_containers method."""
     op = Operator("sound_composer_load_source_spectrum")
-    op.connect(0, pytest.data_path_sound_composer_spectrum_source_in_container)
+    op.connect(0, pytest.data_path_sound_composer_spectrum_source)
     op.run()
     f_data: Field = op.get_output(0, "field")
 
@@ -236,9 +232,7 @@ def test_source_spectrum_set_from_generic_data_containers():
 def test_source_spectrum_get_as_generic_data_containers():
     """Test SourceSpectrum get_as_generic_data_containers method."""
     # Source control undefined => warning.
-    source_spectrum = SourceSpectrum(
-        file_source=pytest.data_path_sound_composer_spectrum_source_in_container
-    )
+    source_spectrum = SourceSpectrum(file_source=pytest.data_path_sound_composer_spectrum_source)
     with pytest.warns(
         PyAnsysSoundWarning,
         match=(
@@ -261,7 +255,7 @@ def test_source_spectrum_get_as_generic_data_containers():
 
     # Both source and source control are defined.
     source_spectrum.load_source_spectrum(
-        pytest.data_path_sound_composer_spectrum_source_in_container,
+        pytest.data_path_sound_composer_spectrum_source,
     )
     source_spectrum.source_control = SourceControlSpectrum(duration=1.0)
     source_data, source_control_data = source_spectrum.get_as_generic_data_containers()
@@ -280,7 +274,7 @@ def test_source_spectrum_get_as_generic_data_containers():
 def test_source_spectrum_process():
     """Test SourceSpectrum process method."""
     source_spectrum = SourceSpectrum(
-        pytest.data_path_sound_composer_spectrum_source_in_container,
+        pytest.data_path_sound_composer_spectrum_source,
         SourceControlSpectrum(duration=1.0),
     )
     source_spectrum.process()
@@ -290,7 +284,7 @@ def test_source_spectrum_process():
 def test_source_spectrum_process_exceptions():
     """Test SourceSpectrum process method exceptions."""
     # Test process method exception1 (missing control).
-    source_spectrum = SourceSpectrum(pytest.data_path_sound_composer_spectrum_source_in_container)
+    source_spectrum = SourceSpectrum(pytest.data_path_sound_composer_spectrum_source)
     with pytest.raises(
         PyAnsysSoundException,
         match=(
@@ -324,7 +318,7 @@ def test_source_spectrum_process_exceptions():
 def test_source_spectrum_get_output():
     """Test SourceSpectrum get_output method."""
     source_spectrum = SourceSpectrum(
-        pytest.data_path_sound_composer_spectrum_source_in_container,
+        pytest.data_path_sound_composer_spectrum_source,
         SourceControlSpectrum(duration=1.0),
     )
     source_spectrum.process(sampling_frequency=44100.0)
@@ -384,7 +378,7 @@ def test_source_spectrum_get_output_unprocessed():
 def test_source_spectrum_get_output_as_nparray():
     """Test SourceSpectrum get_output_as_nparray method."""
     source_spectrum = SourceSpectrum(
-        pytest.data_path_sound_composer_spectrum_source_in_container,
+        pytest.data_path_sound_composer_spectrum_source,
         SourceControlSpectrum(duration=1.0),
     )
     source_spectrum.process(sampling_frequency=44100.0)
@@ -451,7 +445,7 @@ def test_source_spectrum_get_output_as_nparray_unprocessed():
 def test_source_spectrum_plot(mock_show):
     """Test SourceSpectrum plot method."""
     source_spectrum = SourceSpectrum(
-        pytest.data_path_sound_composer_spectrum_source_in_container,
+        pytest.data_path_sound_composer_spectrum_source,
         SourceControlSpectrum(duration=1.0),
     )
     source_spectrum.process()

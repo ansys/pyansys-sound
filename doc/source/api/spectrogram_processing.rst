@@ -1,7 +1,7 @@
 Spectrogram processing
 ----------------------
 
-This module provides functions to process signals in the time-frequency domain,
+This sub-package provides functions to process signals in the time-frequency domain,
 such as the calculation of the Short-Time Fourier Transform (STFT) and Inverse STFT (ISTFT).
 
 In the case of rotating machines, given the RPM information,

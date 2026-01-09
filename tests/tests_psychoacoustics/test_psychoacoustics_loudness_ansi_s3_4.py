@@ -53,7 +53,7 @@ def test_loudness_ansi_s3_4___str__():
     loudness_computer = LoudnessANSI_S3_4()
     assert str(loudness_computer) == EXP_STR_DEFAULT
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -67,7 +67,7 @@ def test_loudness_ansi_s3_4_properties():
     """Test properties of LoudnessANSI_S3_4 class."""
     loudness_computer = LoudnessANSI_S3_4()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -94,7 +94,7 @@ def test_loudness_ansi_s3_4_properties_exceptions():
 
 def test_loudness_ansi_s3_4_process():
     """Test process method of LoudnessANSI_S3_4 class."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -116,7 +116,7 @@ def test_loudness_ansi_s3_4_process_exceptions():
 
 def test_loudness_ansi_s3_4_get_output():
     """Test get_output method of LoudnessANSI_S3_4 class."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -156,7 +156,7 @@ def test_loudness_ansi_s3_4_get_output_as_nparray():
     assert len(loudness) == 0
     assert len(loudness_level) == 0
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -176,7 +176,7 @@ def test_loudness_ansi_s3_4_get_output_as_nparray():
 
 def test_loudness_ansi_s3_4_get_loudness_sone():
     """Test get_loudness_sone method of LoudnessANSI_S3_4 class."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -191,7 +191,7 @@ def test_loudness_ansi_s3_4_get_loudness_sone():
 
 
 def test_loudness_ansi_s3_4_get_loudness_level_phon():
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 

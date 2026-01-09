@@ -37,7 +37,28 @@ from .._pyansys_sound import (
 
 
 class XtractDenoiser(XtractParent):
-    """Provides signal denoising using the Xtract algorithm."""
+    """Denoise a signal using the Xtract algorithm.
+
+    .. seealso::
+        :class:`Xtract`, :class:`XtractDenoiserParameters`
+
+    Examples
+    --------
+    Denoise a signal and display the resulting denoised and noise signals.
+
+    >>> from ansys.sound.core.xtract import XtractDenoiser
+    >>> denoiser = XtractDenoiser(
+    ...     input_signal=my_signal,
+    ...     input_parameters=my_denoiser_parameters
+    ... )
+    >>> denoiser.process()
+    >>> denoised_signal, noise_signal = denoiser.get_output()
+    >>> denoiser.plot()
+
+    .. seealso::
+        :ref:`xtract_feature_example`
+            Example demonstrating how to use Xtract to extract the various components of a signal.
+    """
 
     def __init__(
         self,
