@@ -144,7 +144,7 @@ Follow these steps to create new examples to demonstrate PyAnsys Sound workflows
 Build documentation
 -------------------
 
-.. vale off
+.. vale off  # "dev" in the note below triggers a vale error in the documentation style check.
 
 .. note::
     To view the current development documentation, go to
