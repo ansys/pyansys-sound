@@ -30,8 +30,8 @@ dependencies = [
 
 [project.optional-dependencies]
 full = [
-    "ansys-dpf-core==0.14.2",
-    "matplotlib==3.10.7",
+    "ansys-dpf-core==0.15.0",
+    "matplotlib==3.10.8",
     "platformdirs==4.5.1",
     "requests==2.32.5",
     "scipy==1.15.3",
@@ -39,8 +39,8 @@ full = [
 ]
 
 tests = [
-    "ansys-dpf-core==0.14.2",
-    "matplotlib==3.10.7",
+    "ansys-dpf-core==0.15.0",
+    "matplotlib==3.10.8",
     "pytest==9.0.2",
     "pytest-cov==7.0.0",
     "pytest-dependency==0.6.0",
@@ -51,7 +51,7 @@ tests = [
 ]
 
 doc = [
-    "ansys-dpf-core==0.14.2",
+    "ansys-dpf-core==0.15.0",
     "Sphinx==8.2.3",
     "ansys-sphinx-theme==1.6.4",
     "numpydoc==1.10.0",
