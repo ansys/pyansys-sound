@@ -75,8 +75,8 @@ from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.signal_utilities.crop_signal import CropSignal
 
-# Connect to a DPF Sound server (remote or local).
-my_server = connect_to_or_start_server(use_license_context=True)
+# Connect to a remote DPF server or start a local DPF server.
+my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
 # Download the necessary files for this example.
 model_wav_files_path = download_all_carHVAC_wav()
