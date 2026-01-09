@@ -30,6 +30,10 @@ class OctaveLevelsFromPSD(FractionalOctaveLevelsFromPSDParent, min_dpf_version="
     """Compute octave levels from a power spectral density (PSD) input.
 
     This class computes octave levels from a PSD.
+
+    .. seealso::
+        :ref:`calculate_fractional_octave_levels`
+            Example demonstrating how to calculate and compare octave and one-third-octave levels.
     """
 
     # Override the operator IDs for octave levels computation

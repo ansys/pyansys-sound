@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 """
-.. _fractional_octave_levels:
+.. _calculate_fractional_octave_levels:
 
 Octave and one-third-octave levels computation
 ----------------------------------------------

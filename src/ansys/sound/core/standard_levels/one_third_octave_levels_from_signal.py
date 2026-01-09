@@ -34,6 +34,10 @@ class OneThirdOctaveLevelsFromSignal(
     """Compute 1/3-octave levels from a time-domain signal input.
 
     This class computes 1/3-octave levels from a time-domain signal.
+
+    .. seealso::
+        :ref:`calculate_fractional_octave_levels`
+            Example demonstrating how to calculate and compare octave and one-third-octave levels.
     """
 
     def process(self):
