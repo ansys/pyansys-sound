@@ -63,8 +63,8 @@ from ansys.sound.core.spectrogram_processing.stft import Stft
 # sphinx_gallery_thumbnail_path = '_static/_image/example009_thumbnail.png'
 # sphinx_gallery_end_ignore
 
-# Connect to a remote server or start a local server.
-my_server, lic_context = connect_to_or_start_server(use_license_context=True)
+# Connect to a remote DPF server or start a local DPF server.
+my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
 # Load example data from a WAV file: flyover noise of an aircraft.
 path_turbo_whistle_wav = download_turbo_whistling_wav(server=my_server)

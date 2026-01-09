@@ -43,6 +43,10 @@ class OctaveLevelsFromSignal(FractionalOctaveLevelsFromSignalParent, min_dpf_ver
     one-third-octave-band center frequency. Note that the highest-frequency octave band
     (centered at 16000 Hz) is obtained by only summing the 2 highest one-third-octave bands
     (since the 30th one-third-octave band centered at 20000 Hz is not considered).
+
+    .. seealso::
+        :ref:`calculate_fractional_octave_levels`
+            Example demonstrating how to calculate and compare octave and one-third-octave levels.
     """
 
     def process(self):

@@ -30,7 +30,7 @@ import numpy as np
 
 from ansys.sound.core.server_helpers._check_server_version import _check_dpf_version
 
-REFERENCE_ACOUSTIC_PRESSURE = 2e-5
+REFERENCE_ACOUSTIC_PRESSURE_IN_AIR = 2e-5
 
 
 class PyAnsysSound:

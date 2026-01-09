@@ -63,8 +63,8 @@ from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.standard_levels import LevelOverTime, OverallLevel
 
-# Connect to a remote server or start a local server.
-my_server, lic_context = connect_to_or_start_server(use_license_context=True)
+# Connect to a remote DPF server or start a local DPF server.
+my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
 
 # %%

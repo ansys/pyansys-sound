@@ -41,8 +41,10 @@ from . import (
     spectrogram_processing,
     xtract,
 )
+from ._pyansys_sound import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
 
 __all__ = (
+    "REFERENCE_ACOUSTIC_PRESSURE_IN_AIR",
     "examples_helpers",
     "psychoacoustics",
     "server_helpers",
