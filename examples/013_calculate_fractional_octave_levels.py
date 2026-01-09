@@ -55,7 +55,7 @@ computed from time-domain signals. See section :ref:`FromSignal_vs_FromPSD` for 
 import matplotlib.pyplot as plt
 
 # Load Ansys libraries.
-from ansys.sound.core import REFERENCE_ACOUSTIC_PRESSURE
+from ansys.sound.core import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
 from ansys.sound.core.examples_helpers import download_flute_wav
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
@@ -87,7 +87,7 @@ signal_flute = wav_loader.get_output()[0]
 # Compute octave levels.
 octave_levels = OctaveLevelsFromSignal(
     signal=signal_flute,
-    reference_value=REFERENCE_ACOUSTIC_PRESSURE,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
 )
 octave_levels.process()
 band_levels_from_signal, center_frequencies = octave_levels.get_output_as_nparray()
@@ -99,7 +99,7 @@ band_levels_from_signal, center_frequencies = octave_levels.get_output_as_nparra
 # Compute the PSD.
 psd = PowerSpectralDensity(signal_flute, fft_size=8192, window_length=8192, overlap=0.9)
 psd.process()
-psd_levels_dB_per_Hz = psd.get_PSD_dB_as_nparray(ref_value=REFERENCE_ACOUSTIC_PRESSURE)
+psd_levels_dB_per_Hz = psd.get_PSD_dB_as_nparray(ref_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR)
 psd_frequencies = psd.get_frequencies()
 
 # Plot octave levels and PSD on a single graph.
@@ -122,7 +122,7 @@ plt.semilogx(
 
 plt.title("Octave levels from signal")
 plt.xlabel("Frequency (Hz)")
-plt.ylabel(f"Octave levels (dB re {REFERENCE_ACOUSTIC_PRESSURE} {signal_flute.unit})")
+plt.ylabel(f"Octave levels (dB re {REFERENCE_ACOUSTIC_PRESSURE_IN_AIR} {signal_flute.unit})")
 plt.grid()
 plt.show()
 
@@ -140,7 +140,7 @@ plt.show()
 # Compute 1/3-octave levels from the signal.
 one_third_octave_levels = OneThirdOctaveLevelsFromSignal(
     signal=signal_flute,
-    reference_value=REFERENCE_ACOUSTIC_PRESSURE,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
 )
 one_third_octave_levels.process()
 band_levels_from_signal, center_frequencies = one_third_octave_levels.get_output_as_nparray()
@@ -148,7 +148,7 @@ band_levels_from_signal, center_frequencies = one_third_octave_levels.get_output
 # Compute 1/3-octave levels from PSD (previously computed from the same signal).
 one_third_octave_levels_psd = OneThirdOctaveLevelsFromPSD(
     psd.get_output(),
-    reference_value=REFERENCE_ACOUSTIC_PRESSURE,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
 )
 one_third_octave_levels_psd.process()
 band_levels_from_psd = one_third_octave_levels_psd.get_band_levels()
@@ -183,7 +183,7 @@ plt.semilogx(
 )
 plt.title("1/3-octave levels from signal and from PSD")
 plt.xlabel("Frequency (Hz)")
-plt.ylabel(f"1/3-octave levels (dB re {REFERENCE_ACOUSTIC_PRESSURE} {signal_flute.unit})")
+plt.ylabel(f"1/3-octave levels (dB re {REFERENCE_ACOUSTIC_PRESSURE_IN_AIR} {signal_flute.unit})")
 plt.xticks(rotation=90)
 plt.grid()
 plt.legend()
@@ -233,7 +233,7 @@ plt.semilogx(
 )
 plt.title("1/3-octave levels from signal and from PSD")
 plt.xlabel("Frequency (Hz)")
-plt.ylabel(f"1/3-octave levels (dB re {REFERENCE_ACOUSTIC_PRESSURE} {signal_flute.unit})")
+plt.ylabel(f"1/3-octave levels (dB re {REFERENCE_ACOUSTIC_PRESSURE_IN_AIR} {signal_flute.unit})")
 plt.grid()
 plt.legend()
 plt.show()
