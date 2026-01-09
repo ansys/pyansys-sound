@@ -145,7 +145,7 @@ one_third_octave_levels = OneThirdOctaveLevelsFromSignal(
 one_third_octave_levels.process()
 band_levels_from_signal, center_frequencies = one_third_octave_levels.get_output_as_nparray()
 
-# Compute 1/3-octave levels from PSD (previously computed from the same signal).
+# Compute 1/3-octave levels from the PSD (previously computed from the same signal).
 one_third_octave_levels_psd = OneThirdOctaveLevelsFromPSD(
     psd.get_output(),
     reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
