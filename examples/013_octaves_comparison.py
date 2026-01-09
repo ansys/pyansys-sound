@@ -21,73 +21,40 @@
 # SOFTWARE.
 
 """
-.. _octaves_comparison:
+.. _fractional_octave_levels:
 
 Octave and one-third-octave levels computation
 ----------------------------------------------
 
-This example shows how to compute 1/3-octave and octave levels with PyAnsys Sound.
-It presents the different available methods and explains their differences.
+This example shows how to compute 1/3-octave and octave levels, with different methods that are
+illustrated and compared. Theoretical explanations are also provided at the end of the example, in
+section :ref:`fractional_octave_theory`, to help understand why these different computation methods
+exist.
 
+PyAnsys Sound allows computation of octave and one-third-octave levels, whether the input data is:
+
+- a time-domain signal, with classes :class:`.OctaveLevelsFromSignal` and
+  :class:`.OneThirdOctaveLevelsFromSignal`
+- a power spectral density (PSD), with classes :class:`.OctaveLevelsFromPSD` and
+  :class:`.OneThirdOctaveLevelsFromPSD`
+
+In the latter case, a specific attribute :attr:`~.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986`
+enables you to replicate, when computing band levels from PSD, the effects of the ANSI S1.11-1986
+and IEC 61260:1995 band-pass filters used in signal-based classes. This allows meaningful
+comparisons between levels computed from PSD (for example, from numerical simulations) and levels
+computed from time-domain signals. See section :ref:`FromSignal_vs_FromPSD` for more details.
 """
-# %%
-# Octave and one-third-octave levels
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#
-# What are octave and one-third-octave levels?
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-#
-# Octave (or one-third-octave) levels is a way of analyzing the energy content of a signal
-# within specific frequency bands, related to human perception.
-#
-# Octave bands are frequency bands that have a width of one octave. This means that an octave
-# band is always twice as wide as the previous octave band and half as wide as the successive
-# octave band.
-#
-# One-third-octave bands are frequency bands built from the subdivision of octave bands into three
-# sections.
-#
-# ANSI S1.11-1986 and IEC 61260:1995 standards define the band limits and specify band-pass
-# filters to compute the levels within these 29 bands from the time-domain signal.
-#
-# Why are there several computation methods, and when to use them?
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-#
-# There are several methods to compute octave and one-third-octave levels in PyAnsys Sound, which
-# differ by the type of input data used and by the computation method.
-# More details about the computation can be found in the :ref:`Theory` section below.
-#
-# :class:`OctaveLevelsFromSignal`
-#     Use this class to calculate octave levels from a time-domain signal.
-#     It follows  the ANSI S1.11-1986 and IEC 61260:1995 standards, and can
-#     therefore be used when a standard result is needed.
-#
-# :class:`OctaveLevelsFromPSD`
-#     Use this class to calculate octave levels from a Power Spectral Density (PSD).
-#     The PSD may come from the analysis of a time-domain signal or be the result of a
-#     simulation.
-#
-# * Set parameter ``use_ansi_s1_11_1986=False`` (default), when there is no need
-#   to compare with results computed on a time-domain signal.
-#
-# * Set parameter ``use_ansi_s1_11_1986=True``, when you want to compare
-#   with results computed on a time-domain signal, or with standard results.
-
 
 # %%
-# Octave levels computation
-# ~~~~~~~~~~~~~~~~~~~~~~~~~
-# Here we show how to compute octave levels using :class:`OctaveLevelsFromSignal`.
-#
-# The same processing can be applied using :class:`OctaveLevelsFromPSD`,
-# :class:`OneThirdOctaveLevelsFromSignal` and :class:`OneThirdOctaveLevelsFromPSD`.
-
-# %%
-# Set up analysis: load Ansys libraries, connect to the DPF server, and
-# download the necessary data files.
+# Set up analysis
+# ~~~~~~~~~~~~~~~
+# Setting up the analysis consists of loading Ansys libraries, connecting to the DPF server, and
+# downloading the necessary data files.
 
 # Load standard libraries.
 import matplotlib.pyplot as plt
+
+from ansys.sound.core import REFERENCE_ACOUSTIC_PRESSURE
 
 # Load Ansys libraries.
 from ansys.sound.core.examples_helpers import (
@@ -103,169 +70,300 @@ from ansys.sound.core.standard_levels import (
 )
 
 # Connect to a remote DPF server or start a local DPF server.
-my_server = connect_to_or_start_server(use_license_context=True)
+my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
 # Download the necessary files for this example.
 flute_wav_files_path = download_flute_wav()
+
+# %%
+# Octave and one-third-octave levels from signal
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Here we show how to compute octave levels using the class :class:`.OctaveLevelsFromSignal`. The
+# same workflow can be replicated for one-third-octave levels using the class
+# :class:`.OneThirdOctaveLevelsFromSignal`.
+
+# Load the time-domain signal from a WAV file.
 wav_loader = LoadWav(flute_wav_files_path)
 wav_loader.process()
 signal_flute = wav_loader.get_output()[0]
 
-# %%
 # Compute octave levels.
-
-octave_levels_signal = OctaveLevelsFromSignal(signal_flute)
-octave_levels_signal.process()
-levels_from_signal, frequencies_octaves = octave_levels_signal.get_output_as_nparray()
-
-# %%
-# Compute the Power Spectral Density (PSD) from the time-domain signal, to display
-# it in the same graph as the PSD for illustration.
-psd = PowerSpectralDensity(signal_flute)
-psd.process()
-psd_levels = psd.get_output()
-
-# %%
-# Plot octave levels and PSD on a single graph.
-
-psd_levels_as_nparray_dB = psd.get_PSD_dB_as_nparray()
-frequencies_narrowband = psd.get_frequencies()
-
-frequencies_octave_for_plot = (
-    [frequencies_octaves[0] / pow(2, 1 / 6)]
-    + [x * pow(2, 1 / 6) for x in frequencies_octaves[0:-1] for _ in range(2)]
-    + [frequencies_octaves[-1] * pow(2, 1 / 6)]
+octave_levels = OctaveLevelsFromSignal(
+    signal=signal_flute,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE,
 )
-levels_from_signal_for_plot = [x for x in levels_from_signal for _ in range(2)]
+octave_levels.process()
+band_levels_from_signal, center_frequencies = octave_levels.get_output_as_nparray()
+
+# %%
+# For comparison, let us compute the power spectral density (PSD) from the time-domain signal, and
+# display octave levels and PSD on the same graph.
+
+# Compute the PSD.
+psd = PowerSpectralDensity(signal_flute, fft_size=8192, window_length=8192, overlap=0.9)
+psd.process()
+psd_levels_dB_per_Hz = psd.get_PSD_dB_as_nparray(ref_value=REFERENCE_ACOUSTIC_PRESSURE)
+psd_frequencies = psd.get_frequencies()
+
+# Plot octave levels and PSD on a single graph.
+limit_frequencies = (
+    [center_frequencies[0] / pow(2, 1 / 6)]
+    + [x * pow(2, 1 / 6) for x in center_frequencies[0:-1] for _ in range(2)]
+    + [center_frequencies[-1] * pow(2, 1 / 6)]
+)
+levels_at_limit_frequencies_from_signal = [x for x in band_levels_from_signal for _ in range(2)]
 
 plt.figure()
-plt.plot(frequencies_narrowband, psd_levels_as_nparray_dB, label="PSD", color="gray", linestyle=":")
-plt.plot(
-    frequencies_octave_for_plot,
-    levels_from_signal_for_plot,
-    label="1/3 octave from signal",
+plt.semilogx(psd_frequencies, psd_levels_dB_per_Hz, label="PSD", color="gray", linestyle=":")
+plt.semilogx(
+    limit_frequencies,
+    levels_at_limit_frequencies_from_signal,
+    label="Octave levels from signal",
     color="blue",
     linestyle="-",
 )
 
 plt.title("Octave levels from signal")
 plt.xlabel("Frequency (Hz)")
-plt.xscale("log")
-plt.ylabel("Octave levels (dB)")
-plt.xticks(rotation=90)
+plt.ylabel(f"Octave levels (dB re {REFERENCE_ACOUSTIC_PRESSURE} {signal_flute.unit})")
 plt.grid()
 plt.show()
 
 # %%
-# Methods comparison
-# ~~~~~~~~~~~~~~~~~~
-# Here we illustrate the differences between the computation from a temporal signal and from
-# a PSD, with or without ANSI weighting. The example is done on 1/3-octave levels using the classes
-# :class:`OneThirdOctaveLevelsFromSignal` and :class:`OneThirdOctaveLevelsFromPSD`.
+# .. _FromSignal_vs_FromPSD:
+# Comparing octave and one-third-octave levels from signal and from PSD
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Let us now consider a scenario where we wish to compare one-third-octave levels between
+# simulation results - in the form of a PSD - and test data - in the form of a recorded time-domain
+# signal. We consider the case of one-third-octave levels here, but the same can be done for octave
+# levels. For demonstration purposes, we can use the PSD already computed above. As it comes from
+# the same signal, we would then expect the same band levels regardless of the class used,
+# :class:`.OneThirdOctaveLevelsFromSignal` or :class:`.OneThirdOctaveLevelsFromPSD`.
 
-# %%
-# Compute 1/3-octave levels from signal.
-one_third_octave_levels_signal = OneThirdOctaveLevelsFromSignal(signal_flute)
-one_third_octave_levels_signal.process()
-levels_from_signal, frequencies_third_octaves = (
-    one_third_octave_levels_signal.get_output_as_nparray()
+# Compute 1/3-octave levels from the signal.
+one_third_octave_levels = OneThirdOctaveLevelsFromSignal(
+    signal=signal_flute,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE,
 )
+one_third_octave_levels.process()
+band_levels_from_signal, center_frequencies = one_third_octave_levels.get_output_as_nparray()
 
-# %%
-# Compute 1/3-octave levels from PSD. Here, for comparison, we use the PSD computed from the
-# same signal. However, the PSD may also be provided directly as input, for example as the result
-# of a simulation.
-
-one_third_octave_levels_psd = OneThirdOctaveLevelsFromPSD(psd_levels)
+# Compute 1/3-octave levels from PSD (previously computed from the same signal).
+one_third_octave_levels_psd = OneThirdOctaveLevelsFromPSD(
+    psd.get_output(),
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE,
+)
 one_third_octave_levels_psd.process()
-levels_from_psd = one_third_octave_levels_psd.get_output_as_nparray()[0]
-
-one_third_octave_levels_psd_ansi = OneThirdOctaveLevelsFromPSD(psd_levels, use_ansi_s1_11_1986=True)
-one_third_octave_levels_psd_ansi.process()
-levels_from_psd_ansi = one_third_octave_levels_psd_ansi.get_output_as_nparray()[0]
+band_levels_from_psd = one_third_octave_levels_psd.get_band_levels()
 
 # %%
-# Plot 1/3-octave levels and PSD.
+# Now, let us compare the two.
 
-psd_levels_as_nparray_dB = psd.get_PSD_dB_as_nparray()
-frequencies_narrowband = psd.get_frequencies()
-
-frequencies_third_octave_for_plot = (
-    [frequencies_third_octaves[0] / pow(2, 1 / 6)]
-    + [x * pow(2, 1 / 6) for x in frequencies_third_octaves[0:-1] for _ in range(2)]
-    + [frequencies_third_octaves[-1] * pow(2, 1 / 6)]
+# Prepare data for staircase plot of band levels.
+limit_frequencies = (
+    [center_frequencies[0] / pow(2, 1 / 6)]
+    + [x * pow(2, 1 / 6) for x in center_frequencies[0:-1] for _ in range(2)]
+    + [center_frequencies[-1] * pow(2, 1 / 6)]
 )
-levels_from_signal_for_plot = [x for x in levels_from_signal for _ in range(2)]
-levels_from_psd_for_plot = [x for x in levels_from_psd for _ in range(2)]
-levels_from_psd_ansi_for_plot = [x for x in levels_from_psd_ansi for _ in range(2)]
+levels_at_limit_frequencies_from_signal = [x for x in band_levels_from_signal for _ in range(2)]
+levels_at_limit_frequencies_from_psd = [x for x in band_levels_from_psd for _ in range(2)]
 
+# Plot band levels from both data types.
 plt.figure()
-plt.plot(frequencies_narrowband, psd_levels_as_nparray_dB, label="PSD", color="gray", linestyle=":")
-plt.plot(
-    frequencies_third_octave_for_plot,
-    levels_from_signal_for_plot,
-    label="1/3 octave from signal",
+plt.semilogx(
+    limit_frequencies,
+    levels_at_limit_frequencies_from_signal,
+    label="1/3-octave levels from signal",
     color="red",
     linestyle="-",
 )
-plt.plot(
-    frequencies_third_octave_for_plot,
-    levels_from_psd_for_plot,
-    label="1/3 octave from PSD",
+plt.semilogx(
+    limit_frequencies,
+    levels_at_limit_frequencies_from_psd,
+    label="1/3-octave levels from PSD",
     color="blue",
     linestyle="--",
 )
-plt.plot(
-    frequencies_third_octave_for_plot,
-    levels_from_psd_ansi_for_plot,
-    label="1/3 octave from PSD with ANSI weighting",
-    color="green",
-    linestyle="-.",
-)
-
-plt.title("1/3-octave-band levels - methods comparison")
+plt.title("1/3-octave levels from signal and from PSD")
 plt.xlabel("Frequency (Hz)")
-plt.xscale("log")
-plt.ylabel("1/3 octave levels")
+plt.ylabel(f"1/3-octave levels (dB re {REFERENCE_ACOUSTIC_PRESSURE} {signal_flute.unit})")
 plt.xticks(rotation=90)
 plt.grid()
 plt.legend()
 plt.show()
 
 # %%
-# The red curve represents the levels calculated from the time-domain signal, it is the standard
-# way to do when working with test data.
+# Contrary to our initial assumption, the two methods do not yield identical results, with even
+# very large differences (20-30 dB) in some bands. This discrepancy is due to the neighboring-band
+# leakage effect: since the band-pass filters defined in the ANSI S1.11-1986 and IEC 61260:1995
+# standards have a finite filter order, their frequency responses are not perfectly rectangular,
+# and frequencies outside the band are not completely rejected. This is reflected in the
+# signal-based computation (class :class:`.OneThirdOctaveLevelsFromSignal`). With class
+# :class:`.OneThirdOctaveLevelsFromPSD`, however, the PSD is simply summed up within each band,
+# excluding any contribution from frequencies outside the band. See :ref:`fractional_octave_theory`
+# for more computational details.
 #
-# The blue curve represents the levels calculated from the PSD of the signal. It is highly dependent
-# on the frequency resolution of the PSD, as it only sums up the levels that are exactly in each
-# 1/3-octave band to calculte their respective levels.
-#
-# The green curve represents the levels calculated from the PSD, with a correction added to
-# be closer to the calculation that would be done with the first method. You can notice that the
-# levels obtained with the third method are closer to the first method's ones, because of this
-# correction. However some differences still appear, mainly because of the influence of the frequency
-# resolution of the PSD.
+# Now, let us repeat the PSD-based computation, this time setting the attribute
+# :attr:`~.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986` to ``True`` to replicate the effect
+# of the ANSI S1.11-1986 and IEC 61260:1995 standards' band-pass filters on the PSD, before
+# computing the band levels.
+
+one_third_octave_levels_psd.use_ansi_s1_11_1986 = True
+one_third_octave_levels_psd.process()
+band_levels_from_psd = one_third_octave_levels_psd.get_band_levels()
 
 # %%
-# .. _Theory:
+# Let us compare the results again.
+
+# Prepare data for staircase plot of band levels.
+levels_at_limit_frequencies_from_psd = [x for x in band_levels_from_psd for _ in range(2)]
+
+# Plot against the signal-based levels again.
+plt.figure()
+plt.semilogx(
+    limit_frequencies,
+    levels_at_limit_frequencies_from_signal,
+    label="1/3-octave levels from signal",
+    color="red",
+    linestyle="-",
+)
+plt.semilogx(
+    limit_frequencies,
+    levels_at_limit_frequencies_from_psd,
+    label="1/3-octave levels from PSD (use_ansi_s1_11_1986=True)",
+    color="blue",
+    linestyle="--",
+)
+plt.title("1/3-octave levels from signal and from PSD")
+plt.xlabel("Frequency (Hz)")
+plt.ylabel(f"1/3-octave levels (dB re {REFERENCE_ACOUSTIC_PRESSURE} {signal_flute.unit})")
+plt.grid()
+plt.legend()
+plt.show()
+
+# %%
+# Now, the levels computed from the PSD (with ANSI S1.11-1986 weighting) match those from the
+# signal much more closely.
+
+# %%
+# Takeaways
+# ~~~~~~~~~
+# The previous exemplified scenario emphasizes the importance of selecting the appropriate approach
+# depending on the nature of the input data, and the goal of the analysis:
+#
+# - For time-domain signals, use signal-based classes to follow the standards, or compute their PSD
+#   and then use PSD-based classes to avoid the neighboring-band leakage effect.
+# - For PSD data, use PSD-based classes, with the
+#   :attr:`~.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986` set to ``False`` if you wish to avoid
+#   the neighboring-band leakage effect, or ``True`` if you wish to approximate standardized
+#   results.
+# - Finally, when working with both signal and PSD data, to ensure comparability of results, either
+#   compute PSD from signals and then use PSD-based classes, or use both signal- and PSD-based
+#   classes, but make sure to set the :attr:`~.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986`
+#   attribute of PSD-based classes to ``True``.
+#
+# In any case, keep in mind that following the ANSI S1.11-1986 and IEC 61260:1995 standards
+# (signal-based classes, or PSD-based classes with
+# :attr:`~.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986` set to ``True``) affects the results
+# with the neighboring-band leakage effect. However, using the :class:`.PowerSpectralDensity` class
+# to compute PSD from signals before using PSD-based classes also affects the results, as the PSD
+# computation parameters have a significant influence on the computed band levels, notably in the
+# narrower, low-frequency bands.
+#
+# The table below summarizes the different approaches, and their pros and cons (for the case of
+# octave levels only, but it equally applies for the case of one-third-octave levels).
+#
+# .. list-table::
+#    :align: center
+#    :widths: auto
+#
+#    * - **Input data**
+#      - **Method (classes used)**
+#      - :attr:`~.OctaveLevelsFromPSD.use_ansi_s1_11_1986`
+#      - **Standard-compliant**
+#      - **Neighboring-band leakage effect**
+#      - **PSD parameters' effect**
+#    * - Signal
+#      - :class:`.OctaveLevelsFromSignal`
+#      - N/A
+#      - Yes
+#      - x
+#      -
+#    * - Signal
+#      - | :class:`.PowerSpectralDensity`
+#        | :class:`.OctaveLevelsFromPSD`
+#      - ``False``
+#      - No
+#      -
+#      - x
+#    * - PSD
+#      - :class:`.OctaveLevelsFromPSD`
+#      - ``False``
+#      - No
+#      -
+#      -
+#    * - PSD
+#      - :class:`.OctaveLevelsFromPSD`
+#      - ``True``
+#      - Yes
+#      - x
+#      -
+#    * - Signal & PSD
+#      - :class:`.OctaveLevelsFromSignal` :class:`.OctaveLevelsFromPSD`
+#      - ``True``
+#      - Yes
+#      - x
+#      -
+#    * - Signal & PSD
+#      - | :class:`.PowerSpectralDensity`
+#        | :class:`.OctaveLevelsFromPSD`
+#      - ``False``
+#      - No
+#      -
+#      - x
+#
+
+# %%
+# .. _fractional_octave_theory:
 #
 # Theory
 # ~~~~~~
 #
-# In this section, some details are given about the principles behind each of the three
-# calculation methods.
+# This section provides details on the different methods used to compute octave- and
+# one-third-octave-band levels from a time-domain signal and from a power spectral density (PSD).
+#
+# Octave and one-third-octave levels
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Octave and one-third-octave levels are analysis methods to assess how the energy of a signal
+# is distributed across specific frequency bands, defined logarithmically to better match how the
+# frequency scale is perceived by human ears.
+#
+# An octave is the frequency interval between two frequencies that have a ratio of 2. For example,
+# there is exactly one octave between 50 Hz and 100 Hz, but also between 1000 Hz and 2000 Hz.
+# Octave bands are generally understood as a set of predefined frequency bands where each band
+# starts where the previous one ends, and extends over one octave. This notably means that each
+# octave band is twice as wide as the previous one, and half as wide as the next one.
+#
+# One-third-octave bands are frequency bands built from a further subdivision of each octave band
+# into 3 sub-bands (again, logarithmically).
+#
+# The ANSI S1.11-1986 and IEC 61260:1995 standards provide the definition of band-pass filters
+# allowing the computation of 29 one-third-octave-band levels from a time-domain signal.
+# Octave-band levels are then derived from one-third-octave levels by summing the computed energy
+# within each triplet of consecutive one-third-octave bands.
 #
 # Levels from signal
 # ^^^^^^^^^^^^^^^^^^
-# The computation using :class:`OneThirdOctaveLevelsFromSignal` or :class:`OctaveLevelsFromSignal`
-# follows the ANSI S1.11-1986 and IEC 61260:1995 standards.
+# Band level computation in classes :class:`.OneThirdOctaveLevelsFromSignal` and
+# :class:`.OctaveLevelsFromSignal` follows the ANSI S1.11-1986 and IEC 61260:1995 standards.
 #
-# 1. the signal is filtered using octave (or one-third-octave) band-pass filters, resulting in
-#    as many band-filtered signals as the number of octave (or one-third-octaves).
-#    Each band-pass filter has a bandwith of 1 octave (or 1 one-third-octave), and is centered at the
-#    standardized center frequencies of the bands.
-# 2. for each band filtered signal, the level is calculated by averaging the sum of the squares of the
-#    samples. This level is the level of the band.
+# 1. The signal is filtered using one-third-octave band-pass filters, resulting in as many
+#    band-filtered signals as there are one-third-octaves. Each band-pass filter has a bandwidth of
+#    1/3 of an octave.
+# 2. For each band, the band level is obtained by calculating the overall level of the
+#    band-pass-filtered signal.
+# 3. In the case of octave levels, the band levels are then derived by summing the energies
+#    obtained for the 3 consecutive one-third-octave bands within each octave band.
 #
 # The figure below illustrates this process.
 #
@@ -274,31 +372,33 @@ plt.show()
 # Levels from PSD
 # ^^^^^^^^^^^^^^^
 #
-# The computation using :class:`OneThirdOctaveLevelsFromPSD` or :class:`OctaveLevelsFromPSD` with
-# parameter ``use_ansi_s1_11_1986=False`` (default value) is done using the Power Spectral Density
-# (PSD) as input.
-#
-# The level in each octave or one-third-octave band is calculated by integrating the PSD over
-# the frequency range corresponding to a each octave or one-third-octave band.
+# Band level computation in classes :class:`.OneThirdOctaveLevelsFromPSD` and
+# :class:`.OctaveLevelsFromPSD`, when attribute
+# :attr:`~.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986` is set to ``False`` (default), simply
+# consists of the integration of the PSD over the frequency range corresponding to a each octave or
+# one-third-octave band.
 #
 # The figure below illustrates this process.
 #
 # .. image:: ../../_static/_image/example013_method2.png
 #
-# Levels from PSD with ANSI weighting
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Levels from PSD with ANSI S1.11-1986 weighting
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# The computation using :class:`OneThirdOctaveLevelsFromPSD` or :class:`OctaveLevelsFromPSD` with
-# the parameter ``use_ansi_s1_11_1986=True`` is done using a Power Spectral Density (PSD) as input.
-# For each band, it applies a frequency weighting based on the frequency response of the band-pass
-# filters defined in the ANSI S1.11-1986 standard, in order to approximate the results obtained from
-# a time-domain signal following ANSI S1.11-1986.
+# Band level computation in classes :class:`.OneThirdOctaveLevelsFromPSD` and
+# :class:`.OctaveLevelsFromPSD`, when their attribute
+# :attr:`~.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986` is set to ``True``, precedes the
+# band-wise PSD integration with a PSD weighting according to the frequency responses of the
+# band-pass filters defined in the ANSI S1.11-1986 and IEC61260:1995 standards.
 #
-# This may, for example, allow comparing simulation results with measurements.
+# This allows comparing simulation results with measurements in a meaningful way.
 #
-# 1. the PSD values are weighted using the frequency response of the filter for this band, as defined
-#    in ANSI S1.11-1986.
-# 2. the level in each band is calculated by integrating the weighted PSD over the whole frequency range.
+# 1. For each band, the PSD level values are weighted using the frequency response of the band
+#    filter defined in the ANSI S1.11-1986 and IEC61260:1995 standards.
+# 2. Each band level is then calculated by integrating the weighted PSD over the whole frequency
+#    range.
+# 3. In the case of octave levels, the band levels are again derived by summing the energies
+#    obtained for the 3 consecutive one-third-octave bands within each octave band.
 #
 # The figure below illustrates this process.
 #
