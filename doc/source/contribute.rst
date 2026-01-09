@@ -10,7 +10,7 @@ with this guide before attempting to contribute to PyAnsys Sound.
 
 The following contribution information is specific to PyAnsys Sound.
 
-
+.. _dev_install:
 Install in development mode
 ---------------------------
 
@@ -18,7 +18,7 @@ Installing PyAnsys Sound in development mode allows you to modify and enhance
 the source codebase and documentation.
 
 .. note::
-  For information on prerequisites, see :ref:`prerequisistes`.
+   For information on prerequisites, see :ref:`prerequisites`.
 
 Follow these steps to install PyAnsys Sound in development mode:
 
@@ -64,6 +64,7 @@ Follow these steps to install PyAnsys Sound in development mode:
 
         pip install -e.[doc,tests]
 
+.. _code_style:
 Adhere to code style
 --------------------
 
@@ -104,7 +105,7 @@ Follow these steps to create new examples to demonstrate PyAnsys Sound workflows
 #. Create a new Python script in the ``examples/`` folder.
 #. Follow the structure of existing examples in the ``examples/`` folder.
    Ensure that your example includes descriptive comments to explain the workflow and that it is
-   properly formatted to follow the adopted code style. See :ref:`Adhere to code style` and
+   properly formatted to follow the adopted code style. See :ref:`code_style` and
    :doc:`examples/index` for reference.
 #. If your example requires specific input files, use local paths while developing the example.
    These local paths shall be replaced at a later step, once the example is complete.
@@ -159,8 +160,8 @@ Build documentation
 
 .. note::
     Building the documentation requires access to a DPF Server with the DPF Sound plugin. See
-    `prerequisites`_. It also requires the installation of the documentation-building dependencies.
-    See :ref:`Install_in_development_mode`.
+    :ref:`prerequisites`. It also requires the installation of the documentation-building dependencies.
+    See :ref:`dev_install`.
 
 On Windows, build the documentation with this command:
 
@@ -182,8 +183,8 @@ Run tests
 
 .. note::
     Running the tests requires access to a DPF Server with the DPF Sound plugin. See
-    `prerequisites`_. It also requires the installation of the testing dependencies. See
-    :ref:`Install_in_development_mode`.
+    :ref:`prerequisites`. It also requires the installation of the testing dependencies. See
+    :ref:`dev_install`.
 
 To run all tests locally, use this commands:
 

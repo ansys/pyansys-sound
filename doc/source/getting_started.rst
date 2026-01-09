@@ -6,7 +6,7 @@ This section explains how to install PyAnsys Sound (``ansys-sound-core``) if you
 it. If you are also interested in contributing to PyAnsys Sound, see :ref:`ref_contribute` for
 information on installing in development mode.
 
-.. _prerequisistes:
+.. _prerequisites:
 
 Prerequisites
 -------------
