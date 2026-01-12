@@ -191,7 +191,7 @@ Run tests
     :ref:`prerequisites`. It also requires the installation of the testing dependencies. See
     :ref:`dev_install`.
 
-To run all tests locally, use this commands:
+To run all tests locally, use this command:
 
 .. code:: bash
 

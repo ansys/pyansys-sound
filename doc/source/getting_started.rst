@@ -90,7 +90,7 @@ To start using PyAnsys Sound, you first need to connect to or start a DPF Server
 
     server, license_context = connect_to_or_start_server()
 
-You can now verify that PyAnsys Sound is up and running.
+You can now verify that PyAnsys Sound is running.
 
 .. code::
 

@@ -58,7 +58,8 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     >>> Lw = swl.get_Lw()
     >>> swl.plot()
 
-    Alternatively, load sound power level data from a project file created in Ansys Sound SAS.
+    Alternatively, load sound power level data from a project file created in Ansys Sound: Analysis
+    and Specifications (SAS).
 
     >>> swl = SoundPowerLevelISO3744()
     >>> swl.load_project("path/to/project_file.spw")

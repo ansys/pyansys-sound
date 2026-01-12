@@ -51,7 +51,7 @@ class TonalityAures(PsychoacousticsParent):
 
     Examples
     --------
-    Compute and display the tonality of a signal according to Aures model.
+    Compute and display the tonality of a signal according to the Aures model.
 
     >>> from ansys.sound.core.psychoacoustics import TonalityAures
     >>> tonality = TonalityAures(signal=my_signal)
