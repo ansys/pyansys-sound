@@ -187,7 +187,7 @@ def _check_sound_version(min_sound_version: str, error_msg: str):
         Error message to display if the version check fails.
     """
     if min_sound_version is not None:
-        version_retriever = Operator("get_version_information")
+        version_retriever = Operator("get_version_info")
         version_retriever.run()
         year = version_retriever.get_output(0, types.int)
         major = version_retriever.get_output(1, types.int)
