@@ -28,7 +28,10 @@ import warnings
 from ansys.dpf.core import FieldsContainer
 import numpy as np
 
-from ansys.sound.core.server_helpers._check_server_version import _check_dpf_version
+from ansys.sound.core.server_helpers._check_server_version import (
+    _check_dpf_version,
+    _check_sound_version,
+)
 
 REFERENCE_ACOUSTIC_PRESSURE = 2e-5
 
@@ -43,25 +46,49 @@ class PyAnsysSound:
     # Declare minimum DPF version class attribute.
     _min_dpf_version = None
 
-    def __init_subclass__(cls, *, min_dpf_version: str = None, **kwargs):
-        """Store minimum DPF version requirement for subclasses.
+    def __init_subclass__(
+        cls,
+        *,
+        min_sound_version: str = None,
+        min_dpf_version: str = None,
+        **kwargs,
+    ):
+        """Store minimum DPF Server and/or DPF Sound plugin version requirements for subclasses.
 
-        This is executed at subclass creation time. It stores the specified minimum DPF version
-        requirement for the created subclass as a class attribute. It also adds the version
-        requirement in the class docstring.
+        This is executed at subclass creation time. It stores the specified minimum DPF Server/DPF
+        Sound plugin version requirements for the created subclass as a class attribute. It also
+        adds the version requirements in the class docstring.
 
         .. note::
-            The specified version is not tested against the current DPF server version just yet,
-            because the server might not yet exist, and because doing this check at class creation
-            time might affect other class creations with different version requirements. The actual
-            check is done at class instantiation time.
+            The specified versions are not tested against the current DPF Server/DPF Sound plugin
+            versions just yet, because the server might not yet exist, and because doing this check
+            at class creation time might affect other class creations with different version
+            requirements. The actual checks are done at class instantiation time.
 
         Parameters
         ----------
+        min_sound_version : str, optional
+            Minimum DPF Sound plugin version required for the subclass.
+            The version must be a string with the form YEAR.MAJOR.MINOR, for example "2026.1.0".
         min_dpf_version : str, optional
-            Minimum DPF version required for the subclass.
+            Minimum DPF Server version required for the subclass.
             The version must be a string with the form MAJOR.MINOR, for example "11.0".
         """
+        if min_sound_version is not None:
+            # Check version specifier validity.
+            if not isinstance(min_sound_version, str):
+                raise TypeError(
+                    "In class definition, `min_sound_version` argument must be a string with the "
+                    'form YEAR.MAJOR.MINOR, for example "2026.1.0".'
+                )
+
+            # Append version requirement to subclass docstring.
+            if isinstance(cls.__doc__, str):
+                cls.__doc__ += f"\n\t*Added in DPF Sound plugin version {min_sound_version}.*"
+
+        # Update the subclass's class attribute (to later check compliance, at class instantiation).
+        cls._min_sound_version = min_sound_version
+
         if min_dpf_version is not None:
             # Check version specifier validity.
             if not isinstance(min_dpf_version, str):
@@ -86,11 +113,20 @@ class PyAnsysSound:
         Checks DPF version compliance (if specified in class definition), and initialize necessary
         attributes.
         """
-        # Check current DPF server version against class minimum requirement (if specified).
+        # Check current DPF Sound plugin version against class minimum requirement (if specified).
+        _check_sound_version(
+            self._min_sound_version,
+            (
+                f"Class `{self.__class__.__name__}` requires DPF Sound plugin version "
+                f"{self._min_sound_version} or higher."
+            ),
+        )
+
+        # Check current DPF Server version against class minimum requirement (if specified).
         _check_dpf_version(
             self._min_dpf_version,
             (
-                f"Class `{self.__class__.__name__}` requires DPF server version "
+                f"Class `{self.__class__.__name__}` requires DPF Server version "
                 f"{self._min_dpf_version} or higher."
             ),
         )

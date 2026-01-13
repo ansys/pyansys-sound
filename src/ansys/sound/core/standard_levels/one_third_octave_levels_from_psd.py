@@ -26,7 +26,9 @@ import matplotlib.pyplot as plt
 from ._fractional_octave_levels_from_psd_parent import FractionalOctaveLevelsFromPSDParent
 
 
-class OneThirdOctaveLevelsFromPSD(FractionalOctaveLevelsFromPSDParent, min_dpf_version="11.0"):
+class OneThirdOctaveLevelsFromPSD(
+    FractionalOctaveLevelsFromPSDParent, min_sound_version="2026.1.0"
+):
     """Compute 1/3-octave levels from a power spectral density (PSD) input.
 
     This class computes 1/3-octave levels from a PSD.

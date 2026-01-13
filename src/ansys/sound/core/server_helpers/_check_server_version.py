@@ -25,7 +25,73 @@
 from functools import wraps
 from typing import Any, Callable
 
-from ansys.dpf.core import _global_server
+from ansys.dpf.core import Operator, _global_server, types
+from ansys.tools.common.exceptions import VersionError, VersionSyntaxError
+from packaging.version import parse
+
+
+def requires_sound_version(min_sound_version: str) -> Callable:
+    """Check that the current DPF Sound plugin matches or is higher than a certain version.
+
+    This decorator ensures that the decorated function or method can only be used if the current
+    DPF Sound plugin version allows it.
+
+    Parameters
+    ----------
+    min_sound_version : str
+        Minimum DPF Sound plugin version required for the decorated function or method.
+        The version must be specified as a string with the form YEAR.MAJOR.MINOR, for example
+        "2026.1.0".
+
+    Returns
+    -------
+    callable
+        The decorator.
+
+    .. note::
+       This function must be used as a function or method decorator.
+    """
+
+    def decorator(func) -> Callable:
+        """Wrap the original function or method to include DPF Sound plugin version check.
+
+        Parameters
+        ----------
+        func : callable
+            The function or method to which the decorator applies.
+
+        Returns
+        -------
+        callable
+            The wrapped function or method.
+        """
+        if not isinstance(min_sound_version, str):
+            raise VersionSyntaxError(
+                "requires_sound_version decorator argument must be a string with the form "
+                "YEAR.MAJOR.MINOR, for example '2026.1.0'."
+            )
+
+        @wraps(func)
+        def wrapper(*args, **kwargs) -> Any:
+            """Check DPF Sound plugin version before calling the original function or method.
+
+            Returns
+            -------
+            Any
+                The original function's or method's output.
+            """
+            _check_sound_version(
+                min_sound_version,
+                (
+                    f"Function or method `{func.__name__}()` requires DPF Sound plugin version "
+                    f"{min_sound_version} or higher."
+                ),
+            )
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 
 def requires_dpf_version(min_dpf_version: str) -> Callable:
@@ -36,7 +102,7 @@ def requires_dpf_version(min_dpf_version: str) -> Callable:
 
     Parameters
     ----------
-    min_dpf_version : str, default: None
+    min_dpf_version : str
         Minimum DPF server version required for the decorated function or method.
         The version must be specified as a string with the form MAJOR.MINOR, for example "11.0".
 
@@ -108,3 +174,24 @@ def _check_dpf_version(min_dpf_version: str, error_msg: str):
         # This raises an exception if the current DPF server version is lower than
         # min_dpf_version.
         server.check_version(min_dpf_version, error_msg)
+
+
+def _check_sound_version(min_sound_version: str, error_msg: str):
+    """Check the DPF Sound plugin version and raise an exception if the specified version is higher.
+
+    Parameters
+    ----------
+    min_sound_version : str
+        Minimum DPF Sound plugin version required.
+    error_msg : str
+        Error message to display if the version check fails.
+    """
+    if min_sound_version is not None:
+        version_retriever = Operator("get_version_information")
+        version_retriever.run()
+        year = version_retriever.get_output(0, types.int)
+        major = version_retriever.get_output(1, types.int)
+        minor = version_retriever.get_output(2, types.int)
+
+        if parse(f"{year}.{major}.{minor}") < parse(min_sound_version):
+            raise VersionError(f"DPF Sound plugin version error: {error_msg}")

@@ -29,7 +29,7 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException
 from ._fractional_octave_levels_from_signal_parent import FractionalOctaveLevelsFromSignalParent
 
 
-class OctaveLevelsFromSignal(FractionalOctaveLevelsFromSignalParent, min_dpf_version="11.0"):
+class OctaveLevelsFromSignal(FractionalOctaveLevelsFromSignalParent, min_sound_version="2026.1.0"):
     """Compute octave levels from a time-domain signal input.
 
     This class computes octave levels from a time-domain signal.
