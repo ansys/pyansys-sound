@@ -112,7 +112,7 @@ def test_load_wav_get_set_path():
 
 
 @pytest.mark.skipif(
-    not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0,
+    not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1,
     reason="Sampling frequency and format outputs require DPF server version 11.0 or higher.",
 )
 def test_load_wav_get_sampling_frequency():
@@ -133,7 +133,7 @@ def test_load_wav_get_sampling_frequency():
 
 
 @pytest.mark.skipif(
-    not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0,
+    not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1,
     reason="Sampling frequency and format outputs require DPF server version 11.0 or higher.",
 )
 def test_load_wav_get_format():

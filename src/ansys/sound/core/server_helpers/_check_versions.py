@@ -25,9 +25,17 @@
 from functools import wraps
 from typing import Any, Callable
 
-from ansys.dpf.core import Operator, _global_server, types
+from ansys.dpf.core import Operator, _global_server, available_operator_names, types
 from ansys.tools.common.exceptions import VersionError, VersionSyntaxError
 from packaging.version import parse
+
+# Dictionary mapping DPF Sound plugin versions to corresponding DPF server versions
+MATCHING_VERSIONS = {
+    "2024.2.0": "8.0",
+    "2025.2.0": "10.0",
+    "2026.1.0": "11.0",
+    "2027.1.0": "12.0",
+}
 
 
 def requires_sound_version(min_sound_version: str) -> Callable:
@@ -193,12 +201,14 @@ def _check_sound_version_and_raise(min_sound_version: str, error_msg: str):
 def _check_sound_version(min_sound_version: str) -> bool:
     """Check the DPF Sound plugin version.
 
+    Before Ansys 2027 R1, the DPF Sound plugin version is verified according to the DPF Server/DPF
+    Sound version matching dictionary. From Ansys 2027 R1 onward, the DPF Sound plugin version is
+    retrieved directly from the server.
+
     Parameters
     ----------
     min_sound_version : str
         Minimum DPF Sound plugin version required.
-    error_msg : str
-        Error message to display if the version check fails.
 
     Returns
     -------
@@ -206,8 +216,13 @@ def _check_sound_version(min_sound_version: str) -> bool:
         True if the current DPF Sound plugin version is greater than or equal to the specified
         version, False otherwise.
     """
-    if min_sound_version is None:
-        return True
+    if "get_version_info" not in available_operator_names():
+        # Operator get_version_info is only introduced in Ansys 2027 R1, so if it does not exist,
+        # we use the matching DPF server version to perform the check.
+        if min_sound_version not in MATCHING_VERSIONS:
+            raise VersionError(f"Unknown DPF Sound plugin version {min_sound_version}.")
+
+        return _global_server().meets_version(MATCHING_VERSIONS[min_sound_version])
 
     version_retriever = Operator("get_version_info")
     version_retriever.run()

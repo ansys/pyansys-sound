@@ -30,7 +30,7 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectrogram_processing import Stft
 
-if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
     # bug fix (ID#1247009) & third-party update (IPP) in DPF Sound 2026 R1
     EXP_FC_SIZE = 308  # real and complex parts in separate fields
     EXP_STFT_SIZE = 154  # real and complex parts combined (EXP_STFT_SIZE = EXP_FC_SIZE / 2)

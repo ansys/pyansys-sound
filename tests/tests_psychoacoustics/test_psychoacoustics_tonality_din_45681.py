@@ -52,7 +52,7 @@ EXP_STR = (
     f"Tonal adjustment Kt: 5 dB"
 )
 
-if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
     # Third-party update (IPP) in DPF Sound 2026 R1
     EXP_DLJ3 = 7.5474415
     EXP_UJ3 = 1.98501670

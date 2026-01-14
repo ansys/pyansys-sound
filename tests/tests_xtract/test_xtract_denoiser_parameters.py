@@ -79,7 +79,7 @@ def test_xtract_denoiser_parameters_generate_noise_psd_from_automatic_estimation
 
     s = np.sum(noise)
 
-    if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
         # bug fix in DPF Sound 2026 R1 ID#1247009
         assert s == pytest.approx(0.00522007046561157)
     else:  # DPF Sound <= 2025 R2

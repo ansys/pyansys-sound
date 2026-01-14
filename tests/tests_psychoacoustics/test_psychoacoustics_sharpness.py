@@ -28,7 +28,7 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.psychoacoustics import Sharpness
 from ansys.sound.core.signal_utilities import LoadWav
 
-if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
     # Bug fix (ID#1325159) & third-party update (IPP) in DPF Sound 2026 R1
     EXP_SHARPNESS_1_FREE = 1.661001
     EXP_SHARPNESS_1_DIFFUSE = 1.747807

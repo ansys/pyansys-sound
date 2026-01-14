@@ -113,23 +113,26 @@ class PyAnsysSound:
         Checks DPF version compliance (if specified in class definition), and initialize necessary
         attributes.
         """
-        # Check current DPF Sound plugin version against class minimum requirement (if specified).
-        _check_sound_version_and_raise(
-            self._min_sound_version,
-            (
-                f"Class `{self.__class__.__name__}` requires DPF Sound plugin version "
-                f"{self._min_sound_version} or higher."
-            ),
-        )
+        if self._min_sound_version is not None:
+            # Check current DPF Sound plugin version against class minimum requirement (if
+            # specified).
+            _check_sound_version_and_raise(
+                self._min_sound_version,
+                (
+                    f"Class `{self.__class__.__name__}` requires DPF Sound plugin version "
+                    f"{self._min_sound_version} or higher."
+                ),
+            )
 
-        # Check current DPF Server version against class minimum requirement (if specified).
-        _check_dpf_version_and_raise(
-            self._min_dpf_version,
-            (
-                f"Class `{self.__class__.__name__}` requires DPF Server version "
-                f"{self._min_dpf_version} or higher."
-            ),
-        )
+        if self._min_dpf_version is not None:
+            # Check current DPF Server version against class minimum requirement (if specified).
+            _check_dpf_version_and_raise(
+                self._min_dpf_version,
+                (
+                    f"Class `{self.__class__.__name__}` requires DPF Server version "
+                    f"{self._min_dpf_version} or higher."
+                ),
+            )
 
         # Initialize output attribute.
         self._output = None

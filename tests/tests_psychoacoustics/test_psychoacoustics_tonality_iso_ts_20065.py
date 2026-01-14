@@ -52,7 +52,7 @@ EXP_STR = (
     f"Mean tonality (audibility DL): 9.7 (+/-0.9) dB"
 )
 
-if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
     # Third-party update (IPP) in DPF Sound 2026 R1
     EXP_SPECTRUM1_TONE3_MASKING_NOISE_LEVEL = 0.6313894
 else:  # DPF Sound <= 2025 R2

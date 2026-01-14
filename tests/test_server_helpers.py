@@ -45,8 +45,8 @@ def test_connect_to_or_start_server():
 
 
 @pytest.mark.skipif(
-    not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_12_0,
-    reason="DPF Sound version check require DPF server version 12.0 or higher.",
+    not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1,
+    reason="DPF Sound version check requires version 2027 R1 or higher.",
 )
 def test_requires_sound_version():
     """Test the requires_sound_version decorator."""
@@ -141,7 +141,7 @@ def test_requires_dpf_version():
 
 
 @pytest.mark.skipif(
-    not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_12_0,
+    not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1,
     reason="DPF Sound version check require DPF server version 12.0 or higher.",
 )
 def test__check_sound_version():
@@ -151,7 +151,7 @@ def test__check_sound_version():
 
 
 @pytest.mark.skipif(
-    not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_12_0,
+    not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1,
     reason="DPF Sound version check require DPF server version 12.0 or higher.",
 )
 def test__check_sound_version_and_raise():

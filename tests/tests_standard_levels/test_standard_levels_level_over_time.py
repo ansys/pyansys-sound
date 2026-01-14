@@ -39,7 +39,7 @@ EXP_STR_ALL_SET = (
     "\tFrequency weighting: None\n\tTime weighting: Custom\n\tTime step: 100.0 ms\n"
     "\tWindow size: 5000.0 ms\n\tAnalysis window: HANN\nMaximum level: Not processed"
 )
-if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
     # bug fix in DPF Sound 2026 R1 ID#1288971
     EXP_STR_ALL_PROCESSED = (
         'LevelOverTime object.\nData\n\tSignal: "flute"\n\tScale type: dB\n'
