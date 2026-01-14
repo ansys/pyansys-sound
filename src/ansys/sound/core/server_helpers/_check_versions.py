@@ -222,7 +222,7 @@ def _check_sound_version(min_sound_version: str) -> bool:
         if min_sound_version not in MATCHING_VERSIONS:
             raise VersionError(f"Unknown DPF Sound plugin version {min_sound_version}.")
 
-        return _global_server().meets_version(MATCHING_VERSIONS[min_sound_version])
+        return _global_server().meet_version(MATCHING_VERSIONS[min_sound_version])
 
     version_retriever = Operator("get_version_info")
     version_retriever.run()
