@@ -193,13 +193,13 @@ plt.show()
 # %%
 # Contrary to our initial assumption, the two methods do not yield identical results, with even
 # very large differences (20-30 dB) in some bands. This discrepancy is due to the neighboring-band
-# leakage effect: since the band-pass filters defined in the ANSI S1.11-1986 and IEC 61260:1995
-# standards have a finite filter order, their frequency responses are not perfectly rectangular,
-# and frequencies outside the band are not completely rejected. This is reflected in the
-# signal-based computation (class :class:`.OneThirdOctaveLevelsFromSignal`). With class
-# :class:`.OneThirdOctaveLevelsFromPSD`, however, the PSD is simply summed up within each band,
-# excluding any contribution from frequencies outside the band. See :ref:`fractional_octave_theory`
-# for more computational details.
+# leakage effect that is inherent to the filterbank specified in the ANSI S1.11-1986 and
+# IEC 61260:1995 standards, and that the class :class:`.OneThirdOctaveLevelsFromSignal` implements:
+# since the frequency responses of the specified band-pass filters are not perfectly rectangular
+# (due to their finite filter order), each estimated band level is also affected by
+# neighbouring-band frequency contributions. With class :class:`.OneThirdOctaveLevelsFromPSD`,
+# however, the PSD is simply summed up within each band, excluding any contribution from
+# frequencies outside the band. See :ref:`fractional_octave_theory` for more computational details.
 #
 # Now, let us repeat the PSD-based computation, this time setting the attribute
 # :attr:`~.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986` to ``True`` to replicate the effect
@@ -338,17 +338,16 @@ plt.show()
 #
 # An octave is the frequency interval between two frequencies that have a ratio of 2. For example,
 # there is exactly one octave between 50 Hz and 100 Hz, but also between 1000 Hz and 2000 Hz.
-# Octave bands are generally understood as a set of predefined frequency bands where each band
-# starts where the previous one ends, and extends over one octave. This notably means that each
+# "Octave bands" are generally understood as a set of 10 predefined, contiguous frequency bands
+# extending over one octave exactly and covering the entire audible frequency range. Notably, each
 # octave band is twice as wide as the previous one, and half as wide as the next one.
 #
-# One-third-octave bands are frequency bands built from a further subdivision of each octave band
-# into 3 sub-bands (again, logarithmically).
+# One-third-octave bands are a further logarithmic subdivision of each octave band into 3 sub-bands.
 #
-# The ANSI S1.11-1986 and IEC 61260:1995 standards provide the definition of band-pass filters
-# allowing the computation of 29 one-third-octave-band levels from a time-domain signal.
-# Octave-band levels are then derived from one-third-octave levels by summing the computed energy
-# within each triplet of consecutive one-third-octave bands.
+# The ANSI S1.11-1986 and IEC 61260:1995 standards specify band-pass filters allowing the
+# computation of 29 one-third-octave-band levels from a time-domain signal. Octave-band levels are
+# then derived from one-third-octave levels by summing the computed energy within each set of 3
+# consecutive one-third-octave bands.
 #
 # Levels from signal
 # ^^^^^^^^^^^^^^^^^^
