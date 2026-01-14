@@ -186,7 +186,7 @@ def _check_sound_version_and_raise(min_sound_version: str, error_msg: str):
     error_msg : str
         Error message to display if the version check fails.
     """
-    if not _check_sound_version(min_sound_version, error_msg):
+    if not _check_sound_version(min_sound_version):
         raise VersionError(f"DPF Sound plugin version error: {error_msg}")
 
 
