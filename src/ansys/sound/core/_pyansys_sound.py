@@ -28,9 +28,9 @@ import warnings
 from ansys.dpf.core import FieldsContainer
 import numpy as np
 
-from ansys.sound.core.server_helpers._check_server_version import (
-    _check_dpf_version,
-    _check_sound_version,
+from ansys.sound.core.server_helpers._check_versions import (
+    _check_dpf_version_and_raise,
+    _check_sound_version_and_raise,
 )
 
 REFERENCE_ACOUSTIC_PRESSURE = 2e-5
@@ -114,7 +114,7 @@ class PyAnsysSound:
         attributes.
         """
         # Check current DPF Sound plugin version against class minimum requirement (if specified).
-        _check_sound_version(
+        _check_sound_version_and_raise(
             self._min_sound_version,
             (
                 f"Class `{self.__class__.__name__}` requires DPF Sound plugin version "
@@ -123,7 +123,7 @@ class PyAnsysSound:
         )
 
         # Check current DPF Server version against class minimum requirement (if specified).
-        _check_dpf_version(
+        _check_dpf_version_and_raise(
             self._min_dpf_version,
             (
                 f"Class `{self.__class__.__name__}` requires DPF Server version "

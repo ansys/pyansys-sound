@@ -24,8 +24,9 @@ from ansys.dpf.gate.errors import DpfVersionNotSupported
 import pytest
 
 from ansys.sound.core.server_helpers import (
-    _check_dpf_version,
+    _check_dpf_version_and_raise,
     _check_sound_version,
+    _check_sound_version_and_raise,
     connect_to_or_start_server,
     requires_dpf_version,
     requires_sound_version,
@@ -134,28 +135,42 @@ def test_requires_dpf_version():
         DC.dummy_method_fail()
 
 
+@pytest.mark.skip(
+    not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_12_0,
+    reason="DPF Sound version check require DPF server version 12.0 or higher.",
+)
 def test__check_sound_version():
     """Test the _check_sound_version function."""
+    assert _check_sound_version("2024.2.0")
+    assert not _check_sound_version("3000.1.0")
+
+
+@pytest.mark.skip(
+    not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_12_0,
+    reason="DPF Sound version check require DPF server version 12.0 or higher.",
+)
+def test__check_sound_version_and_raise():
+    """Test the _check_sound_version_and_raise function."""
 
     # This should NOT raise an exception if the plugin version is 2024.2.0 or higher
-    _check_sound_version("2024.2.0", "Test error message.")
+    _check_sound_version_and_raise("2024.2.0", "Test error message.")
     # This should raise an exception if the plugin version is lower than 3000.1.0
     with pytest.raises(
         DpfVersionNotSupported,
         match=("Test error message."),
     ):
-        _check_sound_version("3000.1.0", "Test error message.")
+        _check_sound_version_and_raise("3000.1.0", "Test error message.")
 
 
 def test__check_dpf_version():
     """Test the _check_dpf_version function."""
 
     # This should NOT raise an exception if the server version is 1.0 or higher
-    _check_dpf_version("1.0", "Test error message.")
+    _check_dpf_version_and_raise("1.0", "Test error message.")
 
     # This should raise an exception if the server version is lower than 666.0
     with pytest.raises(
         DpfVersionNotSupported,
         match=("Test error message."),
     ):
-        _check_dpf_version("666.0", "Test error message.")
+        _check_dpf_version_and_raise("666.0", "Test error message.")

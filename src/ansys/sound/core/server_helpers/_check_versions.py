@@ -80,7 +80,7 @@ def requires_sound_version(min_sound_version: str) -> Callable:
             Any
                 The original function's or method's output.
             """
-            _check_sound_version(
+            _check_sound_version_and_raise(
                 min_sound_version,
                 (
                     f"Function or method `{func.__name__}()` requires DPF Sound plugin version "
@@ -143,7 +143,7 @@ def requires_dpf_version(min_dpf_version: str) -> Callable:
             Any
                 The original function's or method's output.
             """
-            _check_dpf_version(
+            _check_dpf_version_and_raise(
                 min_dpf_version,
                 (
                     f"Function or method `{func.__name__}()` requires DPF server version "
@@ -157,7 +157,7 @@ def requires_dpf_version(min_dpf_version: str) -> Callable:
     return decorator
 
 
-def _check_dpf_version(min_dpf_version: str, error_msg: str):
+def _check_dpf_version_and_raise(min_dpf_version: str, error_msg: str):
     """Check the current DPF server and raise an exception if the specified version is higher.
 
     Parameters
@@ -176,7 +176,7 @@ def _check_dpf_version(min_dpf_version: str, error_msg: str):
         server.check_version(min_dpf_version, error_msg)
 
 
-def _check_sound_version(min_sound_version: str, error_msg: str):
+def _check_sound_version_and_raise(min_sound_version: str, error_msg: str):
     """Check the DPF Sound plugin version and raise an exception if the specified version is higher.
 
     Parameters
@@ -186,12 +186,33 @@ def _check_sound_version(min_sound_version: str, error_msg: str):
     error_msg : str
         Error message to display if the version check fails.
     """
-    if min_sound_version is not None:
-        version_retriever = Operator("get_version_info")
-        version_retriever.run()
-        year = version_retriever.get_output(0, types.int)
-        major = version_retriever.get_output(1, types.int)
-        minor = version_retriever.get_output(2, types.int)
+    if not _check_sound_version(min_sound_version, error_msg):
+        raise VersionError(f"DPF Sound plugin version error: {error_msg}")
 
-        if parse(f"{year}.{major}.{minor}") < parse(min_sound_version):
-            raise VersionError(f"DPF Sound plugin version error: {error_msg}")
+
+def _check_sound_version(min_sound_version: str) -> bool:
+    """Check the DPF Sound plugin version.
+
+    Parameters
+    ----------
+    min_sound_version : str
+        Minimum DPF Sound plugin version required.
+    error_msg : str
+        Error message to display if the version check fails.
+
+    Returns
+    -------
+    bool
+        True if the current DPF Sound plugin version is greater than or equal to the specified
+        version, False otherwise.
+    """
+    if min_sound_version is None:
+        return True
+
+    version_retriever = Operator("get_version_info")
+    version_retriever.run()
+    year = version_retriever.get_output(0, types.int)
+    major = version_retriever.get_output(1, types.int)
+    minor = version_retriever.get_output(2, types.int)
+
+    return parse(f"{year}.{major}.{minor}") >= parse(min_sound_version)

@@ -26,9 +26,10 @@ Helper functions for managing the DPF server, in particular for loading
 the DPF Sound plugin.
 """
 
-from ._check_server_version import (
-    _check_dpf_version,
+from ._check_versions import (
+    _check_dpf_version_and_raise,
     _check_sound_version,
+    _check_sound_version_and_raise,
     requires_dpf_version,
     requires_sound_version,
 )
@@ -40,6 +41,7 @@ __all__ = (
     "validate_dpf_sound_connection",
     "requires_sound_version",
     "_check_sound_version",
+    "_check_sound_version_and_raise",
     "requires_dpf_version",
-    "_check_dpf_version",
+    "_check_dpf_version_and_raise",
 )

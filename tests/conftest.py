@@ -27,6 +27,7 @@ from ansys.dpf.core.check_version import get_server_version, meets_version
 import pytest
 
 from ansys.sound.core.server_helpers import connect_to_or_start_server
+from ansys.sound.core.server_helpers._check_versions import _check_sound_version
 
 
 def pytest_configure(config):
@@ -44,6 +45,10 @@ def pytest_configure(config):
 
     # Define global variables for server version checks: store it in the pytest object
     # to make it global and available in all tests where we import pytest.
+    # 12.0 corresponds to Ansys 2027 R1
+    pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_12_0 = meets_version(
+        get_server_version(server), "12.0"
+    )
     # 11.0 corresponds to Ansys 2026 R1
     pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0 = meets_version(
         get_server_version(server), "11.0"
@@ -52,6 +57,7 @@ def pytest_configure(config):
     pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_10_0 = meets_version(
         get_server_version(server), "10.0"
     )
+    pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027_1 = _check_sound_version("2027.1.0")
 
     # Use the conftest.py file's directory to set the base directory for the test data files.
     base_dir = os.path.join(os.path.dirname(__file__), "data")
