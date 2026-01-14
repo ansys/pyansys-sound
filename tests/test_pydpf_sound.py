@@ -65,7 +65,7 @@ def test_pyansys_sound_init_subclass():
 
     with pytest.raises(
         DpfVersionNotSupported,
-        match="Class `TestClass` requires DPF server version 666.0 or higher.",
+        match="Class `TestClass` requires DPF Server version 666.0 or higher.",
     ):
         TestClass()
 

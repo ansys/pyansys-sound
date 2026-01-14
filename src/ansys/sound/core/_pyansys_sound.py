@@ -43,8 +43,9 @@ class PyAnsysSound:
     This is the base class of all PyAnsys Sound classes and should not be used as is.
     """
 
-    # Declare minimum DPF version class attribute.
+    # Declare minimum versions class attributes.
     _min_dpf_version = None
+    _min_sound_version = None
 
     def __init_subclass__(
         cls,
