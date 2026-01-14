@@ -20,8 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
-
 from ansys.dpf.gate.errors import DpfVersionNotSupported
 import pytest
 
@@ -32,8 +30,6 @@ from ansys.sound.core.server_helpers import (
     validate_dpf_sound_connection,
 )
 
-DEFAULT_DPF_SERVER_PORT = os.getenv("ANSRV_DPF_SOUND_PORT")
-
 
 def test_validate_dpf_sound_connection():
     validate_dpf_sound_connection()
@@ -41,14 +37,13 @@ def test_validate_dpf_sound_connection():
 
 def test_connect_to_or_start_server():
     """Test the connect_to_or_start_server function."""
-    # Note: this test purposefully requires a remote DPF Server. It will fail if used with a local
-    # server.
-    s = connect_to_or_start_server(
-        port=DEFAULT_DPF_SERVER_PORT,
-        ip="127.0.0.1",
-        use_license_context=True,
-    )
-    print(s)
+    server, license_context = connect_to_or_start_server(use_license_context=False)
+    assert server is not None
+    assert license_context is None
+
+    server, license_context = connect_to_or_start_server(use_license_context=True)
+    assert server is not None
+    assert license_context is not None
 
 
 def test_requires_dpf_version():
