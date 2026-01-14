@@ -117,7 +117,7 @@ def connect_to_or_start_server(
     connect_kwargs: dict[str, Union[int, str]] = {}
     if port is not None:
         connect_kwargs["port"] = port
-    if ip is not None:
+    if ip is not None:  # pragma: no cover
         connect_kwargs["ip"] = ip
 
     full_path_dll = ""
