@@ -56,6 +56,10 @@ class OctaveLevelsFromSignal(FractionalOctaveLevelsFromSignalParent, min_dpf_ver
     >>> band_levels = octave_levels_from_signal.get_band_levels()
     >>> band_center_frequencies = octave_levels_from_signal.get_frequencies()
     >>> octave_levels_from_signal.plot()
+
+    .. seealso::
+        :ref:`calculate_fractional_octave_levels`
+            Example demonstrating how to calculate and compare octave and one-third-octave levels.
     """
 
     def process(self):

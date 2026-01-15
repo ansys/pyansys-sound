@@ -55,7 +55,8 @@ class FractionalOctaveLevelsFromPSDParent(FractionalOctaveLevelsParent, min_dpf_
         Parameters
         ----------
         psd : Field, default: None
-            The power spectral density (PSD) from which the levels are computed.
+            The power spectral density (PSD), in squared linear unit per Hz  (Pa^2/Hz, for example),
+            from which the levels are computed.
         use_ansi_s1_11_1986 : bool, default: False
             Whether to simulate the 1/3-octave filterbank as defined in ANSI S1.11-1986 and
             IEC 61260 standards.
@@ -103,7 +104,7 @@ class FractionalOctaveLevelsFromPSDParent(FractionalOctaveLevelsParent, min_dpf_
 
     @property
     def psd(self) -> Field:
-        """Input power spectral density (PSD)."""
+        """Input power spectral density (PSD), in squared linear unit per Hz."""
         return self.__psd
 
     @psd.setter
