@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Helpers to check DPF server version."""
+"""Helpers to check DPF Sound plugin version."""
 
 from functools import wraps
 from typing import Any, Callable
@@ -116,7 +116,7 @@ def _check_sound_version(min_sound_version: str) -> bool:
     """Check the DPF Sound plugin version.
 
     Before Ansys 2027 R1, the DPF Sound plugin version is verified according to the DPF Server/DPF
-    Sound version matching dictionary. From Ansys 2027 R1 onward, the DPF Sound plugin version is
+    Sound version matching dictionary. From Ansys 2027 R1 onwards, the DPF Sound plugin version is
     retrieved directly from the server.
 
     Parameters
