@@ -141,7 +141,7 @@ Follow these steps to create new examples to demonstrate PyAnsys Sound workflows
    this test module, and make sure the tests pass (see :ref:`run_tests`).
 #. In your example script, replace the local input file paths with the new download function.
 #. If your example uses libraries that are not already included in the project's dependencies in
-   ``pyproject.toml`` at the root of cloned repository, make sure to add them in the *full* and
+   ``pyproject.toml`` at the root of the cloned repository, make sure to add them in the *full* and
    *doc* dependency groups
 #. Submit your changes in a `pull request` to the PyAnsys Sound repository and wait for review.
 
