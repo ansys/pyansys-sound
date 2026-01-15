@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 """
-.. _calculate_predict_listening_test_ratings:
+.. _predict_listening_test_ratings:
 
 Predict listening test ratings
 ------------------------------
@@ -75,8 +75,8 @@ from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.signal_utilities.crop_signal import CropSignal
 
-# Connect to a DPF Sound server (remote or local).
-my_server = connect_to_or_start_server(use_license_context=True)
+# Connect to a remote DPF server or start a local DPF server.
+my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
 # Download the necessary files for this example.
 model_wav_files_path = download_all_carHVAC_wav()
@@ -87,7 +87,7 @@ test_wav_file_path = download_HVAC_test_wav()
 # Define indicator computation function
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Here we define a function that calculates the 4 psychoacoustic indicators of interest (listed at
-# at the beginning of the example), given an input sound signal as a DPF field.
+# the beginning of the example), given an input sound signal as a DPF field.
 
 
 def compute_indicators(signal: Field) -> list:

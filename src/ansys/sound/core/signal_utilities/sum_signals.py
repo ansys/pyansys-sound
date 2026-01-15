@@ -31,7 +31,17 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class SumSignals(SignalUtilitiesParent):
-    """Sums signals."""
+    """Sum signals.
+
+    Sum several signals together.
+
+    Examples
+    --------
+    >>> from ansys.sound.core.signal_utilities import SumSignals
+    >>> sum_signals = SumSignals(signals=my_signals)
+    >>> sum_signals.process()
+    >>> summed_signal = sum_signals.get_output()
+    """
 
     def __init__(self, signals: FieldsContainer = None):
         """Class instantiation takes the following parameters.

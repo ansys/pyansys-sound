@@ -23,11 +23,11 @@
 """
 .. _xtract_feature_example:
 
-Use the Xtract feature
-----------------------
+Extract tonal, transient, and noise components (Xtract)
+-------------------------------------------------------
 
 This example shows how to use the Xtract feature in PyAnsys Sound.
-It demonstrates different capabilities of this feature, such as
+It demonstrates the different capabilities of this feature, namely,
 noise extraction, tonal extraction, and transient extraction.
 
 """
@@ -68,8 +68,8 @@ from ansys.sound.core.xtract import (
 # sphinx_gallery_thumbnail_path = '_static/_image/example005_thumbnail.png'
 # sphinx_gallery_end_ignore
 
-# Connect to a remote server or start a local server
-my_server, lic_context = connect_to_or_start_server(use_license_context=True)
+# Connect to a remote DPF server or start a local DPF server.
+my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
 
 # %%

@@ -37,7 +37,29 @@ from .._pyansys_sound import (
 
 
 class XtractTransient(XtractParent):
-    """Extracts the transient components of a signal using the Xtract algorithm."""
+    """Extracts the transient components of a signal using the Xtract algorithm.
+
+    .. seealso::
+        :class:`Xtract`, :class:`XtractTransientParameters`
+
+    Examples
+    --------
+    Extract transient components from a signal, and display the transient and non-transient
+    components.
+
+    >>> from ansys.sound.core.xtract import XtractTransient
+    >>> xtract_transient = XtractTransient(
+    ...     input_signal=my_signal_field,
+    ...     input_parameters=my_parameters
+    ... )
+    >>> xtract_transient.process()
+    >>> transient_signals, non_transient_signals = xtract_transient.get_output()
+    >>> xtract_transient.plot()
+
+    .. seealso::
+        :ref:`xtract_feature_example`
+            Example demonstrating how to use Xtract to extract the various components of a signal.
+    """
 
     def __init__(
         self,

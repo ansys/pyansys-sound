@@ -37,6 +37,33 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
     This class computes the TNR from a power spectral density (PSD), according to the ECMA 418-1
     and ISO 7779 standards.
+
+    .. seealso::
+        :class:`ProminenceRatio`, :class:`ToneToNoiseRatioForOrdersOverTime`
+
+    Examples
+    --------
+    Compute and display the tone-to-noise ratio of all identified peaks in a given power spectral
+    density.
+
+    >>> from ansys.sound.core.psychoacoustics import ToneToNoiseRatio
+    >>> tone_to_noise_ratio = ToneToNoiseRatio(psd=my_psd)
+    >>> tone_to_noise_ratio.process()
+    >>> tnr_values = tone_to_noise_ratio.get_TNR_values()
+    >>> frequencies = tone_to_noise_ratio.get_peaks_frequencies()
+    >>> max_tnr = tone_to_noise_ratio.get_max_TNR_value()
+    >>> tone_to_noise_ratio.plot()
+
+    Compute the tone-to-noise ratio at specific frequencies.
+
+    >>> from ansys.sound.core.psychoacoustics import ToneToNoiseRatio
+    >>> tone_to_noise_ratio = ToneToNoiseRatio(psd=my_psd, frequency_list=[500, 1000, 2000])
+    >>> tone_to_noise_ratio.process()
+    >>> tnr_values = tone_to_noise_ratio.get_TNR_values()
+
+    .. seealso::
+        :ref:`calculate_PR_and_TNR`
+            Example demonstrating how to compute tone-to-noise ratio and prominence ratio.
     """
 
     def __init__(self, psd: Field = None, frequency_list: list = None):

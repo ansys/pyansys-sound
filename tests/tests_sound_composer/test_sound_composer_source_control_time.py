@@ -43,21 +43,21 @@ def test_source_control_time_instantiation_no_file():
 def test_source_control_time_instantiation_wav_file():
     """Test SourceControlTime instantiation."""
     # Test instantiation.
-    control_time = SourceControlTime(pytest.data_path_rpm_profile_as_wav_in_container)
+    control_time = SourceControlTime(pytest.data_path_rpm_profile_as_wav)
     assert isinstance(control_time, SourceControlTime)
 
 
 def test_source_control_time_instantiation_txt_file():
     """Test SourceControlTime instantiation."""
     # Test instantiation.
-    control_time = SourceControlTime(pytest.data_path_rpm_profile_as_txt_in_container)
+    control_time = SourceControlTime(pytest.data_path_rpm_profile_as_txt)
     assert isinstance(control_time, SourceControlTime)
 
 
 def test_source_control_time_properties():
     """Test SourceControlTime properties."""
     control_time = SourceControlTime()
-    loader = LoadWav(pytest.data_path_rpm_profile_as_wav_in_container)
+    loader = LoadWav(pytest.data_path_rpm_profile_as_wav)
     loader.process()
     control = loader.get_output()[0]
 
@@ -90,7 +90,7 @@ def test_source_control_time_properties_exceptions():
 
 def test_source_control_time___str__():
     """Test SourceControlTime __str__ method."""
-    control_time = SourceControlTime(pytest.data_path_rpm_profile_as_wav_in_container)
+    control_time = SourceControlTime(pytest.data_path_rpm_profile_as_wav)
     assert str(control_time) == EXP_STR_ALL_SET
 
 
@@ -103,19 +103,19 @@ def test_source_control_time___str___not_set():
 def test_source_control_time_load_from_wave_file():
     """Test SourceControlTime load_from_wave_file method."""
     control_time = SourceControlTime()
-    control_time.load_from_wave_file(pytest.data_path_rpm_profile_as_wav_in_container)
+    control_time.load_from_wave_file(pytest.data_path_rpm_profile_as_wav)
     assert isinstance(control_time.control, Field)
 
 
 def test_source_control_time_load_from_text_file():
     """Test SourceControlTime load_from_text_file method."""
     control_time = SourceControlTime()
-    control_time.load_from_text_file(pytest.data_path_rpm_profile_as_txt_in_container)
+    control_time.load_from_text_file(pytest.data_path_rpm_profile_as_txt)
     assert isinstance(control_time.control, Field)
 
 
 @patch("matplotlib.pyplot.show")
 def test_source_audio_plot(mock_show):
     """Test SourceAudio plot method."""
-    source_audio = SourceControlTime(pytest.data_path_rpm_profile_as_txt_in_container)
+    source_audio = SourceControlTime(pytest.data_path_rpm_profile_as_txt)
     source_audio.plot()

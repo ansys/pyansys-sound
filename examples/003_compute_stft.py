@@ -26,9 +26,9 @@
 Spectrogram: compute the STFT and ISTFT
 ---------------------------------------
 
-This example shows how to compute the short-time Fourier transform (STFT) of a signal.
-It also shows how to compute the inverse short-time Fourier transform (ISTFT) from a
-STFT matrix and get a signal.
+This example shows how to compute the short-time Fourier transform (STFT) of a signal, that is, its
+`spectrogram`. It also shows how to use the inverse short-time Fourier transform (ISTFT) to get the
+signal corresponding to a given spectrogram.
 
 """
 # %%
@@ -47,8 +47,8 @@ from ansys.sound.core.spectrogram_processing import Istft, Stft
 # sphinx_gallery_thumbnail_path = '_static/_image/example003_thumbnail.png'
 # sphinx_gallery_end_ignore
 
-# Connect to a remote server or start a local server
-my_server, lic_context = connect_to_or_start_server(use_license_context=True)
+# Connect to a remote DPF server or start a local DPF server.
+my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
 # %%
 # Load a signal

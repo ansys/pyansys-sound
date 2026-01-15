@@ -95,7 +95,7 @@ def test_source_broadband_noise_two_parameters_instantiation_no_arg():
 def test_source_broadband_noise_two_parameters_instantiation_file_arg():
     """Test SourceBroadbandNoiseTwoParameters instantiation with file argument."""
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters(
-        file=pytest.data_path_sound_composer_bbn_source_2p_in_container
+        file=pytest.data_path_sound_composer_bbn_source_2p
     )
     assert isinstance(source_bbn_two_parameters_obj, SourceBroadbandNoiseTwoParameters)
     assert source_bbn_two_parameters_obj.source_bbn_two_parameters is not None
@@ -133,7 +133,7 @@ def test_source_broadband_noise_two_parameters___str___all_set():
     # Create a SourceBroadbandNoiseTwoParameters object test source file with less and created
     # source controls.
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters(
-        file=pytest.data_path_sound_composer_bbn_source_2p_in_container,
+        file=pytest.data_path_sound_composer_bbn_source_2p,
         source_control1=source_control1,
         source_control2=source_control2,
     )
@@ -142,7 +142,7 @@ def test_source_broadband_noise_two_parameters___str___all_set():
 
     # Test __str__ method with no DeltaF (octave-type spectrum).
     source_bbn_two_parameters_obj.load_source_bbn_two_parameters(
-        pytest.data_path_sound_composer_bbn_source_2p_octave_in_container,
+        pytest.data_path_sound_composer_bbn_source_2p_octave,
     )
 
     assert str(source_bbn_two_parameters_obj) == EXP_STR_ALL_SET_OCTAVE
@@ -164,7 +164,7 @@ def test_source_broadband_noise_two_parameters_properties():
     # Create a second object and then reuse its source_bbn_two_parameters property.
     source_bbn_two_parameters_obj_tmp = SourceBroadbandNoiseTwoParameters()
     source_bbn_two_parameters_obj_tmp.load_source_bbn_two_parameters(
-        pytest.data_path_sound_composer_bbn_source_2p_in_container
+        pytest.data_path_sound_composer_bbn_source_2p
     )
     fc_source = source_bbn_two_parameters_obj_tmp.source_bbn_two_parameters
     source_bbn_two_parameters_obj.source_bbn_two_parameters = fc_source
@@ -225,7 +225,7 @@ def test_source_broadband_noise_two_parameters_properties_exceptions():
     # For this, we use a valid dataset, and then remove the control data.
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters()
     source_bbn_two_parameters_obj.load_source_bbn_two_parameters(
-        pytest.data_path_sound_composer_bbn_source_2p_in_container
+        pytest.data_path_sound_composer_bbn_source_2p
     )
     support_data = source_bbn_two_parameters_obj.source_bbn_two_parameters.get_support(
         "control_parameter_1"
@@ -280,7 +280,7 @@ def test_source_broadband_noise_two_parameters_load_source_bbn_two_parameters():
     """Test SourceBroadbandNoiseTwoParameters load_source_bbn method."""
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters()
     source_bbn_two_parameters_obj.load_source_bbn_two_parameters(
-        pytest.data_path_sound_composer_bbn_source_2p_in_container
+        pytest.data_path_sound_composer_bbn_source_2p
     )
     assert isinstance(source_bbn_two_parameters_obj.source_bbn_two_parameters, FieldsContainer)
     assert source_bbn_two_parameters_obj.source_bbn_two_parameters[0].data[3] == pytest.approx(
@@ -291,7 +291,7 @@ def test_source_broadband_noise_two_parameters_load_source_bbn_two_parameters():
 def test_source_broadband_noise_two_parameters_set_from_generic_data_containers():
     """Test SourceBroadbandNoiseTwoParameters set_from_generic_data_containers method."""
     op = Operator("sound_composer_load_source_bbn_two_parameters")
-    op.connect(0, pytest.data_path_sound_composer_bbn_source_2p_in_container)
+    op.connect(0, pytest.data_path_sound_composer_bbn_source_2p)
     op.run()
     fc_data: FieldsContainer = op.get_output(0, "fields_container")
 
@@ -328,7 +328,7 @@ def test_source_broadband_noise_two_parameters_get_as_generic_data_containers():
     """Test SourceBroadbandNoiseTwoParameters get_as_generic_data_containers method."""
     # Source controls undefined => warning.
     source_bbn_2p_obj = SourceBroadbandNoiseTwoParameters(
-        file=pytest.data_path_sound_composer_bbn_source_2p_in_container
+        file=pytest.data_path_sound_composer_bbn_source_2p
     )
     with pytest.warns(
         PyAnsysSoundWarning,
@@ -363,7 +363,7 @@ def test_source_broadband_noise_two_parameters_get_as_generic_data_containers():
 
     # Both source and source control are defined.
     source_bbn_2p_obj.load_source_bbn_two_parameters(
-        pytest.data_path_sound_composer_bbn_source_2p_in_container,
+        pytest.data_path_sound_composer_bbn_source_2p,
     )
     source_data, source_control_data = source_bbn_2p_obj.get_as_generic_data_containers()
 
@@ -425,7 +425,7 @@ def test_source_broadband_noise_two_parameters_process():
     # Create a SourceBroadbandNoiseTwoParameters object test source file with less and created
     # source controls.
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters(
-        file=pytest.data_path_sound_composer_bbn_source_2p_in_container,
+        file=pytest.data_path_sound_composer_bbn_source_2p,
         source_control1=source_control1,
         source_control2=source_control2,
     )
@@ -438,7 +438,7 @@ def test_source_broadband_noise_two_parameters_process_exceptions():
     """Test SourceBroadbandNoiseTwoParameters process method exceptions."""
     # Test process method exception1 (missing controls).
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters(
-        pytest.data_path_sound_composer_bbn_source_2p_in_container
+        pytest.data_path_sound_composer_bbn_source_2p
     )
     with pytest.raises(
         PyAnsysSoundException,
@@ -472,7 +472,7 @@ def test_source_broadband_noise_two_parameters_process_exceptions():
 
     # Test process method exception3 (invalid sampling frequency value).
     source_bbn_two_parameters_obj.load_source_bbn_two_parameters(
-        pytest.data_path_sound_composer_bbn_source_2p_in_container
+        pytest.data_path_sound_composer_bbn_source_2p
     )
     with pytest.raises(
         PyAnsysSoundException, match="Sampling frequency must be strictly positive."
@@ -515,7 +515,7 @@ def test_source_broadband_noise_two_parameters_get_output():
     # Create a SourceBroadbandNoiseTwoParameters object test source file and created source
     # controls.
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters(
-        file=pytest.data_path_sound_composer_bbn_source_2p_in_container,
+        file=pytest.data_path_sound_composer_bbn_source_2p,
         source_control1=source_control1,
         source_control2=source_control2,
     )
@@ -607,7 +607,7 @@ def test_source_broadband_noise_two_parameters_get_output_as_nparray():
     # Create a SourceBroadbandNoiseTwoParameters object test source file with less and created
     # source controls.
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters(
-        file=pytest.data_path_sound_composer_bbn_source_2p_in_container,
+        file=pytest.data_path_sound_composer_bbn_source_2p,
         source_control1=source_control1,
         source_control2=source_control2,
     )
@@ -668,7 +668,7 @@ def test_source_broadband_noise_two_parameters_plot(mock_show):
     # Create a SourceBroadbandNoiseTwoParameters object with test source file and created source
     # controls.
     source_bbn_two_parameters_obj = SourceBroadbandNoiseTwoParameters(
-        file=pytest.data_path_sound_composer_bbn_source_2p_in_container,
+        file=pytest.data_path_sound_composer_bbn_source_2p,
         source_control1=source_control1,
         source_control2=source_control2,
     )
@@ -760,9 +760,7 @@ def test_source_broadband_noise_two_parameters___extract_bbn_two_parameters_info
         (),
     )
 
-    source.load_source_bbn_two_parameters(
-        pytest.data_path_sound_composer_bbn_source_2p_in_container
-    )
+    source.load_source_bbn_two_parameters(pytest.data_path_sound_composer_bbn_source_2p)
     assert source._SourceBroadbandNoiseTwoParameters__extract_bbn_two_parameters_info() == (
         "Narrow band",
         1000.0,

@@ -99,7 +99,7 @@ def test_overall_level___str__():
     level_obj = OverallLevel()
     assert str(level_obj) == EXP_STR_NOT_SET
 
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     f_signal = loader.get_output()[0]
 
@@ -116,7 +116,7 @@ def test_overall_level___str__():
 
 def test_overall_level_process():
     """Test OverallLevel process method."""
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     f_signal = loader.get_output()[0]
 
@@ -137,7 +137,7 @@ def test_overall_level_process_exceptions():
 
 def test_overall_level_get_output():
     """Test OverallLevel get_output method."""
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     f_signal = loader.get_output()[0]
 
@@ -182,7 +182,7 @@ def test_overall_level_get_output_warnings():
 
 def test_overall_level_get_output_as_nparray():
     """Test OverallLevel get_output_as_nparray method."""
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     f_signal = loader.get_output()[0]
 
@@ -202,7 +202,7 @@ def test_overall_level_get_output_as_nparray():
 
 def test_overall_level_get_level():
     """Test OverallLevel get_level method."""
-    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
     f_signal = loader.get_output()[0]
 

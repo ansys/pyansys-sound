@@ -38,7 +38,20 @@ class PowerSpectralDensity(SpectralProcessingParent):
     """Power Spectral Density (PSD) class.
 
     This class allows the calculation of Power Spectral Density (PSD) for a given signal,
-    using Welch's method
+    using Welch's method.
+
+    .. seealso::
+        :class:`.Stft`
+
+    Examples
+    --------
+    Compute and display the Power Spectral Density (PSD) of an acoustic signal (in Pa).
+
+    >>> from ansys.sound.core.spectral_processing import PowerSpectralDensity
+    >>> power_spectral_density = PowerSpectralDensity(input_signal=signal)
+    >>> power_spectral_density.process()
+    >>> psd_dB = power_spectral_density.get_PSD_dB(ref_value=2e-5)
+    >>> power_spectral_density.plot(display_in_dB=True, ref_value=2e-5)
     """
 
     def __init__(
@@ -194,7 +207,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
         Returns
         -------
         Field
-            PSD amplitudes in squared linear unit.
+            PSD amplitudes in squared linear unit per Hz (Pa^2/Hz, for example).
         """
         if self._output is None:
             warnings.warn(PyAnsysSoundWarning("No output is available."))
@@ -207,7 +220,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
         Returns
         -------
         tuple[numpy.ndarray]
-            -   First element: PSD amplitudes in squared linear unit.
+            -   First element: PSD amplitudes in squared linear unit per Hz (Pa^2/Hz, for example).
             -   Second element: corresponding frequencies in Hz.
         """
         l_output = self.get_output()
@@ -221,24 +234,23 @@ class PowerSpectralDensity(SpectralProcessingParent):
         return (np.array(l_psd), np.array(l_frequencies))
 
     def get_PSD_squared_linear(self) -> Field:
-        """Get the PSD in squared linear unit.
+        """Get the PSD in squared linear unit per Hz.
 
         Returns
         -------
         Field
-            PSD data in squared linear unit.
+            PSD data in squared linear unit per Hz (Pa^2/Hz, for example).
         """
         return self.get_output()
 
     def get_PSD_squared_linear_as_nparray(self) -> tuple[np.ndarray]:
-        """Get the PSD in squared linear unit, as NumPy arrays.
+        """Get the PSD in squared linear unit per Hz, as NumPy arrays.
 
         Returns
         -------
         tuple[numpy.ndarray]
-            First element: PSD amplitudes in squared linear unit.
-
-            Second element: corresponding frequencies in Hz.
+            -   First element: PSD amplitudes in squared linear unit per Hz (Pa^2/Hz, for example).
+            -   Second element: corresponding frequencies in Hz.
         """
         return self.get_output_as_nparray()
 
@@ -306,7 +318,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
         return l_frequencies
 
-    def plot(self, display_in_dB: bool = False):
+    def plot(self, display_in_dB: bool = False, ref_value: float = 1.0):
         """Plot the PSD.
 
         Parameters
@@ -314,6 +326,9 @@ class PowerSpectralDensity(SpectralProcessingParent):
         display_in_dB : bool, default: False
             Parameter that specifies whether the PSD should be plotted in dB/Hz (True)
             or unit^2/Hz (False).
+        ref_value : float, default: 1.0
+            The reference value for the dB level computation. For an input acoustic signal, in Pa,
+            the reference value should be 2e-5 (Pa).
         """
         if self._output is None:
             raise PyAnsysSoundException(
@@ -328,11 +343,11 @@ class PowerSpectralDensity(SpectralProcessingParent):
             plt.ylabel(f"Amplitude ({psd.unit})")
         else:
             # Get the output in dB/Hz.
-            psd_dB_values = self.get_PSD_dB_as_nparray()
+            psd_dB_values = self.get_PSD_dB_as_nparray(ref_value=ref_value)
 
             # Plot the PSD in dB/Hz.
             plt.plot(frequencies.data, psd_dB_values)
             plt.title("Power Spectral Density (PSD)")
-            plt.ylabel("Level (dB/Hz)")
+            plt.ylabel(f"Level (dB/Hz re {ref_value})")
         plt.xlabel(f"Frequency ({frequencies.unit})")
         plt.show()

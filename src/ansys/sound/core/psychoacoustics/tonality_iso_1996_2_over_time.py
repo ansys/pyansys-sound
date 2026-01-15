@@ -59,6 +59,25 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         The computation of the present indicator is thus not entirely covered by the standard. The
         method used here splits the input signal into overlapping windows (segments), and then
         computes the tonality, for each window, according to the standard ISO 1996-2:2007, annex C.
+
+    .. seealso::
+        :class:`TonalityISO1996_2`, :class:`TonalityDIN45681`, :class:`TonalityISOTS20065`,
+        :class:`TonalityECMA418_2`, :class:`TonalityAures`
+
+    Examples
+    --------
+    Compute and display the tonality of a signal according to the 2007 version of the ISO 1996-2
+    standard, annex C, over time.
+
+    >>> from ansys.sound.core.psychoacoustics import TonalityISO1996_2_OverTime
+    >>> tonality = TonalityISO1996_2_OverTime(signal=my_signal)
+    >>> tonality.process()
+    >>> tonal_audibility_over_time = tonality.get_tonal_audibility_over_time()
+    >>> tonality.plot()
+
+    .. seealso::
+        :ref:`calculate_tonality_indicators`
+            Example demonstrating how to compute various tonality indicators.
     """
 
     def __init__(

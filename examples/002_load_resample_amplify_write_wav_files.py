@@ -23,8 +23,8 @@
 """
 .. _load_resample_amplify_write_wav_files_example:
 
-Load a signal from a WAV file
------------------------------
+Basic operations on a signal from a WAV file
+--------------------------------------------
 
 This example shows how to load a signal from a WAV file, modify the signal's
 sampling frequency, and amplify it. It also shows how to access the corresponding
@@ -45,8 +45,8 @@ from ansys.sound.core.examples_helpers import download_flute_wav
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import ApplyGain, LoadWav, Resample, WriteWav
 
-# Connect to a remote server or start a local server
-server, lic_context = connect_to_or_start_server(use_license_context=True)
+# Connect to a remote DPF server or start a local DPF server.
+my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
 # %%
 # Load a signal
@@ -57,7 +57,7 @@ server, lic_context = connect_to_or_start_server(use_license_context=True)
 # in the DPF-Core API documentation.
 
 # Return the input data of the example file
-path_flute_wav = download_flute_wav(server=server)
+path_flute_wav = download_flute_wav(server=my_server)
 
 # Load the WAV file.
 wav_loader = LoadWav(path_flute_wav)
