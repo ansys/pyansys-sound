@@ -27,10 +27,8 @@ the DPF Sound plugin.
 """
 
 from ._check_versions import (
-    _check_dpf_version_and_raise,
     _check_sound_version,
     _check_sound_version_and_raise,
-    requires_dpf_version,
     requires_sound_version,
 )
 from ._connect_to_or_start_server import connect_to_or_start_server
@@ -42,6 +40,4 @@ __all__ = (
     "requires_sound_version",
     "_check_sound_version",
     "_check_sound_version_and_raise",
-    "requires_dpf_version",
-    "_check_dpf_version_and_raise",
 )

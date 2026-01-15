@@ -29,9 +29,10 @@ from ansys.dpf.core import Operator, _global_server, available_operator_names, t
 from ansys.tools.common.exceptions import VersionError, VersionSyntaxError
 from packaging.version import parse
 
-# Dictionary mapping DPF Sound plugin versions to corresponding DPF server versions
+# Dictionary mapping DPF Sound plugin versions to corresponding DPF Server versions.
 MATCHING_VERSIONS = {
     "2024.2.0": "8.0",
+    "2025.1.0": "9.0",
     "2025.2.0": "10.0",
     "2026.1.0": "11.0",
     "2027.1.0": "12.0",
@@ -73,11 +74,6 @@ def requires_sound_version(min_sound_version: str) -> Callable:
         callable
             The wrapped function or method.
         """
-        if not isinstance(min_sound_version, str):
-            raise VersionSyntaxError(
-                "requires_sound_version decorator argument must be a string with the form "
-                "YEAR.MAJOR.MINOR, for example '2026.1.0'."
-            )
 
         @wraps(func)
         def wrapper(*args, **kwargs) -> Any:
@@ -100,88 +96,6 @@ def requires_sound_version(min_sound_version: str) -> Callable:
         return wrapper
 
     return decorator
-
-
-def requires_dpf_version(min_dpf_version: str) -> Callable:
-    """Check that the current DPF server matches or is higher than a certain version.
-
-    This decorator ensures that the decorated function or method can only be used if the current
-    DPF server version allows it.
-
-    Parameters
-    ----------
-    min_dpf_version : str
-        Minimum DPF server version required for the decorated function or method.
-        The version must be specified as a string with the form MAJOR.MINOR, for example "11.0".
-
-    Returns
-    -------
-    callable
-        The decorator.
-
-    .. note::
-       This function must be used as a function or method decorator.
-    """
-
-    def decorator(func) -> Callable:
-        """Wrap the original function or method to include DPF version check.
-
-        Parameters
-        ----------
-        func : callable
-            The function or method to which the decorator applies.
-
-        Returns
-        -------
-        callable
-            The wrapped function or method.
-        """
-        if not isinstance(min_dpf_version, str):
-            raise TypeError(
-                "requires_dpf_version decorator argument must be a string with the form "
-                "MAJOR.MINOR, for example '11.0'."
-            )
-
-        @wraps(func)
-        def wrapper(*args, **kwargs) -> Any:
-            """Check DPF server version before calling the original function or method.
-
-            Returns
-            -------
-            Any
-                The original function's or method's output.
-            """
-            _check_dpf_version_and_raise(
-                min_dpf_version,
-                (
-                    f"Function or method `{func.__name__}()` requires DPF server version "
-                    f"{min_dpf_version} or higher."
-                ),
-            )
-            return func(*args, **kwargs)
-
-        return wrapper
-
-    return decorator
-
-
-def _check_dpf_version_and_raise(min_dpf_version: str, error_msg: str):
-    """Check the current DPF server and raise an exception if the specified version is higher.
-
-    Parameters
-    ----------
-    min_dpf_version : str
-        Minimum DPF version required.
-    error_msg : str
-        Error message to display if the version check fails.
-    """
-    if min_dpf_version is not None:
-        # Retrieve the current server.
-        server = _global_server()
-
-        # This raises an exception if the current DPF server version is lower than
-        # min_dpf_version.
-        server.check_version(min_dpf_version, error_msg)
 
 
 def _check_sound_version_and_raise(min_sound_version: str, error_msg: str):
@@ -216,6 +130,12 @@ def _check_sound_version(min_sound_version: str) -> bool:
         True if the current DPF Sound plugin version is greater than or equal to the specified
         version, False otherwise.
     """
+    if not isinstance(min_sound_version, str):
+        raise VersionSyntaxError(
+            "Version argument must be a string with the form YEAR.MAJOR.MINOR, for example "
+            "'2026.1.0'."
+        )
+
     if "get_version_info" not in available_operator_names():
         # Operator get_version_info is only introduced in Ansys 2027 R1, so if it does not exist,
         # we use the matching DPF server version to perform the check.
