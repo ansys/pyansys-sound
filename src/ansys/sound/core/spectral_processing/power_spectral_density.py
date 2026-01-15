@@ -207,7 +207,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
         Returns
         -------
         Field
-            PSD amplitudes in squared linear unit.
+            PSD amplitudes in squared linear unit per Hz (Pa^2/Hz, for example).
         """
         if self._output is None:
             warnings.warn(PyAnsysSoundWarning("No output is available."))
@@ -220,7 +220,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
         Returns
         -------
         tuple[numpy.ndarray]
-            -   First element: PSD amplitudes in squared linear unit.
+            -   First element: PSD amplitudes in squared linear unit per Hz (Pa^2/Hz, for example).
             -   Second element: corresponding frequencies in Hz.
         """
         l_output = self.get_output()
@@ -234,24 +234,23 @@ class PowerSpectralDensity(SpectralProcessingParent):
         return (np.array(l_psd), np.array(l_frequencies))
 
     def get_PSD_squared_linear(self) -> Field:
-        """Get the PSD in squared linear unit.
+        """Get the PSD in squared linear unit per Hz.
 
         Returns
         -------
         Field
-            PSD data in squared linear unit.
+            PSD data in squared linear unit per Hz (Pa^2/Hz, for example).
         """
         return self.get_output()
 
     def get_PSD_squared_linear_as_nparray(self) -> tuple[np.ndarray]:
-        """Get the PSD in squared linear unit, as NumPy arrays.
+        """Get the PSD in squared linear unit per Hz, as NumPy arrays.
 
         Returns
         -------
         tuple[numpy.ndarray]
-            First element: PSD amplitudes in squared linear unit.
-
-            Second element: corresponding frequencies in Hz.
+            -   First element: PSD amplitudes in squared linear unit per Hz (Pa^2/Hz, for example).
+            -   Second element: corresponding frequencies in Hz.
         """
         return self.get_output_as_nparray()
 

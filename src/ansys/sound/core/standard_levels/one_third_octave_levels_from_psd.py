@@ -47,6 +47,10 @@ class OneThirdOctaveLevelsFromPSD(FractionalOctaveLevelsFromPSDParent, min_dpf_v
     >>> band_levels = one_third_octave_levels_from_psd.get_band_levels()
     >>> band_center_frequencies = one_third_octave_levels_from_psd.get_frequencies()
     >>> one_third_octave_levels_from_psd.plot()
+
+    .. seealso::
+        :ref:`calculate_fractional_octave_levels`
+            Example demonstrating how to calculate and compare octave and one-third-octave levels.
     """
 
     # Override the operator IDs for 1/3-octave levels computation
