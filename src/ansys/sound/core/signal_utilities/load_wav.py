@@ -38,7 +38,24 @@ from .._pyansys_sound import (
 
 
 class LoadWav(SignalUtilitiesParent):
-    """Load a signal, and its sampling frequency and format from a WAV file."""
+    """Load a signal, and its sampling frequency and format from a WAV file.
+
+    .. seealso::
+        :class:`WriteWav`
+
+    Examples
+    --------
+    Load a signal from a WAV file.
+
+    >>> from ansys.sound.core.signal_utilities import LoadWav
+    >>> load_wav = LoadWav(path_to_wav="path/to/file.wav")
+    >>> load_wav.process()
+    >>> signal = load_wav.get_output()
+
+    .. seealso::
+        :ref:`load_resample_amplify_write_wav_files_example`
+            Example demonstrating how to load, resample, amplify, and write WAV files.
+    """
 
     def __init__(self, path_to_wav: str = ""):
         """Class instantiation takes the following parameters.

@@ -38,6 +38,22 @@ class SourceControlTime(SourceControlParent):
     This class stores the source control (that is, the control parameter values over time) used by
     the Sound Composer to generate a sound from sources of types broadband noise and harmonics
     (with one or two control parameters).
+
+    .. seealso::
+        :class:`SourceBroadbandNoise`, :class:`SourceBroadbandNoiseTwoParameters`,
+        :class:`SourceHarmonics`, :class:`SourceHarmonicsTwoParameters`
+
+    Examples
+    --------
+    Create a time source control by loading the control data from a text file.
+
+    >>> from ansys.sound.core.sound_composer import SourceControlTime
+    >>> source_control = SourceControlTime(file_str="path/to/control/file.txt")
+    >>> source_control.description = "Source control data from text file."
+
+    .. seealso::
+        :ref:`sound_composer_create_project`
+            Example demonstrating how to create a Sound Composer project from scratch.
     """
 
     def __init__(self, file_str: str = ""):

@@ -32,6 +32,21 @@ class OctaveLevelsFromPSD(FractionalOctaveLevelsFromPSDParent, min_dpf_version="
     This class computes octave levels from a PSD.
 
     .. seealso::
+        :class:`OctaveLevelsFromSignal`, :class:`OneThirdOctaveLevelsFromPSD`,
+        :class:`PowerSpectralDensity`
+
+    Examples
+    --------
+    Compute and plot the octave-band levels from a PSD.
+
+    >>> from ansys.sound.core.standard_levels import OctaveLevelsFromPSD
+    >>> octave_levels_from_psd = OctaveLevelsFromPSD(psd=my_psd, reference_value=2e-5)
+    >>> octave_levels_from_psd.process()
+    >>> band_levels = octave_levels_from_psd.get_band_levels()
+    >>> band_center_frequencies = octave_levels_from_psd.get_frequencies()
+    >>> octave_levels_from_psd.plot()
+
+    .. seealso::
         :ref:`calculate_fractional_octave_levels`
             Example demonstrating how to calculate and compare octave and one-third-octave levels.
     """

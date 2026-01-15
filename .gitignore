@@ -162,14 +162,15 @@ cython_debug/
 doc/source/sg_execution_times.rst
 doc/source/examples/gallery_examples
 doc/source/api/_autosummary/
-*flute_modified.wav
 
 # VSCode
 .vscode/
 
 # Data output
-tests/data/output/*.wav
+tests/data/output/*
 
 # Example outputs
 examples/*.csv
 /*.csv
+examples/*.scn
+/*.scn

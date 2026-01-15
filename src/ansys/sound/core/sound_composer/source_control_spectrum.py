@@ -39,6 +39,16 @@ class SourceControlSpectrum(SourceControlParent):
     -   Hybrid: sound generation method that combines generation of pure tones and IFFT. If peaks
         are detected in the input spectrum, they are generated as pure tones (sine waves). The rest
         is synthesized using the IFFT method.
+
+    .. seealso::
+        :class:`SourceSpectrum`
+
+    Examples
+    --------
+    Create a spectrum source control with a duration of 5 seconds, and using the IFFT method.
+
+    >>> from ansys.sound.core.sound_composer import SourceControlSpectrum, SpectrumSynthesisMethods
+    >>> source_control = SourceControlSpectrum(duration=5.0, method=SpectrumSynthesisMethods.IFFT)
     """
 
     def __init__(self, duration: float = 0.0, method: Methods = Methods.IFFT):

@@ -71,8 +71,6 @@ from ansys.sound.core.psychoacoustics import (
     SharpnessDIN45692OverTime,
     SharpnessOverTime,
 )
-from ansys.sound.core.psychoacoustics.roughness import Roughness
-from ansys.sound.core.psychoacoustics.sharpness import Sharpness
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 

@@ -36,8 +36,14 @@ def test_validate_dpf_sound_connection():
 
 
 def test_connect_to_or_start_server():
-    s = connect_to_or_start_server(port="6780", ip="127.0.0.1", use_license_context=True)
-    print(s)
+    """Test the connect_to_or_start_server function."""
+    server, license_context = connect_to_or_start_server(use_license_context=False)
+    assert server is not None
+    assert license_context is None
+
+    server, license_context = connect_to_or_start_server(use_license_context=True)
+    assert server is not None
+    assert license_context is not None
 
 
 def test_requires_dpf_version():

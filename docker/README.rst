@@ -2,14 +2,10 @@
 Create your own Ansys Sound Docker container
 ============================================
 
-The Ansys Sound service is based on the Ansys **DPF Server**, and its **DPF Sound plugin**. It is
-notably used by `PyAnsys Sound <https://sound.docs.pyansys.com/version/dev/index.html>`_
-(``ansys-sound-core`` package).
-
-You can create your own service using a Docker container image that includes both the **DPF Server**
-and the **DPF Sound plugin**. The provided example file `Dockerfile.windows
-<https://github.com/ansys/pyansys-sound/blob/main/docker/Dockerfile.windows>`_ shows how to create
-such a Docker image.
+You can create your own containerized Ansys Sound service using a Docker container image that
+includes both the **DPF Server** and the **DPF Sound plugin**. The example file
+`Dockerfile.windows <https://github.com/ansys/pyansys-sound/blob/main/docker/Dockerfile.windows>`_
+shows how to create such a Docker image.
 
 Note that the provided version of the Dockerfile works with:
 
@@ -25,7 +21,8 @@ Build the Ansys Sound Docker image
 For building the image, follow these steps:
 
 #. Make sure Docker is installed on your machine.
-#. Get the **DPF Server** and the **DPF Sound plugin** from the `Ansys Developer Portal
+#. Get the **DPF Server** and the **DPF Sound plugin** from the `Official release download center
+   <https://download.ansys.com/Current%20Release>`_ or the `DPF Pre-Release Download Center
    <https://download.ansys.com/Others/DPF%20Pre-Release>`_.
 #. Extract the 2 downloaded zip files to a local folder, and merge together the ``ansys`` folders
    within.
@@ -40,7 +37,12 @@ For building the image, follow these steps:
 
    ``docker build --file Dockerfile.windows . --tag dpf_sound_image -m 2GB --no-cache``
 
-#. After the build is done, run the container with the following command:
+Run the Ansys Sound Docker container
+------------------------------------
+
+Once the Docker image is built, you must run a container from it to use the Ansys Sound service:
+
+#. Run the container with the following command:
 
    ``docker run -d -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=<your_license_info>" -p <host_port>:50052 --name <your_container_name> <your_image_name>``
 

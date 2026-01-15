@@ -26,9 +26,9 @@
 Spectrogram: compute the STFT and ISTFT
 ---------------------------------------
 
-This example shows how to compute the short-time Fourier transform (STFT) of a signal.
-It also shows how to compute the inverse short-time Fourier transform (ISTFT) from a
-STFT matrix and get a signal.
+This example shows how to compute the short-time Fourier transform (STFT) of a signal, that is, its
+`spectrogram`. It also shows how to use the inverse short-time Fourier transform (ISTFT) to get the
+signal corresponding to a given spectrogram.
 
 """
 # %%

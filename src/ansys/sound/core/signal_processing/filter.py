@@ -63,6 +63,38 @@ class Filter(SignalProcessingParent):
         ``sampling_frequency`` parameter of the ``Filter`` class. As a consequence, the signal to
         filter :attr:`signal` must have the same sampling frequency. If necessary, use the
         :class:`.Resample` class to resample the signal prior to using the ``Filter`` class.
+
+    .. seealso::
+        :class:`.Resample`
+
+    Examples
+    --------
+    Filter a signal according to a given frequency response function (FRF).
+
+    >>> from ansys.sound.core.signal_processing import Filter
+    >>> filter = Filter(
+    ...     frf=my_frf,
+    ...     sampling_frequency=44100.0,
+    ...     signal=my_signal,
+    ... )
+    >>> filter.process()
+    >>> filtered_signal = filter.get_output()
+    >>> filter.plot()
+
+    Create a digital filter from a set of numerator and denominator coefficients, display
+    the resulting frequency response function (FRF), and apply the filter to a signal.
+
+    >>> from ansys.sound.core.signal_processing import Filter
+    >>> filter = Filter(
+    ...     b_coefficients=[0.2, 0.2, 0.2, 0.2, 0.2],
+    ...     a_coefficients=[1.0],
+    ...     sampling_frequency=44100.0,
+    ... )
+    >>> filter.plot_FRF()
+    >>> filter.signal = my_signal
+    >>> filter.process()
+    >>> filtered_signal = filter.get_output()
+    >>> filter.plot()
     """
 
     def __init__(

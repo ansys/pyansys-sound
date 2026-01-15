@@ -39,6 +39,24 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
     This class computes the loudness of a signal according to the ISO 532-1:2017 standard,
     corresponding to the "Zwicker method", for stationary sounds.
+
+    .. seealso::
+        :class:`LoudnessISO532_1_TimeVarying`, :class:`LoudnessISO532_2`
+
+    Examples
+    --------
+    Compute the loudness of a signal in free field, and display its specific loudness.
+
+    >>> from ansys.sound.core.psychoacoustics import LoudnessISO532_1_Stationary
+    >>> loudness = LoudnessISO532_1_Stationary(signal=my_signal, field_type="Free")
+    >>> loudness.process()
+    >>> loudness_value = loudness.get_loudness_sone()
+    >>> loudness_level_value = loudness.get_loudness_level_phon()
+    >>> loudness.plot()
+
+    .. seealso::
+        :ref:`calculate_psychoacoustic_indicators`
+            Example demonstrating how to compute various psychoacoustic indicators.
     """
 
     def __init__(

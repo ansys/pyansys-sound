@@ -171,7 +171,7 @@ def test_tonality_ecma_418_2___str__():
     tonality = TonalityECMA418_2()
     assert tonality.__str__() == EXP_STR_UNPROCESSED
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     signal = wav_loader.get_output()
 
@@ -192,7 +192,7 @@ def test_tonality_ecma_418_2___str___11_0():
     """Test __str__ method with diffuse field and 3rd edition."""
     tonality = TonalityECMA418_2()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     signal = wav_loader.get_output()
 
@@ -207,7 +207,7 @@ def test_tonality_ecma_418_2___str___11_0():
 
 def test_tonality_ecma_418_2_process():
     """Test process method."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     signal = wav_loader.get_output()
 
@@ -256,7 +256,7 @@ def test_tonality_ecma_418_2_process_exceptions():
 
 def test_tonality_ecma_418_2_get_output():
     """Test get_output method."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     signal = wav_loader.get_output()
 
@@ -281,7 +281,7 @@ def test_tonality_ecma_418_2_get_output_unprocessed():
 
 def test_tonality_ecma_418_2_get_output_as_nparray():
     """Test get_output_as_nparray method."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     signal = wav_loader.get_output()
 
@@ -308,7 +308,7 @@ def test_tonality_ecma_418_2_get_output_as_nparray():
 )
 def test_tonality_ecma_418_2_get_output_as_nparray_11_0():
     """Test get_output_as_nparray method with diffuse field and 3rd edition."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     signal = wav_loader.get_output()
 
@@ -377,7 +377,7 @@ def test_tonality_ecma_418_2_get_output_as_nparray_unprocessed():
 
 def test_tonality_ecma_418_2_get_tonality():
     """Test get_tonality method."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     signal = wav_loader.get_output()
 
@@ -390,7 +390,7 @@ def test_tonality_ecma_418_2_get_tonality():
 
 def test_tonality_ecma_418_2_get_tonality_over_time():
     """Test get_tonality_over_time method."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     signal = wav_loader.get_output()
 
@@ -403,7 +403,7 @@ def test_tonality_ecma_418_2_get_tonality_over_time():
 
 def test_tonality_ecma_418_2_get_tone_frequency_over_time():
     """Test get_tone_frequency_over_time method."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     signal = wav_loader.get_output()
 
@@ -416,7 +416,7 @@ def test_tonality_ecma_418_2_get_tone_frequency_over_time():
 
 def test_tonality_ecma_418_2_get_tonality_time_scale():
     """Test get_tonality_time_scale method."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     signal = wav_loader.get_output()
 
@@ -429,7 +429,7 @@ def test_tonality_ecma_418_2_get_tonality_time_scale():
 
 def test_tonality_ecma_418_2_get_tone_frequency_time_scale():
     """Test get_tone_frequency_time_scale method."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     signal = wav_loader.get_output()
 
@@ -443,7 +443,7 @@ def test_tonality_ecma_418_2_get_tone_frequency_time_scale():
 @patch("matplotlib.pyplot.show")
 def test_tonality_ecma_418_2_plot(mock_show):
     """Test plot method."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     signal = wav_loader.get_output()
 
@@ -455,7 +455,7 @@ def test_tonality_ecma_418_2_plot(mock_show):
 
 def test_tonality_ecma_418_2_plot_exception():
     """Test plot method's exception."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     signal = wav_loader.get_output()
 

@@ -36,6 +36,23 @@ class OneThirdOctaveLevelsFromSignal(
     This class computes 1/3-octave levels from a time-domain signal.
 
     .. seealso::
+        :class:`OneThirdOctaveLevelsFromPSD`, :class:`OctaveLevelsFromSignal`
+
+    Examples
+    --------
+    Compute and plot the one-third-octave-band levels from a time-domain signal.
+
+    >>> from ansys.sound.core.standard_levels import OneThirdOctaveLevelsFromSignal
+    >>> one_third_octave_levels_from_signal = OneThirdOctaveLevelsFromSignal(
+    ...     signal=my_signal,
+    ...     reference_value=2e-5
+    ... )
+    >>> one_third_octave_levels_from_signal.process()
+    >>> band_levels = one_third_octave_levels_from_signal.get_band_levels()
+    >>> band_center_frequencies = one_third_octave_levels_from_signal.get_frequencies()
+    >>> one_third_octave_levels_from_signal.plot()
+
+    .. seealso::
         :ref:`calculate_fractional_octave_levels`
             Example demonstrating how to calculate and compare octave and one-third-octave levels.
     """

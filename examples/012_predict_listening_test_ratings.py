@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 """
-.. _calculate_predict_listening_test_ratings:
+.. _predict_listening_test_ratings:
 
 Predict listening test ratings
 ------------------------------
@@ -87,7 +87,7 @@ test_wav_file_path = download_HVAC_test_wav()
 # Define indicator computation function
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Here we define a function that calculates the 4 psychoacoustic indicators of interest (listed at
-# at the beginning of the example), given an input sound signal as a DPF field.
+# the beginning of the example), given an input sound signal as a DPF field.
 
 
 def compute_indicators(signal: Field) -> list:

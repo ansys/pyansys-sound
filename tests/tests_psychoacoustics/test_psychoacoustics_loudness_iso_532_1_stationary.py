@@ -72,7 +72,7 @@ def test_loudness_iso_532_1_stationary_process():
         loudness_computer.process()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -89,7 +89,7 @@ def test_loudness_iso_532_1_stationary_get_output():
     loudness_computer = LoudnessISO532_1_Stationary()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -126,7 +126,7 @@ def test_loudness_iso_532_1_stationary_get_loudness_sone():
     loudness_computer = LoudnessISO532_1_Stationary()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -146,7 +146,7 @@ def test_loudness_iso_532_1_stationary_get_loudness_level_phon():
     loudness_computer = LoudnessISO532_1_Stationary()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -166,7 +166,7 @@ def test_loudness_iso_532_1_stationary_get_specific_loudness():
     loudness_computer = LoudnessISO532_1_Stationary()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -189,7 +189,7 @@ def test_loudness_iso_532_1_stationary_get_bark_band_indexes():
     loudness_computer = LoudnessISO532_1_Stationary()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -212,7 +212,7 @@ def test_loudness_iso_532_1_stationary_get_bark_band_frequencies():
     loudness_computer = LoudnessISO532_1_Stationary()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -235,7 +235,7 @@ def test_loudness_iso_532_1_stationary_get_output_as_nparray():
     loudness_computer = LoudnessISO532_1_Stationary()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -306,7 +306,7 @@ def test_loudness_iso_532_1_stationary_plot(mock_show):
     loudness_computer = LoudnessISO532_1_Stationary()
 
     # Get a signal
-    wav_loader = LoadWav(pytest.data_path_flute_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     fc = wav_loader.get_output()
 
