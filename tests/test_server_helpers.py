@@ -48,8 +48,8 @@ def test_requires_sound_version():
     with pytest.raises(
         VersionSyntaxError,
         match=(
-            "Version argument must be a string with the form YEAR.MAJOR.MINOR, for example "
-            "'2026.1.0'."
+            "requires_sound_version decorator argument must be a string with the form "
+            "YEAR.MAJOR.MINOR, for example '2026.1.0'."
         ),
     ):
 
