@@ -53,7 +53,7 @@ class PyAnsysSound:
         .. note::
             The specified version is not tested against the current DPF Sound plugin version just
             yet, because the server might not yet exist, and because doing this check at class
-            creation time might affects other class creations with different version requirements.
+            creation time might affect other class creations with different version requirements.
             The actual check is done at class instantiation time.
 
         Parameters
