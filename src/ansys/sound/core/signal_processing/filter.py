@@ -81,8 +81,8 @@ class Filter(SignalProcessingParent):
     >>> filtered_signal = filter.get_output()
     >>> filter.plot()
 
-    Design a filter from a set of numerator and denominator coefficients, display the resulting
-    frequency response function (FRF), and apply the filter to a signal.
+    Create a digital filter from a set of numerator and denominator coefficients, display
+    the resulting frequency response function (FRF), and apply the filter to a signal.
 
     >>> from ansys.sound.core.signal_processing import Filter
     >>> filter = Filter(
