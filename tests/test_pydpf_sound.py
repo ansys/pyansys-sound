@@ -23,7 +23,7 @@
 from unittest import mock
 
 from ansys.dpf.core import FieldsContainer, field_from_array, fields_container_factory
-from ansys.tools.common.exceptions import VersionError
+from ansys.tools.common.exceptions import VersionError, VersionSyntaxError
 import numpy as np
 import pytest
 
@@ -49,7 +49,7 @@ def test_pyansys_sound_init_subclass():
 
     # Wrong version specifier type => type error (at definition).
     with pytest.raises(
-        TypeError,
+        VersionSyntaxError,
         match=(
             "In class definition, `min_sound_version` argument must be a string with the form "
             'YEAR.MAJOR.MINOR, for example "2026.1.0".'
