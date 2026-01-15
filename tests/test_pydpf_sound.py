@@ -59,14 +59,23 @@ def test_pyansys_sound_init_subclass():
         class TestClass(PyAnsysSound, min_sound_version=1.0):
             pass
 
-    # Define a subclass requiring DPF Sound plugin version 3000.0.0 or higher => error (at
+    # Define a subclass where the DPF Sound plugin version requirement is not met  => error (at
     # instantiation).
-    class TestClass(PyAnsysSound, min_sound_version="3000.0.0"):
+    if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
+        # If plugin < 2027 R1, only 2027.1.0 exists in the matching versions dictionary, and is not
+        # met.
+        test_version = "2027.1.0"
+    else:
+        # If plugin >= 2027 R1, the version can be anything (as long as it is higher than the
+        # latest to date).
+        test_version = "3000.0.0"
+
+    class TestClass(PyAnsysSound, min_sound_version=test_version):
         pass
 
     with pytest.raises(
         VersionError,
-        match="Class `TestClass` requires DPF Sound plugin version 3000.0.0 or higher.",
+        match=f"Class `TestClass` requires DPF Sound plugin version {test_version} or higher.",
     ):
         TestClass()
 

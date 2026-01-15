@@ -74,6 +74,11 @@ def requires_sound_version(min_sound_version: str) -> Callable:
         callable
             The wrapped function or method.
         """
+        if not isinstance(min_sound_version, str):
+            raise VersionSyntaxError(
+                "requires_sound_version decorator argument must be a string with the form "
+                "YEAR.MAJOR.MINOR, for example '2026.1.0'."
+            )
 
         @wraps(func)
         def wrapper(*args, **kwargs) -> Any:
@@ -130,12 +135,6 @@ def _check_sound_version(min_sound_version: str) -> bool:
         True if the current DPF Sound plugin version is greater than or equal to the specified
         version, False otherwise.
     """
-    if not isinstance(min_sound_version, str):
-        raise VersionSyntaxError(
-            "Version argument must be a string with the form YEAR.MAJOR.MINOR, for example "
-            "'2026.1.0'."
-        )
-
     if "get_version_info" not in available_operator_names():
         # Operator get_version_info is only introduced in Ansys 2027 R1, so if it does not exist,
         # we use the matching DPF server version to perform the check.

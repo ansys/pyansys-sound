@@ -26,6 +26,7 @@ from typing import Any, Callable
 import warnings
 
 from ansys.dpf.core import FieldsContainer
+from ansys.tools.common.exceptions import VersionSyntaxError
 import numpy as np
 
 from ansys.sound.core.server_helpers._check_versions import _check_sound_version_and_raise
@@ -65,7 +66,7 @@ class PyAnsysSound:
         if min_sound_version is not None:
             # Check version specifier validity.
             if not isinstance(min_sound_version, str):
-                raise TypeError(
+                raise VersionSyntaxError(
                     "In class definition, `min_sound_version` argument must be a string with the "
                     'form YEAR.MAJOR.MINOR, for example "2026.1.0".'
                 )

@@ -44,14 +44,7 @@ def test_connect_to_or_start_server():
 def test_requires_sound_version():
     """Test the requires_sound_version decorator."""
 
-    # Wrong version specifier type => version syntax error (at instantiation).
-    class DummyClass:
-        """A dummy class to test version type error in the requires_sound_version decorator."""
-
-        @requires_sound_version(1000)
-        def dummy_method_type_error(self):
-            pass
-
+    # Wrong version specifier type => version syntax error (at definition).
     with pytest.raises(
         VersionSyntaxError,
         match=(
@@ -59,7 +52,13 @@ def test_requires_sound_version():
             "'2026.1.0'."
         ),
     ):
-        DummyClass().dummy_method_type_error()
+
+        class DummyClass:
+            """A dummy class to test version type error in the requires_sound_version decorator."""
+
+            @requires_sound_version(1000)
+            def dummy_method_type_error(self):
+                pass
 
     class DummyClass:
         """A dummy class to test the requires_sound_version decorator."""
@@ -92,34 +91,6 @@ def test_requires_sound_version():
         dummy.dummy_method_fail()
 
 
-def test__check_sound_version():
-    """Test the _check_sound_version function."""
-    # Version met.
-    assert _check_sound_version("2024.2.0")
-
-    # Version NOT met.
-    if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
-        # If plugin < 2027 R1, there are two cases to test:
-        # The version exists in the dictionary but is not met.
-        assert not _check_sound_version("2027.1.0")
-        # The version does not exist in the dictionary.
-        with pytest.raises(VersionError, match=("Unknown DPF Sound plugin version 3000.0.0.")):
-            _check_sound_version("3000.0.0")
-    else:
-        # If plugin >= 2027 R1, the version can be anything (as long as it is higher).
-        assert not _check_sound_version("3000.0.0")
-
-    # Wrong version specifier type => version syntax error.
-    with pytest.raises(
-        VersionSyntaxError,
-        match=(
-            "Version argument must be a string with the form YEAR.MAJOR.MINOR, for example "
-            "'2026.1.0'."
-        ),
-    ):
-        _check_sound_version(None)
-
-
 def test__check_sound_version_and_raise():
     """Test the _check_sound_version_and_raise function."""
     # Version met.
@@ -137,3 +108,22 @@ def test__check_sound_version_and_raise():
         match="DPF Sound plugin version error: Test error message.",
     ):
         _check_sound_version_and_raise(test_version, "Test error message.")
+
+
+def test__check_sound_version():
+    """Test the _check_sound_version function."""
+    # Version met.
+    assert _check_sound_version("2024.2.0")
+
+    # Version NOT met.
+    if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
+        # If plugin < 2027 R1, there are two cases to test:
+        # The version exists in the dictionary but is not met.
+        assert not _check_sound_version("2027.1.0")
+        # The version does not exist in the dictionary.
+        with pytest.raises(VersionError, match=("Unknown DPF Sound plugin version 3000.0.0.")):
+            _check_sound_version("3000.0.0")
+    else:
+        # If plugin >= 2027 R1, the version can be anything (as long as it is higher than the
+        # latest to date).
+        assert not _check_sound_version("3000.0.0")
