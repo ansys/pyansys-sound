@@ -31,18 +31,19 @@ consider:
 -   If the example data file requires a DPF Sound operator to open and use (typically WAV files,
     but also Sound Composer project files, and other Ansys file formats), then the file must be
     made available on the DPF server side. In this case, define the download function with a call
-    to function :func:`._download_file_and_upload_to_server_tmp_folder`.
+    to function :func:`._download_file_and_upload_to_server_tmp_folder`. For example,
+    ``path_on_server = _download_file_and_upload_to_server_tmp_folder("my_file.wav", my_server)``.
 
 -   Conversely, if the example data file can be opened and used using Python's standard or
     third-party libraries (for example, CSV files, or non-Ansys text files), then the file need
     only be downloaded locally. In this case, define the download function with a call to function
-    :func:`._download_file_in_local_examples_folder`.
+    :func:`._download_file_in_local_examples_folder`. For example,
+    ``path_on_client = _download_file_in_local_examples_folder("my_file.csv")``.
 
-.. note::
-    In any case, the example data files must be submitted to the PyAnsys Sound examples repository,
-    through a
-    :ref:`pull request <https://github.com/ansys/example-data/upload/main/pyansys-sound>`_, for the
-    implemented download function to work.
+Note: in any case, the example data files must be submitted to the PyAnsys Sound examples
+repository, through a pull request, for the implemented download function to work. You can create
+the pull request by following this link:
+https://github.com/ansys/example-data/upload/main/pyansys-sound.
 """
 from functools import wraps
 import os
