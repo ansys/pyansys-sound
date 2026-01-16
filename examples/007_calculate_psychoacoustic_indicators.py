@@ -71,13 +71,11 @@ from ansys.sound.core.psychoacoustics import (
     SharpnessDIN45692OverTime,
     SharpnessOverTime,
 )
-from ansys.sound.core.psychoacoustics.roughness import Roughness
-from ansys.sound.core.psychoacoustics.sharpness import Sharpness
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 
 # Connect to a remote DPF server or start a local DPF server.
-my_server, lic_context = connect_to_or_start_server(use_license_context=True)
+my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
 
 # %%

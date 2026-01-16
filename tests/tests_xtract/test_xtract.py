@@ -146,7 +146,7 @@ def test_xtract_except2():
 
 
 def test_xtract_process():
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
+    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
@@ -189,7 +189,7 @@ def test_xtract_process():
 
 
 def test_xtract_get_output_warns():
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
+    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
@@ -222,7 +222,7 @@ def test_xtract_get_output_warns():
 
 
 def test_xtract_get_output_as_np_array_warns():
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
+    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
@@ -254,7 +254,7 @@ def test_xtract_get_output_as_np_array_warns():
 
 
 def test_xtract_get_output():
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
+    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
@@ -315,7 +315,7 @@ def test_xtract_get_output():
 
 
 def test_xtract_get_output_noprocess():
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
+    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
@@ -349,7 +349,7 @@ def test_xtract_get_output_noprocess():
 
 
 def test_xtract_get_output_fc():
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
+    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
@@ -444,7 +444,7 @@ def test_xtract_get_output_fc():
 
 
 def test_xtract_get_output_as_nparray():
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
+    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
@@ -515,7 +515,7 @@ def test_xtract_get_output_as_nparray():
 
 
 def test_xtract_get_output_fc_as_nparray():
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
+    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
@@ -620,7 +620,7 @@ def test_xtract_get_output_fc_as_nparray():
 
 
 def test_xtract_setters():
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
+    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
@@ -667,7 +667,7 @@ def test_xtract_setters():
 
 @patch("matplotlib.pyplot.show")
 def test_xtract_plot_output(mock_show):
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
+    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
@@ -700,7 +700,7 @@ def test_xtract_plot_output(mock_show):
 
 @patch("matplotlib.pyplot.show")
 def test_xtract_plot_output_fc(mock_show):
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute_in_container)
+    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
     bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]

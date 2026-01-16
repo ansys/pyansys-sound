@@ -23,8 +23,8 @@
 """
 .. _sound_composer_create_project:
 
-Create and work with a Sound Composer project
----------------------------------------------
+Create a Sound Composer project
+-------------------------------
 
 The Sound Composer is a tool that allows you to generate the sound of a system by combining the
 sounds of its components, which we call sources here. Each source can be made of data coming from
@@ -81,7 +81,7 @@ from ansys.sound.core.spectrogram_processing import Stft
 # sphinx_gallery_thumbnail_path = '_static/_image/example011_thumbnail.png'
 # sphinx_gallery_end_ignore
 
-# Connect to a remote server or start a local server.
+# Connect to a remote DPF server or start a local DPF server.
 my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
 # Download the necessary files for each source considered in this exeample: the source file

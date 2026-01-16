@@ -12,10 +12,10 @@ PyAnsys Sound
    contribute
 
 
-PyAnsys Sound lets you use the main features of `Ansys Sound`_ to perform
-the postprocessing and analysis of sounds and vibrations in Python. This library is based on
-`PyDPF-Core`_ and the DPF Sound plugin. It is a Python wrapper that implements classes on top
-of DPF Sound operators.
+PyAnsys Sound lets you use the main features of `Ansys Sound`_ to perform sound and vibration
+analysis and postprocessing in Python. This library uses a `DPF server`_ with a DPF Sound plugin,
+both of which are installed along with Ansys Sound Analysis and Specification (SAS). It can be seen
+as a user-friendly, object-oriented, Python interface to DPF Sound operators.
 
 These documentation sections provide information on installing and using PyAnsys Sound:
 
@@ -26,20 +26,19 @@ These documentation sections provide information on installing and using PyAnsys
         :link: getting_started
         :link-type: doc
 
-        Learn how to install PyAnsys Sound and its prerequisites in user mode.
+        Learn about PyAnsys Sound prerequisites and how to install PyAnsys Sound.
 
     .. grid-item-card:: User guide :material-regular:`menu_book`
         :link: user_guide
         :link-type: doc
 
-        Learn how to start a DPF server, load a signal from a WAV files, and perform operations
-        on the signal.
+        Learn how to start PyAnsys Sound and how to use it.
 
     .. grid-item-card:: API reference :material-regular:`bookmark`
         :link: api/index
         :link-type: doc
 
-        Understand how to use Python to interact programmatically with PyAnsys Sound.
+        Learn about all available PyAnsys Sound features and how to use them.
 
     .. grid-item-card:: Examples :material-regular:`play_arrow`
         :link: examples/index
@@ -47,18 +46,17 @@ These documentation sections provide information on installing and using PyAnsys
 
         Explore examples that show how to use PyAnsys Sound for various workflows.
 
-
     .. grid-item-card:: Contribute :material-regular:`group`
         :link: contribute
         :link-type: doc
 
-        Learn how to contribute to the PyAnsys Sound codebase or documentation.
+        Learn how to contribute to the PyAnsys Sound codebase and documentation.
 
 
 Key features
 ------------
 
-The following API reference pages describe some key features of PyAnsys Sound:
+The following API reference pages describe the key features of PyAnsys Sound:
 
 * :doc:`api/signal_utilities`: Tools to read and write WAV files in the format used by Ansys Sound Analysis
   and Specification (SAS) and tools to perform basic editing of audio signals.
@@ -85,4 +83,4 @@ added in new versions.
 
 .. LINKS AND REFERENCES
 .. _Ansys Sound: https://www.ansys.com/sound
-.. _PyDPF-Core: https://dpf.docs.pyansys.com/version/stable/
+.. _DPF Server: https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#dpf-server

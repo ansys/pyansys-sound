@@ -37,6 +37,10 @@ ID_COMPUTE_TONALITY_AURES = "compute_tonality_aures"
 class TonalityAures(PsychoacousticsParent):
     r"""Computes the tonality of the signal according to Aures model.
 
+    .. seealso::
+        :class:`TonalityDIN45681`, :class:`TonalityISOTS20065`, :class:`TonalityECMA418_2`,
+        :class:`TonalityISO1996_2`, :class:`TonalityISO1996_2_OverTime`
+
     References
     ----------
     -   W. Aures, "Procedure for calculating the sensory pleasantness of various sounds", Acustica
@@ -44,6 +48,20 @@ class TonalityAures(PsychoacousticsParent):
 
     -   E. Terhardt, G. Stoll, M. Seewann, "Algorithm for extraction of pitch and pitch salience
         from complex tonal signals", J. Acoust. Soc. Am. **71**\ (3), pp. 679-688, March 1982.
+
+    Examples
+    --------
+    Compute and display the tonality of a signal according to the Aures model.
+
+    >>> from ansys.sound.core.psychoacoustics import TonalityAures
+    >>> tonality = TonalityAures(signal=my_signal)
+    >>> tonality.process()
+    >>> tonality_value = tonality.get_tonality()
+    >>> tonality.plot()
+
+    .. seealso::
+        :ref:`calculate_tonality_indicators`
+            Example demonstrating how to compute various psychoacoustic indicators.
     """
 
     def __init__(

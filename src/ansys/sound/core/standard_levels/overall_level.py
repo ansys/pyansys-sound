@@ -36,6 +36,23 @@ class OverallLevel(StandardLevelsParent):
     """Compute the overall level.
 
     This class computes the overall level of a signal.
+
+    .. seealso::
+        :class:`LevelOverTime`, :class:`OctaveLevelsFromSignal`,
+        :class:`OneThirdOctaveLevelsFromSignal`
+
+    Examples
+    --------
+    Compute the overall SPL of an acoustic signal.
+
+    >>> from ansys.sound.core.standard_levels import OverallLevel
+    >>> overall_level = OverallLevel(signal=signal, reference_value=2e-5, scale="dB")
+    >>> overall_level.process()
+    >>> level_value = overall_level.get_level()
+
+    .. seealso::
+        :ref:`calculate_levels`
+            Example demonstrating how to calculate standard levels.
     """
 
     def __init__(

@@ -35,7 +35,7 @@ def test_sum_signals_instantiation():
 
 def test_sum_signals_process():
     sum_gain = SumSignals()
-    wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_white_noise)
 
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
@@ -54,7 +54,7 @@ def test_sum_signals_process():
 
 
 def test_sum_signals_get_output():
-    wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_white_noise)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
     sum_gain = SumSignals(signals=fc_signal)
@@ -77,7 +77,7 @@ def test_sum_signals_get_output():
 
 
 def test_sum_signals_get_output_as_np_array():
-    wav_loader = LoadWav(pytest.data_path_white_noise_in_container)
+    wav_loader = LoadWav(pytest.data_path_white_noise)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
     sum_gain = SumSignals(signals=fc_signal)

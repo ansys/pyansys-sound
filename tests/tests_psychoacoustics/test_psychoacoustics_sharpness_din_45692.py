@@ -49,7 +49,7 @@ def test_sharpness_din_45692___str__():
     sharpness_obj = SharpnessDIN45692()
     assert str(sharpness_obj) == EXP_STR_DEFAULT
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -62,7 +62,7 @@ def test_sharpness_din_45692_properties():
     """Test the properties of the SharpnessDIN45692 class."""
     sharpness_obj = SharpnessDIN45692()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -102,7 +102,7 @@ def test_sharpness_din_45692_process():
     """Test the process method of the SharpnessDIN45692 class."""
     sharpness_obj = SharpnessDIN45692()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -129,7 +129,7 @@ def test_sharpness_din_45692_get_output():
     """Test the get_output method of the SharpnessDIN45692 class."""
     sharpness_obj = SharpnessDIN45692()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -171,7 +171,7 @@ def test_sharpness_din_45692_get_output_as_nparray():
         sharpness = sharpness_obj.get_output_as_nparray()
     assert np.isnan(sharpness)
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 
@@ -194,7 +194,7 @@ def test_sharpness_din_45692_get_sharpness():
     """Test the get_sharpness method of the SharpnessDIN45692 class."""
     sharpness_obj = SharpnessDIN45692()
 
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
 

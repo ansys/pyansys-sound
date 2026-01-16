@@ -42,6 +42,30 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     """Computes ISO 3744 sound power level.
 
     This class computes the sound power level according to the ISO 3744 standard.
+
+    Examples
+    --------
+    Compute and display sound power level following the ISO 3744 standard.
+
+    >>> from ansys.sound.core.sound_power import SoundPowerLevelISO3744
+    >>> swl = SoundPowerLevelISO3744(
+    ...     surface_shape="Hemisphere",
+    ...     surface_radius=2.0,
+    ... )
+    >>> swl.add_microphone_signal(signal1)
+    >>> # Repeat for all microphone signals.
+    >>> swl.process()
+    >>> Lw = swl.get_Lw()
+    >>> swl.plot()
+
+    Alternatively, load sound power level data from a project file created in Ansys Sound: Analysis
+    and Specifications (SAS).
+
+    >>> swl = SoundPowerLevelISO3744()
+    >>> swl.load_project("path/to/project_file.spw")
+    >>> swl.process()
+    >>> Lw = swl.get_Lw()
+    >>> swl.plot()
     """
 
     def __init__(
@@ -251,21 +275,21 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         else:
             self.__signals.pop(index)
 
-    def get_all_signal_names(self) -> tuple[tuple]:
+    def get_all_signal_names(self) -> dict[int, str]:
         """Get all signal names.
 
-        Gets the list of the names of all signals that were added.
+        Gets all added signal names in a dictionary.
 
         Returns
         -------
-        tuple[tuple]
-            List of all signal names, preceded by their indexes in the list.
+        dict[int, str]
+            Dictionary of all signal indexes and names.
         """
-        all_signals = []
+        signal_names = {}
         for isig in range(len(self.__signals)):
-            all_signals.append([isig, self.__signals[isig].name])
+            signal_names[isig] = self.__signals[isig].name
 
-        return all_signals
+        return signal_names
 
     def set_K2_from_room_properties(
         self, length: float, width: float, height: float, alpha: float

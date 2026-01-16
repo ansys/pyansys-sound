@@ -46,6 +46,24 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
     pair of control parameter values.
 
     Each of the two source controls contains one control parameter's values over time.
+
+    .. seealso::
+        :class:`SoundComposer`, :class:`Track`, :class:`SourceControlTime`,
+        :class:`SourceBroadbandNoise`
+
+    Examples
+    --------
+    Create a broadband noise source with two parameters from a source data file and two source
+    controls, and display the generated signal.
+
+    >>> from ansys.sound.core.sound_composer import SourceBroadbandNoiseTwoParameters
+    >>> source_bbn_two_params = SourceBroadbandNoiseTwoParameters(
+    >>>     file="path/to/source_data.txt",
+    >>>     source_control1=source_control1,
+    >>>     source_control2=source_control2,
+    >>> )
+    >>> source_bbn_two_params.process(sampling_frequency=48000.0)
+    >>> source_bbn_two_params.plot()
     """
 
     def __init__(

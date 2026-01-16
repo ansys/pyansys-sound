@@ -94,9 +94,7 @@ def test_source_harmonics_instantiation_no_arg():
 
 def test_source_harmonics_instantiation_file_arg():
     """Test SourceHarmonics instantiation with file argument."""
-    source_harmonics_obj = SourceHarmonics(
-        file=pytest.data_path_sound_composer_harmonics_source_in_container
-    )
+    source_harmonics_obj = SourceHarmonics(file=pytest.data_path_sound_composer_harmonics_source)
     assert isinstance(source_harmonics_obj, SourceHarmonics)
     assert source_harmonics_obj.source_harmonics is not None
 
@@ -128,14 +126,14 @@ def test_source_harmonics___str___all_set():
 
     # Create a SourceHarmonics object.
     source_harmonics_obj = SourceHarmonics(
-        pytest.data_path_sound_composer_harmonics_source_in_container,
+        pytest.data_path_sound_composer_harmonics_source,
         source_control,
     )
     assert str(source_harmonics_obj) == EXP_STR_ALL_SET
 
     # Replace the source file with another that has 10 rpm values and 40 orders.
     source_harmonics_obj.load_source_harmonics(
-        pytest.data_path_sound_composer_harmonics_source_10rpm_40orders_in_container
+        pytest.data_path_sound_composer_harmonics_source_10rpm_40orders
     )
     assert str(source_harmonics_obj) == EXP_STR_ALL_SET_10_40_VALUES
 
@@ -151,9 +149,7 @@ def test_source_harmonics_properties():
     # Test source_harmonics property.
     # Create a second object and then reuse its source_harmonics property.
     source_harmonics_obj_tmp = SourceHarmonics()
-    source_harmonics_obj_tmp.load_source_harmonics(
-        pytest.data_path_sound_composer_harmonics_source_in_container
-    )
+    source_harmonics_obj_tmp.load_source_harmonics(pytest.data_path_sound_composer_harmonics_source)
     harmonics_fieldscontainer = source_harmonics_obj_tmp.source_harmonics
     source_harmonics_obj.source_harmonics = harmonics_fieldscontainer
     assert isinstance(source_harmonics_obj.source_harmonics, FieldsContainer)
@@ -226,9 +222,7 @@ def test_source_harmonics_properties_exceptions():
     # Test source_harmonics setter exception 5 (empty harmonics source's control data).
     # For this, we use a valid dataset, and then remove the control data.
     source_harmonics_obj = SourceHarmonics()
-    source_harmonics_obj.load_source_harmonics(
-        pytest.data_path_sound_composer_harmonics_source_in_container
-    )
+    source_harmonics_obj.load_source_harmonics(pytest.data_path_sound_composer_harmonics_source)
     support_data = source_harmonics_obj.source_harmonics.get_support("control_parameter_1")
     support_properties = support_data.available_field_supported_properties()
     support_values = support_data.field_support_by_property(support_properties[0])
@@ -279,21 +273,21 @@ def test_source_harmonics_is_source_control_valid():
     "file_path,control_value_idx,order_idx,expected_value",
     [
         pytest.param(
-            pytest.data_path_sound_composer_harmonics_source_in_container,
+            pytest.data_path_sound_composer_harmonics_source,
             0,
             3,
             EXP_ORDER_LEVEL03_REF,
             id="dBSPL_reference",
         ),
         pytest.param(
-            pytest.data_path_sound_composer_harmonics_source_Pa_in_container,
+            pytest.data_path_sound_composer_harmonics_source_Pa,
             0,
             3,
             EXP_ORDER_LEVEL03_PA,
             id="Pa_container",
         ),
         pytest.param(
-            pytest.data_path_sound_composer_harmonics_source_xml_in_container,
+            pytest.data_path_sound_composer_harmonics_source_xml,
             0,
             3,
             EXP_ORDER_LEVEL03_XML,
@@ -343,7 +337,7 @@ def test_source_harmonics_load_valid_files(file_path, control_value_idx, order_i
     "file_path",
     [
         pytest.param(
-            pytest.data_path_sound_composer_harmonics_source_wrong_type_in_container,
+            pytest.data_path_sound_composer_harmonics_source_wrong_type,
             id="wrong_header",
         ),
         pytest.param(
@@ -377,7 +371,7 @@ def test_source_harmonics_load_invalid_files(file_path):
 def test_source_harmonics_set_from_generic_data_containers():
     """Test SourceHarmonics set_from_generic_data_containers method."""
     op = Operator("sound_composer_load_source_harmonics")
-    op.connect(0, pytest.data_path_sound_composer_harmonics_source_in_container)
+    op.connect(0, pytest.data_path_sound_composer_harmonics_source)
     op.run()
     fc_data: FieldsContainer = op.get_output(0, "fields_container")
 
@@ -408,9 +402,7 @@ def test_source_harmonics_set_from_generic_data_containers():
 def test_source_harmonics_get_as_generic_data_containers():
     """Test SourceHarmonics get_as_generic_data_containers method."""
     # Source control undefined => warning.
-    source_harmo_obj = SourceHarmonics(
-        file=pytest.data_path_sound_composer_harmonics_source_in_container
-    )
+    source_harmo_obj = SourceHarmonics(file=pytest.data_path_sound_composer_harmonics_source)
     with pytest.warns(
         PyAnsysSoundWarning,
         match=(
@@ -440,7 +432,7 @@ def test_source_harmonics_get_as_generic_data_containers():
 
     # Both source and source control are defined.
     source_harmo_obj.load_source_harmonics(
-        pytest.data_path_sound_composer_harmonics_source_in_container,
+        pytest.data_path_sound_composer_harmonics_source,
     )
     source_data, source_control_data = source_harmo_obj.get_as_generic_data_containers()
 
@@ -476,7 +468,7 @@ def test_source_harmonics_process():
     source_control_obj.control = f_source_control
 
     source_harmonics_obj = SourceHarmonics(
-        pytest.data_path_sound_composer_harmonics_source_in_container,
+        pytest.data_path_sound_composer_harmonics_source,
         source_control_obj,
     )
     source_harmonics_obj.process()
@@ -486,9 +478,7 @@ def test_source_harmonics_process():
 def test_source_harmonics_process_exceptions():
     """Test SourceHarmonics process method exceptions."""
     # Test process method exception1 (missing control).
-    source_harmonics_obj = SourceHarmonics(
-        pytest.data_path_sound_composer_harmonics_source_in_container
-    )
+    source_harmonics_obj = SourceHarmonics(pytest.data_path_sound_composer_harmonics_source)
     with pytest.raises(
         PyAnsysSoundException,
         match="Harmonics source control is not set/valid. Use ``SourceHarmonics.source_control``.",
@@ -514,9 +504,7 @@ def test_source_harmonics_process_exceptions():
         source_harmonics_obj.process()
 
     # Test process method exception3 (invalid sampling frequency value).
-    source_harmonics_obj.load_source_harmonics(
-        pytest.data_path_sound_composer_harmonics_source_in_container
-    )
+    source_harmonics_obj.load_source_harmonics(pytest.data_path_sound_composer_harmonics_source)
     with pytest.raises(
         PyAnsysSoundException, match="Sampling frequency must be strictly positive."
     ):
@@ -541,7 +529,7 @@ def test_source_harmonics_get_output():
     source_control_obj.control = f_source_control
 
     source_harmonics_obj = SourceHarmonics(
-        pytest.data_path_sound_composer_harmonics_source_in_container,
+        pytest.data_path_sound_composer_harmonics_source,
         source_control_obj,
     )
     source_harmonics_obj.process(sampling_frequency=44100.0)
@@ -611,7 +599,7 @@ def test_source_harmonics_get_output_as_nparray():
     source_control_obj.control = f_source_control
 
     source_harmonics_obj = SourceHarmonics(
-        pytest.data_path_sound_composer_harmonics_source_in_container,
+        pytest.data_path_sound_composer_harmonics_source,
         source_control_obj,
     )
     source_harmonics_obj.process(sampling_frequency=44100.0)
@@ -650,7 +638,7 @@ def test_source_harmonics_plot(mock_show):
     source_control_obj.control = f_source_control
 
     source_harmonics_obj = SourceHarmonics(
-        pytest.data_path_sound_composer_harmonics_source_in_container,
+        pytest.data_path_sound_composer_harmonics_source,
         source_control_obj,
     )
     source_harmonics_obj.process()
@@ -708,9 +696,7 @@ def test_source_harmonics___extract_harmonics_info():
     source_harmonics_obj = SourceHarmonics()
     assert source_harmonics_obj._SourceHarmonics__extract_harmonics_info() == ([], "", [])
 
-    source_harmonics_obj.load_source_harmonics(
-        pytest.data_path_sound_composer_harmonics_source_in_container
-    )
+    source_harmonics_obj.load_source_harmonics(pytest.data_path_sound_composer_harmonics_source)
     orders, name, rpms = source_harmonics_obj._SourceHarmonics__extract_harmonics_info()
     assert orders[0] == pytest.approx(EXP_ORDERS[0])
     assert orders[2] == pytest.approx(EXP_ORDERS[1])

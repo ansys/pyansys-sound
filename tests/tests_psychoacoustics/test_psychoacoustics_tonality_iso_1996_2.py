@@ -86,7 +86,7 @@ def test_tonality_iso_1996_2_properties():
 
 def test_tonality_iso_1996_2___str__():
     """Test __str__ method."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
     sig = fc[0]
@@ -136,7 +136,7 @@ def test_tonality_iso_1996_2_setters_exceptions():
 
 def test_tonality_iso_1996_2_process():
     """Test process method."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
     sig = fc[0]
@@ -164,7 +164,7 @@ def test_tonality_iso_1996_2_process_exception():
 
 def test_tonality_iso_1996_2_get_output():
     """Test get_output method."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
     sig = fc[0]
@@ -195,7 +195,7 @@ def test_tonality_iso_1996_2_get_output_unprocessed():
 
 def test_tonality_iso_1996_2_get_output_as_nparray():
     """Test get_output_as_nparray method."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
     sig = fc[0]
@@ -219,7 +219,7 @@ def test_tonality_iso_1996_2_get_output_as_nparray():
 
 def test_tonality_iso_1996_2_get_output_as_nparray_unprocessed():
     """Test get_output_as_nparray method's warning."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
     sig = fc[0]
@@ -245,7 +245,7 @@ def test_tonality_iso_1996_2_get_output_as_nparray_unprocessed():
 
 def test_tonality_iso_1996_2_get_tonal_audibility():
     """Test get_tonal_audibility method."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
     sig = fc[0]
@@ -261,7 +261,7 @@ def test_tonality_iso_1996_2_get_tonal_audibility():
 
 def test_tonality_iso_1996_2_get_tonal_adjustment():
     """Test get_tonal_adjustment method."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
     sig = fc[0]
@@ -278,7 +278,7 @@ def test_tonality_iso_1996_2_get_tonal_adjustment():
 
 def test_tonality_iso_1996_2_get_computation_details():
     """Test get_computation_details method."""
-    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib_in_container)
+    wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
     sig = fc[0]

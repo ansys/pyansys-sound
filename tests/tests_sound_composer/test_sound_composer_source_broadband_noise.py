@@ -77,9 +77,7 @@ def test_source_broadband_noise_instantiation_no_arg():
 
 def test_source_broadband_noise_instantiation_file_arg():
     """Test SourceBroadbandNoise instantiation with file argument."""
-    source_bbn_obj = SourceBroadbandNoise(
-        file=pytest.data_path_sound_composer_bbn_source_in_container
-    )
+    source_bbn_obj = SourceBroadbandNoise(file=pytest.data_path_sound_composer_bbn_source)
     assert isinstance(source_bbn_obj, SourceBroadbandNoise)
     assert source_bbn_obj.source_bbn is not None
 
@@ -112,15 +110,13 @@ def test_source_broadband_noise___str___all_set():
     # Create a SourceBroadbandNoise object using source file with less than 30 values and created
     # source control.
     source_bbn_obj = SourceBroadbandNoise(
-        pytest.data_path_sound_composer_bbn_source_in_container,
+        pytest.data_path_sound_composer_bbn_source,
         source_control,
     )
     assert str(source_bbn_obj) == EXP_STR_ALL_SET
 
     # Replace source file with one with more than 10 values.
-    source_bbn_obj.load_source_bbn(
-        pytest.data_path_sound_composer_bbn_source_40_values_in_container
-    )
+    source_bbn_obj.load_source_bbn(pytest.data_path_sound_composer_bbn_source_40_values)
     assert str(source_bbn_obj) == EXP_STR_ALL_SET_40_VALUES
 
 
@@ -135,7 +131,7 @@ def test_source_broadband_noise_properties():
     # Test source_bbn property.
     # Create a second object and then reuse its source_bbn property.
     source_bbn_obj_tmp = SourceBroadbandNoise()
-    source_bbn_obj_tmp.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
+    source_bbn_obj_tmp.load_source_bbn(pytest.data_path_sound_composer_bbn_source)
     bbn_fieldscontainer = source_bbn_obj_tmp.source_bbn
     source_bbn_obj.source_bbn = bbn_fieldscontainer
     assert isinstance(source_bbn_obj.source_bbn, FieldsContainer)
@@ -181,7 +177,7 @@ def test_source_broadband_noise_properties_exceptions():
     # Test source_bbn setter exception 4 (empty bbn source's control data).
     # For this, we use a valid dataset, and then remove the control data.
     source_bbn_obj = SourceBroadbandNoise()
-    source_bbn_obj.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
+    source_bbn_obj.load_source_bbn(pytest.data_path_sound_composer_bbn_source)
     support_data = source_bbn_obj.source_bbn.get_support("control_parameter_1")
     support_properties = support_data.available_field_supported_properties()
     support_values = support_data.field_support_by_property(support_properties[0])
@@ -222,7 +218,7 @@ def test_source_broadband_noise_is_source_control_valid():
 def test_source_specrum_load_source_bbn():
     """Test SourceBroadbandNoise load_source_bbn method."""
     source_bbn_obj = SourceBroadbandNoise()
-    source_bbn_obj.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
+    source_bbn_obj.load_source_bbn(pytest.data_path_sound_composer_bbn_source)
     assert isinstance(source_bbn_obj.source_bbn, FieldsContainer)
     assert source_bbn_obj.source_bbn[0].data[3] == pytest.approx(EXP_SPECTRUM_DATA03)
 
@@ -230,7 +226,7 @@ def test_source_specrum_load_source_bbn():
 def test_source_broadband_noise_set_from_generic_data_containers():
     """Test SourceBroadbandNoise set_from_generic_data_containers method."""
     op = Operator("sound_composer_load_source_bbn")
-    op.connect(0, pytest.data_path_sound_composer_bbn_source_in_container)
+    op.connect(0, pytest.data_path_sound_composer_bbn_source)
     op.run()
     fc_data: FieldsContainer = op.get_output(0, "fields_container")
 
@@ -261,9 +257,7 @@ def test_source_broadband_noise_set_from_generic_data_containers():
 def test_source_broadband_noise_get_as_generic_data_containers():
     """Test SourceBroadbandNoise get_as_generic_data_containers method."""
     # Source control undefined => warning.
-    source_bbn_obj = SourceBroadbandNoise(
-        file=pytest.data_path_sound_composer_bbn_source_in_container
-    )
+    source_bbn_obj = SourceBroadbandNoise(file=pytest.data_path_sound_composer_bbn_source)
     with pytest.warns(
         PyAnsysSoundWarning,
         match=(
@@ -292,7 +286,7 @@ def test_source_broadband_noise_get_as_generic_data_containers():
 
     # Both source and source control are defined.
     source_bbn_obj.load_source_bbn(
-        pytest.data_path_sound_composer_bbn_source_in_container,
+        pytest.data_path_sound_composer_bbn_source,
     )
     source_data, source_control_data = source_bbn_obj.get_as_generic_data_containers()
 
@@ -328,7 +322,7 @@ def test_source_broadband_noise_process():
     source_control_obj.control = f_source_control
 
     source_bbn_obj = SourceBroadbandNoise(
-        pytest.data_path_sound_composer_bbn_source_in_container,
+        pytest.data_path_sound_composer_bbn_source,
         source_control_obj,
     )
     source_bbn_obj.process()
@@ -338,7 +332,7 @@ def test_source_broadband_noise_process():
 def test_source_broadband_noise_process_exceptions():
     """Test SourceBroadbandNoise process method exceptions."""
     # Test process method exception1 (missing control).
-    source_bbn_obj = SourceBroadbandNoise(pytest.data_path_sound_composer_bbn_source_in_container)
+    source_bbn_obj = SourceBroadbandNoise(pytest.data_path_sound_composer_bbn_source)
     with pytest.raises(
         PyAnsysSoundException,
         match=(
@@ -367,7 +361,7 @@ def test_source_broadband_noise_process_exceptions():
         source_bbn_obj.process()
 
     # Test process method exception3 (invalid sampling frequency value).
-    source_bbn_obj.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
+    source_bbn_obj.load_source_bbn(pytest.data_path_sound_composer_bbn_source)
     with pytest.raises(
         PyAnsysSoundException, match="Sampling frequency must be strictly positive."
     ):
@@ -392,7 +386,7 @@ def test_source_broadband_noise_get_output():
     source_control_obj.control = f_source_control
 
     source_bbn_obj = SourceBroadbandNoise(
-        pytest.data_path_sound_composer_bbn_source_in_container,
+        pytest.data_path_sound_composer_bbn_source,
         source_control_obj,
     )
     source_bbn_obj.process(sampling_frequency=44100.0)
@@ -462,7 +456,7 @@ def test_source_broadband_noise_get_output_as_nparray():
     source_control_obj.control = f_source_control
 
     source_bbn_obj = SourceBroadbandNoise(
-        pytest.data_path_sound_composer_bbn_source_in_container,
+        pytest.data_path_sound_composer_bbn_source,
         source_control_obj,
     )
     source_bbn_obj.process(sampling_frequency=44100.0)
@@ -501,7 +495,7 @@ def test_source_broadband_noise_plot(mock_show):
     source_control_obj.control = f_source_control
 
     source_bbn_obj = SourceBroadbandNoise(
-        file=pytest.data_path_sound_composer_bbn_source_in_container,
+        file=pytest.data_path_sound_composer_bbn_source,
         source_control=source_control_obj,
     )
     source_bbn_obj.process()
@@ -561,7 +555,7 @@ def test_source_broadband_noise___extract_bbn_info():
     source_bbn_obj = SourceBroadbandNoise()
     assert source_bbn_obj._SourceBroadbandNoise__extract_bbn_info() == ("", 0.0, "", "", [])
 
-    source_bbn_obj.load_source_bbn(pytest.data_path_sound_composer_bbn_source_in_container)
+    source_bbn_obj.load_source_bbn(pytest.data_path_sound_composer_bbn_source)
     assert source_bbn_obj._SourceBroadbandNoise__extract_bbn_info() == (
         "Octave",
         31.0,

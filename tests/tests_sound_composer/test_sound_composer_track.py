@@ -137,7 +137,7 @@ def test_track_set_from_generic_data_containers():
     # Create generic data containers for the source and source control.
     source_control = SourceControlSpectrum(duration=3.0, method=Methods.Hybrid)
     source = SourceSpectrum(
-        file_source=pytest.data_path_sound_composer_spectrum_source_in_container,
+        file_source=pytest.data_path_sound_composer_spectrum_source,
         source_control=source_control,
     )
     source_data, source_control_data = source.get_as_generic_data_containers()
@@ -188,7 +188,7 @@ def test_track_get_as_generic_data_containers():
     # Create a source and a source control.
     source_control = SourceControlSpectrum(duration=3.0, method=Methods.Hybrid)
     source = SourceSpectrum(
-        file_source=pytest.data_path_sound_composer_spectrum_source_in_container,
+        file_source=pytest.data_path_sound_composer_spectrum_source,
         source_control=source_control,
     )
 
@@ -258,7 +258,7 @@ def test_track_process():
     track = Track(
         gain=3.0,
         source=SourceSpectrum(
-            file_source=pytest.data_path_sound_composer_spectrum_source_in_container,
+            file_source=pytest.data_path_sound_composer_spectrum_source,
             source_control=SourceControlSpectrum(duration=3.0, method=Methods.Hybrid),
         ),
         filter=Filter(a_coefficients=[1.0], b_coefficients=[1.0, 0.5]),
@@ -302,7 +302,7 @@ def test_track_get_output():
     track = Track(
         gain=3.0,
         source=SourceSpectrum(
-            file_source=pytest.data_path_sound_composer_spectrum_source_in_container,
+            file_source=pytest.data_path_sound_composer_spectrum_source,
             source_control=SourceControlSpectrum(duration=3.0, method=Methods.Hybrid),
         ),
         filter=Filter(a_coefficients=[1.0], b_coefficients=[1.0, 0.5]),
@@ -365,7 +365,7 @@ def test_track_get_output_as_nparray():
     track = Track(
         gain=3.0,
         source=SourceSpectrum(
-            file_source=pytest.data_path_sound_composer_spectrum_source_in_container,
+            file_source=pytest.data_path_sound_composer_spectrum_source,
             source_control=SourceControlSpectrum(duration=3.0, method=Methods.Hybrid),
         ),
         filter=Filter(a_coefficients=[1.0], b_coefficients=[1.0, 0.5]),
@@ -408,7 +408,7 @@ def test_track_plot(mock_show):
     track = Track(
         gain=3.0,
         source=SourceBroadbandNoise(
-            file=pytest.data_path_sound_composer_bbn_source_in_container,
+            file=pytest.data_path_sound_composer_bbn_source,
             source_control=source_control,
         ),
         filter=Filter(a_coefficients=[1.0], b_coefficients=[1.0, 0.5]),
