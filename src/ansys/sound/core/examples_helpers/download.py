@@ -20,7 +20,24 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Functions to download sample datasets from the PyAnsys Sound examples repository."""
+"""Functions to download example data from the PyAnsys Sound examples repository.
+
+This module provides functions to download example data files used in PyAnsys Sound.
+
+When implementing a new PyAnsys Sound example that requires new example data file(s), a new
+download function must be added to this module. Importantly, there are two different cases to
+consider:
+
+-   If the example data file requires a DPF Sound operator to open and use (typically WAV files,
+    but also Sound Composer project files, and other Ansys file formats), then the file must be
+    made available on the DPF server side. In this case, define the download function with a call
+    to function :func:`._download_file_and_upload_to_server_tmp_folder`.
+
+-   Conversely, if the example data file can be opened and used using Python's standard or
+    third-party libraries (for example, CSV files, or non-Ansys text files), then the file need
+    only be downloaded locally. In this case, define the download function with a call to function
+    :func:`._download_file_in_local_examples_folder`.
+"""
 from functools import wraps
 import os
 
