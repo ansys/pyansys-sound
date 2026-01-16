@@ -26,7 +26,7 @@ from ansys.dpf.core import upload_file_in_tmp_folder
 import pytest
 
 from ansys.sound.core.server_helpers import connect_to_or_start_server
-from ansys.sound.core.server_helpers._check_versions import _check_sound_version
+from ansys.sound.core.server_helpers._check_version import _check_sound_version
 
 
 def pytest_configure(config):
@@ -42,8 +42,8 @@ def pytest_configure(config):
     config.dpf_server = server
     config.dpf_lic_context = lic_context
 
-    # Define global variables for DPF Sound plugin version checks: store it in the pytest object
-    # to make it global and available in all tests where we import pytest.
+    # Define global variables for DPF Sound plugin version checks: store them in the pytest object
+    # to make them global and available in all tests where we import pytest.
     pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2025R2 = _check_sound_version("2025.2.0")
     pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1 = _check_sound_version("2026.1.0")
     pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1 = _check_sound_version("2027.1.0")

@@ -44,7 +44,7 @@ def test_connect_to_or_start_server():
 def test_requires_sound_version():
     """Test the requires_sound_version decorator."""
 
-    # Wrong version specifier type => version syntax error (at definition).
+    # Wrong version specifier type => error (at definition).
     with pytest.raises(
         VersionSyntaxError,
         match=(
@@ -124,6 +124,6 @@ def test__check_sound_version():
         with pytest.raises(VersionError, match=("Unknown DPF Sound plugin version 3000.0.0.")):
             _check_sound_version("3000.0.0")
     else:
-        # If plugin >= 2027 R1, the version can be anything (as long as it is higher than the
+        # If plugin >= 2027 R1, the version can be anything, as long as it is higher than the
         # latest to date).
         assert not _check_sound_version("3000.0.0")
