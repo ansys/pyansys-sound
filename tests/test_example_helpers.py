@@ -49,113 +49,113 @@ from ansys.sound.core.examples_helpers.download import EXAMPLES_PATH
 
 
 def test_download_flute_psd():
-    download_flute_psd()[0]
+    download_flute_psd()
     p = str(EXAMPLES_PATH) + "/flute_psd.txt"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 118119
 
 
 def test_download_flute_wav():
-    download_flute_wav()[0]
+    download_flute_wav()
     p = str(EXAMPLES_PATH) + "/flute.wav"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 312297
 
 
 def test_download_accel_with_rpm_wav():
-    download_accel_with_rpm_wav()[0]
+    download_accel_with_rpm_wav()
     p = str(EXAMPLES_PATH) + "/accel_with_rpm.wav"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 3639982
 
     p = str(EXAMPLES_PATH) + "/accel_with_rpm_2.wav"
-    download_accel_with_rpm_2_wav()[0]
+    download_accel_with_rpm_2_wav()
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 3639982
 
     p = str(EXAMPLES_PATH) + "/accel_with_rpm_3.wav"
-    download_accel_with_rpm_3_wav()[0]
+    download_accel_with_rpm_3_wav()
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 3639982
 
 
 def test_download_xtract_demo_signal_wav():
-    download_xtract_demo_signal_1_wav()[0]
+    download_xtract_demo_signal_1_wav()
     p = str(EXAMPLES_PATH) + "/xtract_demo_signal_1.wav"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 882363
 
     p = str(EXAMPLES_PATH) + "/xtract_demo_signal_2.wav"
-    download_xtract_demo_signal_2_wav()[0]
+    download_xtract_demo_signal_2_wav()
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 882363
 
 
 def test_download_fan_wav():
-    download_fan_wav()[0]
+    download_fan_wav()
     p = str(EXAMPLES_PATH) + "/Fan.wav"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 500195
 
 
 def test_download_aircraft_wav():
-    download_aircraft_wav()[0]
+    download_aircraft_wav()
     p = str(EXAMPLES_PATH) + "/Aircraft.wav"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 2299160
 
 
 def test_download_sound_composer_project_whatif():
-    download_sound_composer_project_whatif()[0]
+    download_sound_composer_project_whatif()
     p = str(EXAMPLES_PATH) + "/SoundComposer-WhatIfScenario-Motor-Gear-HVAC-Noise.scn"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 1313147
 
 
 def test_download_aircraft10kHz_wav():
-    download_aircraft10kHz_wav()[0]
+    download_aircraft10kHz_wav()
     p = str(EXAMPLES_PATH) + "/Aircraft_FS10kHz.wav"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 521565
 
 
 def test_download_turbo_whistling_wav():
-    download_turbo_whistling_wav()[0]
+    download_turbo_whistling_wav()
     p = str(EXAMPLES_PATH) + "/Turbo_whistling.wav"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 443028
 
 
 def test_download_sound_composer_source_eMotor():
-    download_sound_composer_source_eMotor()[0]
+    download_sound_composer_source_eMotor()
     p = str(EXAMPLES_PATH) + "/eMotor - FEM - orders levels (harmonics source).txt"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 3153
 
 
 def test_download_sound_composer_sourcecontrol_eMotor():
-    download_sound_composer_source_control_eMotor()[0]
+    download_sound_composer_source_control_eMotor()
     p = str(EXAMPLES_PATH) + "/eMotor - rpm evolution.txt"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 48
 
 
 def test_download_sound_composer_FRF_eMotor():
-    download_sound_composer_FRF_eMotor()[0]
+    download_sound_composer_FRF_eMotor()
     p = str(EXAMPLES_PATH) + "/FRF - eMotor transfer.txt"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 612509
 
 
 def test_download_sound_composer_source_WindRoadNoise():
-    download_sound_composer_source_WindRoadNoise()[0]
+    download_sound_composer_source_WindRoadNoise()
     p = str(EXAMPLES_PATH) + "/Wind and Road noise - spectrum vs vehicle speed (BBN source).txt"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 147261
 
 
 def test_download_sound_composer_sourcecontrol_WindRoadNoise():
-    download_sound_composer_source_control_WindRoadNoise()[0]
+    download_sound_composer_source_control_WindRoadNoise()
     p = str(EXAMPLES_PATH) + "/WindRoadNoise - vehicle speed.txt"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 80

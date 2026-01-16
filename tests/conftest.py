@@ -61,10 +61,9 @@ def pytest_configure(config):
         local_path = os.path.join(base_dir, filename)
 
         if server.has_client():
-            # If the server is a gRPC server, we need to upload the file to the server's temporary
-            # folder
+            # If the server is remote, we need to upload the file to the server's temporary folder.
             return upload_file_in_tmp_folder(local_path, server=server)
-        # Otherwise, that is, if the server is an in-process server, we return the local path
+        # Otherwise, that is, if the server is local, we return the local path.
         return local_path
 
     ## Construct the paths of the different test files after uploading them on the server.
@@ -233,19 +232,17 @@ def pytest_configure(config):
     )
 
     # PSD file
-    # This path is different from the other files': we need a local path
-    # and not a server path because we will use a native python
-    # `open()` to read this file and not a DPF operator
+    # Contrary to previous files, this file is loaded with Python's built-in ``open()`` function,
+    # not with a DPF Sound operator => It must then remain on the client side, and not on the
+    # server side (in the case of a local server, this is irrelevant, as both locations are the
+    # same).
     pytest.data_path_flute_psd_locally = os.path.join(base_dir, "flute_psd.txt")
 
     # Define the output folder where the output files are saved.
     if server.has_client():
         # Remote server => the "output" folder does not exist within the temporary folder where
-        # input data are uploaded => we use the same folder path for input and output
+        # input data are uploaded => we use the same folder path for input and output.
         pytest.output_folder = os.path.dirname(pytest.data_path_flute)
     else:
-        # Local server => we use the repository folder structure where the output folder exists
-        pytest.output_folder = os.path.join(
-            os.path.dirname(pytest.data_path_flute),
-            "output",
-        )
+        # Local server => we use the repository folder structure where the output folder exists.
+        pytest.output_folder = os.path.join(os.path.dirname(pytest.data_path_flute), "output")
