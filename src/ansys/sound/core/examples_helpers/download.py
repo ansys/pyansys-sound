@@ -56,7 +56,7 @@ import requests
 # Setup data directory
 USER_DATA_PATH = platformdirs.user_data_dir(appname="ansys_sound_core", appauthor="Ansys")
 if not os.path.exists(USER_DATA_PATH):
-    os.makedirs(USER_DATA_PATH)
+    os.makedirs(USER_DATA_PATH)  # pragma: no cover
 
 EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
 
@@ -69,7 +69,7 @@ def check_directory_exist(directory):
         def inner_wrapper(*args, **kwargs):
             # Check if folder exists
             if not os.path.exists(directory):
-                os.makedirs(directory)
+                os.makedirs(directory)  # pragma: no cover
 
             return func(*args, **kwargs)
 
@@ -176,7 +176,7 @@ def _download_file_and_upload_to_server_tmp_folder(filename, server=None):
     if server.has_client():
         # If the server has a client, then it is a remote server and we need to upload the file
         # to the server's temporary folder.
-        return upload_file_in_tmp_folder(file_path=local_path, server=server)
+        return upload_file_in_tmp_folder(file_path=local_path, server=server)  # pragma: no cover
     # Otherwise, the server is a local server, and we can use the local path directly.
     return local_path  # pragma: no cover
 
