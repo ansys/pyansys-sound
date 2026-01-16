@@ -37,6 +37,12 @@ consider:
     third-party libraries (for example, CSV files, or non-Ansys text files), then the file need
     only be downloaded locally. In this case, define the download function with a call to function
     :func:`._download_file_in_local_examples_folder`.
+
+.. note::
+    In any case, the example data files must be submitted to the PyAnsys Sound examples repository,
+    through a
+    :ref:`pull request <https://github.com/ansys/example-data/upload/main/pyansys-sound>`_, for the
+    implemented download function to work.
 """
 from functools import wraps
 import os
