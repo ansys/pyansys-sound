@@ -23,7 +23,6 @@
 """Functions to download sample datasets from the PyAnsys Sound examples repository."""
 from functools import wraps
 import os
-import shutil
 
 from ansys.dpf.core import server as server_module
 from ansys.dpf.core import upload_file_in_tmp_folder
@@ -32,13 +31,13 @@ import requests
 
 # Setup data directory
 USER_DATA_PATH = platformdirs.user_data_dir(appname="ansys_sound_core", appauthor="Ansys")
-if not os.path.exists(USER_DATA_PATH):  # pragma: no cover
+if not os.path.exists(USER_DATA_PATH):
     os.makedirs(USER_DATA_PATH)
 
 EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
 
 
-def check_directory_exist(directory):  # pragma no cover
+def check_directory_exist(directory):
     """Check the existence of a directory."""
 
     def wrap_function(func):
@@ -55,20 +54,30 @@ def check_directory_exist(directory):  # pragma no cover
     return wrap_function
 
 
-def get_ext(filename):  # pragma no cover
-    """Extract the extension of the filename."""
-    ext = os.path.splitext(filename)[1].lower()
-    return ext
+def provide_error_context():
+    """Capture exceptions and provide additional context in the error message."""
+
+    def wrap_function(func):
+        @wraps(func)
+        def inner_wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except Exception as e:
+                raise RuntimeError(
+                    "For the reason that follows, retrieving the file failed.\n"
+                    "You can download this file from:\n"
+                    f"{_get_example_file_url(args[0])}\n"
+                    "\n"
+                    "The reported error message is:\n"
+                    f"{str(e)}"
+                )
+
+        return inner_wrapper
+
+    return wrap_function
 
 
-def delete_downloads():  # pragma no cover
-    """Delete all downloaded examples to free up space."""
-    if os.path.exists(EXAMPLES_PATH):
-        shutil.rmtree(EXAMPLES_PATH)
-    return True
-
-
-def _get_example_file_url(filename):  # pragma no cover
+def _get_example_file_url(filename):
     """Get the URL of the example file in the PyAnsys Sound examples repository.
 
     Parameters
@@ -80,40 +89,41 @@ def _get_example_file_url(filename):  # pragma no cover
     -------
     File url
     """
-    return f"https://github.com/ansys/example-data/raw/main/pyansys-sound/{filename}"  # noqa: E231
+    return f"https://github.com/ansys/example-data/raw/main/pyansys-sound/{filename}"
 
 
+@provide_error_context()
 @check_directory_exist(EXAMPLES_PATH)
-def _download_file_in_local_tmp_folder(url, filename):  # pragma no cover
-    """Download a file from the PyAnsys Sound examples repository to the local tmp folder.
+def _download_file_in_local_examples_folder(filename):
+    """Download a file from the PyAnsys Sound examples repository to the local example files folder.
+
+    The specified file is retrieved from the PyAnsys Sound examples repository at the URL
+    https://github.com/ansys/example-data/raw/main/pyansys-sound/
 
     Parameters
     ----------
-    url : str
-        Url of the file to download.
-        This url can be provided using _get_example_file_url() function.
-
     filename : str
-        File name in the local tmp folder.
+        File name in the local examples folder.
 
     Returns
     -------
-    Local path of the downloaded file.
+    Local path of the downloaded example file.
     """
-    # Download content
-    try:
-        file_content = requests.get(url, timeout=10).content  # 10 seconds
-    except requests.exceptions.Timeout:
-        print("Timed out")
+    # Download content.
+    remote_file = requests.get(
+        _get_example_file_url(filename),
+        timeout=10,
+    )  # timeout in seconds.
 
-    # Copy to local file
+    # Copy content into local file.
     local_path = os.path.join(EXAMPLES_PATH, os.path.basename(filename))
     with open(local_path, "wb") as f:
-        f.write(file_content)
+        f.write(remote_file.content)
     return local_path
 
 
-def _download_example_file_to_server_tmp_folder(filename, server=None):  # pragma no cover
+@provide_error_context()
+def _download_file_and_upload_to_server_tmp_folder(filename, server=None):
     """Download a PyAnsys Sound example file and make it available to the DPF server.
 
     If the server is remote, the file is uploaded to the server's temporary folder, and the remote
@@ -123,7 +133,6 @@ def _download_example_file_to_server_tmp_folder(filename, server=None):  # pragm
     ----------
     filename : str
         Example file name.
-
     server : ansys.dpf.core.server.Server, default: None
         DPF server to which to upload the file (if remote).
         If None, attempts to use the global server.
@@ -133,63 +142,33 @@ def _download_example_file_to_server_tmp_folder(filename, server=None):  # pragm
     str
         Path of the file on the DPF server.
     """
-    # get file url in git repo
-    url = _get_example_file_url(filename)
-    try:
-        # download file locally
-        local_path = _download_file_in_local_tmp_folder(url, filename)
-        if server is None:
-            # If no server is provided, retrieve the global server
-            server = server_module.get_or_create_server(server)
-        if server.has_client():
-            # If the server has a client, then it is a remote server and we need to upload the file
-            # to the server's temporary folder.
-            return upload_file_in_tmp_folder(file_path=local_path, server=server)
-        # Otherwise, the server is a local server, and we can use the local path directly
-        return local_path
+    # Download file locally.
+    local_path = _download_file_in_local_examples_folder(filename)
 
-    except Exception as e:  # Generate exception
-        raise RuntimeError(
-            "For the reason that follows, retrieving the file failed.\n"
-            "You can download this file from:\n"
-            f"{url}\n"
-            "\n"
-            "The reported error message is:\n"
-            f"{str(e)}"
-        )
+    if server is None:
+        # If no server is provided, retrieve the global server.
+        server = server_module.get_or_create_server(server)
+
+    if server.has_client():
+        # If the server has a client, then it is a remote server and we need to upload the file
+        # to the server's temporary folder.
+        return upload_file_in_tmp_folder(file_path=local_path, server=server)
+    # Otherwise, the server is a local server, and we can use the local path directly.
+    return local_path
 
 
 def download_flute_psd():
-    """Download the PSD of the ``flute.wav`` file.
+    """Download the `flute_psd.txt` file with the PSD corresponding to `flute.wav`.
 
-    As flute_psd.txt file is opened using python 'open' function,
-    we need the local path of the file.
-
-    Examples
-    --------
-    >>> from ansys.sound.core.examples_helpers import download_flute_psd
-    >>> filename = print(download_flute_psd()[0])
+    As `flute_psd.txt` is opened using Python's ``open()`` function, and not a DPF Sound operator,
+    we do not need to upload the file onto the server side. The local path of the file suffices.
 
     Returns
     -------
     str
-        Local path for the ``flute_psd.txt`` file.
+        Local path for the `flute_psd.txt` file.
     """
-    url = _get_example_file_url("flute_psd.txt")
-    try:
-        # download file locally
-        local_path = _download_file_in_local_tmp_folder(url, "flute_psd.txt")
-    except Exception as e:  # Generate exception # pragma no cover
-        raise RuntimeError(
-            "For the reason that follows, retrieving the file failed.\n"
-            "You can download this file from:\n"
-            f"{url}\n"
-            "\n"
-            "The reported error message is:\n"
-            f"{str(e)}"
-        )
-
-    return local_path
+    return _download_file_in_local_examples_folder("flute_psd.txt")
 
 
 def download_flute_wav(server=None):
@@ -200,7 +179,7 @@ def download_flute_wav(server=None):
     str
         Path for the ``flute.wav`` file.
     """
-    return _download_example_file_to_server_tmp_folder("flute.wav", server=server)
+    return _download_file_and_upload_to_server_tmp_folder("flute.wav", server=server)
 
 
 def download_accel_with_rpm_wav(server=None):
@@ -211,7 +190,7 @@ def download_accel_with_rpm_wav(server=None):
     str
         Path for the ``accel_with_rpm.wav`` file.
     """
-    return _download_example_file_to_server_tmp_folder("accel_with_rpm.wav", server=server)
+    return _download_file_and_upload_to_server_tmp_folder("accel_with_rpm.wav", server=server)
 
 
 def download_accel_with_rpm_2_wav(server=None):
@@ -222,7 +201,7 @@ def download_accel_with_rpm_2_wav(server=None):
     str
         Path for the ``accel_with_rpm_2.wav`` file.
     """
-    return _download_example_file_to_server_tmp_folder("accel_with_rpm_2.wav", server=server)
+    return _download_file_and_upload_to_server_tmp_folder("accel_with_rpm_2.wav", server=server)
 
 
 def download_accel_with_rpm_3_wav(server=None):
@@ -233,7 +212,7 @@ def download_accel_with_rpm_3_wav(server=None):
     str
         Path for the ``accel_with_rpm_3.wav`` file.
     """
-    return _download_example_file_to_server_tmp_folder("accel_with_rpm_3.wav", server=server)
+    return _download_file_and_upload_to_server_tmp_folder("accel_with_rpm_3.wav", server=server)
 
 
 def download_xtract_demo_signal_1_wav(server=None):
@@ -244,7 +223,7 @@ def download_xtract_demo_signal_1_wav(server=None):
     str
         Path for the ``xtract_demo_signal_1.wav`` file.
     """
-    return _download_example_file_to_server_tmp_folder("xtract_demo_signal_1.wav", server=server)
+    return _download_file_and_upload_to_server_tmp_folder("xtract_demo_signal_1.wav", server=server)
 
 
 def download_xtract_demo_signal_2_wav(server=None):
@@ -255,7 +234,7 @@ def download_xtract_demo_signal_2_wav(server=None):
     str
         Path for the ``xtract_demo_signal_2.wav`` file.
     """
-    return _download_example_file_to_server_tmp_folder("xtract_demo_signal_2.wav", server=server)
+    return _download_file_and_upload_to_server_tmp_folder("xtract_demo_signal_2.wav", server=server)
 
 
 def download_fan_wav(server=None):
@@ -266,7 +245,7 @@ def download_fan_wav(server=None):
     str
         Path for the ``Fan.wav`` file.
     """
-    return _download_example_file_to_server_tmp_folder("Fan.wav", server=server)
+    return _download_file_and_upload_to_server_tmp_folder("Fan.wav", server=server)
 
 
 def download_aircraft_wav(server=None):
@@ -277,7 +256,7 @@ def download_aircraft_wav(server=None):
     str
         Path for the ``Aircraft.wav`` file.
     """
-    return _download_example_file_to_server_tmp_folder("Aircraft.wav", server=server)
+    return _download_file_and_upload_to_server_tmp_folder("Aircraft.wav", server=server)
 
 
 def download_aircraft10kHz_wav(server=None):
@@ -288,7 +267,7 @@ def download_aircraft10kHz_wav(server=None):
     str
         Path for the ``Aircraft_FS10kHz.wav`` file.
     """
-    return _download_example_file_to_server_tmp_folder("Aircraft_FS10kHz.wav", server=server)
+    return _download_file_and_upload_to_server_tmp_folder("Aircraft_FS10kHz.wav", server=server)
 
 
 def download_turbo_whistling_wav(server=None):
@@ -299,7 +278,7 @@ def download_turbo_whistling_wav(server=None):
     str
         Path for the ``Turbo_Whistling.wav`` file.
     """
-    return _download_example_file_to_server_tmp_folder("Turbo_Whistling.wav", server=server)
+    return _download_file_and_upload_to_server_tmp_folder("Turbo_Whistling.wav", server=server)
 
 
 def download_sound_composer_project_whatif(server=None):
@@ -312,7 +291,7 @@ def download_sound_composer_project_whatif(server=None):
     str
         Path for the ``SoundComposer-WhatIfScenario-Motor-Gear-HVAC-Noise.scn`` file.
     """
-    return _download_example_file_to_server_tmp_folder(
+    return _download_file_and_upload_to_server_tmp_folder(
         "SoundComposer-WhatIfScenario-Motor-Gear-HVAC-Noise.scn", server=server
     )
 
@@ -327,7 +306,7 @@ def download_sound_composer_source_eMotor(server=None):
     str
         Path for the ``eMotor - FEM - orders levels (harmonics source).txt`` file.
     """
-    return _download_example_file_to_server_tmp_folder(
+    return _download_file_and_upload_to_server_tmp_folder(
         "eMotor - FEM - orders levels (harmonics source).txt", server=server
     )
 
@@ -342,7 +321,10 @@ def download_sound_composer_source_control_eMotor(server=None):
     str
         Path for the ``eMotor - rpm evolution.txt`` file.
     """
-    return _download_example_file_to_server_tmp_folder("eMotor - rpm evolution.txt", server=server)
+    return _download_file_and_upload_to_server_tmp_folder(
+        "eMotor - rpm evolution.txt",
+        server=server,
+    )
 
 
 def download_sound_composer_FRF_eMotor(server=None):
@@ -356,7 +338,10 @@ def download_sound_composer_FRF_eMotor(server=None):
     str
         Path for the ``FRF - eMotor transfer.txt`` file.
     """
-    return _download_example_file_to_server_tmp_folder("FRF - eMotor transfer.txt", server=server)
+    return _download_file_and_upload_to_server_tmp_folder(
+        "FRF - eMotor transfer.txt",
+        server=server,
+    )
 
 
 def download_sound_composer_source_WindRoadNoise(server=None):
@@ -371,7 +356,7 @@ def download_sound_composer_source_WindRoadNoise(server=None):
     str
         Path for the ``Wind and Road noise - spectrum vs vehicle speed (BBN source).txt`` file.
     """
-    return _download_example_file_to_server_tmp_folder(
+    return _download_file_and_upload_to_server_tmp_folder(
         "Wind and Road noise - spectrum vs vehicle speed (BBN source).txt", server=server
     )
 
@@ -387,7 +372,7 @@ def download_sound_composer_source_control_WindRoadNoise(server=None):
     str
         Path for the ``WindRoadNoise - vehicle speed.txt`` file.
     """
-    return _download_example_file_to_server_tmp_folder(
+    return _download_file_and_upload_to_server_tmp_folder(
         "WindRoadNoise - vehicle speed.txt", server=server
     )
 
@@ -402,7 +387,7 @@ def download_HVAC_test_wav(server=None):
     str
         Path for the ``HVAC_test.wav`` file.
     """
-    return _download_example_file_to_server_tmp_folder("HVAC_test.wav", server=server)
+    return _download_file_and_upload_to_server_tmp_folder("HVAC_test.wav", server=server)
 
 
 def download_all_carHVAC_wav(server=None) -> str:
@@ -416,38 +401,22 @@ def download_all_carHVAC_wav(server=None) -> str:
         Path where the ``carHVAC<i>.wav`` files are located.
     """
     for i in range(20):
-        filepath = _download_example_file_to_server_tmp_folder(f"carHVAC{i+1}.wav", server=server)
+        filepath = _download_file_and_upload_to_server_tmp_folder(
+            f"carHVAC{i+1}.wav",
+            server=server,
+        )
     return os.path.dirname(filepath)
 
 
 def download_JLT_CE_data_csv():
     """Download the ``JLT_CE_data.csv`` file.
 
-    As JLT_CE_data.csv file is opened using Python's `csv` package, we need the local path of the
+    As JLT_CE_data.csv file is opened using Python's ``csv`` package, we need the local path of the
     file.
-
-    Examples
-    --------
-    >>> from ansys.sound.core.examples_helpers import download_JLT_CE_data_csv
-    >>> filename = print(download_JLT_CE_data_csv()[0])
 
     Returns
     -------
     str
         Local path for the ``JLT_CE_data.csv`` file.
     """
-    url = _get_example_file_url("JLT_CE_data.csv")
-    try:
-        # download file locally
-        local_path = _download_file_in_local_tmp_folder(url, "JLT_CE_data.csv")
-    except Exception as e:  # Generate exception # pragma no cover
-        raise RuntimeError(
-            "For the reason that follows, retrieving the file failed.\n"
-            "You can download this file from:\n"
-            f"{url}\n"
-            "\n"
-            "The reported error message is:\n"
-            f"{str(e)}"
-        )
-
-    return local_path
+    return _download_file_in_local_examples_folder("JLT_CE_data.csv")
