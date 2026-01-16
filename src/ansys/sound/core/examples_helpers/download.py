@@ -34,10 +34,10 @@ consider:
     to function :func:`._download_file_and_upload_to_server_tmp_folder`. For example,
     ``path_on_server = _download_file_and_upload_to_server_tmp_folder("my_file.wav", my_server)``.
 
--   Conversely, if the example data file can be opened and used using Python's standard or
-    third-party libraries (for example, CSV files, or non-Ansys text files), then the file need
-    only be downloaded locally. In this case, define the download function with a call to function
-    :func:`._download_file_in_local_examples_folder`. For example,
+-   Conversely, if the example data file is opened using Python's standard or third-party libraries
+    (for example, CSV files, or non-Ansys text files), then the file must remain local, that is, on
+    the client side, where the Python process is running. In this case, define the download
+    function with a call to function :func:`._download_file_in_local_examples_folder`. For example,
     ``path_on_client = _download_file_in_local_examples_folder("my_file.csv")``.
 
 Note: in any case, the example data files must be submitted to the PyAnsys Sound examples
