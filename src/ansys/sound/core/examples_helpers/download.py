@@ -86,7 +86,7 @@ def provide_error_context():
         def inner_wrapper(*args, **kwargs):
             try:
                 return func(*args, **kwargs)
-            except Exception as e:
+            except Exception as e:  # pragma: no cover
                 raise RuntimeError(
                     "For the reason that follows, retrieving the file failed.\n"
                     "You can download this file from:\n"
@@ -178,7 +178,7 @@ def _download_file_and_upload_to_server_tmp_folder(filename, server=None):
         # to the server's temporary folder.
         return upload_file_in_tmp_folder(file_path=local_path, server=server)
     # Otherwise, the server is a local server, and we can use the local path directly.
-    return local_path
+    return local_path  # pragma: no cover
 
 
 def download_flute_psd():
