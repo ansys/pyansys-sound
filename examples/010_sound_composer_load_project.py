@@ -84,7 +84,8 @@ sound_composer_project = SoundComposer()
 sound_composer_project.load(path_sound_composer_project_scn)
 
 # %%
-# You can use the built-in :func:`print()` function to display a summary of the content of the project.
+# You can use the built-in :func:`print()` function to display a summary of the content of the
+# project.
 print(sound_composer_project)
 
 # %%
