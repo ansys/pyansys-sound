@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Computes the sharpness according to Zwicker & Fastl's model, over time."""
+
 import warnings
 
 from ansys.dpf.core import Field, Operator, types

@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Computes ISO/TS 20065:2022 tonality."""
+
 import warnings
 
 from ansys.dpf.core import Field, GenericDataContainersCollection, Operator, types

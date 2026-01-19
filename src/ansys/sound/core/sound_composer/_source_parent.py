@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Sound Composer's source."""
+
 import warnings
 
 from .._pyansys_sound import PyAnsysSoundWarning

@@ -193,11 +193,8 @@ def test_prominence_ratio_get_nb_tones(create_psd_from_txt_data):
 
     with pytest.raises(PyAnsysSoundException) as excinfo:
         pr.get_nb_tones()
-    assert (
-        str(excinfo.value)
-        == "Output is not processed yet. \
+    assert str(excinfo.value) == "Output is not processed yet. \
                     Use the 'ProminenceRatio.process()' method."
-    )
 
     pr.process()
     assert pr.get_nb_tones() == 14
@@ -317,11 +314,8 @@ def test_prominence_ratio_get_all_tone_infos(create_psd_from_txt_data):
 
     with pytest.raises(PyAnsysSoundException) as excinfo:
         pr.get_single_tone_info(1)
-    assert (
-        str(excinfo.value)
-        == "Output is not processed yet. \
+    assert str(excinfo.value) == "Output is not processed yet. \
                     Use the 'ProminenceRatio.process()' method."
-    )
 
     pr.process()
     with pytest.raises(PyAnsysSoundException) as excinfo:
@@ -384,11 +378,8 @@ def test_prominence_ratio_plot(mock_show, create_psd_from_txt_data):
 
     with pytest.raises(PyAnsysSoundException) as excinfo:
         pr.plot()
-    assert (
-        str(excinfo.value)
-        == "Output is not processed yet. \
+    assert str(excinfo.value) == "Output is not processed yet. \
                     Use the 'ProminenceRatio.process()' method."
-    )
 
     pr.process()
     pr.plot()

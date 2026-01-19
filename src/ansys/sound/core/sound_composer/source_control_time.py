@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Sound Composer's source control over time."""
+
 from ansys.dpf.core import Field, Operator
 from matplotlib import pyplot as plt
 

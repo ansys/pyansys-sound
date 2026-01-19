@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Psychoacoustics functions."""
+
 import numpy as np
 
 from .._pyansys_sound import PyAnsysSound, PyAnsysSoundException

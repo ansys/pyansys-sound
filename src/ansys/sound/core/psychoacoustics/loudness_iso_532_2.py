@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Computes ISO 532-2:2017 loudness."""
+
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator, types

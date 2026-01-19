@@ -110,7 +110,7 @@ def test_loudness_iso_532_1_stationary_get_output():
     # Compute
     loudness_computer.process()
 
-    (loudness, loudness_level, specific_loudness) = loudness_computer.get_output()
+    loudness, loudness_level, specific_loudness = loudness_computer.get_output()
     assert isinstance(loudness, float)
     assert loudness == pytest.approx(EXP_LOUDNESS_FREE)
     assert isinstance(loudness_level, float)

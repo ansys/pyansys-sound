@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Sound power."""
+
 from .._pyansys_sound import PyAnsysSound
 
 

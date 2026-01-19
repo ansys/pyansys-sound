@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Sums signals."""
+
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -96,12 +97,8 @@ class SumSignals(SignalUtilitiesParent):
         """
         if self._output == None:
             # Computing output if needed
-            warnings.warn(
-                PyAnsysSoundWarning(
-                    "Output is not processed yet. \
-                        Use the 'SumSignals.process()' method."
-                )
-            )
+            warnings.warn(PyAnsysSoundWarning("Output is not processed yet. \
+                        Use the 'SumSignals.process()' method."))
 
         return self._output
 

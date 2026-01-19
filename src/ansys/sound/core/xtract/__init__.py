@@ -35,7 +35,6 @@ from .xtract_tonal import XtractTonal  # isort:skip
 from .xtract_denoiser import XtractDenoiser  # isort:skip
 from .xtract import Xtract  # isort:skip
 
-
 __all__ = (
     "XtractParent",
     "Xtract",

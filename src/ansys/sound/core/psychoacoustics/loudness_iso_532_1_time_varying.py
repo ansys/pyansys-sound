@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Computes ISO 532-1 loudness for time-varying sounds."""
+
 import warnings
 
 from ansys.dpf.core import Field, Operator, types

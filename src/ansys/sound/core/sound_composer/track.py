@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Sound Composer's track."""
+
 from typing import Union
 import warnings
 

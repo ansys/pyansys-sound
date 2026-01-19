@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Sound Composer's audio source."""
+
 import warnings
 
 from ansys.dpf.core import Field, GenericDataContainer, Operator

@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Sound Composer's harmonics source."""
+
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operator

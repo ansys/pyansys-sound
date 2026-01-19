@@ -50,11 +50,8 @@ def test_write_wav_process():
     # Error 2
     with pytest.raises(PyAnsysSoundException) as excinfo:
         wav_writer.process()
-    assert (
-        str(excinfo.value)
-        == "No signal is specified for writing to a WAV file. \
+    assert str(excinfo.value) == "No signal is specified for writing to a WAV file. \
                     Use `WriteWav.signal`."
-    )
 
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()

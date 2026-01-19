@@ -31,6 +31,7 @@ This example shows how to compute the short-time Fourier transform (STFT) of a s
 signal corresponding to a given spectrogram.
 
 """
+
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
