@@ -262,8 +262,7 @@ plot_stft(stft_modified_signal, fs, SPLmax=max_stft, title="Extracted Tones")
 # ^^^^^^^^^^^^^^^^^^^^
 # The goal is to isolate the transients using the right settings.
 # While these settings are not as easy to handle, they are well explained in the tutorial videos
-# installed with the Ansys Sound Analysis and Specification (SAS) standalone
-# application (with the user interface). You can also find the
+# available on the Ansys Sound YouTube channel. You can also find the
 # `SAS - XTRACT transient <https://learninghub.ansys.com/share/asset/view/108>`_
 # videos on the Ansys Learning Hub.
 
