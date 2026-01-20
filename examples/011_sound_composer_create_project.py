@@ -44,8 +44,8 @@ project.
 The example shows how to perform these operations:
 
 - Create a project,
-- Create a track with a source of type Harmonics, and add it to the project
-- Create a track with a source of type Spectrum, and add it to the project
+- Create a track with a source of type Harmonics, and add it to the project,
+- Create a track with a source of type Spectrum, and add it to the project,
 - Generate the signal of the project,
 - Display the spectrogram of the generated signal,
 - Save the project as an .scn file.
