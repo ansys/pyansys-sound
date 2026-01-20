@@ -1,3 +1,106 @@
+## [0.3.0](https://github.com/ansys/pyansys-sound/releases/tag/v0.3.0) - January 20, 2026
+
+
+### Added
+
+- Feat: update ecma-418-2 tonality allowing 3rd edition and diffuse field [#317](https://github.com/ansys/pyansys-sound/pull/317)
+- Feat: 1/3-octave- and octave-band levels from PSD or signal [#328](https://github.com/ansys/pyansys-sound/pull/328)
+- Feat: helper class to create a PyAnsys Sound FieldsContainer [#366](https://github.com/ansys/pyansys-sound/pull/366)
+- Feat: add a new example to illustrate octave and one-third-octave computation [#415](https://github.com/ansys/pyansys-sound/pull/415)
+
+
+### Miscellaneous
+
+- Chore: update changelog for v0.2.0 [#319](https://github.com/ansys/pyansys-sound/pull/319)
+- Ci: adding ``release to github`` in cicd [#320](https://github.com/ansys/pyansys-sound/pull/320)
+- Build: bump pyvista from 0.45.2 to 0.45.3 [#322](https://github.com/ansys/pyansys-sound/pull/322)
+- Ci: update the ``check-vulnerabilities`` action [#323](https://github.com/ansys/pyansys-sound/pull/323)
+- Ci: bump ansys/actions from 10.0.12 to 10.0.13 in the actions group [#324](https://github.com/ansys/pyansys-sound/pull/324)
+- Build: bump trame-vtk from 2.9.0 to 2.9.1 [#325](https://github.com/ansys/pyansys-sound/pull/325)
+- Build: bump trame from 3.10.2 to 3.11.0 [#326](https://github.com/ansys/pyansys-sound/pull/326)
+- Build: bump regex from 2024.11.6 to 2025.7.34 [#329](https://github.com/ansys/pyansys-sound/pull/329)
+- Build: bump matplotlib from 3.10.3 to 3.10.5 [#330](https://github.com/ansys/pyansys-sound/pull/330)
+- Build: bump pyvista from 0.45.3 to 0.46.0 [#332](https://github.com/ansys/pyansys-sound/pull/332)
+- Ci: bump the actions group with 2 updates [#333](https://github.com/ansys/pyansys-sound/pull/333), [#369](https://github.com/ansys/pyansys-sound/pull/369), [#376](https://github.com/ansys/pyansys-sound/pull/376), [#395](https://github.com/ansys/pyansys-sound/pull/395), [#405](https://github.com/ansys/pyansys-sound/pull/405)
+- Chore: [pre-commit.ci] pre-commit autoupdate [#334](https://github.com/ansys/pyansys-sound/pull/334), [#337](https://github.com/ansys/pyansys-sound/pull/337), [#363](https://github.com/ansys/pyansys-sound/pull/363), [#371](https://github.com/ansys/pyansys-sound/pull/371), [#375](https://github.com/ansys/pyansys-sound/pull/375), [#387](https://github.com/ansys/pyansys-sound/pull/387), [#389](https://github.com/ansys/pyansys-sound/pull/389), [#406](https://github.com/ansys/pyansys-sound/pull/406), [#408](https://github.com/ansys/pyansys-sound/pull/408), [#421](https://github.com/ansys/pyansys-sound/pull/421)
+- Chore: update CHANGELOG for v0.2.1 [#335](https://github.com/ansys/pyansys-sound/pull/335)
+- Build: bump trame from 3.11.0 to 3.12.0 [#338](https://github.com/ansys/pyansys-sound/pull/338)
+- Build: bump pyvista from 0.46.0 to 0.46.2 [#339](https://github.com/ansys/pyansys-sound/pull/339)
+- Ci: bump actions/checkout from 4 to 5 in the actions group [#340](https://github.com/ansys/pyansys-sound/pull/340)
+- Docs: update ``html_context`` with PyAnsys tags [#341](https://github.com/ansys/pyansys-sound/pull/341)
+- Fix: update expected values following octave center frequency update in DPF Sound (31.0->31.5 Hz) [#342](https://github.com/ansys/pyansys-sound/pull/342)
+- Build: bump ansys-sphinx-theme from 1.5.3 to 1.6.0 [#343](https://github.com/ansys/pyansys-sound/pull/343)
+- Build: bump regex from 2025.7.34 to 2025.8.29 [#344](https://github.com/ansys/pyansys-sound/pull/344)
+- Ci: bump ansys/actions from 10.0.14 to 10.0.15 in the actions group [#345](https://github.com/ansys/pyansys-sound/pull/345)
+- Build: bump matplotlib from 3.10.5 to 3.10.6 [#346](https://github.com/ansys/pyansys-sound/pull/346)
+- Build: bump pyvista from 0.46.2 to 0.46.3 [#347](https://github.com/ansys/pyansys-sound/pull/347)
+- Build: bump platformdirs from 4.3.8 to 4.4.0 [#348](https://github.com/ansys/pyansys-sound/pull/348)
+- Build: bump vtk from 9.4.2 to 9.5.1 [#349](https://github.com/ansys/pyansys-sound/pull/349)
+- Build: bump pytest from 8.4.1 to 8.4.2 [#350](https://github.com/ansys/pyansys-sound/pull/350)
+- Build: bump pytest-cov from 6.2.1 to 6.3.0 [#351](https://github.com/ansys/pyansys-sound/pull/351)
+- Build: bump regex from 2025.8.29 to 2025.9.1 [#352](https://github.com/ansys/pyansys-sound/pull/352)
+- Ci: bump the actions group with 4 updates [#353](https://github.com/ansys/pyansys-sound/pull/353)
+- Build: bump ansys-sphinx-theme from 1.6.0 to 1.6.1 [#354](https://github.com/ansys/pyansys-sound/pull/354)
+- Build: bump pytest-cov from 6.3.0 to 7.0.0 [#355](https://github.com/ansys/pyansys-sound/pull/355)
+- Ci: bump ansys/actions from 10.0.20 to 10.1.0 in the actions group [#356](https://github.com/ansys/pyansys-sound/pull/356)
+- Chore: update docker recipe and add docker documentation [#358](https://github.com/ansys/pyansys-sound/pull/358)
+- Docs: Update \`\`CONTRIBUTORS.md\`\` with the latest contributors [#359](https://github.com/ansys/pyansys-sound/pull/359)
+- Ci: bump ansys/actions from 10.1.0 to 10.1.1 in the actions group [#360](https://github.com/ansys/pyansys-sound/pull/360)
+- Build: bump regex from 2025.9.1 to 2025.9.18 [#361](https://github.com/ansys/pyansys-sound/pull/361)
+- Build: bump vtk from 9.5.1 to 9.5.2 [#362](https://github.com/ansys/pyansys-sound/pull/362)
+- Ci: bump ansys/actions from 10.1.1 to 10.1.2 in the actions group [#364](https://github.com/ansys/pyansys-sound/pull/364)
+- Feat: convert class \`PyAnsysSound\`'s method \`convert_fields_container_to_np_array\` into a utility function in the same module [#367](https://github.com/ansys/pyansys-sound/pull/367)
+- Build: bump trame-vtk from 2.9.1 to 2.10.0 [#368](https://github.com/ansys/pyansys-sound/pull/368)
+- Fix: fix level unit following DPF Sound bug #1288971 fix [#370](https://github.com/ansys/pyansys-sound/pull/370)
+- Build: bump matplotlib from 3.10.6 to 3.10.7 [#372](https://github.com/ansys/pyansys-sound/pull/372)
+- Build: bump platformdirs from 4.4.0 to 4.5.0 [#373](https://github.com/ansys/pyansys-sound/pull/373)
+- Build: bump ansys-sphinx-theme from 1.6.1 to 1.6.3 [#374](https://github.com/ansys/pyansys-sound/pull/374)
+- Build: bump regex from 2025.9.18 to 2025.10.23 [#377](https://github.com/ansys/pyansys-sound/pull/377)
+- Fix: manage Sound Composer project name [#380](https://github.com/ansys/pyansys-sound/pull/380)
+- Ci: bump ansys/actions from 10.1.4 to 10.1.5 in the actions group [#381](https://github.com/ansys/pyansys-sound/pull/381)
+- Build: bump pyvista from 0.46.3 to 0.46.4 [#382](https://github.com/ansys/pyansys-sound/pull/382)
+- Build: bump pytest from 8.4.2 to 9.0.0 [#384](https://github.com/ansys/pyansys-sound/pull/384)
+- Build: bump pypandoc from 1.15 to 1.16 [#385](https://github.com/ansys/pyansys-sound/pull/385)
+- Build: bump regex from 2025.10.23 to 2025.11.3 [#386](https://github.com/ansys/pyansys-sound/pull/386)
+- Ci: add check-actions-security step and remedy detected vulnerabilities [#388](https://github.com/ansys/pyansys-sound/pull/388)
+- Build: bump pypandoc from 1.16 to 1.16.2 [#390](https://github.com/ansys/pyansys-sound/pull/390)
+- Build: bump pytest from 9.0.0 to 9.0.1 [#391](https://github.com/ansys/pyansys-sound/pull/391)
+- Build: bump scikit-learn from 1.7.0 to 1.7.2 [#392](https://github.com/ansys/pyansys-sound/pull/392)
+- Build: bump scipy from 1.15.2 to 1.15.3 [#393](https://github.com/ansys/pyansys-sound/pull/393)
+- Build: bump requests from 2.30.0 to 2.32.5 [#394](https://github.com/ansys/pyansys-sound/pull/394)
+- Chore: Update missing or outdated files [#397](https://github.com/ansys/pyansys-sound/pull/397)
+- Ci: bump actions/setup-python from 6.0.0 to 6.1.0 in the actions group [#398](https://github.com/ansys/pyansys-sound/pull/398)
+- Test: add tests related to the addition of Ansys_OrderFreq format. [#400](https://github.com/ansys/pyansys-sound/pull/400)
+- Build: bump pytest from 9.0.1 to 9.0.2 [#401](https://github.com/ansys/pyansys-sound/pull/401)
+- Build: bump sphinx-gallery from 0.19.0 to 0.20.0 [#402](https://github.com/ansys/pyansys-sound/pull/402)
+- Build: bump numpydoc from 1.9.0 to 1.10.0 [#403](https://github.com/ansys/pyansys-sound/pull/403)
+- Build: bump platformdirs from 4.5.0 to 4.5.1 [#404](https://github.com/ansys/pyansys-sound/pull/404)
+- Build: bump ansys-sphinx-theme from 1.6.3 to 1.6.4 [#407](https://github.com/ansys/pyansys-sound/pull/407)
+- Build: bump trame-vtk from 2.10.0 to 2.10.1 [#411](https://github.com/ansys/pyansys-sound/pull/411)
+- Build: bump matplotlib from 3.10.7 to 3.10.8 [#412](https://github.com/ansys/pyansys-sound/pull/412)
+- Ci: bump the actions group with 3 updates [#413](https://github.com/ansys/pyansys-sound/pull/413)
+- Refactor: clean up download module [#418](https://github.com/ansys/pyansys-sound/pull/418)
+- Build: bump trame-vtk from 2.10.1 to 2.10.2 [#419](https://github.com/ansys/pyansys-sound/pull/419)
+- Docs: final documentation review for 0.3.0 [#420](https://github.com/ansys/pyansys-sound/pull/420)
+
+
+### Maintenance
+
+- Fix: removing cache in ``doc-build`` action [#321](https://github.com/ansys/pyansys-sound/pull/321)
+- Fix: test value changes following IPP update [#378](https://github.com/ansys/pyansys-sound/pull/378)
+- Build: Implement package check decorators [#396](https://github.com/ansys/pyansys-sound/pull/396)
+- Ci: add 26.1 to the list of official images [#410](https://github.com/ansys/pyansys-sound/pull/410)
+- Build: bump ansys-dpf-core from 0.14.2 to 0.15.0 [#414](https://github.com/ansys/pyansys-sound/pull/414)
+
+
+### Test
+
+- Test: Add unit tests with version 4 of AnsysSound_Spectrum file format [#357](https://github.com/ansys/pyansys-sound/pull/357)
+- Feat: retrieve sampling frequency and format in class \`LoadWav\` [#379](https://github.com/ansys/pyansys-sound/pull/379)
+- Feat: add new example for analyzing JLT results [#383](https://github.com/ansys/pyansys-sound/pull/383)
+- Docs: example code snippets in class docstrings and update general documentation [#409](https://github.com/ansys/pyansys-sound/pull/409)
+- Ci: use insecure gRPC communication [#416](https://github.com/ansys/pyansys-sound/pull/416)
+
 ## [0.2.1](https://github.com/ansys/pyansys-sound/releases/tag/v0.2.1) - August 12, 2025
 
 
