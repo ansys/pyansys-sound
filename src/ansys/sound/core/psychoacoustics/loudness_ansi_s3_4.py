@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Computes ANSI S3.4-2007 loudness."""
+
 import warnings
 
 from ansys.dpf.core import Field, Operator, types

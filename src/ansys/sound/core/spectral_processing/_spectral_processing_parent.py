@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """SpectralProcessingParent."""
+
 from .._pyansys_sound import PyAnsysSound
 
 

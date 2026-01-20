@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Computes ECMA-418-2 tonality."""
+
 import warnings
 
 from ansys.dpf.core import Field, Operator, _global_server, types

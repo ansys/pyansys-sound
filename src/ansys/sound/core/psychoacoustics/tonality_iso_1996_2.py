@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Computes ISO 1996-2 tonality."""
+
 import warnings
 
 from ansys.dpf.core import DataTree, Field, Operator, types

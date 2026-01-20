@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Compute 1/3-octave levels from a time-domain signal input."""
+
 import matplotlib.pyplot as plt
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException

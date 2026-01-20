@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Sound composer's source control."""
+
 from enum import Enum
 
 from ._sound_composer_parent import SoundComposerParent

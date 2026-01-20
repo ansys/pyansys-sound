@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Spectrogram processing."""
+
 from .._pyansys_sound import PyAnsysSound
 
 

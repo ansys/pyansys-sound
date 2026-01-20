@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Computes the sharpness according to the DIN 45692 standard."""
+
 import warnings
 
 from ansys.dpf.core import Field, Operator, types

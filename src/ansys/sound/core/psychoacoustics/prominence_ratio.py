@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Computes the ECMA 418-1/ISO 7779 prominence ratio (PR)."""
+
 from math import log10
 import warnings
 
@@ -171,12 +172,8 @@ class ProminenceRatio(PsychoacousticsParent):
             PR data as a generic data container.
         """
         if self._output == None:
-            warnings.warn(
-                PyAnsysSoundWarning(
-                    "Output is not processed yet. \
-                        Use the 'ProminentRatio.process()' method."
-                )
-            )
+            warnings.warn(PyAnsysSoundWarning("Output is not processed yet. \
+                        Use the 'ProminentRatio.process()' method."))
 
         return self._output
 
@@ -226,10 +223,8 @@ class ProminenceRatio(PsychoacousticsParent):
             Number of tones.
         """
         if self.get_output() == None:
-            raise PyAnsysSoundException(
-                "Output is not processed yet. \
-                    Use the 'ProminenceRatio.process()' method."
-            )
+            raise PyAnsysSoundException("Output is not processed yet. \
+                    Use the 'ProminenceRatio.process()' method.")
 
         return len(self.get_output_as_nparray()[0])
 
@@ -386,10 +381,8 @@ class ProminenceRatio(PsychoacousticsParent):
     def plot(self):
         """Plot the PR for all identified peaks, along with the threshold curve."""
         if self._output == None:
-            raise PyAnsysSoundException(
-                "Output is not processed yet. \
-                    Use the 'ProminenceRatio.process()' method."
-            )
+            raise PyAnsysSoundException("Output is not processed yet. \
+                    Use the 'ProminenceRatio.process()' method.")
 
         tones_frequencies = self.get_peaks_frequencies()
         PR_values = self.get_PR_values()

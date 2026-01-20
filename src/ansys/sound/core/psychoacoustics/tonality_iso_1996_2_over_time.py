@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Computes the tonality according to the standard ISO 1996-2:2007, annex C, over time."""
+
 import warnings
 
 from ansys.dpf.core import (
