@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Computes ISO 3744 sound power level."""
+
 import warnings
 
 from ansys.dpf.core import Field, Operator

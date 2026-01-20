@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Sound Composer's control for a source of type spectrum."""
+
 from .._pyansys_sound import PyAnsysSoundException
 from ._source_control_parent import SourceControlParent
 from ._source_control_parent import SpectrumSynthesisMethods as Methods

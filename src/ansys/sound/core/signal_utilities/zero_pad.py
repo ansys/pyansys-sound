@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Adds zeros to the end of a signal."""
+
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -92,10 +93,8 @@ class ZeroPad(SignalUtilitiesParent):
         end of the signal.
         """
         if self.signal == None:
-            raise PyAnsysSoundException(
-                "No signal found to zero pad. \
-                    Use the 'ZeroPad.set_signal()' method."
-            )
+            raise PyAnsysSoundException("No signal found to zero pad. \
+                    Use the 'ZeroPad.set_signal()' method.")
 
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, float(self.duration_zeros))
@@ -119,12 +118,8 @@ class ZeroPad(SignalUtilitiesParent):
         """
         if self._output == None:
             # Computing output if needed
-            warnings.warn(
-                PyAnsysSoundWarning(
-                    "Output is not processed yet. \
-                        Use the 'ZeroPad.process()' method."
-                )
-            )
+            warnings.warn(PyAnsysSoundWarning("Output is not processed yet. \
+                        Use the 'ZeroPad.process()' method."))
 
         return self._output
 

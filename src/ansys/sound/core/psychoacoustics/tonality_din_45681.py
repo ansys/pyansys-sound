@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Computes DIN 45681 tonality."""
+
 import warnings
 
 from ansys.dpf.core import Field, GenericDataContainersCollection, Operator, types

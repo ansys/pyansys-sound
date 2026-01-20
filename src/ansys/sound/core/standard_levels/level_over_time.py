@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Compute the level over time."""
+
 import warnings
 
 from ansys.dpf.core import Field, Operator, types

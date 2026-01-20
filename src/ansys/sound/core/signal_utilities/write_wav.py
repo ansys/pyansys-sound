@@ -141,10 +141,8 @@ class WriteWav(SignalUtilitiesParent):
             )
 
         if self.signal == None:
-            raise PyAnsysSoundException(
-                "No signal is specified for writing to a WAV file. \
-                    Use `WriteWav.signal`."
-            )
+            raise PyAnsysSoundException("No signal is specified for writing to a WAV file. \
+                    Use `WriteWav.signal`.")
 
         data_source_out = DataSources()
         data_source_out.add_file_path(self.path_to_write, ".wav")

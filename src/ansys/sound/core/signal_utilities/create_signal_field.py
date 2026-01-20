@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """PyAnsys Sound signal field creation."""
+
 import warnings
 
 from ansys.dpf.core import Field, Operator

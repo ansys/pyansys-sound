@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Computes the tonality of the signal according to Aures model."""
+
 import warnings
 
 from ansys.dpf.core import Field, Operator, types

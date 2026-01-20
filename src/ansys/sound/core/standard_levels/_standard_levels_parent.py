@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Standard levels parent class."""
+
 from .._pyansys_sound import PyAnsysSound
 
 DICT_SCALE = {"dB": 0, "RMS": 1}

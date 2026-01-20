@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Xtract."""
+
 from .._pyansys_sound import PyAnsysSound
 
 

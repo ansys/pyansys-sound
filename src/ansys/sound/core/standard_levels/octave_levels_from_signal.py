@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Compute octave levels from a time-domain signal input."""
+
 import matplotlib.pyplot as plt
 import numpy as np
 

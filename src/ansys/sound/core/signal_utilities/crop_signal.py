@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Crops a signal."""
+
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator
@@ -113,10 +114,8 @@ class CropSignal(SignalUtilitiesParent):
         This method calls the appropriate DPF Sound operator to crop the signal.
         """
         if self.signal == None:
-            raise PyAnsysSoundException(
-                "No signal found to crop. \
-                Use the 'CropSignal.set_signal()' method."
-            )
+            raise PyAnsysSoundException("No signal found to crop. \
+                Use the 'CropSignal.set_signal()' method.")
 
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, float(self.start_time))
@@ -141,12 +140,8 @@ class CropSignal(SignalUtilitiesParent):
         """
         if self._output == None:
             # Computing output if needed
-            warnings.warn(
-                PyAnsysSoundWarning(
-                    "Output is not processed yet. \
-                        Use the 'CropSignal.process()' method."
-                )
-            )
+            warnings.warn(PyAnsysSoundWarning("Output is not processed yet. \
+                        Use the 'CropSignal.process()' method."))
 
         return self._output
 

@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """SignalProcessingParent."""
+
 from .._pyansys_sound import PyAnsysSound
 
 

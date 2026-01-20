@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Computes roughness for stationary sounds."""
+
 import warnings
 
 from ansys.dpf.core import Field, Operator, types

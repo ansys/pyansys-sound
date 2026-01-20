@@ -207,8 +207,6 @@ latex_documents = [
 
 # Fix to resolve hyperlink warnings when building PDF
 # ( https://stackoverflow.com/questions/67485567/sphinx-cross-reference-in-latex)
-latex_elements = {
-    "preamble": r"""
+latex_elements = {"preamble": r"""
 \renewcommand{\hyperref}[2][]{#2}
-"""
-}
+"""}

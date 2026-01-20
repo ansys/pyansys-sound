@@ -98,7 +98,7 @@ def test_fs_get_output():
     # Compute
     fs_computer.process()
 
-    (fs, specific_fs) = fs_computer.get_output()
+    fs, specific_fs = fs_computer.get_output()
     assert isinstance(fs, float)
     assert fs == pytest.approx(EXP_FS)
     assert isinstance(specific_fs, Field)

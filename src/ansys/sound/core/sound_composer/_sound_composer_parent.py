@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Sound composer."""
+
 from .._pyansys_sound import PyAnsysSound
 
 
