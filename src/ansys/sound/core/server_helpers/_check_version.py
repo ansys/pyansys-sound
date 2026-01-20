@@ -118,7 +118,7 @@ def _check_sound_version_and_raise(min_sound_version: str, error_msg: str):
 
 
 def _check_sound_version(min_sound_version: str) -> bool:
-    """Check the DPF Sound plugin version.
+    """Check the current DPF Sound plugin version against the specified minimum version.
 
     Before Ansys 2027 R1, the DPF Sound plugin version is verified according to the DPF Server/DPF
     Sound version matching dictionary. From Ansys 2027 R1 onwards, the DPF Sound plugin version is

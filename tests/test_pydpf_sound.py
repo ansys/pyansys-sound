@@ -62,8 +62,7 @@ def test_pyansys_sound_init_subclass():
     # Define a subclass where the DPF Sound plugin version requirement is not met  => error (at
     # instantiation).
     if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
-        # If plugin < 2027 R1, we must use an unmatched, yet known - that is, existing in the
-        # matching versions dictionary -, version.
+        # If plugin < 2027 R1, we must use an unmatched, but known version.
         test_version = "2027.1.0"
     else:
         # If plugin >= 2027 R1, the version can be anything, as long as it is higher than the
