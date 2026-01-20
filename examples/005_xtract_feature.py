@@ -262,9 +262,10 @@ plot_stft(stft_modified_signal, fs, SPLmax=max_stft, title="Extracted Tones")
 # ^^^^^^^^^^^^^^^^^^^^
 # The goal is to isolate the transients using the right settings.
 # While these settings are not as easy to handle, they are well explained in the tutorial videos
-# available on the Ansys Sound YouTube channel. You can also find the
-# `SAS - XTRACT transient <https://learninghub.ansys.com/share/asset/view/108>`_
-# videos on the Ansys Learning Hub.
+# available on the `Ansys Sound YouTube channel
+# <https://www.youtube.com/playlist?list=PL0lZXwHtV6OkhEaatUbk3bHIX5SIiTNew>`_. You can also find
+# the `SAS - XTRACT transient <https://learninghub.ansys.com/share/asset/view/108>`_ video on the
+# Ansys Learning Hub.
 
 # Create a set of transient parameters.
 # This example assumes that the best minimum and maximum thresholds are known.
