@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """PyAnsys Sound interface."""
+
 from functools import wraps
 from typing import Any, Callable
 import warnings

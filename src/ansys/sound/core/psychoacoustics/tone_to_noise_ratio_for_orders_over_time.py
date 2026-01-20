@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Computes the ECMA 418-1/ISO 7779 tone-to-noise ratio (TNR) for specific orders."""
+
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator, types

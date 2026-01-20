@@ -183,7 +183,7 @@ print(
 
 # %%
 # For comparison, display the values previously obtained with the ISO 532-1 standard. The two
-# standard rely on similar auditory principles but differ in the way they estimate the loudness.
+# standards rely on similar auditory principles but differ in the way they estimate the loudness.
 print(
     f"\nThe ISO 532-1 loudness of sound file {file_name_flute} is "
     f"{loudness_ISO532_1_sone:.1f} sones "

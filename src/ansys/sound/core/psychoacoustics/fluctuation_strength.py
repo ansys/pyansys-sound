@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Compute the fluctuation strength."""
+
 import warnings
 
 from ansys.dpf.core import Field, Operator, types

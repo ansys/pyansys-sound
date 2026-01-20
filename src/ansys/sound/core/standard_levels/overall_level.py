@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Compute the overall level."""
+
 import warnings
 
 from ansys.dpf.core import Field, Operator, types

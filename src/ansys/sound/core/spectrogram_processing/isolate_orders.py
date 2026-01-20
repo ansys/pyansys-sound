@@ -255,12 +255,8 @@ class IsolateOrders(SpectrogramProcessingParent):
         """
         if self._output == None:
             # Computing output if needed
-            warnings.warn(
-                PyAnsysSoundWarning(
-                    "Output is not processed yet. \
-                        Use the 'IsolateOrders.process()' method."
-                )
-            )
+            warnings.warn(PyAnsysSoundWarning("Output is not processed yet. \
+                        Use the 'IsolateOrders.process()' method."))
 
         return self._output
 

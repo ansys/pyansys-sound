@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Signal utilities."""
+
 from ansys.dpf.core import Field
 import matplotlib.pyplot as plt
 

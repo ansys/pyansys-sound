@@ -40,11 +40,8 @@ def test_crop_signal_process():
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
         signal_cropper.process()
-    assert (
-        str(excinfo.value)
-        == "No signal found to crop. \
+    assert str(excinfo.value) == "No signal found to crop. \
                 Use the 'CropSignal.set_signal()' method."
-    )
 
     wav_loader.process()
     fc = wav_loader.get_output()

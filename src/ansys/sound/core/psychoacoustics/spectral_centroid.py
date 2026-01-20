@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Computes the spectral centroid of the signal."""
+
 import warnings
 
 from ansys.dpf.core import Field, Operator
@@ -95,12 +96,8 @@ class SpectralCentroid(PsychoacousticsParent):
             Spectral centroid in Hz.
         """
         if self._output == None:
-            warnings.warn(
-                PyAnsysSoundWarning(
-                    "Output is not processed yet. \
-                        Use the 'SpectralCentroid.process()' method."
-                )
-            )
+            warnings.warn(PyAnsysSoundWarning("Output is not processed yet. \
+                        Use the 'SpectralCentroid.process()' method."))
 
         return self._output
 

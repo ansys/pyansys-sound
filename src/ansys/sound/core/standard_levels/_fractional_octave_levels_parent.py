@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Fractional octave levels from a PSD input."""
+
 import warnings
 
 from ansys.dpf.core import Field, Operator, types

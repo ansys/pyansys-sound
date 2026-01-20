@@ -40,11 +40,8 @@ def test_zero_pad_process():
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
         zero_pad.process()
-    assert (
-        str(excinfo.value)
-        == "No signal found to zero pad. \
+    assert str(excinfo.value) == "No signal found to zero pad. \
                     Use the 'ZeroPad.set_signal()' method."
-    )
 
     wav_loader.process()
     fc = wav_loader.get_output()

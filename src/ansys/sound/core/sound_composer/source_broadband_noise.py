@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Sound Composer's broadband noise source."""
+
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operator

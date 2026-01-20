@@ -32,6 +32,7 @@ data, display it using Matplotlib, and then write the modified signal to the dis
 a new WAV file.
 
 """
+
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~

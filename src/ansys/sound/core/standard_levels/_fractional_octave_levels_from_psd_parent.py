@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Fractional octave levels from a PSD input."""
+
 from ansys.dpf.core import Field, Operator, types
 import numpy as np
 

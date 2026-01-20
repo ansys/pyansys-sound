@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Computes the sharpness of the signal according to Zwicker & Fastl's model."""
+
 import warnings
 
 from ansys.dpf.core import Field, Operator, types

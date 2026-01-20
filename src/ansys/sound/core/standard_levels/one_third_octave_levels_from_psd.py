@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Compute 1/3-octave levels from a PSD input."""
+
 import matplotlib.pyplot as plt
 
 from ._fractional_octave_levels_from_psd_parent import FractionalOctaveLevelsFromPSDParent

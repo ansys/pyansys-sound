@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Computes ISO 532-1 loudness for stationary sounds."""
+
 import warnings
 
 from ansys.dpf.core import Field, Operator, types

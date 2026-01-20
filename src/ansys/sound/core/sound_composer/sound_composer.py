@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Sound Composer project class."""
+
 import os
 import warnings
 

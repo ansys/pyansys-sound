@@ -84,17 +84,18 @@ sound_composer_project = SoundComposer()
 sound_composer_project.load(path_sound_composer_project_scn)
 
 # %%
-# You can use built-in :func:`print()` function to display a summary of the content of the project.
+# You can use the built-in :func:`print()` function to display a summary of the content of the
+# project.
 print(sound_composer_project)
 
 # %%
 # You can see that this project is made of 4 tracks:
 
 # %%
-# - a track with a harmonics source, coming form the FEM simulation of an e-motor,
+# - a track with a harmonics source, coming from the FEM simulation of an e-motor,
 # - a track with another harmonics source, coming from the multibody simulation of a gearbox,
 # - a track with a broadband noise source, coming from the CFD simulation of a HVAC system,
-# - a track with another broadband noise source, coming form the analysis of a background noise
+# - a track with another broadband noise source, coming from the analysis of a background noise
 #   measurement in the cabin, which would correspond to the rolling noise and the wind noise.
 
 # %%
