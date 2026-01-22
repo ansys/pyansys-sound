@@ -58,7 +58,7 @@ the PyDPF-Core documentation:
 import datetime
 
 from ansys.sound.core.examples_helpers import download_flute_wav
-from ansys.sound.core.server_helpers import connect_to_or_start_server
+from ansys.sound.core.server_helpers import connect_to_or_start_server, get_sound_version
 from ansys.sound.core.signal_utilities import LoadWav
 
 # sphinx_gallery_start_ignore
@@ -88,8 +88,9 @@ if is_server_local == True:
     print(f"Local server path (server variable): {my_server.ansys_path}")
 
 # %%
-# Display information about the server that you are using.
+# Display information about the server and the DPF Sound plugin.
 print(f"Server information: {my_server.info}")
+print(f"DPF Sound plugin version: {get_sound_version()}")
 
 # %%
 # Execute the PyAnsys Sound ``LoadWav`` operator several times in a row

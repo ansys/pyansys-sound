@@ -30,6 +30,7 @@ from ansys.sound.core.server_helpers import (
     requires_sound_version,
     validate_dpf_sound_connection,
 )
+from ansys.sound.core.server_helpers._check_version import get_sound_version
 
 
 def test_validate_dpf_sound_connection():
@@ -133,3 +134,20 @@ def test__check_sound_version():
         # If plugin >= 2027 R1, the version can be anything, as long as it is higher than the
         # latest to date).
         assert not _check_sound_version("3000.0.0")
+
+
+def test_get_sound_version():
+    """Test the get_sound_version function."""
+    if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
+        with pytest.raises(
+            VersionError,
+            match=(
+                "Function get_sound_version\(\) requires DPF Sound plugin version 2027.1.0 or "
+                "higher."
+            ),
+        ):
+            get_sound_version()
+    else:
+        version = get_sound_version()
+        assert isinstance(version, str)
+        assert len(version.split(".")) == 3

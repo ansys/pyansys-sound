@@ -29,6 +29,7 @@ the DPF Sound plugin.
 from ._check_version import (
     _check_sound_version,
     _check_sound_version_and_raise,
+    get_sound_version,
     requires_sound_version,
 )
 from ._connect_to_or_start_server import connect_to_or_start_server
@@ -38,6 +39,7 @@ __all__ = (
     "connect_to_or_start_server",
     "validate_dpf_sound_connection",
     "requires_sound_version",
+    "get_sound_version",
     "_check_sound_version",
     "_check_sound_version_and_raise",
 )

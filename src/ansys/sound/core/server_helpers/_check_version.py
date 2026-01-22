@@ -30,6 +30,9 @@ from ansys.tools.common.exceptions import VersionError, VersionSyntaxError
 from packaging.version import parse
 
 # Dictionary mapping DPF Sound plugin versions to corresponding DPF Server versions.
+# Note this is only useful for Ansys versions up to 2026 R1 (version "2027.1.0" is also used for
+# testing purposes). It is unnecessary to further update this dictionary, even if new releases are
+# produced.
 MATCHING_VERSIONS = {
     "2024.2.0": "8.0",
     "2025.1.0": "9.0",
@@ -143,10 +146,30 @@ def _check_sound_version(min_sound_version: str) -> bool:
 
         return _global_server().meet_version(MATCHING_VERSIONS[min_sound_version])
 
+    return parse(get_sound_version()) >= parse(min_sound_version)
+
+
+def get_sound_version() -> str:
+    """Get the current DPF Sound plugin version.
+
+    Returns
+    -------
+    str
+        The DPF Sound plugin version in the form YEAR.MAJOR.MINOR, for example "2026.1.0".
+
+    Notes
+    -----
+    This function requires DPF Sound plugin version 2027.1.0 or higher.
+    """
+    if "get_version_info" not in available_operator_names():
+        raise VersionError(
+            "Function get_sound_version() requires DPF Sound plugin version 2027.1.0 or higher."
+        )
+
     version_retriever = Operator("get_version_info")
     version_retriever.run()
     year = version_retriever.get_output(0, types.int)
     major = version_retriever.get_output(1, types.int)
     minor = version_retriever.get_output(2, types.int)
 
-    return parse(f"{year}.{major}.{minor}") >= parse(min_sound_version)
+    return f"{year}.{major}.{minor}"
