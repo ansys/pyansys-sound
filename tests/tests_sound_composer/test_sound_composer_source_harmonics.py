@@ -49,7 +49,7 @@ EXP_RPMS = [
     600.0,
 ]
 
-if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
     # Third-party update (IPP) in DPF Sound 2026 R1
     EXP_ORDER_LEVEL03_REF = 1.5208672266453505e-05
     EXP_ORDER_LEVEL03_PA = 1.5208672266453505e-05
@@ -300,7 +300,7 @@ def test_source_harmonics_is_source_control_valid():
             EXP_ORDER_LEVEL3000_DBSPL,
             id="order_vs_freq_db_spl",
             marks=pytest.mark.skipif(
-                not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0,
+                not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1,
                 reason="Requires servers version 11.0 or higher",
             ),
         ),
@@ -311,7 +311,7 @@ def test_source_harmonics_is_source_control_valid():
             EXP_ORDER_LEVEL3000_DBA,
             id="order_vs_freq_db_a",
             marks=pytest.mark.skipif(
-                not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0,
+                not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1,
                 reason="Requires servers version 11.0 or higher",
             ),
         ),
@@ -344,7 +344,7 @@ def test_source_harmonics_load_valid_files(file_path, control_value_idx, order_i
             pytest.data_path_sound_composer_harmonics_source_order_vs_freq_nok_rpm,
             id="invalid_rpm",
             marks=pytest.mark.skipif(
-                not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0,
+                not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1,
                 reason="Requires servers version 11.0 or higher",
             ),
         ),
@@ -352,7 +352,7 @@ def test_source_harmonics_load_valid_files(file_path, control_value_idx, order_i
             pytest.data_path_sound_composer_harmonics_source_order_vs_freq_nok_several_orders,
             id="invalid_several_orders",
             marks=pytest.mark.skipif(
-                not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0,
+                not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1,
                 reason="Requires servers version 11.0 or higher",
             ),
         ),

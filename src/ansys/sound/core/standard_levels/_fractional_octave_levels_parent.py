@@ -31,7 +31,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._standard_levels_parent import DICT_FREQUENCY_WEIGHTING, StandardLevelsParent
 
 
-class FractionalOctaveLevelsParent(StandardLevelsParent, min_dpf_version="11.0"):
+class FractionalOctaveLevelsParent(StandardLevelsParent, min_sound_version="2026.1.0"):
     """Abstract base class for fractional octave levels, either from a PSD or a time-domain signal.
 
     This is the base class for all fractional octave level classes (namely OctaveLevelsFromPSD,

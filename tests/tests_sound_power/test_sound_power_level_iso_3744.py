@@ -29,7 +29,7 @@ import pytest
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.sound_power import SoundPowerLevelISO3744
 
-if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
     # bug fix in DPF Sound 2026 R1 ID#1325159
     EXP_LW_OCT_5_CALIB = 137.0859
     EXP_LW_3_10_CALIB = 89.9082

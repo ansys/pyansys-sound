@@ -31,7 +31,7 @@ from ansys.sound.core.signal_utilities import LoadWav, Resample
 
 EXP_SIZE = 311743
 
-if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
     # Third-party update (IPP) in DPF Sound 2026 R1
     EXP_1000 = 2.9065022317809053e-06
     EXP_3456 = -0.000738558592274785

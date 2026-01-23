@@ -286,7 +286,7 @@ def test_xtract_get_output():
     noise, tonal, transient, remainder = xtract.get_output()
 
     # Check numerical values
-    if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
         # bug fix in DPF Sound 2026 R1 ID#1247009
         assert np.min(noise.data) == pytest.approx(-0.2724415361881256)
         assert np.max(noise.data) == pytest.approx(0.30289316177368164)
@@ -400,7 +400,7 @@ def test_xtract_get_output_fc():
     assert len(fc_remainder) == 2
 
     # Check numerical values
-    if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
         # bug fix in DPF Sound 2026 R1 ID#1247009
         assert np.min(fc_noise[0].data) == pytest.approx(-0.2724415361881256)
         assert np.min(fc_tonal[0].data) == pytest.approx(-0.6827592849731445)
@@ -486,7 +486,7 @@ def test_xtract_get_output_as_nparray():
     assert type(np_remainder) == np.ndarray
 
     # Check numerical values
-    if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
         # bug fix in DPF Sound 2026 R1 ID#1247009
         assert np.min(np_noise) == pytest.approx(-0.2724415361881256)
         assert np.max(np_noise) == pytest.approx(0.30289316177368164)
@@ -576,7 +576,7 @@ def test_xtract_get_output_fc_as_nparray():
     assert np_fc_remainder[1] is not None
 
     # Check numerical values
-    if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
         # bug fix in DPF Sound 2026 R1 ID#1247009
         assert np.min(np_fc_noise[0][:]) == pytest.approx(-0.2724415361881256)
         assert np.min(np_fc_tonal[0][:]) == pytest.approx(-0.6827592849731445)

@@ -126,7 +126,7 @@ def test_xtract_denoiser_process():
 
     assert xtract_denoiser.get_output_as_nparray()[0].shape == (156048,)
 
-    if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
         # bug fix in DPF Sound 2026 R1 ID#1247009
         assert np.min(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(
             -0.7059202790260315
@@ -309,7 +309,7 @@ def test_xtract_denoiser_get_output_as_nparray():
 
     assert xtract_denoiser.get_output_as_nparray()[0].shape == (156048,)
 
-    if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+    if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
         # bug fix in DPF Sound 2026 R1 ID#1247009
         assert np.min(xtract_denoiser.get_output_as_nparray()[0]) == pytest.approx(
             -0.7059202790260315

@@ -102,7 +102,7 @@ def test_tonality_ecma_418_2_properties():
 
 
 @pytest.mark.skipif(
-    not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0,
+    not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1,
     reason="Diffuse field and 3rd edition not allowed before server version 11.0",
 )
 def test_tonality_ecma_418_2_properties_11_0():
@@ -140,7 +140,7 @@ def test_tonality_ecma_418_2_setters_exceptions():
 
 
 @pytest.mark.skipif(
-    pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0,
+    pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1,
     reason="Server-version errors are only triggered prior to version 11.0",
 )
 def test_tonality_ecma_418_2_setters_exceptions_lower_than_11_0():
@@ -185,7 +185,7 @@ def test_tonality_ecma_418_2___str__():
 
 
 @pytest.mark.skipif(
-    not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0,
+    not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1,
     reason="Diffuse field and 3rd edition not allowed before server version 11.0",
 )
 def test_tonality_ecma_418_2___str___11_0():
@@ -303,7 +303,7 @@ def test_tonality_ecma_418_2_get_output_as_nparray():
 
 
 @pytest.mark.skipif(
-    not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0,
+    not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1,
     reason="Diffuse field and 3rd edition not allowed before server version 11.0",
 )
 def test_tonality_ecma_418_2_get_output_as_nparray_11_0():

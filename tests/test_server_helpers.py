@@ -20,15 +20,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.dpf.gate.errors import DpfVersionNotSupported
+from ansys.tools.common.exceptions import VersionError, VersionSyntaxError
 import pytest
 
 from ansys.sound.core.server_helpers import (
-    _check_dpf_version,
+    _check_sound_version,
+    _check_sound_version_and_raise,
     connect_to_or_start_server,
-    requires_dpf_version,
+    requires_sound_version,
     validate_dpf_sound_connection,
 )
+from ansys.sound.core.server_helpers._check_version import get_sound_version
 
 
 def test_validate_dpf_sound_connection():
@@ -46,61 +48,106 @@ def test_connect_to_or_start_server():
     assert license_context is not None
 
 
-def test_requires_dpf_version():
-    """Test the requires_dpf_version decorator."""
+def test_requires_sound_version():
+    """Test the requires_sound_version decorator."""
 
-    # Wrong version specifier type => type error (at definition).
+    # Wrong version specifier type => error (at definition).
     with pytest.raises(
-        TypeError,
+        VersionSyntaxError,
         match=(
-            "requires_dpf_version decorator argument must be a string with the form MAJOR.MINOR, "
-            "for example '11.0'."
+            "requires_sound_version decorator argument must be a string with the form "
+            "YEAR.MAJOR.MINOR, for example '2026.1.0'."
         ),
     ):
 
         class DummyClass:
-            """A dummy class to test type error in the requires_dpf_version decorator."""
+            """A dummy class to test version type error in the requires_sound_version decorator."""
 
-            @requires_dpf_version(5.0)
+            @requires_sound_version(1000)
             def dummy_method_type_error(self):
                 pass
 
     class DummyClass:
-        """A dummy class to test the requires_dpf_version decorator."""
+        """A dummy class to test the requires_sound_version decorator."""
 
-        @requires_dpf_version("1.0")
+        @requires_sound_version("2024.2.0")
         def dummy_method_pass(self):
-            return "This method requires DPF version 1.0 or higher."
+            return "This method requires DPF Sound plugin version 2024.2.0 or higher."
 
-        @requires_dpf_version("666.0")
+        @requires_sound_version("3000.0.0")
         def dummy_method_fail(self):
-            return "This method requires DPF version 666.0 or higher."
+            return "This method requires DPF Sound plugin version 3000.0.0 or higher."
 
-    # This should NOT raise an exception if the server version is 1.0 or higher
-    DC = DummyClass()
-    result = DC.dummy_method_pass()
-    assert result == "This method requires DPF version 1.0 or higher."
+    # This should NOT raise an exception (plugin version always > 2024.2.0)
+    dummy = DummyClass()
+    result = dummy.dummy_method_pass()
+    assert result == "This method requires DPF Sound plugin version 2024.2.0 or higher."
 
-    # This should raise an exception if the server version is lower than 666.0
+    # This should raise an exception (plugin version always < 3000.0.0)
+    # If plugin >= 2027 R1, the raised error is that of a version mismatch.
+    # If plugin < 2027 R1, the raised error is that of an unknown version, because 3000.0.0 is not
+    # in the matching versions dictionary.
+    if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
+        error_message = "Unknown DPF Sound plugin version 3000.0.0."
+    else:
+        error_message = (
+            "DPF Sound plugin version error: Function or method `dummy_method_fail\(\)` requires "
+            "DPF Sound plugin version 3000.0.0 or higher."
+        )
+    with pytest.raises(VersionError, match=error_message):
+        dummy.dummy_method_fail()
+
+
+def test__check_sound_version_and_raise():
+    """Test the _check_sound_version_and_raise function."""
+    # Version met.
+    _check_sound_version_and_raise("2024.2.0", "Test error message.")
+
+    # Version NOT met.
+    if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
+        # Check error with an unmatched, but known version => 2027R1.
+        test_version = "2027.1.0"
+    else:
+        # Check error with any unmatchable version.
+        test_version = "3000.0.0"
     with pytest.raises(
-        DpfVersionNotSupported,
-        match=(
-            "Function or method `dummy_method_fail\(\)` requires DPF server version 666.0 or "
-            "higher."
-        ),
+        VersionError,
+        match="DPF Sound plugin version error: Test error message.",
     ):
-        DC.dummy_method_fail()
+        _check_sound_version_and_raise(test_version, "Test error message.")
 
 
-def test__check_dpf_version():
-    """Test the _check_dpf_version function."""
+def test__check_sound_version():
+    """Test the _check_sound_version function."""
+    # Version met.
+    assert _check_sound_version("2024.2.0")
 
-    # This should NOT raise an exception if the server version is 1.0 or higher
-    _check_dpf_version("1.0", "Test error message.")
+    # Version NOT met.
+    if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
+        # If plugin < 2027 R1, there are two cases to test:
+        # The version exists in the dictionary but is not met.
+        assert not _check_sound_version("2027.1.0")
+        # The version does not exist in the dictionary.
+        with pytest.raises(VersionError, match=("Unknown DPF Sound plugin version 3000.0.0.")):
+            _check_sound_version("3000.0.0")
+    else:
+        # If plugin >= 2027 R1, the version can be anything, as long as it is higher than the
+        # latest to date).
+        assert not _check_sound_version("3000.0.0")
 
-    # This should raise an exception if the server version is lower than 666.0
-    with pytest.raises(
-        DpfVersionNotSupported,
-        match=("Test error message."),
-    ):
-        _check_dpf_version("666.0", "Test error message.")
+
+def test_get_sound_version():
+    """Test the get_sound_version function."""
+    if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
+        with pytest.raises(
+            VersionError,
+            match=(
+                "Function get_sound_version\(\) requires DPF Sound plugin version 2027.1.0 or "
+                "higher."
+            ),
+        ):
+            get_sound_version()
+    else:
+        version = get_sound_version()
+        assert isinstance(version, str)
+        assert len(version.split(".")) == 3

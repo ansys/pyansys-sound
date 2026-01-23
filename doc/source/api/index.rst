@@ -1,7 +1,7 @@
 API reference
 =============
 
-This section describes how to use Python to interact programmatically with PyAnsys Sound.
+This section describes how to use Python to interact with PyAnsys Sound programmatically.
 
 .. module:: ansys.sound.core
 

@@ -30,7 +30,7 @@ from ._fractional_octave_levels_from_signal_parent import FractionalOctaveLevels
 
 
 class OneThirdOctaveLevelsFromSignal(
-    FractionalOctaveLevelsFromSignalParent, min_dpf_version="11.0"
+    FractionalOctaveLevelsFromSignalParent, min_sound_version="2026.1.0"
 ):
     """Compute 1/3-octave levels from a time-domain signal input.
 

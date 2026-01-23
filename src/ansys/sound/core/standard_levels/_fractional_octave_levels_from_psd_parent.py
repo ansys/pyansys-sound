@@ -29,7 +29,9 @@ from .._pyansys_sound import PyAnsysSoundException
 from ._fractional_octave_levels_parent import FractionalOctaveLevelsParent
 
 
-class FractionalOctaveLevelsFromPSDParent(FractionalOctaveLevelsParent, min_dpf_version="11.0"):
+class FractionalOctaveLevelsFromPSDParent(
+    FractionalOctaveLevelsParent, min_sound_version="2026.1.0"
+):
     """Abstract base class for fractional octave levels from PSD.
 
     This is the base class for all fractional octave level classes using a PSD as input (namely

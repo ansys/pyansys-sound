@@ -32,7 +32,7 @@ from ansys.sound.core.spectrogram_processing import Istft, Stft
 
 EXP_SIZE = 156048
 
-if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
     # Third-party update (IPP) in DPF Sound 2026 R1
     EXP_100 = 8.265356715025929e-13
     EXP_2000 = -0.001495360629633069

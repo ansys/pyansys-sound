@@ -40,7 +40,7 @@ EXP_STR_ALL_SET = (
     "Denominator coefficients (A): [1, 2, 3]"
 )
 
-if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
     # Third-party update (IPP) in DPF Sound 2026 R1
     EXP_STR_ALL_SET_MORE_COEFFS = (
         "Sampling frequency: 44100.0 Hz\n"

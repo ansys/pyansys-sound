@@ -23,7 +23,7 @@
 from unittest import mock
 
 from ansys.dpf.core import FieldsContainer, field_from_array, fields_container_factory
-from ansys.dpf.gate.errors import DpfVersionNotSupported
+from ansys.tools.common.exceptions import VersionError, VersionSyntaxError
 import numpy as np
 import pytest
 
@@ -39,44 +39,51 @@ from ansys.sound.core._pyansys_sound import (
 def test_pyansys_sound_init_subclass():
     """Test PyAnsySound subclass initialization with DPF version."""
 
-    # Define a subclass requiring DPF server version 1.0 or higher => no error.
-    class TestClass(PyAnsysSound, min_dpf_version="1.0"):
+    # Define a subclass requiring DPF Sound plugin version 1000.0.0 or higher => no error.
+    class TestClass(PyAnsysSound, min_sound_version="1000.0.0"):
         """Some docstring to test version addition to documentation."""
 
         pass
 
-    assert TestClass._min_dpf_version == "1.0"
+    assert TestClass._min_sound_version == "1000.0.0"
 
     # Wrong version specifier type => type error (at definition).
     with pytest.raises(
-        TypeError,
+        VersionSyntaxError,
         match=(
-            "In class definition, `min_dpf_version` argument must be a string with the form "
-            'MAJOR.MINOR, for example "11.0".'
+            "In class definition, `min_sound_version` argument must be a string with the form "
+            'YEAR.MAJOR.MINOR, for example "2026.1.0".'
         ),
     ):
 
-        class TestClass(PyAnsysSound, min_dpf_version=1.0):
+        class TestClass(PyAnsysSound, min_sound_version=1.0):
             pass
 
-    # Define a subclass requiring DPF server version 666.0 or higher => error (at instantiation).
-    class TestClass(PyAnsysSound, min_dpf_version="666.0"):
+    # Define a subclass where the DPF Sound plugin version requirement is not met  => error (at
+    # instantiation).
+    if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
+        # If plugin < 2027 R1, we must use an unmatched, but known version.
+        test_version = "2027.1.0"
+    else:
+        # If plugin >= 2027 R1, the version can be anything, as long as it is higher than the
+        # latest to date.
+        test_version = "3000.0.0"
+
+    class TestClass(PyAnsysSound, min_sound_version=test_version):
         pass
 
     with pytest.raises(
-        DpfVersionNotSupported,
-        match="Class `TestClass` requires DPF server version 666.0 or higher.",
+        VersionError,
+        match=f"Class `TestClass` requires DPF Sound plugin version {test_version} or higher.",
     ):
         TestClass()
 
 
-@pytest.mark.dependency()
 def test_pyansys_sound_instantiate():
     pyansys_sound = PyAnsysSound()
     assert pyansys_sound != None
 
 
-@pytest.mark.dependency(depends=["test_pyansys_sound_instantiate"])
 def test_pyansys_sound_process():
     pyansys_sound = PyAnsysSound()
     with pytest.warns(
@@ -86,7 +93,6 @@ def test_pyansys_sound_process():
     assert pyansys_sound.process() == None
 
 
-@pytest.mark.dependency(depends=["test_pyansys_sound_instantiate"])
 def test_pyansys_sound_plot():
     pyansys_sound = PyAnsysSound()
     with pytest.warns(
@@ -97,7 +103,6 @@ def test_pyansys_sound_plot():
     assert pyansys_sound.plot() == None
 
 
-@pytest.mark.dependency(depends=["test_pyansys_sound_instantiate"])
 def test_pyansys_sound_get_output():
     pyansys_sound = PyAnsysSound()
     with pytest.warns(
@@ -108,7 +113,6 @@ def test_pyansys_sound_get_output():
     assert out == None
 
 
-@pytest.mark.dependency(depends=["test_pyansys_sound_instantiate"])
 def test_pyansys_sound_get_output_as_nparray():
     pyansys_sound = PyAnsysSound()
     with pytest.warns(

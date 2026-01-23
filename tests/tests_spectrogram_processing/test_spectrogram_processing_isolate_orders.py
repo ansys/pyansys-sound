@@ -32,7 +32,7 @@ from ansys.sound.core.spectrogram_processing import IsolateOrders
 
 EXP_SIZE = 909956
 
-if pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0:
+if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
     # Third-party update (IPP) in DPF Sound 2026 R1
     EXP_100 = -0.11279939860105515
     EXP_1000 = -0.016805129125714302

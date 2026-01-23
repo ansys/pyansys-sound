@@ -189,7 +189,7 @@ def test_source_spectrum_load_source():
 
 
 @pytest.mark.skipif(
-    not pytest.SERVERS_VERSION_GREATER_THAN_OR_EQUAL_TO_11_0,
+    not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1,
     reason="AnsysSound_Spectrum v4 files require at least server version 11.0",
 )
 def test_source_spectrum_load_source_with_v4():
