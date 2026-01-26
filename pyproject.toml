@@ -48,7 +48,7 @@ tests = [
     "pytest-cov==7.0.0",
     "pytest-dependency==0.6.0",
     "platformdirs==4.5.1",
-    "regex==2025.11.3",
+    "regex==2026.1.15",
     "requests==2.32.5",
     "scipy==1.15.3",
 ]
