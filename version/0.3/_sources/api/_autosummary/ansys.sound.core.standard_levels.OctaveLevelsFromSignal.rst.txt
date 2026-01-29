@@ -1,0 +1,49 @@
+﻿OctaveLevelsFromSignal
+======================
+
+.. currentmodule:: ansys.sound.core.standard_levels
+
+.. autoclass:: OctaveLevelsFromSignal
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      OctaveLevelsFromSignal.get_band_levels
+      
+      
+      OctaveLevelsFromSignal.get_center_frequencies
+      
+      
+      OctaveLevelsFromSignal.get_output
+      
+      
+      OctaveLevelsFromSignal.get_output_as_nparray
+      
+      
+      OctaveLevelsFromSignal.plot
+      
+      
+      OctaveLevelsFromSignal.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      OctaveLevelsFromSignal.frequency_weighting
+      OctaveLevelsFromSignal.reference_value
+      OctaveLevelsFromSignal.signal
+   
+   
