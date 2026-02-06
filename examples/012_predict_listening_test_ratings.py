@@ -48,8 +48,8 @@ installation of JLT, the corresponding listening test project should be located 
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
-# Setting up the analysis consists of loading Ansys libraries, connecting to the DPF server, and
-# downloading the necessary data files.
+# Setting up the analysis consists of loading the required libraries, connecting to the DPF server,
+# and downloading the necessary data files.
 
 # Load standard libraries.
 from math import sqrt

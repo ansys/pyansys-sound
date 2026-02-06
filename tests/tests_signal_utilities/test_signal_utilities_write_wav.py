@@ -22,7 +22,7 @@
 
 from os import path
 
-from ansys.dpf.core import Field, FieldsContainer
+from ansys.dpf.core import Field
 import numpy as np
 import pytest
 
@@ -99,21 +99,23 @@ def test_write_wav_set_get_signal():
     f_from_get = wav_writer.signal
     assert f_from_get.data[0, 2] == 42
 
-    fc = FieldsContainer()
-    fc.labels = ["channel"]
-    fc.add_field({"channel": 0}, f)
-    fc.name = "testField"
-    wav_writer.signal = fc
+    wav_writer.signal = [f]
     fc_from_get = wav_writer.signal
 
-    assert fc_from_get.name == "testField"
     assert len(fc_from_get) == 1
     assert fc_from_get[0].data[0, 2] == 42
 
     with pytest.raises(
-        PyAnsysSoundException, match="Signal must be specified as a `Field` or `FieldsContainer`."
+        PyAnsysSoundException,
+        match="Signal must be specified as a DPF field or list of DPF fields.",
     ):
         wav_writer.signal = "WrongType"
+
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Signal must be specified as a DPF field or list of DPF fields.",
+    ):
+        wav_writer.signal = [1, 2, 3]
 
 
 def test_write_wav_plot():

@@ -24,15 +24,11 @@
 
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
+from ansys.dpf.core import Field, Operator, types
 import numpy as np
 
 from . import SignalUtilitiesParent
-from .._pyansys_sound import (
-    PyAnsysSoundException,
-    PyAnsysSoundWarning,
-    convert_fields_container_to_np_array,
-)
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Resample(SignalUtilitiesParent):
@@ -52,15 +48,13 @@ class Resample(SignalUtilitiesParent):
             Example demonstrating how to load, resample, amplify, and write WAV files.
     """
 
-    def __init__(
-        self, signal: Field | FieldsContainer = None, new_sampling_frequency: float = 44100.0
-    ):
+    def __init__(self, signal: Field = None, new_sampling_frequency: float = 44100.0):
         """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        signal : Field | FieldsContainer, default: None
-            Signal to resample as a DPF field or fields container.
+        signal : Field, default: None
+            Signal to resample as a DPF field.
         new_sampling_frequency : float, default: 44100.0
             New sampling frequency to use.
         """
@@ -83,12 +77,12 @@ class Resample(SignalUtilitiesParent):
         self.__new_sampling_frequency = new_sampling_frequency
 
     @property
-    def signal(self) -> Field | FieldsContainer:
-        """Input signal as a DPF field or fields container."""
+    def signal(self) -> Field:
+        """Input signal as a DPF field."""
         return self.__signal
 
     @signal.setter
-    def signal(self, signal: Field | FieldsContainer):
+    def signal(self, signal: Field):
         """Set the signal."""
         self.__signal = signal
 
@@ -109,21 +103,17 @@ class Resample(SignalUtilitiesParent):
         self.__operator.run()
 
         # Stores output in the variable
-        if type(self.signal) == FieldsContainer:
-            self._output = self.__operator.get_output(0, "fields_container")
-        elif type(self.signal) == Field:
-            self._output = self.__operator.get_output(0, "field")
+        self._output = self.__operator.get_output(0, types.field)
 
-    def get_output(self) -> FieldsContainer | Field:
-        """Get the resampled signal as a DPF fields container.
+    def get_output(self) -> Field:
+        """Get the resampled signal as a DPF field.
 
         Returns
         -------
-        FieldsContainer
-            Resampled signal in a DPF fields container.
+        Field
+            Resampled signal in a DPF field.
         """
-        if self._output == None:
-            # Computing output if needed
+        if self._output is None:
             warnings.warn(PyAnsysSoundWarning("Output is not processed yet. \
                         Use the 'Resample.process()' method."))
 
@@ -137,9 +127,4 @@ class Resample(SignalUtilitiesParent):
         numpy.ndarray
             Resampled signal in a NumPy array.
         """
-        output = self.get_output()
-
-        if type(output) == Field:
-            return output.data
-
-        return convert_fields_container_to_np_array(output)
+        return np.array(self.get_output().data)

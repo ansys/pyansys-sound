@@ -22,8 +22,7 @@
 
 from unittest.mock import patch
 
-from ansys.dpf.core import Field, FieldsContainer
-from ansys.dpf.core.fields_container_factory import over_time_freq_fields_container
+from ansys.dpf.core import Field
 import numpy as np
 import pytest
 
@@ -120,9 +119,9 @@ def test_loudness_iso_532_2_properties():
     loudness_computer.signal = Field()
     assert type(loudness_computer.signal) == Field
 
-    # Check signal property as a FieldsContainer
-    loudness_computer.signal = over_time_freq_fields_container([Field(), Field()])
-    assert type(loudness_computer.signal) == FieldsContainer
+    # Check signal property as a list of Fields
+    loudness_computer.signal = [Field(), Field()]
+    assert type(loudness_computer.signal) == list
     assert len(loudness_computer.signal) == 2
 
     # Check field_type property
@@ -155,7 +154,7 @@ def test_loudness_iso_532_2_properties_exceptions():
     # Check invalid value for signal property
     with pytest.raises(
         PyAnsysSoundException,
-        match="Signal must be specified as a DPF field or fields container.",
+        match="Signal must be specified as a DPF field or a list of exactly 2 DPF fields.",
     ):
         loudness_computer.signal = "WrongType"
 
@@ -163,11 +162,11 @@ def test_loudness_iso_532_2_properties_exceptions():
     with pytest.raises(
         PyAnsysSoundException,
         match=(
-            "The input FieldsContainer signal must contain exactly 2 fields corresponding to the "
-            "signals presented at the two ears."
+            "The input signal list must contain exactly 2 fields corresponding to the signals "
+            "presented at the two ears."
         ),
     ):
-        loudness_computer.signal = FieldsContainer()
+        loudness_computer.signal = []
 
     # Check invalid value for field_type property
     with pytest.raises(

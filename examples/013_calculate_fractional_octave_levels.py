@@ -48,8 +48,8 @@ computed from time-domain signals. See section :ref:`FromSignal_vs_FromPSD` for 
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
-# Setting up the analysis consists of loading Ansys libraries, connecting to the DPF server, and
-# downloading the necessary data files.
+# Setting up the analysis consists of loading the required libraries, connecting to the DPF server,
+# and downloading the necessary data files.
 
 # Load standard libraries.
 import matplotlib.pyplot as plt

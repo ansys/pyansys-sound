@@ -22,7 +22,7 @@
 
 from unittest.mock import patch
 
-from ansys.dpf.core import Field, FieldsContainer
+from ansys.dpf.core import Field
 import numpy as np
 import pytest
 
@@ -93,10 +93,7 @@ def test_isolate_orders_process():
 def test_isolate_orders_get_output():
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
-    fc = wav_loader.get_output()
-    signal = fc[0]
-    rpm_profile = fc[1]
-    rpm_profile.time_freq_support = signal.time_freq_support
+    signal, rpm_profile = wav_loader.get_output()
     isolate_orders = IsolateOrders(signal=signal, rpm_profile=rpm_profile, orders=[2, 4])
 
     with pytest.warns(
@@ -104,45 +101,20 @@ def test_isolate_orders_get_output():
         match="Output is not processed yet. \
                         Use the 'IsolateOrders.process\\(\\)' method.",
     ):
-        fc_out = isolate_orders.get_output()
+        output = isolate_orders.get_output()
+        assert output is None
 
     isolate_orders.process()
-    fc_out = isolate_orders.get_output()
+    output = isolate_orders.get_output()
 
-    assert len(fc_out) == EXP_SIZE
-
-    fc_bis = FieldsContainer()
-    fc_bis.add_label("channel_number")
-    fc_bis.add_field({"channel_number": 0}, signal)
-    isolate_orders.signal = fc_bis
-
-    isolate_orders.process()
-    fc_out = isolate_orders.get_output()
-
-    assert len(fc_out) == 1
-    assert len(fc_out[0].data) == EXP_SIZE
+    assert len(output) == EXP_SIZE
 
 
 def test_isolate_orders_get_output_as_np_array():
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
-    fc = wav_loader.get_output()
-    signal = fc[0]
-    rpm_profile = fc[1]
-    rpm_profile.time_freq_support = signal.time_freq_support
+    signal, rpm_profile = wav_loader.get_output()
     isolate_orders = IsolateOrders(signal=signal, rpm_profile=rpm_profile, orders=[2, 4])
-
-    isolate_orders.process()
-    arr = isolate_orders.get_output_as_nparray()
-
-    assert arr[100] == EXP_100
-    assert arr[1000] == EXP_1000
-    assert arr[10000] == EXP_10000
-
-    fc_bis = FieldsContainer()
-    fc_bis.add_label("channel_number")
-    fc_bis.add_field({"channel_number": 0}, signal)
-    isolate_orders.signal = fc_bis
 
     isolate_orders.process()
     arr = isolate_orders.get_output_as_nparray()
@@ -154,17 +126,13 @@ def test_isolate_orders_get_output_as_np_array():
 
 def test_isolate_orders_set_get_signal():
     isolate_orders = IsolateOrders()
-    fc = FieldsContainer()
-    fc.labels = ["channel"]
-    f = Field()
-    f.data = 42 * np.ones(3)
-    fc.add_field({"channel": 0}, f)
-    fc.name = "testField"
-    isolate_orders.signal = fc
-    f = isolate_orders.signal
+    signal = Field()
+    signal.data = 42 * np.ones(3)
+    isolate_orders.signal = signal
+    signal = isolate_orders.signal
 
-    assert len(f[0]) == 3
-    assert f[0].data[0, 2] == 42
+    assert len(signal) == 3
+    assert signal.data[0, 2] == 42
 
 
 def test_isolate_orders_set_get_fft_size():
@@ -219,13 +187,11 @@ def test_isolate_orders_set_get_rpm_profile():
 def test_isolate_orders_set_get_orders():
     isolate_orders = IsolateOrders()
     orders = Field()
+
     orders.append([1, 2, 45], 1)
 
-    isolate_orders.orders = orders
-    assert isolate_orders.orders.data[0, 2] == 45
-
     isolate_orders.orders = [1, 2, 45]
-    assert isolate_orders.orders.data[0, 2] == 45
+    assert isolate_orders.orders == [1, 2, 45]
 
 
 def test_isolate_orders_set_get_width_selection():
@@ -244,22 +210,12 @@ def test_isolate_orders_set_get_width_selection():
 def test_isolate_orders_plot(mock_show):
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
-    fc = wav_loader.get_output()
-    signal = fc[0]
-    rpm_profile = fc[1]
-    rpm_profile.time_freq_support = signal.time_freq_support
+    signal, rpm_profile = wav_loader.get_output()
     isolate_orders = IsolateOrders(signal=signal, rpm_profile=rpm_profile, orders=[2, 4])
     with pytest.raises(
         PyAnsysSoundException,
         match="Output is not processed yet. Use the `IsolateOrders.process\\(\\)` method.",
     ):
         isolate_orders.plot()
-    isolate_orders.process()
-    isolate_orders.plot()
-
-    fc_bis = FieldsContainer()
-    fc_bis.add_label("channel_number")
-    fc_bis.add_field({"channel_number": 0}, signal)
-    isolate_orders.signal = fc_bis
     isolate_orders.process()
     isolate_orders.plot()

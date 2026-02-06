@@ -152,9 +152,8 @@ class Istft(SpectrogramProcessingParent):
         output = self.get_output()
         time = output.time_freq_support.time_frequencies
 
-        plt.plot(time.data, output.data, label="Signal")
+        plt.plot(time.data, output.data)
         plt.title(output.name)
-        plt.legend()
         plt.xlabel(f"Time ({time.unit})")
         plt.ylabel(f"Amplitude ({output.unit})")
         plt.grid(True)

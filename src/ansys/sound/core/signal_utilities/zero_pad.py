@@ -24,15 +24,11 @@
 
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
+from ansys.dpf.core import Field, Operator, types
 import numpy as np
 
 from . import SignalUtilitiesParent
-from .._pyansys_sound import (
-    PyAnsysSoundException,
-    PyAnsysSoundWarning,
-    convert_fields_container_to_np_array,
-)
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class ZeroPad(SignalUtilitiesParent):
@@ -48,13 +44,13 @@ class ZeroPad(SignalUtilitiesParent):
     >>> zero_padded_signal = zero_pad.get_output()
     """
 
-    def __init__(self, signal: Field | FieldsContainer = None, duration_zeros: float = 0.0):
+    def __init__(self, signal: Field = None, duration_zeros: float = 0.0):
         """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        signal : Field | FieldsContainer, default: None
-            Signal to add zeros to the end of as a DPF field or fields container.
+        signal : Field, default: None
+            Signal to add zeros to the end of as a DPF field.
         duration_zeros : float: default: 0.0
             Duration in seconds of the zeros to append to the input signal.
         """
@@ -64,12 +60,12 @@ class ZeroPad(SignalUtilitiesParent):
         self.__operator = Operator("append_zeros_to_signal")
 
     @property
-    def signal(self) -> Field | FieldsContainer:
-        """Input signal as a DPF field or fields container."""
+    def signal(self) -> Field:
+        """Input signal as a DPF field."""
         return self.__signal
 
     @signal.setter
-    def signal(self, signal: Field | FieldsContainer):
+    def signal(self, signal: Field):
         """Set the signal."""
         self.__signal = signal
 
@@ -103,21 +99,17 @@ class ZeroPad(SignalUtilitiesParent):
         self.__operator.run()
 
         # Store output in the variable
-        if type(self.signal) == FieldsContainer:
-            self._output = self.__operator.get_output(0, "fields_container")
-        elif type(self.signal) == Field:
-            self._output = self.__operator.get_output(0, "field")
+        self._output = self.__operator.get_output(0, types.field)
 
-    def get_output(self) -> FieldsContainer | Field:
-        """Get the zero-padded signal as a DPF fields container or field.
+    def get_output(self) -> Field:
+        """Get the zero-padded signal as a DPF field.
 
         Returns
         -------
-        FieldsContainer | Field
-             Zero-padded signal in a DPF fields container or field.
+        Field
+             Zero-padded signal in a DPF field.
         """
-        if self._output == None:
-            # Computing output if needed
+        if self._output is None:
             warnings.warn(PyAnsysSoundWarning("Output is not processed yet. \
                         Use the 'ZeroPad.process()' method."))
 
@@ -131,9 +123,4 @@ class ZeroPad(SignalUtilitiesParent):
         numpy.ndarray
             Zero-padded signal in a NumPy array.
         """
-        output = self.get_output()
-
-        if type(output) == Field:
-            return output.data
-
-        return convert_fields_container_to_np_array(output)
+        return np.array(self.get_output().data)

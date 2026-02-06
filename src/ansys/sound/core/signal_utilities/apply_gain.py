@@ -24,15 +24,11 @@
 
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
+from ansys.dpf.core import Field, Operator, types
 import numpy as np
 
 from . import SignalUtilitiesParent
-from .._pyansys_sound import (
-    PyAnsysSoundException,
-    PyAnsysSoundWarning,
-    convert_fields_container_to_np_array,
-)
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class ApplyGain(SignalUtilitiesParent):
@@ -52,15 +48,13 @@ class ApplyGain(SignalUtilitiesParent):
             Example demonstrating how to load, resample, amplify, and write WAV files.
     """
 
-    def __init__(
-        self, signal: Field | FieldsContainer = None, gain: float = 0.0, gain_in_db: bool = True
-    ):
+    def __init__(self, signal: Field = None, gain: float = 0.0, gain_in_db: bool = True):
         """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        signal : Field | FieldsContainer, default: None
-            Signals to apply gain on as a DPF field or fields container.
+        signal : Field, default: None
+            Signal on which to apply the gain as a DPF field.
         gain : float, default: 0.0
             Gain value in decibels (dB) or linear unit. By default, gain is specified in decibels.
             However, you can use the next parameter to change to a linear unit.
@@ -74,12 +68,12 @@ class ApplyGain(SignalUtilitiesParent):
         self.__operator = Operator("apply_gain")
 
     @property
-    def signal(self) -> Field | FieldsContainer:
-        """Input signal as a DPF field or fields container."""
+    def signal(self) -> Field:
+        """Input signal as a DPF field."""
         return self.__signal
 
     @signal.setter
-    def signal(self, signal: Field | FieldsContainer):
+    def signal(self, signal: Field):
         """Set the signal."""
         self.__signal = signal
 
@@ -130,18 +124,15 @@ class ApplyGain(SignalUtilitiesParent):
         self.__operator.run()
 
         # Stores output in the variable
-        if type(self.signal) == FieldsContainer:
-            self._output = self.__operator.get_output(0, "fields_container")
-        elif type(self.signal) == Field:
-            self._output = self.__operator.get_output(0, "field")
+        self._output = self.__operator.get_output(0, types.field)
 
-    def get_output(self) -> FieldsContainer | Field:
-        """Get the signal with a gain as a DPF fields container.
+    def get_output(self) -> Field:
+        """Get the signal with a gain as a DPF field.
 
         Returns
         -------
-        FieldsContainer
-            Signal with an applied gain as a DPF fields container.
+        Field
+            Signal with an applied gain as a DPF field.
         """
         if self._output == None:
             # Computing output if needed
@@ -161,9 +152,4 @@ class ApplyGain(SignalUtilitiesParent):
         numpy.ndarray
             Signal with an applied gain as a NumPy array.
         """
-        output = self.get_output()
-
-        if type(output) == Field:
-            return output.data
-
-        return convert_fields_container_to_np_array(output)
+        return np.array(self.get_output().data)
