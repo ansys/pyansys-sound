@@ -51,7 +51,7 @@ def test_istft_instantiation():
 def test_istft_process():
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
-    stft = Stft(signal=wav_loader.get_output())
+    stft = Stft(signal=wav_loader.get_output()[0])
     stft.process()
     istft = Istft()
 
@@ -72,7 +72,7 @@ def test_istft_process():
 def test_istft_get_output():
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
-    stft = Stft(signal=wav_loader.get_output())
+    stft = Stft(signal=wav_loader.get_output()[0])
     stft.process()
     istft = Istft(stft=stft.get_output())
 
@@ -95,7 +95,7 @@ def test_istft_get_output():
 def test_istft_get_output_as_np_array():
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
-    stft = Stft(signal=wav_loader.get_output())
+    stft = Stft(signal=wav_loader.get_output()[0])
     stft.process()
     istft = Istft(stft=stft.get_output())
 
@@ -132,7 +132,7 @@ def test_istft_set_get_signal():
     # Test 2 - No Error
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
-    stft = Stft(signal=wav_loader.get_output())
+    stft = Stft(signal=wav_loader.get_output()[0])
     stft.process()
     istft.stft = stft.get_output()
 
@@ -147,7 +147,7 @@ def test_istft_set_get_signal():
 def test_istft_plot(mock_show):
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
-    stft = Stft(signal=wav_loader.get_output())
+    stft = Stft(signal=wav_loader.get_output()[0])
     stft.process()
     istft = Istft(stft=stft.get_output())
     with pytest.raises(
