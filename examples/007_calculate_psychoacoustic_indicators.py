@@ -53,7 +53,8 @@ The example shows how to perform these operations:
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
-# Setting up the analysis consists of loading libraries, and connecting to the DPF server.
+# Setting up the analysis consists of loading the required libraries, and connecting to the DPF
+# server.
 
 # Load standard libraries.
 import os

@@ -42,7 +42,7 @@ and the results are commented, compared, and discussed.
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
-# Setting up the analysis consists of loading Ansys libraries, connecting to the
+# Setting up the analysis consists of loading the required libraries, connecting to the
 # DPF server, and retrieving the example file.
 
 # Load required libraries.

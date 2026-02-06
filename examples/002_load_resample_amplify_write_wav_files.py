@@ -36,7 +36,7 @@ a new WAV file.
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
-# Setting up the analysis consists of loading Ansys libraries, connecting to the
+# Setting up the analysis consists of loading the required libraries, connecting to the
 # DPF server, and retrieving the example files.
 
 # Load Ansys and other libraries.
@@ -63,32 +63,32 @@ path_flute_wav = download_flute_wav(server=my_server)
 # Load the WAV file.
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
-fc_signal_original = wav_loader.get_output()
+signal_original = wav_loader.get_output()[0]
 
-t1 = fc_signal_original[0].time_freq_support.time_frequencies.data
-sf1 = wav_loader.get_sampling_frequency()
-print(f"The sampling frequency of the original signal is {int(sf1)} Hz.")
+time_original = signal_original.time_freq_support.time_frequencies.data
+fs_original = wav_loader.get_sampling_frequency()
+print(f"The sampling frequency of the original signal is {int(fs_original)} Hz.")
 
 # %%
 # Resample the signal
 # ~~~~~~~~~~~~~~~~~~~
 # Change the sampling frequency of the loaded signal.
-resampler = Resample(fc_signal_original, new_sampling_frequency=20000.0)
+resampler = Resample(signal_original, new_sampling_frequency=20000.0)
 resampler.process()
-fc_signal_resampled = resampler.get_output()
+signal_resampled = resampler.get_output()
 
-t2 = fc_signal_resampled[0].time_freq_support.time_frequencies.data
-sf2 = 1.0 / (t2[1] - t2[0])
-print(f"The new sampling frequency of the signal is {int(sf2)} Hz.")
+time_resampled = signal_resampled.time_freq_support.time_frequencies.data
+fs_resampled = 1.0 / (time_resampled[1] - time_resampled[0])
+print(f"The new sampling frequency of the signal is {int(fs_resampled)} Hz.")
 
 # %%
 # Apply a gain to the signal
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Amplify the resampled signal by 10 decibels.
 gain = 10.0
-gain_applier = ApplyGain(fc_signal_resampled, gain=gain, gain_in_db=True)
+gain_applier = ApplyGain(signal_resampled, gain=gain, gain_in_db=True)
 gain_applier.process()
-fc_signal_modified = gain_applier.get_output()
+signal_amplified = gain_applier.get_output()
 
 # %%
 # Plot signals
@@ -97,25 +97,30 @@ fc_signal_modified = gain_applier.get_output()
 
 # Get the signals as NumPy arrays
 data_original = wav_loader.get_output_as_nparray()
-unit_original = wav_loader.get_output()[0].unit
-data_modified = gain_applier.get_output_as_nparray()
-unit_modified = gain_applier.get_output()[0].unit
+unit_original = signal_original.unit
+data_amplified = gain_applier.get_output_as_nparray()
+unit_amplified = signal_amplified.unit
 gain_unit = " dB" if gain_applier.gain_in_db else "(linear)"
 
 # Prepare the figure
 fig, axs = plt.subplots(2)
 fig.suptitle("Signals")
 
-axs[0].plot(t1, data_original, color="g", label=f"original signal, sf={int(sf1)} Hz")
+axs[0].plot(
+    time_original, data_original, color="g", label=f"original signal, fs={int(fs_original)} Hz"
+)
 axs[0].set_ylabel(f"Amplitude ({unit_original})")
 axs[0].legend(loc="upper right")
 axs[0].set_ylim([-3, 3])
 
 axs[1].plot(
-    t2, data_modified, color="r", label=f"modified signal, sf={int(sf2)} Hz, gain={gain}{gain_unit}"
+    time_resampled,
+    data_amplified,
+    color="r",
+    label=f"amplified signal, fs={int(fs_resampled)} Hz, gain={gain}{gain_unit}",
 )
 axs[1].set_xlabel("Time (s)")
-axs[1].set_ylabel(f"Amplitude ({unit_modified})")
+axs[1].set_ylabel(f"Amplitude ({unit_amplified})")
 axs[1].legend(loc="upper right")
 axs[1].set_ylim([-3, 3])
 
@@ -127,5 +132,5 @@ plt.show()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Write the modified signal to the disk as a WAV file.
 output_path = path_flute_wav[:-4] + "_modified.wav"  # "[-4]" is to remove the ".wav" extension
-wav_writer = WriteWav(path_to_write=output_path, signal=fc_signal_modified, bit_depth="int16")
+wav_writer = WriteWav(path_to_write=output_path, signal=signal_amplified, bit_depth="int16")
 wav_writer.process()
