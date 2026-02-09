@@ -197,6 +197,16 @@ def test_xtract_transient_setters():
     assert type(xtract_transient.input_parameters) == XtractTransientParameters
 
 
+def test_xtract_transient_set_input_signal_exception():
+    """Test exception for input signal setter."""
+    xtract_transient = XtractTransient()
+
+    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
+        xtract_transient.input_signal = "WrongType"
+
+    assert xtract_transient.input_signal is None
+
+
 @patch("matplotlib.pyplot.show")
 def test_xtract_transient_plot_output(mock_show):
     """Test the plot method of XtractTransient."""

@@ -356,6 +356,19 @@ def test_xtract_setters():
     assert type(xtract.parameters_transient) == XtractTransientParameters
 
 
+def test_xtract_set_input_signal_exception():
+    """Test exception for input signal setter."""
+    xtract = Xtract()
+
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Input signal must be specified as a DPF field.",
+    ):
+        xtract.input_signal = "WrongType"
+
+    assert xtract.input_signal is None
+
+
 @patch("matplotlib.pyplot.show")
 def test_xtract_plot_output(mock_show):
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute)

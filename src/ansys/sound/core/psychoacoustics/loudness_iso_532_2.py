@@ -310,7 +310,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
             np.array(output[2]),
             np.array(output[3]),
             np.array(output[4].data),
-            np.stack([np.array(field.data) for field in output[5]]),
+            np.vstack([np.array(field.data) for field in output[5]]),
             np.array(output[4].time_freq_support.time_frequencies.data),
         )
 
@@ -385,7 +385,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
         output = self.get_output_as_nparray()[5]
 
         if len(output) == 1:
-            return np.array([output, output])
+            return np.vstack([output[0], output[0]])
         else:
             return output
 

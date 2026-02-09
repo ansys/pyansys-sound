@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.dpf.core import Field, FieldsContainer
+from ansys.dpf.core import Field
 import numpy as np
 import pytest
 
@@ -90,19 +90,24 @@ def test_apply_gain_get_output_as_np_array():
 
 
 def test_apply_gain_set_get_signal():
+    """Test setter and getter for signal."""
     gain_applier = ApplyGain()
-    fc = FieldsContainer()
-    fc.labels = ["channel"]
-    f = Field()
-    f.data = 42 * np.ones(3)
-    fc.add_field({"channel": 0}, f)
-    fc.name = "testField"
-    gain_applier.signal = fc
-    fc_from_get = gain_applier.signal
+    signal = Field()
+    signal.data = 42 * np.ones(3)
+    gain_applier.signal = signal
+    signal_from_get = gain_applier.signal
 
-    assert fc_from_get.name == "testField"
-    assert len(fc_from_get) == 1
-    assert fc_from_get[0].data[0, 2] == 42
+    assert signal_from_get.data[0, 2] == 42
+
+
+def test_apply_gain_set_signal_exception():
+    """Test exception for signal setter."""
+    gain_applier = ApplyGain()
+
+    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
+        gain_applier.signal = "not a field"
+
+    assert gain_applier.signal is None
 
 
 def test_apply_gain_set_get_gain():

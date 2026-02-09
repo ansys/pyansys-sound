@@ -241,6 +241,16 @@ def test_xtract_denoiser_setters():
     assert type(xtract_denoiser.input_parameters) == XtractDenoiserParameters
 
 
+def test_xtart_denoiser_set_input_signal_exception():
+    """Test exception for input signal setter."""
+    xtract_denoiser = XtractDenoiser()
+
+    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
+        xtract_denoiser.input_signal = "WrongType"
+
+    assert xtract_denoiser.input_signal is None
+
+
 @patch("matplotlib.pyplot.show")
 def test_xtract_denoiser_plot_output(mock_show):
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute)

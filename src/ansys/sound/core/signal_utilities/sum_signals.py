@@ -66,6 +66,17 @@ class SumSignals(SignalUtilitiesParent):
     @signals.setter
     def signals(self, signals: list[Field]):
         """Set the signals to sum."""
+        if signals is not None:
+            if not isinstance(signals, list):
+                raise PyAnsysSoundException(
+                    "Input signals must be specified as a list of DPF fields."
+                )
+            for channel in signals:
+                if not isinstance(channel, Field):
+                    raise PyAnsysSoundException(
+                        "Input signals must be specified as a list of DPF fields."
+                    )
+
         self.__signals = signals
 
     def process(self):

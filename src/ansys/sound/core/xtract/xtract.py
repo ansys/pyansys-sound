@@ -137,9 +137,12 @@ class Xtract(XtractParent):
         return self.__input_signal
 
     @input_signal.setter
-    def input_signal(self, value: Field):
+    def input_signal(self, signal: Field):
         """Input signal."""
-        self.__input_signal = value
+        if not (signal is None or isinstance(signal, Field)):
+            raise PyAnsysSoundException("Input signal must be specified as a DPF field.")
+
+        self.__input_signal = signal
 
     @property
     def parameters_denoiser(self) -> XtractDenoiserParameters:

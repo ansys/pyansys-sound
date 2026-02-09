@@ -114,6 +114,16 @@ def test_resample_set_get_signal():
     assert signal_from_getter.data[0, 2] == 42
 
 
+def test_resample_set_signal_exception():
+    """Test exception for signal setter."""
+    resampler = Resample()
+
+    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
+        resampler.signal = "WrongType"
+
+    assert resampler.signal is None
+
+
 def test_resample_set_get_sampling_frequency():
     resampler = Resample()
 

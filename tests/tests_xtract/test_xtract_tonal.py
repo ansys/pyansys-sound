@@ -222,6 +222,14 @@ def test_extract_tonal_setters():
     assert type(xtract_tonal.input_parameters) == XtractTonalParameters
 
 
+def test_xtract_tonal_process_set_signal_exception():
+    """Test exception for input signal setter."""
+    xtract_tonal = XtractTonal()
+
+    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
+        xtract_tonal.input_signal = "WrongType"
+
+
 @patch("matplotlib.pyplot.show")
 def test_xtract_tonal_plot_output(mock_show):
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute)

@@ -95,9 +95,12 @@ class XtractTransient(XtractParent):
         return self.__input_signal
 
     @input_signal.setter
-    def input_signal(self, value: Field):
+    def input_signal(self, signal: Field):
         """Set input signal."""
-        self.__input_signal = value
+        if not (signal is None or isinstance(signal, Field)):
+            raise PyAnsysSoundException("Signal must be specified as a DPF field.")
+
+        self.__input_signal = signal
 
     @property
     def input_parameters(self) -> XtractTransientParameters:

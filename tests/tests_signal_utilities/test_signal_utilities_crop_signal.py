@@ -107,6 +107,16 @@ def test_crop_signal_set_get_signal():
     assert signal_from_getter.data[0, 2] == 42
 
 
+def test_crop_signal_set_signal_exception():
+    """Test exception for signal setter."""
+    signal_cropper = CropSignal()
+
+    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
+        signal_cropper.signal = "WrongType"
+
+    assert signal_cropper.signal is None
+
+
 def test_crop_signal_set_get_start_end_times():
     signal_cropper = CropSignal()
 

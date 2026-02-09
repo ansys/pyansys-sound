@@ -97,6 +97,9 @@ class XtractTonal(XtractParent):
     @input_signal.setter
     def input_signal(self, signal: Field):
         """Set input signal."""
+        if not (signal is None or isinstance(signal, Field)):
+            raise PyAnsysSoundException("Signal must be specified as a DPF field.")
+
         self.__input_signal = signal
 
     @property

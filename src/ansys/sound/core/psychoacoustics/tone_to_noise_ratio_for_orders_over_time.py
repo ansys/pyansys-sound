@@ -208,14 +208,8 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         if output is None:
             return (np.array([]), np.array([]), np.array([]))
 
-        tnr_data = output[0]
-        if len(tnr_data) == 1:
-            tnr_data = np.array(tnr_data[0].data)
-        else:
-            tnr_data = np.vstack([np.array(field.data) for field in tnr_data])
-
         return (
-            tnr_data,
+            np.vstack([np.array(field.data) for field in output[0]]),
             np.array(output[0][0].time_freq_support.time_frequencies.data),
             np.array(output[1].data),
         )

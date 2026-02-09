@@ -90,17 +90,16 @@ class WriteWav(SignalUtilitiesParent):
     @signal.setter
     def signal(self, signal: Field | list[Field]):
         """Setter for the signal."""
-        if signal is not None:
-            if not isinstance(signal, Field):
-                if not isinstance(signal, list):
+        if not (signal is None or isinstance(signal, Field)):
+            if not isinstance(signal, list):
+                raise PyAnsysSoundException(
+                    "Signal must be specified as a DPF field or list of DPF fields."
+                )
+            for channel in signal:
+                if not isinstance(channel, Field):
                     raise PyAnsysSoundException(
                         "Signal must be specified as a DPF field or list of DPF fields."
                     )
-                for channel in signal:
-                    if not isinstance(channel, Field):
-                        raise PyAnsysSoundException(
-                            "Signal must be specified as a DPF field or list of DPF fields."
-                        )
         self.__signal = signal
 
     @property

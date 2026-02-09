@@ -211,14 +211,8 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
         if output is None:
             return (np.array([]), np.array([]), np.array([]))
 
-        pr_data = output[0]
-        if len(pr_data) == 1:
-            pr_data = np.array(pr_data[0].data)
-        else:
-            pr_data = np.vstack([np.array(field.data) for field in pr_data])
-
         return (
-            pr_data,
+            np.vstack([np.array(field.data) for field in output[0]]),
             np.array(output[0][0].time_freq_support.time_frequencies.data),
             np.array(output[1].data),
         )

@@ -102,6 +102,16 @@ def test_zero_pad_set_get_signal():
     assert signal_from_getter.data[0, 2] == 42
 
 
+def test_zero_pad_set_signal_exception():
+    """Test exception for signal setter."""
+    zero_pad = ZeroPad()
+
+    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
+        zero_pad.signal = "WrongType"
+
+    assert zero_pad.signal is None
+
+
 def test_zero_pad_set_get_duration_zeros():
     zero_pad = ZeroPad()
 

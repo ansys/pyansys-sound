@@ -105,6 +105,9 @@ class IsolateOrders(SpectrogramProcessingParent):
     @signal.setter
     def signal(self, signal: Field):
         """Set the signal."""
+        if not (signal is None or isinstance(signal, Field)):
+            raise PyAnsysSoundException("Signal must be specified as a DPF field.")
+
         self.__signal = signal
 
     @property
