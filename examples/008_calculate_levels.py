@@ -71,8 +71,8 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # %%
 # Calculate overall RMS, dBSPL and dBA levels
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load a signal from a WAV file using the :class:`.LoadWav` class. It is returned as a
-# :class:`FieldsContainer <ansys.dpf.core.fields_container.FieldsContainer>` object.
+# Load the signals from WAV files using the :class:`.LoadWav` class. They are returned as a list of
+# :class:`Field <ansys.dpf.core.field.Field>` objects, where each field corresponds to a channel.
 
 # Load example data from two wav files.
 path_fan_wav = download_fan_wav(server=my_server)

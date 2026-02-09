@@ -29,11 +29,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
-from .._pyansys_sound import (
-    PyAnsysSoundException,
-    PyAnsysSoundWarning,
-    convert_fields_container_to_np_array,
-)
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ..signal_utilities import CreateSignalFieldsContainer
 
 # Name of the DPF Sound operator used in this module.
@@ -241,7 +237,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
             self.__operator.get_output(2, types.vec_double),
             self.__operator.get_output(3, types.vec_double),
             self.__operator.get_output(4, types.field),
-            self.__operator.get_output(5, types.fields_container),
+            [field for field in self.__operator.get_output(5, types.fields_container)],
         )
 
     def get_output(self) -> tuple:
@@ -249,20 +245,19 @@ class LoudnessISO532_2(PsychoacousticsParent):
 
         Returns
         -------
-        tuple
-            -   First element (float): binaural loudness in sone.
-
-            -   Second element (float): binaural loudness level in phon.
-
-            -   Third element (DPFarray): monaural loudness in sone at each ear.
-
-            -   Fourth element (DPFarray): monaural loudness level in phon at each ear.
-
-            -   Fifth element (Field): binaural specific loudness in sone/Cam, as a function of the
-                ERB center frequency.
-
-            -   Sixth element (FieldsContainer): monaural specific loudness in sone/Cam at each ear,
-                as a function of the ERB center frequency.
+        float
+            Binaural loudness in sone.
+        float
+            Binaural loudness level in phon.
+        DPFarray
+            Monaural loudness in sone at each ear.
+        DPFarray
+            Monaural loudness level in phon at each ear.
+        Field
+            Binaural specific loudness in sone/Cam, as a function of the ERB center frequency.
+        list[Field]
+            Monaural specific loudness in sone/Cam at each ear, as a function of the ERB center
+            frequency.
         """
         if self._output == None:
             warnings.warn(
@@ -315,7 +310,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
             np.array(output[2]),
             np.array(output[3]),
             np.array(output[4].data),
-            convert_fields_container_to_np_array(output[5]),
+            np.stack([np.array(field.data) for field in output[5]]),
             np.array(output[4].time_freq_support.time_frequencies.data),
         )
 
@@ -389,10 +384,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
         """
         output = self.get_output_as_nparray()[5]
 
-        # If signal is a FieldsContainer, then output's length is 2.
-        # However, here, if signal is a Field, then output's length is not 1, it is the length of
-        # the specific loudness. So the test below has to compare the length to 2, not 1.
-        if len(output) != 2:
+        if len(output) == 1:
             return np.array([output, output])
         else:
             return output
