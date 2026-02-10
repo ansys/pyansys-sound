@@ -107,7 +107,10 @@ fig, axs = plt.subplots(2)
 fig.suptitle("Signals")
 
 axs[0].plot(
-    time_original, data_original, color="g", label=f"original signal, fs={int(fs_original)} Hz"
+    time_original,
+    data_original,
+    color="g",
+    label=f"original signal, fs={int(fs_original)} Hz",
 )
 axs[0].set_ylabel(f"Amplitude ({unit_original})")
 axs[0].legend(loc="upper right")

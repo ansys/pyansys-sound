@@ -125,6 +125,7 @@ def test_isolate_orders_get_output_as_np_array():
 
 
 def test_isolate_orders_set_get_signal():
+    """Test the setter and getter of the signal property of IsolateOrders."""
     isolate_orders = IsolateOrders()
     signal = Field()
     signal.data = 42 * np.ones(3)
@@ -133,6 +134,16 @@ def test_isolate_orders_set_get_signal():
 
     assert len(signal) == 3
     assert signal.data[0, 2] == 42
+
+
+def test_isolate_orders_set_signal_exception():
+    """Test the signal property exception."""
+    isolate_orders = IsolateOrders()
+
+    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF Field."):
+        isolate_orders.signal = "WrongType"
+
+    assert isolate_orders.signal is None
 
 
 def test_isolate_orders_set_get_fft_size():

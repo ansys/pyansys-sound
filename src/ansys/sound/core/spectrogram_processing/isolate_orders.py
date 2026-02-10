@@ -219,7 +219,7 @@ class IsolateOrders(SpectrogramProcessingParent):
                 "No orders found for order isolation. Use 'IsolateOrder.orders'."
             )
 
-        # Converts orders list to DPF Field
+        # Convert order list to field.
         orders = Field(nentities=1, nature=natures.scalar, location=locations.time_freq)
         orders.append(self.orders, 1)
 
