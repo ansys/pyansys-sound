@@ -144,7 +144,7 @@ def test_isolate_orders_set_signal_exception():
     """Test the signal property exception."""
     isolate_orders = IsolateOrders()
 
-    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF Field."):
+    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
         isolate_orders.signal = "WrongType"
 
     assert isolate_orders.signal is None
