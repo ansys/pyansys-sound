@@ -29,11 +29,13 @@ from ansys.sound.core.signal_utilities import LoadWav, SumSignals
 
 
 def test_sum_signals_instantiation():
+    """Test the instantiation of SumSignals class."""
     sum_gain = SumSignals()
     assert sum_gain != None
 
 
 def test_sum_signals_process():
+    """Test the process method of SumSignals class."""
     sum_gain = SumSignals()
     wav_loader = LoadWav(pytest.data_path_white_noise)
 
@@ -54,6 +56,7 @@ def test_sum_signals_process():
 
 
 def test_sum_signals_get_output():
+    """Test the get_output method of SumSignals class."""
     wav_loader = LoadWav(pytest.data_path_white_noise)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -77,6 +80,7 @@ def test_sum_signals_get_output():
 
 
 def test_sum_signals_get_output_as_np_array():
+    """Test the get_output_as_nparray method of SumSignals class."""
     wav_loader = LoadWav(pytest.data_path_white_noise)
     wav_loader.process()
     fc_signal = wav_loader.get_output()

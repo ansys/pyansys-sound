@@ -27,11 +27,13 @@ from ansys.sound.core.xtract.xtract_transient_parameters import XtractTransientP
 
 
 def test_xtract_transient_parameters_instantiation():
+    """Test the instantiation of XtractTransientParameters class."""
     xtract_transient_parameters = XtractTransientParameters()
     assert xtract_transient_parameters != None
 
 
 def test_xtract_transient_parameters_getter_setter_upper_threshold():
+    """Test the upper_threshold setter and getter of XtractTransientParameters class."""
     xtract_transient_parameters = XtractTransientParameters()
 
     # Invalid value
@@ -45,6 +47,7 @@ def test_xtract_transient_parameters_getter_setter_upper_threshold():
 
 
 def test_xtract_transient_parameters_getter_setter_lower_threshold():
+    """Test the lower_threshold setter and getter of XtractTransientParameters class."""
     xtract_transient_parameters = XtractTransientParameters()
 
     # Invalid value
@@ -58,6 +61,7 @@ def test_xtract_transient_parameters_getter_setter_lower_threshold():
 
 
 def test_xtract_transient_parameters_getter_generic_data_container():
+    """Test getting parameters as a generic data container from XtractTransientParameters."""
     xtract_transient_parameters = XtractTransientParameters()
 
     gdc = xtract_transient_parameters.get_parameters_as_generic_data_container()

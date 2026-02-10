@@ -34,6 +34,7 @@ from ansys.sound.core.server_helpers._check_version import get_sound_version
 
 
 def test_validate_dpf_sound_connection():
+    """Test the validate_dpf_sound_connection function."""
     validate_dpf_sound_connection()
 
 

@@ -54,11 +54,13 @@ else:  # DPF Sound <= 2025 R2
 
 
 def test_stft_instantiation():
+    """Test the instantiation of Stft class."""
     stft = Stft()
     assert stft != None
 
 
 def test_stft_process():
+    """Test the process method of Stft class."""
     stft = Stft()
     wav_loader = LoadWav(pytest.data_path_flute)
 
@@ -80,6 +82,7 @@ def test_stft_process():
 
 
 def test_stft_get_output():
+    """Test the get_output method of Stft class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     signal = wav_loader.get_output()[0]
@@ -103,6 +106,7 @@ def test_stft_get_output():
 
 
 def test_stft_get_output_as_np_array():
+    """Test the get_output_as_nparray method of Stft class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     signal = wav_loader.get_output()[0]
@@ -119,6 +123,7 @@ def test_stft_get_output_as_np_array():
 
 
 def test_stft_set_get_signal():
+    """Test the signal setter and getter of Stft class."""
     stft = Stft()
     signal = Field(nentities=1, nature=natures.scalar, location=locations.time_freq)
     signal.data = 42 * np.ones(3)
@@ -137,6 +142,7 @@ def test_stft_set_get_signal():
 
 
 def test_stft_set_get_fft_size():
+    """Test the fft_size setter and getter of Stft class."""
     stft = Stft()
 
     # Error
@@ -149,6 +155,7 @@ def test_stft_set_get_fft_size():
 
 
 def test_stft_set_get_window_overlap():
+    """Test the window_overlap setter and getter of Stft class."""
     stft = Stft()
 
     # Error
@@ -161,6 +168,7 @@ def test_stft_set_get_window_overlap():
 
 
 def test_stft_set_get_window_type():
+    """Test the window_type setter and getter of Stft class."""
     stft = Stft()
 
     # Error
@@ -178,6 +186,7 @@ def test_stft_set_get_window_type():
 
 @patch("matplotlib.pyplot.show")
 def test_stft_plot(mock_show):
+    """Test the plot method of Stft class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     signal = wav_loader.get_output()[0]

@@ -29,11 +29,13 @@ from ansys.sound.core.signal_utilities import LoadWav, ZeroPad
 
 
 def test_zero_pad_instantiation():
+    """Test the instantiation of ZeroPad class."""
     zero_pad = ZeroPad()
     assert zero_pad != None
 
 
 def test_zero_pad_process():
+    """Test the process method of ZeroPad class."""
     zero_pad = ZeroPad()
     wav_loader = LoadWav(pytest.data_path_flute)
 
@@ -51,6 +53,7 @@ def test_zero_pad_process():
 
 
 def test_zero_pad_get_output():
+    """Test the get_output method of ZeroPad class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     signal = wav_loader.get_output()
@@ -76,6 +79,7 @@ def test_zero_pad_get_output():
 
 
 def test_zero_pad_get_output_as_np_array():
+    """Test the get_output_as_nparray method of ZeroPad class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     signal = wav_loader.get_output()
@@ -93,6 +97,7 @@ def test_zero_pad_get_output_as_np_array():
 
 
 def test_zero_pad_set_get_signal():
+    """Test the signal setter and getter of ZeroPad class."""
     zero_pad = ZeroPad()
     signal = Field()
     signal.data = 42 * np.ones(3)
@@ -113,6 +118,7 @@ def test_zero_pad_set_signal_exception():
 
 
 def test_zero_pad_set_get_duration_zeros():
+    """Test the duration_zeros setter and getter of ZeroPad class."""
     zero_pad = ZeroPad()
 
     # Error

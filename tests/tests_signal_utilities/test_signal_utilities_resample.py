@@ -45,11 +45,13 @@ else:  # DPF Sound <= 2025 R2
 
 
 def test_resample_instantiation():
+    """Test the instantiation of Resample class."""
     resampler = Resample()
     assert resampler != None
 
 
 def test_resample_process():
+    """Test the process method of Resample class."""
     resampler = Resample()
     wav_loader = LoadWav(pytest.data_path_flute)
 
@@ -67,6 +69,7 @@ def test_resample_process():
 
 
 def test_resample_get_output():
+    """Test the get_output method of Resample class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     signal = wav_loader.get_output()
@@ -90,6 +93,7 @@ def test_resample_get_output():
 
 
 def test_resample_get_output_as_np_array():
+    """Test the get_output_as_nparray method of Resample class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     signal = wav_loader.get_output()
@@ -105,6 +109,7 @@ def test_resample_get_output_as_np_array():
 
 
 def test_resample_set_get_signal():
+    """Test the signal setter and getter of Resample class."""
     resampler = Resample()
     signal = Field()
     signal.data = 42 * np.ones(3)
@@ -125,6 +130,7 @@ def test_resample_set_signal_exception():
 
 
 def test_resample_set_get_sampling_frequency():
+    """Test the new_sampling_frequency setter and getter of Resample class."""
     resampler = Resample()
 
     # Error
@@ -138,6 +144,7 @@ def test_resample_set_get_sampling_frequency():
 
 @patch("matplotlib.pyplot.show")
 def test_resample_plot(mock_show):
+    """Test the plot method of Resample class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     signal = wav_loader.get_output()

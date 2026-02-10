@@ -44,11 +44,13 @@ else:  # DPF Sound <= 2025 R2
 
 
 def test_istft_instantiation():
+    """Test the instantiation of Istft class."""
     stft = Istft()
     assert stft != None
 
 
 def test_istft_process():
+    """Test the process method of Istft class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     stft = Stft(signal=wav_loader.get_output()[0])
@@ -70,6 +72,7 @@ def test_istft_process():
 
 
 def test_istft_get_output():
+    """Test the get_output method of Istft class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     stft = Stft(signal=wav_loader.get_output()[0])
@@ -93,6 +96,7 @@ def test_istft_get_output():
 
 
 def test_istft_get_output_as_np_array():
+    """Test the get_output_as_nparray method of Istft class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     stft = Stft(signal=wav_loader.get_output()[0])
@@ -109,6 +113,7 @@ def test_istft_get_output_as_np_array():
 
 
 def test_istft_set_get_signal():
+    """Test the stft setter and getter of Istft class."""
     # Test 1 with error
     istft = Istft()
     fc = FieldsContainer()
@@ -145,6 +150,7 @@ def test_istft_set_get_signal():
 
 @patch("matplotlib.pyplot.show")
 def test_istft_plot(mock_show):
+    """Test the plot method of Istft class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     stft = Stft(signal=wav_loader.get_output()[0])

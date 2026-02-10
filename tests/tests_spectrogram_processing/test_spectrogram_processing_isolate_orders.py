@@ -44,11 +44,13 @@ else:  # DPF Sound <= 2025 R2
 
 
 def test_isolate_orders_instantiation():
+    """Test the instantiation of IsolateOrders class."""
     isolate_orders = IsolateOrders()
     assert isolate_orders != None
 
 
 def test_isolate_orders_process():
+    """Test the process method of IsolateOrders class."""
     isolate_orders = IsolateOrders()
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
@@ -91,6 +93,7 @@ def test_isolate_orders_process():
 
 
 def test_isolate_orders_get_output():
+    """Test the get_output method of IsolateOrders class."""
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     signal, rpm_profile = wav_loader.get_output()
@@ -111,6 +114,7 @@ def test_isolate_orders_get_output():
 
 
 def test_isolate_orders_get_output_as_np_array():
+    """Test the get_output_as_nparray method of IsolateOrders class."""
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     signal, rpm_profile = wav_loader.get_output()
@@ -147,6 +151,7 @@ def test_isolate_orders_set_signal_exception():
 
 
 def test_isolate_orders_set_get_fft_size():
+    """Test the fft_size setter and getter of IsolateOrders class."""
     isolate_orders = IsolateOrders()
 
     # Error
@@ -159,6 +164,7 @@ def test_isolate_orders_set_get_fft_size():
 
 
 def test_isolate_orders_set_get_window_overlap():
+    """Test the window_overlap setter and getter of IsolateOrders class."""
     isolate_orders = IsolateOrders()
 
     # Error
@@ -171,6 +177,7 @@ def test_isolate_orders_set_get_window_overlap():
 
 
 def test_isolate_orders_set_get_window_type():
+    """Test the window_type setter and getter of IsolateOrders class."""
     isolate_orders = IsolateOrders()
 
     # Error
@@ -186,6 +193,7 @@ def test_isolate_orders_set_get_window_type():
 
 
 def test_isolate_orders_set_get_rpm_profile():
+    """Test the rpm_profile setter and getter of IsolateOrders class."""
     isolate_orders = IsolateOrders()
 
     rpm = Field()
@@ -196,6 +204,7 @@ def test_isolate_orders_set_get_rpm_profile():
 
 
 def test_isolate_orders_set_get_orders():
+    """Test the orders setter and getter of IsolateOrders class."""
     isolate_orders = IsolateOrders()
     orders = Field()
 
@@ -206,6 +215,7 @@ def test_isolate_orders_set_get_orders():
 
 
 def test_isolate_orders_set_get_width_selection():
+    """Test the width_selection setter and getter of IsolateOrders class."""
     isolate_orders = IsolateOrders()
 
     # Error
@@ -219,6 +229,7 @@ def test_isolate_orders_set_get_width_selection():
 
 @patch("matplotlib.pyplot.show")
 def test_isolate_orders_plot(mock_show):
+    """Test the plot method of IsolateOrders class."""
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     signal, rpm_profile = wav_loader.get_output()

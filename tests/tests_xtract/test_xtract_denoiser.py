@@ -222,6 +222,7 @@ def test_xtract_denoiser_get_output_as_nparray():
 
 
 def test_xtract_denoiser_setters():
+    """Test setters for XtractDenoiser class."""
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
@@ -253,6 +254,7 @@ def test_xtart_denoiser_set_input_signal_exception():
 
 @patch("matplotlib.pyplot.show")
 def test_xtract_denoiser_plot_output(mock_show):
+    """Test the plot method of XtractDenoiser class."""
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 

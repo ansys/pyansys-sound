@@ -77,11 +77,13 @@ def create_psd_from_txt_data():
 
 
 def test_prominence_ratio_instantiation():
+    """Test the instantiation of ProminenceRatio class."""
     pr = ProminenceRatio()
     assert pr != None
 
 
 def test_prominence_ratio_set_get_psd(create_psd_from_txt_data):
+    """Test the psd setter and getter of ProminenceRatio class."""
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -93,6 +95,7 @@ def test_prominence_ratio_set_get_psd(create_psd_from_txt_data):
 
 
 def test_prominence_ratio_set_get_frequency_list():
+    """Test the frequency_list setter and getter of ProminenceRatio class."""
     pr = ProminenceRatio()
 
     frequency_list = [2, 5, 9]
@@ -104,6 +107,7 @@ def test_prominence_ratio_set_get_frequency_list():
 
 
 def test_prominence_ratio_process(create_psd_from_txt_data):
+    """Test the process method of ProminenceRatio class."""
     pr = ProminenceRatio()
 
     # no signal -> error 1
@@ -119,6 +123,7 @@ def test_prominence_ratio_process(create_psd_from_txt_data):
 
 
 def test_prominence_ratio_get_output(create_psd_from_txt_data):
+    """Test the get_output method of ProminenceRatio class."""
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -136,6 +141,7 @@ def test_prominence_ratio_get_output(create_psd_from_txt_data):
 
 
 def test_prominence_ratio_get_output_as_nparray(create_psd_from_txt_data):
+    """Test the get_output_as_nparray method of ProminenceRatio class."""
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -186,6 +192,7 @@ def test_prominence_ratio_get_output_as_nparray(create_psd_from_txt_data):
 
 
 def test_prominence_ratio_get_nb_tones(create_psd_from_txt_data):
+    """Test getting the number of tones from ProminenceRatio computation."""
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -206,6 +213,7 @@ def test_prominence_ratio_get_nb_tones(create_psd_from_txt_data):
 
 
 def test_prominence_ratio_get_peaks_frequencies(create_psd_from_txt_data):
+    """Test getting the peaks frequencies from ProminenceRatio computation."""
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -223,6 +231,7 @@ def test_prominence_ratio_get_peaks_frequencies(create_psd_from_txt_data):
 
 
 def test_prominence_ratio_get_PR_values(create_psd_from_txt_data):
+    """Test getting the prominence ratio values from ProminenceRatio computation."""
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -240,6 +249,7 @@ def test_prominence_ratio_get_PR_values(create_psd_from_txt_data):
 
 
 def test_prominence_ratio_get_peaks_levels(create_psd_from_txt_data):
+    """Test getting the peaks levels from ProminenceRatio computation."""
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -257,6 +267,7 @@ def test_prominence_ratio_get_peaks_levels(create_psd_from_txt_data):
 
 
 def test_prominence_ratio_get_peaks_low_frequencies(create_psd_from_txt_data):
+    """Test getting the low boundary frequencies from ProminenceRatio computation."""
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -274,6 +285,7 @@ def test_prominence_ratio_get_peaks_low_frequencies(create_psd_from_txt_data):
 
 
 def test_prominence_ratio_get_peaks_high_frequencies(create_psd_from_txt_data):
+    """Test getting the high boundary frequencies from ProminenceRatio computation."""
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -291,6 +303,7 @@ def test_prominence_ratio_get_peaks_high_frequencies(create_psd_from_txt_data):
 
 
 def test_prominence_ratio_get_max_PR_value(create_psd_from_txt_data):
+    """Test getting the maximum prominence ratio value from ProminenceRatio computation."""
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -307,6 +320,7 @@ def test_prominence_ratio_get_max_PR_value(create_psd_from_txt_data):
 
 
 def test_prominence_ratio_get_all_tone_infos(create_psd_from_txt_data):
+    """Test getting all tone information from ProminenceRatio computation."""
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -345,6 +359,7 @@ def test_prominence_ratio_get_all_tone_infos(create_psd_from_txt_data):
 
 
 def test_prominence_ratio_get_reference_curve(create_psd_from_txt_data):
+    """Test getting the reference curve from ProminenceRatio computation."""
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -371,6 +386,7 @@ def test_prominence_ratio_get_reference_curve(create_psd_from_txt_data):
 
 @patch("matplotlib.pyplot.show")
 def test_prominence_ratio_plot(mock_show, create_psd_from_txt_data):
+    """Test the plot method of ProminenceRatio class."""
     pr = ProminenceRatio()
 
     psd = create_psd_from_txt_data
@@ -386,6 +402,7 @@ def test_prominence_ratio_plot(mock_show, create_psd_from_txt_data):
 
 
 def test_prominence_ratio_with_frequency_list(create_psd_from_txt_data):
+    """Test ProminenceRatio computation with a custom frequency list."""
     psd = create_psd_from_txt_data
     frequency_list = [
         261.090087890625,

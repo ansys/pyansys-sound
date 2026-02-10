@@ -29,11 +29,13 @@ from ansys.sound.core.signal_utilities import CropSignal, LoadWav
 
 
 def test_crop_signal_instantiation():
+    """Test the instantiation of CropSignal class."""
     signal_cropper = CropSignal()
     assert signal_cropper != None
 
 
 def test_crop_signal_process():
+    """Test the process method of CropSignal class."""
     signal_cropper = CropSignal(start_time=0.0, end_time=1.0)
     wav_loader = LoadWav(pytest.data_path_flute)
 
@@ -52,6 +54,7 @@ def test_crop_signal_process():
 
 
 def test_crop_signal_get_output():
+    """Test the get_output method of CropSignal class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     signal = wav_loader.get_output()
@@ -76,6 +79,7 @@ def test_crop_signal_get_output():
 
 
 def test_crop_signal_get_output_as_np_array():
+    """Test the get_output_as_nparray method of CropSignal class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     signal = wav_loader.get_output()
@@ -99,6 +103,7 @@ def test_crop_signal_get_output_as_np_array():
 
 
 def test_crop_signal_set_get_signal():
+    """Test the signal setter and getter of CropSignal class."""
     signal_cropper = CropSignal()
     signal = Field()
     signal.data = 42 * np.ones(3)
@@ -118,6 +123,7 @@ def test_crop_signal_set_signal_exception():
 
 
 def test_crop_signal_set_get_start_end_times():
+    """Test the start_time and end_time setters and getters of CropSignal class."""
     signal_cropper = CropSignal()
 
     # Error

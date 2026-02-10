@@ -371,6 +371,7 @@ def test_xtract_set_input_signal_exception():
 
 @patch("matplotlib.pyplot.show")
 def test_xtract_plot_output(mock_show):
+    """Test the plot method of Xtract class."""
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 

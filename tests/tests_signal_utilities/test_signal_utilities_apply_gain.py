@@ -29,11 +29,13 @@ from ansys.sound.core.signal_utilities import ApplyGain, LoadWav
 
 
 def test_apply_gain_instantiation():
+    """Test the instantiation of ApplyGain class."""
     gain_applier = ApplyGain()
     assert gain_applier != None
 
 
 def test_apply_gain_process():
+    """Test the process method of ApplyGain class."""
     gain_applier = ApplyGain()
     wav_loader = LoadWav(pytest.data_path_flute)
 
@@ -53,6 +55,7 @@ def test_apply_gain_process():
 
 
 def test_apply_gain_get_output():
+    """Test the get_output method of ApplyGain class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     signal = wav_loader.get_output()
@@ -75,6 +78,7 @@ def test_apply_gain_get_output():
 
 
 def test_apply_gain_get_output_as_np_array():
+    """Test the get_output_as_nparray method of ApplyGain class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
     signal = wav_loader.get_output()
@@ -111,6 +115,7 @@ def test_apply_gain_set_signal_exception():
 
 
 def test_apply_gain_set_get_gain():
+    """Test the gain setter and getter of ApplyGain class."""
     gain_applier = ApplyGain()
 
     gain_applier.gain = 1234.0
@@ -118,6 +123,7 @@ def test_apply_gain_set_get_gain():
 
 
 def test_apply_gain_set_get_gain_in_db():
+    """Test the gain_in_db setter and getter of ApplyGain class."""
     gain_applier = ApplyGain()
 
     # Error 1

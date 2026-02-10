@@ -31,11 +31,13 @@ from ansys.sound.core.signal_utilities import LoadWav, WriteWav
 
 
 def test_write_wav_instantiation():
+    """Test the instantiation of WriteWav class."""
     wav_writer = WriteWav()
     assert wav_writer != None
 
 
 def test_write_wav_process():
+    """Test the process method of WriteWav class."""
     wav_writer = WriteWav()
 
     # Error 1
@@ -66,6 +68,7 @@ def test_write_wav_process():
 
 
 def test_write_wav_set_get_path():
+    """Test the path setter and getter of WriteWav class."""
     wav_writer = WriteWav()
 
     wav_writer.path_to_write = r"C:\test\path"
@@ -75,6 +78,7 @@ def test_write_wav_set_get_path():
 
 
 def test_write_wav_set_get_bit_depth():
+    """Test the bit_depth setter and getter of WriteWav class."""
     wav_writer = WriteWav()
 
     # Error
@@ -92,6 +96,7 @@ def test_write_wav_set_get_bit_depth():
 
 
 def test_write_wav_set_get_signal():
+    """Test the signal setter and getter of WriteWav class."""
     wav_writer = WriteWav()
     f = Field()
     f.data = 42 * np.ones(3)
@@ -119,6 +124,7 @@ def test_write_wav_set_get_signal():
 
 
 def test_write_wav_plot():
+    """Test the plot method of WriteWav class."""
     wav_writer = WriteWav()
 
     with pytest.warns(PyAnsysSoundWarning, match="Nothing to plot."):

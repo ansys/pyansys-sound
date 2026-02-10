@@ -232,6 +232,7 @@ def test_xtract_tonal_process_set_signal_exception():
 
 @patch("matplotlib.pyplot.show")
 def test_xtract_tonal_plot_output(mock_show):
+    """Test the plot method of XtractTonal class."""
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
