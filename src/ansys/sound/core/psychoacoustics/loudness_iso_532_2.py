@@ -24,13 +24,12 @@
 
 import warnings
 
-from ansys.dpf.core import Field, Operator, types
+from ansys.dpf.core import Field, Operator, fields_container_factory, types
 import matplotlib.pyplot as plt
 import numpy as np
 
 from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-from ..signal_utilities import CreateSignalFieldsContainer
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_LOUDNESS_ISO_532_2 = "compute_loudness_iso532_2"
@@ -220,9 +219,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
 
         signal = self.signal
         if isinstance(self.signal, list):
-            fields_container_factory = CreateSignalFieldsContainer(self.signal)
-            fields_container_factory.process()
-            signal = fields_container_factory.get_output()
+            signal = fields_container_factory.over_time_freq_fields_container(self.signal)
 
         self.__operator.connect(0, signal)
         self.__operator.connect(1, self.field_type)
