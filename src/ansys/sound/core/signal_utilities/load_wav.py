@@ -24,17 +24,13 @@
 
 import warnings
 
-from ansys.dpf.core import DataSources, FieldsContainer, Operator, types
+from ansys.dpf.core import DataSources, Field, Operator, types
 import numpy as np
 
 from ansys.sound.core.server_helpers import requires_sound_version
 
 from . import SignalUtilitiesParent
-from .._pyansys_sound import (
-    PyAnsysSoundException,
-    PyAnsysSoundWarning,
-    convert_fields_container_to_np_array,
-)
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class LoadWav(SignalUtilitiesParent):
@@ -104,18 +100,18 @@ class LoadWav(SignalUtilitiesParent):
         self.__operator.run()
 
         # Store outputs
-        self._output = self.__operator.get_output(0, types.fields_container)
+        self._output = [f for f in self.__operator.get_output(0, types.fields_container)]
         # Note: sampling frequency and format are retrieved within their respective getter methods,
         # because their availabilility depends on the DPF Sound plugin version (which is managed by
         # these methods' `requires_sound_version` decorator).
 
-    def get_output(self) -> FieldsContainer:
-        """Get the signal loaded from the WAV file as a DPF fields container.
+    def get_output(self) -> list[Field]:
+        """Get the signal loaded from the WAV file as list of DPF fields.
 
         Returns
         -------
-        FieldsContainer
-            Signal loaded from the WAV file in a DPF fields container.
+        list[Field]
+            Signal loaded from the WAV file as a list of DPF fields.
         """
         if self._output is None:
             warnings.warn(
@@ -135,7 +131,12 @@ class LoadWav(SignalUtilitiesParent):
         numpy.ndarray
             Signal loaded from the WAV file in a NumPy array.
         """
-        return convert_fields_container_to_np_array(self.get_output())
+        output = self.get_output()
+        if output is None:
+            return np.array([])
+        if len(self.get_output()) == 1:
+            return np.array(output[0].data)
+        return np.vstack([np.array(f.data) for f in self.get_output()])
 
     @requires_sound_version("2026.1.0")
     def get_sampling_frequency(self) -> float:

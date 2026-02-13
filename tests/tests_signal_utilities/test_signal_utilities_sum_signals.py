@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.dpf.core import Field, FieldsContainer
+from ansys.dpf.core import Field
 import numpy as np
 import pytest
 
@@ -29,11 +29,13 @@ from ansys.sound.core.signal_utilities import LoadWav, SumSignals
 
 
 def test_sum_signals_instantiation():
+    """Test the instantiation of SumSignals class."""
     sum_gain = SumSignals()
     assert sum_gain != None
 
 
 def test_sum_signals_process():
+    """Test the process method of SumSignals class."""
     sum_gain = SumSignals()
     wav_loader = LoadWav(pytest.data_path_white_noise)
 
@@ -54,6 +56,7 @@ def test_sum_signals_process():
 
 
 def test_sum_signals_get_output():
+    """Test the get_output method of SumSignals class."""
     wav_loader = LoadWav(pytest.data_path_white_noise)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -77,6 +80,7 @@ def test_sum_signals_get_output():
 
 
 def test_sum_signals_get_output_as_np_array():
+    """Test the get_output_as_nparray method of SumSignals class."""
     wav_loader = LoadWav(pytest.data_path_white_noise)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -100,17 +104,36 @@ def test_sum_signals_get_output_as_np_array():
 
 
 def test_sum_signals_set_get_signals():
+    """Test set and get signals."""
     sum_gain = SumSignals()
 
-    fc = FieldsContainer()
-    fc.labels = ["channel"]
-    f = Field()
-    f.data = 42 * np.ones(3)
-    fc.add_field({"channel": 0}, f)
-    fc.name = "testField"
-    sum_gain.signals = fc
-    fc_from_get = sum_gain.signals
+    signal = Field()
+    signal.data = 42 * np.ones(3)
+    signals = [signal, signal, signal]
+    sum_gain.signals = signals
+    signals_from_get = sum_gain.signals
 
-    assert fc_from_get.name == "testField"
-    assert len(fc_from_get) == 1
-    assert fc_from_get[0].data[0, 2] == 42
+    assert type(signals_from_get) == list
+    assert type(signals_from_get[0]) == Field
+    assert signals_from_get[0].data[0, 2] == 42
+
+
+def test_sum_signals_set_signals_exceptions():
+    """Test exceptions for signals setter."""
+    sum_signals = SumSignals()
+
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Input signals must be specified as a list of DPF fields.",
+    ):
+        sum_signals.signals = "WrongType"
+
+    assert sum_signals.signals is None
+
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Input signals must be specified as a list of DPF fields.",
+    ):
+        sum_signals.signals = [Field(), "WrongType", Field()]
+
+    assert sum_signals.signals is None

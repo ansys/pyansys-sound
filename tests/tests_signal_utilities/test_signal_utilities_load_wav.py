@@ -55,18 +55,17 @@ def test_load_wav_get_output():
     """Test the get_output method of LoadWav class."""
     wav_loader = LoadWav(pytest.data_path_flute)
 
-    # Loading a wav signal using LoadWav class
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. Use the `LoadWav.process\\(\\)` method.",
     ):
-        fc = wav_loader.get_output()
+        assert wav_loader.get_output() is None
 
     wav_loader.process()
-    fc = wav_loader.get_output()
+    output = wav_loader.get_output()
 
     # Extracting data
-    data = fc[0].data
+    data = output[0].data
 
     # Checking data size and some random samples
     assert len(data) == 156048
@@ -79,12 +78,17 @@ def test_load_wav_get_output():
 def test_load_wav_get_output_as_nparray():
     """Test the get_output_as_nparray method of LoadWav class."""
     wav_loader = LoadWav(pytest.data_path_flute)
+
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. Use the `LoadWav.process\\(\\)` method.",
+    ):
+        assert len(wav_loader.get_output_as_nparray()) == 0
+
     wav_loader.process()
 
-    # Loading a wav signal using LoadWav
     np_arr = wav_loader.get_output_as_nparray()
 
-    # Checking data size and some random samples
     assert len(np_arr) == 156048
     assert np_arr[10] == 0.0
     assert np_arr[1000] == 6.103515625e-05

@@ -24,16 +24,12 @@
 
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
+from ansys.dpf.core import Field, Operator
 import matplotlib.pyplot as plt
 import numpy as np
 
 from . import XtractParent, XtractTransientParameters
-from .._pyansys_sound import (
-    PyAnsysSoundException,
-    PyAnsysSoundWarning,
-    convert_fields_container_to_np_array,
-)
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class XtractTransient(XtractParent):
@@ -49,7 +45,7 @@ class XtractTransient(XtractParent):
 
     >>> from ansys.sound.core.xtract import XtractTransient
     >>> xtract_transient = XtractTransient(
-    ...     input_signal=my_signal_field,
+    ...     input_signal=my_signal,
     ...     input_parameters=my_parameters
     ... )
     >>> xtract_transient.process()
@@ -63,17 +59,15 @@ class XtractTransient(XtractParent):
 
     def __init__(
         self,
-        input_signal: FieldsContainer | Field = None,
+        input_signal: Field = None,
         input_parameters: XtractTransientParameters = None,
     ):
         """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        input_signal : FieldsContainer | Field, default: None
-            One or more signals to extract transient components on
-            as a DPF fields container or fields. When inputting a fields container,
-            each signal (each field of the fields container) is processed individually.
+        input_signal : Field, default: None
+            Input signal from which to extract transient components, as a DPF field.
         input_parameters : XtractTransientParameters, default: None
             Structure that contains the parameters of the algorithm:
 
@@ -96,19 +90,17 @@ class XtractTransient(XtractParent):
         self.__operator = Operator("xtract_transient")
 
     @property
-    def input_signal(self) -> FieldsContainer | Field:
-        """Input signal.
-
-        One or more signals from which to extract transient components, as a DPF field or fields
-        container. When inputting a fields container, each signal (each field of the fields
-        container) is processed individually.
-        """
+    def input_signal(self) -> Field:
+        """Input signal from which to extract transient components, as a DPF field."""
         return self.__input_signal
 
     @input_signal.setter
-    def input_signal(self, value: FieldsContainer | Field):
+    def input_signal(self, signal: Field):
         """Set input signal."""
-        self.__input_signal = value
+        if not (signal is None or isinstance(signal, Field)):
+            raise PyAnsysSoundException("Signal must be specified as a DPF field.")
+
+        self.__input_signal = signal
 
     @property
     def input_parameters(self) -> XtractTransientParameters:
@@ -127,20 +119,13 @@ class XtractTransient(XtractParent):
         self.__input_parameters = value
 
     @property
-    def output_transient_signals(self) -> FieldsContainer | Field:
-        """Output transient signals.
-
-        One or more transient signals as a DPF field or fields container (depending on the input).
-        """
+    def output_transient_signals(self) -> Field:
+        """Output transient signal as a DPF field."""
         return self.__output_transient_signals
 
     @property
-    def output_non_transient_signals(self) -> FieldsContainer | Field:
-        """Output non-transient signals.
-
-        One or more non-transient signals (original signal minus transient signal) as a DPF field
-        or fields container (depending on the input).
-        """
+    def output_non_transient_signals(self) -> Field:
+        """Output non-transient signal as a DPF field."""
         return self.__output_non_transient_signals
 
     def process(self):
@@ -161,105 +146,61 @@ class XtractTransient(XtractParent):
         self.__operator.run()
 
         # Stores the output in the variable
-        if type(self.input_signal) == Field:
-            self.__output_transient_signals = self.__operator.get_output(0, "field")
-            self.__output_non_transient_signals = self.__operator.get_output(1, "field")
-        else:
-            self.__output_transient_signals = self.__operator.get_output(0, "fields_container")
-            self.__output_non_transient_signals = self.__operator.get_output(1, "fields_container")
+        self.__output_transient_signals = self.__operator.get_output(0, "field")
+        self.__output_non_transient_signals = self.__operator.get_output(1, "field")
 
         self._output = (self.__output_transient_signals, self.__output_non_transient_signals)
 
-    def get_output(self) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
+    def get_output(self) -> tuple[Field, Field]:
         """Get the output of the transient extraction.
 
         Returns
         -------
-        tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]
-            One or more transient signals and non-transient signals
-            in a tuple as DPF fields containers or fields (depending on the input).
+        Field
+            Transient signal as a DPF field.
+        Field
+            Non-transient signal as a DPF field.
         """
-        if self.__output_transient_signals is None or self.__output_non_transient_signals is None:
+        if None in self._output:
             warnings.warn(PyAnsysSoundWarning("Output is not processed yet."))
 
-        return self.__output_transient_signals, self.__output_non_transient_signals
+        return self._output
 
     def get_output_as_nparray(self) -> tuple[np.ndarray, np.ndarray]:
         """Get the output of the transient extraction as NumPy arrays.
 
         Returns
         -------
-        tuple[numpy.ndarray, numpy.ndarray]
-            Transient signals and non-transient signals in a tuple as NumPy arrays.
+        numpy.ndarray
+            Transient signal as a NumPy array.
+        numpy.ndarray
+            Non-transient signal as a NumPy array.
         """
-        l_output_transient_signals, l_output_non_transient_signals = self.get_output()
+        transient_signal, non_transient_signal = self.get_output()
 
-        if type(l_output_transient_signals) == Field:
-            return np.array(l_output_transient_signals.data), np.array(
-                l_output_non_transient_signals.data
-            )
-        else:
-            if (
-                self.__output_transient_signals is None
-                or self.__output_non_transient_signals is None
-            ):
-                return np.array([]), np.array([])
-            else:
-                return (
-                    convert_fields_container_to_np_array(l_output_transient_signals),
-                    convert_fields_container_to_np_array(l_output_non_transient_signals),
-                )
+        if transient_signal is None or non_transient_signal is None:
+            return np.array([]), np.array([])
+
+        return np.array(transient_signal.data), np.array(non_transient_signal.data)
 
     def plot(self):
         """Plot signals.
 
         This method plots the transient signal and non-transient signal.
         """
-        l_output_transient_signals = self.get_output()[0]
+        transient_signal, non_transient_signal = self.get_output()
+        time = transient_signal.time_freq_support.time_frequencies
 
-        l_output_transient_signals_as_field = (
-            l_output_transient_signals
-            if type(l_output_transient_signals) == Field
-            else l_output_transient_signals[0]
-        )
+        plt.figure()
+        plt.plot(time.data, transient_signal.data)
+        plt.xlabel(f"Time ({time.unit})")
+        plt.ylabel(f"Amplitude ({transient_signal.unit})")
+        plt.title(f"Transient signal")
 
-        l_np_output_transient, l_np_output_non_transient = self.get_output_as_nparray()
+        plt.figure()
+        plt.plot(time.data, non_transient_signal.data)
+        plt.xlabel(f"Time ({time.unit})")
+        plt.ylabel(f"Amplitude ({non_transient_signal.unit})")
+        plt.title(f"Non transient signal")
 
-        l_time_data = l_output_transient_signals_as_field.time_freq_support.time_frequencies.data
-        l_time_unit = l_output_transient_signals_as_field.time_freq_support.time_frequencies.unit
-        l_unit = l_output_transient_signals_as_field.unit
-
-        ################
-        # Note: by design, we have l_output_transient.ndim == l_output_non_transient.ndim
-        if l_np_output_transient.ndim == 1:
-            ###########
-            # Field type
-            plt.figure()
-            plt.plot(l_time_data, l_np_output_transient)
-            plt.xlabel(f"Time ({l_time_unit})")
-            plt.ylabel(f"Amplitude ({l_unit})")
-            plt.title(f"Transient signal")
-
-            plt.figure()
-            plt.plot(l_time_data, l_np_output_non_transient)
-            plt.xlabel(f"Time ({l_time_unit})")
-            plt.ylabel(f"Amplitude ({l_unit})")
-            plt.title(f"Non transient signal")
-        else:
-            for l_i in range(len(l_np_output_transient)):
-                ###########
-                # FieldsContainer type
-                plt.figure()
-                plt.plot(l_time_data, l_np_output_transient[l_i], label=f"Channel {l_i}")
-                plt.xlabel(f"Time ({l_time_unit})")
-                plt.ylabel(f"Amplitude ({l_unit})")
-                plt.title(f"Transient signal - channel {l_i}")
-
-                plt.figure()
-                plt.plot(l_time_data, l_np_output_non_transient[l_i], label=f"Channel {l_i}")
-                plt.xlabel(f"Time ({l_time_unit})")
-                plt.ylabel(f"Amplitude ({l_unit})")
-                plt.title(f"Non transient signal - channel {l_i}")
-
-        # Show all figures created
         plt.show()

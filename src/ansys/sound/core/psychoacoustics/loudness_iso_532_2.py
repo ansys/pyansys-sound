@@ -24,16 +24,12 @@
 
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator, types
+from ansys.dpf.core import Field, Operator, fields_container_factory, types
 import matplotlib.pyplot as plt
 import numpy as np
 
 from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
-from .._pyansys_sound import (
-    PyAnsysSoundException,
-    PyAnsysSoundWarning,
-    convert_fields_container_to_np_array,
-)
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_LOUDNESS_ISO_532_2 = "compute_loudness_iso532_2"
@@ -73,7 +69,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
 
     >>> from ansys.sound.core.psychoacoustics import LoudnessISO532_2
     >>> loudness = LoudnessISO532_2(
-    ...     signal=my_binaual_signal,
+    ...     signal=my_binaural_signal,
     ...     field_type="Free",
     ...     recording_type="Head"
     ... )
@@ -89,7 +85,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
 
     def __init__(
         self,
-        signal: Field | FieldsContainer = None,
+        signal: Field | list[Field] = None,
         field_type: str = FIELD_FREE,
         recording_type: str = RECORDING_MIC,
     ):
@@ -97,13 +93,12 @@ class LoudnessISO532_2(PsychoacousticsParent):
 
         Parameters
         ----------
-        signal : Field | FieldsContainer, default: None
+        signal : Field | list[Field], default: None
             Signal in Pa on which to compute loudness. If ``signal`` is a
             :class:`Field <ansys.dpf.core.field.Field>`, the listening assumption is diotic (same
-            signal presented at both ears). If ``signal`` is a
-            :class:`FieldsContainer <ansys.dpf.core.fields_container.FieldsContainer>`, with
-            exactly 2 fields, the listening assumption is dichotic (each field's signal presented
-            at each ear).
+            signal presented at both ears). If ``signal`` is a list of exactly 2
+            :class:`Field <ansys.dpf.core.field.Field>`, the listening assumption is dichotic (each
+            field's signal presented at each ear).
         field_type : str, default: "Free"
             Sound field type. Available options are `"Free"` and `"Diffuse"`.
         recording_type : str, default: "Mic"
@@ -150,30 +145,30 @@ class LoudnessISO532_2(PsychoacousticsParent):
         )
 
     @property
-    def signal(self) -> Field | FieldsContainer:
+    def signal(self) -> Field | list[Field]:
         """Input sound signal in Pa.
 
         Signal in Pa on which to compute loudness. If ``signal`` is a
         :class:`Field <ansys.dpf.core.field.Field>`, the listening assumption is diotic (same
-        signal presented at both ears). If ``signal`` is a
-        :class:`FieldsContainer <ansys.dpf.core.fields_container.FieldsContainer>`, with exactly 2
-        fields, the listening assumption is dichotic (each field's signal presented at each ear).
+        signal presented at both ears). If ``signal`` is a list of exactly 2
+        :class:`Field <ansys.dpf.core.field.Field>`, the listening assumption is dichotic (each
+        field's signal presented at each ear).
         """
         return self.__signal
 
     @signal.setter
-    def signal(self, signal: Field | FieldsContainer):
+    def signal(self, signal: Field | list[Field]):
         """Set the signal."""
         if signal is not None:
-            if isinstance(signal, FieldsContainer):
-                if len(signal) != 2:
+            if isinstance(signal, list):
+                if len(signal) != 2 or not all(isinstance(f, Field) for f in signal):
                     raise PyAnsysSoundException(
-                        "The input FieldsContainer signal must contain exactly 2 fields "
-                        "corresponding to the signals presented at the two ears."
+                        "The input signal list must contain exactly 2 fields corresponding to the "
+                        "signals presented at the two ears."
                     )
             elif not isinstance(signal, Field):
                 raise PyAnsysSoundException(
-                    "Signal must be specified as a DPF field or fields container."
+                    "Signal must be specified as a DPF field or a list of exactly 2 DPF fields."
                 )
         self.__signal = signal
 
@@ -222,7 +217,11 @@ class LoudnessISO532_2(PsychoacousticsParent):
         if self.signal == None:
             raise PyAnsysSoundException(f"No input signal set. Use `{__class__.__name__}.signal`.")
 
-        self.__operator.connect(0, self.signal)
+        signal = self.signal
+        if isinstance(self.signal, list):
+            signal = fields_container_factory.over_time_freq_fields_container(self.signal)
+
+        self.__operator.connect(0, signal)
         self.__operator.connect(1, self.field_type)
         self.__operator.connect(2, self.recording_type)
 
@@ -235,7 +234,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
             self.__operator.get_output(2, types.vec_double),
             self.__operator.get_output(3, types.vec_double),
             self.__operator.get_output(4, types.field),
-            self.__operator.get_output(5, types.fields_container),
+            [field for field in self.__operator.get_output(5, types.fields_container)],
         )
 
     def get_output(self) -> tuple:
@@ -243,20 +242,19 @@ class LoudnessISO532_2(PsychoacousticsParent):
 
         Returns
         -------
-        tuple
-            -   First element (float): binaural loudness in sone.
-
-            -   Second element (float): binaural loudness level in phon.
-
-            -   Third element (DPFarray): monaural loudness in sone at each ear.
-
-            -   Fourth element (DPFarray): monaural loudness level in phon at each ear.
-
-            -   Fifth element (Field): binaural specific loudness in sone/Cam, as a function of the
-                ERB center frequency.
-
-            -   Sixth element (FieldsContainer): monaural specific loudness in sone/Cam at each ear,
-                as a function of the ERB center frequency.
+        float
+            Binaural loudness in sone.
+        float
+            Binaural loudness level in phon.
+        DPFarray
+            Monaural loudness in sone at each ear.
+        DPFarray
+            Monaural loudness level in phon at each ear.
+        Field
+            Binaural specific loudness in sone/Cam, as a function of the ERB center frequency.
+        list[Field]
+            Monaural specific loudness in sone/Cam at each ear, as a function of the ERB center
+            frequency.
         """
         if self._output == None:
             warnings.warn(
@@ -309,7 +307,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
             np.array(output[2]),
             np.array(output[3]),
             np.array(output[4].data),
-            convert_fields_container_to_np_array(output[5]),
+            np.vstack([np.array(field.data) for field in output[5]]),
             np.array(output[4].time_freq_support.time_frequencies.data),
         )
 
@@ -356,6 +354,7 @@ class LoudnessISO532_2(PsychoacousticsParent):
             Monaural loudness level in phon at each ear.
         """
         output = self.get_output_as_nparray()[3]
+
         if len(output) == 1:
             return np.array([output[0], output[0]])
         else:
@@ -382,11 +381,8 @@ class LoudnessISO532_2(PsychoacousticsParent):
         """
         output = self.get_output_as_nparray()[5]
 
-        # If signal is a FieldsContainer, then output's length is 2.
-        # However, here, if signal is a Field, then it is not 1, it is the length of the specific
-        # loudness. So the test below has to compare the length to 2, not 1.
-        if len(output) != 2:
-            return np.array([output, output])
+        if len(output) == 1:
+            return np.vstack([output[0], output[0]])
         else:
             return output
 

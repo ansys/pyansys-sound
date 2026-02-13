@@ -37,7 +37,7 @@ orders, when the input signal is associated with an RPM profile.
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
-# Setting up the analysis consists of loading Ansys libraries, connecting to the
+# Setting up the analysis consists of loading the required libraries, connecting to the
 # DPF server, and retrieving the example files.
 
 # Load Ansys libraries.

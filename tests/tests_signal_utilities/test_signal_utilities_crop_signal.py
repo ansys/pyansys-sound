@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.dpf.core import Field, FieldsContainer
+from ansys.dpf.core import Field
 import numpy as np
 import pytest
 
@@ -29,11 +29,13 @@ from ansys.sound.core.signal_utilities import CropSignal, LoadWav
 
 
 def test_crop_signal_instantiation():
+    """Test the instantiation of CropSignal class."""
     signal_cropper = CropSignal()
     assert signal_cropper != None
 
 
 def test_crop_signal_process():
+    """Test the process method of CropSignal class."""
     signal_cropper = CropSignal(start_time=0.0, end_time=1.0)
     wav_loader = LoadWav(pytest.data_path_flute)
 
@@ -44,39 +46,30 @@ def test_crop_signal_process():
                 Use the 'CropSignal.set_signal()' method."
 
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    # Testing input fields container (no error expected)
-    signal_cropper.signal = fc
+    signal_cropper.signal = signal[0]
     signal_cropper.process()
-
-    # Testing input field (no error expected)
-    signal_cropper.signal = fc[0]
-    signal_cropper.process()
+    assert signal_cropper._output is not None
 
 
 def test_crop_signal_get_output():
+    """Test the get_output method of CropSignal class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
-    fc_signal = wav_loader.get_output()
-    signal_cropper = CropSignal(signal=fc_signal, start_time=0.0, end_time=1.0)
+    signal = wav_loader.get_output()
+    signal_cropper = CropSignal(signal=signal[0], start_time=0.0, end_time=1.0)
 
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. \
                         Use the 'CropSignal.process\\(\\)' method.",
     ):
-        fc_out = signal_cropper.get_output()
+        _ = signal_cropper.get_output()
 
     signal_cropper.process()
-    fc_out = signal_cropper.get_output()
-
-    assert len(fc_out) == 1
-
-    signal_cropper.signal = fc_signal[0]
-    signal_cropper.process()
-    f_out = signal_cropper.get_output()
-    data = f_out.data
+    output = signal_cropper.get_output()
+    data = output.data
     # Checking data size and some random samples
     assert len(data) == 44101
     assert data[10] == 0.0
@@ -86,31 +79,22 @@ def test_crop_signal_get_output():
 
 
 def test_crop_signal_get_output_as_np_array():
+    """Test the get_output_as_nparray method of CropSignal class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
-    fc_signal = wav_loader.get_output()
-    signal_cropper = CropSignal(signal=fc_signal, start_time=0.0, end_time=1.0)
+    signal = wav_loader.get_output()
+    signal_cropper = CropSignal(signal=signal[0], start_time=0.0, end_time=1.0)
 
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. \
                         Use the 'CropSignal.process\\(\\)' method.",
     ):
-        fc_out = signal_cropper.get_output()
+        _ = signal_cropper.get_output()
 
     signal_cropper.process()
     data = signal_cropper.get_output_as_nparray()
 
-    assert len(data) == 44101
-    assert data[10] == 0.0
-    assert data[1000] == 6.103515625e-05
-    assert data[10000] == 0.0308837890625
-    assert data[44000] == 0.47772216796875
-
-    signal_cropper.signal = fc_signal[0]
-    signal_cropper.process()
-    data = signal_cropper.get_output_as_nparray()
-    # Checking data size and some random samples
     assert len(data) == 44101
     assert data[10] == 0.0
     assert data[1000] == 6.103515625e-05
@@ -119,22 +103,27 @@ def test_crop_signal_get_output_as_np_array():
 
 
 def test_crop_signal_set_get_signal():
+    """Test the signal setter and getter of CropSignal class."""
     signal_cropper = CropSignal()
-    fc = FieldsContainer()
-    fc.labels = ["channel"]
-    f = Field()
-    f.data = 42 * np.ones(3)
-    fc.add_field({"channel": 0}, f)
-    fc.name = "testField"
-    signal_cropper.signal = fc
-    fc_from_get = signal_cropper.signal
+    signal = Field()
+    signal.data = 42 * np.ones(3)
+    signal_cropper.signal = signal
+    signal_from_getter = signal_cropper.signal
+    assert signal_from_getter.data[0, 2] == 42
 
-    assert fc_from_get.name == "testField"
-    assert len(fc_from_get) == 1
-    assert fc_from_get[0].data[0, 2] == 42
+
+def test_crop_signal_set_signal_exception():
+    """Test exception for signal setter."""
+    signal_cropper = CropSignal()
+
+    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
+        signal_cropper.signal = "WrongType"
+
+    assert signal_cropper.signal is None
 
 
 def test_crop_signal_set_get_start_end_times():
+    """Test the start_time and end_time setters and getters of CropSignal class."""
     signal_cropper = CropSignal()
 
     # Error

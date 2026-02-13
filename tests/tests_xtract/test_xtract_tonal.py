@@ -22,7 +22,7 @@
 
 from unittest.mock import patch
 
-from ansys.dpf.core import Field, FieldsContainer
+from ansys.dpf.core import Field
 import numpy as np
 import pytest
 
@@ -46,32 +46,13 @@ EXP_1_99 = 1.8362156879447866e-06
 
 
 def test_xtract_tonal_instantiation():
+    """Test instantiation of XtractTonal."""
     xtract_tonal = XtractTonal()
     assert xtract_tonal != None
 
 
-def test_xtract_tonal_initialization_FieldsContainer():
-    # Test initialization with default values
-    xtract_tonal = XtractTonal()
-    assert xtract_tonal.input_signal is None
-    assert xtract_tonal.input_parameters is None
-    assert xtract_tonal.output_tonal_signals is None
-    assert xtract_tonal.output_non_tonal_signals is None
-
-    # Test initialization with custom values
-    input_signal = FieldsContainer()
-    input_parameters = XtractTonalParameters()
-    xtract_tonal = XtractTonal(
-        input_signal=input_signal,
-        input_parameters=input_parameters,
-    )
-    assert xtract_tonal.input_signal == input_signal
-    assert xtract_tonal.input_parameters == input_parameters
-    assert xtract_tonal.output_tonal_signals is None
-    assert xtract_tonal.output_non_tonal_signals is None
-
-
-def test_xtract_tonal_initialization_Field():
+def test_xtract_tonal_initialization():
+    """Test initialization of XtractTonal."""
     # Test initialization with default values
     xtract_tonal = XtractTonal()
     assert xtract_tonal.input_signal is None
@@ -93,20 +74,23 @@ def test_xtract_tonal_initialization_Field():
 
 
 def test_xtract_tonal_process_except1():
+    """Test method process's exception for missing signal."""
     xtract_tonal = XtractTonal(None, XtractTonalParameters())
-    with pytest.raises(PyAnsysSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException, match="No input signal found for tonal analysis."):
         xtract_tonal.process()
-    assert str(excinfo.value) == "No input signal found for tonal analysis."
+        assert xtract_tonal._output is (None, None)
 
 
 def test_xtract_tonal_process_except2():
+    """Test method process's exception for missing parameters."""
     xtract_tonal = XtractTonal(Field(), None)
-    with pytest.raises(PyAnsysSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException, match="Input parameters are not set."):
         xtract_tonal.process()
-    assert str(excinfo.value) == "Input parameters are not set."
+        assert xtract_tonal._output is (None, None)
 
 
 def test_xtract_tonal_process():
+    """Test method process."""
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
@@ -126,42 +110,28 @@ def test_xtract_tonal_process():
 
     assert xtract_tonal.output_tonal_signals is not None
     assert xtract_tonal.output_non_tonal_signals is not None
-
-    assert type(xtract_tonal.output_tonal_signals) == Field
-    assert type(xtract_tonal.output_non_tonal_signals) == Field
-
-    # Type of output tonal signals. np.array
-    assert xtract_tonal.get_output_as_nparray() is not None
-    assert type(xtract_tonal.get_output_as_nparray()[0]) == np.ndarray
-    assert type(xtract_tonal.get_output_as_nparray()[1]) == np.ndarray
-
-    assert xtract_tonal.get_output_as_nparray()[0].shape == (EXP_SIZE,)
-    assert np.min(xtract_tonal.get_output_as_nparray()[0]) == pytest.approx(EXP_0_MIN)
-    assert np.max(xtract_tonal.get_output_as_nparray()[0]) == pytest.approx(EXP_0_MAX)
-
-    assert xtract_tonal.get_output_as_nparray()[0][0] == pytest.approx(EXP_0_0)
-    assert xtract_tonal.get_output_as_nparray()[0][1] == pytest.approx(EXP_0_1)
-
-    assert xtract_tonal.get_output_as_nparray()[1].shape == (EXP_SIZE,)
-    assert xtract_tonal.get_output_as_nparray()[1][0] == pytest.approx(EXP_1_0)
-    assert xtract_tonal.get_output_as_nparray()[1][99] == pytest.approx(EXP_1_99)
+    assert xtract_tonal._output is not (None, None)
 
 
 def test_xtract_tonal_get_output_warns():
+    """Test method get_output's warning for unprocessed output."""
     xtract_tonal = XtractTonal()
-    with pytest.warns(PyAnsysSoundWarning) as record:
-        xtract_tonal.get_output()
-    assert "Output is not processed yet." in record[0].message.args[0]
+    with pytest.warns(PyAnsysSoundWarning, match="Output is not processed yet."):
+        output = xtract_tonal.get_output()
+        assert output == (None, None)
 
 
 def test_xtract_tonal_get_output_as_nparray_warns():
+    """Test get_output's warning propagation to get_output_as_nparray."""
     xtract_tonal = XtractTonal()
-    with pytest.warns(PyAnsysSoundWarning) as record:
-        xtract_tonal.get_output_as_nparray()
-    assert "Output is not processed yet." in record[0].message.args[0]
+    with pytest.warns(PyAnsysSoundWarning, match="Output is not processed yet."):
+        tonal, non_tonal = xtract_tonal.get_output_as_nparray()
+        assert len(tonal) == 0
+        assert len(non_tonal) == 0
 
 
 def test_xtract_tonal_get_output():
+    """Test method get_output."""
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
@@ -179,87 +149,20 @@ def test_xtract_tonal_get_output():
     xtract_tonal = XtractTonal(bird_plus_idle_sig, params_tonal)
     xtract_tonal.process()
 
-    assert xtract_tonal.output_tonal_signals is not None
-    assert xtract_tonal.output_non_tonal_signals is not None
+    tonal_signal, non_tonal_signal = xtract_tonal.get_output()
 
-    assert type(xtract_tonal.output_tonal_signals) == Field
-    assert type(xtract_tonal.output_non_tonal_signals) == Field
+    assert type(tonal_signal) == Field
+    assert type(non_tonal_signal) == Field
 
-    # Type of output tonal signals. As Field
-    assert xtract_tonal.get_output()[0].data[0] == pytest.approx(EXP_0_0)
-    assert xtract_tonal.get_output()[0].data[1] == pytest.approx(EXP_0_1)
+    assert tonal_signal.data[0] == pytest.approx(EXP_0_0)
+    assert tonal_signal.data[1] == pytest.approx(EXP_0_1)
 
-    assert xtract_tonal.get_output()[1].data[0] == pytest.approx(EXP_1_0)
-    assert xtract_tonal.get_output()[1].data[99] == pytest.approx(EXP_1_99)
-
-
-def test_xtract_tonal_get_output_noprocess():
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
-    wav_bird_plus_idle.process()
-
-    bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
-
-    # Setting tonal parameters
-    params_tonal = XtractTonalParameters()
-    params_tonal.regularity = 1.0
-    params_tonal.maximum_slope = 750.0
-    params_tonal.minimum_duration = 1.0
-    params_tonal.intertonal_gap = 20.0
-    params_tonal.local_emergence = 15.0
-    params_tonal.fft_size = 8192
-
-    xtract_tonal = XtractTonal(bird_plus_idle_sig, params_tonal)
-    output1, output2 = xtract_tonal.get_output()
-
-    assert output1 is None
-    assert output2 is None
-
-
-def test_xtract_tonal_get_output_fc():
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
-    wav_bird_plus_idle.process()
-
-    bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
-
-    # Setting tonal parameters
-    params_tonal = XtractTonalParameters()
-    params_tonal.regularity = 1.0
-    params_tonal.maximum_slope = 750.0
-    params_tonal.minimum_duration = 1.0
-    params_tonal.intertonal_gap = 20.0
-    params_tonal.local_emergence = 15.0
-    params_tonal.fft_size = 8192
-
-    fc_bird_plus_idle = FieldsContainer()
-    fc_bird_plus_idle.labels = ["channel"]
-    fc_bird_plus_idle.add_field({"channel": 0}, bird_plus_idle_sig)
-    fc_bird_plus_idle.add_field({"channel": 1}, bird_plus_idle_sig)
-
-    xtract_tonal = XtractTonal(fc_bird_plus_idle, params_tonal)
-    xtract_tonal.process()
-
-    assert xtract_tonal.get_output() is not None
-    assert type(xtract_tonal.get_output()[0]) == FieldsContainer
-    assert type(xtract_tonal.get_output()[1]) == FieldsContainer
-
-    # Verify numerical app. of the denoiser.
-    # Get the denoised signal - signal1
-    assert xtract_tonal.get_output()[0][0].data[0] == pytest.approx(EXP_0_0)
-    assert xtract_tonal.get_output()[0][0].data[99] == pytest.approx(EXP_0_99)
-
-    # Get the denoised signal - signal2
-    assert xtract_tonal.get_output()[0][1].data[0] == pytest.approx(EXP_0_0)
-    assert xtract_tonal.get_output()[0][1].data[99] == pytest.approx(EXP_0_99)
-
-    # Get the noise signal - signal1
-    assert xtract_tonal.get_output()[1][0].data[0] == pytest.approx(EXP_1_0)
-    assert xtract_tonal.get_output()[1][0].data[99] == pytest.approx(EXP_1_99)
-    # Get the noise signal - signal2
-    assert xtract_tonal.get_output()[1][0].data[0] == pytest.approx(EXP_1_0)
-    assert xtract_tonal.get_output()[1][0].data[99] == pytest.approx(EXP_1_99)
+    assert non_tonal_signal.data[0] == pytest.approx(EXP_1_0)
+    assert non_tonal_signal.data[99] == pytest.approx(EXP_1_99)
 
 
 def test_xtract_tonal_get_output_as_nparray():
+    """Test method get_output_as_nparray."""
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
@@ -277,51 +180,25 @@ def test_xtract_tonal_get_output_as_nparray():
     xtract_tonal = XtractTonal(bird_plus_idle_sig, params_tonal)
     xtract_tonal.process()
 
-    assert xtract_tonal.get_output_as_nparray() is not None
-    assert type(xtract_tonal.get_output_as_nparray()[0]) == np.ndarray
-    assert type(xtract_tonal.get_output_as_nparray()[1]) == np.ndarray
+    tonal_signal, non_tonal_signal = xtract_tonal.get_output_as_nparray()
 
-    assert xtract_tonal.get_output_as_nparray()[0].shape == (156048,)
-    assert np.min(xtract_tonal.get_output_as_nparray()[0]) == pytest.approx(EXP_0_MIN)
-    assert np.max(xtract_tonal.get_output_as_nparray()[0]) == pytest.approx(EXP_0_MAX)
+    assert type(tonal_signal) == np.ndarray
+    assert type(non_tonal_signal) == np.ndarray
 
-    assert xtract_tonal.get_output_as_nparray()[0][0] == pytest.approx(EXP_0_0)
-    assert xtract_tonal.get_output_as_nparray()[0][1] == pytest.approx(EXP_0_1)
+    assert tonal_signal.shape == (156048,)
+    assert np.min(tonal_signal) == pytest.approx(EXP_0_MIN)
+    assert np.max(tonal_signal) == pytest.approx(EXP_0_MAX)
 
-    assert xtract_tonal.get_output_as_nparray()[1].shape == (156048,)
-    assert xtract_tonal.get_output_as_nparray()[1][0] == pytest.approx(EXP_1_0)
-    assert xtract_tonal.get_output_as_nparray()[1][99] == pytest.approx(EXP_1_99)
+    assert tonal_signal[0] == pytest.approx(EXP_0_0)
+    assert tonal_signal[1] == pytest.approx(EXP_0_1)
 
-
-def test_xtract_tonal_get_output_fc_as_nparray():
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
-    wav_bird_plus_idle.process()
-
-    bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
-
-    # Setting tonal parameters
-    params_tonal = XtractTonalParameters()
-    params_tonal.regularity = 1.0
-    params_tonal.maximum_slope = 750.0
-    params_tonal.minimum_duration = 1.0
-    params_tonal.intertonal_gap = 20.0
-    params_tonal.local_emergence = 15.0
-    params_tonal.fft_size = 8192
-
-    fc_bird_plus_idle = FieldsContainer()
-    fc_bird_plus_idle.labels = ["channel"]
-    fc_bird_plus_idle.add_field({"channel": 0}, bird_plus_idle_sig)
-    fc_bird_plus_idle.add_field({"channel": 1}, bird_plus_idle_sig)
-
-    xtract_tonal = XtractTonal(fc_bird_plus_idle, params_tonal)
-    xtract_tonal.process()
-
-    # Type of output tonal signals. np.array
-    assert type(xtract_tonal.get_output_as_nparray()[0]) == np.ndarray
-    assert type(xtract_tonal.get_output_as_nparray()[1]) == np.ndarray
+    assert non_tonal_signal.shape == (156048,)
+    assert non_tonal_signal[0] == pytest.approx(EXP_1_0)
+    assert non_tonal_signal[99] == pytest.approx(EXP_1_99)
 
 
 def test_extract_tonal_setters():
+    """Test setters for input signal and parameters."""
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
@@ -336,19 +213,26 @@ def test_extract_tonal_setters():
     params_tonal.local_emergence = 15.0
     params_tonal.fft_size = 8192
 
-    xtract_tonal = XtractTonal(bird_plus_idle_sig, params_tonal)
+    xtract_tonal = XtractTonal()
 
-    assert xtract_tonal.input_signal is not None
-    xtract_tonal.input_signal = None
-    assert xtract_tonal.input_signal is None
+    xtract_tonal.input_signal = bird_plus_idle_sig
+    assert type(xtract_tonal.input_signal) == Field
 
-    assert xtract_tonal.input_parameters is not None
-    xtract_tonal.input_parameters = None
-    assert xtract_tonal.input_parameters is None
+    xtract_tonal.input_parameters = params_tonal
+    assert type(xtract_tonal.input_parameters) == XtractTonalParameters
+
+
+def test_xtract_tonal_process_set_signal_exception():
+    """Test exception for input signal setter."""
+    xtract_tonal = XtractTonal()
+
+    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
+        xtract_tonal.input_signal = "WrongType"
 
 
 @patch("matplotlib.pyplot.show")
 def test_xtract_tonal_plot_output(mock_show):
+    """Test the plot method of XtractTonal class."""
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
@@ -364,33 +248,6 @@ def test_xtract_tonal_plot_output(mock_show):
     params_tonal.fft_size = 8192
 
     xtract_tonal = XtractTonal(bird_plus_idle_sig, params_tonal)
-    xtract_tonal.process()
-
-    xtract_tonal.plot()
-
-
-@patch("matplotlib.pyplot.show")
-def test_xtract_tonal_plot_output_fc(mock_show):
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
-    wav_bird_plus_idle.process()
-
-    bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
-
-    # Setting tonal parameters
-    params_tonal = XtractTonalParameters()
-    params_tonal.regularity = 1.0
-    params_tonal.maximum_slope = 750.0
-    params_tonal.minimum_duration = 1.0
-    params_tonal.intertonal_gap = 20.0
-    params_tonal.local_emergence = 15.0
-    params_tonal.fft_size = 8192
-
-    fc_bird_plus_idle = FieldsContainer()
-    fc_bird_plus_idle.labels = ["channel"]
-    fc_bird_plus_idle.add_field({"channel": 0}, bird_plus_idle_sig)
-    fc_bird_plus_idle.add_field({"channel": 1}, bird_plus_idle_sig)
-
-    xtract_tonal = XtractTonal(fc_bird_plus_idle, params_tonal)
     xtract_tonal.process()
 
     xtract_tonal.plot()

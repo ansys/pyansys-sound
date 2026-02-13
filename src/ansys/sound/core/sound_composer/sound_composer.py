@@ -30,9 +30,6 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 from ansys.sound.core.signal_utilities import SumSignals
-from ansys.sound.core.signal_utilities.create_signal_fields_container import (
-    CreateSignalFieldsContainer,
-)
 from ansys.sound.core.sound_composer._sound_composer_parent import SoundComposerParent
 from ansys.sound.core.sound_composer.track import Track
 
@@ -231,11 +228,7 @@ class SoundComposer(SoundComposerParent):
                 track_signal.unit = ""
                 track_signals.append(track_signal)
 
-            fc_creator = CreateSignalFieldsContainer(track_signals)
-            fc_creator.process()
-            track_signals_fc = fc_creator.get_output()
-
-            track_sum = SumSignals(signals=track_signals_fc)
+            track_sum = SumSignals(signals=track_signals)
             track_sum.process()
 
             self._output = track_sum.get_output()

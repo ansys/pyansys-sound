@@ -24,16 +24,12 @@
 
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator, types
+from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
 from . import PsychoacousticsParent
-from .._pyansys_sound import (
-    PyAnsysSoundException,
-    PyAnsysSoundWarning,
-    convert_fields_container_to_np_array,
-)
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
@@ -79,9 +75,9 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
             List of the order numbers, as floats, on which to compute the tone-to-noise ratio.
         """
         super().__init__()
-        self.signal = signal  # uses the setter
-        self.profile = profile  # uses the setter
-        self.order_list = order_list  # uses the setter
+        self.signal = signal
+        self.profile = profile
+        self.order_list = order_list
         self.__operator = Operator("compute_tone_to_noise_ratio_for_orders_over_time")
 
     def __str__(self):
@@ -166,26 +162,24 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         self.__operator.connect(1, self.profile)
         self.__operator.connect(2, self.order_list)
 
-        # Runs the operator
+        # Run the operator
         self.__operator.run()
 
-        # Stores outputs in the tuple variable
-        self._output = self.__operator.get_output(
-            0, types.fields_container
-        ), self.__operator.get_output(1, types.field)
+        # Store outputs in the tuple variable
+        orders_tnr = [field for field in self.__operator.get_output(0, types.fields_container)]
+        rpm = self.__operator.get_output(1, types.field)
+        self._output = orders_tnr, rpm
 
-    def get_output(self) -> tuple[FieldsContainer, Field]:
+    def get_output(self) -> tuple[list[Field], Field]:
         """Get TNR data over time and its associated RPM profile.
 
         Returns
         -------
-        tuple[FieldsContainer, Field]
-            -   First element (FieldsContainer): tone-to-noise ratio data over time for the
-                requested orders. Each field of the fields container gives the TNR over time, in dB,
-                for each requested order in :attr:`order_list`.
-
-            -   Second element (Field): RPM over time profile corresponding to the TNR over time.
-
+        list[Field]
+            Tone-to-noise ratio data over time for the requested orders. Each field contains the TNR
+            TNR over time, in dB, for each requested order in :attr:`order_list`.
+        Field
+            RPM over time with the same time scale as the TNR data.
         """
         if self._output == None:
             warnings.warn(
@@ -202,23 +196,22 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
 
         Returns
         -------
-        tuple
-            -   First element: tone-to-noise ratio data over time for the requested orders. Each
-                column corresponds to the TNR over time, in dB, for each requested order in
-                :attr:`order_list`.
-
-            -   Second element: time scale associated with the output tone-to-noise ratios.
-
-            -   Third element: RPM over time profile corresponding to the TNR over time.
+        numpy.ndarray
+            Tone-to-noise ratio data over time for the requested orders. Each column contains the
+            TNR over time, in dB, for each requested order in :attr:`order_list`.
+        numpy.ndarray
+            Time scale associated with the TNR data.
+        numpy.ndarray
+            RPM over time profile with the same time scale as the TNR data.
         """
-        tnr_container = self.get_output()
-        if tnr_container == None:
+        output = self.get_output()
+        if output is None:
             return (np.array([]), np.array([]), np.array([]))
 
         return (
-            convert_fields_container_to_np_array(tnr_container[0]),
-            np.array(tnr_container[0][0].time_freq_support.time_frequencies.data),
-            np.array(tnr_container[1].data),
+            np.vstack([np.array(field.data) for field in output[0]]),
+            np.array(output[0][0].time_freq_support.time_frequencies.data),
+            np.array(output[1].data),
         )
 
     def get_order_tone_to_noise_ratio_over_time(self, order_index: int) -> np.ndarray:
@@ -242,13 +235,13 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
                     f"Order list has {len(self.order_list)} elements."
                 )
 
-        tnr_container = self.get_output_as_nparray()
+        tnr_data, _, _ = self.get_output_as_nparray()
 
-        if len(tnr_container[0]) == 0:
+        if len(tnr_data) == 0:
             # Handling the case where the output is not processed yet
             return np.array([])
 
-        return tnr_container[0][order_index]
+        return tnr_data[order_index]
 
     def get_time_scale(self) -> np.ndarray | None:
         """Get the time scale corresponding to the TNR array over time.
@@ -278,34 +271,32 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
         use_rpm_scale : bool
             Indicates whether to plot the TNR as a function of time or RPM.
         """
-        tnr_container = self.get_output()
-        if tnr_container == None:
+        output = self.get_output()
+        if output is None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the ``{__class__.__name__}.process()`` method."
             )
 
-        unit = tnr_container[0][0].unit
+        tnr_unit = output[0][0].unit
+        time = output[0][0].time_freq_support.time_frequencies
+        rpm = output[1]
 
         if use_rpm_scale:
-            x_unit = tnr_container[1].unit
-            x_scale_label = f"RPM ({x_unit})"
-            x_scale_data = self.get_rpm_scale()
+            x_scale_label = f"RPM ({rpm.unit})"
+            x_scale_data = rpm.data
             title = "Orders’ tone-to-noise ratio over RPM"
         else:
-            x_unit = tnr_container[0][0].time_freq_support.time_frequencies.unit
-            x_scale_label = f"Time ({x_unit})"
-            x_scale_data = self.get_time_scale()
+            x_scale_label = f"Time ({time.unit})"
+            x_scale_data = time.data
             title = "Orders’ tone-to-noise ratio over time"
-
         fig, ax = plt.subplots()
         fig.suptitle(title)
         ax.set_xlabel(x_scale_label)
 
-        ax.set_ylabel(f"Tone-to-noise ratio ({unit})")
+        ax.set_ylabel(f"Tone-to-noise ratio ({tnr_unit})")
 
-        for order_idx in range(len(self.order_list)):
+        for order_idx, order_value in enumerate(self.order_list):
             order_data = self.get_order_tone_to_noise_ratio_over_time(order_idx)
-            order_value = self.order_list[order_idx]
             ax.plot(x_scale_data, order_data, label=f"Order {order_value}")
 
         ax.legend()

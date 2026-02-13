@@ -22,7 +22,7 @@
 
 from unittest.mock import patch
 
-from ansys.dpf.core import Field, FieldsContainer
+from ansys.dpf.core import Field, locations, natures
 import numpy as np
 import pytest
 
@@ -54,11 +54,13 @@ else:  # DPF Sound <= 2025 R2
 
 
 def test_stft_instantiation():
+    """Test the instantiation of Stft class."""
     stft = Stft()
     assert stft != None
 
 
 def test_stft_process():
+    """Test the process method of Stft class."""
     stft = Stft()
     wav_loader = LoadWav(pytest.data_path_flute)
 
@@ -68,10 +70,10 @@ def test_stft_process():
     assert str(excinfo.value) == "No signal found for STFT. Use 'Stft.signal'."
 
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()[0]
 
     # Testing input fields container (no error expected)
-    stft.signal = fc
+    stft.signal = signal
     try:
         stft.process()
     except:
@@ -80,10 +82,11 @@ def test_stft_process():
 
 
 def test_stft_get_output():
+    """Test the get_output method of Stft class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
-    fc_signal = wav_loader.get_output()
-    stft = Stft(signal=fc_signal)
+    signal = wav_loader.get_output()[0]
+    stft = Stft(signal=signal)
 
     with pytest.warns(
         PyAnsysSoundWarning,
@@ -103,10 +106,11 @@ def test_stft_get_output():
 
 
 def test_stft_get_output_as_np_array():
+    """Test the get_output_as_nparray method of Stft class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
-    fc_signal = wav_loader.get_output()
-    stft = Stft(signal=fc_signal)
+    signal = wav_loader.get_output()[0]
+    stft = Stft(signal=signal)
 
     stft.process()
     arr = stft.get_output_as_nparray()
@@ -119,37 +123,26 @@ def test_stft_get_output_as_np_array():
 
 
 def test_stft_set_get_signal():
+    """Test the signal setter and getter of Stft class."""
     stft = Stft()
-    fc = FieldsContainer()
-    fc.labels = ["channel"]
-    f = Field()
-    f.data = 42 * np.ones(3)
-    fc.add_field({"channel": 0}, f)
-    fc.name = "testField"
-    stft.signal = fc
-    f = stft.signal
+    signal = Field(nentities=1, nature=natures.scalar, location=locations.time_freq)
+    signal.data = 42 * np.ones(3)
+    stft.signal = signal
+    signal = stft.signal
 
-    assert len(f) == 3
-    assert f.data[0, 2] == 42
-
-    stft.signal = fc[0]
-    fc_from_get = stft.signal
-
-    assert len(f) == 3
-    assert f.data[0, 2] == 42
-
-    fc.add_field({"channel": 1}, fc[0])
+    assert len(signal.data) == 3
+    assert signal.data[2] == 42
 
     # Error
-    with pytest.raises(PyAnsysSoundException) as excinfo:
-        stft.signal = fc
-    assert (
-        str(excinfo.value)
-        == "Input as a DPF fields container can only have one field (mono signal)."
-    )
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Input signal must be provided as a DPF Field.",
+    ):
+        stft.signal = 2
 
 
 def test_stft_set_get_fft_size():
+    """Test the fft_size setter and getter of Stft class."""
     stft = Stft()
 
     # Error
@@ -162,6 +155,7 @@ def test_stft_set_get_fft_size():
 
 
 def test_stft_set_get_window_overlap():
+    """Test the window_overlap setter and getter of Stft class."""
     stft = Stft()
 
     # Error
@@ -174,6 +168,7 @@ def test_stft_set_get_window_overlap():
 
 
 def test_stft_set_get_window_type():
+    """Test the window_type setter and getter of Stft class."""
     stft = Stft()
 
     # Error
@@ -191,10 +186,11 @@ def test_stft_set_get_window_type():
 
 @patch("matplotlib.pyplot.show")
 def test_stft_plot(mock_show):
+    """Test the plot method of Stft class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
-    fc_signal = wav_loader.get_output()
-    stft = Stft(signal=fc_signal)
+    signal = wav_loader.get_output()[0]
+    stft = Stft(signal=signal)
     with pytest.raises(
         PyAnsysSoundException,
         match="Output is not processed yet. Use the `Stft.process\\(\\)` method.",

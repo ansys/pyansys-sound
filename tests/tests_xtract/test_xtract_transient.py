@@ -22,7 +22,7 @@
 
 from unittest.mock import patch
 
-from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer
+from ansys.dpf.core import Field
 import numpy as np
 import pytest
 
@@ -33,32 +33,13 @@ from ansys.sound.core.xtract.xtract_transient_parameters import XtractTransientP
 
 
 def test_xtract_transient_instantiation():
+    """Test instantiation of XtractTransient."""
     xtract_transient = XtractTransient()
     assert xtract_transient != None
 
 
-def test_xtract_transient_initialization_FieldsContainer():
-    # Test initialization with default values
-    xtract_transient = XtractTransient()
-    assert xtract_transient.input_signal is None
-    assert xtract_transient.input_parameters is None
-    assert xtract_transient.output_transient_signals is None
-    assert xtract_transient.output_non_transient_signals is None
-
-    # Test initialization with custom values
-    input_signal = FieldsContainer()
-    input_parameters = XtractTransientParameters()
-    xtract_transient = XtractTransient(
-        input_signal=input_signal,
-        input_parameters=input_parameters,
-    )
-    assert xtract_transient.input_signal == input_signal
-    assert xtract_transient.input_parameters == input_parameters
-    assert xtract_transient.output_transient_signals is None
-    assert xtract_transient.output_non_transient_signals is None
-
-
-def test_xtract_transient_initialization_Field():
+def test_xtract_transient_initialization():
+    """Test initialization of XtractTransient."""
     # Test initialization with default values
     xtract_transient = XtractTransient()
     assert xtract_transient.input_signal is None
@@ -80,20 +61,23 @@ def test_xtract_transient_initialization_Field():
 
 
 def test_xtract_transient_except1():
+    """Test method process's exception when input signal is not set."""
     xtract_transient = XtractTransient(None, XtractTransientParameters())
-    with pytest.raises(PyAnsysSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException, match="Input signal is not set."):
         xtract_transient.process()
-    assert str(excinfo.value) == "Input signal is not set."
+        assert xtract_transient._output == (None, None)
 
 
 def test_xtract_transient_except2():
+    """Test method process's exception when input parameters are not set."""
     xtract_transient = XtractTransient(Field(), None)
-    with pytest.raises(PyAnsysSoundException) as excinfo:
+    with pytest.raises(PyAnsysSoundException, match="Input parameters are not set."):
         xtract_transient.process()
-    assert str(excinfo.value) == "Input parameters are not set."
+        assert xtract_transient._output == (None, None)
 
 
 def test_xtract_transient_process():
+    """Test the process method of XtractTransient."""
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
@@ -109,41 +93,28 @@ def test_xtract_transient_process():
 
     assert xtract_transient.output_transient_signals is not None
     assert xtract_transient.output_non_transient_signals is not None
-
-    assert type(xtract_transient.output_transient_signals) == Field
-    assert type(xtract_transient.output_non_transient_signals) == Field
-
-    # Type of output transient signals. It should be a Field
-    # transient
-    assert type(xtract_transient.get_output()[0]) == Field
-    assert type(xtract_transient.get_output()[1]) == Field
-
-    assert xtract_transient.get_output()[0].data[0] == pytest.approx(0.0)
-    assert xtract_transient.get_output()[0].data[99] == pytest.approx(0.0)
-    assert np.min(xtract_transient.get_output()[0].data) == pytest.approx(-0.70742798)
-    assert np.max(xtract_transient.get_output()[0].data) == pytest.approx(0.87719721)
-    # non transient
-    assert xtract_transient.get_output()[1].data[0] == pytest.approx(0.0)
-    assert xtract_transient.get_output()[1].data[99] == pytest.approx(0.0)
-    assert np.min(xtract_transient.get_output()[1].data) == pytest.approx(-1.78813934e-07)
-    assert np.max(xtract_transient.get_output()[1].data) == pytest.approx(1.78813934e-07)
+    assert xtract_transient._output is not None
 
 
 def test_xtract_transient_get_output_warns():
+    """Test method get_output's warning when output is not processed yet."""
     xtract_transient = XtractTransient()
-    with pytest.warns(PyAnsysSoundWarning) as record:
-        xtract_transient.get_output()
-    assert "Output is not processed yet." in record[0].message.args[0]
+    with pytest.warns(PyAnsysSoundWarning, match="Output is not processed yet."):
+        output = xtract_transient.get_output()
+        assert output == (None, None)
 
 
 def test_xtract_transient_get_output_as_np_array_warns():
+    """Test get_output's warning propagation to get_output_as_nparray."""
     xtract_transient = XtractTransient()
-    with pytest.warns(PyAnsysSoundWarning) as record:
-        xtract_transient.get_output_as_nparray()
-    assert "Output is not processed yet." in record[0].message.args[0]
+    with pytest.warns(PyAnsysSoundWarning, match="Output is not processed yet."):
+        transient, non_transient = xtract_transient.get_output_as_nparray()
+        assert len(transient) == 0
+        assert len(non_transient) == 0
 
 
 def test_xtract_transient_get_output():
+    """Test method get_output."""
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
@@ -157,96 +128,27 @@ def test_xtract_transient_get_output():
     xtract_transient = XtractTransient(bird_plus_idle_sig, params_transient)
     xtract_transient.process()
 
-    # Type of output transient signals. It should be a Field
-    # transient
-    assert type(xtract_transient.get_output()[0]) == Field
-    assert type(xtract_transient.get_output()[1]) == Field
+    transient_signal, non_transient_signal = xtract_transient.get_output()
 
-    assert xtract_transient.get_output()[0].data[0] == pytest.approx(0.0)
-    assert xtract_transient.get_output()[0].data[99] == pytest.approx(0.0)
-    assert np.min(xtract_transient.get_output()[0].data) == pytest.approx(-0.70742798)
-    assert np.max(xtract_transient.get_output()[0].data) == pytest.approx(0.87719721)
-    # non transient
-    assert xtract_transient.get_output()[1].data[0] == pytest.approx(0.0)
-    assert xtract_transient.get_output()[1].data[99] == pytest.approx(0.0)
-    assert np.min(xtract_transient.get_output()[1].data) == pytest.approx(-1.78813934e-07)
-    assert np.max(xtract_transient.get_output()[1].data) == pytest.approx(1.78813934e-07)
+    # Type checks
+    assert type(transient_signal) == Field
+    assert type(non_transient_signal) == Field
 
+    # Check transient signal values
+    assert transient_signal.data[0] == pytest.approx(0.0)
+    assert transient_signal.data[99] == pytest.approx(0.0)
+    assert np.min(transient_signal.data) == pytest.approx(-0.70742798)
+    assert np.max(transient_signal.data) == pytest.approx(0.87719721)
 
-def test_xtract_transient_get_output_noprocess():
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
-    wav_bird_plus_idle.process()
-
-    bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
-
-    # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
-
-    xtract_transient = XtractTransient(bird_plus_idle_sig, params_transient)
-    output_transient_signals, output_non_transient_signals = xtract_transient.get_output()
-
-    assert output_transient_signals is None
-    assert output_non_transient_signals is None
-
-
-def test_xtract_transient_get_output_fc():
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
-    wav_bird_plus_idle.process()
-
-    bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
-
-    # Setting transient parameters
-    params_transient = XtractTransientParameters()
-    params_transient.lower_threshold = 1.0
-    params_transient.upper_threshold = 100.0
-
-    fc_bird_plus_idle = FieldsContainer()
-    fc_bird_plus_idle.labels = ["channel"]
-    fc_bird_plus_idle.add_field({"channel": 0}, bird_plus_idle_sig)
-    fc_bird_plus_idle.add_field({"channel": 1}, bird_plus_idle_sig)
-
-    xtract_transient = XtractTransient(fc_bird_plus_idle, params_transient)
-    xtract_transient.process()
-
-    assert xtract_transient.get_output() is not None
-    assert type(xtract_transient.get_output()[0]) == FieldsContainer
-    assert type(xtract_transient.get_output()[1]) == FieldsContainer
-
-    # Verify the output of the transient analysis
-    assert xtract_transient.get_output()[0][0].data[0] == pytest.approx(0.0)
-    assert xtract_transient.get_output()[0][0].data[99] == pytest.approx(0.0)
-    # Verify the output of the non transient analysis
-    assert xtract_transient.get_output()[1][0].data[0] == pytest.approx(0.0)
-    assert xtract_transient.get_output()[1][0].data[99] == pytest.approx(0.0)
+    # Check non transient signal values
+    assert non_transient_signal.data[0] == pytest.approx(0.0)
+    assert non_transient_signal.data[99] == pytest.approx(0.0)
+    assert np.min(non_transient_signal.data) == pytest.approx(-1.78813934e-07)
+    assert np.max(non_transient_signal.data) == pytest.approx(1.78813934e-07)
 
 
 def test_xtract_transient_get_output_as_nparray():
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
-    wav_bird_plus_idle.process()
-
-    bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
-
-    # Setting transient parameters
-    params_transient = GenericDataContainer()
-    params_transient.set_property("class_name", "Xtract_transient_parameters")
-    params_transient.set_property("lower_threshold", 1.0)
-    params_transient.set_property("upper_threshold", 100.0)
-
-    xtract_transient = XtractTransient(bird_plus_idle_sig, params_transient)
-    xtract_transient.process()
-
-    # Type of output transient signals. np.array
-    assert xtract_transient.get_output_as_nparray() is not None
-    assert type(xtract_transient.get_output_as_nparray()[0]) == np.ndarray
-    assert type(xtract_transient.get_output_as_nparray()[1]) == np.ndarray
-
-    assert xtract_transient.get_output_as_nparray()[0].shape == (156048,)
-
-
-def test_xtract_transient_get_output_as_nparray():
+    """Test method get_output_as_nparray."""
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
@@ -260,42 +162,22 @@ def test_xtract_transient_get_output_as_nparray():
     xtract_transient = XtractTransient(bird_plus_idle_sig, params_transient)
     xtract_transient.process()
 
-    # Type of output transient signals. np.array
-    assert xtract_transient.get_output_as_nparray() is not None
-    assert type(xtract_transient.get_output_as_nparray()[0]) == np.ndarray
-    assert type(xtract_transient.get_output_as_nparray()[1]) == np.ndarray
+    transient_signal, non_transient_signal = xtract_transient.get_output_as_nparray()
 
-    assert xtract_transient.get_output_as_nparray()[0].shape == (156048,)
-    np.min(xtract_transient.get_output_as_nparray()[0]) == pytest.approx(-0.707427978515625)
-    np.max(xtract_transient.get_output_as_nparray()[0]) == pytest.approx(0.8771972060203552)
-    np.min(xtract_transient.get_output_as_nparray()[1]) == pytest.approx(-1.7881393432617188e-07)
-    np.max(xtract_transient.get_output_as_nparray()[1]) == pytest.approx(-1.7881393432617188e-07)
+    # Type checks
+    assert type(transient_signal) == np.ndarray
+    assert type(non_transient_signal) == np.ndarray
 
-
-def test_xtract_transient_get_output_fc_as_nparray():
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
-    wav_bird_plus_idle.process()
-
-    bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
-
-    # Setting transient parameters
-    params_transient = XtractTransientParameters()
-    params_transient.lower_threshold = 1.0
-    params_transient.upper_threshold = 100.0
-
-    fc_bird_plus_idle = FieldsContainer()
-    fc_bird_plus_idle.labels = ["channel"]
-    fc_bird_plus_idle.add_field({"channel": 0}, bird_plus_idle_sig)
-    fc_bird_plus_idle.add_field({"channel": 1}, bird_plus_idle_sig)
-
-    xtract_transient = XtractTransient(fc_bird_plus_idle, params_transient)
-    xtract_transient.process()
-
-    assert type(xtract_transient.get_output_as_nparray()[0]) == np.ndarray
-    assert type(xtract_transient.get_output_as_nparray()[1]) == np.ndarray
+    # Check signal values
+    assert transient_signal.shape == (156048,)
+    np.min(transient_signal) == pytest.approx(-0.707427978515625)
+    np.max(transient_signal) == pytest.approx(0.8771972060203552)
+    np.min(non_transient_signal) == pytest.approx(-1.7881393432617188e-07)
+    np.max(non_transient_signal) == pytest.approx(-1.7881393432617188e-07)
 
 
 def test_xtract_transient_setters():
+    """Test setters for input signal and parameters."""
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
@@ -306,19 +188,28 @@ def test_xtract_transient_setters():
     params_transient.lower_threshold = 1.0
     params_transient.upper_threshold = 100.0
 
-    xtract_transient = XtractTransient(bird_plus_idle_sig, params_transient)
+    xtract_transient = XtractTransient()
 
-    assert xtract_transient.input_signal is not None
-    xtract_transient.input_signal = None
+    xtract_transient.input_signal = bird_plus_idle_sig
+    assert type(xtract_transient.input_signal) == Field
+
+    xtract_transient.input_parameters = params_transient
+    assert type(xtract_transient.input_parameters) == XtractTransientParameters
+
+
+def test_xtract_transient_set_input_signal_exception():
+    """Test exception for input signal setter."""
+    xtract_transient = XtractTransient()
+
+    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
+        xtract_transient.input_signal = "WrongType"
+
     assert xtract_transient.input_signal is None
-
-    assert xtract_transient.input_parameters is not None
-    xtract_transient.input_parameters = None
-    assert xtract_transient.input_parameters is None
 
 
 @patch("matplotlib.pyplot.show")
 def test_xtract_transient_plot_output(mock_show):
+    """Test the plot method of XtractTransient."""
     wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
     wav_bird_plus_idle.process()
 
@@ -330,29 +221,6 @@ def test_xtract_transient_plot_output(mock_show):
     params_transient.upper_threshold = 100.0
 
     xtract_transient = XtractTransient(bird_plus_idle_sig, params_transient)
-    xtract_transient.process()
-
-    xtract_transient.plot()
-
-
-@patch("matplotlib.pyplot.show")
-def test_xtract_transient_plot_output_fc(mock_show):
-    wav_bird_plus_idle = LoadWav(pytest.data_path_flute)
-    wav_bird_plus_idle.process()
-
-    bird_plus_idle_sig = wav_bird_plus_idle.get_output()[0]
-
-    # Setting transient parameters
-    params_transient = XtractTransientParameters()
-    params_transient.lower_threshold = 1.0
-    params_transient.upper_threshold = 100.0
-
-    fc_bird_plus_idle = FieldsContainer()
-    fc_bird_plus_idle.labels = ["channel"]
-    fc_bird_plus_idle.add_field({"channel": 0}, bird_plus_idle_sig)
-    fc_bird_plus_idle.add_field({"channel": 1}, bird_plus_idle_sig)
-
-    xtract_transient = XtractTransient(fc_bird_plus_idle, params_transient)
     xtract_transient.process()
 
     xtract_transient.plot()

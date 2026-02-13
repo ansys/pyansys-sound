@@ -57,6 +57,7 @@ The example shows how to perform these operations:
 # Setting up the analysis consists of loading the required libraries,
 # connecting to the DPF server, and downloading the data files required in this example.
 
+# Load Ansys libraries.
 from ansys.sound.core.examples_helpers import (
     download_sound_composer_FRF_eMotor,
     download_sound_composer_source_control_eMotor,
@@ -64,8 +65,6 @@ from ansys.sound.core.examples_helpers import (
     download_sound_composer_source_eMotor,
     download_sound_composer_source_WindRoadNoise,
 )
-
-# Load Ansys libraries.
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_processing import Filter
 from ansys.sound.core.sound_composer import (

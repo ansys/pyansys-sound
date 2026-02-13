@@ -30,11 +30,13 @@ from ansys.sound.core.xtract.xtract_denoiser_parameters import XtractDenoiserPar
 
 
 def test_xtract_denoiser_parameters_instantiation():
+    """Test the instantiation of XtractDenoiserParameters class."""
     xtract_denoiser_parameters = XtractDenoiserParameters()
     assert xtract_denoiser_parameters != None
 
 
 def test_xtract_denoiser_parameters_getter_setter_upper_threshold():
+    """Test the noise_psd setter and getter of XtractDenoiserParameters class."""
     xtract_denoiser_parameters = XtractDenoiserParameters()
 
     # Invalid value
@@ -48,6 +50,7 @@ def test_xtract_denoiser_parameters_getter_setter_upper_threshold():
 
 
 def test_xtract_denoiser_parameters_getter_generic_data_container():
+    """Test getting parameters as a generic data container from XtractDenoiserParameters."""
     xtract_denoiser_parameters = XtractDenoiserParameters()
 
     gdc = xtract_denoiser_parameters.get_parameters_as_generic_data_container()
@@ -55,6 +58,7 @@ def test_xtract_denoiser_parameters_getter_generic_data_container():
 
 
 def test_xtract_denoiser_parameters_generate_noise_psd_from_white_noise_level():
+    """Test generating noise PSD from white noise level."""
     xtract_denoiser_parameters = XtractDenoiserParameters()
 
     noise_psd = xtract_denoiser_parameters.create_noise_psd_from_white_noise_level(
@@ -68,6 +72,7 @@ def test_xtract_denoiser_parameters_generate_noise_psd_from_white_noise_level():
 
 
 def test_xtract_denoiser_parameters_generate_noise_psd_from_automatic_estimation():
+    """Test generating noise PSD from automatic estimation."""
     wav_loader = LoadWav(pytest.data_path_white_noise)
     wav_loader.process()
     fc_signal = wav_loader.get_output()
@@ -87,6 +92,7 @@ def test_xtract_denoiser_parameters_generate_noise_psd_from_automatic_estimation
 
 
 def test_xtract_denoiser_parameters_generate_noise_psd_from_noise_samples():
+    """Test generating noise PSD from noise samples."""
     wav_loader = LoadWav(pytest.data_path_white_noise)
     wav_loader.process()
     fc_signal = wav_loader.get_output()

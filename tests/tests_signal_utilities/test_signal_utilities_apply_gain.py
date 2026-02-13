@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.dpf.core import Field, FieldsContainer
+from ansys.dpf.core import Field
 import numpy as np
 import pytest
 
@@ -29,11 +29,13 @@ from ansys.sound.core.signal_utilities import ApplyGain, LoadWav
 
 
 def test_apply_gain_instantiation():
+    """Test the instantiation of ApplyGain class."""
     gain_applier = ApplyGain()
     assert gain_applier != None
 
 
 def test_apply_gain_process():
+    """Test the process method of ApplyGain class."""
     gain_applier = ApplyGain()
     wav_loader = LoadWav(pytest.data_path_flute)
 
@@ -45,60 +47,42 @@ def test_apply_gain_process():
     )
 
     wav_loader.process()
-    fc = wav_loader.get_output()
-
-    # Testing input fields container (no error expected)
-    gain_applier.signal = fc
-    gain_applier.process()
+    signal = wav_loader.get_output()
 
     # Testing input field (no error expected)
-    gain_applier.signal = fc[0]
+    gain_applier.signal = signal[0]
     gain_applier.process()
 
 
 def test_apply_gain_get_output():
+    """Test the get_output method of ApplyGain class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
-    fc_signal = wav_loader.get_output()
-    gain_applier = ApplyGain(signal=fc_signal, gain=12.0, gain_in_db=True)
+    signal = wav_loader.get_output()
+    gain_applier = ApplyGain(signal=signal[0], gain=12.0, gain_in_db=True)
 
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. Use the 'ApplyGain.process\\(\\)' method.",
     ):
-        fc_out = gain_applier.get_output()
+        output = gain_applier.get_output()
 
     gain_applier.process()
-    fc_out = gain_applier.get_output()
+    output = gain_applier.get_output()
 
-    assert len(fc_out) == 1
-
-    gain_applier.signal = fc_signal[0]
-    gain_applier.process()
-    f_out = gain_applier.get_output()
-
-    assert len(f_out.data) == 156048
-    assert f_out.data[1000] == 0.00024298533389810473
-    assert f_out.data[3456] == -0.005102692171931267
-    assert f_out.data[30000] == 0.29461970925331116
-    assert f_out.data[60000] == -0.09051203727722168
+    assert len(output.data) == 156048
+    assert output.data[1000] == 0.00024298533389810473
+    assert output.data[3456] == -0.005102692171931267
+    assert output.data[30000] == 0.29461970925331116
+    assert output.data[60000] == -0.09051203727722168
 
 
 def test_apply_gain_get_output_as_np_array():
+    """Test the get_output_as_nparray method of ApplyGain class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
-    fc_signal = wav_loader.get_output()
-    gain_applier = ApplyGain(signal=fc_signal[0], gain=12.0, gain_in_db=True)
-    gain_applier.process()
-    out_arr = gain_applier.get_output_as_nparray()
-
-    assert len(out_arr) == 156048
-    assert out_arr[1000] == 0.00024298533389810473
-    assert out_arr[3456] == -0.005102692171931267
-    assert out_arr[30000] == 0.29461970925331116
-    assert out_arr[60000] == -0.09051203727722168
-
-    gain_applier.signal = fc_signal
+    signal = wav_loader.get_output()
+    gain_applier = ApplyGain(signal=signal[0], gain=12.0, gain_in_db=True)
     gain_applier.process()
     out_arr = gain_applier.get_output_as_nparray()
 
@@ -110,22 +94,28 @@ def test_apply_gain_get_output_as_np_array():
 
 
 def test_apply_gain_set_get_signal():
+    """Test setter and getter for signal."""
     gain_applier = ApplyGain()
-    fc = FieldsContainer()
-    fc.labels = ["channel"]
-    f = Field()
-    f.data = 42 * np.ones(3)
-    fc.add_field({"channel": 0}, f)
-    fc.name = "testField"
-    gain_applier.signal = fc
-    fc_from_get = gain_applier.signal
+    signal = Field()
+    signal.data = 42 * np.ones(3)
+    gain_applier.signal = signal
+    signal_from_get = gain_applier.signal
 
-    assert fc_from_get.name == "testField"
-    assert len(fc_from_get) == 1
-    assert fc_from_get[0].data[0, 2] == 42
+    assert signal_from_get.data[0, 2] == 42
+
+
+def test_apply_gain_set_signal_exception():
+    """Test exception for signal setter."""
+    gain_applier = ApplyGain()
+
+    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
+        gain_applier.signal = "not a field"
+
+    assert gain_applier.signal is None
 
 
 def test_apply_gain_set_get_gain():
+    """Test the gain setter and getter of ApplyGain class."""
     gain_applier = ApplyGain()
 
     gain_applier.gain = 1234.0
@@ -133,6 +123,7 @@ def test_apply_gain_set_get_gain():
 
 
 def test_apply_gain_set_get_gain_in_db():
+    """Test the gain_in_db setter and getter of ApplyGain class."""
     gain_applier = ApplyGain()
 
     # Error 1

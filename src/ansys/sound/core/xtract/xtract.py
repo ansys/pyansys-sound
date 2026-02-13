@@ -24,7 +24,7 @@
 
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
+from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -34,11 +34,7 @@ from . import (
     XtractTonalParameters,
     XtractTransientParameters,
 )
-from .._pyansys_sound import (
-    PyAnsysSoundException,
-    PyAnsysSoundWarning,
-    convert_fields_container_to_np_array,
-)
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Xtract(XtractParent):
@@ -75,7 +71,7 @@ class Xtract(XtractParent):
 
     def __init__(
         self,
-        input_signal: FieldsContainer | Field = None,
+        input_signal: Field = None,
         parameters_denoiser: XtractDenoiserParameters = None,
         parameters_tonal: XtractTonalParameters = None,
         parameters_transient: XtractTransientParameters = None,
@@ -84,8 +80,8 @@ class Xtract(XtractParent):
 
         Parameters
         ----------
-        input_signal : FieldsContainer | Field, default: None
-            One or more signals to apply Xtract processing on as a DPF field or fields container.
+        input_signal : Field, default: None
+            Input signal on which to apply the Xtract processing as a DPF field.
         parameters_denoiser : XtractDenoiserParameters, default: None
             Structure that contains the parameters of the denoising step:
 
@@ -136,18 +132,17 @@ class Xtract(XtractParent):
         self.__operator = Operator("xtract")
 
     @property
-    def input_signal(self) -> FieldsContainer | Field:
-        """Input signal.
-
-        One or more signals on which to apply the Xtract processing, as a DPF field or fields
-        container.
-        """
+    def input_signal(self) -> Field:
+        """Input signal on which to apply the Xtract processing as a DPF field."""
         return self.__input_signal
 
     @input_signal.setter
-    def input_signal(self, value: FieldsContainer | Field):
+    def input_signal(self, signal: Field):
         """Input signal."""
-        self.__input_signal = value
+        if not (signal is None or isinstance(signal, Field)):
+            raise PyAnsysSoundException("Input signal must be specified as a DPF field.")
+
+        self.__input_signal = signal
 
     @property
     def parameters_denoiser(self) -> XtractDenoiserParameters:
@@ -201,39 +196,23 @@ class Xtract(XtractParent):
         self.__parameters_transient = value
 
     @property
-    def output_noise_signal(self) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
-        """Noise signal.
-
-        Noise signal in a tuple of DPF fields or fields containers.
-        """
+    def output_noise_signal(self) -> Field:
+        """Noise signal as a DPF field."""
         return self.__output_noise_signal
 
     @property
-    def output_tonal_signal(self) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
-        """Tonal signal.
-
-        Tonal signal in a tuple of DPF fields or fields containers.
-        """
+    def output_tonal_signal(self) -> Field:
+        """Tonal signal as a DPF field."""
         return self.__output_tonal_signal
 
     @property
-    def output_transient_signal(
-        self,
-    ) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
-        """Transient signal.
-
-        Transient signal in a tuple of DPF fields or fields containers.
-        """
+    def output_transient_signal(self) -> Field:
+        """Transient signal as a DPF field."""
         return self.__output_transient_signal
 
     @property
-    def output_remainder_signal(
-        self,
-    ) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
-        """Remainder signal.
-
-        Remainder signal in a tuple of DPF fields or fields containers.
-        """
+    def output_remainder_signal(self) -> Field:
+        """Remainder signal as a DPF field."""
         return self.__output_remainder_signal
 
     def process(self):
@@ -252,7 +231,6 @@ class Xtract(XtractParent):
                 "Input parameters for the transient extraction are not set."
             )
 
-        # Wrapping
         self.__operator.connect(0, self.input_signal)
         self.__operator.connect(
             1, self.parameters_denoiser.get_parameters_as_generic_data_container()
@@ -265,17 +243,11 @@ class Xtract(XtractParent):
         # Runs the operator
         self.__operator.run()
 
-        # Stores the output in the variables
-        if type(self.input_signal) == Field:
-            self.__output_noise_signal = self.__operator.get_output(0, "fields_container")[0]
-            self.__output_tonal_signal = self.__operator.get_output(1, "fields_container")[0]
-            self.__output_transient_signal = self.__operator.get_output(2, "fields_container")[0]
-            self.__output_remainder_signal = self.__operator.get_output(3, "fields_container")[0]
-        else:
-            self.__output_noise_signal = self.__operator.get_output(0, "fields_container")
-            self.__output_tonal_signal = self.__operator.get_output(1, "fields_container")
-            self.__output_transient_signal = self.__operator.get_output(2, "fields_container")
-            self.__output_remainder_signal = self.__operator.get_output(3, "fields_container")
+        # Stores the outputs
+        self.__output_noise_signal = self.__operator.get_output(0, types.fields_container)[0]
+        self.__output_tonal_signal = self.__operator.get_output(1, types.fields_container)[0]
+        self.__output_transient_signal = self.__operator.get_output(2, types.fields_container)[0]
+        self.__output_remainder_signal = self.__operator.get_output(3, types.fields_container)[0]
 
         self._output = (
             self.__output_noise_signal,
@@ -284,35 +256,24 @@ class Xtract(XtractParent):
             self.__output_remainder_signal,
         )
 
-    def get_output(
-        self,
-    ) -> (
-        tuple[FieldsContainer, FieldsContainer, FieldsContainer, FieldsContainer]
-        | tuple[Field, Field, Field, Field]
-    ):
-        """Get the output of the Xtract algorithm in a tuple as DPF fields containers or fields.
+    def get_output(self) -> tuple[Field, Field, Field, Field]:
+        """Get the output of the Xtract algorithm in a tuple of DPF fields.
 
         Returns
         -------
-        tuple[FieldsContainer, FieldsContainer, FieldsContainer, FieldsContainer] |
-        tuple[Field, Field, Field, Field]
-            Noise signal, tonal signal, transient signal, and remainder signal
-            in a tuple of DPF fields or fields containers.
+        Field
+            Noise signal as a DPF field.
+        Field
+            Tonal signal as a DPF field.
+        Field
+            Transient signal as a DPF field.
+        Field
+            Remainder signal as a DPF field.
         """
-        if (
-            (self.__output_noise_signal is None)
-            or (self.__output_tonal_signal is None)
-            or (self.__output_transient_signal is None)
-            or (self.__output_remainder_signal is None)
-        ):
-            warnings.warn(PyAnsysSoundWarning("No output is available."))
+        if None in self._output:
+            warnings.warn(PyAnsysSoundWarning("Output is not processed yet."))
 
-        return (
-            self.__output_noise_signal,
-            self.__output_tonal_signal,
-            self.__output_transient_signal,
-            self.__output_remainder_signal,
-        )
+        return self._output
 
     def get_output_as_nparray(
         self,
@@ -321,104 +282,49 @@ class Xtract(XtractParent):
 
         Returns
         -------
-        tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray]
-            Noise signal, tonal signal, transient signal, and remainder signal in a
-            tuple as NumPy arrays.
+        numpy.ndarray
+            Noise signal as a NumPy array.
+        numpy.ndarray
+            Tonal signal as a NumPy array.
+        numpy.ndarray
+            Transient signal as a NumPy array.
+        numpy.ndarray
+            Remainder signal as a NumPy array.
         """
-        (
-            l_output_noise_signal,
-            l_output_tonal_signal,
-            l_output_transient_signal,
-            l_output_remainder_signal,
-        ) = self.get_output()
+        output = self.get_output()
 
-        if type(l_output_noise_signal) == Field:
-            return (
-                np.array(l_output_noise_signal.data),
-                np.array(l_output_tonal_signal.data),
-                np.array(l_output_transient_signal.data),
-                np.array(l_output_remainder_signal.data),
-            )
-        else:
-            if (
-                self.output_noise_signal is None
-                or self.output_tonal_signal is None
-                or self.output_transient_signal is None
-                or self.output_remainder_signal is None
-            ):
-                return np.array([]), np.array([]), np.array([]), np.array([])
-            else:
-                return (
-                    convert_fields_container_to_np_array(l_output_noise_signal),
-                    convert_fields_container_to_np_array(l_output_tonal_signal),
-                    convert_fields_container_to_np_array(l_output_transient_signal),
-                    convert_fields_container_to_np_array(l_output_remainder_signal),
-                )
+        if None in output:
+            return np.array([]), np.array([]), np.array([]), np.array([])
+
+        return tuple(np.array(signal.data) for signal in output)
 
     def plot(self):
         """Plot the Xtract algorithm results."""
-        l_output_noise_signal = self.get_output()[0]
-
-        l_output_noise_signal_as_field = (
-            l_output_noise_signal
-            if type(l_output_noise_signal) == Field
-            else l_output_noise_signal[0]
-        )
-
-        l_time_data = l_output_noise_signal_as_field.time_freq_support.time_frequencies.data
-        l_time_unit = l_output_noise_signal_as_field.time_freq_support.time_frequencies.unit
-        l_unit = l_output_noise_signal_as_field.unit
-
         (
-            l_np_output_noise_signal,
-            l_np_output_tonal_signal,
-            l_np_output_transient_signal,
-            l_np_output_remainder_signal,
-        ) = self.get_output_as_nparray()
+            noise_signal,
+            tonal_signal,
+            transient_signal,
+            remainder_signal,
+        ) = self.get_output()
+        time = noise_signal.time_freq_support.time_frequencies
 
-        if l_np_output_noise_signal.ndim == 1:
-            ###########
-            # Field type
-            _, axs = plt.subplots(4, figsize=(10, 20))
+        _, axs = plt.subplots(4, figsize=(10, 20))
 
-            axs[0].plot(l_time_data, l_np_output_noise_signal)
-            axs[0].set_ylabel(f"Amplitude ({l_unit})")
-            axs[0].set_title("Noise signal")
+        axs[0].plot(time.data, noise_signal.data)
+        axs[0].set_ylabel(f"Amplitude ({noise_signal.unit})")
+        axs[0].set_title("Noise signal")
 
-            axs[1].plot(l_time_data, l_np_output_tonal_signal)
-            axs[1].set_ylabel(f"Amplitude ({l_unit})")
-            axs[1].set_title("Tonal signal")
+        axs[1].plot(time.data, tonal_signal.data)
+        axs[1].set_ylabel(f"Amplitude ({tonal_signal.unit})")
+        axs[1].set_title("Tonal signal")
 
-            axs[2].plot(l_time_data, l_np_output_transient_signal)
-            axs[2].set_ylabel(f"Amplitude ({l_unit})")
-            axs[2].set_title("Transient signal")
+        axs[2].plot(time.data, transient_signal.data)
+        axs[2].set_ylabel(f"Amplitude ({transient_signal.unit})")
+        axs[2].set_title("Transient signal")
 
-            axs[3].plot(l_time_data, l_np_output_remainder_signal)
-            axs[3].set_xlabel(f"Time ({l_time_unit})")
-            axs[3].set_ylabel(f"Amplitude ({l_unit})")
-            axs[3].set_title("Remainder signal")
-        else:
-            ###########
-            # FieldsContainer type
-            for l_i in range(len(l_np_output_noise_signal)):
-                _, axs = plt.subplots(4, figsize=(10, 20))
+        axs[3].plot(time.data, remainder_signal.data)
+        axs[3].set_xlabel(f"Time ({time.unit})")
+        axs[3].set_ylabel(f"Amplitude ({remainder_signal.unit})")
+        axs[3].set_title("Remainder signal")
 
-                axs[0].plot(l_time_data, l_np_output_noise_signal[l_i])
-                axs[0].set_ylabel(f"Amplitude ({l_unit})")
-                axs[0].set_title(f"Noise signal - channel {l_i}")
-
-                axs[1].plot(l_time_data, l_np_output_tonal_signal[l_i])
-                axs[1].set_ylabel(f"Amplitude ({l_unit})")
-                axs[1].set_title(f"Tonal signal - channel {l_i}")
-
-                axs[2].plot(l_time_data, l_np_output_transient_signal[l_i])
-                axs[2].set_ylabel(f"Amplitude ({l_unit})")
-                axs[2].set_title(f"Transient signal - channel {l_i}")
-
-                axs[3].plot(l_time_data, l_np_output_remainder_signal[l_i])
-                axs[3].set_xlabel(f"Time ({l_time_unit})")
-                axs[3].set_ylabel(f"Amplitude ({l_unit})")
-                axs[3].set_title(f"Remainder signal - channel {l_i}")
-
-        # Show all figures created
         plt.show()

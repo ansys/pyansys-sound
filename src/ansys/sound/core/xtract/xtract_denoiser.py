@@ -24,16 +24,12 @@
 
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
+from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
 from . import XtractDenoiserParameters, XtractParent
-from .._pyansys_sound import (
-    PyAnsysSoundException,
-    PyAnsysSoundWarning,
-    convert_fields_container_to_np_array,
-)
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class XtractDenoiser(XtractParent):
@@ -62,17 +58,15 @@ class XtractDenoiser(XtractParent):
 
     def __init__(
         self,
-        input_signal: FieldsContainer | Field = None,
+        input_signal: Field = None,
         input_parameters: XtractDenoiserParameters = None,
     ):
         """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        input_signal : FieldsContainer | Field, default: None
-            One or more signals to denoise as a DPF fields container or field. When inputting a
-            fields container, each signal (each field of the fields container) is processed
-            individually.
+        input_signal : Field, default: None
+            Input signal to denoise as a DPF field.
         input_parameters : XtractDenoiserParametersm, default: None
             Structure that contains the parameters of the algorithm:
 
@@ -94,19 +88,17 @@ class XtractDenoiser(XtractParent):
         self.__operator = Operator("xtract_denoiser")
 
     @property
-    def input_signal(self) -> FieldsContainer | Field:
-        """Input signal.
-
-        One or more signals to denoise, as a DPF field or fields container. When inputting a
-        fields container, each signal (each field of the fields container) is processed
-        individually.
-        """
+    def input_signal(self) -> Field:
+        """Input signal to denoise, as a DPF field."""
         return self.__input_signal
 
     @input_signal.setter
-    def input_signal(self, value: FieldsContainer | Field):
+    def input_signal(self, signal: Field):
         """Set input signal."""
-        self.__input_signal = value
+        if not (signal is None or isinstance(signal, Field)):
+            raise PyAnsysSoundException("Signal must be specified as a DPF field.")
+
+        self.__input_signal = signal
 
     @property
     def input_parameters(self) -> XtractDenoiserParameters:
@@ -124,21 +116,13 @@ class XtractDenoiser(XtractParent):
         self.__input_parameters = value
 
     @property
-    def output_denoised_signals(self) -> FieldsContainer | Field:
-        """Output denoised signals.
-
-        One or more denoised signals as a DPF field or fields container (depending on
-        the input).
-        """
+    def output_denoised_signals(self) -> Field:
+        """Output denoised signal."""
         return self.__output_denoised_signals
 
     @property
-    def output_noise_signals(self) -> FieldsContainer | Field:
-        """Output noise signals.
-
-        One or more noise signals as a DPF field or fields container (depending on the input).
-        The noise signal is the original signal minus the denoised signal.
-        """
+    def output_noise_signals(self) -> Field:
+        """Output noise signal."""
         return self.__output_noise_signals
 
     def process(self):
@@ -156,103 +140,62 @@ class XtractDenoiser(XtractParent):
         self.__operator.run()
 
         # Stores the output in the variable
-        if type(self.input_signal) == Field:
-            self.__output_denoised_signals = self.__operator.get_output(0, "field")
-            self.__output_noise_signals = self.__operator.get_output(1, "field")
-        else:
-            self.__output_denoised_signals = self.__operator.get_output(0, "fields_container")
-            self.__output_noise_signals = self.__operator.get_output(1, "fields_container")
+        self.__output_denoised_signals = self.__operator.get_output(0, types.field)
+        self.__output_noise_signals = self.__operator.get_output(1, types.field)
 
         self._output = (self.__output_denoised_signals, self.__output_noise_signals)
 
-    def get_output(self) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
+    def get_output(self) -> tuple[Field, Field]:
         """Get the output of the denoising.
 
         Returns
         -------
-        tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]
-            Denoised signal and noise signal in a tuple as
-            DPF fields containers or fields (depending on the input).
+        Field
+            Denoised signal as a DPF field.
+        Field
+            Noise signal as a DPF field.
         """
-        if self.__output_denoised_signals == None or self.__output_noise_signals == None:
+        if None in self._output:
             warnings.warn(PyAnsysSoundWarning("Output is not processed yet."))
 
-        return self._output  # i.e. self.__output_denoised_signals, self.__output_noise_signals
+        return self._output
 
     def get_output_as_nparray(self) -> tuple[np.ndarray, np.ndarray]:
         """Get the output of the denoising as NumPy arrays.
 
         Returns
         -------
-        tuple[np.ndarray, np.ndarray]
-            Denoised signal and noise signal in a tuple as NumPy arrays.
+        numpy.ndarray
+            Denoised signal as a NumPy array.
+        numpy.ndarray
+            Noise signal as a NumPy array.
         """
-        l_output_denoised_signals, l_output_noise_signals = self.get_output()
+        denoised_signal, noise_signal = self.get_output()
 
-        if type(l_output_denoised_signals) == Field:
-            return np.array(l_output_denoised_signals.data), np.array(l_output_noise_signals.data)
-        else:
-            if self.output_denoised_signals is None or self.output_noise_signals is None:
-                return np.array([]), np.array([])
-            else:
-                return convert_fields_container_to_np_array(
-                    l_output_denoised_signals
-                ), convert_fields_container_to_np_array(l_output_noise_signals)
+        if denoised_signal is None or noise_signal is None:
+            return np.array([]), np.array([])
+
+        return np.array(denoised_signal.data), np.array(noise_signal.data)
 
     def plot(self):
         """Plot signals.
 
         This method plots both the denoised signal and the noise signal.
         """
-        ################
-        #
-        # Plot denoised signal
-        #
-        l_output_denoised_signals = self.get_output()[0]
-        l_output_denoised_signals_as_field = (
-            l_output_denoised_signals
-            if type(l_output_denoised_signals) == Field
-            else l_output_denoised_signals[0]
-        )
+        # Plot the denoised signal.
+        denoised_signal, noise_signal = self.get_output()
+        time = denoised_signal.time_freq_support.time_frequencies
 
-        l_np_output_denoised, l_np_output_noise = self.get_output_as_nparray()
+        plt.figure()
+        plt.plot(time.data, denoised_signal.data)
+        plt.xlabel(f"Time ({time.unit})")
+        plt.ylabel(f"Amplitude ({denoised_signal.unit})")
+        plt.title(f"Denoised signal")
 
-        l_time_data = l_output_denoised_signals_as_field.time_freq_support.time_frequencies.data
-        l_time_unit = l_output_denoised_signals_as_field.time_freq_support.time_frequencies.unit
-        l_unit = l_output_denoised_signals_as_field.unit
+        plt.figure()
+        plt.plot(time.data, noise_signal.data)
+        plt.xlabel(f"Time ({time.unit})")
+        plt.ylabel(f"Amplitude ({noise_signal.unit})")
+        plt.title(f"Noise signal")
 
-        ################
-        # Note: by design, we have l_np_output_denoised.ndim == l_np_output_noise.ndim
-        if l_np_output_denoised.ndim == 1:
-            ###########
-            # Field type
-            plt.figure()
-            plt.plot(l_time_data, l_np_output_denoised)
-            plt.xlabel("Time (" + l_time_unit + ")")
-            plt.ylabel("Amplitude (" + l_unit + ")")
-            plt.title(f"Denoised signal")
-
-            plt.figure()
-            plt.plot(l_time_data, l_np_output_noise)
-            plt.xlabel("Time (" + l_time_unit + ")")
-            plt.ylabel("Amplitude (" + l_unit + ")")
-            plt.title(f"Noise signal")
-        else:
-            ###########
-            # FieldsContainer type
-            for l_i in range(len(l_np_output_denoised)):
-                plt.figure()
-                plt.plot(l_time_data, l_np_output_denoised[l_i], label=f"Channel {l_i}")
-                plt.xlabel("Time (" + l_time_unit + ")")
-                plt.ylabel("Amplitude (" + l_unit + ")")
-                plt.title(f"Denoised signal  - channel {l_i}")
-
-            for l_i in range(len(l_np_output_noise)):
-                plt.figure()
-                plt.plot(l_time_data, l_np_output_noise[l_i], label=f"Channel {l_i}")
-                plt.xlabel("Time (" + l_time_unit + ")")
-                plt.ylabel("Amplitude (" + l_unit + ")")
-                plt.title(f"Noise signal - channel {l_i}")
-
-        # Show all figures created
         plt.show()

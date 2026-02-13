@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.dpf.core import Field, FieldsContainer
+from ansys.dpf.core import Field
 import numpy as np
 import pytest
 
@@ -29,11 +29,13 @@ from ansys.sound.core.signal_utilities import LoadWav, ZeroPad
 
 
 def test_zero_pad_instantiation():
+    """Test the instantiation of ZeroPad class."""
     zero_pad = ZeroPad()
     assert zero_pad != None
 
 
 def test_zero_pad_process():
+    """Test the process method of ZeroPad class."""
     zero_pad = ZeroPad()
     wav_loader = LoadWav(pytest.data_path_flute)
 
@@ -44,65 +46,44 @@ def test_zero_pad_process():
                     Use the 'ZeroPad.set_signal()' method."
 
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    # Testing input fields container (no error expected)
-    zero_pad.signal = fc
-    zero_pad.process()
-
-    # Testing input field (no error expected)
-    zero_pad.signal = fc[0]
+    zero_pad.signal = signal[0]
     zero_pad.process()
 
 
 def test_zero_pad_get_output():
+    """Test the get_output method of ZeroPad class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
-    fc_signal = wav_loader.get_output()
-    zero_pad = ZeroPad(signal=fc_signal, duration_zeros=12.0)
+    signal = wav_loader.get_output()
+    zero_pad = ZeroPad(signal=signal[0], duration_zeros=12.0)
 
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. \
                         Use the 'ZeroPad.process\\(\\)' method.",
     ):
-        fc_out = zero_pad.get_output()
+        _ = zero_pad.get_output()
 
     zero_pad.process()
-    fc_out = zero_pad.get_output()
+    output = zero_pad.get_output()
 
-    assert len(fc_out) == 1
-
-    zero_pad.signal = fc_signal[0]
-    zero_pad.process()
-    f_out = zero_pad.get_output()
-
-    assert len(f_out.data) == 685248
-    assert f_out.data[1000] == 6.103515625e-05
-    assert f_out.data[3456] == -0.00128173828125
-    assert f_out.data[30000] == 0.074005126953125
-    assert f_out.data[60000] == -0.022735595703125
-    assert f_out.data[156048] == 0.0
-    assert f_out.data[600000] == 0.0
+    assert len(output.data) == 685248
+    assert output.data[1000] == 6.103515625e-05
+    assert output.data[3456] == -0.00128173828125
+    assert output.data[30000] == 0.074005126953125
+    assert output.data[60000] == -0.022735595703125
+    assert output.data[156048] == 0.0
+    assert output.data[600000] == 0.0
 
 
 def test_zero_pad_get_output_as_np_array():
+    """Test the get_output_as_nparray method of ZeroPad class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
-    fc_signal = wav_loader.get_output()
-    zero_pad = ZeroPad(signal=fc_signal[0], duration_zeros=12.0)
-    zero_pad.process()
-    out_arr = zero_pad.get_output_as_nparray()
-
-    assert len(out_arr) == 685248
-    assert out_arr[1000] == 6.103515625e-05
-    assert out_arr[3456] == -0.00128173828125
-    assert out_arr[30000] == 0.074005126953125
-    assert out_arr[60000] == -0.022735595703125
-    assert out_arr[156048] == 0.0
-    assert out_arr[600000] == 0.0
-
-    zero_pad.signal = fc_signal
+    signal = wav_loader.get_output()
+    zero_pad = ZeroPad(signal=signal[0], duration_zeros=12.0)
     zero_pad.process()
     out_arr = zero_pad.get_output_as_nparray()
 
@@ -116,22 +97,28 @@ def test_zero_pad_get_output_as_np_array():
 
 
 def test_zero_pad_set_get_signal():
+    """Test the signal setter and getter of ZeroPad class."""
     zero_pad = ZeroPad()
-    fc = FieldsContainer()
-    fc.labels = ["channel"]
-    f = Field()
-    f.data = 42 * np.ones(3)
-    fc.add_field({"channel": 0}, f)
-    fc.name = "testField"
-    zero_pad.signal = fc
-    fc_from_get = zero_pad.signal
+    signal = Field()
+    signal.data = 42 * np.ones(3)
+    zero_pad.signal = signal
+    signal_from_getter = zero_pad.signal
 
-    assert fc_from_get.name == "testField"
-    assert len(fc_from_get) == 1
-    assert fc_from_get[0].data[0, 2] == 42
+    assert signal_from_getter.data[0, 2] == 42
+
+
+def test_zero_pad_set_signal_exception():
+    """Test exception for signal setter."""
+    zero_pad = ZeroPad()
+
+    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
+        zero_pad.signal = "WrongType"
+
+    assert zero_pad.signal is None
 
 
 def test_zero_pad_set_get_duration_zeros():
+    """Test the duration_zeros setter and getter of ZeroPad class."""
     zero_pad = ZeroPad()
 
     # Error
