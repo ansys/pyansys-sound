@@ -1,0 +1,50 @@
+﻿Stft
+====
+
+.. currentmodule:: ansys.sound.core.spectrogram_processing
+
+.. autoclass:: Stft
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Stft.get_output
+      
+      
+      Stft.get_output_as_nparray
+      
+      
+      Stft.get_stft_magnitude_as_nparray
+      
+      
+      Stft.get_stft_phase_as_nparray
+      
+      
+      Stft.plot
+      
+      
+      Stft.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Stft.fft_size
+      Stft.signal
+      Stft.window_overlap
+      Stft.window_type
+   
+   

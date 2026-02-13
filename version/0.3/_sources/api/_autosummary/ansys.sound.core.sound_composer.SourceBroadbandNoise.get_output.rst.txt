@@ -1,0 +1,6 @@
+get\_output
+===========
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. automethod:: SourceBroadbandNoise.get_output

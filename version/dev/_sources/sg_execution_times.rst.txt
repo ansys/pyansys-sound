@@ -1,0 +1,73 @@
+
+:orphan:
+
+.. _sphx_glr_sg_execution_times:
+
+
+Computation times
+=================
+**15:44.937** total execution time for 13 files **from all galleries**:
+
+.. container::
+
+  .. raw:: html
+
+    <style scoped>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" class="init">
+    $(document).ready( function () {
+        $('table.sg-datatable').DataTable({order: [[1, 'desc']]});
+    } );
+    </script>
+
+  .. list-table::
+   :header-rows: 1
+   :class: table table-striped sg-datatable
+
+   * - Example
+     - Time
+     - Mem (MB)
+   * - :ref:`sphx_glr_examples_gallery_examples_012_predict_listening_test_ratings.py` (``..\..\examples\012_predict_listening_test_ratings.py``)
+     - 04:44.045
+     - 0.0
+   * - :ref:`sphx_glr_examples_gallery_examples_005_xtract_feature.py` (``..\..\examples\005_xtract_feature.py``)
+     - 04:07.521
+     - 0.0
+   * - :ref:`sphx_glr_examples_gallery_examples_004_isolate_orders.py` (``..\..\examples\004_isolate_orders.py``)
+     - 02:07.853
+     - 0.0
+   * - :ref:`sphx_glr_examples_gallery_examples_009_calculate_tonality_indicators.py` (``..\..\examples\009_calculate_tonality_indicators.py``)
+     - 01:30.800
+     - 0.0
+   * - :ref:`sphx_glr_examples_gallery_examples_010_sound_composer_load_project.py` (``..\..\examples\010_sound_composer_load_project.py``)
+     - 00:40.365
+     - 0.0
+   * - :ref:`sphx_glr_examples_gallery_examples_003_compute_stft.py` (``..\..\examples\003_compute_stft.py``)
+     - 00:35.860
+     - 0.0
+   * - :ref:`sphx_glr_examples_gallery_examples_001_initialize_server_and_deal_with_license.py` (``..\..\examples\001_initialize_server_and_deal_with_license.py``)
+     - 00:33.839
+     - 0.0
+   * - :ref:`sphx_glr_examples_gallery_examples_006_calculate_PR_and_TNR.py` (``..\..\examples\006_calculate_PR_and_TNR.py``)
+     - 00:25.052
+     - 0.0
+   * - :ref:`sphx_glr_examples_gallery_examples_011_sound_composer_create_project.py` (``..\..\examples\011_sound_composer_create_project.py``)
+     - 00:21.918
+     - 0.0
+   * - :ref:`sphx_glr_examples_gallery_examples_007_calculate_psychoacoustic_indicators.py` (``..\..\examples\007_calculate_psychoacoustic_indicators.py``)
+     - 00:17.954
+     - 0.0
+   * - :ref:`sphx_glr_examples_gallery_examples_008_calculate_levels.py` (``..\..\examples\008_calculate_levels.py``)
+     - 00:09.693
+     - 0.0
+   * - :ref:`sphx_glr_examples_gallery_examples_013_calculate_fractional_octave_levels.py` (``..\..\examples\013_calculate_fractional_octave_levels.py``)
+     - 00:05.909
+     - 0.0
+   * - :ref:`sphx_glr_examples_gallery_examples_002_load_resample_amplify_write_wav_files.py` (``..\..\examples\002_load_resample_amplify_write_wav_files.py``)
+     - 00:04.129
+     - 0.0

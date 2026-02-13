@@ -1,0 +1,6 @@
+get\_spectrum\_number
+=====================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: TonalityDIN45681.get_spectrum_number

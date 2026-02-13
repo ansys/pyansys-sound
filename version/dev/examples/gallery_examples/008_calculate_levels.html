@@ -1,0 +1,927 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Calculate RMS, dBSPL and dBA levels &#8212; PyAnsys Sound</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/ansys-sphinx-theme.css?v=a23b20f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles\ansys-sphinx-theme.css?v=a23b20f3" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../../_static/documentation_options.js?v=925a45a3"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/gallery_examples/008_calculate_levels';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://sound.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="icon" href="../../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Calculate tonality indicators" href="009_calculate_tonality_indicators.html" />
+    <link rel="prev" title="Calculate psychoacoustic indicators" href="007_calculate_psychoacoustic_indicators.html" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.dev1" />
+  <meta property="og:site_name" content="PyAnsys" />
+  <meta name="physics" content="Acoustics" />
+  <link rel="canonical" href="https://sound.docs.pyansys.com/version/stable/examples/gallery_examples/008_calculate_levels.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyAnsys Sound - Home"/>
+    <img src="../../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark pst-js-only" alt="PyAnsys Sound - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html" title="PyAnsys Sound home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../contribute.html">
+    Contribute
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav>
+</div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+  
+</div></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyansys-sound" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    
+<!--
+  Announcement Version Loader
+  Dynamically loads the announcement.html content into the announcement_msg div.
+-->
+<div id="announcement_msg" aria-live="polite"></div>
+<script>
+  // Fetch and inject the announcement HTML content
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status} Announcement.html file not found, Please ignore this, if you are in dev/stable documentation`);
+      }
+      return response.text();
+    })
+    .then((text) => {
+      var msgDiv = document.getElementById("announcement_msg");
+      if (msgDiv) {
+        msgDiv.innerHTML = text;
+      }
+    })
+    .catch((error) => {
+      // Log only unexpected fetch errors
+      if (!(error.message && error.message.startsWith("HTTP error: 404"))) {
+        console.error(`Fetch problem: ${error.message} Announcement.html could not be loaded.`);
+      }
+    });
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html" title="PyAnsys Sound home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contribute.html">
+    Contribute
+  </a>
+</li>
+
+  </ul>
+</nav>
+</div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+  
+</div></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyansys-sound" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="001_initialize_server_and_deal_with_license.html">Initialize PyAnsys Sound and check out the license</a></li>
+<li class="toctree-l1"><a class="reference internal" href="002_load_resample_amplify_write_wav_files.html">Basic operations on a signal from a WAV file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="003_compute_stft.html">Spectrogram: compute the STFT and ISTFT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="004_isolate_orders.html">Isolate orders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="005_xtract_feature.html">Extract tonal, transient, and noise components (Xtract)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="006_calculate_PR_and_TNR.html">Calculate TNR and PR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="007_calculate_psychoacoustic_indicators.html">Calculate psychoacoustic indicators</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Calculate RMS, dBSPL and dBA levels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="009_calculate_tonality_indicators.html">Calculate tonality indicators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="010_sound_composer_load_project.html">Use an existing Sound Composer project file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="011_sound_composer_create_project.html">Create a Sound Composer project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="012_predict_listening_test_ratings.html">Predict listening test ratings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="013_calculate_fractional_octave_levels.html">Octave and one-third-octave levels computation</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../index.html" class="nav-link">Examples</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Calculate RMS, dBSPL and dBA levels</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-examples-gallery-examples-008-calculate-levels-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="calculate-rms-dbspl-and-dba-levels">
+<span id="calculate-levels"></span><span id="sphx-glr-examples-gallery-examples-008-calculate-levels-py"></span><h1>Calculate RMS, dBSPL and dBA levels<a class="headerlink" href="#calculate-rms-dbspl-and-dba-levels" title="Link to this heading">#</a></h1>
+<p>This example shows how to calculate RMS, dBSPL and dBA levels.
+The following levels are included:</p>
+<ul class="simple">
+<li><p>Overall RMS level</p></li>
+<li><p>Overall dBSPL level</p></li>
+<li><p>Overall dBA level</p></li>
+<li><p>RMS level over time</p></li>
+<li><p>dBSPL level over time</p></li>
+<li><p>dBA level over time</p></li>
+</ul>
+<p>The example shows how to perform these operations:</p>
+<ul class="simple">
+<li><p>Set up the analysis.</p></li>
+<li><p>Calculate levels on loaded WAV files.</p></li>
+<li><p>Get calculation outputs.</p></li>
+<li><p>Plot some corresponding curves.</p></li>
+<li><p>Export levels into a .csv files.</p></li>
+</ul>
+<section id="set-up-analysis">
+<h2>Set up analysis<a class="headerlink" href="#set-up-analysis" title="Link to this heading">#</a></h2>
+<p>Setting up the analysis consists of loading Ansys libraries, and connecting to the DPF server.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load standard libraries.</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># Load Ansys libraries.</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.examples_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">download_aircraft_wav</span><span class="p">,</span> <span class="n">download_fan_wav</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.server_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">connect_to_or_start_server</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.signal_utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoadWav</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.standard_levels</span><span class="w"> </span><span class="kn">import</span> <span class="n">LevelOverTime</span><span class="p">,</span> <span class="n">OverallLevel</span>
+
+<span class="c1"># Connect to a remote DPF server or start a local DPF server.</span>
+<a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_types/GrpcServer.html#ansys.dpf.core.server_types.GrpcServer" title="ansys.dpf.core.server_types.GrpcServer" class="sphx-glr-backref-module-ansys-dpf-core-server_types sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_server</span></a><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_context/LicenseContextManager.html#ansys.dpf.core.server_context.LicenseContextManager" title="ansys.dpf.core.server_context.LicenseContextManager" class="sphx-glr-backref-module-ansys-dpf-core-server_context sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_license_context</span></a> <span class="o">=</span> <span class="n">connect_to_or_start_server</span><span class="p">(</span><span class="n">use_license_context</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="calculate-overall-rms-dbspl-and-dba-levels">
+<h2>Calculate overall RMS, dBSPL and dBA levels<a class="headerlink" href="#calculate-overall-rms-dbspl-and-dba-levels" title="Link to this heading">#</a></h2>
+<p>Load a signal from a WAV file using the <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.signal_utilities.LoadWav.html#ansys.sound.core.signal_utilities.LoadWav" title="ansys.sound.core.signal_utilities.LoadWav"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoadWav</span></code></a> class. It is returned as a
+<a class="reference external" href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/fields_container/FieldsContainer.html#ansys.dpf.core.fields_container.FieldsContainer" title="(in PyDPF-Core v0.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldsContainer</span></code></a> object.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load example data from two wav files.</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_fan_wav</span></a> <span class="o">=</span> <span class="n">download_fan_wav</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_types/GrpcServer.html#ansys.dpf.core.server_types.GrpcServer" title="ansys.dpf.core.server_types.GrpcServer" class="sphx-glr-backref-module-ansys-dpf-core-server_types sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_server</span></a><span class="p">)</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_aircraft_wav</span></a> <span class="o">=</span> <span class="n">download_aircraft_wav</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_types/GrpcServer.html#ansys.dpf.core.server_types.GrpcServer" title="ansys.dpf.core.server_types.GrpcServer" class="sphx-glr-backref-module-ansys-dpf-core-server_types sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_server</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a first .csv file in which the overall levels will be written, and write the header row.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">filepath_overall_results</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Overall_Results.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="n">csv_writer_overall_results</span> <span class="o">=</span> <a href="https://docs.python.org/dev/library/csv.html#csv.writer" title="csv.writer" class="sphx-glr-backref-module-csv sphx-glr-backref-type-py-function"><span class="n">csv</span><span class="o">.</span><span class="n">writer</span></a><span class="p">(</span><span class="n">filepath_overall_results</span><span class="p">)</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">header_row</span></a> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Signal name&quot;</span><span class="p">,</span> <span class="s2">&quot;Overall level [RMS]&quot;</span><span class="p">,</span> <span class="s2">&quot;Overall level [dBSPL]&quot;</span><span class="p">,</span> <span class="s2">&quot;Overall level [dBA]&quot;</span><span class="p">]</span>
+<a href="https://docs.python.org/dev/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">_</span></a> <span class="o">=</span> <span class="n">csv_writer_overall_results</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">header_row</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<p>For each sound, create an <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OverallLevel.html#ansys.sound.core.standard_levels.OverallLevel" title="ansys.sound.core.standard_levels.OverallLevel"><code class="xref py py-class docutils literal notranslate"><span class="pre">OverallLevel</span></code></a> object, set its signals, compute the overall RMS,
+dBSPL and dBA levels, and then write the results into the .csv file.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file_path</span></a> <span class="ow">in</span> <span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_fan_wav</span></a><span class="p">,</span> <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_aircraft_wav</span></a><span class="p">):</span>
+    <span class="c1"># Load wav.</span>
+    <span class="n">wav_loader</span> <span class="o">=</span> <span class="n">LoadWav</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file_path</span></a><span class="p">)</span>
+    <span class="n">wav_loader</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+    <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a> <span class="o">=</span> <span class="n">wav_loader</span><span class="o">.</span><span class="n">get_output</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Calculate RMS.</span>
+    <span class="n">level_RMS</span> <span class="o">=</span> <span class="n">OverallLevel</span><span class="p">(</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;RMS&quot;</span><span class="p">)</span>
+    <span class="n">level_RMS</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+    <a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rms</span></a> <span class="o">=</span> <span class="n">level_RMS</span><span class="o">.</span><span class="n">get_level</span><span class="p">()</span>
+
+    <span class="c1"># Calculate dBSPL.</span>
+    <span class="n">level_dBSPL</span> <span class="o">=</span> <span class="n">OverallLevel</span><span class="p">(</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;dB&quot;</span><span class="p">,</span> <span class="n">reference_value</span><span class="o">=</span><span class="mf">2e-5</span><span class="p">)</span>
+    <span class="n">level_dBSPL</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+    <a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dBSPL</span></a> <span class="o">=</span> <span class="n">level_dBSPL</span><span class="o">.</span><span class="n">get_level</span><span class="p">()</span>
+
+    <span class="c1"># Calculate dBA.</span>
+    <span class="n">level_dBA</span> <span class="o">=</span> <span class="n">OverallLevel</span><span class="p">(</span>
+        <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;dB&quot;</span><span class="p">,</span> <span class="n">reference_value</span><span class="o">=</span><span class="mf">2e-5</span><span class="p">,</span> <span class="n">frequency_weighting</span><span class="o">=</span><span class="s2">&quot;A&quot;</span>
+    <span class="p">)</span>
+    <span class="n">level_dBA</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+    <a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dBA</span></a> <span class="o">=</span> <span class="n">level_dBA</span><span class="o">.</span><span class="n">get_level</span><span class="p">()</span>
+
+    <span class="c1"># Print the results.</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file_name</span></a> <span class="o">=</span> <a href="https://docs.python.org/dev/library/os.path.html#os.path.basename" title="os.path.basename" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span></a><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file_path</span></a><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The RMS level of sound file </span><span class="si">{</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file_name</span></a><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rms</span></a><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s2">, its dBSPL level is&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dBSPL</span></a><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> dBSPL and its dBA level is </span><span class="si">{</span><a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dBA</span></a><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> dBA.&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Write the results in .csv.</span>
+    <span class="n">csv_writer_overall_results</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file_name</span></a><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">],</span> <a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rms</span></a><span class="p">,</span> <a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dBSPL</span></a><span class="p">,</span> <a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dBA</span></a><span class="p">])</span>
+
+<span class="n">filepath_overall_results</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The RMS level of sound file Fan.wav is 1.1 Pa, its dBSPL level is 94.8 dBSPL and its dBA level is 88.5 dBA.
+
+The RMS level of sound file Aircraft.wav is 0.1 Pa, its dBSPL level is 77.2 dBSPL and its dBA level is 73.7 dBA.
+</pre></div>
+</div>
+</section>
+<section id="calculate-rms-dbspl-and-dba-levels-over-time">
+<h2>Calculate RMS, dBSPL and dBA levels over time<a class="headerlink" href="#calculate-rms-dbspl-and-dba-levels-over-time" title="Link to this heading">#</a></h2>
+<p>Initialize empty lists to store the levels in order to plot them.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time</span></a> <span class="o">=</span> <span class="p">[]</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rms_levels</span></a> <span class="o">=</span> <span class="p">[]</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SPL_levels</span></a> <span class="o">=</span> <span class="p">[]</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">A_weighted_levels</span></a> <span class="o">=</span> <span class="p">[]</span>
+</pre></div>
+</div>
+<p>For each sound, create a <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.LevelOverTime.html#ansys.sound.core.standard_levels.LevelOverTime" title="ansys.sound.core.standard_levels.LevelOverTime"><code class="xref py py-class docutils literal notranslate"><span class="pre">LevelOverTime</span></code></a> object, set its signals, compute and plot the
+RMS level over time, the dBSPL level over time and the dBA level over time, then write the
+results into an individual .csv file.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file_path</span></a> <span class="ow">in</span> <span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_fan_wav</span></a><span class="p">,</span> <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_aircraft_wav</span></a><span class="p">):</span>
+    <span class="c1"># Write a .csv file for each sound, and add the header row.</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file</span></a> <span class="o">=</span> <a href="https://docs.python.org/dev/library/os.path.html#os.path.basename" title="os.path.basename" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span></a><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file_path</span></a><span class="p">)</span>
+    <span class="n">filepath_results_vs_time</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span>
+        <a href="https://docs.python.org/dev/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file</span></a><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_Levels_vs_time_Results.csv&quot;</span><span class="p">),</span> <span class="s2">&quot;w+&quot;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+    <span class="p">)</span>
+    <span class="n">csv_writer_results_vs_time</span> <span class="o">=</span> <a href="https://docs.python.org/dev/library/csv.html#csv.writer" title="csv.writer" class="sphx-glr-backref-module-csv sphx-glr-backref-type-py-function"><span class="n">csv</span><span class="o">.</span><span class="n">writer</span></a><span class="p">(</span><span class="n">filepath_results_vs_time</span><span class="p">)</span>
+    <span class="n">csv_writer_results_vs_time</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s2">&quot;time steps [s]&quot;</span><span class="p">,</span> <span class="s2">&quot;RMS level&quot;</span><span class="p">,</span> <span class="s2">&quot;dBSPL level&quot;</span><span class="p">,</span> <span class="s2">&quot;dBA level&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Load wav.</span>
+    <span class="n">wav_loader</span> <span class="o">=</span> <span class="n">LoadWav</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file_path</span></a><span class="p">)</span>
+    <span class="n">wav_loader</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+    <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a> <span class="o">=</span> <span class="n">wav_loader</span><span class="o">.</span><span class="n">get_output</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Calculate RMS over time and get the time steps.</span>
+    <span class="n">rms_level_time_varying</span> <span class="o">=</span> <span class="n">LevelOverTime</span><span class="p">(</span>
+        <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;RMS&quot;</span><span class="p">,</span> <span class="n">frequency_weighting</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">time_weighting</span><span class="o">=</span><span class="s2">&quot;Fast&quot;</span>
+    <span class="p">)</span>
+    <span class="n">rms_level_time_varying</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rms_level_over_time</span></a> <span class="o">=</span> <span class="n">rms_level_time_varying</span><span class="o">.</span><span class="n">get_level_over_time</span><span class="p">()</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rms_level_unit</span></a> <span class="o">=</span> <span class="n">rms_level_time_varying</span><span class="o">.</span><span class="n">get_output</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_steps</span></a> <span class="o">=</span> <span class="n">rms_level_time_varying</span><span class="o">.</span><span class="n">get_time_scale</span><span class="p">()</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time</span></a><span class="o">.</span><span class="n">append</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_steps</span></a><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_unit</span></a> <span class="o">=</span> <span class="n">rms_level_time_varying</span><span class="o">.</span><span class="n">get_output</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">time_freq_support</span><span class="o">.</span><span class="n">time_frequencies</span><span class="o">.</span><span class="n">unit</span>
+
+    <span class="c1"># Calculate dBSPL over time.</span>
+    <span class="n">SPL_time_varying</span> <span class="o">=</span> <span class="n">LevelOverTime</span><span class="p">(</span>
+        <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="p">,</span>
+        <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;dB&quot;</span><span class="p">,</span>
+        <span class="n">reference_value</span><span class="o">=</span><span class="mf">2e-5</span><span class="p">,</span>
+        <span class="n">frequency_weighting</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">time_weighting</span><span class="o">=</span><span class="s2">&quot;Fast&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">SPL_time_varying</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SPL_over_time</span></a> <span class="o">=</span> <span class="n">SPL_time_varying</span><span class="o">.</span><span class="n">get_level_over_time</span><span class="p">()</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SPL_unit</span></a> <span class="o">=</span> <span class="n">SPL_time_varying</span><span class="o">.</span><span class="n">get_output</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span>
+
+    <span class="c1"># Calculate dBA over time.</span>
+    <span class="n">A_weighted_level_time_varying</span> <span class="o">=</span> <span class="n">LevelOverTime</span><span class="p">(</span>
+        <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="p">,</span>
+        <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;dB&quot;</span><span class="p">,</span>
+        <span class="n">reference_value</span><span class="o">=</span><span class="mf">2e-5</span><span class="p">,</span>
+        <span class="n">frequency_weighting</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span>
+        <span class="n">time_weighting</span><span class="o">=</span><span class="s2">&quot;Fast&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">A_weighted_level_time_varying</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+    <span class="n">A_weighted_level_over_time</span> <span class="o">=</span> <span class="n">A_weighted_level_time_varying</span><span class="o">.</span><span class="n">get_level_over_time</span><span class="p">()</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">A_weighted_level_unit</span></a> <span class="o">=</span> <span class="n">A_weighted_level_time_varying</span><span class="o">.</span><span class="n">get_output</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span>
+
+    <span class="c1"># Append all the results to the lists previously created.</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rms_levels</span></a><span class="o">.</span><span class="n">append</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rms_level_over_time</span></a><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SPL_levels</span></a><span class="o">.</span><span class="n">append</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SPL_over_time</span></a><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">A_weighted_levels</span></a><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">A_weighted_level_over_time</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+    <span class="c1"># Write the results in the .csv files.</span>
+    <span class="k">for</span> <a href="https://docs.python.org/dev/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_steps</span></a><span class="p">)):</span>
+        <span class="n">csv_writer_results_vs_time</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span>
+            <span class="p">[</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_steps</span></a><span class="p">[</span><a href="https://docs.python.org/dev/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a><span class="p">],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rms_level_over_time</span></a><span class="p">[</span><a href="https://docs.python.org/dev/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a><span class="p">],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SPL_over_time</span></a><span class="p">[</span><a href="https://docs.python.org/dev/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a><span class="p">],</span> <span class="n">A_weighted_level_over_time</span><span class="p">[</span><a href="https://docs.python.org/dev/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a><span class="p">]]</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<p>Use the object’s <code class="docutils literal notranslate"><span class="pre">plot()</span></code> method to plot the level over time (here, level in dBA, for the
+second signal).</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">A_weighted_level_over_time</span> <span class="o">=</span> <span class="n">A_weighted_level_time_varying</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_008_calculate_levels_001.png" srcset="../../_images/sphx_glr_008_calculate_levels_001.png" alt="Level over time" class = "sphx-glr-single-img"/><p>Alternatively, plot the results over time for both signals into three graphs.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.suptitle.html#matplotlib.figure.Figure.suptitle" title="matplotlib.figure.Figure.suptitle" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span></a><span class="p">(</span><span class="s2">&quot;Time varying RMS, dBSPL and dBA levels&quot;</span><span class="p">)</span>
+
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time</span></a><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rms_levels</span></a><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Fan&quot;</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time</span></a><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rms_levels</span></a><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Airplane&quot;</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;RMS level (</span><span class="si">{</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rms_level_unit</span></a><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time</span></a><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SPL_levels</span></a><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Fan&quot;</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time</span></a><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SPL_levels</span></a><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Airplane&quot;</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Level (</span><span class="si">{</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SPL_unit</span></a><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time</span></a><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">A_weighted_levels</span></a><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Fan&quot;</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time</span></a><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">A_weighted_levels</span></a><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Airplane&quot;</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Level (</span><span class="si">{</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">A_weighted_level_unit</span></a><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time (</span><span class="si">{</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_unit</span></a><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_008_calculate_levels_002.png" srcset="../../_images/sphx_glr_008_calculate_levels_002.png" alt="Time varying RMS, dBSPL and dBA levels" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 9.693 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-gallery-examples-008-calculate-levels-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/cb5415284867950032460d97f809290b/008_calculate_levels.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">008_calculate_levels.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/25e13a1279a416680a987647abf7f021/008_calculate_levels.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">008_calculate_levels.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/51f11e2fcf65745511c0ad068e6e80dc/008_calculate_levels.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">008_calculate_levels.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-analysis">Set up analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-overall-rms-dbspl-and-dba-levels">Calculate overall RMS, dBSPL and dBA levels</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-rms-dbspl-and-dba-levels-over-time">Calculate RMS, dBSPL and dBA levels over time</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/examples/gallery_examples/008_calculate_levels.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"ignoreLocation": true, "keys": ["title", "text", "objectID"], "limit": 10, "min_chars_for_search": 2, "threshold": 0.5}');
+const SEARCH_FILE = "../../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2026 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<!--
+  Theme Version Footer
+  Displays the Sphinx theme version and the last updated date.
+  Accessibility and semantic improvements included.
+-->
+<footer class="theme-version" aria-label="Theme version and last update">
+  <span>
+    
+      Built with the
+      <a href="https://sphinxdocs.ansys.com/version/stable/index.html" target="_blank" rel="noopener noreferrer">
+        Ansys Sphinx Theme
+      </a>
+      1.7.0.
+    
+  </span>
+  <br />
+  <span>Last updated on <time id="ast_build_date"></time></span>
+</footer>
+<script>
+  // Set the last updated date in a readable format
+  (function() {
+    var options = { day: "numeric", month: "long", year: "numeric" };
+    var ast_lastModifiedDate = new Date(document.lastModified);
+    var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+    var dateElem = document.getElementById("ast_build_date");
+    if (dateElem) {
+      dateElem.textContent = ast_build_date;
+    }
+  })();
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

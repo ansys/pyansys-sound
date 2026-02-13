@@ -1,0 +1,6 @@
+set\_custom\_parameters
+=======================
+
+.. currentmodule:: ansys.sound.core.standard_levels
+
+.. automethod:: LevelOverTime.set_custom_parameters

@@ -1,0 +1,48 @@
+﻿LoudnessANSI\_S3\_4
+===================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: LoudnessANSI_S3_4
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      LoudnessANSI_S3_4.get_loudness_level_phon
+      
+      
+      LoudnessANSI_S3_4.get_loudness_sone
+      
+      
+      LoudnessANSI_S3_4.get_output
+      
+      
+      LoudnessANSI_S3_4.get_output_as_nparray
+      
+      
+      LoudnessANSI_S3_4.plot
+      
+      
+      LoudnessANSI_S3_4.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      LoudnessANSI_S3_4.field_type
+      LoudnessANSI_S3_4.signal
+   
+   

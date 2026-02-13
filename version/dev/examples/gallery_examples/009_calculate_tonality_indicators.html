@@ -1,0 +1,960 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Calculate tonality indicators &#8212; PyAnsys Sound</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/ansys-sphinx-theme.css?v=a23b20f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles\ansys-sphinx-theme.css?v=a23b20f3" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../../_static/documentation_options.js?v=925a45a3"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/gallery_examples/009_calculate_tonality_indicators';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://sound.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="icon" href="../../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Use an existing Sound Composer project file" href="010_sound_composer_load_project.html" />
+    <link rel="prev" title="Calculate RMS, dBSPL and dBA levels" href="008_calculate_levels.html" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.dev1" />
+  <meta property="og:site_name" content="PyAnsys" />
+  <meta name="physics" content="Acoustics" />
+  <link rel="canonical" href="https://sound.docs.pyansys.com/version/stable/examples/gallery_examples/009_calculate_tonality_indicators.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyAnsys Sound - Home"/>
+    <img src="../../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark pst-js-only" alt="PyAnsys Sound - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html" title="PyAnsys Sound home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../contribute.html">
+    Contribute
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav>
+</div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+  
+</div></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyansys-sound" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    
+<!--
+  Announcement Version Loader
+  Dynamically loads the announcement.html content into the announcement_msg div.
+-->
+<div id="announcement_msg" aria-live="polite"></div>
+<script>
+  // Fetch and inject the announcement HTML content
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status} Announcement.html file not found, Please ignore this, if you are in dev/stable documentation`);
+      }
+      return response.text();
+    })
+    .then((text) => {
+      var msgDiv = document.getElementById("announcement_msg");
+      if (msgDiv) {
+        msgDiv.innerHTML = text;
+      }
+    })
+    .catch((error) => {
+      // Log only unexpected fetch errors
+      if (!(error.message && error.message.startsWith("HTTP error: 404"))) {
+        console.error(`Fetch problem: ${error.message} Announcement.html could not be loaded.`);
+      }
+    });
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html" title="PyAnsys Sound home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contribute.html">
+    Contribute
+  </a>
+</li>
+
+  </ul>
+</nav>
+</div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+  
+</div></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyansys-sound" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="001_initialize_server_and_deal_with_license.html">Initialize PyAnsys Sound and check out the license</a></li>
+<li class="toctree-l1"><a class="reference internal" href="002_load_resample_amplify_write_wav_files.html">Basic operations on a signal from a WAV file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="003_compute_stft.html">Spectrogram: compute the STFT and ISTFT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="004_isolate_orders.html">Isolate orders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="005_xtract_feature.html">Extract tonal, transient, and noise components (Xtract)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="006_calculate_PR_and_TNR.html">Calculate TNR and PR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="007_calculate_psychoacoustic_indicators.html">Calculate psychoacoustic indicators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="008_calculate_levels.html">Calculate RMS, dBSPL and dBA levels</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Calculate tonality indicators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="010_sound_composer_load_project.html">Use an existing Sound Composer project file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="011_sound_composer_create_project.html">Create a Sound Composer project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="012_predict_listening_test_ratings.html">Predict listening test ratings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="013_calculate_fractional_octave_levels.html">Octave and one-third-octave levels computation</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../index.html" class="nav-link">Examples</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Calculate tonality indicators</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-examples-gallery-examples-009-calculate-tonality-indicators-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="calculate-tonality-indicators">
+<span id="sphx-glr-examples-gallery-examples-009-calculate-tonality-indicators-py"></span><span id="id1"></span><h1>Calculate tonality indicators<a class="headerlink" href="#calculate-tonality-indicators" title="Link to this heading">#</a></h1>
+<p>This example shows how to calculate tonality indicators.
+The list of indicators covered in this example is:</p>
+<ul class="simple">
+<li><p>Annex C of ISO1996-2</p></li>
+<li><p>DIN45681</p></li>
+<li><p>ECMA-418-2</p></li>
+<li><p>ISO/TS 20065</p></li>
+<li><p>Aures</p></li>
+</ul>
+<p>All these indicators are calculated using the same acoustic signal,
+and the results are commented, compared, and discussed.</p>
+<section id="set-up-analysis">
+<h2>Set up analysis<a class="headerlink" href="#set-up-analysis" title="Link to this heading">#</a></h2>
+<p>Setting up the analysis consists of loading Ansys libraries, connecting to the
+DPF server, and retrieving the example file.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load required libraries.</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.examples_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">download_turbo_whistling_wav</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.psychoacoustics</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">TonalityAures</span><span class="p">,</span>
+    <span class="n">TonalityDIN45681</span><span class="p">,</span>
+    <span class="n">TonalityECMA418_2</span><span class="p">,</span>
+    <span class="n">TonalityISO1996_2</span><span class="p">,</span>
+    <span class="n">TonalityISO1996_2_OverTime</span><span class="p">,</span>
+    <span class="n">TonalityISOTS20065</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.server_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">connect_to_or_start_server</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.signal_utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoadWav</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.spectrogram_processing.stft</span><span class="w"> </span><span class="kn">import</span> <span class="n">Stft</span>
+
+
+<span class="c1"># Connect to a remote DPF server or start a local DPF server.</span>
+<a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_types/GrpcServer.html#ansys.dpf.core.server_types.GrpcServer" title="ansys.dpf.core.server_types.GrpcServer" class="sphx-glr-backref-module-ansys-dpf-core-server_types sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_server</span></a><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_context/LicenseContextManager.html#ansys.dpf.core.server_context.LicenseContextManager" title="ansys.dpf.core.server_context.LicenseContextManager" class="sphx-glr-backref-module-ansys-dpf-core-server_context sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_license_context</span></a> <span class="o">=</span> <span class="n">connect_to_or_start_server</span><span class="p">(</span><span class="n">use_license_context</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Load example data from a WAV file: flyover noise of an aircraft.</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_turbo_whistle_wav</span></a> <span class="o">=</span> <span class="n">download_turbo_whistling_wav</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_types/GrpcServer.html#ansys.dpf.core.server_types.GrpcServer" title="ansys.dpf.core.server_types.GrpcServer" class="sphx-glr-backref-module-ansys-dpf-core-server_types sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_server</span></a><span class="p">)</span>
+<span class="n">wav_loader</span> <span class="o">=</span> <span class="n">LoadWav</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_turbo_whistle_wav</span></a><span class="p">)</span>
+<span class="n">wav_loader</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+<a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal_aircraft</span></a> <span class="o">=</span> <span class="n">wav_loader</span><span class="o">.</span><span class="n">get_output</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The signal used in this example is the flyover noise of an aircraft. The signal is sampled at
+10 kHz, and the duration is about 26 seconds.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate and display the spectrogram of the signal used in this example.</span>
+<span class="n">stft</span> <span class="o">=</span> <span class="n">Stft</span><span class="p">(</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal_aircraft</span></a><span class="p">,</span> <span class="n">fft_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">window_overlap</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">stft</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+<span class="n">stft</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_009_calculate_tonality_indicators_001.png" srcset="../../_images/sphx_glr_009_calculate_tonality_indicators_001.png" alt="STFT, Amplitude, Phase" class = "sphx-glr-single-img"/><p>From the spectrogram, you can see that the signal contains some tonal components,
+especially the two tones whose frequencies start at around 800 Hz and decrease over the
+duration of the signal, due to the Doppler effect.</p>
+</section>
+<section id="iso-1996-2-annex-c">
+<h2>ISO 1996-2 annex C<a class="headerlink" href="#iso-1996-2-annex-c" title="Link to this heading">#</a></h2>
+<p>In this section, we calculate and print out the tonal audibility of the signal according to
+annex C of the standard ISO 1996-2 using the class <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.psychoacoustics.TonalityISO1996_2.html#ansys.sound.core.psychoacoustics.TonalityISO1996_2" title="ansys.sound.core.psychoacoustics.TonalityISO1996_2"><code class="xref py py-class docutils literal notranslate"><span class="pre">TonalityISO1996_2</span></code></a>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the ISO 1996-2 tonality.</span>
+<span class="n">tonality_ISO1996_2</span> <span class="o">=</span> <span class="n">TonalityISO1996_2</span><span class="p">(</span><span class="n">signal</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal_aircraft</span></a><span class="p">)</span>
+<span class="n">tonality_ISO1996_2</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+
+<span class="c1"># Display the results in the console.</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;ISO 1996-2 tonality: </span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;- tonal audibility: </span><span class="si">{</span><span class="n">tonality_ISO1996_2</span><span class="o">.</span><span class="n">get_tonal_audibility</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> dB</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;- tonal adjustment: </span><span class="si">{</span><span class="n">tonality_ISO1996_2</span><span class="o">.</span><span class="n">get_tonal_adjustment</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> dB&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ISO 1996-2 tonality:
+- tonal audibility: 16.5 dB
+- tonal adjustment: 6.0 dB
+</pre></div>
+</div>
+<p>You can also retrieve computation details using the method
+<a class="reference internal" href="../../api/_autosummary/ansys.sound.core.psychoacoustics.TonalityISO1996_2.get_computation_details.html#ansys.sound.core.psychoacoustics.TonalityISO1996_2.get_computation_details" title="ansys.sound.core.psychoacoustics.TonalityISO1996_2.get_computation_details"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_computation_details()</span></code></a>. As you can notice, computing the ISO
+1996-2 tonality over the whole signal is not relevant, as the tonal audibility equals 0 dB in
+that case, even if strong tonal components are audible. Rigorously speaking, the ISO 1996-2
+standard requires at least 1 minute of stationary signal, which is often a very high bar to reach,
+especially for transient signals. The ISO 1996-2 tonality is therefore not very useful for the
+analysis of transient signals, and it is recommended to use the ISO 1996-2 tonality over time in
+that case.</p>
+<p>Let us now calculate and plot the ISO 1996-2 tonality over time using the class
+<a class="reference internal" href="../../api/_autosummary/ansys.sound.core.psychoacoustics.TonalityISO1996_2_OverTime.html#ansys.sound.core.psychoacoustics.TonalityISO1996_2_OverTime" title="ansys.sound.core.psychoacoustics.TonalityISO1996_2_OverTime"><code class="xref py py-class docutils literal notranslate"><span class="pre">TonalityISO1996_2_OverTime</span></code></a>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the ISO 1996-2 tonality over time.</span>
+<span class="n">tonality_ISO1996_2_over_time</span> <span class="o">=</span> <span class="n">TonalityISO1996_2_OverTime</span><span class="p">(</span><span class="n">signal</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal_aircraft</span></a><span class="p">)</span>
+<span class="n">tonality_ISO1996_2_over_time</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+
+<span class="c1"># Display the results over time in a figure.</span>
+<span class="n">tonality_ISO1996_2_over_time</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_009_calculate_tonality_indicators_002.png" srcset="../../_images/sphx_glr_009_calculate_tonality_indicators_002.png" alt="ISO 1996-2 tonal audibility over time, ISO 1996-2 tonal adjustment over time" class = "sphx-glr-single-img"/><p>In this figure, you can notice that the tonal audibility and tonal adjustment show
+strong tonal components near the beginning and the end of the signal.
+Some tonal content is also detected in the middle part of the signal, but less consistently so.
+The most likely reason is that, due to the Doppler effect, the frequencies of the tones are
+changing at a higher rate than in the other parts of the signal.</p>
+</section>
+<section id="din-45681">
+<h2>DIN 45681<a class="headerlink" href="#din-45681" title="Link to this heading">#</a></h2>
+<p>In this section, we calculate, print out, and plot the tonality according to the DIN 45681
+standard using the same signal and the class <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.psychoacoustics.TonalityDIN45681.html#ansys.sound.core.psychoacoustics.TonalityDIN45681" title="ansys.sound.core.psychoacoustics.TonalityDIN45681"><code class="xref py py-class docutils literal notranslate"><span class="pre">TonalityDIN45681</span></code></a>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the DIN 45681 tonality.</span>
+<span class="n">tonality_DIN45681</span> <span class="o">=</span> <span class="n">TonalityDIN45681</span><span class="p">(</span><span class="n">signal</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal_aircraft</span></a><span class="p">)</span>
+<span class="n">tonality_DIN45681</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+
+<span class="c1"># Display the overall results in the console.</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;DIN 45681 tonality: </span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;- mean difference: </span><span class="si">{</span><span class="n">tonality_DIN45681</span><span class="o">.</span><span class="n">get_mean_difference</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> dB &quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;(+/-</span><span class="si">{</span><span class="n">tonality_DIN45681</span><span class="o">.</span><span class="n">get_uncertainty</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> dB)</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;- tonal adjustment: </span><span class="si">{</span><span class="n">tonality_DIN45681</span><span class="o">.</span><span class="n">get_tonal_adjustment</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> dB&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>DIN 45681 tonality:
+- mean difference: 22.0 dB (+/-1.6 dB)
+- tonal adjustment: 6.0 dB
+</pre></div>
+</div>
+<p>The DIN 45681 tonality returns results in a similar form as the ISO 1996-2 tonality. However, as
+it is an average of the computed tonality over time, the overall DIN 45681 tonality value is
+more relevant than that of ISO 1996-2, which computes tonality over the entire signal at once.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display the results over time in a figure.</span>
+<span class="n">tonality_DIN45681</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_009_calculate_tonality_indicators_003.png" srcset="../../_images/sphx_glr_009_calculate_tonality_indicators_003.png" alt="DIN45681 decisive difference, DIN45681 decisive frequency, DIN45681 tonal adjustment" class = "sphx-glr-single-img"/><p>The DIN 45681 “decisive difference”, displayed in the figure, is comparable in its definition to
+the ISO 1996-2 tonal audibility over time. However the default time resolution for the
+computation of the two indicators is different (3 s for DIN 45681, 250 ms for ISO 1996-2). In
+both cases, you can change this time resolution using the class properties
+<a class="reference internal" href="../../api/_autosummary/ansys.sound.core.psychoacoustics.TonalityDIN45681.window_length.html#ansys.sound.core.psychoacoustics.TonalityDIN45681.window_length" title="ansys.sound.core.psychoacoustics.TonalityDIN45681.window_length"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TonalityDIN45681.window_length</span></code></a> for DIN 45681, and
+<a class="reference internal" href="../../api/_autosummary/ansys.sound.core.psychoacoustics.TonalityISO1996_2_OverTime.window_length.html#ansys.sound.core.psychoacoustics.TonalityISO1996_2_OverTime.window_length" title="ansys.sound.core.psychoacoustics.TonalityISO1996_2_OverTime.window_length"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TonalityISO1996_2_OverTime.window_length</span></code></a> and
+<a class="reference internal" href="../../api/_autosummary/ansys.sound.core.psychoacoustics.TonalityISO1996_2_OverTime.overlap.html#ansys.sound.core.psychoacoustics.TonalityISO1996_2_OverTime.overlap" title="ansys.sound.core.psychoacoustics.TonalityISO1996_2_OverTime.overlap"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TonalityISO1996_2_OverTime.overlap</span></code></a> for ISO 1996-2.
+Additionally, the DIN 45681 class provides the frequency of the most prominent tone at each
+computation time step, with the method
+<a class="reference internal" href="../../api/_autosummary/ansys.sound.core.psychoacoustics.TonalityDIN45681.get_decisive_frequency_over_time.html#ansys.sound.core.psychoacoustics.TonalityDIN45681.get_decisive_frequency_over_time" title="ansys.sound.core.psychoacoustics.TonalityDIN45681.get_decisive_frequency_over_time"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TonalityDIN45681.get_decisive_frequency_over_time()</span></code></a>.</p>
+</section>
+<section id="iso-ts-20065">
+<h2>ISO/TS 20065<a class="headerlink" href="#iso-ts-20065" title="Link to this heading">#</a></h2>
+<p>In this section, we calculate, print out, and plot the tonality according to the ISO/TS 20065
+standard using the same signal and the class <code class="xref py py-class docutils literal notranslate"><span class="pre">TonalityISOTS20065</span></code>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the ISO/TS 20065 tonality.</span>
+<span class="n">tonality_ISOTS20065</span> <span class="o">=</span> <span class="n">TonalityISOTS20065</span><span class="p">(</span><span class="n">signal</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal_aircraft</span></a><span class="p">)</span>
+<span class="n">tonality_ISOTS20065</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+
+<span class="c1"># Display the overall results in the console.</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;ISO/TS 20065 tonality (mean audibility): </span><span class="si">{</span><span class="n">tonality_ISOTS20065</span><span class="o">.</span><span class="n">get_mean_audibility</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> dB &quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;(+/- </span><span class="si">{</span><span class="n">tonality_ISOTS20065</span><span class="o">.</span><span class="n">get_uncertainty</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> dB)&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Display the results over time in a figure.</span>
+<span class="n">tonality_ISOTS20065</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_009_calculate_tonality_indicators_004.png" srcset="../../_images/sphx_glr_009_calculate_tonality_indicators_004.png" alt="ISO/TS 20065 decisive audibility, ISO/TS 20065 decisive frequency" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ISO/TS 20065 tonality (mean audibility): 22.4 dB (+/- 1.6 dB)
+</pre></div>
+</div>
+<p>As you can see from the results, the ISO/TS 20065 tonality is basically the same as the DIN 45681
+tonality. Nonetheless a few minor differences are noteworthy:</p>
+<ul class="simple">
+<li><p>the DIN 45681 standard computes a tonal adjustment Kt, meant to be used as a dBA penalty when
+the sound has tonal components, whereas the ISO/TS 20065 standard does not.</p></li>
+<li><p>the DIN 45681 standard can detect tones down to 90 Hz, whereas this limit is extended to 50 Hz
+in the ISO/TS 20065 standard. This means that a very low frequency tone (that is, between 50
+and 90 Hz) can be detected by the ISO/TS 20065 standard, but will most likely be missed by
+the DIN 45681 standard.</p></li>
+<li><p>Some minor differences in the calculation of the detected tones’ edge slopes.</p></li>
+</ul>
+</section>
+<section id="aures">
+<h2>Aures<a class="headerlink" href="#aures" title="Link to this heading">#</a></h2>
+<p>In this section, we calculate, print out, and plot the tonality according to Aures model using
+the same signal and the class <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.psychoacoustics.TonalityAures.html#ansys.sound.core.psychoacoustics.TonalityAures" title="ansys.sound.core.psychoacoustics.TonalityAures"><code class="xref py py-class docutils literal notranslate"><span class="pre">TonalityAures</span></code></a>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the Aures tonality.</span>
+<span class="n">tonality_Aures</span> <span class="o">=</span> <span class="n">TonalityAures</span><span class="p">(</span><span class="n">signal</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal_aircraft</span></a><span class="p">)</span>
+<span class="n">tonality_Aures</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+
+<span class="c1"># Display the overall results in the console.</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Aures tonality: </span><span class="si">{</span><span class="n">tonality_Aures</span><span class="o">.</span><span class="n">get_tonality</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> tu&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Aures tonality: 0.2 tu
+</pre></div>
+</div>
+<p>Contrary to previously mentioned tonality standards, Aures tonality is meant to model the
+perceptual scale of tonality, which is known to have a non-linear relation to spectral peak
+emergence as expressed in decibels. It uses a specific unit called tonality unit (tu), using as a
+reference a 1-kHz pure tone with a level of 60 dB SPL, which is assigned a tonality of 1 tu.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display the results over time in a figure.</span>
+<span class="n">tonality_Aures</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_009_calculate_tonality_indicators_005.png" srcset="../../_images/sphx_glr_009_calculate_tonality_indicators_005.png" alt="Aures tonality over time, Tonal component weighting over time, Relative loudness weighting over time" class = "sphx-glr-single-img"/><p>The figure plots the the Aures tonality over time, which is the main value of interest, and the
+tonal component weighting and relative loudness weighting, which are two intermediate
+multiplicative parameters used to calculate the tonality.</p>
+</section>
+<section id="ecma-418-2">
+<h2>ECMA-418-2<a class="headerlink" href="#ecma-418-2" title="Link to this heading">#</a></h2>
+<p>In this section, we calculate, print out, and plot the tonality according to the ECMA-418-2
+standard (3rd edition, 2024) using the same signal and the class <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.psychoacoustics.TonalityECMA418_2.html#ansys.sound.core.psychoacoustics.TonalityECMA418_2" title="ansys.sound.core.psychoacoustics.TonalityECMA418_2"><code class="xref py py-class docutils literal notranslate"><span class="pre">TonalityECMA418_2</span></code></a>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the ECMA-418-2 tonality.</span>
+<span class="n">tonality_ECMA418_2</span> <span class="o">=</span> <span class="n">TonalityECMA418_2</span><span class="p">(</span><span class="n">signal</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal_aircraft</span></a><span class="p">,</span> <span class="n">field_type</span><span class="o">=</span><span class="s2">&quot;Free&quot;</span><span class="p">,</span> <span class="n">edition</span><span class="o">=</span><span class="s2">&quot;3rd&quot;</span><span class="p">)</span>
+<span class="n">tonality_ECMA418_2</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+
+<span class="c1"># Display the overall results in the console.</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Tonality ECMA 418-2 (psychoacoustic tonality): &quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tonality_ECMA418_2</span><span class="o">.</span><span class="n">get_tonality</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> tuHMS&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Tonality ECMA 418-2 (psychoacoustic tonality): 1.1 tuHMS
+</pre></div>
+</div>
+<p>As with the Aures tonality, the ECMA-418-2 standard uses a perceptual scale, with a specific unit
+called tuHMS (tonality unit, hearing model of Sottek). The hearing model of Sottek is a
+perceptual model of sound, where the tonality is computed based on autocorrelation functions
+calculated in each critical band. A value of 1 tuHMS corresponds to the tonality of a 1-kHz pure
+tone with a level of 40 dB SPL. A value of 0 tuHMS indicates that no tonality could be detected
+(that is, no tonal content), while high values in tuHMS indicate prominent tonal contents.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display the results over time in a figure.</span>
+<span class="n">tonality_ECMA418_2</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_009_calculate_tonality_indicators_006.png" srcset="../../_images/sphx_glr_009_calculate_tonality_indicators_006.png" alt="ECMA-418-2 psychoacoustic tonality, ECMA-418-2 tone frequency" class = "sphx-glr-single-img"/><p>The figure shows the psychoacoustic tonality over time, as well as the frequency of
+the most prominent tone at each computation time step. The frequency seemingly follows the
+Doppler effect that the previously displayed spectrogram showed, only switching back and forth
+between the two main tones’ frequencies.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (1 minutes 30.800 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-gallery-examples-009-calculate-tonality-indicators-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/e917574954fcf4046ed042b0d676504c/009_calculate_tonality_indicators.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">009_calculate_tonality_indicators.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/07fb3cc64dad60ab2421121aa4494713/009_calculate_tonality_indicators.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">009_calculate_tonality_indicators.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/b381942bab571eafd027f1e53e143b79/009_calculate_tonality_indicators.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">009_calculate_tonality_indicators.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-analysis">Set up analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iso-1996-2-annex-c">ISO 1996-2 annex C</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#din-45681">DIN 45681</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iso-ts-20065">ISO/TS 20065</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aures">Aures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ecma-418-2">ECMA-418-2</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/examples/gallery_examples/009_calculate_tonality_indicators.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"ignoreLocation": true, "keys": ["title", "text", "objectID"], "limit": 10, "min_chars_for_search": 2, "threshold": 0.5}');
+const SEARCH_FILE = "../../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2026 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<!--
+  Theme Version Footer
+  Displays the Sphinx theme version and the last updated date.
+  Accessibility and semantic improvements included.
+-->
+<footer class="theme-version" aria-label="Theme version and last update">
+  <span>
+    
+      Built with the
+      <a href="https://sphinxdocs.ansys.com/version/stable/index.html" target="_blank" rel="noopener noreferrer">
+        Ansys Sphinx Theme
+      </a>
+      1.7.0.
+    
+  </span>
+  <br />
+  <span>Last updated on <time id="ast_build_date"></time></span>
+</footer>
+<script>
+  // Set the last updated date in a readable format
+  (function() {
+    var options = { day: "numeric", month: "long", year: "numeric" };
+    var ast_lastModifiedDate = new Date(document.lastModified);
+    var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+    var dateElem = document.getElementById("ast_build_date");
+    if (dateElem) {
+      dateElem.textContent = ast_build_date;
+    }
+  })();
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

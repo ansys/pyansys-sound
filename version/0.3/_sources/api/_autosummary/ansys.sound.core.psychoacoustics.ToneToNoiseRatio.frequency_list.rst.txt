@@ -1,0 +1,6 @@
+frequency\_list
+===============
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: ToneToNoiseRatio.frequency_list

@@ -1,0 +1,6 @@
+get\_single\_tone\_info
+=======================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: ProminenceRatio.get_single_tone_info

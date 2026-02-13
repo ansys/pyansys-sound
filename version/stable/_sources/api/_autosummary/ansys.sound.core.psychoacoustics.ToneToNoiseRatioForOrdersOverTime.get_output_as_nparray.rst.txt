@@ -1,0 +1,6 @@
+get\_output\_as\_nparray
+========================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: ToneToNoiseRatioForOrdersOverTime.get_output_as_nparray

@@ -1,0 +1,6 @@
+gain\_in\_db
+============
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoproperty:: ApplyGain.gain_in_db

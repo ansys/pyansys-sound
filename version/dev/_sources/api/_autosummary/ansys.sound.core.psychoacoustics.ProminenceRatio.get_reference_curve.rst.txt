@@ -1,0 +1,6 @@
+get\_reference\_curve
+=====================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: ProminenceRatio.get_reference_curve

@@ -1,0 +1,6 @@
+path\_to\_wav
+=============
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoproperty:: LoadWav.path_to_wav

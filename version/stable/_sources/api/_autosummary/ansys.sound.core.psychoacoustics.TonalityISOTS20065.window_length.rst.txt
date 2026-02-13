@@ -1,0 +1,6 @@
+window\_length
+==============
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: TonalityISOTS20065.window_length

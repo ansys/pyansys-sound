@@ -1,0 +1,6 @@
+process
+=======
+
+.. currentmodule:: ansys.sound.core.spectral_processing
+
+.. automethod:: PowerSpectralDensity.process

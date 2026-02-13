@@ -1,0 +1,56 @@
+﻿XtractDenoiserParameters
+========================
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoclass:: XtractDenoiserParameters
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      XtractDenoiserParameters.convert_fields_container_to_np_array
+      
+      
+      XtractDenoiserParameters.create_noise_psd_from_automatic_estimation
+      
+      
+      XtractDenoiserParameters.create_noise_psd_from_noise_samples
+      
+      
+      XtractDenoiserParameters.create_noise_psd_from_white_noise_level
+      
+      
+      XtractDenoiserParameters.get_output
+      
+      
+      XtractDenoiserParameters.get_output_as_nparray
+      
+      
+      XtractDenoiserParameters.get_parameters_as_generic_data_container
+      
+      
+      XtractDenoiserParameters.plot
+      
+      
+      XtractDenoiserParameters.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      XtractDenoiserParameters.noise_psd
+   
+   

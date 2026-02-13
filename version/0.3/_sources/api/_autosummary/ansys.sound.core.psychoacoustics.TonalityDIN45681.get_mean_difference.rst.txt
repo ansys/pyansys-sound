@@ -1,0 +1,6 @@
+get\_mean\_difference
+=====================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: TonalityDIN45681.get_mean_difference

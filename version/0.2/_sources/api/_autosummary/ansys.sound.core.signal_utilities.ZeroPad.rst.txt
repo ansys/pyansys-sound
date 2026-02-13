@@ -1,0 +1,45 @@
+﻿ZeroPad
+=======
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoclass:: ZeroPad
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      ZeroPad.convert_fields_container_to_np_array
+      
+      
+      ZeroPad.get_output
+      
+      
+      ZeroPad.get_output_as_nparray
+      
+      
+      ZeroPad.plot
+      
+      
+      ZeroPad.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ZeroPad.duration_zeros
+      ZeroPad.signal
+   
+   

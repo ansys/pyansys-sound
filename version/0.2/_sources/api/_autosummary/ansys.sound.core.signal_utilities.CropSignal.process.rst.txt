@@ -1,0 +1,6 @@
+process
+=======
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. automethod:: CropSignal.process

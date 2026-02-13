@@ -1,0 +1,6 @@
+frequency\_weighting
+====================
+
+.. currentmodule:: ansys.sound.core.standard_levels
+
+.. autoproperty:: OctaveLevelsFromPSD.frequency_weighting

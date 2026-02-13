@@ -1,0 +1,55 @@
+
+:orphan:
+
+.. _sphx_glr_examples_gallery_examples_sg_execution_times:
+
+
+Computation times
+=================
+**23:05.853** total execution time for 7 files **from examples\gallery_examples**:
+
+.. container::
+
+  .. raw:: html
+
+    <style scoped>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" class="init">
+    $(document).ready( function () {
+        $('table.sg-datatable').DataTable({order: [[1, 'desc']]});
+    } );
+    </script>
+
+  .. list-table::
+   :header-rows: 1
+   :class: table table-striped sg-datatable
+
+   * - Example
+     - Time
+     - Mem (MB)
+   * - :ref:`sphx_glr_examples_gallery_examples_005_xtract_feature.py` (``005_xtract_feature.py``)
+     - 12:43.565
+     - 0.0
+   * - :ref:`sphx_glr_examples_gallery_examples_004_isolate_orders.py` (``004_isolate_orders.py``)
+     - 07:34.674
+     - 0.0
+   * - :ref:`sphx_glr_examples_gallery_examples_003_compute_stft.py` (``003_compute_stft.py``)
+     - 01:20.899
+     - 0.0
+   * - :ref:`sphx_glr_examples_gallery_examples_007_calculate_psychoacoustic_indicators.py` (``007_calculate_psychoacoustic_indicators.py``)
+     - 00:52.138
+     - 0.0
+   * - :ref:`sphx_glr_examples_gallery_examples_001_initialize_server_and_deal_with_license.py` (``001_initialize_server_and_deal_with_license.py``)
+     - 00:29.813
+     - 0.0
+   * - :ref:`sphx_glr_examples_gallery_examples_006_calculate_PR_and_TNR.py` (``006_calculate_PR_and_TNR.py``)
+     - 00:03.953
+     - 0.0
+   * - :ref:`sphx_glr_examples_gallery_examples_002_load_resample_amplify_write_wav_files.py` (``002_load_resample_amplify_write_wav_files.py``)
+     - 00:00.810
+     - 0.0

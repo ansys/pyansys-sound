@@ -1,0 +1,6 @@
+set\_from\_generic\_data\_containers
+====================================
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. automethod:: SourceHarmonics.set_from_generic_data_containers

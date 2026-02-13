@@ -1,0 +1,6 @@
+get\_decisive\_audibility\_over\_time
+=====================================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: TonalityISOTS20065.get_decisive_audibility_over_time

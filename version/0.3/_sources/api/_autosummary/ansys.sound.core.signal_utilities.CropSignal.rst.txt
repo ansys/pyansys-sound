@@ -1,0 +1,43 @@
+﻿CropSignal
+==========
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoclass:: CropSignal
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      CropSignal.get_output
+      
+      
+      CropSignal.get_output_as_nparray
+      
+      
+      CropSignal.plot
+      
+      
+      CropSignal.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      CropSignal.end_time
+      CropSignal.signal
+      CropSignal.start_time
+   
+   

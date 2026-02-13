@@ -1,0 +1,6 @@
+output\_non\_transient\_signals
+===============================
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoproperty:: XtractTransient.output_non_transient_signals
