@@ -134,6 +134,7 @@ def test_power_spectral_density_noprocess():
 
 
 def test_power_spectral_density_process():
+    """Test the process method of PowerSpectralDensity class."""
     # Test process with input signal.
     op_load_wav = LoadWav(pytest.data_path_flute)
     op_load_wav.process()
@@ -236,6 +237,7 @@ def test_get_PSD_squared_linear_as_nparray():
 
 
 def test_get_PSD_dB():
+    """Test getting the PSD in dB."""
     op_load_wav = LoadWav(pytest.data_path_flute)
     op_load_wav.process()
     input_signal = op_load_wav.get_output()[0]
@@ -261,6 +263,7 @@ def test_get_PSD_dB():
 
 
 def test_get_PSD_dB_as_nparray():
+    """Test getting the PSD in dB as a NumPy array."""
     op_load_wav = LoadWav(pytest.data_path_flute)
     op_load_wav.process()
     input_signal = op_load_wav.get_output()[0]
@@ -279,6 +282,7 @@ def test_get_PSD_dB_as_nparray():
 
 
 def test_get_frequencies():
+    """Test getting the frequencies from PSD computation."""
     op_load_wav = LoadWav(pytest.data_path_flute)
     op_load_wav.process()
     input_signal = op_load_wav.get_output()[0]

@@ -28,11 +28,13 @@ from ansys.sound.core.psychoacoustics import PsychoacousticsParent
 
 
 def test_psychoacoustics_parent_instantiation():
+    """Test the instantiation of PsychoacousticsParent class."""
     psychoacoustics_parent = PsychoacousticsParent()
     assert psychoacoustics_parent != None
 
 
 def test_psychoacoustics_convert_bark_to_hertz():
+    """Test conversion from Bark scale to Hertz."""
     psychoacoustics_parent = PsychoacousticsParent()
 
     # Invalid Bark band index -> error

@@ -53,7 +53,8 @@ The example shows how to perform these operations:
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
-# Setting up the analysis consists of loading libraries, and connecting to the DPF server.
+# Setting up the analysis consists of loading the required libraries, and connecting to the DPF
+# server.
 
 # Load standard libraries.
 import os
@@ -81,8 +82,8 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # %%
 # Load the WAV files used in this example
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load the signals from WAV files using the :class:`.LoadWav` class. They are returned as
-# :class:`FieldsContainer <ansys.dpf.core.fields_container.FieldsContainer>` objects.
+# Load the signals from WAV files using the :class:`.LoadWav` class. They are returned as a list of
+# :class:`Field <ansys.dpf.core.field.Field>` objects, where each field corresponds to a channel.
 
 # Load a first signal from a WAV file: recording of a flute.
 path_flute_wav = download_flute_wav(server=my_server)

@@ -24,7 +24,7 @@
 
 import warnings
 
-from ansys.dpf.core import DataSources, Field, FieldsContainer, Operator
+from ansys.dpf.core import DataSources, Field, Operator, fields_container_factory
 
 from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -55,7 +55,7 @@ class WriteWav(SignalUtilitiesParent):
 
     def __init__(
         self,
-        signal: Field | FieldsContainer = None,
+        signal: Field | list[Field] = None,
         path_to_write: str = "",
         bit_depth: str = "float32",
     ):
@@ -63,12 +63,9 @@ class WriteWav(SignalUtilitiesParent):
 
         Parameters
         ----------
-        signal : Field | FieldsContainer, default: None
-            Signal to write to a WAV file. Signal may be single-channel (``Field``, or
-            ``FieldsContainer`` with one ``Field``) or multichannel (``FieldsContainer`` with more
-            than one ``Field``). If necessary, the classes :class:`CreateSignalField` (for
-            single-channel signals) and :class:`CreateSignalFieldsContainer` (for single- or
-            multi-channel signals) can help create such input from signal data.
+        signal : Field | list[Field], default: None
+            Signal to write to a WAV file. Data in each Field instance in the list is stored as a
+            separate channel in the WAV file.
         path_to_write : str, default: ''
             Path for the WAV file.
         bit_depth : str, default: 'float32'
@@ -83,21 +80,26 @@ class WriteWav(SignalUtilitiesParent):
         self.__operator = Operator("write_wav_sas")
 
     @property
-    def signal(self) -> Field | FieldsContainer:
+    def signal(self) -> Field | list[Field]:
         """Input signal.
 
-        Signal may be single-channel (``Field``, or ``FieldsContainer`` with one ``Field``) or
-        multichannel (``FieldsContainer`` with more than one ``Field``).
+        Data in each Field instance in the list corresponds to signal channel.
         """
         return self.__signal
 
     @signal.setter
-    def signal(self, signal: Field | FieldsContainer):
+    def signal(self, signal: Field | list[Field]):
         """Setter for the signal."""
-        if not isinstance(signal, (Field, FieldsContainer)) and signal is not None:
-            raise PyAnsysSoundException(
-                "Signal must be specified as a `Field` or `FieldsContainer`."
-            )
+        if not (signal is None or isinstance(signal, Field)):
+            if not isinstance(signal, list):
+                raise PyAnsysSoundException(
+                    "Signal must be specified as a DPF field or list of DPF fields."
+                )
+            for channel in signal:
+                if not isinstance(channel, Field):
+                    raise PyAnsysSoundException(
+                        "Signal must be specified as a DPF field or list of DPF fields."
+                    )
         self.__signal = signal
 
     @property
@@ -147,7 +149,13 @@ class WriteWav(SignalUtilitiesParent):
         data_source_out = DataSources()
         data_source_out.add_file_path(self.path_to_write, ".wav")
 
-        self.__operator.connect(0, self.signal)
+        signal = self.signal
+        if isinstance(signal, Field):
+            signal = [signal]
+        signal_as_fields_container = fields_container_factory.over_time_freq_fields_container(
+            signal
+        )
+        self.__operator.connect(0, signal_as_fields_container)
         self.__operator.connect(1, data_source_out)
         self.__operator.connect(2, self.bit_depth)
 

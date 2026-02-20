@@ -110,6 +110,20 @@ def test_source_audio_load_from_wave_file():
     )
 
 
+def test_source_audio_load_from_wave_file_warning():
+    """Test SourceAudio load_source_audio_from_wave_file method warning (for multiple channels)."""
+    source_audio = SourceAudio()
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match=(
+            f"The specified WAV file contains multiple channels. Only the first is used as audio "
+            "source data."
+        ),
+    ):
+        source_audio.load_from_wave_file(pytest.data_path_Acceleration_stereo_nonUnitaryCalib)
+    assert isinstance(source_audio.source_audio_data, Field)
+
+
 def test_source_audio_load_from_text_file():
     """Test SourceAudio load_source_audio_from_text method."""
     source_audio = SourceAudio()

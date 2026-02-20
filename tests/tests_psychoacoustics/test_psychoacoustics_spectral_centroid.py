@@ -32,11 +32,13 @@ EXP_SPECTRAL_CENTROID = 816.00695
 
 
 def test_spectral_centroid_instantiation():
+    """Test the instantiation of SpectralCentroid class."""
     spectral_centroid_computer = SpectralCentroid()
     assert spectral_centroid_computer != None
 
 
 def test_spectral_centroid_process():
+    """Test the process method of SpectralCentroid class."""
     spectral_centroid_computer = SpectralCentroid()
 
     # No signal -> error
@@ -59,6 +61,7 @@ def test_spectral_centroid_process():
 
 
 def test_spectral_centroid_get_output():
+    """Test the get_output method of SpectralCentroid class."""
     spectral_centroid_computer = SpectralCentroid()
 
     # Get a signal
@@ -87,6 +90,7 @@ def test_spectral_centroid_get_output():
 
 
 def test_spectral_centroid_get_spectral_centroid():
+    """Test the get_spectral_centroid method of SpectralCentroid class."""
     spectral_centroid_computer = SpectralCentroid()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
@@ -105,6 +109,7 @@ def test_spectral_centroid_get_spectral_centroid():
 
 
 def test_spectral_centroid_get_output_as_nparray():
+    """Test the get_output_as_nparray method of SpectralCentroid class."""
     spectral_centroid_computer = SpectralCentroid()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
@@ -128,6 +133,7 @@ def test_spectral_centroid_get_output_as_nparray():
 
 
 def test_spectral_centroid_set_get_signal():
+    """Test the signal setter and getter of SpectralCentroid class."""
     spectral_centroid_computer = SpectralCentroid()
     field = Field()
     field.data = 42 * np.ones(3)
@@ -138,6 +144,7 @@ def test_spectral_centroid_set_get_signal():
 
 
 def test_spectral_centroid_print():
+    """Test the __str__ method of SpectralCentroid class."""
     spectral_centroid_computer = SpectralCentroid()
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)

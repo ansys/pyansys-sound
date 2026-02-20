@@ -77,11 +77,13 @@ def create_psd_from_txt_data():
 
 
 def test_tone_to_noise_ratio_instantiation():
+    """Test the instantiation of ToneToNoiseRatio class."""
     tnr = ToneToNoiseRatio()
     assert tnr != None
 
 
 def test_tone_to_noise_ratio_set_get_psd(create_psd_from_txt_data):
+    """Test the psd setter and getter of ToneToNoiseRatio class."""
     tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
@@ -93,6 +95,7 @@ def test_tone_to_noise_ratio_set_get_psd(create_psd_from_txt_data):
 
 
 def test_tone_to_noise_ratio_set_get_frequency_list():
+    """Test the frequency_list setter and getter of ToneToNoiseRatio class."""
     tnr = ToneToNoiseRatio()
 
     frequency_list = [2, 5, 9]
@@ -104,6 +107,7 @@ def test_tone_to_noise_ratio_set_get_frequency_list():
 
 
 def test_tone_to_noise_ratio_process(create_psd_from_txt_data):
+    """Test the process method of ToneToNoiseRatio class."""
     tnr = ToneToNoiseRatio()
 
     # no signal -> error 1
@@ -119,6 +123,7 @@ def test_tone_to_noise_ratio_process(create_psd_from_txt_data):
 
 
 def test_tone_to_noise_ratio_get_output(create_psd_from_txt_data):
+    """Test the get_output method of ToneToNoiseRatio class."""
     tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
@@ -136,6 +141,7 @@ def test_tone_to_noise_ratio_get_output(create_psd_from_txt_data):
 
 
 def test_tone_to_noise_ratio_get_output_as_nparray(create_psd_from_txt_data):
+    """Test the get_output_as_nparray method of ToneToNoiseRatio class."""
     tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
@@ -186,6 +192,7 @@ def test_tone_to_noise_ratio_get_output_as_nparray(create_psd_from_txt_data):
 
 
 def test_tone_to_noise_ratio_get_nb_tones(create_psd_from_txt_data):
+    """Test getting the number of tones from ToneToNoiseRatio computation."""
     tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
@@ -208,6 +215,7 @@ def test_tone_to_noise_ratio_get_nb_tones(create_psd_from_txt_data):
 
 
 def test_tone_to_noise_ratio_get_peaks_frequencies(create_psd_from_txt_data):
+    """Test getting the peaks frequencies from ToneToNoiseRatio computation."""
     tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
@@ -225,6 +233,7 @@ def test_tone_to_noise_ratio_get_peaks_frequencies(create_psd_from_txt_data):
 
 
 def test_tone_to_noise_ratio_get_TNR_values(create_psd_from_txt_data):
+    """Test getting the tone-to-noise ratio values from ToneToNoiseRatio computation."""
     tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
@@ -242,6 +251,7 @@ def test_tone_to_noise_ratio_get_TNR_values(create_psd_from_txt_data):
 
 
 def test_tone_to_noise_ratio_get_peaks_levels(create_psd_from_txt_data):
+    """Test getting the peaks levels from ToneToNoiseRatio computation."""
     tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
@@ -259,6 +269,7 @@ def test_tone_to_noise_ratio_get_peaks_levels(create_psd_from_txt_data):
 
 
 def test_tone_to_noise_ratio_get_peaks_low_frequencies(create_psd_from_txt_data):
+    """Test getting the low boundary frequencies from ToneToNoiseRatio computation."""
     tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
@@ -276,6 +287,7 @@ def test_tone_to_noise_ratio_get_peaks_low_frequencies(create_psd_from_txt_data)
 
 
 def test_tone_to_noise_ratio_get_peaks_high_frequencies(create_psd_from_txt_data):
+    """Test getting the high boundary frequencies from ToneToNoiseRatio computation."""
     tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
@@ -293,6 +305,7 @@ def test_tone_to_noise_ratio_get_peaks_high_frequencies(create_psd_from_txt_data
 
 
 def test_tone_to_noise_ratio_get_max_TNR_value(create_psd_from_txt_data):
+    """Test getting the maximum tone-to-noise ratio value from ToneToNoiseRatio computation."""
     tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
@@ -309,6 +322,7 @@ def test_tone_to_noise_ratio_get_max_TNR_value(create_psd_from_txt_data):
 
 
 def test_tone_to_noise_ratio_get_all_tone_infos(create_psd_from_txt_data):
+    """Test getting all tone information from ToneToNoiseRatio computation."""
     tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
@@ -349,6 +363,7 @@ def test_tone_to_noise_ratio_get_all_tone_infos(create_psd_from_txt_data):
 
 
 def test_tone_to_noise_ratio_get_reference_curve(create_psd_from_txt_data):
+    """Test getting the reference curve from ToneToNoiseRatio computation."""
     tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
@@ -375,6 +390,7 @@ def test_tone_to_noise_ratio_get_reference_curve(create_psd_from_txt_data):
 
 @patch("matplotlib.pyplot.show")
 def test_tone_to_noise_ratio_plot(mock_show, create_psd_from_txt_data):
+    """Test the plot method of ToneToNoiseRatio class."""
     tnr = ToneToNoiseRatio()
 
     psd = create_psd_from_txt_data
@@ -392,6 +408,7 @@ def test_tone_to_noise_ratio_plot(mock_show, create_psd_from_txt_data):
 
 
 def test_tone_to_noise_ratio_with_frequency_list(create_psd_from_txt_data):
+    """Test ToneToNoiseRatio computation with a custom frequency list."""
     psd = create_psd_from_txt_data
     frequency_list = [
         261.090087890625,

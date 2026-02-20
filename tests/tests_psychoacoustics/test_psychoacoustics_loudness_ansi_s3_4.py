@@ -191,6 +191,7 @@ def test_loudness_ansi_s3_4_get_loudness_sone():
 
 
 def test_loudness_ansi_s3_4_get_loudness_level_phon():
+    """Test get_loudness_level_phon method of LoudnessANSI_S3_4 class."""
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()

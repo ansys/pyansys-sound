@@ -131,7 +131,17 @@ class SourceAudio(SourceParent):
         """
         loader = LoadWav(file)
         loader.process()
-        self.source_audio_data = loader.get_output()[0]
+        signal = loader.get_output()
+
+        if len(signal) > 1:
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    f"The specified WAV file contains multiple channels. Only the first is used as "
+                    f"audio source data."
+                )
+            )
+
+        self.source_audio_data = signal[0]
 
     def load_from_text_file(self, file: str):
         """Load the audio source data from a text file.

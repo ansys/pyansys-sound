@@ -24,16 +24,12 @@
 
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
+from ansys.dpf.core import Field, Operator, locations, natures, types
 import matplotlib.pyplot as plt
 import numpy as np
 
 from . import SpectrogramProcessingParent
-from .._pyansys_sound import (
-    PyAnsysSoundException,
-    PyAnsysSoundWarning,
-    convert_fields_container_to_np_array,
-)
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class IsolateOrders(SpectrogramProcessingParent):
@@ -58,9 +54,9 @@ class IsolateOrders(SpectrogramProcessingParent):
 
     def __init__(
         self,
-        signal: FieldsContainer | Field = None,
+        signal: Field = None,
         rpm_profile: Field = None,
-        orders: list = None,
+        orders: list[float] = None,
         fft_size: int = 1024,
         window_type: str = "HANN",
         window_overlap: float = 0.5,
@@ -70,13 +66,13 @@ class IsolateOrders(SpectrogramProcessingParent):
 
         Parameters
         ----------
-        signal : FieldsContainer | Field, default: None
-            One or more input signals on which to isolate orders.
+        signal : Field, default: None
+            Input signal on which to isolate orders.
         rpm_profile : Field, default: None
-            RPM signal associated with the time-domain signals.
-            It is assumed that the signal's unit is ``rpm``. If this is not the case,
+            RPM signal associated with the input signal.
+            It is assumed that the RPM signal's unit is ``rpm``. If this is not the case,
             inaccurate behavior might occur during the conversion from RPM to frequency.
-        orders : list, default: None
+        orders : list[float], default: None
             List of the order numbers to isolate. The list must contain at least one value.
         fft_size : int, default: 1024
             Size of the FFT used to compute the STFT.
@@ -102,13 +98,16 @@ class IsolateOrders(SpectrogramProcessingParent):
         self.__operator = Operator("isolate_orders")
 
     @property
-    def signal(self) -> Field | FieldsContainer:
+    def signal(self) -> Field:
         """Input signal."""
         return self.__signal
 
     @signal.setter
-    def signal(self, signal: Field | FieldsContainer):
+    def signal(self, signal: Field):
         """Set the signal."""
+        if not (signal is None or isinstance(signal, Field)):
+            raise PyAnsysSoundException("Signal must be specified as a DPF field.")
+
         self.__signal = signal
 
     @property
@@ -122,22 +121,14 @@ class IsolateOrders(SpectrogramProcessingParent):
         self.__rpm_profile = rpm_profile
 
     @property
-    def orders(self) -> Field:
-        """List of the order numbers to isolate.
-
-        Can be provided as a list or a DPF field, but will be stored as DPF field regardless.
-        """
+    def orders(self) -> list[float]:
+        """List of the order numbers to isolate."""
         return self.__orders
 
     @orders.setter
-    def orders(self, orders: Field | list):
+    def orders(self, orders: list[float]):
         """Set the orders."""
-        if type(orders) == list:
-            f = Field()
-            f.append(orders, 1)
-            self.__orders = f
-        else:
-            self.__orders = orders
+        self.__orders = orders
 
     @property
     def fft_size(self) -> int:
@@ -202,11 +193,11 @@ class IsolateOrders(SpectrogramProcessingParent):
         return self.__width_selection
 
     @width_selection.setter
-    def width_selection(self, widt_selection: int):
+    def width_selection(self, width_selection: int):
         """Set the width selection."""
-        if widt_selection < 0:
+        if width_selection < 0:
             raise PyAnsysSoundException("Width selection must be greater than 0.0.")
-        self.__width_selection = widt_selection
+        self.__width_selection = width_selection
 
     def process(self):
         """Isolate the orders of the signal.
@@ -228,9 +219,13 @@ class IsolateOrders(SpectrogramProcessingParent):
                 "No orders found for order isolation. Use 'IsolateOrder.orders'."
             )
 
+        # Convert order list to field.
+        orders = Field(nentities=1, nature=natures.scalar, location=locations.time_freq)
+        orders.append(self.orders, 1)
+
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, self.rpm_profile)
-        self.__operator.connect(2, self.orders)
+        self.__operator.connect(2, orders)
         self.__operator.connect(3, self.fft_size)
         self.__operator.connect(4, self.window_type)
         self.__operator.connect(5, self.window_overlap)
@@ -240,21 +235,17 @@ class IsolateOrders(SpectrogramProcessingParent):
         self.__operator.run()
 
         # Stores output in the variable
-        if type(self.signal) == FieldsContainer:
-            self._output = self.__operator.get_output(0, "fields_container")
-        elif type(self.signal) == Field:
-            self._output = self.__operator.get_output(0, "field")
+        self._output = self.__operator.get_output(0, types.field)
 
-    def get_output(self) -> Field | FieldsContainer:
-        """Get the temporal signal of the isolated orders as a DPF field or fields container.
+    def get_output(self) -> Field:
+        """Get the temporal signal of the isolated orders as a DPF field.
 
         Returns
         -------
-        Field | FieldsContainer
-            Signal resulting from the order isolation as a DPF field or fields container.
+        Field
+            Signal resulting from the order isolation as a DPF field.
         """
         if self._output == None:
-            # Computing output if needed
             warnings.warn(PyAnsysSoundWarning("Output is not processed yet. \
                         Use the 'IsolateOrders.process()' method."))
 
@@ -268,12 +259,7 @@ class IsolateOrders(SpectrogramProcessingParent):
         numpy.ndarray
             Temporal signal of the isolated orders in a NumPy array.
         """
-        output = self.get_output()
-
-        if type(output) == Field:
-            return output.data
-
-        return convert_fields_container_to_np_array(output)
+        return np.array(self.get_output().data)
 
     def plot(self):
         """Plot the signal after order isolation."""
@@ -282,26 +268,11 @@ class IsolateOrders(SpectrogramProcessingParent):
                 f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
             )
         output = self.get_output()
+        time = output.time_freq_support.time_frequencies
 
-        if type(output) == Field:
-            num_channels = 0
-            field = output
-        else:
-            num_channels = len(output)
-            field = output[0]
-
-        time_data = field.time_freq_support.time_frequencies.data
-        time_unit = field.time_freq_support.time_frequencies.unit
-        unit = field.unit
-
-        for i in range(num_channels):
-            plt.plot(time_data, output[i].data, label=f"Channel {i}")
-        else:
-            plt.plot(time_data, field.data, label="Channel 0")
-
-        plt.title(field.name)
-        plt.legend()
-        plt.xlabel(f"Time ({time_unit})")
-        plt.ylabel(f"Amplitude ({unit})")
+        plt.plot(time.data, output.data)
+        plt.title(output.name)
+        plt.xlabel(f"Time ({time.unit})")
+        plt.ylabel(f"Amplitude ({output.unit})")
         plt.grid(True)
         plt.show()

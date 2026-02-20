@@ -24,16 +24,12 @@
 
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
+from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
 from . import XtractParent, XtractTonalParameters
-from .._pyansys_sound import (
-    PyAnsysSoundException,
-    PyAnsysSoundWarning,
-    convert_fields_container_to_np_array,
-)
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class XtractTonal(XtractParent):
@@ -47,7 +43,7 @@ class XtractTonal(XtractParent):
     Extract tonal components from a signal, and display the tonal and non-tonal components.
 
     >>> from ansys.sound.core.xtract import XtractTonal
-    >>> xtract_tonal = XtractTonal(input_signal=my_signal_field, input_parameters=my_parameters)
+    >>> xtract_tonal = XtractTonal(input_signal=my_signal, input_parameters=my_parameters)
     >>> xtract_tonal.process()
     >>> tonal_signals, non_tonal_signals = xtract_tonal.get_output()
     >>> xtract_tonal.plot()
@@ -59,18 +55,15 @@ class XtractTonal(XtractParent):
 
     def __init__(
         self,
-        input_signal: FieldsContainer | Field = None,
+        input_signal: Field = None,
         input_parameters: XtractTonalParameters = None,
     ):
         """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        input_signal : FieldsContainer | Field, default: None
-            One or more signals to extract tonal components from
-            as a DPF field or fields container.
-            When inputting a fields container,
-            each signal (each field of the fields container) is processed individually.
+        input_signal : Field, default: None
+            Input signal from which to extract tonal components, as a DPF field.
         input_parameters : XtractTonalParameters, default: None
             Structure that contains the parameters of the algorithm:
 
@@ -97,19 +90,17 @@ class XtractTonal(XtractParent):
         self.__operator = Operator("xtract_tonal")
 
     @property
-    def input_signal(self) -> FieldsContainer | Field:
-        """Input signal.
-
-        One or more signals from which to extract tonal components, as a DPF field or fields
-        container. When inputting a fields container, each signal (each field of the fields
-        container) is processed individually.
-        """
+    def input_signal(self) -> Field:
+        """Input signal from which to extract tonal components, as a DPF field."""
         return self.__input_signal
 
     @input_signal.setter
-    def input_signal(self, value: FieldsContainer | Field):
+    def input_signal(self, signal: Field):
         """Set input signal."""
-        self.__input_signal = value
+        if not (signal is None or isinstance(signal, Field)):
+            raise PyAnsysSoundException("Signal must be specified as a DPF field.")
+
+        self.__input_signal = signal
 
     @property
     def input_parameters(self) -> XtractTonalParameters:
@@ -132,19 +123,13 @@ class XtractTonal(XtractParent):
         self.__input_parameters = value
 
     @property
-    def output_tonal_signals(self) -> FieldsContainer | Field:
-        """Output tonal signals.
-
-        One or more tonal signals as a DPF field or fields container (depending on the input).
-        """
+    def output_tonal_signals(self) -> Field:
+        """Output tonal signal as a DPF field."""
         return self.__output_tonal_signals
 
     @property
-    def output_non_tonal_signals(self) -> FieldsContainer | Field:
-        """Output non-tonal signals.
-
-        One or more non-tonal signals as a DPF field or fields container (depending on the input).
-        """
+    def output_non_tonal_signals(self) -> Field:
+        """Output non-tonal signal as a DPF field."""
         return self.__output_non_tonal_signals
 
     def process(self):
@@ -162,100 +147,61 @@ class XtractTonal(XtractParent):
         self.__operator.run()
 
         # Stores the output in the variable
-        if type(self.__input_signal) == Field:
-            self.__output_tonal_signals = self.__operator.get_output(0, "field")
-            self.__output_non_tonal_signals = self.__operator.get_output(1, "field")
-        else:
-            self.__output_tonal_signals = self.__operator.get_output(0, "fields_container")
-            self.__output_non_tonal_signals = self.__operator.get_output(1, "fields_container")
+        self.__output_tonal_signals = self.__operator.get_output(0, types.field)
+        self.__output_non_tonal_signals = self.__operator.get_output(1, types.field)
 
         self._output = (self.__output_tonal_signals, self.__output_non_tonal_signals)
 
-    def get_output(self) -> tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]:
+    def get_output(self) -> tuple[Field, Field]:
         """Get the output of the tonal analysis.
 
         Returns
         -------
-        tuple[FieldsContainer, FieldsContainer] | tuple[Field, Field]
-            Tonal and non-tonal signals in a tuple as DPF fields containers or fields.
+        Field
+            Tonal signal as a DPF field.
+        Field
+            Non-tonal signal as a DPF field.
         """
-        if self.__output_tonal_signals == None or self.__output_non_tonal_signals == None:
+        if None in self._output:
             warnings.warn(PyAnsysSoundWarning("Output is not processed yet."))
 
-        return self.__output_tonal_signals, self.__output_non_tonal_signals
+        return self._output
 
     def get_output_as_nparray(self) -> tuple[np.ndarray, np.ndarray]:
         """Get the output of the tonal analysis as NumPy arrays.
 
         Returns
         -------
-        tuple[np.ndarray, np.ndarray]
-            Tonal and non-tonal signals as a tuple in NumPy arrays.
+        numpy.ndarray
+            Tonal signal as a NumPy array.
+        numpy.ndarray
+            Non-tonal signal as a NumPy array.
         """
-        l_output_tonal_signals, l_output_non_tonal_signals = self.get_output()
+        tonal_signal, non_tonal_signal = self.get_output()
 
-        if type(l_output_tonal_signals) == Field:
-            return np.array(l_output_tonal_signals.data), np.array(l_output_non_tonal_signals.data)
-        else:
-            if self.__output_tonal_signals == None or self.__output_non_tonal_signals == None:
-                return np.array([]), np.array([])
-            else:
-                return (
-                    convert_fields_container_to_np_array(l_output_tonal_signals),
-                    convert_fields_container_to_np_array(l_output_non_tonal_signals),
-                )
+        if tonal_signal is None or non_tonal_signal is None:
+            return np.array([]), np.array([])
+
+        return np.array(tonal_signal.data), np.array(non_tonal_signal.data)
 
     def plot(self):
         """Plot the output of the tonal analysis.
 
         This method plots both the tonal and non-tonal signals.
         """
-        l_output_tonal_signals = self.get_output()[0]
-        l_output_tonal_signals_as_field = (
-            l_output_tonal_signals
-            if type(l_output_tonal_signals) == Field
-            else l_output_tonal_signals[0]
-        )
+        tonal_signal, non_tonal_signal = self.get_output()
+        time = tonal_signal.time_freq_support.time_frequencies
 
-        l_np_output_tonal_signals, l_np_output_non_tonal_signals = self.get_output_as_nparray()
+        plt.figure()
+        plt.plot(time.data, tonal_signal.data)
+        plt.xlabel(f"Time ({time.unit})")
+        plt.ylabel(f"Amplitude ({tonal_signal.unit})")
+        plt.title("Tonal signal")
 
-        l_time_data = l_output_tonal_signals_as_field.time_freq_support.time_frequencies.data
-        l_time_unit = l_output_tonal_signals_as_field.time_freq_support.time_frequencies.unit
-        l_unit = l_output_tonal_signals_as_field.unit
+        plt.figure()
+        plt.plot(time.data, non_tonal_signal.data)
+        plt.xlabel(f"Time ({time.unit})")
+        plt.ylabel(f"Amplitude ({non_tonal_signal.unit})")
+        plt.title("Non tonal signal")
 
-        ################
-        # Note: by design, we have l_np_output_tonal_signals.ndim
-        # == l_np_output_non_tonal_signals.ndim
-        if l_np_output_tonal_signals.ndim == 1:
-            ################
-            # Field type
-            plt.figure()
-            plt.plot(l_time_data, l_np_output_tonal_signals)
-            plt.xlabel(f"Time ({l_time_unit})")
-            plt.ylabel(f"Amplitude ({l_unit})")
-            plt.title("Tonal signal")
-
-            plt.figure()
-            plt.plot(l_time_data, l_np_output_non_tonal_signals)
-            plt.xlabel(f"Time ({l_time_unit})")
-            plt.ylabel(f"Amplitude ({l_unit})")
-            plt.title("Non tonal signal")
-        else:
-            ################
-            # FieldsContainer type
-            for l_i in range(len(l_np_output_tonal_signals)):
-                plt.figure()
-                plt.plot(l_time_data, l_np_output_tonal_signals[l_i], label=f"Channel {l_i}")
-                plt.xlabel(f"Time ({l_time_unit})")
-                plt.ylabel(f"Amplitude ({l_unit})")
-                plt.title(f"Tonal signal - channel {l_i}")
-
-            for l_i in range(len(l_np_output_non_tonal_signals)):
-                plt.figure()
-                plt.plot(l_time_data, l_np_output_non_tonal_signals[l_i], label=f"Channel {l_i}")
-                plt.xlabel(f"Time ({l_time_unit})")
-                plt.ylabel(f"Amplitude ({l_unit})")
-                plt.title(f"Non tonal signal - channel {l_i}")
-
-        # Show all figures created
         plt.show()

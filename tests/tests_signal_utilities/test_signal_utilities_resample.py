@@ -22,7 +22,7 @@
 
 from unittest.mock import patch
 
-from ansys.dpf.core import Field, FieldsContainer
+from ansys.dpf.core import Field
 import numpy as np
 import pytest
 
@@ -45,11 +45,13 @@ else:  # DPF Sound <= 2025 R2
 
 
 def test_resample_instantiation():
+    """Test the instantiation of Resample class."""
     resampler = Resample()
     assert resampler != None
 
 
 def test_resample_process():
+    """Test the process method of Resample class."""
     resampler = Resample()
     wav_loader = LoadWav(pytest.data_path_flute)
 
@@ -59,61 +61,43 @@ def test_resample_process():
     assert str(excinfo.value) == "No signal to resample. Use the 'Resample.set_signal()' method."
 
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    # Testing input fields container (no error expected)
-    resampler.signal = fc
+    resampler.signal = signal[0]
     resampler.process()
-
-    # Testing input field (no error expected)
-    resampler.signal = fc[0]
-    resampler.process()
+    assert resampler._output is not None
 
 
 def test_resample_get_output():
+    """Test the get_output method of Resample class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
-    fc_signal = wav_loader.get_output()
-    resampler = Resample(signal=fc_signal, new_sampling_frequency=88100.0)
+    signal = wav_loader.get_output()
+    resampler = Resample(signal=signal[0], new_sampling_frequency=88100.0)
 
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. \
                         Use the 'Resample.process\\(\\)' method.",
     ):
-        fc_out = resampler.get_output()
+        _ = resampler.get_output()
 
     resampler.process()
-    fc_out = resampler.get_output()
+    output = resampler.get_output()
 
-    assert len(fc_out) == 1
-
-    resampler.signal = fc_signal[0]
-    resampler.process()
-    f_out = resampler.get_output()
-
-    assert len(f_out.data) == EXP_SIZE
-    assert f_out.data[1000] == EXP_1000
-    assert f_out.data[3456] == EXP_3456
-    assert f_out.data[30000] == EXP_30000
-    assert f_out.data[60000] == EXP_60000
+    assert len(output.data) == EXP_SIZE
+    assert output.data[1000] == EXP_1000
+    assert output.data[3456] == EXP_3456
+    assert output.data[30000] == EXP_30000
+    assert output.data[60000] == EXP_60000
 
 
 def test_resample_get_output_as_np_array():
+    """Test the get_output_as_nparray method of Resample class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
-    fc_signal = wav_loader.get_output()
-    resampler = Resample(signal=fc_signal[0], new_sampling_frequency=88100.0)
-    resampler.process()
-    out_arr = resampler.get_output_as_nparray()
-
-    assert len(out_arr) == EXP_SIZE
-    assert out_arr[1000] == EXP_1000
-    assert out_arr[3456] == EXP_3456
-    assert out_arr[30000] == EXP_30000
-    assert out_arr[60000] == EXP_60000
-
-    resampler.signal = fc_signal
+    signal = wav_loader.get_output()
+    resampler = Resample(signal=signal[0], new_sampling_frequency=88100.0)
     resampler.process()
     out_arr = resampler.get_output_as_nparray()
 
@@ -125,22 +109,28 @@ def test_resample_get_output_as_np_array():
 
 
 def test_resample_set_get_signal():
+    """Test the signal setter and getter of Resample class."""
     resampler = Resample()
-    fc = FieldsContainer()
-    fc.labels = ["channel"]
-    f = Field()
-    f.data = 42 * np.ones(3)
-    fc.add_field({"channel": 0}, f)
-    fc.name = "testField"
-    resampler.signal = fc
-    fc_from_get = resampler.signal
+    signal = Field()
+    signal.data = 42 * np.ones(3)
+    resampler.signal = signal
+    signal_from_getter = resampler.signal
 
-    assert fc_from_get.name == "testField"
-    assert len(fc_from_get) == 1
-    assert fc_from_get[0].data[0, 2] == 42
+    assert signal_from_getter.data[0, 2] == 42
+
+
+def test_resample_set_signal_exception():
+    """Test exception for signal setter."""
+    resampler = Resample()
+
+    with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
+        resampler.signal = "WrongType"
+
+    assert resampler.signal is None
 
 
 def test_resample_set_get_sampling_frequency():
+    """Test the new_sampling_frequency setter and getter of Resample class."""
     resampler = Resample()
 
     # Error
@@ -154,13 +144,10 @@ def test_resample_set_get_sampling_frequency():
 
 @patch("matplotlib.pyplot.show")
 def test_resample_plot(mock_show):
+    """Test the plot method of Resample class."""
     wav_loader = LoadWav(pytest.data_path_flute)
     wav_loader.process()
-    fc_signal = wav_loader.get_output()
-    resampler = Resample(signal=fc_signal, new_sampling_frequency=88100.0)
-    resampler.process()
-    resampler.plot()
-
-    resampler.signal = fc_signal[0]
+    signal = wav_loader.get_output()
+    resampler = Resample(signal=signal[0], new_sampling_frequency=88100.0)
     resampler.process()
     resampler.plot()

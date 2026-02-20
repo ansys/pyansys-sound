@@ -24,7 +24,7 @@
 
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
+from ansys.dpf.core import Field, FieldsContainer, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -55,7 +55,7 @@ class Stft(SpectrogramProcessingParent):
 
     def __init__(
         self,
-        signal: Field | FieldsContainer = None,
+        signal: Field = None,
         fft_size: int = 2048,
         window_type: str = "HANN",
         window_overlap: float = 0.5,
@@ -64,7 +64,7 @@ class Stft(SpectrogramProcessingParent):
 
         Parameters
         ----------
-        signal : Field | FieldsContainer, default: None
+        signal : Field, default: None
             Input signal on which to compute the STFT.
         fft_size : int, default: 2048
             Size of the FFT to compute the STFT.
@@ -86,25 +86,16 @@ class Stft(SpectrogramProcessingParent):
 
     @property
     def signal(self) -> Field:
-        """Input signal.
-
-        Can be provided as a DPF field or fields container, but will be stored as DPF field
-        regardless.
-        """
+        """Input signal as a DPF field."""
         return self.__signal
 
     @signal.setter
-    def signal(self, signal: Field | FieldsContainer):
+    def signal(self, signal: Field):
         """Signal."""
-        if type(signal) == FieldsContainer:
-            if len(signal) > 1:
-                raise PyAnsysSoundException(
-                    "Input as a DPF fields container can only have one field (mono signal)."
-                )
-            else:
-                self.__signal = signal[0]
-        else:
-            self.__signal = signal
+        if signal is not None and not isinstance(signal, Field):
+            raise PyAnsysSoundException("Input signal must be provided as a DPF Field.")
+
+        self.__signal = signal
 
     @property
     def fft_size(self) -> int:
@@ -165,7 +156,7 @@ class Stft(SpectrogramProcessingParent):
 
         This method calls the appropriate DPF Sound operator to compute the STFT of the signal.
         """
-        if self.signal == None:
+        if self.signal is None:
             raise PyAnsysSoundException("No signal found for STFT. Use 'Stft.signal'.")
 
         self.__operator.connect(0, self.signal)
@@ -177,7 +168,7 @@ class Stft(SpectrogramProcessingParent):
         self.__operator.run()
 
         # Stores output in the variable
-        self._output = self.__operator.get_output(0, "fields_container")
+        self._output = self.__operator.get_output(0, types.fields_container)
 
     def get_output(self) -> FieldsContainer:
         """Get the STFT of the signal as a DPF fields container.

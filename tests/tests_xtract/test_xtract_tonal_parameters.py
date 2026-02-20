@@ -28,6 +28,7 @@ from ansys.sound.core.xtract.xtract_tonal_parameters import XtractTonalParameter
 
 
 def test_xtract_tonal_parameters_instantiation():
+    """Test the instantiation of XtractTonalParameters class."""
     xtract_tonal_parameters = XtractTonalParameters()
     assert xtract_tonal_parameters != None
 
@@ -46,6 +47,7 @@ def test_xtract_tonal_parameters_getter_setter_regularity():
 
 
 def test_xtract_tonal_parameters_getter_setter_maximum_slope():
+    """Test the maximum_slope setter and getter of XtractTonalParameters class."""
     xtract_tonal_parameters = XtractTonalParameters()
 
     # Invalid value
@@ -59,6 +61,7 @@ def test_xtract_tonal_parameters_getter_setter_maximum_slope():
 
 
 def test_xtract_tonal_parameters_getter_setter_minimum_duration():
+    """Test the minimum_duration setter and getter of XtractTonalParameters class."""
     xtract_tonal_parameters = XtractTonalParameters()
 
     # Invalid value
@@ -72,6 +75,7 @@ def test_xtract_tonal_parameters_getter_setter_minimum_duration():
 
 
 def test_xtract_tonal_parameters_getter_setter_local_emergence():
+    """Test the local_emergence setter and getter of XtractTonalParameters class."""
     xtract_tonal_parameters = XtractTonalParameters()
 
     # Invalid value
@@ -85,6 +89,7 @@ def test_xtract_tonal_parameters_getter_setter_local_emergence():
 
 
 def test_xtract_tonal_parameters_getter_setter_fft_size():
+    """Test the fft_size setter and getter of XtractTonalParameters class."""
     xtract_tonal_parameters = XtractTonalParameters()
 
     # Invalid value
@@ -98,6 +103,7 @@ def test_xtract_tonal_parameters_getter_setter_fft_size():
 
 
 def test_xtract_tonal_parameters_getter_setter_regularity():
+    """Test the regularity setter and getter of XtractTonalParameters class."""
     xtract_tonal_parameters = XtractTonalParameters()
 
     # Invalid value
@@ -111,6 +117,7 @@ def test_xtract_tonal_parameters_getter_setter_regularity():
 
 
 def test_xtract_tonal_parameters_getter_intertonal_gap():
+    """Test the intertonal_gap setter and getter of XtractTonalParameters class."""
     xtract_tonal_parameters = XtractTonalParameters()
 
     # Invalid value
@@ -124,6 +131,7 @@ def test_xtract_tonal_parameters_getter_intertonal_gap():
 
 
 def test_xtract_tonal_parameters_getter_generic_data_container():
+    """Test getting parameters as a generic data container from XtractTonalParameters."""
     xtract_tonal_parameters = XtractTonalParameters()
 
     gdc = xtract_tonal_parameters.get_parameters_as_generic_data_container()

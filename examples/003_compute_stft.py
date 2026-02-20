@@ -35,7 +35,7 @@ signal corresponding to a given spectrogram.
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
-# Setting up the analysis consists of loading Ansys libraries, connecting to the
+# Setting up the analysis consists of loading the required libraries, connecting to the
 # DPF server, and retrieving the example files.
 
 # Load Ansys libraries.
@@ -65,7 +65,7 @@ path_flute_wav = download_flute_wav(server=my_server)
 # Load the WAV file
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
-fc_signal = wav_loader.get_output()
+signal = wav_loader.get_output()[0]
 
 # Plot the input signal
 wav_loader.plot()
@@ -77,7 +77,7 @@ wav_loader.plot()
 # Instantiate an instance of the ``Stft`` class using the previously loaded signal
 # as an input. Use an FFT size of 1024 points and then display the STFT colormap.
 
-stft = Stft(fc_signal, fft_size=1024)
+stft = Stft(signal, fft_size=1024)
 
 # Process the STFT
 stft.process()
@@ -106,10 +106,10 @@ stft.plot()
 # Obtain a time-domain signal using the ``Istft`` class.
 # The input of the ``Istft`` class is the output STFT object previously computed.
 
-fc_stft = stft.get_output()
+spectrogram = stft.get_output()
 
 # Instantiate the class
-istft = Istft(fc_stft)
+istft = Istft(spectrogram)
 
 # Process the ISTFT
 istft.process()

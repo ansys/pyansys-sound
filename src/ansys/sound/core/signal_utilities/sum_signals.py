@@ -24,7 +24,7 @@
 
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator
+from ansys.dpf.core import Field, Operator, fields_container_factory, types
 import numpy as np
 
 from . import SignalUtilitiesParent
@@ -44,29 +44,39 @@ class SumSignals(SignalUtilitiesParent):
     >>> summed_signal = sum_signals.get_output()
     """
 
-    def __init__(self, signals: FieldsContainer = None):
+    def __init__(self, signals: list[Field] = None):
         """Class instantiation takes the following parameters.
 
         Parameters
         ----------
-        signals : FieldsContainer, default: None
-            Input signals, in a ``FieldsContainer`` where each ``Field`` contains a signal to sum
-            with the others. If necessary, the classes :class:`CreateSignalField` (for
-            single-channel signals) and :class:`CreateSignalFieldsContainer` (for single- or
-            multi-channel signals) can help create such input from signal data.
+        signals : list[Field], default: None
+            Input signals, in a list of ``Field``, where each ``Field`` contains a signal to sum
+            with the others. If necessary, the class :class:`CreateSignalField` can help create
+            such input from signal data.
         """
         super().__init__()
         self.signals = signals
         self.__operator = Operator("sum_signals")
 
     @property
-    def signals(self) -> FieldsContainer:
-        """Input signals as a DPF fields container."""
+    def signals(self) -> list[Field]:
+        """Input signals as a list of DPF fields."""
         return self.__signals
 
     @signals.setter
-    def signals(self, signals: FieldsContainer):
+    def signals(self, signals: list[Field]):
         """Set the signals to sum."""
+        if signals is not None:
+            if not isinstance(signals, list):
+                raise PyAnsysSoundException(
+                    "Input signals must be specified as a list of DPF fields."
+                )
+            for channel in signals:
+                if not isinstance(channel, Field):
+                    raise PyAnsysSoundException(
+                        "Input signals must be specified as a list of DPF fields."
+                    )
+
         self.__signals = signals
 
     def process(self):
@@ -74,18 +84,21 @@ class SumSignals(SignalUtilitiesParent):
 
         This method calls the appropriate DPF Sound operator to sum signals.
         """
-        if self.signals == None:
+        if self.signals is None:
             raise PyAnsysSoundException(
                 "No signal to apply gain on. Use the 'SumSignals.set_signal()' method."
             )
 
-        self.__operator.connect(0, self.signals)
+        signal_as_fields_container = fields_container_factory.over_time_freq_fields_container(
+            self.signals
+        )
+        self.__operator.connect(0, signal_as_fields_container)
 
         # Run the operator
         self.__operator.run()
 
         # Store output in the variable
-        self._output = self.__operator.get_output(0, "field")
+        self._output = self.__operator.get_output(0, types.field)
 
     def get_output(self) -> Field:
         """Get the summed signals as a DPF field.

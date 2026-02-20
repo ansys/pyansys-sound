@@ -24,13 +24,9 @@
 
 import warnings
 
-from ansys.dpf.core import Field, Operator
+from ansys.dpf.core import Field, Operator, fields_container_factory
 import matplotlib.pyplot as plt
 import numpy as np
-
-from ansys.sound.core.signal_utilities.create_signal_fields_container import (
-    CreateSignalFieldsContainer,
-)
 
 from . import SoundPowerParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -418,9 +414,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
             )
 
         # Create a fields container containing all microphone signals.
-        fc_creator = CreateSignalFieldsContainer(self.__signals)
-        fc_creator.process()
-        fc_signals = fc_creator.get_output()
+        fc_signals = fields_container_factory.over_time_freq_fields_container(self.__signals)
 
         # Set operator inputs.
         self.__operator_compute.connect(0, self.surface_shape)

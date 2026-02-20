@@ -22,8 +22,7 @@
 
 from unittest.mock import patch
 
-from ansys.dpf.core import Field, FieldsContainer
-from ansys.dpf.core.fields_container_factory import over_time_freq_fields_container
+from ansys.dpf.core import Field
 import numpy as np
 import pytest
 
@@ -120,9 +119,9 @@ def test_loudness_iso_532_2_properties():
     loudness_computer.signal = Field()
     assert type(loudness_computer.signal) == Field
 
-    # Check signal property as a FieldsContainer
-    loudness_computer.signal = over_time_freq_fields_container([Field(), Field()])
-    assert type(loudness_computer.signal) == FieldsContainer
+    # Check signal property as a list of Fields
+    loudness_computer.signal = [Field(), Field()]
+    assert type(loudness_computer.signal) == list
     assert len(loudness_computer.signal) == 2
 
     # Check field_type property
@@ -155,7 +154,7 @@ def test_loudness_iso_532_2_properties_exceptions():
     # Check invalid value for signal property
     with pytest.raises(
         PyAnsysSoundException,
-        match="Signal must be specified as a DPF field or fields container.",
+        match="Signal must be specified as a DPF field or a list of exactly 2 DPF fields.",
     ):
         loudness_computer.signal = "WrongType"
 
@@ -163,11 +162,11 @@ def test_loudness_iso_532_2_properties_exceptions():
     with pytest.raises(
         PyAnsysSoundException,
         match=(
-            "The input FieldsContainer signal must contain exactly 2 fields corresponding to the "
-            "signals presented at the two ears."
+            "The input signal list must contain exactly 2 fields corresponding to the signals "
+            "presented at the two ears."
         ),
     ):
-        loudness_computer.signal = FieldsContainer()
+        loudness_computer.signal = []
 
     # Check invalid value for field_type property
     with pytest.raises(
@@ -192,9 +191,9 @@ def test_loudness_iso_532_2___str__():
 
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    loudness_computer.signal = fc[0]
+    loudness_computer.signal = signal[0]
     loudness_computer.field_type = "Diffuse"
     loudness_computer.recording_type = "Head"
     loudness_computer.process()
@@ -208,9 +207,9 @@ def test_loudness_iso_532_2_process():
 
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    loudness_computer.signal = fc[0]
+    loudness_computer.signal = signal[0]
 
     loudness_computer.process()
     assert loudness_computer._output is not None
@@ -233,10 +232,10 @@ def test_loudness_iso_532_2_get_output_diotic_case():
 
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
     # A single signal channel -> Diotic case
-    loudness_computer.signal = fc[0]
+    loudness_computer.signal = signal[0]
 
     loudness_computer.process()
 
@@ -321,9 +320,9 @@ def test_loudness_iso_532_2_get_output_dichotic_case(field_type, recording_type,
 
     wav_loader = LoadWav(pytest.data_path_Acceleration_stereo_nonUnitaryCalib)
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    loudness_computer.signal = fc
+    loudness_computer.signal = signal
 
     loudness_computer.field_type = field_type
     loudness_computer.recording_type = recording_type
@@ -352,9 +351,9 @@ def test_loudness_iso_532_2_get_output_monaural_outputs():
 
     wav_loader = LoadWav(pytest.data_path_Acceleration_stereo_nonUnitaryCalib)
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    loudness_computer.signal = fc
+    loudness_computer.signal = signal
 
     loudness_computer.process()
 
@@ -377,9 +376,9 @@ def test_loudness_iso_532_2_get_output_warning():
 
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    loudness_computer.signal = fc[0]
+    loudness_computer.signal = signal[0]
 
     # Loudness not calculated yet -> warning
     with pytest.warns(
@@ -396,9 +395,9 @@ def test_loudness_iso_532_2_get_output_as_nparray():
 
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
-    ERBn = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    loudness_computer.signal = ERBn[0]
+    loudness_computer.signal = signal[0]
 
     # Loudness not calculated yet -> warning
     with pytest.warns(
@@ -431,10 +430,10 @@ def test_loudness_iso_532_2_get_output_as_nparray():
     assert Nprime_bin[0] == pytest.approx(EXP_BIN_SPECIFIC_LOUDNESS_DIOTIC_FREE_MIC_0)
     assert Nprime_bin[45] == pytest.approx(EXP_BIN_SPECIFIC_LOUDNESS_DIOTIC_FREE_MIC_45)
     assert Nprime_bin[98] == pytest.approx(EXP_BIN_SPECIFIC_LOUDNESS_DIOTIC_FREE_MIC_98)
-    assert len(Nprime_mon) == EXP_ERB_LEN
-    assert Nprime_mon[0] == pytest.approx(EXP_MON_SPECIFIC_LOUDNESS_DIOTIC_FREE_MIC_0)
-    assert Nprime_mon[45] == pytest.approx(EXP_MON_SPECIFIC_LOUDNESS_DIOTIC_FREE_MIC_45)
-    assert Nprime_mon[98] == pytest.approx(EXP_MON_SPECIFIC_LOUDNESS_DIOTIC_FREE_MIC_98)
+    assert len(Nprime_mon[0]) == EXP_ERB_LEN
+    assert Nprime_mon[0][0] == pytest.approx(EXP_MON_SPECIFIC_LOUDNESS_DIOTIC_FREE_MIC_0)
+    assert Nprime_mon[0][45] == pytest.approx(EXP_MON_SPECIFIC_LOUDNESS_DIOTIC_FREE_MIC_45)
+    assert Nprime_mon[0][98] == pytest.approx(EXP_MON_SPECIFIC_LOUDNESS_DIOTIC_FREE_MIC_98)
     assert len(ERBn) == 372
     assert ERBn[0] == pytest.approx(EXP_ERB_0)
     assert ERBn[45] == pytest.approx(EXP_ERB_45)
@@ -447,9 +446,9 @@ def test_loudness_iso_532_2_get_binaural_loudness_sone():
 
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    loudness_computer.signal = fc[0]
+    loudness_computer.signal = signal[0]
 
     loudness_computer.process()
 
@@ -463,9 +462,9 @@ def test_loudness_iso_532_2_get_binaural_loudness_level_phon():
 
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    loudness_computer.signal = fc[0]
+    loudness_computer.signal = signal[0]
 
     loudness_computer.process()
 
@@ -477,11 +476,12 @@ def test_loudness_iso_532_2_get_monaural_loudness_sone():
     """Test the get_monaural_loudness_sone method of the LoudnessISO532_2 class."""
     loudness_computer = LoudnessISO532_2()
 
+    # Test with a mono signal.
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    loudness_computer.signal = fc[0]
+    loudness_computer.signal = signal[0]
 
     loudness_computer.process()
 
@@ -490,11 +490,12 @@ def test_loudness_iso_532_2_get_monaural_loudness_sone():
     assert N_mon[0] == pytest.approx(EXP_MON_LOUDNESS_DIOTIC_FREE_MIC)
     assert N_mon[1] == pytest.approx(EXP_MON_LOUDNESS_DIOTIC_FREE_MIC)
 
+    # Test with a stereo signal.
     wav_loader.path_to_wav = pytest.data_path_Acceleration_stereo_nonUnitaryCalib
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    loudness_computer.signal = fc
+    loudness_computer.signal = signal
 
     loudness_computer.process()
 
@@ -508,11 +509,12 @@ def test_loudness_iso_532_2_get_monaural_loudness_level_phon():
     """Test the get_monaural_loudness_level_phon method of the LoudnessISO532_2 class."""
     loudness_computer = LoudnessISO532_2()
 
+    # Test with a mono signal.
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    loudness_computer.signal = fc[0]
+    loudness_computer.signal = signal[0]
 
     loudness_computer.process()
 
@@ -521,11 +523,12 @@ def test_loudness_iso_532_2_get_monaural_loudness_level_phon():
     assert LN_mon[0] == pytest.approx(EXP_MON_LOUDNESS_LEVEL_DIOTIC_FREE_MIC)
     assert LN_mon[1] == pytest.approx(EXP_MON_LOUDNESS_LEVEL_DIOTIC_FREE_MIC)
 
+    # Test with a stereo signal.
     wav_loader.path_to_wav = pytest.data_path_Acceleration_stereo_nonUnitaryCalib
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    loudness_computer.signal = fc
+    loudness_computer.signal = signal
 
     loudness_computer.process()
 
@@ -541,9 +544,9 @@ def test_loudness_iso_532_2_get_binaural_specific_loudness():
 
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    loudness_computer.signal = fc[0]
+    loudness_computer.signal = signal[0]
 
     loudness_computer.process()
 
@@ -558,11 +561,12 @@ def test_loudness_iso_532_2_get_monaural_specific_loudness():
     """Test the get_specific_loudness_sone method of the LoudnessISO532_2 class."""
     loudness_computer = LoudnessISO532_2()
 
+    # Test with a mono signal.
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    loudness_computer.signal = fc[0]
+    loudness_computer.signal = signal[0]
 
     loudness_computer.process()
 
@@ -573,11 +577,12 @@ def test_loudness_iso_532_2_get_monaural_specific_loudness():
     assert Nprime_mon[0][45] == pytest.approx(EXP_MON_SPECIFIC_LOUDNESS_DIOTIC_FREE_MIC_45)
     assert Nprime_mon[0][98] == pytest.approx(EXP_MON_SPECIFIC_LOUDNESS_DIOTIC_FREE_MIC_98)
 
+    # Test with a stereo signal.
     wav_loader.path_to_wav = pytest.data_path_Acceleration_stereo_nonUnitaryCalib
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    loudness_computer.signal = fc
+    loudness_computer.signal = signal
 
     loudness_computer.process()
 
@@ -599,9 +604,9 @@ def test_loudness_iso_532_2_get_erb_center_frequencies():
 
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    loudness_computer.signal = fc[0]
+    loudness_computer.signal = signal[0]
 
     loudness_computer.process()
 
@@ -618,9 +623,9 @@ def test_loudness_iso_532_2_get_erbn_numbers():
 
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    loudness_computer.signal = fc[0]
+    loudness_computer.signal = signal[0]
 
     loudness_computer.process()
 
@@ -638,9 +643,9 @@ def test_loudness_iso_532_2_plot(mock_show):
 
     wav_loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     wav_loader.process()
-    fc = wav_loader.get_output()
+    signal = wav_loader.get_output()
 
-    loudness_computer.signal = fc[0]
+    loudness_computer.signal = signal[0]
 
     loudness_computer.process()
 

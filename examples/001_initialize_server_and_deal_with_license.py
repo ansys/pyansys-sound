@@ -52,7 +52,7 @@ the PyDPF-Core documentation:
 # %%
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
-# Perform the required imports:
+# Perform the required imports.
 
 # Load Ansys and other libraries.
 import datetime

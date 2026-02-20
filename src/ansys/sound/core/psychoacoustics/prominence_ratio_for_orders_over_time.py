@@ -24,16 +24,12 @@
 
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator, types
+from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
 from . import PsychoacousticsParent
-from .._pyansys_sound import (
-    PyAnsysSoundException,
-    PyAnsysSoundWarning,
-    convert_fields_container_to_np_array,
-)
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_PR_FOR_ORDERS_OVER_TIME = "compute_prominence_ratio_for_orders_over_time"
@@ -82,9 +78,9 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
             List of the order numbers, as floats, on which to compute the prominence ratio.
         """
         super().__init__()
-        self.signal = signal  # uses the setter
-        self.profile = profile  # uses the setter
-        self.order_list = order_list  # uses the setter
+        self.signal = signal
+        self.profile = profile
+        self.order_list = order_list
         self.__operator = Operator(ID_COMPUTE_PR_FOR_ORDERS_OVER_TIME)
 
     def __str__(self):
@@ -169,26 +165,24 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
         self.__operator.connect(1, self.profile)
         self.__operator.connect(2, self.order_list)
 
-        # Runs the operator
+        # Run the operator
         self.__operator.run()
 
-        # Stores outputs in the tuple variable
-        self._output = self.__operator.get_output(
-            0, types.fields_container
-        ), self.__operator.get_output(1, types.field)
+        # Store outputs in the tuple variable
+        orders_pr = [field for field in self.__operator.get_output(0, types.fields_container)]
+        rpm = self.__operator.get_output(1, types.field)
+        self._output = orders_pr, rpm
 
-    def get_output(self) -> tuple[FieldsContainer, Field]:
+    def get_output(self) -> tuple[list[Field], Field]:
         """Get PR data over time and its associated RPM profile.
 
         Returns
         -------
-        tuple[FieldsContainer, Field]
-            -   First element (FieldsContainer): prominence ratio data over time for the requested
-                orders. Each field of the fields container gives the PR over time, in dB, for each
-                requested order in :attr:`order_list`.
-
-            -   Second element (Field): RPM over time profile corresponding to the PR over time.
-
+        list[Field]
+            Prominence ratio data over time for the requested orders. Each field contains the PR
+            over time, in dB, for each requested order in :attr:`order_list`.
+        Field
+            RPM over time with the same time scale as the PR data.
         """
         if self._output == None:
             warnings.warn(
@@ -205,23 +199,22 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
 
         Returns
         -------
-        tuple
-            -   First element: prominence ratio data over time for the requested orders. Each
-                column corresponds to the PR over time, in dB, for each requested order in
-                :attr:`order_list`.
-
-            -   Second element: time scale associated with the output prominence ratios.
-
-            -   Third element: RPM over time profile corresponding to the TNR over time.
+        numpy.ndarray
+            Prominence ratio data over time for the requested orders. Each column contains the PR
+            over time, in dB, for each requested order in :attr:`order_list`.
+        numpy.ndarray
+            Time scale associated with the PR data.
+        numpy.ndarray
+            RPM over time profile with the same time scale as the PR data.
         """
-        pr_container = self.get_output()
-        if pr_container == None:
+        output = self.get_output()
+        if output is None:
             return (np.array([]), np.array([]), np.array([]))
 
         return (
-            convert_fields_container_to_np_array(pr_container[0]),
-            np.array(pr_container[0][0].time_freq_support.time_frequencies.data),
-            np.array(pr_container[1].data),
+            np.vstack([np.array(field.data) for field in output[0]]),
+            np.array(output[0][0].time_freq_support.time_frequencies.data),
+            np.array(output[1].data),
         )
 
     def get_order_prominence_ratio_over_time(self, order_index: int) -> np.ndarray:
@@ -245,13 +238,13 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
                     f"Order list has {len(self.order_list)} elements."
                 )
 
-        pr_container = self.get_output_as_nparray()
+        pr_data, _, _ = self.get_output_as_nparray()
 
-        if len(pr_container[0]) == 0:
+        if len(pr_data) == 0:
             # Handling the case where the output is not processed yet
             return np.array([])
 
-        return pr_container[0][order_index]
+        return pr_data[order_index]
 
     def get_time_scale(self) -> np.ndarray | None:
         """Get the time scale corresponding to the PR array over time.
@@ -281,34 +274,33 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
         use_rpm_scale : bool
             Indicates whether to plot the PR as a function of time or RPM.
         """
-        pr_container = self.get_output()
-        if pr_container == None:
+        output = self.get_output()
+        if output is None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the ``{__class__.__name__}.process()`` method."
             )
 
-        unit = pr_container[0][0].unit
+        pr_unit = output[0][0].unit
+        time = output[0][0].time_freq_support.time_frequencies
+        rpm = output[1]
 
         if use_rpm_scale:
-            x_unit = pr_container[1].unit
-            x_scale_label = f"RPM ({x_unit})"
-            x_scale_data = self.get_rpm_scale()
+            x_scale_label = f"RPM ({rpm.unit})"
+            x_scale_data = rpm.data
             title = "Orders’ prominence ratio over RPM"
         else:
-            x_unit = pr_container[0][0].time_freq_support.time_frequencies.unit
-            x_scale_label = f"Time ({x_unit})"
-            x_scale_data = self.get_time_scale()
+            x_scale_label = f"Time ({time.unit})"
+            x_scale_data = time.data
             title = "Orders’ prominence ratio over time"
 
         fig, ax = plt.subplots()
         fig.suptitle(title)
         ax.set_xlabel(x_scale_label)
 
-        ax.set_ylabel(f"Prominence ratio ({unit})")
+        ax.set_ylabel(f"Prominence ratio ({pr_unit})")
 
-        for order_idx in range(len(self.order_list)):
+        for order_idx, order_value in enumerate(self.order_list):
             order_data = self.get_order_prominence_ratio_over_time(order_idx)
-            order_value = self.order_list[order_idx]
             ax.plot(x_scale_data, order_data, label=f"Order {order_value}")
 
         ax.legend()

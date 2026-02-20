@@ -80,11 +80,13 @@ def test_pyansys_sound_init_subclass():
 
 
 def test_pyansys_sound_instantiate():
+    """Test instantiation of PyAnsysSound class."""
     pyansys_sound = PyAnsysSound()
     assert pyansys_sound != None
 
 
 def test_pyansys_sound_process():
+    """Test the process method of PyAnsysSound class."""
     pyansys_sound = PyAnsysSound()
     with pytest.warns(
         PyAnsysSoundWarning, match="This method is not implemented for class PyAnsysSound."
@@ -94,6 +96,7 @@ def test_pyansys_sound_process():
 
 
 def test_pyansys_sound_plot():
+    """Test the plot method of PyAnsysSound class."""
     pyansys_sound = PyAnsysSound()
     with pytest.warns(
         PyAnsysSoundWarning, match="This method is not implemented for class PyAnsysSound."
@@ -104,6 +107,7 @@ def test_pyansys_sound_plot():
 
 
 def test_pyansys_sound_get_output():
+    """Test the get_output method of PyAnsysSound class."""
     pyansys_sound = PyAnsysSound()
     with pytest.warns(
         PyAnsysSoundWarning, match="This method is not implemented for class PyAnsysSound."
@@ -114,6 +118,7 @@ def test_pyansys_sound_get_output():
 
 
 def test_pyansys_sound_get_output_as_nparray():
+    """Test the get_output_as_nparray method of PyAnsysSound class."""
     pyansys_sound = PyAnsysSound()
     with pytest.warns(
         PyAnsysSoundWarning, match="This method is not implemented for class PyAnsysSound."
