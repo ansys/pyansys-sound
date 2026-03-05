@@ -1,0 +1,6 @@
+get\_nb\_tones
+==============
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: ToneToNoiseRatio.get_nb_tones
