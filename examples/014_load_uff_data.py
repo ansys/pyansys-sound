@@ -78,7 +78,7 @@ from ansys.dpf.core.available_result import Homogeneity
 my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
 # Download the necessary files for this example.
-path_uff_type58b = download_uff_sample_4_channels_type58b()
+path_uff_type58b = path_uff_type58b = download_uff_sample_4_channels_type58b()
 
 # Define unit mapping for supported units in the UFF files. This is used to convert UFF units to DPF units.
 match_units = {
@@ -234,7 +234,7 @@ for level_obj, name in zip(level_objects_58b, signal_names_58b):
 
 ax.set_xlabel("Time (s)")
 ax.set_ylabel("Level (dBA)")
-ax.legend(loc="upper right")
+ax.legend(loc="lower right")
 plt.tight_layout()
 plt.show()
 
