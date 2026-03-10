@@ -193,4 +193,4 @@ def test_download_uff_sample_4_channels_type58b():
     download_uff_sample_4_channels_type58b()
     p = str(EXAMPLES_PATH) + "/4_channels_type58b.uff"
     assert pathlib.Path(p).exists() == True
-    assert p.endswith(".uff")
+    assert os.path.getsize(p) == 10483384
