@@ -445,3 +445,19 @@ def download_JLT_CE_data_csv():
         Local path for the ``JLT_CE_data.csv`` file.
     """
     return _download_file_in_local_examples_folder("JLT_CE_data.csv")
+
+
+def download_uff_sample_4_channels_type58b():
+    """Download the ``4_channels_type58b.uff`` file.
+
+    This UFF/UNV file contains 4 data blocks of type 58b (binary time data, evenly spaced).
+    As PyAnsys Sound uses the ``pyuff`` package (a third-party Python library) to read such files,
+    and not a DPF Sound operator, we do not need to upload the file onto the DPF server.
+    The local path of the file suffices.
+
+    Returns
+    -------
+    str
+        Local path for the ``4_channels_type58b.uff`` file.
+    """
+    return _download_file_in_local_examples_folder("4_channels_type58b.uff")
