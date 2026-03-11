@@ -46,7 +46,8 @@ The example processes one UFF file:
 
 -   ``4 channels_type58b.uff`` — contains data blocks of type 58b (binary time data)
 
-But it works with ASCII time data blocks (type 58) as well, so you can try it with your own UFF files containing type 58 or type 58b data blocks.
+But it works with ASCII time data blocks (type 58) as well, so you can try it with your own
+UFF files containing type 58 or type 58b data blocks.
 """
 
 # %%
@@ -67,8 +68,6 @@ except ImportError:
         "Install it with: pip install ansys-sound-core[full]"
     )
 
-from ansys.dpf.core.available_result import Homogeneity
-
 # Load Ansys libraries.
 from ansys.sound.core.examples_helpers import download_uff_sample_4_channels_type58b
 from ansys.sound.core.server_helpers import connect_to_or_start_server
@@ -81,7 +80,8 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # Download the necessary files for this example.
 path_uff_type58b = download_uff_sample_4_channels_type58b()
 
-# Define unit mapping for supported units in the UFF files. This is used to convert UFF units to DPF units.
+# Define unit mapping for supported units in the UFF files. 
+# This is used to convert UFF units to DPF units.
 match_units = {"Pa": "Pa", "tr/min": "RPM", "m/s2": "m/s^2"}
 
 # %%
@@ -159,7 +159,8 @@ for i, block in enumerate(datasets_58b):
     signal_names_58b.append(signal_name)
     signal_units_58b.append(match_units[signal_unit])
     print(
-        f"Created DPF Field for '{signal_name}' ({len(signal_data)} samples, fs={fs:.1f} Hz), unit='{match_units[signal_unit]}'."
+        f"Created DPF Field for '{signal_name}' ({len(signal_data)} samples, "
+        f"fs={fs:.1f} Hz), unit='{match_units[signal_unit]}'."
     )
 
 
