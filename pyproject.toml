@@ -32,10 +32,10 @@ dependencies = [
 [project.optional-dependencies]
 full = [
     "ansys-dpf-core==0.15.0",
-    "ansys-tools-common==0.4.3",
+    "ansys-tools-common==0.4.5",
     "matplotlib==3.10.8",
-    "platformdirs==4.5.1",
     "pyuff>=2.3.0",
+    "platformdirs==4.9.2",
     "requests==2.32.5",
     "scipy==1.15.3",
     "scikit-learn==1.7.2",
@@ -43,14 +43,14 @@ full = [
 
 tests = [
     "ansys-dpf-core==0.15.0",
-    "ansys-tools-common==0.4.3",
+    "ansys-tools-common==0.4.5",
     "matplotlib==3.10.8",
     "pytest==9.0.2",
     "pytest-cov==7.0.0",
-    "pytest-dependency==0.6.0",
-    "platformdirs==4.5.1",
+    "pytest-dependency==0.6.1",
+    "platformdirs==4.9.2",
+    "regex==2026.2.28",
     "pyuff>=2.3.0",
-    "regex==2026.1.15",
     "requests==2.32.5",
     "scipy==1.15.3",
 ]
@@ -58,7 +58,7 @@ tests = [
 doc = [
     "ansys-dpf-core==0.15.0",
     "Sphinx==8.2.3",
-    "ansys-sphinx-theme==1.7.0",
+    "ansys-sphinx-theme==1.7.2",
     "numpydoc==1.10.0",
     "pyuff>=2.3.0",
     "sphinx-autodoc-typehints==3.1.0",
@@ -68,11 +68,11 @@ doc = [
     "vtk==9.6.0",
     "trame==3.12.0",
     "trame_vtk==2.11.1",
-    "pyvista==0.47.0",
+    "pyvista==0.47.1",
     "pypandoc==1.16.2",
     "jupyter-sphinx==0.5.3",
     "sphinx-autobuild==2024.10.3",
-    "platformdirs==4.5.1",
+    "platformdirs==4.9.2",
     "requests==2.32.5",
     "scikit-learn==1.7.2",
 ]
