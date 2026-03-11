@@ -67,25 +67,22 @@ except ImportError:
         "Install it with: pip install ansys-sound-core[full]"
     )
 
+from ansys.dpf.core.available_result import Homogeneity
+
 # Load Ansys libraries.
-from ansys.sound.core.examples_helpers import download_uff_sample_4_channels_type58b    
+from ansys.sound.core.examples_helpers import download_uff_sample_4_channels_type58b
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import CreateSignalField
 from ansys.sound.core.standard_levels import LevelOverTime
-from ansys.dpf.core.available_result import Homogeneity
 
 # Connect to a remote DPF server or start a local DPF server.
 my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
 # Download the necessary files for this example.
-path_uff_type58b = path_uff_type58b = download_uff_sample_4_channels_type58b()
+path_uff_type58b = download_uff_sample_4_channels_type58b()
 
 # Define unit mapping for supported units in the UFF files. This is used to convert UFF units to DPF units.
-match_units = {
-    "Pa": "Pa",
-    "tr/min": "RPM",
-    "m/s2": "m/s^2"
-}
+match_units = {"Pa": "Pa", "tr/min": "RPM", "m/s2": "m/s^2"}
 
 # %%
 # Load and process a UFF file
@@ -124,7 +121,7 @@ for idx in range(n_blocks_58b):
             f"(abscissa_spacing='{spacing}'). Only evenly spaced time data is supported."
         )
     datasets_58b.append(block)
-    block_name = block.get("id1") # id1 contains the signal name
+    block_name = block.get("id1")  # id1 contains the signal name
     dx = block["abscissa_inc"]
     fs = 1.0 / dx
     n_samples = len(block["data"])
@@ -149,13 +146,11 @@ for i, block in enumerate(datasets_58b):
     signal_data = np.array(block["data"], dtype=np.float64)
     dx = block["abscissa_inc"]
     fs = 1.0 / dx
-    signal_name = block.get("id1") # id1 contains the signal name
+    signal_name = block.get("id1")  # id1 contains the signal name
     signal_unit = block.get("ordinate_axis_units_lab")
 
     creator = CreateSignalField(
-        data=signal_data,
-        sampling_frequency=fs,
-        unit= match_units[signal_unit]
+        data=signal_data, sampling_frequency=fs, unit=match_units[signal_unit]
     )
     creator.process()
     field = creator.get_output()
@@ -163,7 +158,9 @@ for i, block in enumerate(datasets_58b):
     fields_58b.append(field)
     signal_names_58b.append(signal_name)
     signal_units_58b.append(match_units[signal_unit])
-    print(f"Created DPF Field for '{signal_name}' ({len(signal_data)} samples, fs={fs:.1f} Hz), unit='{match_units[signal_unit]}'.")
+    print(
+        f"Created DPF Field for '{signal_name}' ({len(signal_data)} samples, fs={fs:.1f} Hz), unit='{match_units[signal_unit]}'."
+    )
 
 
 # %%
@@ -187,9 +184,9 @@ fig2, axs2 = plt.subplots(2, figsize=(10, 6), sharex=True)
 fig2.suptitle("Time-domain signals (channels 3 & 4) from UFF type 58b file")
 for i in range(2, 4):
     time_data = fields_58b[i].time_freq_support.time_frequencies.data
-    axs2[i-2].plot(time_data, fields_58b[i].data, label=signal_names_58b[i])
-    axs2[i-2].set_ylabel(f"Amplitude ({signal_units_58b[i]})")
-    axs2[i-2].legend(loc="upper right")
+    axs2[i - 2].plot(time_data, fields_58b[i].data, label=signal_names_58b[i])
+    axs2[i - 2].set_ylabel(f"Amplitude ({signal_units_58b[i]})")
+    axs2[i - 2].legend(loc="upper right")
 axs2[-1].set_xlabel("Time (s)")
 plt.tight_layout()
 plt.show()
@@ -204,7 +201,9 @@ level_objects_58b = []
 for field, name in zip(fields_58b, signal_names_58b):
 
     if field.unit != "Pa":
-        print(f"Skipping level computation for '{name}' since its unit is '{field.unit}' (not 'Pa').")
+        print(
+            f"Skipping level computation for '{name}' since its unit is '{field.unit}' (not 'Pa')."
+        )
         continue
 
     level_over_time = LevelOverTime(
