@@ -80,7 +80,7 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # Download the necessary files for this example.
 path_uff_type58b = download_uff_sample_4_channels_type58b()
 
-# Define unit mapping for supported units in the UFF files. 
+# Define unit mapping for supported units in the UFF files.
 # This is used to convert UFF units to DPF units.
 match_units = {"Pa": "Pa", "tr/min": "RPM", "m/s2": "m/s^2"}
 
