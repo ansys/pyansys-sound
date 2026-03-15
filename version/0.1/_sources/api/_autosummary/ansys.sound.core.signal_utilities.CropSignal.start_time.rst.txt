@@ -1,0 +1,6 @@
+start\_time
+===========
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoproperty:: CropSignal.start_time
