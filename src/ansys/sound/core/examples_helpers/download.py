@@ -450,10 +450,8 @@ def download_JLT_CE_data_csv():
 def download_uff_sample_4_channels_type58b():
     """Download the ``4_channels_type58b.uff`` file.
 
-    This UFF/UNV file contains 4 data blocks of type 58b (binary time data, evenly spaced).
-    As PyAnsys Sound uses the ``pyuff`` package (a third-party Python library) to read such files,
-    and not a DPF Sound operator, we do not need to upload the file onto the DPF server.
-    The local path of the file suffices.
+    This function downloads a UFF/UNV file containing 4 data blocks of type 58b
+    (binary time data, evenly spaced in time).
 
     Returns
     -------
