@@ -50,7 +50,6 @@ tests = [
     "pytest-dependency==0.6.1",
     "platformdirs==4.9.2",
     "regex==2026.2.28",
-    "pyuff==2.3.0",
     "requests==2.32.5",
     "scipy==1.15.3",
 ]
