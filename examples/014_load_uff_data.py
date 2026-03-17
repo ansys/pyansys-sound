@@ -113,7 +113,7 @@ for idx in range(n_blocks_58b):
     spacing = block.get("abscissa_spacing", None)
     if spacing is not None and spacing != 1:
         raise ValueError(
-            f"Block at index {idx} does not have evenly spaced data "
+            f"Block at index {idx} does not have evenly spaced time data "
             f"(abscissa_spacing='{spacing}'). Only evenly spaced time data is supported."
         )
     datasets_58b.append(block)
