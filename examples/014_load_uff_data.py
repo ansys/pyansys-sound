@@ -118,13 +118,13 @@ for idx in range(n_blocks_58b):
         )
     datasets_58b.append(block)
     block_name = block.get("id1")  # id1 contains the signal name
-    dx = block["abscissa_inc"]
-    fs = 1.0 / dx
+    time_step = block["abscissa_inc"]
+    fs = 1.0 / time_step
     n_samples = len(block["data"])
     print(
         f"\nBlock {idx + 1} (index {idx}):"
         f"\n  Name: {block_name}"
-        f"\n  Time step (dx): {dx} s"
+        f"\n  Time step (time_step): {time_step} s"
         f"\n  Sampling frequency: {fs:.1f} Hz"
         f"\n  Number of samples: {n_samples}"
     )
@@ -140,8 +140,8 @@ signal_names_58b = []
 signal_units_58b = []
 for i, block in enumerate(datasets_58b):
     signal_data = np.array(block["data"], dtype=np.float64)
-    dx = block["abscissa_inc"]
-    fs = 1.0 / dx
+    time_step = block["abscissa_inc"]
+    fs = 1.0 / time_step
     signal_name = block.get("id1")  # id1 contains the signal name
     signal_unit = block.get("ordinate_axis_units_lab")
 
