@@ -35,7 +35,7 @@ The ``pyuff`` package is an optional dependency that can be installed via
 
 .. note::
 
-    Only time data blocks of type 58 and 58b, **evenly spaced in time**, are supported by
+    Only time data blocks of types 58 and 58b, **evenly spaced in time**, are supported by
     PyAnsys Sound.
 
 In practice, a UFF file may contain data blocks of various types (geometry, frequency response
