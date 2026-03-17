@@ -30,8 +30,8 @@ This example shows how to load data from UFF (Universal File Format) files, extr
 signals, convert them into DPF fields compatible with PyAnsys Sound, and then compute and display
 dBA levels over time.
 
-The :mod:`pyuff` package (https://pyuff.readthedocs.io/en/latest/) is a PyAnsys Sound optional dependency that can be installed via
-``pip install ansys-sound-core[full]``.
+The :mod:`pyuff` package (https://pyuff.readthedocs.io/en/latest/) is a PyAnsys Sound optional
+dependency that can be installed via ``pip install ansys-sound-core[full]``.
 
 .. note::
 
@@ -53,6 +53,8 @@ UFF files containing type 58 or type 58b data blocks.
 # and downloading the necessary data files.
 
 # Load standard libraries.
+import warnings
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -69,6 +71,9 @@ from ansys.sound.core.examples_helpers import download_uff_sample_4_channels_typ
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import CreateSignalField
 from ansys.sound.core.standard_levels import LevelOverTime
+
+# Suppress non-interactive backend warning from matplotlib.
+warnings.filterwarnings("ignore", message="FigureCanvasAgg is non-interactive")
 
 # Connect to a remote DPF server or start a local DPF server.
 my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
@@ -133,7 +138,8 @@ for idx in range(n_blocks_58b):
 # %%
 # Convert to DPF fields using CreateSignalField
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-# For each extracted signal, we create a DPF :class:`Field <ansys.dpf.core.field.Field>` using the :class:`.CreateSignalField` class.
+# For each extracted signal, we create a DPF :class:`Field <ansys.dpf.core.field.Field>`
+# using the :class:`.CreateSignalField` class.
 
 fields_58b = []
 signal_names_58b = []
@@ -171,10 +177,11 @@ for i in range(2):
     time_data = fields_58b[i].time_freq_support.time_frequencies.data
     axs1[i].plot(time_data, fields_58b[i].data, label=signal_names_58b[i])
     axs1[i].set_ylabel(f"Amplitude ({signal_units_58b[i]})")
-    axs1[i].legend(loc="upper right")
+    axs1[i].legend(loc="lower right")
 axs1[-1].set_xlabel("Time (s)")
 plt.tight_layout()
 plt.show()
+
 
 # Second figure: channels 3 and 4
 fig2, axs2 = plt.subplots(2, figsize=(10, 6), sharex=True)
@@ -183,7 +190,7 @@ for i in range(2, 4):
     time_data = fields_58b[i].time_freq_support.time_frequencies.data
     axs2[i - 2].plot(time_data, fields_58b[i].data, label=signal_names_58b[i])
     axs2[i - 2].set_ylabel(f"Amplitude ({signal_units_58b[i]})")
-    axs2[i - 2].legend(loc="upper right")
+    axs2[i - 2].legend(loc="lower right")
 axs2[-1].set_xlabel("Time (s)")
 plt.tight_layout()
 plt.show()
