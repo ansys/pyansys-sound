@@ -109,7 +109,7 @@ for i, block_type in enumerate(set_types_58b):
 # Extract data from all blocks
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # We read the datasets, extract the time-domain data, the time step
-# (``abscissa_inc``), and the block description. We also verify that the data is evenly spaced.
+# (`"abscissa_inc"`), and the block description. We also verify that the data is evenly spaced.
 
 datasets_58b = []
 for idx in range(n_blocks_58b):
