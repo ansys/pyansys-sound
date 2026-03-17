@@ -30,7 +30,7 @@ This example shows how to load data from UFF (Universal File Format) files, extr
 signals, convert them into DPF fields compatible with PyAnsys Sound, and then compute and display
 dBA levels over time.
 
-The ``pyuff`` package is an optional dependency that can be installed via
+The :mod:`pyuff` package (https://pyuff.readthedocs.io/en/latest/) is a PyAnsys Sound optional dependency that can be installed via
 ``pip install ansys-sound-core[full]``.
 
 .. note::
@@ -92,7 +92,7 @@ match_units = {"Pa": "Pa", "tr/min": "RPM", "m/s2": "m/s^2"}
 
 uff_file_58b = pyuff.UFF(path_uff_type58b)
 
-# List all data blocks dynamically.
+# List all data blocks.
 set_types_58b = uff_file_58b.get_set_types()
 n_blocks_58b = len(set_types_58b)
 print(f"File '{path_uff_type58b}' contains {n_blocks_58b} data block(s).")
@@ -109,7 +109,7 @@ for i, block_type in enumerate(set_types_58b):
 datasets_58b = []
 for idx in range(n_blocks_58b):
     block = uff_file_58b.read_sets(idx)
-    # Verify evenly spaced data.
+    # Verify evenly spaced time steps.
     spacing = block.get("abscissa_spacing", None)
     if spacing is not None and spacing != 1:
         raise ValueError(
