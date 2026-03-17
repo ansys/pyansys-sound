@@ -38,10 +38,6 @@ The ``pyuff`` package is an optional dependency that can be installed via
     Only time data blocks of types 58 and 58b, **evenly spaced in time**, are supported by
     PyAnsys Sound.
 
-In practice, a UFF file may contain data blocks of various types (geometry, frequency response
-functions, time data, etc.). Only types 58 and 58b (time data, evenly spaced in time) are
-supported by PyAnsys Sound. This example shows how to identify and extract the relevant blocks.
-
 The example processes one UFF file:
 
 -   ``4 channels_type58b.uff`` — contains data blocks of type 58b (binary time data)
