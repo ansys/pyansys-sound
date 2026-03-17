@@ -113,7 +113,7 @@ for i, block_type in enumerate(set_types_58b):
 datasets_58b = []
 for idx in range(n_blocks_58b):
     block = uff_file_58b.read_sets(idx)
-    # Verify evenly spaced data.
+    # Verify evenly spaced time steps.
     spacing = block.get("abscissa_spacing", None)
     if spacing is not None and spacing != 1:
         raise ValueError(
