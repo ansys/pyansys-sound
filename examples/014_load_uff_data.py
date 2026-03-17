@@ -216,7 +216,7 @@ for field, name in zip(fields_58b, signal_names_58b):
     print(f"Max dBA level for '{name}': {level_max:.1f} dBA")
 
 # %%
-# Plot dBA levels over time (type 58b)
+# Plot dBA levels over time
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Display the dBA levels for signals.
 
