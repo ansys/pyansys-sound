@@ -30,7 +30,7 @@ This example shows how to load data from UFF (Universal File Format) files, extr
 signals, convert them into DPF fields compatible with PyAnsys Sound, and then compute and display
 dBA levels over time.
 
-The ``pyuff`` package is an optional dependency that can be installed via
+The :mod:`pyuff` package (https://pyuff.readthedocs.io/en/latest/) is a PyAnsys Sound optional dependency that can be installed via
 ``pip install ansys-sound-core[full]``.
 
 .. note::
