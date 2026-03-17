@@ -133,7 +133,7 @@ for idx in range(n_blocks_58b):
 # %%
 # Convert to DPF fields using CreateSignalField
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-# For each extracted signal, we create a DPF ``Field`` using the :class:`.CreateSignalField` class.
+# For each extracted signal, we create a DPF :class:`Field <ansys.dpf.core.field.Field>` using the :class:`.CreateSignalField` class.
 
 fields_58b = []
 signal_names_58b = []
