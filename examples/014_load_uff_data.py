@@ -241,7 +241,7 @@ plt.show()
 # This example demonstrated how to:
 #
 # - Load UFF/UNV files using the ``pyuff`` package
-# - Dynamically list and filter data blocks
+# - Check the files' contents
 # - Verify that the time data is evenly spaced
 # - Extract time-domain signals and convert them into DPF fields using
 #   :class:`.CreateSignalField`
