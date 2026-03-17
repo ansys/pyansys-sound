@@ -96,7 +96,7 @@ match_units = {"Pa": "Pa", "tr/min": "RPM", "m/s2": "m/s^2"}
 
 uff_file_58b = pyuff.UFF(path_uff_type58b)
 
-# List all data blocks dynamically.
+# List all data blocks.
 set_types_58b = uff_file_58b.get_set_types()
 n_blocks_58b = len(set_types_58b)
 print(f"File '{path_uff_type58b}' contains {n_blocks_58b} data block(s).")
