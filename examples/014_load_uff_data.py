@@ -247,6 +247,6 @@ plt.show()
 #   :class:`.CreateSignalField`
 # - Compute and display dBA levels over time using :class:`.LevelOverTime`
 #
-# Only time data blocks of (type 58 and 58b) with evenly spaced data are supported by PyAnsys Sound.
+# Only data blocks of (type 58 and 58b) with evenly spaced time data are supported by PyAnsys Sound.
 # The ``pyuff`` package can be installed as an optional dependency via
 # ``pip install ansys-sound-core[full]``.
