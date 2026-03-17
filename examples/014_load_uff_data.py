@@ -133,7 +133,7 @@ for idx in range(n_blocks_58b):
 # %%
 # Convert to DPF fields using CreateSignalField
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-# For each extracted signal, we create a DPF ``Field`` using the :class:`.CreateSignalField` class.
+# For each extracted signal, we create a DPF :class:`Field <ansys.dpf.core.field.Field>` using the :class:`.CreateSignalField` class.
 
 fields_58b = []
 signal_names_58b = []
@@ -216,9 +216,9 @@ for field, name in zip(fields_58b, signal_names_58b):
     print(f"Max dBA level for '{name}': {level_max:.1f} dBA")
 
 # %%
-# Plot dBA levels over time (type 58b)
+# Plot dBA levels over time
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-# Display the dBA levels for signals.
+# Display the computed dBA levels over time.
 
 fig, ax = plt.subplots(figsize=(10, 4))
 fig.suptitle("dBA levels over time — UFF type 58b file")
