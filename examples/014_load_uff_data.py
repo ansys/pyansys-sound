@@ -81,10 +81,6 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # Download the necessary files for this example.
 path_uff_type58b = download_uff_sample_4_channels_type58b()
 
-# Define unit mapping for supported units in the UFF files.
-# This is used to convert UFF units to DPF units.
-match_units = {"Pa": "Pa", "tr/min": "RPM", "m/s2": "m/s^2"}
-
 # %%
 # Load and process a UFF file
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -151,18 +147,16 @@ for i, block in enumerate(datasets_58b):
     signal_name = block.get("id1")  # id1 contains the signal name
     signal_unit = block.get("ordinate_axis_units_lab")
 
-    creator = CreateSignalField(
-        data=signal_data, sampling_frequency=fs, unit=match_units[signal_unit]
-    )
+    creator = CreateSignalField(data=signal_data, sampling_frequency=fs, unit=signal_unit)
     creator.process()
     field = creator.get_output()
 
     fields_58b.append(field)
     signal_names_58b.append(signal_name)
-    signal_units_58b.append(match_units[signal_unit])
+    signal_units_58b.append(signal_unit)
     print(
         f"Created DPF Field for '{signal_name}' ({len(signal_data)} samples, "
-        f"fs={fs:.1f} Hz), unit='{match_units[signal_unit]}'."
+        f"fs={fs:.1f} Hz), unit='{signal_unit}'."
     )
 
 
