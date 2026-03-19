@@ -52,9 +52,6 @@ UFF files containing type 58 or type 58b data blocks.
 # Setting up the analysis consists of loading the required libraries, connecting to the DPF server,
 # and downloading the necessary data files.
 
-# Load standard libraries.
-import warnings
-
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -71,9 +68,6 @@ from ansys.sound.core.examples_helpers import download_uff_sample_4_channels_typ
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import CreateSignalField
 from ansys.sound.core.standard_levels import LevelOverTime
-
-# Suppress non-interactive backend warning from matplotlib.
-warnings.filterwarnings("ignore", message="FigureCanvasAgg is non-interactive")
 
 # Connect to a remote DPF server or start a local DPF server.
 my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
@@ -221,17 +215,18 @@ for field, name in zip(fields_58b, signal_names_58b):
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Display the computed dBA levels over time.
 
-fig, ax = plt.subplots(figsize=(10, 4))
-fig.suptitle("dBA levels over time — UFF type 58b file")
+plt.figure(figsize=(10, 4))
+plt.title("dBA levels over time — UFF type 58b file")
 
-for level_obj, name in zip(level_objects_58b, signal_names_58b):
-    time_scale = level_obj.get_time_scale()
-    level_data = level_obj.get_level_over_time()
-    ax.plot(time_scale, level_data, label=name)
+level_obj = level_objects_58b[0]
+name = signal_names_58b[0]
+time_scale = level_obj.get_time_scale()
+level_data = level_obj.get_level_over_time()
+plt.plot(time_scale, level_data, label=name)
 
-ax.set_xlabel("Time (s)")
-ax.set_ylabel("Level (dBA)")
-ax.legend(loc="lower right")
+plt.xlabel("Time (s)")
+plt.ylabel("Level (dBA)")
+plt.legend(loc="lower right")
 plt.tight_layout()
 plt.show()
 
