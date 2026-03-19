@@ -213,7 +213,7 @@ for field, name in zip(fields_58b, signal_names_58b):
 # %%
 # Plot dBA levels over time
 # ^^^^^^^^^^^^^^^^^^^^^^^^^
-# Display the computed dBA levels over time.
+# Display the computed dBA level over time for one signal.
 
 plt.figure(figsize=(10, 4))
 plt.title("dBA levels over time — UFF type 58b file")
