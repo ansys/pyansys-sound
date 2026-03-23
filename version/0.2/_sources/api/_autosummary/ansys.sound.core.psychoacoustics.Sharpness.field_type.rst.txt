@@ -1,0 +1,6 @@
+field\_type
+===========
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: Sharpness.field_type

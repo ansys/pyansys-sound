@@ -1,0 +1,6 @@
+end\_time
+=========
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoproperty:: CropSignal.end_time
