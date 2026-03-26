@@ -42,6 +42,7 @@ from ansys.sound.core.examples_helpers import (
     download_sound_composer_source_eMotor,
     download_sound_composer_source_WindRoadNoise,
     download_turbo_whistling_wav,
+    download_uff_sample_4_channels_type58b,
     download_xtract_demo_signal_1_wav,
     download_xtract_demo_signal_2_wav,
 )
@@ -185,3 +186,10 @@ def test_download_HVAC_test_wav():
     p = str(EXAMPLES_PATH) + "/HVAC_test.wav"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 930005
+
+
+def test_download_uff_sample_4_channels_type58b():
+    download_uff_sample_4_channels_type58b()
+    p = str(EXAMPLES_PATH) + "/4_channels_type58b.uff"
+    assert pathlib.Path(p).exists() == True
+    assert os.path.getsize(p) == 10483384
