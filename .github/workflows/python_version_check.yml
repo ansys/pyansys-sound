@@ -2,7 +2,8 @@ name: GitHub CI
 on:
   schedule:
     - cron: '0 0 1 * *'
-    - cron: '55 17 * * *'
+    - cron: '00 17 * * *'
+      timezone: 'Europe/Paris'
   workflow_dispatch:
 
 permissions: {}
