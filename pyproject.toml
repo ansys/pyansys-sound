@@ -18,6 +18,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
@@ -29,6 +30,7 @@ dependencies = [
     "requests>=2.30.0",
 ]
 
+
 [project.optional-dependencies]
 full = [
     "ansys-dpf-core==0.15.0",
@@ -37,7 +39,7 @@ full = [
     "pyuff==2.5.3",
     "platformdirs==4.9.4",
     "requests==2.32.5",
-    "scipy==1.15.3",
+    "scipy==1.17.1",
     "scikit-learn==1.7.2",
 ]
 
@@ -51,7 +53,7 @@ tests = [
     "platformdirs==4.9.4",
     "regex==2026.2.28",
     "requests==2.32.5",
-    "scipy==1.15.3",
+    "scipy==1.17.1",
 ]
 
 doc = [
