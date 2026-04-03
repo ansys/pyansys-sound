@@ -1,11 +1,7 @@
-name: GitHub CI
+name: Python compatibility check
 on:
   schedule:
     - cron: '0 0 1 * *'
-    - cron: '16 * * * *'
-  push:
-    branches:
-      - maint/supported-python-versions-check-workflow
   workflow_dispatch:
 
 permissions: {}
