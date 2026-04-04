@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PYTHON_VERSION_MATRIX: '["3.10", "3.11", "3.12", "3.13", "3.14"]' # Supported Python versions
+  PYTHON_VERSION_MATRIX: '["3.10", "3.11", "3.12", "3.13"]' # Supported Python versions
   PACKAGE_NAME: 'ansys-sound-core'
   DOCUMENTATION_CNAME: 'sound.docs.pyansys.com'
   DOCUMENTATION_DPF_SOUND_TAG: 'latest' # DPF Sound image tag for doc building
