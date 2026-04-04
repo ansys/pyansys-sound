@@ -152,6 +152,7 @@ jobs:
       contents: read  # Required to create documentation
       packages: read  # Required to use the DPF Sound Docker image
     strategy:
+      fail-fast: false
       matrix:
         # This matrix contains the list of Python versions to test against.
         # (see env.PYTHON_VERSION_MATRIX)
