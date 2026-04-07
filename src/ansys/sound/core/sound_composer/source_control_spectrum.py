@@ -90,7 +90,7 @@ class SourceControlSpectrum(SourceControlParent):
     @method.setter
     def method(self, method: Methods):
         """Set the sound generation method: IFFT or Hybrid."""
-        if method not in Methods:
+        if not isinstance(method, Methods):
             available_methods = ", ".join(Methods.__members__.keys())
             raise PyAnsysSoundException(
                 "Specified method must be of type `SpectrumSynthesisMethods`. Available methods "

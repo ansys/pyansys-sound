@@ -49,7 +49,7 @@ def test_source_control_spectrum_properties():
     assert control.method == Methods.Hybrid
 
 
-def test_source_control_spectrum_propertiess_exceptions():
+def test_source_control_spectrum_properties_exceptions():
     """Test SourceControlSpectrum properties' exceptions."""
     control = SourceControlSpectrum()
 
