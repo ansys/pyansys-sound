@@ -18,6 +18,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
@@ -29,6 +30,7 @@ dependencies = [
     "requests>=2.30.0",
 ]
 
+
 [project.optional-dependencies]
 full = [
     "ansys-dpf-core==0.15.0",
@@ -36,8 +38,8 @@ full = [
     "matplotlib==3.10.8",
     "pyuff==2.5.3",
     "platformdirs==4.9.4",
-    "requests==2.32.5",
-    "scipy==1.15.3",
+    "requests==2.33.1",
+    "scipy==1.17.1",
     "scikit-learn==1.7.2",
 ]
 
@@ -49,9 +51,9 @@ tests = [
     "pytest-cov==7.1.0",
     "pytest-dependency==0.6.1",
     "platformdirs==4.9.4",
-    "regex==2026.2.28",
-    "requests==2.32.5",
-    "scipy==1.15.3",
+    "regex==2026.3.32",
+    "requests==2.33.1",
+    "scipy==1.17.1",
 ]
 
 doc = [
@@ -64,15 +66,15 @@ doc = [
     "sphinx-copybutton==0.5.2",
     "sphinx-gallery==0.20.0",
     "sphinx-design==0.6.1",
-    "vtk==9.6.0",
+    "vtk==9.6.1",
     "trame==3.12.0",
-    "trame_vtk==2.11.5",
+    "trame_vtk==2.11.6",
     "pyvista==0.47.1",
     "pypandoc==1.17",
     "jupyter-sphinx==0.5.3",
     "sphinx-autobuild==2024.10.3",
     "platformdirs==4.9.4",
-    "requests==2.32.5",
+    "requests==2.33.1",
     "scikit-learn==1.7.2",
 ]
 
