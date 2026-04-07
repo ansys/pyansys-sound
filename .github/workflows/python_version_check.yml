@@ -7,6 +7,7 @@ on:
     paths:
         # Run whenever this workflow is modified
       - .github/workflows/python_version_check.yml
+  # Allow manual trigger
   workflow_dispatch:
 
 permissions: {}
