@@ -11,8 +11,8 @@ concurrency:
 permissions: {}
 
 jobs:
-  cleanup:
-    name: Cleaning unnecessary docker images
+  cleanup-ghcr:
+    name: Cleaning unnecessary docker images in GHCR
     runs-on: ubuntu-latest
     env:
       PACKAGE_DELETION_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -20,7 +20,7 @@ jobs:
       packages: write  # Required to delete images
 
     steps:
-    - name: "Perform docker image cleanup - except certain tags"
+    - name: Perform docker image cleanup - except certain tags
       uses: ansys/actions/hk-package-clean-except@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
       with:
         package-name: 'ansys-sound'
@@ -29,10 +29,10 @@ jobs:
         allow-last-days: '15'
 
   cleanup-self-hosted:
-    name: Cleaning local images
+    name: Cleaning unnecessary docker images in self-hosted runner
     runs-on: [self-hosted, Windows, pyansys-sound]
     steps:
-      - name: Cleanup local images
+      - name: Perform docker image cleanup - except certain tags
         shell: bash
         run: |
           echo "Cleaning ghcr.io/ansys/ansys-sound images"
