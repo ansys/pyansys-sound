@@ -27,3 +27,38 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         tags-kept: '25.2, 26.1, latest'
         allow-last-days: '15'
+
+  cleanup-self-hosted:
+    name: Cleaning local images
+    runs-on: [self-hosted, Windows, pyansys-sound]
+    steps:
+      - name: Cleanup local images
+        shell: bash
+        run: |
+          echo "Cleaning ghcr.io/ansys/ansys-sound images"
+          image_name="ghcr.io/ansys/ansys-sound"
+          keep_tags=("latest" "25.2" "26.1")
+
+          images=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "^$image_name:")
+
+          for image in $images; do
+            tag="${image##*:}"
+
+            keep=false
+            for keep_tag in "${keep_tags[@]}"; do
+              if [ "$tag" = "$keep_tag" ]; then
+                keep=true
+                break
+              fi
+            done
+
+            if [ "$keep" = true ]; then
+              echo "Keeping $image"
+            else
+              echo "Removing $image"
+              docker rmi "$image"
+            fi
+          done
+
+          echo "Cleaning dangling images"
+          docker image prune -f
