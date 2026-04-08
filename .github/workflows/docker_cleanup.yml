@@ -10,6 +10,10 @@ on:
   # Allow manual trigger
   workflow_dispatch:
 
+env:
+  # List of DPF Sound image tags to NOT delete
+  IMAGES_TO_KEEP: '["25.2", "26.1", "latest"]'
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -31,7 +35,7 @@ jobs:
       with:
         package-name: 'ansys-sound'
         token: ${{ secrets.GITHUB_TOKEN }}
-        tags-kept: '25.2, 26.1, latest'
+        tags-kept: ${{ env.IMAGES_TO_KEEP }}
         allow-last-days: '15'
 
   cleanup-self-hosted:
@@ -43,7 +47,7 @@ jobs:
         run: |
           echo "Cleaning ghcr.io/ansys/ansys-sound images"
           image_name="ghcr.io/ansys/ansys-sound"
-          keep_tags=("latest" "25.2" "26.1")
+          keep_tags=$(echo $IMAGES_TO_KEEP | jq -r '.[]')
 
           images=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "^$image_name:")
 
@@ -51,7 +55,7 @@ jobs:
             tag="${image##*:}"
 
             keep=false
-            for keep_tag in "${keep_tags[@]}"; do
+            for keep_tag in $keep_tags; do
               if [ "$tag" = "$keep_tag" ]; then
                 keep=true
                 break
