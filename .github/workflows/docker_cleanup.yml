@@ -30,7 +30,7 @@ jobs:
       packages: write  # Required to delete images
 
     steps:
-    - name: Perform docker image cleanup - except certain tags
+    - name: Docker image cleanup (GHCR)
       uses: ansys/actions/hk-package-clean-except@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
       with:
         package-name: 'ansys-sound'
@@ -42,10 +42,9 @@ jobs:
     name: Cleaning unnecessary docker images in self-hosted runner
     runs-on: [self-hosted, Windows, pyansys-sound]
     steps:
-      - name: Perform docker image cleanup - except certain tags
+      - name: Docker image cleanup (self-hosted runner)
         shell: bash
         run: |
-          echo "Cleaning ghcr.io/ansys/ansys-sound images"
           image_name="ghcr.io/ansys/ansys-sound"
 
           keep_tags="${{ env.IMAGES_TO_KEEP }}"
