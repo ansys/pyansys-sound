@@ -44,10 +44,12 @@ jobs:
     steps:
       - name: Docker image cleanup (self-hosted runner)
         shell: bash
+        env:
+          IMAGES_TO_KEEP: ${{ env.IMAGES_TO_KEEP }}
         run: |
           image_name="ghcr.io/ansys/ansys-sound"
 
-          keep_tags="${{ env.IMAGES_TO_KEEP }}"
+          keep_tags="${IMAGES_TO_KEEP}"
           echo "Tags to keep: $keep_tags"
 
           images=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "^$image_name:" || true)
