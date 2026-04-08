@@ -39,7 +39,8 @@ full = [
     "pyuff==2.5.3",
     "platformdirs==4.9.4",
     "requests==2.33.1",
-    "scipy==1.17.1",
+    "scipy==1.14.1; python_version<'3.11'",
+    "scipy==1.17.1; python_version>='3.11'",
     "scikit-learn==1.7.2",
 ]
 
@@ -53,7 +54,8 @@ tests = [
     "platformdirs==4.9.4",
     "regex==2026.3.32",
     "requests==2.33.1",
-    "scipy==1.17.1",
+    "scipy==1.14.1; python_version<'3.11'",
+    "scipy==1.17.1; python_version>='3.11'",
 ]
 
 doc = [
