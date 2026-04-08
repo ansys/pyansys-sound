@@ -1,7 +1,13 @@
 name: Docker image cleanup
 on:
-  schedule: # UTC at 0200 every Sunday
+  schedule:
+      # Run on sundays at 02:00 UTC
     - cron: "0 2 * * 0"
+  pull_request:
+    paths:
+        # Run whenever this workflow is modified
+      - .github/workflows/docker_cleanup.yml
+  # Allow manual trigger
   workflow_dispatch:
 
 concurrency:
