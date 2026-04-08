@@ -10,15 +10,15 @@ on:
   # Allow manual trigger
   workflow_dispatch:
 
-env:
-  # List of DPF Sound image tags to NOT delete
-  IMAGES_TO_KEEP: '["25.2", "26.1", "latest"]'
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 permissions: {}
+
+env:
+  # List of DPF Sound image tags to NOT delete
+  IMAGES_TO_KEEP: '["25.2", "26.1", "latest"]'
 
 jobs:
   cleanup-ghcr:
