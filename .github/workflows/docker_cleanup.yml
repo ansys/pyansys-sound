@@ -18,7 +18,7 @@ permissions: {}
 
 env:
   # List of DPF Sound image tags to NOT delete
-  IMAGES_TO_KEEP: '["25.2", "26.1", "latest"]'
+  IMAGES_TO_KEEP: '25.2 26.1 latest'
 
 jobs:
   cleanup-ghcr:
@@ -47,12 +47,20 @@ jobs:
         run: |
           echo "Cleaning ghcr.io/ansys/ansys-sound images"
           image_name="ghcr.io/ansys/ansys-sound"
-          keep_tags=$(echo $IMAGES_TO_KEEP | jq -r '.[]')
 
-          images=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "^$image_name:")
+          keep_tags="${{ env.IMAGES_TO_KEEP }}"
+          echo "Tags to keep: $keep_tags"
+
+          images=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "^$image_name:" || true)
+
+          if [ -z "$images" ]; then
+            echo "No images found for $image_name"
+            exit 0
+          fi
 
           for image in $images; do
             tag="${image##*:}"
+            echo "Processing image: $image (tag: $tag)"
 
             keep=false
             for keep_tag in $keep_tags; do
@@ -66,7 +74,7 @@ jobs:
               echo "Keeping $image"
             else
               echo "Removing $image"
-              docker rmi "$image"
+              docker rmi "$image" || echo "Failed to remove $image"
             fi
           done
 
