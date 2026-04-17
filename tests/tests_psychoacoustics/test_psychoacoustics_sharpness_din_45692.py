@@ -28,8 +28,13 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.psychoacoustics import SharpnessDIN45692
 from ansys.sound.core.signal_utilities import LoadWav
 
-EXP_SHARPNESS_FREE = 1.212127
-EXP_SHARPNESS_DIFFUSE = 1.221791
+if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
+    # Sound_mlb_lib update (see PR668614)
+    EXP_SHARPNESS_FREE = 1.212127
+    EXP_SHARPNESS_DIFFUSE = 1.221791
+else:
+    EXP_SHARPNESS_FREE = 1.212122
+    EXP_SHARPNESS_DIFFUSE = 1.221786
 
 EXP_STR_DEFAULT = (
     "SharpnessDIN45692 object\nData:\n\tSignal name: Not set\nSharpness: Not processed"
