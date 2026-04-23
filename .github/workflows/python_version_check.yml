@@ -1,0 +1,147 @@
+name: Python compatibility check
+on:
+  schedule:
+      # Run on day 1 of each month at 00:00 UTC
+    - cron: '0 0 1 * *'
+  pull_request:
+    paths:
+        # Run whenever this workflow is modified
+      - .github/workflows/python_version_check.yml
+  # Allow manual trigger
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION_MATRIX: '["3.10", "3.11", "3.12", "3.13", "3.14"]' # Supported Python versions
+  PACKAGE_NAME: 'ansys-sound-core'
+  TEST_DPF_SOUND_TAG: 'latest' # DPF Sound image tag for testing
+  ANSRV_DPF_SOUND_REPO: ghcr.io/ansys/ansys-sound # Docker repository for DPF Sound
+  ANSRV_DPF_SOUND_PORT: 6780 # Port to connect to DPF Sound Docker container
+  ANSRV_DPF_SOUND_PORT_IN_CONTAINER: 50052 # Port inside DPF Sound Docker container
+  DPF_SOUND_CONT_NAME: ansys-sound-core
+  DPF_DEFAULT_GRPC_MODE: insecure
+
+jobs:
+  # Retrieve test matrix from the environment variable, as env variables are not directly available
+  # at matrix definition (in jobs testing-windows and doc-build below).
+  retrieve-test-matrix:
+    name: "Retrieve test matrix of Python versions"
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: echo "matrix=${PYTHON_VERSION_MATRIX}" >> $GITHUB_OUTPUT
+        env:
+          PYTHON_VERSION_MATRIX: ${{ env.PYTHON_VERSION_MATRIX }}
+
+  testing-windows:
+    name: "Testing"
+    runs-on: [self-hosted, Windows, pyansys-sound]
+    needs: retrieve-test-matrix
+    permissions:
+      contents: read  # Required to access test code
+      packages: read  # Required to use the DPF Sound Docker image
+    env:
+      PYVISTA_OFF_SCREEN: true
+      MPLBACKEND: Agg  # non-interactive mode ("headless backend") for matplotlib: no GUI is used when plotting
+    strategy:
+      fail-fast: false
+      matrix:
+        # This matrix contains the list of Python versions to test against.
+        # (see env.PYTHON_VERSION_MATRIX)
+        python-version: ${{ fromJson(needs.retrieve-test-matrix.outputs.matrix) }}
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: "Set up Python"
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Set up headless display
+        uses: pyvista/setup-headless-display-action@5bc8de3bc71fcda7a96439571287a554901541a0 # v4.3
+        with:
+          pyvista: false
+
+      - name: "Create Python venv"
+        run: |
+          python -m venv .venv
+          .\.venv\Scripts\Activate.ps1
+
+      - name: "Install packages for testing"
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          python -m pip install --upgrade pip
+          pip install --upgrade build wheel
+          pip install .[tests]
+
+      - name: "Login to GitHub Container Registry"
+        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download DPF-Sound service container
+        env:
+          ANSRV_DPF_SOUND_IMAGE: "${{ env.ANSRV_DPF_SOUND_REPO }}:${{ env.TEST_DPF_SOUND_TAG }}"
+        run: docker pull $env:ANSRV_DPF_SOUND_IMAGE
+
+      - name: "Start DPF-Sound service and verify start"
+        env:
+          ANSRV_DPF_SOUND_IMAGE: "${{ env.ANSRV_DPF_SOUND_REPO }}:${{ env.TEST_DPF_SOUND_TAG }}"
+          PORT_MAPPING: "${{ env.ANSRV_DPF_SOUND_PORT }}:${{ env.ANSRV_DPF_SOUND_PORT_IN_CONTAINER }}"
+          LICENSE_SERVER: ${{ secrets.LICENSE_SERVER }}
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          docker run -d --name $env:DPF_SOUND_CONT_NAME -e "DPF_DEFAULT_GRPC_MODE=insecure" -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@$env:LICENSE_SERVER" -p $env:PORT_MAPPING --dns '8.8.8.8' $env:ANSRV_DPF_SOUND_IMAGE
+          python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
+
+      - name: "Testing"
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          pytest -v
+
+      - name: "Upload Coverage Results"
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: coverage-html-${{ matrix.python-version }}
+          path: .cov/html
+          retention-days: 7
+
+      - name: "Upload coverage reports to Codecov"
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: .cov/xml
+
+      - name: "Stop the DPF-Sound service"
+        if: always()
+        run: |
+          docker stop $env:DPF_SOUND_CONT_NAME
+          docker logs $env:DPF_SOUND_CONT_NAME
+          docker rm $env:DPF_SOUND_CONT_NAME
+
+      - name: "Stop any remaining containers"
+        if: always()
+        run: |
+          $dockerContainers = docker ps -a -q
+          if (-not [string]::IsNullOrEmpty($dockerContainers)) {
+              docker stop $dockerContainers
+              docker rm $dockerContainers
+          }
+
+      - name: "Delete the Docker images (and untagged ones)"
+        if: always()
+        run: |
+          docker system prune -f
+
