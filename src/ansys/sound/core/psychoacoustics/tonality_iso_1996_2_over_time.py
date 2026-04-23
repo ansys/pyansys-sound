@@ -130,8 +130,10 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
                 f"Maximum tonal adjustment: Not processed"
             )
         else:
-            tonal_audibility_unit = self.get_output()[0].unit
-            tonal_adjustment_unit = self.get_output()[1].unit
+            unit: str | tuple = self.get_output()[0].unit
+            tonal_audibility_unit = unit if isinstance(unit, str) else unit[1]
+            unit: str | tuple = self.get_output()[1].unit
+            tonal_adjustment_unit = unit if isinstance(unit, str) else unit[1]
             str_tonality = (
                 f"Number of segments: {self.get_segment_count()}\n"
                 f"Maximum tonal audibility: {max(self.get_tonal_audibility_over_time()):.1f} "

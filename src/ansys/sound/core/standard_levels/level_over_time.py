@@ -124,8 +124,9 @@ class LevelOverTime(StandardLevelsParent):
         )
         if self._output is not None:
             max_level = self.get_level_max()
-            unit = self.get_output()[1].unit
-            str_level = f"{max_level:.1f} {unit}"
+            unit: str | tuple = self.get_output()[1].unit
+            str_unit = unit if isinstance(unit, str) else unit[1]
+            str_level = f"{max_level:.1f} {str_unit}"
         else:
             str_level = "Not processed"
 

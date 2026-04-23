@@ -86,11 +86,13 @@ class SourceControlTime(SourceControlParent):
         else:
             time = self.control.time_freq_support.time_frequencies
             str_duration = f"{time.data[-1]:.1f} {time.unit}" if len(time.data) > 0 else "N/A"
+            unit: str | tuple = self.control.unit
+            str_unit = unit if isinstance(unit, str) else unit[1]
             return (
-                f"Unit: {self.control.unit}\n"
+                f"Unit: {str_unit}\n"
                 f"Duration: {str_duration}\n"
                 f"Min - max: {self.control.data.min():.1f} - {self.control.data.max():.1f} "
-                f"{self.control.unit}"
+                f"{str_unit}"
             )
 
     @property
