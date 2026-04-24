@@ -9,7 +9,8 @@ version = "0.2.dev1"
 description = "A Python wrapper for Ansys DPF Sound."
 readme = "README.rst"
 requires-python = ">=3.10,<4"
-license = { file = "LICENSE" }
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [{ name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" }]
 maintainers = [{ name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" }]
 classifiers = [
@@ -19,15 +20,14 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
+    "Operating System :: OS Independent"
 ]
 dependencies = [
     "ansys-dpf-core>=0.13.8,<1",
     "ansys-tools-common>=0.1.0,<1",
     "matplotlib>=3.8.2,<4",
     "platformdirs>=3.6.0",
-    "requests>=2.30.0",
+    "requests>=2.30.0"
 ]
 
 
@@ -37,11 +37,11 @@ full = [
     "ansys-tools-common==0.5.0",
     "matplotlib==3.10.8",
     "pyuff==2.5.3",
-    "platformdirs==4.9.4",
+    "platformdirs==4.9.6",
     "requests==2.33.1",
     "scipy==1.14.1; python_version<'3.11'",
     "scipy==1.17.1; python_version>='3.11'",
-    "scikit-learn==1.7.2",
+    "scikit-learn==1.7.2"
 ]
 
 tests = [
@@ -51,11 +51,11 @@ tests = [
     "pytest==9.0.3",
     "pytest-cov==7.1.0",
     "pytest-dependency==0.6.1",
-    "platformdirs==4.9.4",
+    "platformdirs==4.9.6",
     "regex==2026.4.4",
     "requests==2.33.1",
     "scipy==1.14.1; python_version<'3.11'",
-    "scipy==1.17.1; python_version>='3.11'",
+    "scipy==1.17.1; python_version>='3.11'"
 ]
 
 doc = [
@@ -70,14 +70,14 @@ doc = [
     "sphinx-design==0.6.1",
     "vtk==9.6.1",
     "trame==3.12.0",
-    "trame_vtk==2.11.6",
-    "pyvista==0.47.1",
+    "trame_vtk==2.11.7",
+    "pyvista==0.47.3",
     "pypandoc==1.17",
     "jupyter-sphinx==0.5.3",
     "sphinx-autobuild==2024.10.3",
-    "platformdirs==4.9.4",
+    "platformdirs==4.9.6",
     "requests==2.33.1",
-    "scikit-learn==1.7.2",
+    "scikit-learn==1.7.2"
 ]
 
 [tool.flit.module]
