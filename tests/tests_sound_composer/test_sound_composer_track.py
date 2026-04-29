@@ -42,10 +42,8 @@ from ansys.sound.core.sound_composer import (
     SourceControlTime,
     SourceSpectrum,
 )
-from ansys.sound.core.sound_composer import (
-    Track,
-)
 from ansys.sound.core.sound_composer import SpectrumSynthesisMethods as Methods
+from ansys.sound.core.sound_composer import Track
 from ansys.sound.core.spectral_processing.power_spectral_density import PowerSpectralDensity
 
 REF_ACOUSTIC_POWER = 4e-10
