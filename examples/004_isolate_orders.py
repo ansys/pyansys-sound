@@ -95,6 +95,8 @@ def plot_stft(
     """
     magnitude = stft.get_stft_magnitude_as_nparray()
     magnitude_unit = stft.get_output()[0].unit
+    if isinstance(magnitude_unit, tuple):
+        magnitude_unit = magnitude_unit[1]
     frequency_unit = stft.get_output()[0].time_freq_support.time_frequencies.unit
     time_unit = stft.get_output().time_freq_support.time_frequencies.unit
 

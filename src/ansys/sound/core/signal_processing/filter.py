@@ -372,13 +372,15 @@ class Filter(SignalProcessingParent):
                 f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
             )
         output = self.get_output()
+        unit = output.unit if isinstance(output.unit, str) else output.unit[1]
+        unit_str = f" ({unit})" if len(unit) > 0 else ""
 
         time = output.time_freq_support.time_frequencies
 
         plt.plot(time.data, output.data)
         plt.title("Filtered signal")
         plt.xlabel(f"Time ({time.unit})")
-        plt.ylabel(f"Amplitude ({output.unit})")
+        plt.ylabel(f"Amplitude{unit_str}")
         plt.grid(True)
         plt.show()
 
@@ -392,11 +394,12 @@ class Filter(SignalProcessingParent):
                 f"`{__class__.__name__}.design_FIR_from_FRF_file()` method."
             )
         frequencies = self.frf.time_freq_support.time_frequencies
+        frf_unit = self.frf.unit[1]
 
         plt.plot(frequencies.data, self.frf.data)
         plt.title("Frequency response function (FRF) of the filter")
         plt.xlabel(f"Frequency ({frequencies.unit})")
-        plt.ylabel(f"Magnitude ({self.frf.unit})")
+        plt.ylabel(f"Magnitude ({frf_unit})")
         plt.grid(True)
         plt.show()
 
@@ -474,4 +477,5 @@ class Filter(SignalProcessingParent):
                 num_entities=1, location=locations.time_freq
             )
             self.__frf.append(20 * np.log10(abs(complex_response)), 1)
+            self.__frf.unit = "dB"
             self.__frf.time_freq_support = frf_support
