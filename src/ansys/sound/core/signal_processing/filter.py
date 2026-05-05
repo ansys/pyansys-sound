@@ -25,6 +25,7 @@
 import warnings
 
 from ansys.dpf.core import Field, Operator, TimeFreqSupport, fields_factory, locations
+from ansys.dpf.core.available_result import Homogeneity
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -477,5 +478,5 @@ class Filter(SignalProcessingParent):
                 num_entities=1, location=locations.time_freq
             )
             self.__frf.append(20 * np.log10(abs(complex_response)), 1)
-            self.__frf.unit = "dB"
+            self.__frf.unit = (Homogeneity.dimensionless, "dB")
             self.__frf.time_freq_support = frf_support
