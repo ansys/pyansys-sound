@@ -580,7 +580,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         # Display octave-band levels in the upper subplot.
         Lw = self.get_Lw_octave()
         Lw_unit = self.get_output()[2].unit
-        
+        Lw_unit = Lw_unit if isinstance(Lw_unit, str) else Lw_unit[1]
         Lw_unit_str = f" ({Lw_unit})" if len(Lw_unit) > 0 else ""
         f_center = self.get_octave_center_frequencies()
 
@@ -593,6 +593,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         # Display 1/3-octave-band levels in the lower subplot.
         Lw = self.get_Lw_thirdoctave()
         Lw_unit = self.get_output()[3].unit
+        Lw_unit = Lw_unit if isinstance(Lw_unit, str) else Lw_unit[1]
         Lw_unit_str = f" ({Lw_unit})" if len(Lw_unit) > 0 else ""
         f_center = self.get_thirdoctave_center_frequencies()
         f_unit = self.get_output()[3].time_freq_support.time_frequencies.unit

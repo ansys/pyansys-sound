@@ -30,6 +30,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning, scipy_required
+from ..server_helpers._check_version import _check_sound_version
 from ..signal_processing import SignalProcessingParent
 
 ID_OPERATOR_DESIGN = "filter_design_minimum_phase_FIR_filter_from_FRF"
@@ -479,5 +480,6 @@ class Filter(SignalProcessingParent):
                 num_entities=1, location=locations.time_freq
             )
             self.__frf.append(20 * np.log10(abs(complex_response)), 1)
-            self.__frf.unit = (Homogeneity.dimensionless, "dB")
+            if _check_sound_version("2026.1.0"):
+                self.__frf.unit = (Homogeneity.dimensionless, "dB")
             self.__frf.time_freq_support = frf_support
