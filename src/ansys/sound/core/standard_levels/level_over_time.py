@@ -369,6 +369,8 @@ class LevelOverTime(StandardLevelsParent):
         level_over_time = self.get_level_over_time()
         time_scale = self.get_time_scale()
         unit = self.get_output()[1].unit
+        if isinstance(unit, tuple):
+            unit = unit[1]
         time_unit = self.get_output()[1].time_freq_support.time_frequencies.unit
 
         plt.plot(time_scale, level_over_time)

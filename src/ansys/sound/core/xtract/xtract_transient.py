@@ -189,18 +189,22 @@ class XtractTransient(XtractParent):
         This method plots the transient signal and non-transient signal.
         """
         transient_signal, non_transient_signal = self.get_output()
+        unit = transient_signal.unit
+        if isinstance(transient_signal.unit, tuple):
+            unit = transient_signal.unit[1]
+        unit_str = f" ({unit})" if len(unit) > 0 else ""
         time = transient_signal.time_freq_support.time_frequencies
 
         plt.figure()
         plt.plot(time.data, transient_signal.data)
         plt.xlabel(f"Time ({time.unit})")
-        plt.ylabel(f"Amplitude ({transient_signal.unit})")
+        plt.ylabel(f"Amplitude{unit_str}")
         plt.title(f"Transient signal")
 
         plt.figure()
         plt.plot(time.data, non_transient_signal.data)
         plt.xlabel(f"Time ({time.unit})")
-        plt.ylabel(f"Amplitude ({non_transient_signal.unit})")
+        plt.ylabel(f"Amplitude{unit_str}")
         plt.title(f"Non transient signal")
 
         plt.show()

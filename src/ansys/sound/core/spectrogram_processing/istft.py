@@ -150,11 +150,13 @@ class Istft(SpectrogramProcessingParent):
                 f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
             )
         output = self.get_output()
+        unit = output.unit if isinstance(output.unit, str) else output.unit[1]
+        unit_str = f" ({unit})" if len(unit) > 0 else ""
         time = output.time_freq_support.time_frequencies
 
         plt.plot(time.data, output.data)
         plt.title(output.name)
         plt.xlabel(f"Time ({time.unit})")
-        plt.ylabel(f"Amplitude ({output.unit})")
+        plt.ylabel(f"Amplitude{unit_str}")
         plt.grid(True)
         plt.show()

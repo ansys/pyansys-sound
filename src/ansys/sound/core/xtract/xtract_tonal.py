@@ -190,18 +190,22 @@ class XtractTonal(XtractParent):
         This method plots both the tonal and non-tonal signals.
         """
         tonal_signal, non_tonal_signal = self.get_output()
+        unit = tonal_signal.unit
+        if isinstance(tonal_signal.unit, tuple):
+            unit = tonal_signal.unit[1]
+        unit_str = f" ({unit})" if len(unit) > 0 else ""
         time = tonal_signal.time_freq_support.time_frequencies
 
         plt.figure()
         plt.plot(time.data, tonal_signal.data)
         plt.xlabel(f"Time ({time.unit})")
-        plt.ylabel(f"Amplitude ({tonal_signal.unit})")
+        plt.ylabel(f"Amplitude{unit_str}")
         plt.title("Tonal signal")
 
         plt.figure()
         plt.plot(time.data, non_tonal_signal.data)
         plt.xlabel(f"Time ({time.unit})")
-        plt.ylabel(f"Amplitude ({non_tonal_signal.unit})")
+        plt.ylabel(f"Amplitude{unit_str}")
         plt.title("Non tonal signal")
 
         plt.show()

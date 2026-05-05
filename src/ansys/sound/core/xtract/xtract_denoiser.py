@@ -184,18 +184,22 @@ class XtractDenoiser(XtractParent):
         """
         # Plot the denoised signal.
         denoised_signal, noise_signal = self.get_output()
+        unit = denoised_signal.unit
+        if isinstance(denoised_signal.unit, tuple):
+            unit = denoised_signal.unit[1]
+        unit_str = f" ({unit})" if len(unit) > 0 else ""
         time = denoised_signal.time_freq_support.time_frequencies
 
         plt.figure()
         plt.plot(time.data, denoised_signal.data)
         plt.xlabel(f"Time ({time.unit})")
-        plt.ylabel(f"Amplitude ({denoised_signal.unit})")
+        plt.ylabel(f"Amplitude{unit_str}")
         plt.title(f"Denoised signal")
 
         plt.figure()
         plt.plot(time.data, noise_signal.data)
         plt.xlabel(f"Time ({time.unit})")
-        plt.ylabel(f"Amplitude ({noise_signal.unit})")
+        plt.ylabel(f"Amplitude{unit_str}")
         plt.title(f"Noise signal")
 
         plt.show()
