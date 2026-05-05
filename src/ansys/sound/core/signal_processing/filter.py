@@ -395,12 +395,13 @@ class Filter(SignalProcessingParent):
                 f"`{__class__.__name__}.design_FIR_from_FRF_file()` method."
             )
         frequencies = self.frf.time_freq_support.time_frequencies
-        frf_unit = self.frf.unit[1]
+        frf_unit = self.frf.unit if isinstance(self.frf.unit, str) else self.frf.unit[1]
+        frf_unit_str = f" ({frf_unit})" if len(frf_unit) > 0 else ""
 
         plt.plot(frequencies.data, self.frf.data)
         plt.title("Frequency response function (FRF) of the filter")
         plt.xlabel(f"Frequency ({frequencies.unit})")
-        plt.ylabel(f"Magnitude ({frf_unit})")
+        plt.ylabel(f"Magnitude{frf_unit_str}")
         plt.grid(True)
         plt.show()
 
