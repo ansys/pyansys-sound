@@ -268,7 +268,7 @@ class Roughness(PsychoacousticsParent):
 
         axes[0].plot(bark_band_indexes, specific_roughness)
         axes[0].set_title("Specific roughness")
-        axes[0].set_xlabel(f"z {bark_unit_str}")
+        axes[0].set_xlabel(f"z{bark_unit_str}")
         axes[0].set_ylabel(f"R' ({specific_roughness_unit})")
         axes[0].grid(True)
 
