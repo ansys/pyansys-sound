@@ -215,17 +215,17 @@ fig.suptitle("Time varying RMS, dBSPL and dBA levels")
 
 axs[0].plot(time[0], rms_levels[0], color="b", label="Fan")
 axs[0].plot(time[1], rms_levels[1], color="r", label="Airplane")
-axs[0].set_ylabel(f"{rms_level_unit}")
+axs[0].set_ylabel(rms_level_unit)
 axs[0].legend(loc="upper right")
 
 axs[1].plot(time[0], SPL_levels[0], color="b", label="Fan")
 axs[1].plot(time[1], SPL_levels[1], color="r", label="Airplane")
-axs[1].set_ylabel(f"{SPL_unit}")
+axs[1].set_ylabel(SPL_unit)
 axs[1].legend(loc="upper right")
 
 axs[2].plot(time[0], A_weighted_levels[0], color="b", label="Fan")
 axs[2].plot(time[1], A_weighted_levels[1], color="r", label="Airplane")
-axs[2].set_ylabel(f"{A_weighted_level_unit}")
+axs[2].set_ylabel(A_weighted_level_unit)
 axs[2].legend(loc="upper right")
 axs[2].set_xlabel(f"Time ({time_unit})")
 
