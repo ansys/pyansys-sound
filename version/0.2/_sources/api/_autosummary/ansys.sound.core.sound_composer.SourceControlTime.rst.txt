@@ -1,0 +1,51 @@
+﻿SourceControlTime
+=================
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. autoclass:: SourceControlTime
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SourceControlTime.convert_fields_container_to_np_array
+      
+      
+      SourceControlTime.get_output
+      
+      
+      SourceControlTime.get_output_as_nparray
+      
+      
+      SourceControlTime.load_from_text_file
+      
+      
+      SourceControlTime.load_from_wave_file
+      
+      
+      SourceControlTime.plot
+      
+      
+      SourceControlTime.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SourceControlTime.control
+      SourceControlTime.description
+   
+   

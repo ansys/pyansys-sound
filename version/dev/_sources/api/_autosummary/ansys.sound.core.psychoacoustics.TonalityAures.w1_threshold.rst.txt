@@ -1,0 +1,6 @@
+w1\_threshold
+=============
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: TonalityAures.w1_threshold

@@ -1,0 +1,6 @@
+get\_peaks\_low\_frequencies
+============================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: ToneToNoiseRatio.get_peaks_low_frequencies

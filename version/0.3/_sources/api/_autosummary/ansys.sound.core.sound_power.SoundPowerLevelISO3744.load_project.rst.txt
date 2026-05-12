@@ -1,0 +1,6 @@
+load\_project
+=============
+
+.. currentmodule:: ansys.sound.core.sound_power
+
+.. automethod:: SoundPowerLevelISO3744.load_project

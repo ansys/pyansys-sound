@@ -1,0 +1,6 @@
+unit
+====
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoproperty:: CreateSignalField.unit

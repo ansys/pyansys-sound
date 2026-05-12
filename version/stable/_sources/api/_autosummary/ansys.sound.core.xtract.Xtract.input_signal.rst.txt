@@ -1,0 +1,6 @@
+input\_signal
+=============
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoproperty:: Xtract.input_signal

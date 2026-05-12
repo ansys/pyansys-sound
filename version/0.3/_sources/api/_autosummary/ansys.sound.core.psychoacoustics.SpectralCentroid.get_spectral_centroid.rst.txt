@@ -1,0 +1,6 @@
+get\_spectral\_centroid
+=======================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: SpectralCentroid.get_spectral_centroid

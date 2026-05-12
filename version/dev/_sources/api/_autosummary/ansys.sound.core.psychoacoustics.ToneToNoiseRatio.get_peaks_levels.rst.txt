@@ -1,0 +1,6 @@
+get\_peaks\_levels
+==================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: ToneToNoiseRatio.get_peaks_levels

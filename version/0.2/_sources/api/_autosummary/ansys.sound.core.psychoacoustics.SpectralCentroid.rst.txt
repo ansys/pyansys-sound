@@ -1,0 +1,47 @@
+﻿SpectralCentroid
+================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: SpectralCentroid
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SpectralCentroid.convert_fields_container_to_np_array
+      
+      
+      SpectralCentroid.get_output
+      
+      
+      SpectralCentroid.get_output_as_nparray
+      
+      
+      SpectralCentroid.get_spectral_centroid
+      
+      
+      SpectralCentroid.plot
+      
+      
+      SpectralCentroid.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SpectralCentroid.signal
+   
+   

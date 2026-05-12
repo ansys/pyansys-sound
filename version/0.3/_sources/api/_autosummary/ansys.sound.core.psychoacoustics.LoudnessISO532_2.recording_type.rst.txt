@@ -1,0 +1,6 @@
+recording\_type
+===============
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: LoudnessISO532_2.recording_type

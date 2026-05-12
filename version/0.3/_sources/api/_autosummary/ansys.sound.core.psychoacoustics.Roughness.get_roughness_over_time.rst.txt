@@ -1,0 +1,6 @@
+get\_roughness\_over\_time
+==========================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: Roughness.get_roughness_over_time
