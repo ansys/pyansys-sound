@@ -230,7 +230,7 @@ class SharpnessDIN45692OverTime(PsychoacousticsParent):
 
         sharpness_over_time = self.get_sharpness_over_time()
         time_scale = self.get_time_scale()
-        sharpness_unit = self.get_output()[1].unit
+        sharpness_unit = self.get_output()[1].unit[1]
         time_unit = self.get_output()[1].time_freq_support.time_frequencies.unit
 
         plt.figure()

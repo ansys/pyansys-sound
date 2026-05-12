@@ -257,15 +257,18 @@ class Roughness(PsychoacousticsParent):
         roughness_over_time = self.get_roughness_over_time()
         time_scale = self.get_time_scale()
         bark_unit = self.get_output()[1].time_freq_support.time_frequencies.unit
+        if isinstance(bark_unit, tuple):
+            bark_unit = bark_unit[1]
+        bark_unit_str = f" ({bark_unit})" if len(bark_unit) > 0 else ""
         time_unit = self.get_output()[2].time_freq_support.time_frequencies.unit
-        specific_roughness_unit = self.get_output()[1].unit
-        roughness_over_time_unit = self.get_output()[2].unit
+        specific_roughness_unit = self.get_output()[1].unit[1]
+        roughness_over_time_unit = self.get_output()[2].unit[1]
 
         _, axes = plt.subplots(2, 1, sharex=False)
 
         axes[0].plot(bark_band_indexes, specific_roughness)
         axes[0].set_title("Specific roughness")
-        axes[0].set_xlabel(f"z ({bark_unit})")
+        axes[0].set_xlabel(f"z{bark_unit_str}")
         axes[0].set_ylabel(f"R' ({specific_roughness_unit})")
         axes[0].grid(True)
 

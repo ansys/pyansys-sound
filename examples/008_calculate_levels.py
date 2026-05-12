@@ -176,7 +176,7 @@ for file_path in (path_fan_wav, path_aircraft_wav):
     )
     SPL_time_varying.process()
     SPL_over_time = SPL_time_varying.get_level_over_time()
-    SPL_unit = SPL_time_varying.get_output()[1].unit
+    SPL_unit = SPL_time_varying.get_output()[1].unit[1]
 
     # Calculate dBA over time.
     A_weighted_level_time_varying = LevelOverTime(
@@ -188,7 +188,7 @@ for file_path in (path_fan_wav, path_aircraft_wav):
     )
     A_weighted_level_time_varying.process()
     A_weighted_level_over_time = A_weighted_level_time_varying.get_level_over_time()
-    A_weighted_level_unit = A_weighted_level_time_varying.get_output()[1].unit
+    A_weighted_level_unit = A_weighted_level_time_varying.get_output()[1].unit[1]
 
     # Append all the results to the lists previously created.
     rms_levels.append(rms_level_over_time.tolist())
@@ -215,17 +215,17 @@ fig.suptitle("Time varying RMS, dBSPL and dBA levels")
 
 axs[0].plot(time[0], rms_levels[0], color="b", label="Fan")
 axs[0].plot(time[1], rms_levels[1], color="r", label="Airplane")
-axs[0].set_ylabel(f"RMS level ({rms_level_unit})")
+axs[0].set_ylabel(rms_level_unit)
 axs[0].legend(loc="upper right")
 
 axs[1].plot(time[0], SPL_levels[0], color="b", label="Fan")
 axs[1].plot(time[1], SPL_levels[1], color="r", label="Airplane")
-axs[1].set_ylabel(f"Level ({SPL_unit})")
+axs[1].set_ylabel(SPL_unit)
 axs[1].legend(loc="upper right")
 
 axs[2].plot(time[0], A_weighted_levels[0], color="b", label="Fan")
 axs[2].plot(time[1], A_weighted_levels[1], color="r", label="Airplane")
-axs[2].set_ylabel(f"Level ({A_weighted_level_unit})")
+axs[2].set_ylabel(A_weighted_level_unit)
 axs[2].legend(loc="upper right")
 axs[2].set_xlabel(f"Time ({time_unit})")
 

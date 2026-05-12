@@ -278,6 +278,8 @@ class SourceAudio(SourceParent):
                 f"Output is not processed yet. Use the ``{__class__.__name__}.process()`` method."
             )
         output = self.get_output()
+        unit = output.unit if isinstance(output.unit, str) else output.unit[1]
+        str_unit = f" ({unit})" if len(unit) > 0 else ""
 
         time = output.time_freq_support.time_frequencies
 
@@ -288,6 +290,6 @@ class SourceAudio(SourceParent):
         else:
             plt.title("Sound generated from the audio source")
         plt.xlabel(f"Time ({time.unit})")
-        plt.ylabel(f"Amplitude ({output.unit})")
+        plt.ylabel(f"Amplitude{str_unit}")
         plt.grid(True)
         plt.show()
