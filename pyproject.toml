@@ -30,7 +30,6 @@ dependencies = [
     "requests>=2.30.0"
 ]
 
-
 [project.optional-dependencies]
 full = [
     "ansys-dpf-core==0.16.0",
@@ -71,7 +70,7 @@ doc = [
     "vtk==9.6.1",
     "trame==3.12.0",
     "trame_vtk==2.11.8",
-    "pyvista==0.47.3",
+    "pyvista==0.48.0",
     "pypandoc==1.17",
     "jupyter-sphinx==0.5.3",
     "sphinx-autobuild==2024.10.3",
@@ -115,13 +114,13 @@ issue_format = "[#{issue}](https://github.com/ansys/pyansys-sound/pull/{issue})"
 package = "ansys.sound.core"
 
 [[tool.towncrier.type]]
-directory = "added"
-name = "Added"
+directory = "breaking"
+name = "Breaking"
 showcontent = true
 
 [[tool.towncrier.type]]
-directory = "changed"
-name = "Changed"
+directory = "added"
+name = "Added"
 showcontent = true
 
 [[tool.towncrier.type]]
@@ -130,18 +129,13 @@ name = "Fixed"
 showcontent = true
 
 [[tool.towncrier.type]]
-directory = "dependencies"
-name = "Dependencies"
-showcontent = true
-
-[[tool.towncrier.type]]
-directory = "miscellaneous"
-name = "Miscellaneous"
-showcontent = true
-
-[[tool.towncrier.type]]
 directory = "documentation"
 name = "Documentation"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "dependencies"
+name = "Dependencies"
 showcontent = true
 
 [[tool.towncrier.type]]
@@ -150,6 +144,17 @@ name = "Maintenance"
 showcontent = true
 
 [[tool.towncrier.type]]
+directory = "miscellaneous"
+name = "Miscellaneous"
+showcontent = true
+
+[[tool.towncrier.type]]
 directory = "test"
 name = "Test"
 showcontent = true
+
+[[tool.towncrier.type]]
+directory = "changed"
+name = "Changed"
+showcontent = true
+
