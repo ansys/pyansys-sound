@@ -36,7 +36,7 @@ ID_COMPUTE_ROUGHNESS_ECMA418_2 = "compute_roughness_ecma418_2"
 ECMA_418_2_EDITION = 4
 
 
-class RoughnessECMA418_2(PsychoacousticsParent):
+class RoughnessECMA418_2(PsychoacousticsParent, min_sound_version="2027.1.0"):
     """Computes ECMA-418-2 roughness.
 
     Computes the roughness, specific roughness, and roughness over time of a sound according to the

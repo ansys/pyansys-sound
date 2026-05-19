@@ -30,6 +30,10 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.psychoacoustics import RoughnessECMA418_2
 from ansys.sound.core.signal_utilities import LoadWav
 
+# Skip entire test module if Sound version < 2027.1.0
+if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
+    pytest.skip("Requires Sound version >= 2027.1.0", allow_module_level=True)
+
 EXP_ROUGHNESS_FREE = 0.7290801262493071
 EXP_ROUGHNESS_DIFFUSE = 0.7537649028785819
 EXP_BARK_COUNT = 53
