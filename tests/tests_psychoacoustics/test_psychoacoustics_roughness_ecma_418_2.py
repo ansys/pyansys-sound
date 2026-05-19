@@ -437,7 +437,7 @@ def test_roughness_ecma_418_2_get_time_scale():
 
 
 @patch("matplotlib.pyplot.show")
-def test_roughness_ecma_418_2_plot():
+def test_roughness_ecma_418_2_plot(mock_show):
     """Test the plot method."""
     # Get a signal
     wav_loader = LoadWav(pytest.data_path_rough_noise)
