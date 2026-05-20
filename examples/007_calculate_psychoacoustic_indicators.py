@@ -67,6 +67,7 @@ from ansys.sound.core.psychoacoustics import (
     LoudnessISO532_1_TimeVarying,
     LoudnessISO532_2,
     Roughness,
+    RoughnessECMA418_2,
     Sharpness,
     SharpnessDIN45692,
     SharpnessDIN45692OverTime,
@@ -226,15 +227,27 @@ sharpness_DIN45692_over_time.process()
 sharpness_DIN45692_over_time.plot()
 
 # %%
-# Calculate the roughness, and plot the specific roughness and roughness over time.
+# Calculate the roughness according to Daniel & Weber's model, and plot the specific roughness and
+# roughness over time.
 
 # Calculate the specific roughness, the roughness over time, and the overall roughness.
 roughness = Roughness(signal=signal_flute)
 roughness.process()
-roughness_value = roughness.get_roughness()
+roughness_value_Daniel_Weber = roughness.get_roughness()
 
 # Plot the specific roughness and the roughness over time.
-roughness_over_time = roughness.get_roughness_over_time()
+roughness.plot()
+
+# %%
+# Calculate the roughness according to ECMA-418-2, and plot the specific roughness and roughness
+# over time.
+
+# Calculate the specific roughness, the roughness over time, and the overall roughness.
+roughness = RoughnessECMA418_2(signal=signal_flute, field_type="Free")
+roughness.process()
+roughness_value_ECMA_418_2 = roughness.get_roughness()
+
+# Plot the specific roughness and the roughness over time.
 roughness.plot()
 
 # %%
@@ -249,6 +262,8 @@ print(
     f"\nThe sharpness of sound file {file_name_flute} "
     f"is {sharpness_value:.2f} acum,\n"
     f"its sharpness according to DIN 45692 is {sharpness_DIN45692_value:.2f} acum,\n"
-    f"its roughness is {roughness_value:.2f} asper,\n"
+    f"its roughness is {roughness_value_Daniel_Weber:.2f} asper according to Daniel & Weber's "
+    "model,\n"
+    f"and {roughness_value_ECMA_418_2:.2f} asper according to ECMA-418-2,\n"
     f"and its fluctuation strength is {fluctuation_strength_values:.2f} vacil."
 )
