@@ -35,6 +35,7 @@ from .octave_levels_from_signal import OctaveLevelsFromSignal
 from .one_third_octave_levels_from_psd import OneThirdOctaveLevelsFromPSD
 from .one_third_octave_levels_from_signal import OneThirdOctaveLevelsFromSignal
 from .overall_level import OverallLevel
+from .overall_level_from_psd import OverallLevelFromPSD
 
 __all__ = (
     "StandardLevelsParent",
@@ -42,6 +43,7 @@ __all__ = (
     "FractionalOctaveLevelsFromSignalParent",
     "FractionalOctaveLevelsParent",
     "OverallLevel",
+    "OverallLevelFromPSD",
     "LevelOverTime",
     "OctaveLevelsFromPSD",
     "OctaveLevelsFromSignal",
