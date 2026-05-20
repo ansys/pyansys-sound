@@ -43,14 +43,14 @@ class RoughnessECMA418_2(PsychoacousticsParent, min_sound_version="2027.1.0"):
     ECMA-418-2 standard (4th edition, 2025).
 
     .. seealso::
-        :class:`Roughness`, :class:`FluctuationStrength`
+        :class:`Roughness`, :class:`FluctuationStrength`, :class:`TonalityECMA418_2`
 
     Examples
     --------
     Compute the roughness of a signal, and display the specific roughness and roughness over time.
 
     >>> from ansys.sound.core.psychoacoustics import RoughnessECMA418_2
-    >>> roughness = RoughnessECMA418_2(signal=my_signal)
+    >>> roughness = RoughnessECMA418_2(signal=my_signal, field_type="Free")
     >>> roughness.process()
     >>> roughness_value = roughness.get_roughness()
     >>> roughness.plot()
@@ -82,7 +82,7 @@ class RoughnessECMA418_2(PsychoacousticsParent, min_sound_version="2027.1.0"):
         else:
             str_roughness = f"{self.get_roughness():.2f} asper"
 
-        str_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
+        str_name = f'"{self.signal.name}"' if self.signal is not None else "Signal not set"
 
         return (
             f"{__class__.__name__} object\n"
