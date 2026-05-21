@@ -93,7 +93,7 @@ class OverallLevelFromPSD(StandardLevelsParent, min_sound_version="2026.1.0"):
         str_name = f'"{self.psd.name}"' if self.psd is not None else "Not set"
         if self.scale == "RMS":
             str_frequency_weighting = "Not applicable"
-            unit = "RMS"
+            unit = "(RMS)"
         elif len(self.frequency_weighting) > 0:
             str_frequency_weighting = self.frequency_weighting
             unit = f"dB{self.frequency_weighting} (re {self.reference_value})"
