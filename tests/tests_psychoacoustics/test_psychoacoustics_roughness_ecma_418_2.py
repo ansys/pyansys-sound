@@ -60,7 +60,7 @@ EXP_TIME_5 = 0.1
 EXP_TIME_12 = 0.24
 EXP_TIME_20 = 0.4
 EXP_STR_DEFAULT = (
-    "RoughnessECMA418_2 object\nData:\n\tSignal name: Not set\n\tField type: Free\n"
+    "RoughnessECMA418_2 object\nData:\n\tSignal name: Signal not set\n\tField type: Free\n"
     "Overall roughness: Not processed"
 )
 EXP_STR = (
