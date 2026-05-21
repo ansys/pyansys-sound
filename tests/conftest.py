@@ -232,6 +232,8 @@ def pytest_configure(config):
     # server side (in the case of a local server, this is irrelevant, as both locations are the
     # same).
     pytest.data_path_flute_psd_locally = os.path.join(base_dir, "flute_psd.txt")
+    pytest.data_path_psd_regular = os.path.join(base_dir, "Overall_level_from_PSD_regular.txt")
+    pytest.data_path_psd_nonregular = os.path.join(base_dir, "Overall_level_from_PSD_nonregular.txt")
 
     # Define the output folder where the output files are saved.
     if server.has_client():

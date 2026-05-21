@@ -48,7 +48,6 @@ EXP_STR_ALL_PROCESSED = (
     "\tReference value: 2e-05\n\tFrequency weighting: A\n"
     "Output level value: 81.2 dBA (re 2e-05)"
 )
-# CQU debug
 
 # Expected values from C++ tests (flute_nonUnitaryCalib PSD)
 EXP_LEVEL_DEFAULT = -5.63976  # dB with reference_value=1.0, no weighting
@@ -57,6 +56,8 @@ EXP_LEVEL_DBSPL = 88.345
 EXP_LEVEL_DBA = 86.868
 EXP_LEVEL_DBB = 88.135
 EXP_LEVEL_DBC = 88.344
+EXP_LEVEL_RMS_REGULAR = 1.600078
+EXP_LEVEL_DBSPL_REGULAR = 98.06222
 
 
 @pytest.fixture
@@ -123,6 +124,43 @@ def create_psd_from_flute_nonUnitaryCalib():
     psd_obj.process()
 
     yield psd_obj.get_output()
+
+
+@pytest.fixture
+def create_psd_from_regular_data():
+    """Create a PSD DPF field from the Overall_level_from_PSD_regular.txt test data file."""
+    path_psd_regular = pytest.data_path_psd_regular
+
+    fid = open(path_psd_regular)
+    fid.readline()  # skip header line
+    all_lines = fid.readlines()
+    fid.close()
+
+    frequencies = []
+    amplitudes = []
+
+    for line in all_lines:
+        splitted_line = line.split()
+        frequencies.append(float(splitted_line[0]))
+        amplitudes.append(float(splitted_line[1]))
+
+    frequencies = np.array(frequencies)
+    amplitudes = np.array(amplitudes)
+
+    # Data is already in Pa²/Hz — no conversion needed
+
+    psd = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    psd.append(amplitudes, 1)
+    support = TimeFreqSupport()
+    frequencies_field = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    frequencies_field.append(frequencies, 1)
+    support.time_frequencies = frequencies_field
+
+    psd.time_freq_support = support
+
+    yield psd
 
 
 def test_overall_level_from_psd_instantiation():
@@ -252,6 +290,28 @@ def test_overall_level_from_psd_get_output(create_psd_from_flute_nonUnitaryCalib
     assert level_obj.get_output() == pytest.approx(EXP_LEVEL_DBC, abs=1e-3)
     # debug_DBC_0 = level_obj.get_output()
     # debug_DBC_1 = pytest.approx(EXP_LEVEL_DBC, abs=1e-3)
+
+
+def test_overall_level_from_psd_get_output_regular(create_psd_from_regular_data):
+    """Test OverallLevelFromPSD get_output method with regular PSD data."""
+    level_obj = OverallLevelFromPSD(psd=create_psd_from_regular_data)
+
+    # RMS
+    level_obj.scale = "RMS"
+    level_obj.process()
+    #debug_RMS_REGULAR_0 = level_obj.get_output()
+    #debug_RMS_REGULAR_1 = pytest.approx(EXP_LEVEL_RMS_REGULAR, abs=1e-3)
+    assert level_obj.get_output() == pytest.approx(EXP_LEVEL_RMS_REGULAR, abs=1e-3)
+
+    # dB SPL
+    level_obj.scale = "dB"
+    level_obj.reference_value = 2e-5
+    level_obj.process()
+    #debug_DBSPL_REGULAR_0 = level_obj.get_output()
+    #debug_DBSPL_REGULAR_1 = pytest.approx(EXP_LEVEL_DBSPL_REGULAR, abs=1e-3)
+    assert level_obj.get_output() == pytest.approx(EXP_LEVEL_DBSPL_REGULAR, abs=1e-3)
+
+    print("Cyrille")
 
 
 def test_overall_level_from_psd_get_output_warnings():
