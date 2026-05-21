@@ -107,8 +107,8 @@ class OverallLevelFromPSD(StandardLevelsParent, min_sound_version="2026.1.0"):
             "Data\n"
             f"\tPSD: {str_name}\n"
             f"\tScale type: {self.scale}\n"
-            f"\tReference value: {self.reference_value}\n"
-            f"\tFrequency weighting: {str_frequency_weighting}\n"
+            + (f"\tReference value: {self.reference_value}\n" if self.scale == "dB" else "")
+            + f"\tFrequency weighting: {str_frequency_weighting}\n"
             f"Output level value: {str_level}"
         )
 

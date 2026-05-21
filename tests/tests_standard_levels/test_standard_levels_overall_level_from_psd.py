@@ -40,7 +40,7 @@ EXP_STR_NOT_SET = (
 )
 EXP_STR_ALL_SET = (
     'OverallLevelFromPSD object.\nData\n\tPSD: "Name of the PSD"\n\tScale type: RMS\n'
-    "\tReference value: 1.0\n\tFrequency weighting: Not applicable\n"
+    "\tFrequency weighting: Not applicable\n"
     "Output level value: Not processed"
 )
 EXP_STR_ALL_PROCESSED = (
@@ -258,7 +258,7 @@ def test_overall_level_from_psd___str__(create_psd_from_txt_data):
     level_obj.process()
     assert str(level_obj) == (
         'OverallLevelFromPSD object.\nData\n\tPSD: "Name of the PSD"\n\tScale type: RMS\n'
-        "\tReference value: 1.0\n\tFrequency weighting: Not applicable\n"
+        "\tFrequency weighting: Not applicable\n"
         f"Output level value: {level_obj.get_output():.1f} (RMS)"
     )
 
