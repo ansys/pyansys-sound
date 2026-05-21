@@ -289,37 +289,27 @@ def test_overall_level_from_psd_get_output(create_psd_from_flute_nonUnitaryCalib
     level_obj.scale = "RMS"
     level_obj.process()
     assert level_obj.get_output() == pytest.approx(EXP_LEVEL_RMS, abs=1e-3)
-    # debug_RMS_0 = level_obj.get_output()
-    # debug_RMS_1 = pytest.approx(EXP_LEVEL_RMS, abs=1e-3)
 
     # dB SPL
     level_obj.scale = "dB"
     level_obj.reference_value = 2e-5
     level_obj.process()
     assert level_obj.get_output() == pytest.approx(EXP_LEVEL_DBSPL, abs=1e-3)
-    # debug_DBSPL_0 = level_obj.get_output()
-    # debug_DBSPL_1 = pytest.approx(EXP_LEVEL_DBSPL, abs=1e-3)
 
     # dBA
     level_obj.frequency_weighting = "A"
     level_obj.process()
     assert level_obj.get_output() == pytest.approx(EXP_LEVEL_DBA, abs=1e-3)
-    # debug_DBA_0 = level_obj.get_output()
-    # debug_DBA_1 = pytest.approx(EXP_LEVEL_DBA, abs=1e-3)
 
     # dBB
     level_obj.frequency_weighting = "B"
     level_obj.process()
     assert level_obj.get_output() == pytest.approx(EXP_LEVEL_DBB, abs=1e-3)
-    # debug_DBB_0 = level_obj.get_output()
-    # debug_DBB_1 = pytest.approx(EXP_LEVEL_DBB, abs=1e-3)
 
     # dBC
     level_obj.frequency_weighting = "C"
     level_obj.process()
     assert level_obj.get_output() == pytest.approx(EXP_LEVEL_DBC, abs=1e-3)
-    # debug_DBC_0 = level_obj.get_output()
-    # debug_DBC_1 = pytest.approx(EXP_LEVEL_DBC, abs=1e-3)
 
 
 def test_overall_level_from_psd_get_output_regular(create_psd_from_data):
@@ -329,16 +319,12 @@ def test_overall_level_from_psd_get_output_regular(create_psd_from_data):
     # RMS
     level_obj.scale = "RMS"
     level_obj.process()
-    #debug_RMS_REGULAR_0 = level_obj.get_output()
-    #debug_RMS_REGULAR_1 = pytest.approx(EXP_LEVEL_RMS_REGULAR, abs=1e-3)
     assert level_obj.get_output() == pytest.approx(EXP_LEVEL_RMS_REGULAR, abs=1e-3)
 
     # dB SPL
     level_obj.scale = "dB"
     level_obj.reference_value = 2e-5
     level_obj.process()
-    #debug_DBSPL_REGULAR_0 = level_obj.get_output()
-    #debug_DBSPL_REGULAR_1 = pytest.approx(EXP_LEVEL_DBSPL_REGULAR, abs=1e-3)
     assert level_obj.get_output() == pytest.approx(EXP_LEVEL_DBSPL_REGULAR, abs=1e-3)
 
 
@@ -349,16 +335,12 @@ def test_overall_level_from_psd_get_output_nonregular(create_psd_from_data):
     # RMS
     level_obj.scale = "RMS"
     level_obj.process()
-    #debug_RMS_NONREGULAR_0 = level_obj.get_output()
-    #debug_RMS_NONREGULAR_1 = pytest.approx(EXP_LEVEL_RMS_NONREGULAR, abs=1e-3)
     assert level_obj.get_output() == pytest.approx(EXP_LEVEL_RMS_NONREGULAR, abs=1e-3)
 
     # dB SPL
     level_obj.scale = "dB"
     level_obj.reference_value = 2e-5
     level_obj.process()
-    #debug_DBSPL_NONREGULAR_0 = level_obj.get_output()
-    #debug_DBSPL_NONREGULAR_1 = pytest.approx(EXP_LEVEL_DBSPL_NONREGULAR, abs=1e-3)
     assert level_obj.get_output() == pytest.approx(EXP_LEVEL_DBSPL_NONREGULAR, abs=1e-3)
 
 
