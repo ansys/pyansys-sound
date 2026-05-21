@@ -58,6 +58,8 @@ EXP_LEVEL_DBB = 88.135
 EXP_LEVEL_DBC = 88.344
 EXP_LEVEL_RMS_REGULAR = 1.600078
 EXP_LEVEL_DBSPL_REGULAR = 98.06222
+EXP_LEVEL_RMS_NONREGULAR = 2.879844
+EXP_LEVEL_DBSPL_NONREGULAR = 103.1668
 
 
 @pytest.fixture
@@ -127,40 +129,68 @@ def create_psd_from_flute_nonUnitaryCalib():
 
 
 @pytest.fixture
-def create_psd_from_regular_data():
-    """Create a PSD DPF field from the Overall_level_from_PSD_regular.txt test data file."""
-    path_psd_regular = pytest.data_path_psd_regular
+def create_psd_from_data():
+    """Create a PSD DPF field from a two-column (frequency, amplitude) text data file.
 
-    fid = open(path_psd_regular)
-    fid.readline()  # skip header line
-    all_lines = fid.readlines()
-    fid.close()
+    This fixture uses the *factory* pattern: it yields a callable ``_create(path)``
+    instead of a ready-made object. This allows a single fixture to serve multiple
+    tests that need PSD fields built from different files (e.g. regular vs. non-regular
+    frequency grids), without duplicating the fixture body.
 
-    frequencies = []
-    amplitudes = []
+    Usage in a test::
 
-    for line in all_lines:
-        splitted_line = line.split()
-        frequencies.append(float(splitted_line[0]))
-        amplitudes.append(float(splitted_line[1]))
+        def test_something(create_psd_from_data):
+            psd = create_psd_from_data(pytest.data_path_psd_regular)
+            ...
 
-    frequencies = np.array(frequencies)
-    amplitudes = np.array(amplitudes)
+    Expected file format:
+        - One header line (skipped).
+        - One data row per frequency bin: ``<frequency_Hz>  <amplitude_Pa2_per_Hz>``.
+        - Amplitudes are assumed to be already in Pa²/Hz (no unit conversion applied).
+    """
 
-    # Data is already in Pa²/Hz — no conversion needed
+    def _create(path):
+        # --- Read the text file ---
+        fid = open(path)
+        fid.readline()  # skip header line
+        all_lines = fid.readlines()
+        fid.close()
 
-    psd = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
-    psd.append(amplitudes, 1)
-    support = TimeFreqSupport()
-    frequencies_field = fields_factory.create_scalar_field(
-        num_entities=1, location=locations.time_freq
-    )
-    frequencies_field.append(frequencies, 1)
-    support.time_frequencies = frequencies_field
+        frequencies = []
+        amplitudes = []
 
-    psd.time_freq_support = support
+        for line in all_lines:
+            splitted_line = line.split()
+            frequencies.append(float(splitted_line[0]))
+            amplitudes.append(float(splitted_line[1]))
 
-    yield psd
+        frequencies = np.array(frequencies)
+        amplitudes = np.array(amplitudes)
+
+        # Data is already in Pa²/Hz — no conversion needed
+
+        # --- Build the DPF field ---
+        # The PSD values are stored as a scalar field in the time_freq location,
+        # which is the standard DPF container for spectral data.
+        psd = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+        psd.append(amplitudes, 1)
+
+        # Attach the frequency axis via a TimeFreqSupport so that the DPF operator
+        # can retrieve the bin spacing (regular or non-regular).
+        support = TimeFreqSupport()
+        frequencies_field = fields_factory.create_scalar_field(
+            num_entities=1, location=locations.time_freq
+        )
+        frequencies_field.append(frequencies, 1)
+        support.time_frequencies = frequencies_field
+
+        psd.time_freq_support = support
+
+        return psd
+
+    # Yield the factory so pytest manages the fixture lifetime while letting each
+    # test call _create() as many times as needed with different paths.
+    yield _create
 
 
 def test_overall_level_from_psd_instantiation():
@@ -292,9 +322,9 @@ def test_overall_level_from_psd_get_output(create_psd_from_flute_nonUnitaryCalib
     # debug_DBC_1 = pytest.approx(EXP_LEVEL_DBC, abs=1e-3)
 
 
-def test_overall_level_from_psd_get_output_regular(create_psd_from_regular_data):
+def test_overall_level_from_psd_get_output_regular(create_psd_from_data):
     """Test OverallLevelFromPSD get_output method with regular PSD data."""
-    level_obj = OverallLevelFromPSD(psd=create_psd_from_regular_data)
+    level_obj = OverallLevelFromPSD(psd=create_psd_from_data(pytest.data_path_psd_regular))
 
     # RMS
     level_obj.scale = "RMS"
@@ -311,7 +341,25 @@ def test_overall_level_from_psd_get_output_regular(create_psd_from_regular_data)
     #debug_DBSPL_REGULAR_1 = pytest.approx(EXP_LEVEL_DBSPL_REGULAR, abs=1e-3)
     assert level_obj.get_output() == pytest.approx(EXP_LEVEL_DBSPL_REGULAR, abs=1e-3)
 
-    print("Cyrille")
+
+def test_overall_level_from_psd_get_output_nonregular(create_psd_from_data):
+    """Test OverallLevelFromPSD get_output method with non-regular PSD data."""
+    level_obj = OverallLevelFromPSD(psd=create_psd_from_data(pytest.data_path_psd_nonregular))
+
+    # RMS
+    level_obj.scale = "RMS"
+    level_obj.process()
+    #debug_RMS_NONREGULAR_0 = level_obj.get_output()
+    #debug_RMS_NONREGULAR_1 = pytest.approx(EXP_LEVEL_RMS_NONREGULAR, abs=1e-3)
+    assert level_obj.get_output() == pytest.approx(EXP_LEVEL_RMS_NONREGULAR, abs=1e-3)
+
+    # dB SPL
+    level_obj.scale = "dB"
+    level_obj.reference_value = 2e-5
+    level_obj.process()
+    #debug_DBSPL_NONREGULAR_0 = level_obj.get_output()
+    #debug_DBSPL_NONREGULAR_1 = pytest.approx(EXP_LEVEL_DBSPL_NONREGULAR, abs=1e-3)
+    assert level_obj.get_output() == pytest.approx(EXP_LEVEL_DBSPL_NONREGULAR, abs=1e-3)
 
 
 def test_overall_level_from_psd_get_output_warnings():
