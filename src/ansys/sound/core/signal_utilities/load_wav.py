@@ -134,9 +134,9 @@ class LoadWav(SignalUtilitiesParent):
         output = self.get_output()
         if output is None:
             return np.array([])
-        if len(self.get_output()) == 1:
+        if len(output) == 1:
             return np.array(output[0].data)
-        return np.vstack([np.array(f.data) for f in self.get_output()])
+        return np.vstack([np.array(f.data) for f in output])
 
     @requires_sound_version("2026.1.0")
     def get_sampling_frequency(self) -> float:

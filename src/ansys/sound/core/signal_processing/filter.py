@@ -25,10 +25,12 @@
 import warnings
 
 from ansys.dpf.core import Field, Operator, TimeFreqSupport, fields_factory, locations
+from ansys.dpf.core.available_result import Homogeneity
 import matplotlib.pyplot as plt
 import numpy as np
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning, scipy_required
+from ..server_helpers._check_version import _check_sound_version
 from ..signal_processing import SignalProcessingParent
 
 ID_OPERATOR_DESIGN = "filter_design_minimum_phase_FIR_filter_from_FRF"
@@ -372,13 +374,15 @@ class Filter(SignalProcessingParent):
                 f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
             )
         output = self.get_output()
+        unit = output.unit if isinstance(output.unit, str) else output.unit[1]
+        unit_str = f" ({unit})" if len(unit) > 0 else ""
 
         time = output.time_freq_support.time_frequencies
 
         plt.plot(time.data, output.data)
         plt.title("Filtered signal")
         plt.xlabel(f"Time ({time.unit})")
-        plt.ylabel(f"Amplitude ({output.unit})")
+        plt.ylabel(f"Amplitude{unit_str}")
         plt.grid(True)
         plt.show()
 
@@ -392,11 +396,13 @@ class Filter(SignalProcessingParent):
                 f"`{__class__.__name__}.design_FIR_from_FRF_file()` method."
             )
         frequencies = self.frf.time_freq_support.time_frequencies
+        frf_unit = self.frf.unit if isinstance(self.frf.unit, str) else self.frf.unit[1]
+        frf_unit_str = f" ({frf_unit})" if len(frf_unit) > 0 else ""
 
         plt.plot(frequencies.data, self.frf.data)
         plt.title("Frequency response function (FRF) of the filter")
         plt.xlabel(f"Frequency ({frequencies.unit})")
-        plt.ylabel(f"Magnitude ({self.frf.unit})")
+        plt.ylabel(f"Magnitude{frf_unit_str}")
         plt.grid(True)
         plt.show()
 
@@ -474,4 +480,6 @@ class Filter(SignalProcessingParent):
                 num_entities=1, location=locations.time_freq
             )
             self.__frf.append(20 * np.log10(abs(complex_response)), 1)
+            if _check_sound_version("2026.1.0"):
+                self.__frf.unit = (Homogeneity.dimensionless, "dB")
             self.__frf.time_freq_support = frf_support

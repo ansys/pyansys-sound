@@ -170,11 +170,13 @@ class SourceControlTime(SourceControlParent):
     def plot(self):
         """Plot the control profile."""
         time = self.control.time_freq_support.time_frequencies
+        unit = self.control.unit if isinstance(self.control.unit, str) else self.control.unit[1]
+        str_unit = f" ({unit})" if len(unit) > 0 else ""
+        str_name = self.control.name if len(self.control.name) > 0 else "Control parameter"
 
         plt.plot(time.data, self.control.data)
-        plt.title(self.control.name if len(self.control.name) > 0 else "Control profile")
+        plt.title("Control profile")
         plt.xlabel(f"Time ({time.unit})")
-        str_unit = f" ({self.control.unit})" if len(self.control.unit) > 0 else ""
-        plt.ylabel("Control parameter" + str_unit)
+        plt.ylabel(f"{str_name}{str_unit}")
         plt.grid(True)
         plt.show()

@@ -326,14 +326,14 @@ class LoudnessISO532_1_TimeVarying(PsychoacousticsParent):
         _, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
 
         # Plot loudness in sone
-        unit = self.get_output()[0].unit
+        unit = self.get_output()[0].unit[1]
         ax1.plot(time, self.get_loudness_sone_vs_time())
         ax1.set_title("Instantaneous loudness")
         ax1.set_ylabel(f"N ({unit})")
         ax1.grid(True)
 
         # Plot loudness level in phon
-        unit = self.get_output()[3].unit
+        unit = self.get_output()[3].unit[1]
         ax2.plot(time, self.get_loudness_level_phon_vs_time())
         ax2.set_title("Instantaneous loudness level")
         ax2.set_xlabel("Time (s)")

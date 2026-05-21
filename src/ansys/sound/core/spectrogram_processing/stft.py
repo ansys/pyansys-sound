@@ -241,7 +241,6 @@ class Stft(SpectrogramProcessingParent):
                 f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
             )
         magnitude = self.get_stft_magnitude_as_nparray()
-        mag_unit = self.get_output()[0].unit
         freq_unit = self.get_output()[0].time_freq_support.time_frequencies.unit
         time_unit = self.get_output().time_freq_support.time_frequencies.unit
 
@@ -265,7 +264,7 @@ class Stft(SpectrogramProcessingParent):
         # Plotting
         f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
         p = ax1.imshow(magnitude, origin="lower", aspect="auto", cmap="jet", extent=extent)
-        f.colorbar(p, ax=ax1, label=f"Amplitude ({mag_unit})")
+        f.colorbar(p, ax=ax1, label=f"Amplitude (dBSPL)")
         ax1.set_title("Amplitude")
         ax1.set_ylabel(f"Frequency ({freq_unit})")
         p = ax2.imshow(phase, origin="lower", aspect="auto", cmap="jet", extent=extent)
