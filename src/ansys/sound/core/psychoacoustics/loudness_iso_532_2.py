@@ -425,7 +425,9 @@ class LoudnessISO532_2(PsychoacousticsParent):
 
         center_frequency = self.get_erb_center_frequencies()
         specific_loudness = self.get_binaural_specific_loudness()
-        unit = self.get_output()[4].unit[1]
+        unit = self.get_output()[4].unit
+        if isinstance(unit, tuple):
+            unit = unit[1]
 
         plt.plot(center_frequency, specific_loudness)
         plt.title("Binaural specific loudness")

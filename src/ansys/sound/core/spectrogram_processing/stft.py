@@ -235,6 +235,7 @@ class Stft(SpectrogramProcessingParent):
         """Plot signals.
 
         This method plots the STFT amplitude and the associated phase.
+
         Parameters
         ----------
         reference_value : float, default: 1.0

@@ -219,8 +219,12 @@ class FluctuationStrength(PsychoacousticsParent):
 
         bark_band_indexes = self.get_bark_band_indexes()
         specific_fluctuation_strength = self.get_output_as_nparray()[1]
-        unit = self.get_output()[1].unit[1]
-        bark_unit = self.get_output()[1].time_freq_support.time_frequencies.unit[1]
+        unit = self.get_output()[1].unit
+        if isinstance(unit, tuple):
+            unit = unit[1]
+        bark_unit = self.get_output()[1].time_freq_support.time_frequencies.unit
+        if isinstance(bark_unit, tuple):
+            bark_unit = bark_unit[1]
 
         plt.plot(bark_band_indexes, specific_fluctuation_strength)
         plt.title("Specific fluctuation strength")

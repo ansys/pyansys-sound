@@ -280,7 +280,9 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
                 f"Output is not processed yet. Use the ``{__class__.__name__}.process()`` method."
             )
 
-        pr_unit = output[0][0].unit[1]
+        pr_unit = output[0][0].unit
+        if isinstance(pr_unit, tuple):
+            pr_unit = pr_unit[1]
         time = output[0][0].time_freq_support.time_frequencies
         rpm = output[1]
 

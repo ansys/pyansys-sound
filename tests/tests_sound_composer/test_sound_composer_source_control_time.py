@@ -23,6 +23,7 @@
 from unittest.mock import patch
 
 from ansys.dpf.core import Field
+from ansys.dpf.core.available_result import Homogeneity
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -58,8 +59,12 @@ def test_source_control_time_instantiation_wav_file_warning():
     assert control_time.control is not None
 
     # Check that the unit is that which is stored in the WAV file, not the specified one.
-    assert isinstance(control_time.control.unit, tuple)
-    assert control_time.control.unit[1] == "rpm"
+    if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
+        assert isinstance(control_time.control.unit, tuple)
+        assert control_time.control.unit[0] == Homogeneity.dimensionless
+        assert control_time.control.unit[1] == "rpm"
+    else:
+        assert control_time.control.unit == "rpm"
 
 
 def test_source_control_time_instantiation_txt_file():
@@ -67,10 +72,22 @@ def test_source_control_time_instantiation_txt_file():
     # Test instantiation.
     control_time = SourceControlTime(pytest.data_path_rpm_profile_as_txt)
     assert control_time.control is not None
-    assert control_time.control.unit == ""
 
     control_time = SourceControlTime(pytest.data_path_rpm_profile_as_txt, expected_unit="RPM")
     assert control_time.control is not None
+
+
+@pytest.mark.skipif(
+    not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1,
+    reason="Before 2027 R1, load from text operator (wrongly) returns 'Pa' units in all cases.",
+)
+def test_source_control_time_instantiation_txt_file_with_expected_unit():
+    """Test SourceControlTime instantiation."""
+    # Test instantiation.
+    control_time = SourceControlTime(pytest.data_path_rpm_profile_as_txt)
+    assert control_time.control.unit == ""
+
+    control_time = SourceControlTime(pytest.data_path_rpm_profile_as_txt, expected_unit="RPM")
     assert control_time.control.unit == "RPM"
 
 
