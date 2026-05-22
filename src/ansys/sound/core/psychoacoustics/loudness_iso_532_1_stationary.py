@@ -254,7 +254,7 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
 
         bark_band_indexes = self.get_bark_band_indexes()
         specific_loudness = self.get_specific_loudness()
-        unit = self.get_output()[2].unit
+        unit = self.get_output()[2].unit[1]
 
         plt.plot(bark_band_indexes, specific_loudness)
         plt.title("Specific loudness")

@@ -42,25 +42,24 @@ class SignalUtilitiesParent(PyAnsysSound):
                 "Output is not processed yet. "
                 f"Use the `{self.__class__.__name__}.process()` method."
             )
-        output = self.get_output()
+        output: Field | list[Field] = self.get_output()
 
-        if type(output) == Field:
-            num_channels = 0
-            field = output
-        else:
-            num_channels = len(output)
-            field = output[0]
+        if isinstance(output, Field):
+            output = [output]
 
-        time_data = field.time_freq_support.time_frequencies.data
-        time_unit = field.time_freq_support.time_frequencies.unit
-        unit = field.unit
+        num_channels = len(output)
+
+        time_data = output[0].time_freq_support.time_frequencies.data
+        time_unit = output[0].time_freq_support.time_frequencies.unit
+        unit = output[0].unit if isinstance(output[0].unit, str) else output[0].unit[1]
+        unit_str = f" ({unit})" if len(unit) > 0 else ""
 
         for i in range(num_channels):
             plt.plot(time_data, output[i].data, label=f"Channel {i}")
 
-        plt.title(field.name)
+        plt.title(output[0].name)
         plt.legend()
         plt.xlabel(f"Time ({time_unit})")
-        plt.ylabel(f"Amplitude ({unit})")
+        plt.ylabel(f"Amplitude{unit_str}")
         plt.grid(True)
         plt.show()

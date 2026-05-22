@@ -306,25 +306,28 @@ class Xtract(XtractParent):
             transient_signal,
             remainder_signal,
         ) = self.get_output()
+        unit = noise_signal.unit if isinstance(noise_signal.unit, str) else noise_signal.unit[1]
+        unit_str = f" ({unit})" if len(unit) > 0 else ""
         time = noise_signal.time_freq_support.time_frequencies
 
-        _, axs = plt.subplots(4, figsize=(10, 20))
+        _, axs = plt.subplots(4, 1, sharex=True)
 
         axs[0].plot(time.data, noise_signal.data)
-        axs[0].set_ylabel(f"Amplitude ({noise_signal.unit})")
+        axs[0].set_ylabel(f"Amplitude{unit_str}")
         axs[0].set_title("Noise signal")
 
         axs[1].plot(time.data, tonal_signal.data)
-        axs[1].set_ylabel(f"Amplitude ({tonal_signal.unit})")
+        axs[1].set_ylabel(f"Amplitude{unit_str}")
         axs[1].set_title("Tonal signal")
 
         axs[2].plot(time.data, transient_signal.data)
-        axs[2].set_ylabel(f"Amplitude ({transient_signal.unit})")
+        axs[2].set_ylabel(f"Amplitude{unit_str}")
         axs[2].set_title("Transient signal")
 
         axs[3].plot(time.data, remainder_signal.data)
         axs[3].set_xlabel(f"Time ({time.unit})")
-        axs[3].set_ylabel(f"Amplitude ({remainder_signal.unit})")
+        axs[3].set_ylabel(f"Amplitude{unit_str}")
         axs[3].set_title("Remainder signal")
 
+        plt.tight_layout()
         plt.show()
