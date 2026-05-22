@@ -60,6 +60,12 @@ EXP_LEVEL_RMS_REGULAR = 1.600078
 EXP_LEVEL_DBSPL_REGULAR = 98.06222
 EXP_LEVEL_RMS_NONREGULAR = 2.879844
 EXP_LEVEL_DBSPL_NONREGULAR = 103.1668
+EXP_LEVEL_DBA_REGULAR = 97.61288869784109
+EXP_LEVEL_DBB_REGULAR = 96.29682955410959
+EXP_LEVEL_DBC_REGULAR = 96.30580391645842
+EXP_LEVEL_DBA_NONREGULAR = 103.8890850917627
+EXP_LEVEL_DBB_NONREGULAR = 102.35895548586012
+EXP_LEVEL_DBC_NONREGULAR = 102.28886603807935
 
 
 @pytest.fixture
@@ -334,6 +340,21 @@ def test_overall_level_from_psd_get_output_regular(create_psd_from_data):
     level_obj.process()
     assert level_obj.get_output() == pytest.approx(EXP_LEVEL_DBSPL_REGULAR, abs=1e-3)
 
+    # dBA
+    level_obj.frequency_weighting = "A"
+    level_obj.process()
+    assert level_obj.get_output() == pytest.approx(EXP_LEVEL_DBA_REGULAR, abs=1e-3)
+
+    # dBB
+    level_obj.frequency_weighting = "B"
+    level_obj.process()
+    assert level_obj.get_output() == pytest.approx(EXP_LEVEL_DBB_REGULAR, abs=1e-3)
+
+    # dBC
+    level_obj.frequency_weighting = "C"
+    level_obj.process()
+    assert level_obj.get_output() == pytest.approx(EXP_LEVEL_DBC_REGULAR, abs=1e-3)
+
 
 def test_overall_level_from_psd_get_output_nonregular(create_psd_from_data):
     """Test OverallLevelFromPSD get_output method with non-regular PSD data."""
@@ -349,6 +370,21 @@ def test_overall_level_from_psd_get_output_nonregular(create_psd_from_data):
     level_obj.reference_value = 2e-5
     level_obj.process()
     assert level_obj.get_output() == pytest.approx(EXP_LEVEL_DBSPL_NONREGULAR, abs=1e-3)
+
+    # # dBA
+    level_obj.frequency_weighting = "A"
+    level_obj.process()
+    assert level_obj.get_output() == pytest.approx(EXP_LEVEL_DBA_NONREGULAR, abs=1e-3)
+
+    # # dBB
+    level_obj.frequency_weighting = "B"
+    level_obj.process()
+    assert level_obj.get_output() == pytest.approx(EXP_LEVEL_DBB_NONREGULAR, abs=1e-3)
+
+    # # dBC
+    level_obj.frequency_weighting = "C"
+    level_obj.process()
+    assert level_obj.get_output() == pytest.approx(EXP_LEVEL_DBC_NONREGULAR, abs=1e-3)
 
 
 def test_overall_level_from_psd_get_output_warnings():
