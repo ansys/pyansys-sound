@@ -579,22 +579,18 @@ class SoundPowerLevelISO3744(SoundPowerParent):
 
         # Display octave-band levels in the upper subplot.
         Lw = self.get_Lw_octave()
-        Lw_unit = self.get_output()[2].unit
-        Lw_unit = Lw_unit if isinstance(Lw_unit, str) else Lw_unit[1]
-        Lw_unit_str = f" ({Lw_unit})" if len(Lw_unit) > 0 else ""
+        Lw_unit = self.get_output()[2].unit[1]
         f_center = self.get_octave_center_frequencies()
 
         plt.subplot(211)
         plt.bar(range(len(Lw)), Lw)
         plt.xticks(range(len(Lw)), f_center.astype(int), rotation=45, fontsize=9)
         plt.title("Octave-band sound power level")
-        plt.ylabel(r"$\mathregular{L_w}$" + Lw_unit_str)
+        plt.ylabel(r"$\mathregular{L_w}$" + f" ({Lw_unit})")
 
         # Display 1/3-octave-band levels in the lower subplot.
         Lw = self.get_Lw_thirdoctave()
-        Lw_unit = self.get_output()[3].unit
-        Lw_unit = Lw_unit if isinstance(Lw_unit, str) else Lw_unit[1]
-        Lw_unit_str = f" ({Lw_unit})" if len(Lw_unit) > 0 else ""
+        Lw_unit = self.get_output()[3].unit[1]
         f_center = self.get_thirdoctave_center_frequencies()
         f_unit = self.get_output()[3].time_freq_support.time_frequencies.unit
 
@@ -602,7 +598,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         plt.bar(range(len(Lw)), Lw)
         plt.xticks(range(len(Lw)), f_center.astype(int), rotation=45, fontsize=9)
         plt.title("1/3-octave-band sound power level")
-        plt.ylabel(r"$\mathregular{L_w}$" + Lw_unit_str)
+        plt.ylabel(r"$\mathregular{L_w}$" + f" ({Lw_unit})")
         plt.xlabel(f"Frequency ({f_unit})")
 
         plt.tight_layout()

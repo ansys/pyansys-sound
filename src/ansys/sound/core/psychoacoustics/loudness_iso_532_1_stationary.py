@@ -255,10 +255,11 @@ class LoudnessISO532_1_Stationary(PsychoacousticsParent):
         bark_band_indexes = self.get_bark_band_indexes()
         specific_loudness = self.get_specific_loudness()
         unit = self.get_output()[2].unit[1]
+        bark_unit = self.get_output()[2].time_freq_support.time_frequencies.unit[1]
 
         plt.plot(bark_band_indexes, specific_loudness)
         plt.title("Specific loudness")
-        plt.xlabel("Bark band index")
+        plt.xlabel(f"z ({bark_unit})")
         plt.ylabel(f"N' ({unit})")
         plt.grid(True)
         plt.show()

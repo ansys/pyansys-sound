@@ -25,7 +25,7 @@ from unittest.mock import patch
 from ansys.dpf.core import Field
 import pytest
 
-from ansys.sound.core._pyansys_sound import PyAnsysSoundException
+from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.signal_utilities.load_wav import LoadWav
 from ansys.sound.core.sound_composer import SourceControlTime
 
@@ -37,21 +37,41 @@ def test_source_control_time_instantiation_no_file():
     """Test SourceControlTime instantiation."""
     # Test instantiation.
     control_time = SourceControlTime()
-    assert isinstance(control_time, SourceControlTime)
+    assert control_time.control is None
 
 
 def test_source_control_time_instantiation_wav_file():
     """Test SourceControlTime instantiation."""
     # Test instantiation.
     control_time = SourceControlTime(pytest.data_path_rpm_profile_as_wav)
-    assert isinstance(control_time, SourceControlTime)
+    assert control_time.control is not None
+
+
+def test_source_control_time_instantiation_wav_file_warning():
+    """Test SourceControlTime instantiation with expected unit warning."""
+    # Test instantiation with expected unit.
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Expected unit is ignored when loading control data from a WAV file.",
+    ):
+        control_time = SourceControlTime(pytest.data_path_rpm_profile_as_wav, expected_unit="km/h")
+    assert control_time.control is not None
+
+    # Check that the unit is that which is stored in the WAV file, not the specified one.
+    assert isinstance(control_time.control.unit, tuple)
+    assert control_time.control.unit[1] == "rpm"
 
 
 def test_source_control_time_instantiation_txt_file():
     """Test SourceControlTime instantiation."""
     # Test instantiation.
     control_time = SourceControlTime(pytest.data_path_rpm_profile_as_txt)
-    assert isinstance(control_time, SourceControlTime)
+    assert control_time.control is not None
+    assert control_time.control.unit == ""
+
+    control_time = SourceControlTime(pytest.data_path_rpm_profile_as_txt, expected_unit="RPM")
+    assert control_time.control is not None
+    assert control_time.control.unit == "RPM"
 
 
 def test_source_control_time_properties():

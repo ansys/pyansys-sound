@@ -198,3 +198,4 @@ def test_stft_plot(mock_show):
         stft.plot()
     stft.process()
     stft.plot()
+    stft.plot(reference_value=2e-5)
