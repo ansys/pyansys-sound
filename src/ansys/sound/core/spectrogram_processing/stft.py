@@ -246,6 +246,12 @@ class Stft(SpectrogramProcessingParent):
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
             )
+
+        if reference_value <= 0:
+            raise PyAnsysSoundException(
+                "Reference value for dB conversion must be strictly greater than 0."
+            )
+
         magnitude = self.get_stft_magnitude_as_nparray()
         unit = self.get_output()[0].unit
         mag_unit = unit if isinstance(unit, str) else unit[1]

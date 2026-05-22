@@ -191,11 +191,25 @@ def test_stft_plot(mock_show):
     wav_loader.process()
     signal = wav_loader.get_output()[0]
     stft = Stft(signal=signal)
+    stft.process()
+    stft.plot()
+    stft.plot(reference_value=2e-5)
+
+
+def test_stft_plot_exceptions():
+    """Test the plot method of Stft class."""
+    wav_loader = LoadWav(pytest.data_path_flute)
+    wav_loader.process()
+    signal = wav_loader.get_output()[0]
+    stft = Stft(signal=signal)
     with pytest.raises(
         PyAnsysSoundException,
         match="Output is not processed yet. Use the `Stft.process\\(\\)` method.",
     ):
         stft.plot()
     stft.process()
-    stft.plot()
-    stft.plot(reference_value=2e-5)
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Reference value for dB conversion must be strictly greater than 0.",
+    ):
+        stft.plot(reference_value=0.0)
