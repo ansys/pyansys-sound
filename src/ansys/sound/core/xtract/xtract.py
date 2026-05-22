@@ -244,10 +244,10 @@ class Xtract(XtractParent):
         self.__operator.run()
 
         # Stores the outputs
-        self.__output_noise_signal = self.__operator.get_output(0, types.fields_container)[0]
-        self.__output_tonal_signal = self.__operator.get_output(1, types.fields_container)[0]
-        self.__output_transient_signal = self.__operator.get_output(2, types.fields_container)[0]
-        self.__output_remainder_signal = self.__operator.get_output(3, types.fields_container)[0]
+        self.__output_noise_signal = self.__operator.get_output(0, types.field)
+        self.__output_tonal_signal = self.__operator.get_output(1, types.field)
+        self.__output_transient_signal = self.__operator.get_output(2, types.field)
+        self.__output_remainder_signal = self.__operator.get_output(3, types.field)
 
         self._output = (
             self.__output_noise_signal,
