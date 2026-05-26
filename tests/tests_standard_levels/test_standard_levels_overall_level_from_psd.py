@@ -48,6 +48,11 @@ EXP_STR_ALL_PROCESSED = (
     "\tReference value: 2e-05\n\tFrequency weighting: A\n"
     "Output level value: 97.6 dBA (re 2e-05)"
 )
+EXP_STR_ALL_SET_PROCESSED =(
+        'OverallLevelFromPSD object.\nData\n\tPSD: "Name of the PSD"\n\tScale type: RMS\n'
+        "\tFrequency weighting: Not applicable\n"
+        "Output level value: 1.6 (RMS)"
+    )
 
 # Expected values for flute_nonUnitaryCalib PSD
 EXP_LEVEL_DEFAULT = -5.63976  # dB with reference_value=1.0, no weighting
@@ -216,11 +221,7 @@ def test_overall_level_from_psd___str__(create_psd_from_data):
     assert str(level_obj) == EXP_STR_ALL_SET
 
     level_obj.process()
-    assert str(level_obj) == (
-        'OverallLevelFromPSD object.\nData\n\tPSD: "Name of the PSD"\n\tScale type: RMS\n'
-        "\tFrequency weighting: Not applicable\n"
-        f"Output level value: {level_obj.get_output():.1f} (RMS)"
-    )
+    assert str(level_obj) == EXP_STR_ALL_SET_PROCESSED
 
     level_obj.scale = "dB"
     level_obj.reference_value = 2e-5
