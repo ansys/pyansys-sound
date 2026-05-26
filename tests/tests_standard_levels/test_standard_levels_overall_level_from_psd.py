@@ -117,7 +117,7 @@ def create_psd_from_txt_data():
 
 
 @pytest.fixture
-def create_psd_from_flute_nonUnitaryCalib():
+def create_psd_from_wav():
     """Create a PSD DPF field by computing PSD from flute_nonUnitaryCalib.wav."""
     loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
     loader.process()
@@ -292,9 +292,9 @@ def test_overall_level_from_psd_process_exceptions():
         level_obj.process()
 
 
-def test_overall_level_from_psd_get_output(create_psd_from_flute_nonUnitaryCalib):
+def test_overall_level_from_psd_get_output(create_psd_from_wav):
     """Test OverallLevelFromPSD get_output method."""
-    level_obj = OverallLevelFromPSD(psd=create_psd_from_flute_nonUnitaryCalib)
+    level_obj = OverallLevelFromPSD(psd=create_psd_from_wav)
     level_obj.process()
     output = level_obj.get_output()
     assert type(output) == float
