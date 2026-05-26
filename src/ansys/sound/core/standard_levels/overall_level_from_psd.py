@@ -45,7 +45,7 @@ class OverallLevelFromPSD(StandardLevelsParent, min_sound_version="2027.1.0"):
 
     Examples
     --------
-    Compute the overall SPL from a PSD.
+    Compute the overall level from a PSD.
 
     >>> from ansys.sound.core.standard_levels import OverallLevelFromPSD
     >>> level = OverallLevelFromPSD(psd=my_psd, reference_value=2e-5)
