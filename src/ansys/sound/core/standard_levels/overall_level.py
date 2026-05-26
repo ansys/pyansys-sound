@@ -202,7 +202,7 @@ class OverallLevel(StandardLevelsParent):
             warnings.warn(
                 PyAnsysSoundWarning(
                     f"Output is not processed yet. "
-                    f"Use the {__class__.__name__}.process() method."
+                    f"Use the {type(self).__name__}.process() method."
                 )
             )
 

@@ -22,18 +22,16 @@
 
 """Compute the overall level from a PSD input."""
 
-import warnings
-
 from ansys.dpf.core import Field, Operator, types
-import numpy as np
 
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-from ._standard_levels_parent import DICT_FREQUENCY_WEIGHTING, DICT_SCALE, StandardLevelsParent
+from .._pyansys_sound import PyAnsysSoundException
+from ._standard_levels_parent import DICT_FREQUENCY_WEIGHTING, DICT_SCALE
+from .overall_level import OverallLevel
 
 ID_COMPUTE_OVERALL_LEVEL_FROM_PSD = "compute_overall_level_from_psd"
 
 
-class OverallLevelFromPSD(StandardLevelsParent, min_sound_version="2027.1.0"):
+class OverallLevelFromPSD(OverallLevel, min_sound_version="2027.1.0"):
     """Compute the overall level from a power spectral density (PSD) input.
 
     This class computes the overall level from a PSD, on a decibel scale or a linear,
@@ -77,11 +75,13 @@ class OverallLevelFromPSD(StandardLevelsParent, min_sound_version="2027.1.0"):
             and dBC. Note that the frequency weighting is only applied if the attribute
             :attr:`scale` is set to `"dB"`.
         """
-        super().__init__()
+        super().__init__(
+            signal=None,
+            scale=scale,
+            reference_value=reference_value,
+            frequency_weighting=frequency_weighting,
+        )
         self.psd = psd
-        self.scale = scale
-        self.reference_value = reference_value
-        self.frequency_weighting = frequency_weighting
         self.__operator = Operator(ID_COMPUTE_OVERALL_LEVEL_FROM_PSD)
 
     def __str__(self) -> str:
@@ -126,56 +126,20 @@ class OverallLevelFromPSD(StandardLevelsParent, min_sound_version="2027.1.0"):
         self.__psd = psd
 
     @property
-    def scale(self) -> str:
-        """Scale type of the output level.
+    def signal(self) -> Field:
+        """Not applicable for this class. Use :attr:`psd` instead."""
+        raise PyAnsysSoundException(
+            f"'{__class__.__name__}' does not use a signal input. Use the 'psd' attribute instead."
+        )
 
-        Specifies whether the output level shall be provided on a decibel (`"dB"`) or linear
-        (`"RMS"`) scale.
-        """
-        return self.__scale
-
-    @scale.setter
-    def scale(self, scale: str):
-        """Set the scale type."""
-        if scale not in DICT_SCALE.keys():
-            raise PyAnsysSoundException("The scale type must be either 'dB' or 'RMS'.")
-        self.__scale = scale
-
-    @property
-    def reference_value(self) -> float:
-        """Reference value for the level computation.
-
-        If the PSD is computed from a sound pressure signal in Pa, the reference value should
-        be 2e-5 (Pa).
-        """
-        return self.__reference_value
-
-    @reference_value.setter
-    def reference_value(self, value: float):
-        """Set the reference value."""
-        if value <= 0:
-            raise PyAnsysSoundException("The reference value must be strictly positive.")
-        self.__reference_value = value
-
-    @property
-    def frequency_weighting(self) -> str:
-        """Frequency weighting of the computed level.
-
-        Available options are `""`, `"A"`, `"B"`, and `"C"`. If attribute :attr:`reference_value`
-        is 2e-5 Pa, these options allow level calculation in dBSPL, dBA, dBB, and dBC,
-        respectively. Note that the frequency weighting is only applied if the attribute
-        :attr:`scale` is set to `"dB"`.
-        """
-        return self.__frequency_weighting
-
-    @frequency_weighting.setter
-    def frequency_weighting(self, weighting: str):
-        """Set the frequency weighting."""
-        if weighting not in DICT_FREQUENCY_WEIGHTING.keys():
+    @signal.setter
+    def signal(self, signal: Field):
+        """Block setting signal on this class."""
+        if signal is not None:
             raise PyAnsysSoundException(
-                f"The frequency weighting must be one of {list(DICT_FREQUENCY_WEIGHTING.keys())}."
+                f"'{__class__.__name__}' does not use a signal input. "
+                "Use the 'psd' attribute instead."
             )
-        self.__frequency_weighting = weighting
 
     def process(self):
         """Compute the overall level from the PSD."""
@@ -190,46 +154,3 @@ class OverallLevelFromPSD(StandardLevelsParent, min_sound_version="2027.1.0"):
         self.__operator.run()
 
         self._output = self.__operator.get_output(0, types.double)
-
-    def get_output(self) -> float:
-        """Return the overall level.
-
-        Returns
-        -------
-        float
-            The overall level value.
-        """
-        if self._output is None:
-            warnings.warn(
-                PyAnsysSoundWarning(
-                    f"Output is not processed yet. "
-                    f"Use the {__class__.__name__}.process() method."
-                )
-            )
-
-        return self._output
-
-    def get_output_as_nparray(self) -> np.ndarray:
-        """Return the overall level as a numpy array.
-
-        Returns
-        -------
-        numpy.ndarray
-            The overall level value as a numpy array.
-        """
-        output = self.get_output()
-
-        if output is None:
-            return None
-
-        return np.array([output])
-
-    def get_level(self) -> float:
-        """Return the overall level.
-
-        Returns
-        -------
-        float
-            The overall level value.
-        """
-        return self.get_output()
