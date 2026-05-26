@@ -66,6 +66,7 @@ EXP_LEVEL_DBC_REGULAR = 96.30580391645842
 EXP_LEVEL_DBA_NONREGULAR = 103.8890850917627
 EXP_LEVEL_DBB_NONREGULAR = 102.35895548586012
 EXP_LEVEL_DBC_NONREGULAR = 102.28886603807935
+EXP_LEVEL_DBSPL_2 = -11.323645911074411
 
 
 @pytest.fixture
@@ -419,4 +420,4 @@ def test_overall_level_from_psd_get_level(create_psd_from_txt_data):
     level_obj.process()
     level = level_obj.get_level()
     assert type(level) == float
-    assert level == level_obj.get_output()
+    assert level == pytest.approx(EXP_LEVEL_DBSPL_2, abs=1e-3)
