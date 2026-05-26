@@ -173,7 +173,7 @@ def create_psd_from_data():
         frequencies = np.array(frequencies)
         amplitudes = np.array(amplitudes)
 
-        # Data is already in Pa²/Hz — no conversion needed
+        # It is supposed that data is already in Pa²/Hz — no conversion is done.
 
         # --- Build the DPF field ---
         # The PSD values are stored as a scalar field in the time_freq location,
