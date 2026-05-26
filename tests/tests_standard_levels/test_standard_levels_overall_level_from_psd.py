@@ -115,6 +115,23 @@ def create_psd_from_data():
     """
 
     def _create(path):
+        """Build a PSD DPF field from a two-column text file.
+
+        Parameters
+        ----------
+        path : str
+            Path to the text file. The first line is a header (skipped).
+            Each subsequent line must contain two whitespace-separated values:
+            ``<frequency_Hz>  <amplitude_Pa2_per_Hz>``.
+
+        Returns
+        -------
+        ansys.dpf.core.Field
+            Scalar DPF field at the ``time_freq`` location containing the PSD
+            amplitudes (Pa²/Hz), with a :class:`TimeFreqSupport` attaching the
+            corresponding frequency axis.
+        """
+
         # --- Read the text file ---
         fid = open(path)
         fid.readline()  # skip header line
