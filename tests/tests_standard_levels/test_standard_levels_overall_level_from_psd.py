@@ -46,7 +46,7 @@ EXP_STR_ALL_SET = (
 EXP_STR_ALL_PROCESSED = (
     'OverallLevelFromPSD object.\nData\n\tPSD: "Name of the PSD"\n\tScale type: dB\n'
     "\tReference value: 2e-05\n\tFrequency weighting: A\n"
-    "Output level value: 81.2 dBA (re 2e-05)"
+    "Output level value: 97.6 dBA (re 2e-05)"
 )
 
 # Expected values for flute_nonUnitaryCalib PSD
@@ -66,7 +66,7 @@ EXP_LEVEL_DBC_REGULAR = 96.30580391645842
 EXP_LEVEL_DBA_NONREGULAR = 103.8890850917627
 EXP_LEVEL_DBB_NONREGULAR = 102.35895548586012
 EXP_LEVEL_DBC_NONREGULAR = 102.28886603807935
-EXP_LEVEL_DBSPL_2 = -11.323645911074411
+EXP_LEVEL_DBSPL_2 = 4.08283676423176
 
 
 @pytest.fixture
@@ -202,12 +202,12 @@ def test_overall_level_from_psd_properties_exceptions():
         level_obj.frequency_weighting = "Invalid"
 
 
-def test_overall_level_from_psd___str__(create_psd_from_txt_data):
+def test_overall_level_from_psd___str__(create_psd_from_data):
     """Test OverallLevelFromPSD __str__ method."""
     level_obj = OverallLevelFromPSD()
     assert str(level_obj) == EXP_STR_NOT_SET
 
-    psd = create_psd_from_txt_data
+    psd = create_psd_from_data(pytest.data_path_psd_regular)
     psd.name = "Name of the PSD"
 
     level_obj.psd = psd
@@ -228,9 +228,9 @@ def test_overall_level_from_psd___str__(create_psd_from_txt_data):
     assert str(level_obj) == EXP_STR_ALL_PROCESSED
 
 
-def test_overall_level_from_psd_process(create_psd_from_txt_data):
+def test_overall_level_from_psd_process(create_psd_from_data):
     """Test OverallLevelFromPSD process method."""
-    level_obj = OverallLevelFromPSD(psd=create_psd_from_txt_data)
+    level_obj = OverallLevelFromPSD(psd=create_psd_from_data(pytest.data_path_psd_regular))
     level_obj.process()
     assert level_obj.get_output() is not None
 
@@ -352,9 +352,9 @@ def test_overall_level_from_psd_get_output_warnings():
     assert output is None
 
 
-def test_overall_level_from_psd_get_output_as_nparray(create_psd_from_txt_data):
+def test_overall_level_from_psd_get_output_as_nparray(create_psd_from_data):
     """Test OverallLevelFromPSD get_output_as_nparray method."""
-    level_obj = OverallLevelFromPSD(psd=create_psd_from_txt_data)
+    level_obj = OverallLevelFromPSD(psd=create_psd_from_data(pytest.data_path_psd_regular))
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. Use the OverallLevelFromPSD.process\\(\\) method.",
@@ -367,9 +367,9 @@ def test_overall_level_from_psd_get_output_as_nparray(create_psd_from_txt_data):
     assert len(output) == 1
 
 
-def test_overall_level_from_psd_get_level(create_psd_from_txt_data):
+def test_overall_level_from_psd_get_level(create_psd_from_data):
     """Test OverallLevelFromPSD get_level method."""
-    level_obj = OverallLevelFromPSD(psd=create_psd_from_txt_data)
+    level_obj = OverallLevelFromPSD(psd=create_psd_from_data(pytest.data_path_psd_regular))
     level_obj.process()
     level = level_obj.get_level()
     assert type(level) == float
