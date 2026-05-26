@@ -149,7 +149,7 @@ def create_psd_from_data():
             psd = create_psd_from_data(pytest.data_path_psd_regular)
             ...
 
-    Expected file format:
+    Supported file format:
         - One header line (skipped).
         - One data row per frequency bin: ``<frequency_Hz>  <amplitude_Pa2_per_Hz>``.
         - Amplitudes are assumed to be already in Pa²/Hz (no unit conversion applied).
