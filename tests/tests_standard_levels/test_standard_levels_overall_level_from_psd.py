@@ -31,7 +31,7 @@ from ansys.sound.core.standard_levels import OverallLevelFromPSD
 
 # Skip entire test module if server < 2026R1
 if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
-    pytest.skip("Requires server version >= 11.0", allow_module_level=True)
+    pytest.skip("Requires Sound version >= 2027.1.0", allow_module_level=True)
 
 EXP_STR_NOT_SET = (
     "OverallLevelFromPSD object.\nData\n\tPSD: Not set\n\tScale type: dB\n"
