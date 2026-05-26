@@ -49,7 +49,7 @@ EXP_STR_ALL_PROCESSED = (
     "Output level value: 81.2 dBA (re 2e-05)"
 )
 
-# Expected values from C++ tests (flute_nonUnitaryCalib PSD)
+# Expected values for flute_nonUnitaryCalib PSD
 EXP_LEVEL_DEFAULT = -5.63976  # dB with reference_value=1.0, no weighting
 EXP_LEVEL_RMS = 0.52254
 EXP_LEVEL_DBSPL = 88.345
