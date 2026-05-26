@@ -278,8 +278,6 @@ def create_psd_from_txt_data():
     amplitudes = amplitudes * 2.0e-5
     amplitudes = amplitudes * 2.0e-5
 
-    # for now, due to a sharp constraint on regularity of frequencies (1.0e-5) in the operator,
-    # we cannot use those written in the file. Let's recreate them
     frequencies = np.linspace(0, 22050, len(amplitudes))
 
     psd = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
