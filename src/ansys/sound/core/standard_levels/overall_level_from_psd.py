@@ -51,10 +51,6 @@ class OverallLevelFromPSD(StandardLevelsParent, min_sound_version="2027.1.0"):
     >>> level = OverallLevelFromPSD(psd=my_psd, reference_value=2e-5)
     >>> level.process()
     >>> level_dB = level.get_level()
-
-    .. seealso::
-        :ref:`calculate_levels`
-            Example demonstrating how to calculate standard levels.
     """
 
     def __init__(
