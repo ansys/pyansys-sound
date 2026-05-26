@@ -403,8 +403,12 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
         tonal_audibility = self.get_tonal_audibility_over_time()
         tonal_adjustment = self.get_tonal_adjustment_over_time()
         time_scale = self.get_time_scale()
-        tonal_audibility_unit = self.get_output()[0].unit[1]
-        tonal_adjustment_unit = self.get_output()[1].unit[1]
+        tonal_audibility_unit = self.get_output()[0].unit
+        if isinstance(tonal_audibility_unit, tuple):
+            tonal_audibility_unit = tonal_audibility_unit[1]
+        tonal_adjustment_unit = self.get_output()[1].unit
+        if isinstance(tonal_adjustment_unit, tuple):
+            tonal_adjustment_unit = tonal_adjustment_unit[1]
         time_unit = self.get_output()[0].time_freq_support.time_frequencies.unit
 
         _, axes = plt.subplots(2, 1, sharex=True)
