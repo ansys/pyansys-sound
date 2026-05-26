@@ -102,11 +102,9 @@ def create_psd_from_data():
     tests that need PSD fields built from different files (e.g. regular vs. non-regular
     frequency grids), without duplicating the fixture body.
 
-    Usage in a test::
-
-        def test_something(create_psd_from_data):
-            psd = create_psd_from_data(pytest.data_path_psd_regular)
-            ...
+    How to use the fixture with the factory pattern in a test:
+    >>> def test_something(create_psd_from_data):
+    ...     psd = create_psd_from_data(pytest.data_path_psd_regular)
 
     Supported file format:
         - One header line (skipped).
