@@ -33,7 +33,7 @@ from ._standard_levels_parent import DICT_FREQUENCY_WEIGHTING, DICT_SCALE, Stand
 ID_COMPUTE_OVERALL_LEVEL_FROM_PSD = "compute_overall_level_from_psd"
 
 
-class OverallLevelFromPSD(StandardLevelsParent, min_sound_version="2026.1.0"):
+class OverallLevelFromPSD(StandardLevelsParent, min_sound_version="2027.1.0"):
     """Compute the overall level from a power spectral density (PSD) input.
 
     This class computes the overall level from a PSD, on a decibel scale or a linear,
