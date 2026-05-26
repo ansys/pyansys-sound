@@ -90,7 +90,10 @@ class OverallLevel(StandardLevelsParent):
     def __str__(self) -> str:
         """Return the string representation of the object."""
         str_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
-        if len(self.frequency_weighting) > 0:
+        if self.scale == "RMS":
+            str_frequency_weighting = "Not applicable"
+            unit = "(RMS)"       
+        elif len(self.frequency_weighting) > 0:
             str_frequency_weighting = self.frequency_weighting
             unit = f"dB{self.frequency_weighting} (re {self.reference_value})"
         else:
@@ -103,8 +106,8 @@ class OverallLevel(StandardLevelsParent):
             "Data\n"
             f"\tSignal: {str_name}\n"
             f"\tScale type: {self.scale}\n"
-            f"\tReference value: {self.reference_value}\n"
-            f"\tFrequency weighting: {str_frequency_weighting}\n"
+            + (f"\tReference value: {self.reference_value}\n" if self.scale == "dB" else "")
+            + f"\tFrequency weighting: {str_frequency_weighting}\n"
             f"Output level value: {str_level}"
         )
 
