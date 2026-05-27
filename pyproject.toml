@@ -37,7 +37,7 @@ full = [
     "matplotlib==3.10.9",
     "pyuff==2.5.3",
     "platformdirs==4.9.6",
-    "requests==2.33.1",
+    "requests==2.34.1",
     "scipy==1.14.1; python_version<'3.11'",
     "scipy==1.17.1; python_version>='3.11'",
     "scikit-learn==1.7.2"
@@ -52,7 +52,7 @@ tests = [
     "pytest-dependency==0.6.1",
     "platformdirs==4.9.6",
     "regex==2026.4.4",
-    "requests==2.33.1",
+    "requests==2.34.1",
     "scipy==1.14.1; python_version<'3.11'",
     "scipy==1.17.1; python_version>='3.11'"
 ]
@@ -68,14 +68,14 @@ doc = [
     "sphinx-gallery==0.21.0",
     "sphinx-design==0.6.1",
     "vtk==9.6.1",
-    "trame==3.12.0",
+    "trame==3.13.1",
     "trame_vtk==2.11.8",
-    "pyvista==0.48.0",
+    "pyvista==0.48.2",
     "pypandoc==1.17",
     "jupyter-sphinx==0.5.3",
     "sphinx-autobuild==2024.10.3",
     "platformdirs==4.9.6",
-    "requests==2.33.1",
+    "requests==2.34.1",
     "scikit-learn==1.7.2"
 ]
 

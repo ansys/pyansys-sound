@@ -278,6 +278,8 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
             )
 
         tnr_unit = output[0][0].unit
+        if isinstance(tnr_unit, tuple):
+            tnr_unit = tnr_unit[1]
         time = output[0][0].time_freq_support.time_frequencies
         rpm = output[1]
 

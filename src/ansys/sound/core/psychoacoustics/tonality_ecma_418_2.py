@@ -351,6 +351,8 @@ class TonalityECMA418_2(PsychoacousticsParent):
         time_scale_tonality = self.get_tonality_time_scale()
         time_scale_ft = self.get_tone_frequency_time_scale()
         tonality_unit = self.get_output()[1].unit
+        if isinstance(tonality_unit, tuple):
+            tonality_unit = tonality_unit[1]
         time_unit = self.get_output()[1].time_freq_support.time_frequencies.unit
         frequency_unit = self.get_output()[2].unit
 

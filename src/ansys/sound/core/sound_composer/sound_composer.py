@@ -270,13 +270,14 @@ class SoundComposer(SoundComposerParent):
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
             )
-        output_signal = self.get_output()
-        str_output_unit = f" ({output_signal.unit})" if len(output_signal.unit) > 0 else ""
-        time = output_signal.time_freq_support.time_frequencies
+        output = self.get_output()
+        unit = output.unit if isinstance(output.unit, str) else output.unit[1]
+        str_unit = f" ({unit})" if len(unit) > 0 else ""
+        time = output.time_freq_support.time_frequencies
 
-        plt.plot(time.data, output_signal.data)
+        plt.plot(time.data, output.data)
         plt.title("Generated signal")
         plt.xlabel(f"Time ({time.unit})")
-        plt.ylabel(f"Amplitude{str_output_unit}")
+        plt.ylabel(f"Amplitude{str_unit}")
         plt.grid(True)
         plt.show()

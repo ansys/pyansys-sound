@@ -142,19 +142,21 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         # Source control info.
         if self.is_source_control_valid():
             control = self.source_control1.control
+            control_unit = control.unit if isinstance(control.unit, str) else control.unit[1]
             time = control.time_freq_support.time_frequencies
             str_source_control1 = (
                 f"{control.name}\n"
-                f"\t\tMin: {control.data.min()} {control.unit}\n"
-                f"\t\tMax: {control.data.max()} {control.unit}\n"
+                f"\t\tMin: {control.data.min()} {control_unit}\n"
+                f"\t\tMax: {control.data.max()} {control_unit}\n"
                 f"\t\tDuration: {time.data[-1]} {time.unit}"
             )
             control = self.source_control2.control
+            control_unit = control.unit if isinstance(control.unit, str) else control.unit[1]
             time = control.time_freq_support.time_frequencies
             str_source_control2 = (
                 f"{control.name}\n"
-                f"\t\tMin: {control.data.min()} {control.unit}\n"
-                f"\t\tMax: {control.data.max()} {control.unit}\n"
+                f"\t\tMin: {control.data.min()} {control_unit}\n"
+                f"\t\tMax: {control.data.max()} {control_unit}\n"
                 f"\t\tDuration: {time.data[-1]} {time.unit}"
             )
         else:
@@ -453,6 +455,8 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
                 f"Output is not processed yet. Use the '{__class__.__name__}.process()' method."
             )
         output = self.get_output()
+        unit = output.unit if isinstance(output.unit, str) else output.unit[1]
+        unit_str = f" ({unit})" if len(unit) > 0 else ""
 
         time = output.time_freq_support.time_frequencies
 
@@ -463,7 +467,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
             else "Signal from broadband noise source with two parameters"
         )
         plt.xlabel(f"Time ({time.unit})")
-        plt.ylabel(f"Amplitude ({output.unit})")
+        plt.ylabel(f"Amplitude{unit_str}")
         plt.grid(True)
         plt.show()
 
@@ -480,7 +484,8 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
 
         control = self.source_control1.control
         time = control.time_freq_support.time_frequencies
-        unit_str = f" ({control.unit})" if len(control.unit) > 0 else ""
+        unit = control.unit if isinstance(control.unit, str) else control.unit[1]
+        unit_str = f" ({unit})" if len(unit) > 0 else ""
         name_str = control.name if len(control.name) > 0 else "Amplitude"
         axes[0].plot(time.data, control.data)
         axes[0].set_title("Control profile 1")
@@ -489,9 +494,10 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
 
         control = self.source_control2.control
         time = control.time_freq_support.time_frequencies
-        unit_str = f" ({control.unit})" if len(control.unit) > 0 else ""
+        unit = control.unit if isinstance(control.unit, str) else control.unit[1]
+        unit_str = f" ({unit})" if len(unit) > 0 else ""
         name_str = control.name if len(control.name) > 0 else "Amplitude"
-        axes[0].plot(time.data, control.data)
+        axes[1].plot(time.data, control.data)
         axes[1].set_title("Control profile 2")
         axes[1].set_ylabel(f"{name_str}{unit_str}")
         axes[1].set_xlabel(f"Time ({time.unit})")

@@ -349,7 +349,8 @@ class Track(SoundComposerParent):
         output = self.get_output()
 
         time = output.time_freq_support.time_frequencies
-        str_unit = f" ({output.unit})" if len(output.unit) > 0 else ""
+        unit = output.unit if isinstance(output.unit, str) else output.unit[1]
+        str_unit = f" ({unit})" if len(unit) > 0 else ""
         str_title = self.name if len(self.name) > 0 else "Generated signal"
 
         plt.plot(time.data, output.data)

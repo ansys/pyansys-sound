@@ -22,12 +22,14 @@
 
 """Sound Composer's source control over time."""
 
+import warnings
+
 from ansys.dpf.core import Field, Operator
 from matplotlib import pyplot as plt
 
 from ansys.sound.core.signal_utilities.load_wav import LoadWav
 
-from .._pyansys_sound import PyAnsysSoundException
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._source_control_parent import SourceControlParent
 
 ID_LOAD_FROM_TEXT = "load_sound_samples_from_txt"
@@ -57,7 +59,7 @@ class SourceControlTime(SourceControlParent):
             Example demonstrating how to create a Sound Composer project from scratch.
     """
 
-    def __init__(self, file_str: str = ""):
+    def __init__(self, file_str: str = "", expected_unit: str = ""):
         """Class instantiation takes the following parameters.
 
         Parameters
@@ -65,6 +67,9 @@ class SourceControlTime(SourceControlParent):
         file_str : str, default: ""
             Path to the control data file. Supported files are WAV files and and text files with
             the header `AnsysSound_SoundSamples`.
+        expected_unit : str, default: ""
+            Expected unit of the control data when loading from a text file. Ignored when loading
+            from a WAV file.
         """
         super().__init__()
 
@@ -73,9 +78,15 @@ class SourceControlTime(SourceControlParent):
 
         if len(file_str) > 0:
             if file_str.endswith(".wav"):
+                if len(expected_unit) > 0:
+                    warnings.warn(
+                        PyAnsysSoundWarning(
+                            "Expected unit is ignored when loading control data from a WAV file."
+                        )
+                    )
                 self.load_from_wave_file(file_str)
             else:
-                self.load_from_text_file(file_str)
+                self.load_from_text_file(file_str, expected_unit)
         else:
             self.control = None
 
@@ -146,7 +157,7 @@ class SourceControlTime(SourceControlParent):
         loader.process()
         self.control = loader.get_output()[0]
 
-    def load_from_text_file(self, file_str: str):
+    def load_from_text_file(self, file_str: str, expected_unit: str = ""):
         """Load control data from a text file.
 
         Parameters
@@ -154,9 +165,13 @@ class SourceControlTime(SourceControlParent):
         file_str : str
             Path to the text file. Supported files have the same text format (with the header
             `AnsysSound_SoundSamples`) as supported by Ansys Sound SAS.
+        expected_unit : str, default: ""
+            Expected unit of the loaded control data.
         """
         # Set operator inputs.
         self.__operator_load.connect(0, file_str)
+        if len(expected_unit) > 0:
+            self.__operator_load.connect(1, expected_unit)
 
         # Run the operator.
         self.__operator_load.run()
@@ -164,17 +179,16 @@ class SourceControlTime(SourceControlParent):
         # Get the loaded sound power level parameters.
         self.control = self.__operator_load.get_output(0, "field")
 
-        # Clear the control unit, as this operator always returns the unit as "Pa".
-        self.control.unit = ""
-
     def plot(self):
         """Plot the control profile."""
         time = self.control.time_freq_support.time_frequencies
+        unit = self.control.unit if isinstance(self.control.unit, str) else self.control.unit[1]
+        str_unit = f" ({unit})" if len(unit) > 0 else ""
+        str_name = self.control.name if len(self.control.name) > 0 else "Control parameter"
 
         plt.plot(time.data, self.control.data)
-        plt.title(self.control.name if len(self.control.name) > 0 else "Control profile")
+        plt.title("Control profile")
         plt.xlabel(f"Time ({time.unit})")
-        str_unit = f" ({self.control.unit})" if len(self.control.unit) > 0 else ""
-        plt.ylabel("Control parameter" + str_unit)
+        plt.ylabel(f"{str_name}{str_unit}")
         plt.grid(True)
         plt.show()
