@@ -22,7 +22,7 @@
 
 from unittest.mock import patch
 
-from ansys.dpf.core import Field, TimeFreqSupport, fields_factory, locations
+from ansys.dpf.core import Field
 import numpy as np
 import pytest
 
