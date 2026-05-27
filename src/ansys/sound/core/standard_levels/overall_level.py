@@ -95,10 +95,10 @@ class OverallLevel(StandardLevelsParent):
             unit = "(RMS)"
         elif len(self.frequency_weighting) > 0:
             str_frequency_weighting = self.frequency_weighting
-            unit = f"dB{self.frequency_weighting} (re {self.reference_value})"
+            unit = f"dB{self.frequency_weighting} re. {self.reference_value}"
         else:
             str_frequency_weighting = "None"
-            unit = f"dB (re {self.reference_value})"
+            unit = f"dB re. {self.reference_value}"
         str_level = f"{self._output:.1f} {unit}" if self._output is not None else "Not processed"
 
         return (

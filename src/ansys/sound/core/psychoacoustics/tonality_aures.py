@@ -331,6 +331,8 @@ class TonalityAures(PsychoacousticsParent):
         wGr = self.get_loudness_weighting_over_time()
         time_scale = self.get_time_scale()
         tonality_unit = self.get_output()[1].unit
+        if isinstance(tonality_unit, tuple):
+            tonality_unit = tonality_unit[1]
         time_unit = self.get_output()[1].time_freq_support.time_frequencies.unit
 
         _, axes = plt.subplots(3, 1, sharex=True)

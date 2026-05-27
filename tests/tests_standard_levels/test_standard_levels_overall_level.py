@@ -38,7 +38,7 @@ EXP_STR_ALL_SET = (
 )
 EXP_STR_ALL_PROCESSED = (
     'OverallLevel object.\nData\n\tSignal: "flute"\n\tScale type: dB\n\tReference value: 2e-05\n'
-    "\tFrequency weighting: A\nOutput level value: 86.7 dBA (re 2e-05)"
+    "\tFrequency weighting: A\nOutput level value: 86.7 dBA re. 2e-05"
 )
 EXP_LEVEL_DEFAULT = -5.76525
 EXP_LEVEL_RMS = 0.514917

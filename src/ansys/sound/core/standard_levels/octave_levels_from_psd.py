@@ -69,10 +69,10 @@ class OctaveLevelsFromPSD(FractionalOctaveLevelsFromPSDParent, min_sound_version
         if len(self.frequency_weighting) > 0:
             ylabel = (
                 f"{self.frequency_weighting}-weighted octave-band level "
-                f"(dB{self.frequency_weighting} re {self.reference_value})"
+                f"(dB{self.frequency_weighting} re. {self.reference_value})"
             )
         else:
-            ylabel = f"Octave-band level (dB re {self.reference_value})"
+            ylabel = f"Octave-band level (dB re. {self.reference_value})"
 
         plt.figure()
         plt.bar(freq_str, levels)

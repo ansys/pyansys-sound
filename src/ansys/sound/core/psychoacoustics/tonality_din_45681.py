@@ -473,7 +473,11 @@ class TonalityDIN45681(PsychoacousticsParent):
         tonal_adjustment_over_time = self.get_tonal_adjustment_over_time()
         time_scale = self.get_time_scale()
         difference_unit = self.get_output()[3].unit
+        if isinstance(difference_unit, tuple):
+            difference_unit = difference_unit[1]
         adjustment_unit = self.get_output()[6].unit
+        if isinstance(adjustment_unit, tuple):
+            adjustment_unit = adjustment_unit[1]
         frequency_unit = self.get_output()[5].unit
         time_unit = self.get_output()[3].time_freq_support.time_frequencies.unit
 

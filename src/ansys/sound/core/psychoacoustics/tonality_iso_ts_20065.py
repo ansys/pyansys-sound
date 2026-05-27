@@ -437,6 +437,8 @@ class TonalityISOTS20065(PsychoacousticsParent):
         decisive_frequency_over_time = self.get_decisive_frequency_over_time()
         time_scale = self.get_time_scale()
         difference_unit = self.get_output()[2].unit
+        if isinstance(difference_unit, tuple):
+            difference_unit = difference_unit[1]
         frequency_unit = self.get_output()[4].unit
         time_unit = self.get_output()[2].time_freq_support.time_frequencies.unit
 

@@ -281,6 +281,8 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
             )
 
         pr_unit = output[0][0].unit
+        if isinstance(pr_unit, tuple):
+            pr_unit = pr_unit[1]
         time = output[0][0].time_freq_support.time_frequencies
         rpm = output[1]
 
