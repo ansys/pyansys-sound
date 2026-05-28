@@ -231,16 +231,30 @@ class Stft(SpectrogramProcessingParent):
         output = self.get_output_as_nparray()
         return np.arctan2(np.imag(output), np.real(output))
 
-    def plot(self):
+    def plot(self, reference_value: float = 1.0):
         """Plot signals.
 
         This method plots the STFT amplitude and the associated phase.
+
+        Parameters
+        ----------
+        reference_value : float, default: 1.0
+            Reference STFT amplitude value for dB conversion. For example, for an input sound
+            pressure signal, the reference value is typically 2e-5 (Pa).
         """
         if self._output is None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
             )
+
+        if reference_value <= 0:
+            raise PyAnsysSoundException(
+                "Reference value for dB conversion must be strictly greater than 0."
+            )
+
         magnitude = self.get_stft_magnitude_as_nparray()
+        unit = self.get_output()[0].unit
+        mag_unit = unit if isinstance(unit, str) else unit[1]
         freq_unit = self.get_output()[0].time_freq_support.time_frequencies.unit
         time_unit = self.get_output().time_freq_support.time_frequencies.unit
 
@@ -248,7 +262,7 @@ class Stft(SpectrogramProcessingParent):
         half_nfft = int(np.shape(magnitude)[0] / 2) + 1
 
         np.seterr(divide="ignore")
-        magnitude = 20 * np.log10(magnitude[0:half_nfft, :])
+        magnitude = 20 * np.log10(magnitude[0:half_nfft, :] / reference_value)
         np.seterr(divide="warn")
         phase = self.get_stft_phase_as_nparray()
         phase = phase[0:half_nfft, :]
@@ -264,7 +278,7 @@ class Stft(SpectrogramProcessingParent):
         # Plotting
         f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
         p = ax1.imshow(magnitude, origin="lower", aspect="auto", cmap="jet", extent=extent)
-        f.colorbar(p, ax=ax1, label=f"Amplitude (dBSPL)")
+        f.colorbar(p, ax=ax1, label=f"Amplitude (dB re. {reference_value} {mag_unit})")
         ax1.set_title("Amplitude")
         ax1.set_ylabel(f"Frequency ({freq_unit})")
         p = ax2.imshow(phase, origin="lower", aspect="auto", cmap="jet", extent=extent)
