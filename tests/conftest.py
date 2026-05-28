@@ -250,7 +250,7 @@ def pytest_configure(config):
 
 @pytest.fixture
 def create_psd_from_txt_data():
-    """Create a PSD DPF field from the flute_psd.txt test data file."""
+    """Create a PSD DPF field, in Pa^2/Hz, from the flute_psd.txt test data file."""
     path_flute_psd = pytest.data_path_flute_psd_locally
 
     # Open a txt file for reading
