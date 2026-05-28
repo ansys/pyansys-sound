@@ -249,7 +249,7 @@ def pytest_configure(config):
 
 
 @pytest.fixture
-def create_psd_from_txt_data():
+def create_psd_from_txt_data() -> Field:
     """Create a PSD DPF field, in Pa^2/Hz, from the flute_psd.txt test data file."""
     path_flute_psd = pytest.data_path_flute_psd_locally
 
