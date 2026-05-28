@@ -94,7 +94,7 @@ def create_psd_from_wav():
 
 
 @pytest.fixture
-def create_psd_from_data():
+def create_psd_from_data() -> Field:
     """Create a PSD DPF field from a two-column (frequency, amplitude) text data file.
 
     This fixture uses the *factory* pattern: it yields a callable ``_create(path)``
