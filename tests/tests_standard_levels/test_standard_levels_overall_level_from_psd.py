@@ -104,7 +104,7 @@ def create_psd_from_data() -> Field:
 
     Examples
     --------
-    
+
     >>> def test_something(create_psd_from_data):
     ...     psd = create_psd_from_data(pytest.data_path_psd_regular)
 
