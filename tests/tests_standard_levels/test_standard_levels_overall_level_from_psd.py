@@ -114,7 +114,7 @@ def create_psd_from_data() -> Field:
         - Amplitudes are assumed to be already in Pa²/Hz (no unit conversion applied).
     """
 
-    def _create(path):
+    def _create(path) -> Field:
         """Build a PSD DPF field from a two-column text file.
 
         Parameters
