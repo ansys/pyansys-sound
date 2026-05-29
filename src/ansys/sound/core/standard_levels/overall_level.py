@@ -92,7 +92,7 @@ class OverallLevel(StandardLevelsParent):
         str_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
         if self.scale == "RMS":
             str_frequency_weighting = "Not applicable"
-            unit = "(RMS)"
+            unit = self.signal.unit if isinstance(self.signal.unit, str) else self.signal.unit[1]
         elif len(self.frequency_weighting) > 0:
             str_frequency_weighting = self.frequency_weighting
             unit = f"dB{self.frequency_weighting} re. {self.reference_value}"
