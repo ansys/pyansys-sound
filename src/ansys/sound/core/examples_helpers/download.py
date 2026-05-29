@@ -89,13 +89,9 @@ def provide_error_context():
                 return func(*args, **kwargs)
             except Exception as e:  # pragma: no cover
                 raise RuntimeError(
-                    "For the reason that follows, retrieving the file failed.\n"
-                    "You can download this file from:\n"
-                    f"{_get_example_file_url(args[0])}\n"
-                    "\n"
-                    "The reported error message is:\n"
-                    f"{str(e)}"
-                )
+                    "Because of the above error, retrieving the file failed. You can download it "
+                    f"manually from {_get_example_file_url(args[0])}."
+                ) from e
 
         return inner_wrapper
 
@@ -173,6 +169,8 @@ def _download_file_and_upload_to_server_tmp_folder(filename, server=None):
     if server is None:
         # If no server is provided, retrieve the global server.
         server = server_module.get_or_create_server(server)
+    
+    raise RuntimeError("Test error")
 
     if server.has_client():
         # If the server has a client, then it is a remote server and we need to upload the file
