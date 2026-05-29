@@ -169,7 +169,7 @@ def _download_file_and_upload_to_server_tmp_folder(filename, server=None):
     if server is None:
         # If no server is provided, retrieve the global server.
         server = server_module.get_or_create_server(server)
-    
+
     if server.has_client():
         # If the server has a client, then it is a remote server and we need to upload the file
         # to the server's temporary folder.
