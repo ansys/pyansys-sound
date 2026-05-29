@@ -22,7 +22,13 @@
 
 import os
 
-from ansys.dpf.core import Field, TimeFreqSupport, fields_factory, locations, upload_file_in_tmp_folder
+from ansys.dpf.core import (
+    Field,
+    TimeFreqSupport,
+    fields_factory,
+    locations,
+    upload_file_in_tmp_folder,
+)
 import numpy as np
 import pytest
 
