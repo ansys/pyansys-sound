@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Computes Daniel & Weber roughness for stationary sounds."""
+"""Computes ECMA-418-2 roughness for stationary sounds."""
 
 import warnings
 
@@ -28,33 +28,29 @@ from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
-from . import PsychoacousticsParent
+from . import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 # Name of the DPF Sound operator used in this module.
-ID_COMPUTE_ROUGHNESS = "compute_roughness"
+ID_COMPUTE_ROUGHNESS_ECMA418_2 = "compute_roughness_ecma418_2"
+ECMA_418_2_EDITION = 4
 
 
-class Roughness(PsychoacousticsParent):
-    """Compute Daniel & Weber roughness.
+class RoughnessECMA418_2(PsychoacousticsParent, min_sound_version="2027.1.0"):
+    """Computes ECMA-418-2 roughness.
 
     Computes the roughness, specific roughness, and roughness over time of a sound according to the
-    model described in Daniel and Weber's reference paper.
+    ECMA-418-2 standard (4th edition, 2025).
 
     .. seealso::
-        :class:`RoughnessECMA418_2`, :class:`FluctuationStrength`
-
-    References
-    ----------
-    Daniel and Weber, "Psychoacoustical roughness: implementation of an optimized model." Acta
-    Acustica united with Acustica, 83, pp. 113-123 (1997).
+        :class:`Roughness`, :class:`FluctuationStrength`, :class:`TonalityECMA418_2`
 
     Examples
     --------
     Compute the roughness of a signal, and display the specific roughness and roughness over time.
 
-    >>> from ansys.sound.core.psychoacoustics import Roughness
-    >>> roughness = Roughness(signal=my_signal)
+    >>> from ansys.sound.core.psychoacoustics import RoughnessECMA418_2
+    >>> roughness = RoughnessECMA418_2(signal=my_signal, field_type="Free")
     >>> roughness.process()
     >>> roughness_value = roughness.get_roughness()
     >>> roughness.plot()
@@ -64,17 +60,20 @@ class Roughness(PsychoacousticsParent):
             Example demonstrating how to compute various psychoacoustic indicators.
     """
 
-    def __init__(self, signal: Field = None):
+    def __init__(self, signal: Field = None, field_type: str = FIELD_FREE):
         """Class instantiation takes the following parameters.
 
         Parameters
         ----------
         signal : Field, default: None
             Signal in Pa on which to compute roughness.
+        field_type : str, default: "Free"
+            Sound field type. Available options are `"Free"` and `"Diffuse"`.
         """
         super().__init__()
         self.signal = signal
-        self.__operator = Operator(ID_COMPUTE_ROUGHNESS)
+        self.field_type = field_type
+        self.__operator = Operator(ID_COMPUTE_ROUGHNESS_ECMA418_2)
 
     def __str__(self):
         """Return the string representation of the object."""
@@ -83,12 +82,13 @@ class Roughness(PsychoacousticsParent):
         else:
             str_roughness = f"{self.get_roughness():.2f} asper"
 
-        str_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
+        str_name = f'"{self.signal.name}"' if self.signal is not None else "Signal not set"
 
         return (
             f"{__class__.__name__} object\n"
             "Data:\n"
             f"\tSignal name: {str_name}\n"
+            f"\tField type: {self.field_type}\n"
             f"Overall roughness: {str_roughness}"
         )
 
@@ -104,22 +104,38 @@ class Roughness(PsychoacousticsParent):
             raise PyAnsysSoundException("Signal must be specified as a DPF field.")
         self.__signal = signal
 
+    @property
+    def field_type(self) -> str:
+        """Sound field type."""
+        return self.__field_type
+
+    @field_type.setter
+    def field_type(self, field_type: str):
+        """Set the sound field type."""
+        if field_type.lower() not in [FIELD_FREE.lower(), FIELD_DIFFUSE.lower()]:
+            raise PyAnsysSoundException(
+                f'Invalid field type "{field_type}". Available options are "{FIELD_FREE}" and '
+                f'"{FIELD_DIFFUSE}".'
+            )
+        self.__field_type = field_type
+
     def process(self):
         """Compute the roughness.
 
         This method calls the appropriate DPF Sound operator to compute the roughness of the signal.
         """
-        if self.signal == None:
-            raise PyAnsysSoundException(
-                "No signal found for roughness computation. Use `Roughness.signal`."
-            )
+        if self.signal is None:
+            raise PyAnsysSoundException(f"No input signal set. Use `{__class__.__name__}.signal`.")
 
+        # Connect inputs
         self.__operator.connect(0, self.signal)
+        self.__operator.connect(1, self.field_type)
+        self.__operator.connect(2, ECMA_418_2_EDITION)
 
-        # Runs the operator
+        # Run the operator
         self.__operator.run()
 
-        # Stores outputs in the tuple variable
+        # Store outputs
         self._output = (
             self.__operator.get_output(0, types.double),
             self.__operator.get_output(1, types.field),
@@ -134,14 +150,14 @@ class Roughness(PsychoacousticsParent):
         float
             Overall roughness in asper.
         Field
-            Specific roughness, that is, the roughness in each Bark band, in asper/Bark.
+            Specific roughness, that is, the roughness in each Bark band, in asperHMS/Bark.
         Field
             Roughness over time, in asper.
         """
         if self._output is None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the `Roughness.process()` method."
+                    f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
                 )
             )
 
@@ -184,15 +200,15 @@ class Roughness(PsychoacousticsParent):
         float
             Roughness value in asper.
         """
-        return float(self.get_output_as_nparray()[0])
+        return self.get_output()[0]
 
     def get_specific_roughness(self) -> np.ndarray:
-        """Get the specific roughness in asper/Bark.
+        """Get the specific roughness in asperHMS/Bark.
 
         Returns
         -------
         numpy.ndarray
-            Specific roughness, that is, the roughness in each Bark band, in asper/Bark.
+            Specific roughness, that is, the roughness in each Bark band, in asperHMS/Bark.
         """
         return self.get_output_as_nparray()[1]
 
@@ -204,7 +220,7 @@ class Roughness(PsychoacousticsParent):
         Returns
         -------
         numpy.ndarray
-            Bark band indexes, in Bark.
+            Bark band indexes, in BarkHMS.
         """
         return self.get_output_as_nparray()[2]
 
@@ -212,19 +228,17 @@ class Roughness(PsychoacousticsParent):
         """Get Bark band frequencies.
 
         Returns the frequencies corresponding to the Bark band indexes where the specific roughness
-        is defined.
-
-        References
-        ----------
-        Traunmüller, Hartmut. "Analytical Expressions for the Tonotopic Sensory Scale." Journal of
-        the Acoustical Society of America. Vol. 88, Issue 1, 1990, pp. 97–100.
+        is defined, according to Formula (9) in ECMA-418-2, 4th edition (2025).
 
         Returns
         -------
         numpy.ndarray
             Bark band center frequencies, in Hz.
         """
-        return self._convert_bark_to_hertz(self.get_bark_band_indexes())
+        z = self.get_bark_band_indexes()
+        Df0 = 81.9289
+        c = 0.1618
+        return Df0 / c * np.sinh(c * z)
 
     def get_roughness_over_time(self) -> np.ndarray:
         """Get the roughness over time in asper.
@@ -252,30 +266,23 @@ class Roughness(PsychoacousticsParent):
         """Plot the specific roughness and the roughness over time."""
         if self._output is None:
             raise PyAnsysSoundException(
-                "Output is not processed yet. Use the `Roughness.process()` method."
+                f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
             )
 
         bark_band_indexes = self.get_bark_band_indexes()
         specific_roughness = self.get_specific_roughness()
         roughness_over_time = self.get_roughness_over_time()
         time_scale = self.get_time_scale()
-        bark_unit = self.get_output()[1].time_freq_support.time_frequencies.unit
-        if isinstance(bark_unit, tuple):
-            bark_unit = bark_unit[1]
-        bark_unit_str = f" ({bark_unit})" if len(bark_unit) > 0 else ""
+        bark_unit = self.get_output()[1].time_freq_support.time_frequencies.unit[1]
         time_unit = self.get_output()[2].time_freq_support.time_frequencies.unit
-        specific_roughness_unit = self.get_output()[1].unit
-        if isinstance(specific_roughness_unit, tuple):
-            specific_roughness_unit = specific_roughness_unit[1]
-        roughness_over_time_unit = self.get_output()[2].unit
-        if isinstance(roughness_over_time_unit, tuple):
-            roughness_over_time_unit = roughness_over_time_unit[1]
+        specific_roughness_unit = self.get_output()[1].unit[1]
+        roughness_over_time_unit = self.get_output()[2].unit[1]
 
         _, axes = plt.subplots(2, 1, sharex=False)
 
         axes[0].plot(bark_band_indexes, specific_roughness)
         axes[0].set_title("Specific roughness")
-        axes[0].set_xlabel(f"z{bark_unit_str}")
+        axes[0].set_xlabel(f"z ({bark_unit})")
         axes[0].set_ylabel(f"R' ({specific_roughness_unit})")
         axes[0].grid(True)
 

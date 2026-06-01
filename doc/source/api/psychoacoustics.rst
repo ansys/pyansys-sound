@@ -19,6 +19,7 @@ which are useful to study and assess sound quality.
     SharpnessDIN45692
     SharpnessDIN45692OverTime
     Roughness
+    RoughnessECMA418_2
     FluctuationStrength
     ProminenceRatio
     ProminenceRatioForOrdersOverTime
