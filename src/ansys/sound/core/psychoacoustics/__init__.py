@@ -34,6 +34,7 @@ from .loudness_iso_532_2 import LoudnessISO532_2
 from .prominence_ratio import ProminenceRatio
 from .prominence_ratio_for_orders_over_time import ProminenceRatioForOrdersOverTime
 from .roughness import Roughness
+from .roughness_ecma_418_2 import RoughnessECMA418_2
 from .sharpness import Sharpness
 from .sharpness_din_45692 import SharpnessDIN45692
 from .sharpness_din_45692_over_time import SharpnessDIN45692OverTime
@@ -61,6 +62,7 @@ __all__ = (
     "SharpnessDIN45692OverTime",
     "SharpnessOverTime",
     "Roughness",
+    "RoughnessECMA418_2",
     "FluctuationStrength",
     "TonalityDIN45681",
     "TonalityISOTS20065",
