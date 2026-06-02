@@ -30,9 +30,9 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.signal_utilities.load_wav import LoadWav
 from ansys.sound.core.standard_levels import OneThirdOctaveLevelsFromSignal
 
-# Skip entire test module if server < 11.0
+# Skip entire test module if Sound version < 2026.1.0
 if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
-    pytest.skip("Requires server version >= 11.0", allow_module_level=True)
+    pytest.skip("Requires Sound version >= 2026.1.0", allow_module_level=True)
 
 EXP_STR_NOT_SET = (
     "OneThirdOctaveLevelsFromSignal object.\nData\n\tSignal: Not set\n\tReference value: 1.0\n"

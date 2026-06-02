@@ -51,7 +51,7 @@ EXP_TIME_20 = 1.857917
 EXP_STR_DEFAULT = (
     "Roughness object\nData:\n\tSignal name: Not set\nOverall roughness: Not processed"
 )
-EXP_STR = 'Roughness object\nData:\n\tSignal name: ""\nOverall roughness: 0.55 aspers'
+EXP_STR = 'Roughness object\nData:\n\tSignal name: ""\nOverall roughness: 0.55 asper'
 
 
 def test_roughness_instantiation():
