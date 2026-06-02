@@ -25,13 +25,13 @@
 from ansys.dpf.core import Field, Operator, types
 
 from .._pyansys_sound import PyAnsysSoundException
+from ._overall_level_parent import OverallLevelParent
 from ._standard_levels_parent import DICT_FREQUENCY_WEIGHTING, DICT_SCALE
-from .overall_level import OverallLevel
 
 ID_COMPUTE_OVERALL_LEVEL_FROM_PSD = "compute_overall_level_from_psd"
 
 
-class OverallLevelFromPSD(OverallLevel, min_sound_version="2027.1.0"):
+class OverallLevelFromPSD(OverallLevelParent, min_sound_version="2027.1.0"):
     """Compute the overall level from a power spectral density (PSD) input.
 
     This class computes the overall level from a PSD, on a decibel scale or a linear,
@@ -76,7 +76,6 @@ class OverallLevelFromPSD(OverallLevel, min_sound_version="2027.1.0"):
             :attr:`scale` is set to `"dB"`.
         """
         super().__init__(
-            signal=None,
             scale=scale,
             reference_value=reference_value,
             frequency_weighting=frequency_weighting,
@@ -124,22 +123,6 @@ class OverallLevelFromPSD(OverallLevel, min_sound_version="2027.1.0"):
             if not isinstance(psd, Field):
                 raise PyAnsysSoundException("The input PSD must be provided as a DPF field.")
         self.__psd = psd
-
-    @property
-    def signal(self) -> Field:
-        """Not applicable for this class. Use :attr:`psd` instead."""
-        raise PyAnsysSoundException(
-            f"'{__class__.__name__}' does not use a signal input. Use the 'psd' attribute instead."
-        )
-
-    @signal.setter
-    def signal(self, signal: Field):
-        """Block setting signal on this class."""
-        if signal is not None:
-            raise PyAnsysSoundException(
-                f"'{__class__.__name__}' does not use a signal input. "
-                "Use the 'psd' attribute instead."
-            )
 
     def process(self):
         """Compute the overall level from the PSD."""

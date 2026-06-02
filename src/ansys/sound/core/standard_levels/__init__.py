@@ -28,6 +28,7 @@ Helper classes related to the computation of standard levels.
 from ._fractional_octave_levels_from_psd_parent import FractionalOctaveLevelsFromPSDParent
 from ._fractional_octave_levels_from_signal_parent import FractionalOctaveLevelsFromSignalParent
 from ._fractional_octave_levels_parent import FractionalOctaveLevelsParent
+from ._overall_level_parent import OverallLevelParent
 from ._standard_levels_parent import StandardLevelsParent
 from .level_over_time import LevelOverTime
 from .octave_levels_from_psd import OctaveLevelsFromPSD
@@ -42,6 +43,7 @@ __all__ = (
     "FractionalOctaveLevelsFromPSDParent",
     "FractionalOctaveLevelsFromSignalParent",
     "FractionalOctaveLevelsParent",
+    "OverallLevelParent",
     "OverallLevel",
     "OverallLevelFromPSD",
     "LevelOverTime",
