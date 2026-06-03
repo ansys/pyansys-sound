@@ -29,7 +29,7 @@ from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectral_processing import PowerSpectralDensity
 from ansys.sound.core.standard_levels import OverallLevelFromPSD
 
-# Skip entire test module if server < 2026R1
+# Skip entire test module if server < 2027R1
 if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
     pytest.skip("Requires Sound version >= 2027.1.0", allow_module_level=True)
 
@@ -94,7 +94,7 @@ def create_psd_from_wav():
 
 
 @pytest.fixture
-def create_psd_from_data() -> Field:
+def create_psd_from_data():
     """Create a PSD DPF field from a two-column (frequency, amplitude) text data file.
 
     This fixture uses the *factory* pattern: it yields a callable ``_create(path)``
@@ -114,7 +114,7 @@ def create_psd_from_data() -> Field:
         - Amplitudes are assumed to be already in Pa²/Hz (no unit conversion applied).
     """
 
-    def _create(path) -> Field:
+    def _create(path):
         """Build a PSD DPF field from a two-column text file.
 
         Parameters
@@ -133,10 +133,9 @@ def create_psd_from_data() -> Field:
         """
 
         # --- Read the text file ---
-        fid = open(path)
-        fid.readline()  # skip header line
-        all_lines = fid.readlines()
-        fid.close()
+        with open(path, "r") as fid:
+            fid.readline()  # skip header line
+            all_lines = fid.readlines()
 
         frequencies = []
         amplitudes = []

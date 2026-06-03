@@ -91,8 +91,9 @@ class OverallLevelFromPSD(OverallLevelParent, min_sound_version="2027.1.0"):
             unit = "(RMS)"
             if self.psd is not None:
                 psd_unit = self.psd.unit if isinstance(self.psd.unit, str) else self.psd.unit[1]
-                if psd_unit.endswith("^2/Hz"):
-                    unit = self.psd.unit[:-6]
+                if isinstance(psd_unit, str) and psd_unit.endswith("^2/Hz"):
+                    unit = psd_unit.removesuffix("^2/Hz")
+
         elif len(self.frequency_weighting) > 0:
             str_frequency_weighting = self.frequency_weighting
             unit = f"dB{self.frequency_weighting} (re {self.reference_value})"

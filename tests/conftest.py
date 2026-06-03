@@ -260,15 +260,12 @@ def create_psd_from_txt_data() -> Field:
     path_flute_psd = pytest.data_path_flute_psd_locally
 
     # Open a txt file for reading
-    fid = open(path_flute_psd)
+    with open(path_flute_psd, "r") as fid:
+        # skip first line
+        fid.readline()
 
-    # skip first line
-    fid.readline()
-
-    # read all other lines
-    all_lines = fid.readlines()
-    # close file
-    fid.close()
+        # read all other lines
+        all_lines = fid.readlines()
 
     amplitudes = []
 
