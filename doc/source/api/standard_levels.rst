@@ -14,3 +14,4 @@ This sub-package provides functions to calculate standard levels from time-domai
     OneThirdOctaveLevelsFromPSD
     OctaveLevelsFromSignal
     OctaveLevelsFromPSD
+    OverallLevelFromPSD
