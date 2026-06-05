@@ -292,5 +292,6 @@ def create_psd_from_txt_data() -> Field:
     support.time_frequencies = frequencies_field
 
     psd.time_freq_support = support
+    psd.unit = "Pa^2/Hz"
 
     yield psd
