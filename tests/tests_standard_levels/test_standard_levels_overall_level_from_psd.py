@@ -51,7 +51,7 @@ EXP_STR_ALL_PROCESSED = (
 EXP_STR_ALL_SET_PROCESSED = (
     'OverallLevelFromPSD object.\nData\n\tPSD: "Name of the PSD"\n\tScale type: RMS\n'
     "\tFrequency weighting: Not applicable\n"
-    "Output level value: 1.6 (RMS)"
+    "Output level value: 1.6 Pa"
 )
 
 # Expected values for flute_nonUnitaryCalib PSD
