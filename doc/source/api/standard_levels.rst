@@ -9,6 +9,7 @@ This sub-package provides functions to calculate standard levels from time-domai
     :toctree: _autosummary
 
     OverallLevel
+    OverallLevelFromPSD
     LevelOverTime
     OneThirdOctaveLevelsFromSignal
     OneThirdOctaveLevelsFromPSD

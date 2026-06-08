@@ -33,8 +33,8 @@ EXP_STR_NOT_SET = (
     "\tFrequency weighting: None\nOutput level value: Not processed"
 )
 EXP_STR_ALL_SET = (
-    'OverallLevel object.\nData\n\tSignal: "flute"\n\tScale type: RMS\n\tReference value: 1.0\n'
-    "\tFrequency weighting: None\nOutput level value: Not processed"
+    'OverallLevel object.\nData\n\tSignal: "flute"\n\tScale type: RMS\n'
+    "\tFrequency weighting: Not applicable\nOutput level value: Not processed"
 )
 EXP_STR_ALL_PROCESSED = (
     'OverallLevel object.\nData\n\tSignal: "flute"\n\tScale type: dB\n\tReference value: 2e-05\n'

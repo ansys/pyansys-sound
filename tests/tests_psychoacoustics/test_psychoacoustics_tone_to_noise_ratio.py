@@ -22,58 +22,12 @@
 
 from unittest.mock import patch
 
-from ansys.dpf.core import GenericDataContainer, TimeFreqSupport, fields_factory, locations
+from ansys.dpf.core import GenericDataContainer
 import numpy as np
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.psychoacoustics import ToneToNoiseRatio
-
-
-@pytest.fixture
-def create_psd_from_txt_data():
-    path_flute_psd = pytest.data_path_flute_psd_locally
-
-    # Open a txt file for reading
-    fid = open(path_flute_psd)
-
-    # skip first line
-    fid.readline()
-
-    # read all other lines
-    all_lines = fid.readlines()
-    # close file
-    fid.close()
-
-    amplitudes = []
-
-    for line in all_lines:
-        splitted_line = line.split()
-        amplitudes.append(float(splitted_line[1]))
-
-    amplitudes = np.array(amplitudes)
-
-    # convert dBSPL / Hz -> Pa^2/Hz
-    amplitudes = np.power(10, amplitudes / 10)
-    amplitudes = amplitudes * 2.0e-5
-    amplitudes = amplitudes * 2.0e-5
-
-    # for now, due to a sharp constraint on regularity of frequencies (1.0e-5) in the operator,
-    # we cannot use those written in the file. Let's recreate them
-    frequencies = np.linspace(0, 22050, len(amplitudes))
-
-    psd = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
-    psd.append(amplitudes, 1)
-    support = TimeFreqSupport()
-    frequencies_field = fields_factory.create_scalar_field(
-        num_entities=1, location=locations.time_freq
-    )
-    frequencies_field.append(frequencies, 1)
-    support.time_frequencies = frequencies_field
-
-    psd.time_freq_support = support
-
-    yield psd
 
 
 def test_tone_to_noise_ratio_instantiation():

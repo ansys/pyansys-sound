@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Compute the overall level."""
+"""Compute the overall level from a PSD input."""
 
 from ansys.dpf.core import Field, Operator, types
 
@@ -28,35 +28,32 @@ from .._pyansys_sound import PyAnsysSoundException
 from ._overall_level_parent import OverallLevelParent
 from ._standard_levels_parent import DICT_FREQUENCY_WEIGHTING, DICT_SCALE
 
-ID_COMPUTE_OVERALL_LEVEL = "compute_overall_level"
+ID_COMPUTE_OVERALL_LEVEL_FROM_PSD = "compute_overall_level_from_psd"
 
 
-class OverallLevel(OverallLevelParent):
-    """Compute the overall level.
+class OverallLevelFromPSD(OverallLevelParent, min_sound_version="2027.1.0"):
+    """Compute the overall level from a power spectral density (PSD) input.
 
-    This class computes the overall level of a signal.
+    This class computes the overall level from a PSD, on a decibel scale or a linear,
+    root-mean-square (RMS) scale.
 
     .. seealso::
-        :class:`LevelOverTime`, :class:`OctaveLevelsFromSignal`,
-        :class:`OneThirdOctaveLevelsFromSignal`
+        :class:`OverallLevel`, :class:`OneThirdOctaveLevelsFromPSD`,
+        :class:`OctaveLevelsFromPSD`, :class:`PowerSpectralDensity`
 
     Examples
     --------
-    Compute the overall SPL of an acoustic signal.
+    Compute the overall level from a PSD.
 
-    >>> from ansys.sound.core.standard_levels import OverallLevel
-    >>> overall_level = OverallLevel(signal=signal, reference_value=2e-5, scale="dB")
-    >>> overall_level.process()
-    >>> level_value = overall_level.get_level()
-
-    .. seealso::
-        :ref:`calculate_levels`
-            Example demonstrating how to calculate standard levels.
+    >>> from ansys.sound.core.standard_levels import OverallLevelFromPSD
+    >>> level = OverallLevelFromPSD(psd=my_psd, reference_value=2e-5)
+    >>> level.process()
+    >>> level_dB = level.get_level()
     """
 
     def __init__(
         self,
-        signal: Field = None,
+        psd: Field = None,
         scale: str = "dB",
         reference_value: float = 1.0,
         frequency_weighting: str = "",
@@ -65,17 +62,17 @@ class OverallLevel(OverallLevelParent):
 
         Parameters
         ----------
-        signal : Field, default: None
-            The signal to process.
+        psd : Field, default: None
+            The input power spectral density (PSD), in unit^2/Hz.
         scale : str, default: "dB"
             The scale type of the output level. Available options are `"dB"` and `"RMS"`.
         reference_value : float, default: 1.0
-            The reference value for the level computation. If the overall level is computed with a
-            signal in Pa, the reference value should be 2e-5 (Pa).
+            The reference value for the level computation. If the PSD is computed from a signal
+            in Pa, the reference value should be 2e-5 (Pa).
         frequency_weighting : str, default: ""
-            The frequency weighting to apply to the signal before computing the level. Available
-            options are `""`, `"A"`, `"B"`,  and `"C"`, respectively to get level in dB (or dBSPL),
-            dBA, dBB, and dBC. Note that the frequency weighting is only applied if the attribute
+            The frequency weighting to apply before computing the level. Available options are
+            `""`, `"A"`, `"B"`, and `"C"`, respectively to get level in dB (or dBSPL), dBA, dBB,
+            and dBC. Note that the frequency weighting is only applied if the attribute
             :attr:`scale` is set to `"dB"`.
         """
         super().__init__(
@@ -83,27 +80,32 @@ class OverallLevel(OverallLevelParent):
             reference_value=reference_value,
             frequency_weighting=frequency_weighting,
         )
-        self.signal = signal
-        self.__operator = Operator(ID_COMPUTE_OVERALL_LEVEL)
+        self.psd = psd
+        self.__operator = Operator(ID_COMPUTE_OVERALL_LEVEL_FROM_PSD)
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
-        str_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
+        str_name = f'"{self.psd.name}"' if self.psd is not None else "Not set"
         if self.scale == "RMS":
             str_frequency_weighting = "Not applicable"
-            unit = self.signal.unit if isinstance(self.signal.unit, str) else self.signal.unit[1]
+            unit = "(RMS)"
+            if self.psd is not None:
+                psd_unit = self.psd.unit if isinstance(self.psd.unit, str) else self.psd.unit[1]
+                if isinstance(psd_unit, str) and psd_unit.endswith("^2/Hz"):
+                    unit = psd_unit.removesuffix("^2/Hz")
+
         elif len(self.frequency_weighting) > 0:
             str_frequency_weighting = self.frequency_weighting
-            unit = f"dB{self.frequency_weighting} re. {self.reference_value}"
+            unit = f"dB{self.frequency_weighting} (re {self.reference_value})"
         else:
             str_frequency_weighting = "None"
-            unit = f"dB re. {self.reference_value}"
+            unit = f"dB (re {self.reference_value})"
         str_level = f"{self._output:.1f} {unit}" if self._output is not None else "Not processed"
 
         return (
             f"{__class__.__name__} object.\n"
             "Data\n"
-            f"\tSignal: {str_name}\n"
+            f"\tPSD: {str_name}\n"
             f"\tScale type: {self.scale}\n"
             + (f"\tReference value: {self.reference_value}\n" if self.scale == "dB" else "")
             + f"\tFrequency weighting: {str_frequency_weighting}\n"
@@ -111,24 +113,24 @@ class OverallLevel(OverallLevelParent):
         )
 
     @property
-    def signal(self) -> Field:
-        """Input signal."""
-        return self.__signal
+    def psd(self) -> Field:
+        """Input power spectral density (PSD)."""
+        return self.__psd
 
-    @signal.setter
-    def signal(self, signal: Field):
-        """Set the signal."""
-        if signal is not None:
-            if not isinstance(signal, Field):
-                raise PyAnsysSoundException("The signal must be provided as a DPF field.")
-        self.__signal = signal
+    @psd.setter
+    def psd(self, psd: Field):
+        """Set the PSD."""
+        if psd is not None:
+            if not isinstance(psd, Field):
+                raise PyAnsysSoundException("The input PSD must be provided as a DPF field.")
+        self.__psd = psd
 
     def process(self):
-        """Compute the overall level."""
-        if self.signal is None:
-            raise PyAnsysSoundException(f"No input signal is set. Use {__class__.__name__}.signal.")
+        """Compute the overall level from the PSD."""
+        if self.psd is None:
+            raise PyAnsysSoundException(f"No input PSD is set. Use {__class__.__name__}.psd.")
 
-        self.__operator.connect(0, self.signal)
+        self.__operator.connect(0, self.psd)
         self.__operator.connect(1, DICT_SCALE[self.scale])
         self.__operator.connect(2, float(self.reference_value))
         self.__operator.connect(3, DICT_FREQUENCY_WEIGHTING[self.frequency_weighting])

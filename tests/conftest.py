@@ -22,7 +22,14 @@
 
 import os
 
-from ansys.dpf.core import upload_file_in_tmp_folder
+from ansys.dpf.core import (
+    Field,
+    TimeFreqSupport,
+    fields_factory,
+    locations,
+    upload_file_in_tmp_folder,
+)
+import numpy as np
 import pytest
 
 from ansys.sound.core.server_helpers import connect_to_or_start_server
@@ -226,12 +233,16 @@ def pytest_configure(config):
         "AnsysSound_FRF_bad_2024R2_20241206.txt", base_dir, server=server
     )
 
-    # PSD file
-    # Contrary to previous files, this file is loaded with Python's built-in ``open()`` function,
-    # not with a DPF Sound operator => It must then remain on the client side, and not on the
+    # PSD files
+    # Contrary to previous files, these files are loaded with Python's built-in ``open()`` function,
+    # not with a DPF Sound operator => They must then remain on the client side, and not on the
     # server side (in the case of a local server, this is irrelevant, as both locations are the
     # same).
     pytest.data_path_flute_psd_locally = os.path.join(base_dir, "flute_psd.txt")
+    pytest.data_path_psd_regular = os.path.join(base_dir, "Overall_level_from_PSD_regular.txt")
+    pytest.data_path_psd_nonregular = os.path.join(
+        base_dir, "Overall_level_from_PSD_nonregular.txt"
+    )
 
     # Define the output folder where the output files are saved.
     if server.has_client():
@@ -241,3 +252,46 @@ def pytest_configure(config):
     else:
         # Local server => we use the repository folder structure where the output folder exists.
         pytest.output_folder = os.path.join(os.path.dirname(pytest.data_path_flute), "output")
+
+
+@pytest.fixture
+def create_psd_from_txt_data() -> Field:
+    """Create a PSD DPF field, in Pa^2/Hz, from the flute_psd.txt test data file."""
+    path_flute_psd = pytest.data_path_flute_psd_locally
+
+    # Open a txt file for reading
+    with open(path_flute_psd, "r") as fid:
+        # skip first line
+        fid.readline()
+
+        # read all other lines
+        all_lines = fid.readlines()
+
+    amplitudes = []
+
+    for line in all_lines:
+        splitted_line = line.split()
+        amplitudes.append(float(splitted_line[1]))
+
+    amplitudes = np.array(amplitudes)
+
+    # convert dBSPL / Hz -> Pa^2/Hz
+    amplitudes = np.power(10, amplitudes / 10)
+    amplitudes = amplitudes * 2.0e-5
+    amplitudes = amplitudes * 2.0e-5
+
+    frequencies = np.linspace(0, 22050, len(amplitudes))
+
+    psd = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
+    psd.append(amplitudes, 1)
+    support = TimeFreqSupport()
+    frequencies_field = fields_factory.create_scalar_field(
+        num_entities=1, location=locations.time_freq
+    )
+    frequencies_field.append(frequencies, 1)
+    support.time_frequencies = frequencies_field
+
+    psd.time_freq_support = support
+    psd.unit = "Pa^2/Hz"
+
+    yield psd
