@@ -1,0 +1,54 @@
+﻿SharpnessOverTime
+=================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: SharpnessOverTime
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SharpnessOverTime.convert_fields_container_to_np_array
+      
+      
+      SharpnessOverTime.get_max_sharpness
+      
+      
+      SharpnessOverTime.get_output
+      
+      
+      SharpnessOverTime.get_output_as_nparray
+      
+      
+      SharpnessOverTime.get_sharpness_over_time
+      
+      
+      SharpnessOverTime.get_time_scale
+      
+      
+      SharpnessOverTime.plot
+      
+      
+      SharpnessOverTime.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SharpnessOverTime.field_type
+      SharpnessOverTime.signal
+   
+   

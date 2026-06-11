@@ -1,0 +1,6 @@
+get\_output
+===========
+
+.. currentmodule:: ansys.sound.core.spectral_processing
+
+.. automethod:: PowerSpectralDensity.get_output

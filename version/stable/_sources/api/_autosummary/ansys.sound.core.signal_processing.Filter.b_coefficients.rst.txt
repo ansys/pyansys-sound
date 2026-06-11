@@ -1,0 +1,6 @@
+b\_coefficients
+===============
+
+.. currentmodule:: ansys.sound.core.signal_processing
+
+.. autoproperty:: Filter.b_coefficients

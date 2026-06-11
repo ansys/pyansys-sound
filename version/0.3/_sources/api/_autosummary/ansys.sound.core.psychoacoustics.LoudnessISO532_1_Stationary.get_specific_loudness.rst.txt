@@ -1,0 +1,6 @@
+get\_specific\_loudness
+=======================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: LoudnessISO532_1_Stationary.get_specific_loudness

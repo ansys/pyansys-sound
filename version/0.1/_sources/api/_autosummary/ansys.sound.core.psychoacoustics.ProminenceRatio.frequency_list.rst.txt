@@ -1,0 +1,6 @@
+frequency\_list
+===============
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: ProminenceRatio.frequency_list

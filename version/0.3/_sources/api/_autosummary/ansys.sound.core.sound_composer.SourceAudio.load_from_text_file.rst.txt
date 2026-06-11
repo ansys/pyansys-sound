@@ -1,0 +1,6 @@
+load\_from\_text\_file
+======================
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. automethod:: SourceAudio.load_from_text_file

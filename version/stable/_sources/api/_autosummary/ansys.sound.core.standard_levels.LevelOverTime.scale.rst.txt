@@ -1,0 +1,6 @@
+scale
+=====
+
+.. currentmodule:: ansys.sound.core.standard_levels
+
+.. autoproperty:: LevelOverTime.scale

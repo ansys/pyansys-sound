@@ -1,0 +1,6 @@
+plot\_control
+=============
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. automethod:: SourceAudio.plot_control

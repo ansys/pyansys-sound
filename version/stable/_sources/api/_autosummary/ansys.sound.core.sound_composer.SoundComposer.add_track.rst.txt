@@ -1,0 +1,6 @@
+add\_track
+==========
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. automethod:: SoundComposer.add_track

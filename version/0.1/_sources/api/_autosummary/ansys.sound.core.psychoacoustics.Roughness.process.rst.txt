@@ -1,0 +1,6 @@
+process
+=======
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: Roughness.process

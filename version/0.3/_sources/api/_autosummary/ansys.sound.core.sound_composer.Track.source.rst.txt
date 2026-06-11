@@ -1,0 +1,6 @@
+source
+======
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. autoproperty:: Track.source

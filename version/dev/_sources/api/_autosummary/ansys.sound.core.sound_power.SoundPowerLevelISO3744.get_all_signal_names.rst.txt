@@ -1,0 +1,6 @@
+get\_all\_signal\_names
+=======================
+
+.. currentmodule:: ansys.sound.core.sound_power
+
+.. automethod:: SoundPowerLevelISO3744.get_all_signal_names

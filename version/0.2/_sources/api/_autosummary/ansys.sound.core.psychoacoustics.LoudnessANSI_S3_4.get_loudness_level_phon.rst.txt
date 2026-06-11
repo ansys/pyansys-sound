@@ -1,0 +1,6 @@
+get\_loudness\_level\_phon
+==========================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: LoudnessANSI_S3_4.get_loudness_level_phon

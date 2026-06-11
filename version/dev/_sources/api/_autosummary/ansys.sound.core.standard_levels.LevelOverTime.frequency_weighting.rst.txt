@@ -1,0 +1,6 @@
+frequency\_weighting
+====================
+
+.. currentmodule:: ansys.sound.core.standard_levels
+
+.. autoproperty:: LevelOverTime.frequency_weighting

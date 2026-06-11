@@ -1,0 +1,6 @@
+get\_bark\_band\_frequencies
+============================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: LoudnessISO532_1_Stationary.get_bark_band_frequencies
