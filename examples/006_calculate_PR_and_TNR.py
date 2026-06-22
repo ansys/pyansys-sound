@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -272,5 +272,5 @@ PR_orders.process()
 PR_orders.plot(use_rpm_scale=True)
 
 # %%
-# You can then notice that order #6's PR is above 0 dB mostly in the range 2600-3600 rpm,
+# You can then notice that order #6's PR is above 0 dB mostly in the range 2600 - 3600 rpm,
 # order #4's, only above 4000 rpm, and order #2's, at various RPM values above 3000 rpm.
