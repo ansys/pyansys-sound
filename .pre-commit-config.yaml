@@ -25,6 +25,8 @@ repos:
   hooks:
   - id: codespell
     exclude: "^(docker/|pyproject.toml)"
+    args:
+    - --ignore-words=.codespellignorewords
 
 - repo: https://github.com/pycqa/pydocstyle
   rev: 6.3.0
