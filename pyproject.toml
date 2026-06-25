@@ -47,7 +47,7 @@ tests = [
     "ansys-dpf-core==0.16.1",
     "ansys-tools-common==0.5.0",
     "matplotlib==3.10.9",
-    "pytest==9.0.3",
+    "pytest==9.1.0",
     "pytest-cov==7.1.0",
     "pytest-dependency==0.6.1",
     "platformdirs==4.10.0",
