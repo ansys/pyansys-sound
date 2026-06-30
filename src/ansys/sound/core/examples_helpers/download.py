@@ -89,13 +89,9 @@ def provide_error_context():
                 return func(*args, **kwargs)
             except Exception as e:  # pragma: no cover
                 raise RuntimeError(
-                    "For the reason that follows, retrieving the file failed.\n"
-                    "You can download this file from:\n"
-                    f"{_get_example_file_url(args[0])}\n"
-                    "\n"
-                    "The reported error message is:\n"
-                    f"{str(e)}"
-                )
+                    "Because of the above error, retrieving the file failed. You can download it "
+                    f"manually from {_get_example_file_url(args[0])}."
+                ) from e
 
         return inner_wrapper
 
