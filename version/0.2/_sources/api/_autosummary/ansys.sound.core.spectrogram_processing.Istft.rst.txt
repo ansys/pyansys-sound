@@ -1,0 +1,44 @@
+﻿Istft
+=====
+
+.. currentmodule:: ansys.sound.core.spectrogram_processing
+
+.. autoclass:: Istft
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Istft.convert_fields_container_to_np_array
+      
+      
+      Istft.get_output
+      
+      
+      Istft.get_output_as_nparray
+      
+      
+      Istft.plot
+      
+      
+      Istft.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Istft.stft
+   
+   

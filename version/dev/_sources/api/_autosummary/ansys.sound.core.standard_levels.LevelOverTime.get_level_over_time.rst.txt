@@ -1,0 +1,6 @@
+get\_level\_over\_time
+======================
+
+.. currentmodule:: ansys.sound.core.standard_levels
+
+.. automethod:: LevelOverTime.get_level_over_time

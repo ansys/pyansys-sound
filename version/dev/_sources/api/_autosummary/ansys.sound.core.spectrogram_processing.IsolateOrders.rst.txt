@@ -1,0 +1,47 @@
+﻿IsolateOrders
+=============
+
+.. currentmodule:: ansys.sound.core.spectrogram_processing
+
+.. autoclass:: IsolateOrders
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      IsolateOrders.get_output
+      
+      
+      IsolateOrders.get_output_as_nparray
+      
+      
+      IsolateOrders.plot
+      
+      
+      IsolateOrders.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      IsolateOrders.fft_size
+      IsolateOrders.orders
+      IsolateOrders.rpm_profile
+      IsolateOrders.signal
+      IsolateOrders.width_selection
+      IsolateOrders.window_overlap
+      IsolateOrders.window_type
+   
+   

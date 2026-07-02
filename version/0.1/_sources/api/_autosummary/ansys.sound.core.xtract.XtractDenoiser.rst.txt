@@ -1,0 +1,47 @@
+﻿XtractDenoiser
+==============
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoclass:: XtractDenoiser
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      XtractDenoiser.convert_fields_container_to_np_array
+      
+      
+      XtractDenoiser.get_output
+      
+      
+      XtractDenoiser.get_output_as_nparray
+      
+      
+      XtractDenoiser.plot
+      
+      
+      XtractDenoiser.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      XtractDenoiser.input_parameters
+      XtractDenoiser.input_signal
+      XtractDenoiser.output_denoised_signals
+      XtractDenoiser.output_noise_signals
+   
+   

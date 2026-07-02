@@ -1,0 +1,6 @@
+output\_noise\_signals
+======================
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoproperty:: XtractDenoiser.output_noise_signals

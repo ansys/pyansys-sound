@@ -1,0 +1,57 @@
+﻿SourceBroadbandNoise
+====================
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. autoclass:: SourceBroadbandNoise
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SourceBroadbandNoise.get_as_generic_data_containers
+      
+      
+      SourceBroadbandNoise.get_output
+      
+      
+      SourceBroadbandNoise.get_output_as_nparray
+      
+      
+      SourceBroadbandNoise.is_source_control_valid
+      
+      
+      SourceBroadbandNoise.load_source_bbn
+      
+      
+      SourceBroadbandNoise.plot
+      
+      
+      SourceBroadbandNoise.plot_control
+      
+      
+      SourceBroadbandNoise.process
+      
+      
+      SourceBroadbandNoise.set_from_generic_data_containers
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SourceBroadbandNoise.source_bbn
+      SourceBroadbandNoise.source_control
+   
+   

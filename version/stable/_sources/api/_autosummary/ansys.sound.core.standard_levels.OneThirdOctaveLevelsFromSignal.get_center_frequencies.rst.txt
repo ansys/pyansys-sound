@@ -1,0 +1,6 @@
+get\_center\_frequencies
+========================
+
+.. currentmodule:: ansys.sound.core.standard_levels
+
+.. automethod:: OneThirdOctaveLevelsFromSignal.get_center_frequencies

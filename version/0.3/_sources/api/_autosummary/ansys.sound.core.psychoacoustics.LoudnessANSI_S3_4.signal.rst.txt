@@ -1,0 +1,6 @@
+signal
+======
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: LoudnessANSI_S3_4.signal
