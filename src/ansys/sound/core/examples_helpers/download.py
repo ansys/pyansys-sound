@@ -51,8 +51,8 @@ import os
 
 from ansys.dpf.core import server as server_module
 from ansys.dpf.core import upload_file_in_tmp_folder
+from ansys.tools.common.example_download import download_manager
 import platformdirs
-import requests
 
 # Setup data directory
 USER_DATA_PATH = platformdirs.user_data_dir(appname="ansys_sound_core", appauthor="Ansys")
@@ -134,17 +134,9 @@ def _download_file_in_local_examples_folder(filename):
     -------
     Local path of the downloaded example file.
     """
-    # Download content.
-    remote_file = requests.get(
-        _get_example_file_url(filename),
-        timeout=10,
-    )  # timeout in seconds.
-
-    # Copy content into local file.
-    local_path = os.path.join(EXAMPLES_PATH, os.path.basename(filename))
-    with open(local_path, "wb") as f:
-        f.write(remote_file.content)
-    return local_path
+    return download_manager.download_file(
+        filename, "pyansys-sound", EXAMPLES_PATH, force=True, timeout=10.0
+    )
 
 
 @provide_error_context()
