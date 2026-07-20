@@ -46,7 +46,6 @@ the pull request by following this link:
 https://github.com/ansys/example-data/upload/main/pyansys-sound.
 """
 
-from functools import wraps
 import os
 
 from ansys.dpf.core import server as server_module
@@ -56,69 +55,9 @@ import platformdirs
 
 # Setup data directory
 USER_DATA_PATH = platformdirs.user_data_dir(appname="ansys_sound_core", appauthor="Ansys")
-if not os.path.exists(USER_DATA_PATH):
-    os.makedirs(USER_DATA_PATH)  # pragma: no cover
-
 EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
 
 
-def check_directory_exist(directory):
-    """Check the existence of a directory."""
-
-    def wrap_function(func):
-        @wraps(func)
-        def inner_wrapper(*args, **kwargs):
-            # Check if folder exists
-            if not os.path.exists(directory):
-                os.makedirs(directory)  # pragma: no cover
-
-            return func(*args, **kwargs)
-
-        return inner_wrapper
-
-    return wrap_function
-
-
-def provide_error_context():
-    """Capture exceptions and provide additional context in the error message."""
-
-    def wrap_function(func):
-        @wraps(func)
-        def inner_wrapper(*args, **kwargs):
-            try:
-                return func(*args, **kwargs)
-            except Exception as e:  # pragma: no cover
-                raise RuntimeError(
-                    "For the reason that follows, retrieving the file failed.\n"
-                    "You can download this file from:\n"
-                    f"{_get_example_file_url(args[0])}\n"
-                    "\n"
-                    "The reported error message is:\n"
-                    f"{str(e)}"
-                )
-
-        return inner_wrapper
-
-    return wrap_function
-
-
-def _get_example_file_url(filename):
-    """Get the URL of the example file in the PyAnsys Sound examples repository.
-
-    Parameters
-    ----------
-    filename : str
-        File in https://github.com/ansys/example-data/raw/main/pyansys-sound/
-
-    Returns
-    -------
-    File url
-    """
-    return f"https://github.com/ansys/example-data/raw/main/pyansys-sound/{filename}"
-
-
-@provide_error_context()
-@check_directory_exist(EXAMPLES_PATH)
 def _download_file_in_local_examples_folder(filename):
     """Download a file from the PyAnsys Sound examples repository to the local example files folder.
 
@@ -139,7 +78,6 @@ def _download_file_in_local_examples_folder(filename):
     )
 
 
-@provide_error_context()
 def _download_file_and_upload_to_server_tmp_folder(filename, server=None):
     """Download a PyAnsys Sound example file and make it available to the DPF server.
 
