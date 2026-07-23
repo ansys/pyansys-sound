@@ -20,40 +20,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""PyAnsys Sound core package."""
+"""Order analysis."""
 
-# Version
-# ------------------------------------------------------------------------------
+from .._pyansys_sound import PyAnsysSound
 
-import importlib.metadata as importlib_metadata
 
-__version__ = importlib_metadata.version(__name__.replace(".", "-"))
-"""PyAnsys Sound version."""
+class OrderAnalysisParent(PyAnsysSound):
+    """
+    Provides the base class for order analysis.
 
-from . import (
-    examples_helpers,
-    order_analysis,
-    psychoacoustics,
-    server_helpers,
-    signal_utilities,
-    sound_composer,
-    sound_power,
-    spectral_processing,
-    spectrogram_processing,
-    xtract,
-)
-from ._pyansys_sound import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
-
-__all__ = (
-    "REFERENCE_ACOUSTIC_PRESSURE_IN_AIR",
-    "examples_helpers",
-    "order_analysis",
-    "psychoacoustics",
-    "server_helpers",
-    "signal_utilities",
-    "sound_composer",
-    "sound_power",
-    "spectral_processing",
-    "spectrogram_processing",
-    "xtract",
-)
+    This is the base class of all order analysis classes and should not be used as is.
+    """

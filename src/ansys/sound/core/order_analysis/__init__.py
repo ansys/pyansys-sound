@@ -20,40 +20,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""PyAnsys Sound core package."""
+"""Order analysis classes."""
 
-# Version
-# ------------------------------------------------------------------------------
-
-import importlib.metadata as importlib_metadata
-
-__version__ = importlib_metadata.version(__name__.replace(".", "-"))
-"""PyAnsys Sound version."""
-
-from . import (
-    examples_helpers,
-    order_analysis,
-    psychoacoustics,
-    server_helpers,
-    signal_utilities,
-    sound_composer,
-    sound_power,
-    spectral_processing,
-    spectrogram_processing,
-    xtract,
-)
-from ._pyansys_sound import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
+from ._order_analysis_parent import OrderAnalysisParent  # isort:skip
+from .compute_rpm_order_representation import ComputeRPMOrderRepresentation
+from .order_levels import OrderLevels
 
 __all__ = (
-    "REFERENCE_ACOUSTIC_PRESSURE_IN_AIR",
-    "examples_helpers",
-    "order_analysis",
-    "psychoacoustics",
-    "server_helpers",
-    "signal_utilities",
-    "sound_composer",
-    "sound_power",
-    "spectral_processing",
-    "spectrogram_processing",
-    "xtract",
+    "OrderAnalysisParent",
+    "ComputeRPMOrderRepresentation",
+    "OrderLevels",
 )
