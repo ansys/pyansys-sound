@@ -24,10 +24,12 @@
 
 from ._order_analysis_parent import OrderAnalysisParent  # isort:skip
 from .compute_rpm_order_representation import ComputeRPMOrderRepresentation
+from .isolate_orders import IsolateOrders
 from .order_levels import OrderLevels
 
 __all__ = (
     "OrderAnalysisParent",
     "ComputeRPMOrderRepresentation",
+    "IsolateOrders",
     "OrderLevels",
 )

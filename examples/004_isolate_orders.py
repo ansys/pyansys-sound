@@ -56,7 +56,8 @@ from ansys.sound.core.examples_helpers import (
 from ansys.sound.core.psychoacoustics import LoudnessISO532_1_Stationary
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav, WriteWav
-from ansys.sound.core.spectrogram_processing import IsolateOrders, Stft
+from ansys.sound.core.order_analysis import IsolateOrders
+from ansys.sound.core.spectrogram_processing import Stft
 
 # sphinx_gallery_start_ignore
 # sphinx_gallery_thumbnail_path = '_static/_image/example004_thumbnail.png'

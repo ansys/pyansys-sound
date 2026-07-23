@@ -28,11 +28,11 @@ from ansys.dpf.core import Field, Operator, locations, natures, types
 import matplotlib.pyplot as plt
 import numpy as np
 
-from . import SpectrogramProcessingParent
+from . import OrderAnalysisParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
-class IsolateOrders(SpectrogramProcessingParent):
+class IsolateOrders(OrderAnalysisParent):
     """Isolate the orders of a signal.
 
     This class isolates the order of a signal that has an associated RPM profile.
@@ -41,7 +41,7 @@ class IsolateOrders(SpectrogramProcessingParent):
     --------
     Isolate orders 2 and 4 from a signal, and display the resulting signal.
 
-    >>> from ansys.sound.core.spectrogram_processing import IsolateOrders
+    >>> from ansys.sound.core.order_analysis import IsolateOrders
     >>> isolate_orders = IsolateOrders(signal=signal, rpm_profile=rpm_profile, orders=[2, 4])
     >>> isolate_orders.process()
     >>> isolated_orders_signal = isolate_orders.get_output()
