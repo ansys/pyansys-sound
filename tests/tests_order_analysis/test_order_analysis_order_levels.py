@@ -489,7 +489,9 @@ def test_order_levels_get_output_as_nparray_with_order_10():
 def test_order_levels_get_output_as_nparray_width_100():
     """Test get_output_as_nparray with width=100%."""
     signal, rpm_profile = _load_signal_and_rpm()
-    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], width=100.0, order_max=160)
+    ol = OrderLevels(
+        signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], width=100.0, order_max=160
+    )
     ol.process()
     out = ol.get_output_as_nparray()
     assert len(out) == EXP_NUM_ORDERS
