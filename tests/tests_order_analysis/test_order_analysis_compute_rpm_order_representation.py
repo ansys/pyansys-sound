@@ -28,15 +28,16 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.order_analysis import ComputeRPMOrderRepresentation
 
+# CQU debug
 # Skip entire test module if the operator is not yet registered in the DPF Sound plugin.
-try:
-    _probe = ComputeRPMOrderRepresentation()
-    del _probe
-except KeyError:
-    pytest.skip(
-        "compute_rpm_order_representation operator not available in the current DPF Sound version",
-        allow_module_level=True,
-    )
+# try:
+#     _probe = ComputeRPMOrderRepresentation()
+#     del _probe
+# except KeyError:
+#     pytest.skip(
+#         "compute_rpm_order_representation operator not available in the current DPF Sound version",
+#         allow_module_level=True,
+#     )
 
 # Expected frame counts (from C++ TestSuiteOrderAnalysis)
 EXP_NUM_FRAMES_160 = 858
