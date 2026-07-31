@@ -201,18 +201,14 @@ def test_order_levels_set_resolution_exception_negative():
 def test_order_levels_set_resolution_exception_hundred():
     """Test that setting resolution to 100.0 raises PyAnsysSoundException."""
     ol = OrderLevels()
-    with pytest.raises(
-        PyAnsysSoundException, match="Order resolution must be less than 100.0."
-    ):
+    with pytest.raises(PyAnsysSoundException, match="Order resolution must be less than 100.0."):
         ol.resolution = 100.0
 
 
 def test_order_levels_set_resolution_exception_above_hundred():
     """Test that setting resolution above 100 raises PyAnsysSoundException."""
     ol = OrderLevels()
-    with pytest.raises(
-        PyAnsysSoundException, match="Order resolution must be less than 100.0."
-    ):
+    with pytest.raises(PyAnsysSoundException, match="Order resolution must be less than 100.0."):
         ol.resolution = 150.0
 
 
