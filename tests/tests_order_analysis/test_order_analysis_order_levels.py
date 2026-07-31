@@ -50,8 +50,16 @@ EXP_RPM_LAST = 4821.28173828125
 # Raw squared output from the DPF operator (accel_with_rpm.wav, orders=[2,4], defaults)
 EXP_SQ_ORDER2_IDX0 = 0.005626889206199194
 EXP_SQ_ORDER2_IDX10 = 0.013161622351230954
+EXP_SQ_ORDER2_IDX100 = 0.002508111987130388
+EXP_SQ_ORDER2_IDX500 = 0.003555132792918785
 EXP_SQ_ORDER4_IDX0 = 4.903476226989506e-05
 EXP_SQ_ORDER4_IDX10 = 0.00012212950655857445
+EXP_SQ_ORDER4_IDX100 = 0.0003326681206206413
+EXP_SQ_ORDER4_IDX500 = 0.001930705602536031
+
+# Order 10 (accel_with_rpm.wav, orders=[2,4,10], width=10%, defaults)
+EXP_SQ_ORDER10_IDX0 = 6.052499164449122e-07
+EXP_SQ_ORDER10_IDX10 = 2.5686953569487317e-06
 
 # sqrt(squared) — linear amplitude
 EXP_LIN_ORDER2_IDX0 = 0.07501259365066106
@@ -60,6 +68,16 @@ EXP_LIN_ORDER4_IDX0 = 0.007002482579049737
 # 10*log10(squared / 1.0²)
 EXP_DB_ORDER2_IDX0 = -22.497316360473633
 EXP_DB_ORDER4_IDX0 = -43.0949592590332
+
+# RPM intermediate spot checks
+EXP_RPM_IDX100 = 2591.694580078125
+EXP_RPM_IDX500 = 4773.02001953125
+
+# Raw squared output (accel_with_rpm.wav, orders=[2,4], width=100%)
+EXP_SQ_ORDER2_IDX0_W100 = 0.007279247514075558
+EXP_SQ_ORDER2_IDX10_W100 = 0.013432783278460135
+EXP_SQ_ORDER4_IDX0_W100 = 7.76061953832823e-05
+EXP_SQ_ORDER4_IDX10_W100 = 0.0001455329044846945
 
 
 def _load_signal_and_rpm():
@@ -180,6 +198,24 @@ def test_order_levels_set_resolution_exception_negative():
         ol.resolution = -1.0
 
 
+def test_order_levels_set_resolution_exception_hundred():
+    """Test that setting resolution to 100.0 raises PyAnsysSoundException."""
+    ol = OrderLevels()
+    with pytest.raises(
+        PyAnsysSoundException, match="Order resolution must be less than 100.0."
+    ):
+        ol.resolution = 100.0
+
+
+def test_order_levels_set_resolution_exception_above_hundred():
+    """Test that setting resolution above 100 raises PyAnsysSoundException."""
+    ol = OrderLevels()
+    with pytest.raises(
+        PyAnsysSoundException, match="Order resolution must be less than 100.0."
+    ):
+        ol.resolution = 150.0
+
+
 # --- Property: width ---
 
 
@@ -202,6 +238,13 @@ def test_order_levels_set_width_exception_negative():
     ol = OrderLevels()
     with pytest.raises(PyAnsysSoundException, match="Width must be greater than 0.0."):
         ol.width = -5.0
+
+
+def test_order_levels_set_width_exception_above_100():
+    """Test that setting width above 100 raises PyAnsysSoundException."""
+    ol = OrderLevels()
+    with pytest.raises(PyAnsysSoundException, match="Width must be less than or equal to 100.0."):
+        ol.width = 101.0
 
 
 # --- Property: order_max ---
@@ -338,8 +381,12 @@ def test_order_levels_get_output_as_nparray():
     assert len(out[0]) == EXP_NUM_RPM_POINTS
     assert out[0][0] == pytest.approx(EXP_SQ_ORDER2_IDX0, rel=1e-4)
     assert out[0][10] == pytest.approx(EXP_SQ_ORDER2_IDX10, rel=1e-4)
+    assert out[0][100] == pytest.approx(EXP_SQ_ORDER2_IDX100, rel=1e-4)
+    assert out[0][500] == pytest.approx(EXP_SQ_ORDER2_IDX500, rel=1e-4)
     assert out[1][0] == pytest.approx(EXP_SQ_ORDER4_IDX0, rel=1e-4)
     assert out[1][10] == pytest.approx(EXP_SQ_ORDER4_IDX10, rel=1e-4)
+    assert out[1][100] == pytest.approx(EXP_SQ_ORDER4_IDX100, rel=1e-4)
+    assert out[1][500] == pytest.approx(EXP_SQ_ORDER4_IDX500, rel=1e-4)
 
 
 def test_order_levels_get_order_levels_in_squared_linear_unit():
@@ -426,7 +473,35 @@ def test_order_levels_get_associated_rpm():
     assert isinstance(rpm_arr, np.ndarray)
     assert len(rpm_arr) == EXP_NUM_RPM_POINTS
     assert rpm_arr[0] == pytest.approx(EXP_RPM_0, rel=1e-4)
+    assert rpm_arr[100] == pytest.approx(EXP_RPM_IDX100, rel=1e-4)
+    assert rpm_arr[500] == pytest.approx(EXP_RPM_IDX500, rel=1e-4)
     assert rpm_arr[-1] == pytest.approx(EXP_RPM_LAST, rel=1e-4)
+
+
+def test_order_levels_get_output_as_nparray_with_order_10():
+    """Test get_output_as_nparray returns 3 arrays when orders=[2,4,10]."""
+    signal, rpm_profile = _load_signal_and_rpm()
+    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0])
+    ol.process()
+    out = ol.get_output_as_nparray()
+    assert len(out) == 3
+    assert len(out[2]) == EXP_NUM_RPM_POINTS
+    assert out[2][0] == pytest.approx(EXP_SQ_ORDER10_IDX0, rel=1e-4)
+    assert out[2][10] == pytest.approx(EXP_SQ_ORDER10_IDX10, rel=1e-4)
+
+
+def test_order_levels_get_output_as_nparray_width_100():
+    """Test get_output_as_nparray with width=100%."""
+    signal, rpm_profile = _load_signal_and_rpm()
+    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], width=100.0)
+    ol.process()
+    out = ol.get_output_as_nparray()
+    assert len(out) == EXP_NUM_ORDERS
+    assert len(out[0]) == EXP_NUM_RPM_POINTS
+    assert out[0][0] == pytest.approx(EXP_SQ_ORDER2_IDX0_W100, rel=1e-4)
+    assert out[0][10] == pytest.approx(EXP_SQ_ORDER2_IDX10_W100, rel=1e-4)
+    assert out[1][0] == pytest.approx(EXP_SQ_ORDER4_IDX0_W100, rel=1e-4)
+    assert out[1][10] == pytest.approx(EXP_SQ_ORDER4_IDX10_W100, rel=1e-4)
 
 
 # --- plot() ---

@@ -161,6 +161,8 @@ class OrderLevels(OrderAnalysisParent):
         """Set the order resolution."""
         if resolution <= 0.0:
             raise PyAnsysSoundException("Order resolution must be greater than 0.0.")
+        if resolution >= 100.0:
+            raise PyAnsysSoundException("Order resolution must be less than 100.0.")
         self.__resolution = resolution
 
     @property
@@ -173,6 +175,8 @@ class OrderLevels(OrderAnalysisParent):
         """Set the width."""
         if width <= 0.0:
             raise PyAnsysSoundException("Width must be greater than 0.0.")
+        if width > 100.0:
+            raise PyAnsysSoundException("Width must be less than or equal to 100.0.")
         self.__width = width
 
     @property
