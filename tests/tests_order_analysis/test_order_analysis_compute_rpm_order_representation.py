@@ -39,7 +39,8 @@ from ansys.sound.core.signal_utilities import LoadWav
 #         allow_module_level=True,
 #     )
 
-# Expected frame counts (from C++ TestSuiteOrderAnalysis)
+# Time frame counts per complex part (real or imaginary); the output FieldsContainer holds
+# both real (complex=0) and imaginary (complex=1) fields, so total field count is * 2.
 EXP_NUM_FRAMES_160 = 858
 EXP_NUM_FRAMES_10 = 74
 
@@ -225,7 +226,8 @@ def test_compute_rpm_order_representation_get_output():
     obj.process()
     output = obj.get_output()
     assert output is not None
-    assert len(output) == EXP_NUM_FRAMES_160
+    # FieldsContainer contains real (complex=0) and imaginary (complex=1) fields.
+    assert len(output) == EXP_NUM_FRAMES_160 * 2
 
 
 def test_compute_rpm_order_representation_get_output_as_nparray_not_processed():
@@ -251,7 +253,8 @@ def test_compute_rpm_order_representation_get_output_as_nparray_order_max_160():
     obj.process()
     arr = obj.get_output_as_nparray()
 
-    assert arr.shape[0] == EXP_NUM_FRAMES_160
+    # Array rows span real (complex=0) then imaginary (complex=1) fields.
+    assert arr.shape[0] == EXP_NUM_FRAMES_160 * 2
     assert arr[0][0] == pytest.approx(EXP_160_FRAME0_IDX0, abs=1e-4)
     assert arr[0][500] == pytest.approx(EXP_160_FRAME0_IDX500, abs=1e-4)
     assert arr[12][836] == pytest.approx(EXP_160_FRAME12_IDX836, abs=1e-4)
@@ -274,7 +277,8 @@ def test_compute_rpm_order_representation_get_output_as_nparray_order_max_10():
     obj.process()
     arr = obj.get_output_as_nparray()
 
-    assert arr.shape[0] == EXP_NUM_FRAMES_10
+    # Array rows span real (complex=0) then imaginary (complex=1) fields.
+    assert arr.shape[0] == EXP_NUM_FRAMES_10 * 2
     assert arr[0][0] == pytest.approx(EXP_10_FRAME0_IDX0, abs=1e-4)
     assert arr[0][500] == pytest.approx(EXP_10_FRAME0_IDX500, abs=1e-4)
     assert arr[12][836] == pytest.approx(EXP_10_FRAME12_IDX836, abs=1e-4)
