@@ -213,7 +213,8 @@ def test_compute_rpm_order_representation_get_output():
     rpm_profile = fc[1]
     rpm_profile.time_freq_support = signal.time_freq_support
 
-    obj = ComputeRPMOrderRepresentation(signal=signal, rpm_profile=rpm_profile)
+    # Use order_max=160 to match EXP_NUM_FRAMES_160 (frame count depends on order_max).
+    obj = ComputeRPMOrderRepresentation(signal=signal, rpm_profile=rpm_profile, order_max=160)
 
     with pytest.warns(
         PyAnsysSoundWarning,
@@ -253,13 +254,13 @@ def test_compute_rpm_order_representation_get_output_as_nparray_order_max_160():
     obj.process()
     arr = obj.get_output_as_nparray()
 
-    # Array rows span real (complex=0) then imaginary (complex=1) fields.
+    # DPF iterates interleaved: real part of frame i is at arr[2*i], imaginary at arr[2*i+1].
     assert arr.shape[0] == EXP_NUM_FRAMES_160 * 2
     assert arr[0][0] == pytest.approx(EXP_160_FRAME0_IDX0, abs=1e-4)
     assert arr[0][500] == pytest.approx(EXP_160_FRAME0_IDX500, abs=1e-4)
-    assert arr[12][836] == pytest.approx(EXP_160_FRAME12_IDX836, abs=1e-4)
-    assert arr[24][51] == pytest.approx(EXP_160_FRAME24_IDX51, abs=1e-2)
-    assert arr[814][102] == pytest.approx(EXP_160_FRAME814_IDX102, abs=1e-1)
+    assert arr[24][836] == pytest.approx(EXP_160_FRAME12_IDX836, abs=1e-4)
+    assert arr[48][51] == pytest.approx(EXP_160_FRAME24_IDX51, abs=1e-2)
+    assert arr[1628][102] == pytest.approx(EXP_160_FRAME814_IDX102, abs=1e-1)
 
 
 def test_compute_rpm_order_representation_get_output_as_nparray_order_max_10():
@@ -277,13 +278,13 @@ def test_compute_rpm_order_representation_get_output_as_nparray_order_max_10():
     obj.process()
     arr = obj.get_output_as_nparray()
 
-    # Array rows span real (complex=0) then imaginary (complex=1) fields.
+    # DPF iterates interleaved: real part of frame i is at arr[2*i], imaginary at arr[2*i+1].
     assert arr.shape[0] == EXP_NUM_FRAMES_10 * 2
     assert arr[0][0] == pytest.approx(EXP_10_FRAME0_IDX0, abs=1e-4)
     assert arr[0][500] == pytest.approx(EXP_10_FRAME0_IDX500, abs=1e-4)
-    assert arr[12][836] == pytest.approx(EXP_10_FRAME12_IDX836, abs=1e-4)
-    assert arr[31][780] == pytest.approx(EXP_10_FRAME31_IDX780, abs=1e-2)
-    assert arr[41][1560] == pytest.approx(EXP_10_FRAME41_IDX1560, abs=1e-2)
+    assert arr[24][836] == pytest.approx(EXP_10_FRAME12_IDX836, abs=1e-4)
+    assert arr[62][780] == pytest.approx(EXP_10_FRAME31_IDX780, abs=1e-2)
+    assert arr[82][1560] == pytest.approx(EXP_10_FRAME41_IDX1560, abs=1e-2)
 
 
 def test_compute_rpm_order_representation_plot_exception():
