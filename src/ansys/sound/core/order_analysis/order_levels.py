@@ -24,7 +24,7 @@
 
 import warnings
 
-from ansys.dpf.core import Field, FieldsContainer, Operator, locations, natures, types
+from ansys.dpf.core import Field, FieldsContainer, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -226,12 +226,8 @@ class OrderLevels(OrderAnalysisParent):
         self.__rpm_order_representation = rpm_order_repr.get_output()
 
         # Step 2: Extract order levels.
-        # Convert order list to field.
-        order_field = Field(nentities=1, nature=natures.scalar, location=locations.time_freq)
-        order_field.append(self.orders, 1)
-
         self.__operator.connect(0, self.__rpm_order_representation)
-        self.__operator.connect(1, order_field)
+        self.__operator.connect(1, self.orders)  # doubleVector, not Field
         self.__operator.connect(2, self.width)
 
         # Runs the operator
@@ -298,7 +294,8 @@ class OrderLevels(OrderAnalysisParent):
         list[numpy.ndarray]
             Order levels in linear unit, one array per order.
         """
-        return self.get_output_as_nparray()
+        # Raw output is in squared unit; take the square root to get linear unit.
+        return [np.sqrt(level) for level in self.get_output_as_nparray()]
 
     def get_order_levels_in_squared_linear_unit(self) -> list[np.ndarray]:
         """Get the order levels in squared linear unit.
@@ -308,7 +305,8 @@ class OrderLevels(OrderAnalysisParent):
         list[numpy.ndarray]
             Order levels squared (element-wise), one array per order.
         """
-        return [level**2 for level in self.get_output_as_nparray()]
+        # Raw output is already in squared unit.
+        return self.get_output_as_nparray()
 
     def get_order_levels_in_dB(self, reference_value: float = 1.0) -> list[np.ndarray]:
         """Get the order levels in dB.
@@ -321,7 +319,7 @@ class OrderLevels(OrderAnalysisParent):
         Returns
         -------
         list[numpy.ndarray]
-            Order levels in dB (20*log10(level / reference_value)), one array per order.
+            Order levels in dB (10*log10(level / reference_value**2)), one array per order.
 
         Raises
         ------
@@ -331,8 +329,9 @@ class OrderLevels(OrderAnalysisParent):
         if reference_value <= 0:
             raise PyAnsysSoundException("Reference value must be greater than 0.")
 
+        # Raw output is in squared unit: use 10*log10(level/ref²) = 20*log10(sqrt(level)/ref).
         return [
-            20.0 * np.log10(level / reference_value) for level in self.get_output_as_nparray()
+            10.0 * np.log10(level / reference_value**2) for level in self.get_output_as_nparray()
         ]
 
     def get_order_level(self, order: float) -> np.ndarray:
