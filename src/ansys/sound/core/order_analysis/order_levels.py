@@ -108,7 +108,6 @@ class OrderLevels(OrderAnalysisParent):
 
         return (
             f"{__class__.__name__} object\n"
-            "\n"
             "Data\n"
             f"\tSignal name: {str_signal}\n"
             f"\tRPM profile name: {str_rpm}\n"

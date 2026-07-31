@@ -32,7 +32,6 @@ from ansys.sound.core.signal_utilities import LoadWav
 
 EXP_STR_DEFAULTS = (
     "OrderLevels object\n"
-    "\n"
     "Data\n"
     "\tSignal name: Not set\n"
     "\tRPM profile name: Not set\n"
