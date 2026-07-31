@@ -25,8 +25,8 @@ import numpy as np
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.order_analysis import ComputeRPMOrderRepresentation
+from ansys.sound.core.signal_utilities import LoadWav
 
 # CQU debug
 # Skip entire test module if the operator is not yet registered in the DPF Sound plugin.
@@ -162,9 +162,7 @@ def test_compute_rpm_order_representation_set_get_order_resolution():
 def test_compute_rpm_order_representation_set_order_resolution_exception_zero():
     """Test that setting order_resolution to 0.0 raises PyAnsysSoundException."""
     obj = ComputeRPMOrderRepresentation()
-    with pytest.raises(
-        PyAnsysSoundException, match="Order resolution must be greater than 0.0."
-    ):
+    with pytest.raises(PyAnsysSoundException, match="Order resolution must be greater than 0.0."):
         obj.order_resolution = 0.0
 
 
@@ -176,8 +174,7 @@ def test_compute_rpm_order_representation_process():
     with pytest.raises(PyAnsysSoundException) as excinfo:
         obj.process()
     assert (
-        str(excinfo.value)
-        == "No signal found for RPM order representation computation. "
+        str(excinfo.value) == "No signal found for RPM order representation computation. "
         "Use `ComputeRPMOrderRepresentation.signal`."
     )
 
@@ -194,8 +191,7 @@ def test_compute_rpm_order_representation_process():
     with pytest.raises(PyAnsysSoundException) as excinfo:
         obj.process()
     assert (
-        str(excinfo.value)
-        == "No RPM profile found for RPM order representation computation. "
+        str(excinfo.value) == "No RPM profile found for RPM order representation computation. "
         "Use `ComputeRPMOrderRepresentation.rpm_profile`."
     )
 
