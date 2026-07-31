@@ -31,22 +31,11 @@ from . import OrderAnalysisParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
-class ComputeRPMOrderRepresentation(OrderAnalysisParent):
+class ComputeRPMOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
     """Compute the RPM order representation of a signal.
 
     This class wraps the DPF Sound operator ``"compute_rpm_order_representation"`` to compute
     the RPM-order representation of a signal given an associated RPM profile.
-
-    Parameters
-    ----------
-    signal : Field, default: None
-        Input signal.
-    rpm_profile : Field, default: None
-        RPM profile associated with the input signal.
-    order_max : int, default: 100
-        Maximum order to compute.
-    order_resolution : float, default: 2.0
-        Order resolution in percent (e.g. ``2.0`` for 2%).
     """
 
     def __init__(
