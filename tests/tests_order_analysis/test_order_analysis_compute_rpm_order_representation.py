@@ -28,6 +28,10 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.order_analysis import ComputeRPMOrderRepresentation
 from ansys.sound.core.signal_utilities import LoadWav
 
+# Skip entire test module if Sound version < 2027.1.0
+if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
+    pytest.skip("Requires Sound version >= 2027.1.0", allow_module_level=True)
+
 # Time frame counts per complex part (real or imaginary); the output FieldsContainer holds
 # both real (complex=0) and imaginary (complex=1) fields, so total field count is * 2.
 EXP_NUM_FRAMES_160 = 858

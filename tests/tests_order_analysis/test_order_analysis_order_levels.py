@@ -30,6 +30,10 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.order_analysis import OrderLevels
 from ansys.sound.core.signal_utilities import LoadWav
 
+# Skip entire test module if Sound version < 2027.1.0
+if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
+    pytest.skip("Requires Sound version >= 2027.1.0", allow_module_level=True)
+
 EXP_STR_DEFAULTS = (
     "OrderLevels object\n"
     "Data\n"
@@ -549,8 +553,8 @@ def test_order_levels_plot_warning_more_than_10_orders(mock_show):
 # --- export ---
 
 
-def test_order_levels_export_not_implemented():
-    """Test that export_as_AnsysSound_Orders raises NotImplementedError."""
+def test_order_levels_save_not_implemented():
+    """Test that save_as_AnsysSound_Orders raises NotImplementedError."""
     ol = OrderLevels()
     with pytest.raises(NotImplementedError):
-        ol.export_as_AnsysSound_Orders("dummy_path.txt")
+        ol.save_as_AnsysSound_Orders("dummy_path.txt")

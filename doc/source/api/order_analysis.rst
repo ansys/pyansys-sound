@@ -9,7 +9,6 @@ given an associated RPM profile.
 .. autosummary::
     :toctree: _autosummary
 
-    OrderAnalysisParent
     ComputeRPMOrderRepresentation
     OrderLevels
     IsolateOrders

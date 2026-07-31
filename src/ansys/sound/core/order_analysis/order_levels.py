@@ -33,7 +33,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from .compute_rpm_order_representation import ComputeRPMOrderRepresentation
 
 
-class OrderLevels(OrderAnalysisParent):
+class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
     """Compute order levels from a signal and RPM profile.
 
     This class computes the order levels of a signal by first computing the RPM order
@@ -363,7 +363,7 @@ class OrderLevels(OrderAnalysisParent):
         return self.get_output_as_nparray()[index]
 
     def get_associated_rpm(self) -> np.ndarray:
-        """Get the RPM support from the output.
+        """Get the RPM support of the output order levels.
 
         Returns
         -------
@@ -431,12 +431,12 @@ class OrderLevels(OrderAnalysisParent):
         plt.grid(True)
         plt.show()
 
-    def export_as_AnsysSound_Orders(self, path: str) -> None:
-        """Export results to an AnsysSound_Orders file.
+    def save_as_AnsysSound_Orders(self, path: str) -> None:
+        """Save results to an AnsysSound_Orders file.
 
         Parameters
         ----------
         path : str
             Path to the output file.
         """
-        raise NotImplementedError("export_as_AnsysSound_Orders() is not yet implemented.")
+        raise NotImplementedError("save_as_AnsysSound_Orders() is not yet implemented.")
