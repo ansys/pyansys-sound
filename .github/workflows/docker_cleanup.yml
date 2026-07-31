@@ -31,7 +31,7 @@ jobs:
 
     steps:
     - name: Docker image cleanup (GHCR)
-      uses: ansys/actions/hk-package-clean-except@a5b0351dc277d68c2dc1beca2d2674c7dfa4fc55 # v10.3.3
+      uses: ansys/actions/hk-package-clean-except@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
       with:
         package-name: 'ansys-sound'
         token: ${{ secrets.GITHUB_TOKEN }}
