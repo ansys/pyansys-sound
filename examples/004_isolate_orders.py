@@ -53,10 +53,10 @@ from ansys.sound.core.examples_helpers import (
     download_accel_with_rpm_3_wav,
     download_accel_with_rpm_wav,
 )
+from ansys.sound.core.order_analysis import IsolateOrders
 from ansys.sound.core.psychoacoustics import LoudnessISO532_1_Stationary
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav, WriteWav
-from ansys.sound.core.order_analysis import IsolateOrders
 from ansys.sound.core.spectrogram_processing import Stft
 
 # sphinx_gallery_start_ignore

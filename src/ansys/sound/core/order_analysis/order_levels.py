@@ -98,9 +98,7 @@ class OrderLevels(OrderAnalysisParent):
 
         if self.orders is not None:
             # Format each order: display as integer if possible, otherwise as float.
-            formatted_orders = [
-                str(int(o)) if o == int(o) else str(o) for o in self.orders
-            ]
+            formatted_orders = [str(int(o)) if o == int(o) else str(o) for o in self.orders]
             str_orders = f"{len(self.orders)} orders: [{', '.join(formatted_orders)}]"
         else:
             str_orders = "Not set"
