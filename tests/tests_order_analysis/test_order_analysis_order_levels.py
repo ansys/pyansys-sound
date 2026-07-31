@@ -42,42 +42,42 @@ EXP_STR_DEFAULTS = (
 )
 
 EXP_NUM_ORDERS = 2
-EXP_NUM_RPM_POINTS = 534
+EXP_NUM_RPM_POINTS = 848  # order_max=160, matching C++ reference
 
 EXP_RPM_0 = 974.4971313476562
 EXP_RPM_LAST = 4821.28173828125
 
-# Raw squared output from the DPF operator (accel_with_rpm.wav, orders=[2,4], defaults)
-EXP_SQ_ORDER2_IDX0 = 0.005626889206199194
-EXP_SQ_ORDER2_IDX10 = 0.013161622351230954
-EXP_SQ_ORDER2_IDX100 = 0.002508111987130388
-EXP_SQ_ORDER2_IDX500 = 0.003555132792918785
-EXP_SQ_ORDER4_IDX0 = 4.903476226989506e-05
-EXP_SQ_ORDER4_IDX10 = 0.00012212950655857445
-EXP_SQ_ORDER4_IDX100 = 0.0003326681206206413
-EXP_SQ_ORDER4_IDX500 = 0.001930705602536031
+# Raw squared output — order_max=160, values identical to C++ reference
+EXP_SQ_ORDER2_IDX0 = 0.0053486785509092695
+EXP_SQ_ORDER2_IDX10 = 0.008893666678337932
+EXP_SQ_ORDER2_IDX100 = 0.00047953474928854608
+EXP_SQ_ORDER2_IDX500 = 0.00090051242185874196
+EXP_SQ_ORDER4_IDX0 = 5.554353083763535e-05
+EXP_SQ_ORDER4_IDX10 = 0.00011636148361238936
+EXP_SQ_ORDER4_IDX100 = 0.00018775817776853440
+EXP_SQ_ORDER4_IDX500 = 0.00063774500269680350
 
-# Order 10 (accel_with_rpm.wav, orders=[2,4,10], width=10%, defaults)
-EXP_SQ_ORDER10_IDX0 = 6.052499164449122e-07
-EXP_SQ_ORDER10_IDX10 = 2.5686953569487317e-06
+# Order 10 (order_max=160 = C++ reference)
+EXP_SQ_ORDER10_IDX0 = 4.6480690136126773e-07
+EXP_SQ_ORDER10_IDX10 = 2.8781593669622625e-06
 
 # sqrt(squared) — linear amplitude
-EXP_LIN_ORDER2_IDX0 = 0.07501259365066106
-EXP_LIN_ORDER4_IDX0 = 0.007002482579049737
+EXP_LIN_ORDER2_IDX0 = 0.07313466039375086
+EXP_LIN_ORDER4_IDX0 = 0.007452753238745755
 
 # 10*log10(squared / 1.0²)
-EXP_DB_ORDER2_IDX0 = -22.497316360473633
-EXP_DB_ORDER4_IDX0 = -43.0949592590332
+EXP_DB_ORDER2_IDX0 = -22.7175350189209
+EXP_DB_ORDER4_IDX0 = -42.55366516113281
 
-# RPM intermediate spot checks
-EXP_RPM_IDX100 = 2591.694580078125
-EXP_RPM_IDX500 = 4773.02001953125
+# RPM intermediate spot checks (C++ reference values)
+EXP_RPM_IDX100 = 2030.80322265625
+EXP_RPM_IDX500 = 4209.921875
 
-# Raw squared output (accel_with_rpm.wav, orders=[2,4], width=100%)
-EXP_SQ_ORDER2_IDX0_W100 = 0.007279247514075558
-EXP_SQ_ORDER2_IDX10_W100 = 0.013432783278460135
-EXP_SQ_ORDER4_IDX0_W100 = 7.76061953832823e-05
-EXP_SQ_ORDER4_IDX10_W100 = 0.0001455329044846945
+# Raw squared output (width=100%, order_max=160 = C++ reference)
+EXP_SQ_ORDER2_IDX0_W100 = 0.007259188930523296
+EXP_SQ_ORDER2_IDX10_W100 = 0.009584942415342615
+EXP_SQ_ORDER4_IDX0_W100 = 8.988746071167709e-05
+EXP_SQ_ORDER4_IDX10_W100 = 0.00014242398895127672
 
 
 def _load_signal_and_rpm():
@@ -374,7 +374,7 @@ def test_order_levels_get_rpm_order_representation():
 def test_order_levels_get_output_as_nparray():
     """Test get_output_as_nparray shape and spot values."""
     signal, rpm_profile = _load_signal_and_rpm()
-    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0])
+    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], order_max=160)
     ol.process()
     out = ol.get_output_as_nparray()
     assert len(out) == EXP_NUM_ORDERS
@@ -404,7 +404,7 @@ def test_order_levels_get_order_levels_in_squared_linear_unit():
 def test_order_levels_get_order_levels_in_linear_unit():
     """Test get_order_levels_in_linear_unit returns the sqrt of squared values."""
     signal, rpm_profile = _load_signal_and_rpm()
-    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0])
+    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], order_max=160)
     ol.process()
     lin = ol.get_order_levels_in_linear_unit()
     assert len(lin) == EXP_NUM_ORDERS
@@ -415,7 +415,7 @@ def test_order_levels_get_order_levels_in_linear_unit():
 def test_order_levels_get_order_levels_in_dB():
     """Test get_order_levels_in_dB spot values with reference_value=1.0."""
     signal, rpm_profile = _load_signal_and_rpm()
-    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0])
+    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], order_max=160)
     ol.process()
     db = ol.get_order_levels_in_dB(reference_value=1.0)
     assert len(db) == EXP_NUM_ORDERS
@@ -444,7 +444,7 @@ def test_order_levels_get_order_levels_in_dB_exception_negative():
 def test_order_levels_get_order_level():
     """Test get_order_level returns the correct array for a given order."""
     signal, rpm_profile = _load_signal_and_rpm()
-    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0])
+    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], order_max=160)
     ol.process()
     lvl = ol.get_order_level(2.0)
     assert isinstance(lvl, np.ndarray)
@@ -467,7 +467,7 @@ def test_order_levels_get_order_level_exception():
 def test_order_levels_get_associated_rpm():
     """Test get_associated_rpm returns the expected RPM support vector."""
     signal, rpm_profile = _load_signal_and_rpm()
-    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0])
+    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], order_max=160)
     ol.process()
     rpm_arr = ol.get_associated_rpm()
     assert isinstance(rpm_arr, np.ndarray)
@@ -481,7 +481,7 @@ def test_order_levels_get_associated_rpm():
 def test_order_levels_get_output_as_nparray_with_order_10():
     """Test get_output_as_nparray returns 3 arrays when orders=[2,4,10]."""
     signal, rpm_profile = _load_signal_and_rpm()
-    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0])
+    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0], order_max=160)
     ol.process()
     out = ol.get_output_as_nparray()
     assert len(out) == 3
@@ -493,7 +493,7 @@ def test_order_levels_get_output_as_nparray_with_order_10():
 def test_order_levels_get_output_as_nparray_width_100():
     """Test get_output_as_nparray with width=100%."""
     signal, rpm_profile = _load_signal_and_rpm()
-    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], width=100.0)
+    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], width=100.0, order_max=160)
     ol.process()
     out = ol.get_output_as_nparray()
     assert len(out) == EXP_NUM_ORDERS
