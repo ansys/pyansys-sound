@@ -104,9 +104,9 @@ def test_order_levels_instantiation():
     assert ol.signal is None
     assert ol.rpm_profile is None
     assert ol.orders is None
-    assert ol.resolution == 2.0
-    assert ol.width == 10.0
-    assert ol.order_max == 100
+    assert ol.order_resolution == 2.0
+    assert ol.order_width == 10.0
+    assert ol.max_order == 100
 
 
 def test_order_levels_str_defaults():
@@ -183,36 +183,36 @@ def test_order_levels_set_get_orders():
 def test_order_levels_set_get_resolution():
     """Test the resolution property setter and getter."""
     ol = OrderLevels()
-    ol.resolution = 0.5
-    assert ol.resolution == 0.5
+    ol.order_resolution = 0.5
+    assert ol.order_resolution == 0.5
 
 
 def test_order_levels_set_resolution_exception_zero():
     """Test that setting resolution to 0.0 raises PyAnsysSoundException."""
     ol = OrderLevels()
     with pytest.raises(PyAnsysSoundException, match="Order resolution must be greater than 0.0."):
-        ol.resolution = 0.0
+        ol.order_resolution = 0.0
 
 
 def test_order_levels_set_resolution_exception_negative():
     """Test that setting resolution to a negative value raises PyAnsysSoundException."""
     ol = OrderLevels()
     with pytest.raises(PyAnsysSoundException, match="Order resolution must be greater than 0.0."):
-        ol.resolution = -1.0
+        ol.order_resolution = -1.0
 
 
 def test_order_levels_set_resolution_exception_hundred():
     """Test that setting resolution to 100.0 raises PyAnsysSoundException."""
     ol = OrderLevels()
     with pytest.raises(PyAnsysSoundException, match="Order resolution must be less than 100.0."):
-        ol.resolution = 100.0
+        ol.order_resolution = 100.0
 
 
 def test_order_levels_set_resolution_exception_above_hundred():
     """Test that setting resolution above 100 raises PyAnsysSoundException."""
     ol = OrderLevels()
     with pytest.raises(PyAnsysSoundException, match="Order resolution must be less than 100.0."):
-        ol.resolution = 150.0
+        ol.order_resolution = 150.0
 
 
 # --- Property: width ---
@@ -221,29 +221,29 @@ def test_order_levels_set_resolution_exception_above_hundred():
 def test_order_levels_set_get_width():
     """Test the width property setter and getter."""
     ol = OrderLevels()
-    ol.width = 5.0
-    assert ol.width == 5.0
+    ol.order_width = 5.0
+    assert ol.order_width == 5.0
 
 
 def test_order_levels_set_width_exception_zero():
     """Test that setting width to 0.0 raises PyAnsysSoundException."""
     ol = OrderLevels()
     with pytest.raises(PyAnsysSoundException, match="Width must be greater than 0.0."):
-        ol.width = 0.0
+        ol.order_width = 0.0
 
 
 def test_order_levels_set_width_exception_negative():
     """Test that setting width to a negative value raises PyAnsysSoundException."""
     ol = OrderLevels()
     with pytest.raises(PyAnsysSoundException, match="Width must be greater than 0.0."):
-        ol.width = -5.0
+        ol.order_width = -5.0
 
 
 def test_order_levels_set_width_exception_above_100():
     """Test that setting width above 100 raises PyAnsysSoundException."""
     ol = OrderLevels()
     with pytest.raises(PyAnsysSoundException, match="Width must be less than or equal to 100.0."):
-        ol.width = 101.0
+        ol.order_width = 101.0
 
 
 # --- Property: order_max ---
@@ -252,22 +252,22 @@ def test_order_levels_set_width_exception_above_100():
 def test_order_levels_set_get_order_max():
     """Test the order_max property setter and getter."""
     ol = OrderLevels()
-    ol.order_max = 50
-    assert ol.order_max == 50
+    ol.max_order = 50
+    assert ol.max_order == 50
 
 
 def test_order_levels_set_order_max_exception_zero():
     """Test that setting order_max to 0 raises PyAnsysSoundException."""
     ol = OrderLevels()
     with pytest.raises(PyAnsysSoundException, match="Maximum order must be greater than 0."):
-        ol.order_max = 0
+        ol.max_order = 0
 
 
 def test_order_levels_set_order_max_exception_negative():
     """Test that setting order_max to a negative value raises PyAnsysSoundException."""
     ol = OrderLevels()
     with pytest.raises(PyAnsysSoundException, match="Maximum order must be greater than 0."):
-        ol.order_max = -10
+        ol.max_order = -10
 
 
 # --- process() ---
@@ -345,7 +345,7 @@ def test_order_levels_get_associated_rpm_not_processed():
     """Test get_associated_rpm returns an empty array when not processed."""
     ol = OrderLevels()
     with pytest.warns(PyAnsysSoundWarning):
-        result = ol.get_associated_rpm()
+        result = ol.get_rpm_scale()
     assert result.size == 0
 
 
@@ -373,7 +373,7 @@ def test_order_levels_get_rpm_order_representation():
 def test_order_levels_get_output_as_nparray():
     """Test get_output_as_nparray shape and spot values."""
     signal, rpm_profile = _load_signal_and_rpm()
-    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], order_max=160)
+    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], max_order=160)
     ol.process()
     out = ol.get_output_as_nparray()
     assert len(out) == EXP_NUM_ORDERS
@@ -393,7 +393,7 @@ def test_order_levels_get_order_levels_in_squared_linear_unit():
     signal, rpm_profile = _load_signal_and_rpm()
     ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0])
     ol.process()
-    sq = ol.get_order_levels_in_squared_linear_unit()
+    sq = ol.get_order_levels_squared_unit()
     raw = ol.get_output_as_nparray()
     assert len(sq) == EXP_NUM_ORDERS
     np.testing.assert_array_equal(sq[0], raw[0])
@@ -403,7 +403,7 @@ def test_order_levels_get_order_levels_in_squared_linear_unit():
 def test_order_levels_get_order_levels_in_linear_unit():
     """Test get_order_levels_in_linear_unit returns the sqrt of squared values."""
     signal, rpm_profile = _load_signal_and_rpm()
-    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], order_max=160)
+    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], max_order=160)
     ol.process()
     lin = ol.get_order_levels_in_linear_unit()
     assert len(lin) == EXP_NUM_ORDERS
@@ -414,9 +414,9 @@ def test_order_levels_get_order_levels_in_linear_unit():
 def test_order_levels_get_order_levels_in_dB():
     """Test get_order_levels_in_dB spot values with reference_value=1.0."""
     signal, rpm_profile = _load_signal_and_rpm()
-    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], order_max=160)
+    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], max_order=160)
     ol.process()
-    db = ol.get_order_levels_in_dB(reference_value=1.0)
+    db = ol.get_order_levels_dB(reference_value=1.0)
     assert len(db) == EXP_NUM_ORDERS
     assert db[0][0] == pytest.approx(EXP_DB_ORDER2_IDX0, rel=1e-4)
     assert db[1][0] == pytest.approx(EXP_DB_ORDER4_IDX0, rel=1e-4)
@@ -428,7 +428,7 @@ def test_order_levels_get_order_levels_in_dB_exception_zero():
     ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0])
     ol.process()
     with pytest.raises(PyAnsysSoundException, match="Reference value must be greater than 0."):
-        ol.get_order_levels_in_dB(reference_value=0)
+        ol.get_order_levels_dB(reference_value=0)
 
 
 def test_order_levels_get_order_levels_in_dB_exception_negative():
@@ -437,15 +437,15 @@ def test_order_levels_get_order_levels_in_dB_exception_negative():
     ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0])
     ol.process()
     with pytest.raises(PyAnsysSoundException, match="Reference value must be greater than 0."):
-        ol.get_order_levels_in_dB(reference_value=-1.0)
+        ol.get_order_levels_dB(reference_value=-1.0)
 
 
 def test_order_levels_get_order_level():
     """Test get_order_level returns the correct array for a given order."""
     signal, rpm_profile = _load_signal_and_rpm()
-    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], order_max=160)
+    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], max_order=160)
     ol.process()
-    lvl = ol.get_order_level(2.0)
+    lvl = ol.get_order_level_squared_linear(2.0)
     assert isinstance(lvl, np.ndarray)
     assert len(lvl) == EXP_NUM_RPM_POINTS
     assert lvl[0] == pytest.approx(EXP_SQ_ORDER2_IDX0, rel=1e-4)
@@ -460,15 +460,15 @@ def test_order_levels_get_order_level_exception():
         PyAnsysSoundException,
         match="Order 99.0 is not in the list of orders.",
     ):
-        ol.get_order_level(99.0)
+        ol.get_order_level_squared_linear(99.0)
 
 
 def test_order_levels_get_associated_rpm():
     """Test get_associated_rpm returns the expected RPM support vector."""
     signal, rpm_profile = _load_signal_and_rpm()
-    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], order_max=160)
+    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], max_order=160)
     ol.process()
-    rpm_arr = ol.get_associated_rpm()
+    rpm_arr = ol.get_rpm_scale()
     assert isinstance(rpm_arr, np.ndarray)
     assert len(rpm_arr) == EXP_NUM_RPM_POINTS
     assert rpm_arr[0] == pytest.approx(EXP_RPM_0, rel=1e-4)
@@ -480,7 +480,7 @@ def test_order_levels_get_associated_rpm():
 def test_order_levels_get_output_as_nparray_with_order_10():
     """Test get_output_as_nparray returns 3 arrays when orders=[2,4,10]."""
     signal, rpm_profile = _load_signal_and_rpm()
-    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0], order_max=160)
+    ol = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0], max_order=160)
     ol.process()
     out = ol.get_output_as_nparray()
     assert len(out) == 3
@@ -493,7 +493,7 @@ def test_order_levels_get_output_as_nparray_width_100():
     """Test get_output_as_nparray with width=100%."""
     signal, rpm_profile = _load_signal_and_rpm()
     ol = OrderLevels(
-        signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], width=100.0, order_max=160
+        signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], order_width=100.0, max_order=160
     )
     ol.process()
     out = ol.get_output_as_nparray()

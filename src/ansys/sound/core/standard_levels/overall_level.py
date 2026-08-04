@@ -97,7 +97,7 @@ class OverallLevel(OverallLevelParent):
             unit = f"dB{self.frequency_weighting} re. {self.reference_value}"
         else:
             str_frequency_weighting = "None"
-            unit = f"dB re. {self.reference_value}"
+            unit = f"dB re {self.reference_value}"
         str_level = f"{self._output:.1f} {unit}" if self._output is not None else "Not processed"
 
         return (

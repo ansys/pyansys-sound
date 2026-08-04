@@ -223,7 +223,7 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         numpy.ndarray
             RPM values corresponding to the columns of the output array.
         numpy.ndarray
-            Time values, in second, corresponding to the columns of the output array.
+            Time values, in seconds, corresponding to the columns of the output array.
         """
         output: FieldsContainer = self.get_output()
         
@@ -282,6 +282,6 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         Returns
         -------
         numpy.ndarray
-            Time values, in second, corresponding to the columns of the RPM-order representation.
+            Time values, in seconds, corresponding to the columns of the RPM-order representation.
         """
         return self.get_output_as_nparray()[3]

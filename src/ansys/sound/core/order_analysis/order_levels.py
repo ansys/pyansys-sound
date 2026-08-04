@@ -20,8 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Computes order levels from a signal and RPM profile."""
+"""Compute order levels from a signal and its RPM profile."""
 
+import os
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator, types
@@ -30,29 +31,16 @@ import numpy as np
 
 from . import OrderAnalysisParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-from .compute_rpm_order_representation import ComputeRPMOrderRepresentation
+from .rpm_order_representation import RpmOrderRepresentation
+
+ID_EXTRACT_ORDER_LEVELS = "extract_order_levels"
 
 
 class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
-    """Compute order levels from a signal and RPM profile.
+    """Compute order levels from a signal and its associated RPM profile.
 
     This class computes the order levels of a signal by first computing the RPM order
     representation, and then extracting order levels at the specified orders.
-
-    Parameters
-    ----------
-    signal : Field, default: None
-        Input signal.
-    rpm_profile : Field, default: None
-        RPM profile associated with the input signal.
-    orders : list[float], default: None
-        List of orders at which to extract levels.
-    resolution : float, default: 2.0
-        Order resolution in percent for the RPM order representation computation.
-    width : float, default: 10.0
-        Width in percent for the order level extraction.
-    order_max : int, default: 100
-        Maximum order for the RPM order representation computation.
     """
 
     def __init__(
@@ -60,9 +48,9 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         signal: Field = None,
         rpm_profile: Field = None,
         orders: list[float] = None,
-        resolution: float = 2.0,
-        width: float = 10.0,
-        order_max: int = 100,
+        order_width: float = 10.0,
+        max_order: int = 160,
+        order_resolution: float = 2.0,
     ):
         """Class instantiation takes the following parameters.
 
@@ -74,22 +62,26 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
             RPM profile associated with the input signal.
         orders : list[float], default: None
             List of orders at which to extract levels.
-        resolution : float, default: 2.0
-            Order resolution in percent for the RPM order representation computation.
-        width : float, default: 10.0
-            Width in percent for the order level extraction.
-        order_max : int, default: 100
-            Maximum order for the RPM order representation computation.
+        order_width : float, default: 10.0
+            Width in percent of order for the order level extraction. It defines the range of order
+            values around each specified order in :attr:`orders` where the energy is integrated to
+            compute that order's level.
+        max_order : int, default: 160
+            Maximum order for the RPM-order representation computation. This is the maximum order
+            value included in the computed RPM-order representation. Every order listed in
+            :attr:`orders` must be less than or equal to this value.
+        order_resolution : float, default: 2.0
+            Order resolution in percent of order for the RPM order representation computation.
         """
         super().__init__()
         self.signal = signal
         self.rpm_profile = rpm_profile
         self.orders = orders
-        self.resolution = resolution
-        self.width = width
-        self.order_max = order_max
+        self.order_resolution = order_resolution
+        self.order_width = order_width
+        self.max_order = max_order
         self.__rpm_order_representation = None
-        self.__operator = Operator("extract_order_levels")
+        self.__operator = Operator(ID_EXTRACT_ORDER_LEVELS)
 
     def __str__(self):
         """Return the string representation of the object."""
@@ -97,14 +89,13 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         str_rpm = f'"{self.rpm_profile.name}"' if self.rpm_profile is not None else "Not set"
 
         if self.orders is not None:
-            # Format each order: display as integer if possible, otherwise as float.
-            formatted_orders = [str(int(o)) if o == int(o) else str(o) for o in self.orders]
-            str_orders = f"{len(self.orders)} orders: [{', '.join(formatted_orders)}]"
+            str_orders = f"{len(self.orders)} orders: "
+            if len(self.orders) > 10:
+                str_orders += f"[{str(self.orders[:5])[:-1]} ... {str(self.orders[-5:])[1:]}]"
+            else:
+                str_orders += f"{self.orders}"
         else:
             str_orders = "Not set"
-
-        str_resolution = f"{self.resolution} %" if self.resolution is not None else "Not set"
-        str_width = f"{self.width} %" if self.width is not None else "Not set"
 
         return (
             f"{__class__.__name__} object\n"
@@ -112,8 +103,9 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
             f"\tSignal name: {str_signal}\n"
             f"\tRPM profile name: {str_rpm}\n"
             f"\t{str_orders}\n"
-            f"\tOrder analysis resolution: {str_resolution}\n"
-            f"\tOrder analysis width: {str_width}"
+            f"\tOrder analysis width: {self.order_width} %\n"
+            f"\tMaximum order: {self.max_order}\n"
+            f"\tOrder analysis resolution: {self.order_resolution} %"
         )
 
     @property
@@ -148,88 +140,101 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
     @orders.setter
     def orders(self, orders: list[float]):
         """Set the orders."""
+        if not (orders is None or isinstance(orders, (list, tuple, np.ndarray))):
+            raise PyAnsysSoundException(
+                "Orders must be specified as a list of floats."
+            )
+        for order in orders:
+            if not isinstance(order, (int, float)):
+                raise PyAnsysSoundException(
+                    "Orders must be specified as a list of floats."
+                )
         self.__orders = orders
 
     @property
-    def resolution(self) -> float:
+    def order_resolution(self) -> float:
         """Order resolution in percent."""
         return self.__resolution
 
-    @resolution.setter
-    def resolution(self, resolution: float):
+    @order_resolution.setter
+    def order_resolution(self, resolution: float):
         """Set the order resolution."""
         if resolution <= 0.0:
-            raise PyAnsysSoundException("Order resolution must be greater than 0.0.")
-        if resolution >= 100.0:
-            raise PyAnsysSoundException("Order resolution must be less than 100.0.")
+            raise PyAnsysSoundException(r"Order resolution must be greater than 0.0 %.")
         self.__resolution = resolution
 
     @property
-    def width(self) -> float:
+    def order_width(self) -> float:
         """Width in percent for order level extraction."""
         return self.__width
 
-    @width.setter
-    def width(self, width: float):
+    @order_width.setter
+    def order_width(self, width: float):
         """Set the width."""
-        if width <= 0.0:
-            raise PyAnsysSoundException("Width must be greater than 0.0.")
-        if width > 100.0:
-            raise PyAnsysSoundException("Width must be less than or equal to 100.0.")
+        if width <= 0.0 or width > 100.0:
+            raise PyAnsysSoundException(
+                r"Width must be greater than 0.0 % and less than or equal to 100.0 %."
+            )
         self.__width = width
 
     @property
-    def order_max(self) -> int:
+    def max_order(self) -> int:
         """Maximum order."""
-        return self.__order_max
+        return self.__max_order
 
-    @order_max.setter
-    def order_max(self, order_max: int):
+    @max_order.setter
+    def max_order(self, max_order: int):
         """Set the maximum order."""
-        if order_max <= 0:
+        if max_order <= 0.0:
             raise PyAnsysSoundException("Maximum order must be greater than 0.")
-        self.__order_max = order_max
+        self.__max_order = max_order
+
+    @property
+    def rpm_order_representation(self) -> FieldsContainer:
+        """RPM-order representation of the input signal.
+        
+        Requires that the :meth:`process()` method be called to be populated.
+        """
+        return self.__rpm_order_representation
 
     def process(self):
         """Run the order analysis.
 
-        This method first computes the RPM order representation, then extracts order levels
-        at the specified orders.
-
-        Raises
-        ------
-        PyAnsysSoundException
-            If ``signal``, ``rpm_profile``, or ``orders`` is None.
+        This method first computes the RPM order representation using the signal and rpm profile,
+        and then extracts the levels of the specified orders.
         """
         if self.signal is None:
             raise PyAnsysSoundException(
-                "No signal found for order level computation. Use `OrderLevels.signal`."
+                f"No input signal set. Use `{__class__.__name__}.signal`."
             )
 
         if self.rpm_profile is None:
             raise PyAnsysSoundException(
-                "No RPM profile found for order level computation. Use `OrderLevels.rpm_profile`."
+                f"No RPM profile set. Use `{__class__.__name__}.rpm_profile`."
             )
 
         if self.orders is None:
             raise PyAnsysSoundException(
-                "No orders found for order level computation. Use `OrderLevels.orders`."
+                f"No order list set. Use `{__class__.__name__}.orders`."
             )
 
-        # Step 1: Compute RPM order representation.
-        rpm_order_repr = ComputeRPMOrderRepresentation(
+        # Step 1: Compute RPM-order representation.
+        rpm_order_repr = RpmOrderRepresentation(
             signal=self.signal,
             rpm_profile=self.rpm_profile,
-            order_max=self.order_max,
-            order_resolution=self.resolution,
+            max_order=self.max_order,
+            order_resolution=self.order_resolution,
         )
         rpm_order_repr.process()
         self.__rpm_order_representation = rpm_order_repr.get_output()
 
         # Step 2: Extract order levels.
+        # orders = map(float, self.orders)
+
         self.__operator.connect(0, self.__rpm_order_representation)
-        self.__operator.connect(1, self.orders)  # doubleVector, not Field
-        self.__operator.connect(2, self.width)
+        # self.__operator.connect(1, list(orders))
+        self.__operator.connect(1, self.orders)
+        self.__operator.connect(2, self.order_width)
 
         # Runs the operator
         self.__operator.run()
@@ -237,206 +242,261 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         # Stores output in the variable
         self._output = self.__operator.get_output(0, types.fields_container)
 
-    def get_rpm_order_representation(self) -> FieldsContainer:
-        """Return the intermediate RPM-order representation.
+    def get_output(self) -> FieldsContainer:
+        """Get the order levels.
 
         Returns
         -------
         FieldsContainer
-            Intermediate RPM-order representation as a DPF fields container.
-        """
-        if self.__rpm_order_representation is None:
-            warnings.warn(
-                PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the `OrderLevels.process()` method."
-                )
-            )
-
-        return self.__rpm_order_representation
-
-    def get_output(self) -> list[Field]:
-        """Get the order levels as a list of DPF fields.
-
-        Returns
-        -------
-        list[Field]
-            List of DPF fields, one per order.
+            FieldsContainer of order levels. Each field corresponds to a requested order in :attr:`orders`,
+            containing that order's level over RPM, in squared signal unit.
         """
         if self._output is None:
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output is not processed yet. Use the `OrderLevels.process()` method."
+                    f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
                 )
             )
             return None
 
-        return [self._output[i] for i in range(len(self._output))]
+        return self._output
 
-    def get_output_as_nparray(self) -> list[np.ndarray]:
-        """Get the order levels as a list of NumPy arrays.
+    def get_output_as_nparray(self) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+        """Get the order levels as NumPy arrays.
 
         Returns
         -------
-        list[numpy.ndarray]
-            List of NumPy arrays, one per order.
+        numpy.ndarray
+            Order levels as a 2-D NumPy array. Each row corresponds to a specific order value, and
+            each column corresponds to a specific RPM value. The values are in squared signal unit.
+        numpy.ndarray
+            Order values corresponding to the rows of the output array.
+        numpy.ndarray
+            RPM values corresponding to the columns of the output array.
+        numpy.ndarray
+            Time values, in seconds, corresponding to the columns of the output array.
         """
         output = self.get_output()
 
         if output is None:
-            return []
+            return np.array([]), np.array([]), np.array([]), np.array([])
 
-        return [np.array(field.data) for field in output]
+        order_levels = np.vstack([np.array(field.data) for field in output])
+        order_values = np.array(self.orders)
+        rpm_values = np.array(output.get_support("RPM").time_frequencies.data)
+        time_values = np.array(output.time_freq_support.time_frequencies.data)
 
-    def get_order_levels_in_linear_unit(self) -> list[np.ndarray]:
-        """Get the order levels in linear unit.
+        return order_levels, order_values, rpm_values, time_values
 
-        Returns
-        -------
-        list[numpy.ndarray]
-            Order levels in linear unit, one array per order.
-        """
-        # Raw output is in squared unit; take the square root to get linear unit.
-        return [np.sqrt(level) for level in self.get_output_as_nparray()]
-
-    def get_order_levels_in_squared_linear_unit(self) -> list[np.ndarray]:
-        """Get the order levels in squared linear unit.
+    def get_order_levels_squared_linear(self) -> np.ndarray:
+        """Get the order levels in squared signal unit.
 
         Returns
         -------
-        list[numpy.ndarray]
-            Order levels squared (element-wise), one array per order.
+        numpy.ndarray
+            Order levels as a 2-D NumPy array. Each row corresponds to a specific order value, and
+            each column corresponds to a specific RPM value. The values are in squared signal unit.
         """
-        # Raw output is already in squared unit.
-        return self.get_output_as_nparray()
+        return self.get_output_as_nparray()[0]
 
-    def get_order_levels_in_dB(self, reference_value: float = 1.0) -> list[np.ndarray]:
+    def get_order_levels_dB(self, reference_value: float = 1.0) -> np.ndarray:
         """Get the order levels in dB.
 
         Parameters
         ----------
         reference_value : float, default: 1.0
-            Reference value for the dB computation. Must be greater than 0.
+            Reference value for dB conversion. If the input signal is in Pa, the reference value
+            should be 2e-5 Pa to produce levels in dB SPL.
 
         Returns
         -------
         list[numpy.ndarray]
-            Order levels in dB (10*log10(level / reference_value**2)), one array per order.
-
-        Raises
-        ------
-        PyAnsysSoundException
-            If ``reference_value`` is less than or equal to 0.
+            Order levels in dB (actual unit depends on the reference value), as a 2-D NumPy array.
+            Each row corresponds to a specific order value, and each column corresponds to a
+            specific RPM value.
         """
         if reference_value <= 0:
             raise PyAnsysSoundException("Reference value must be greater than 0.")
 
-        # Raw output is in squared unit: use 10*log10(level/ref²) = 20*log10(sqrt(level)/ref).
-        return [
-            10.0 * np.log10(level / reference_value**2) for level in self.get_output_as_nparray()
-        ]
+        levels_squared = self.get_order_levels_squared_linear()
+        return 10.0 * np.log10(levels_squared / reference_value**2 + 1e-12)
 
-    def get_order_level(self, order: float) -> np.ndarray:
-        """Get the level array for a single order.
+    def get_order_level_squared_linear(self, order: float) -> np.ndarray:
+        """Get a single order's level over RPM or time, in squared linear unit.
 
         Parameters
         ----------
         order : float
-            Order value for which to get the level.
+            Order value of interest.
 
         Returns
         -------
         numpy.ndarray
-            Level array for the specified order.
-
-        Raises
-        ------
-        PyAnsysSoundException
-            If the specified order is not in the orders list.
-        """
-        if self.orders is None or order not in self.orders:
-            raise PyAnsysSoundException(
-                f"Order {order} is not in the list of orders. "
-                "Use `OrderLevels.orders` to check or set the orders list."
-            )
-
-        index = self.orders.index(order)
-        return self.get_output_as_nparray()[index]
-
-    def get_associated_rpm(self) -> np.ndarray:
-        """Get the RPM support of the output order levels.
-
-        Returns
-        -------
-        numpy.ndarray
-            RPM values associated with the order levels.
-        """
-        output = self.get_output()
-
-        if output is None:
-            return np.array([])
-
-        return np.array(output[0].time_freq_support.time_frequencies.data)
-
-    def plot(self, display_in_dB: bool = False, reference_value: float = 1.0):
-        """Plot the order levels vs RPM.
-
-        Parameters
-        ----------
-        display_in_dB : bool, default: False
-            Whether to display levels in dB.
-        reference_value : float, default: 1.0
-            Reference value for the dB computation. Only used if ``display_in_dB`` is True.
-
-        Raises
-        ------
-        PyAnsysSoundException
-            If the output is not processed yet.
+            Level over RPM or time of the specified order, in squared linear unit.
         """
         if self._output is None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
             )
 
-        orders_to_plot = self.orders
-        if len(orders_to_plot) > 10:
-            warnings.warn(
-                PyAnsysSoundWarning(
-                    "More than 10 order values were listed. "
-                    "Only the first 10 order curves are displayed."
-                )
+        if self.orders is None or order not in self.orders:
+            raise PyAnsysSoundException(
+                f"Order {order} is not in the list of orders in :attr:`orders`."
             )
-            orders_to_plot = orders_to_plot[:10]
 
-        rpm = self.get_associated_rpm()
+        index = self.orders.index(order)
+        return self.get_order_levels_squared_linear()[index]
 
-        if display_in_dB:
-            levels = self.get_order_levels_in_dB(reference_value=reference_value)
-        else:
-            levels = self.get_order_levels_in_linear_unit()
-
-        for i, order in enumerate(orders_to_plot):
-            # Format order label: display as integer if possible.
-            order_label = str(int(order)) if order == int(order) else str(order)
-            plt.plot(rpm, levels[i], label=f"Order {order_label}")
-
-        plt.title(f"Order Analysis: {self.signal.name}")
-        plt.xlabel("RPM")
-
-        if display_in_dB:
-            plt.ylabel(f"Level (dB re {reference_value} {self.signal.unit})")
-        else:
-            plt.ylabel(f"Level ({self.signal.unit})")
-
-        plt.legend()
-        plt.grid(True)
-        plt.show()
-
-    def save_as_AnsysSound_Orders(self, path: str) -> None:
-        """Save results to an AnsysSound_Orders file.
+    def get_order_level_dB(self, order: float, reference_value: float = 1.0) -> np.ndarray:
+        """Get a single order's level over RPM or time, in dB.
 
         Parameters
         ----------
-        path : str
-            Path to the output file.
+        order : float
+            Order value of interest.
+        reference_value : float, default: 1.0
+            Reference value for dB conversion. If the input signal is in Pa, the reference value
+            should be 2e-5 Pa to produce levels in dB SPL.
+
+        Returns
+        -------
+        numpy.ndarray
+            Level over RPM or time of the specified order, in dB.
         """
-        raise NotImplementedError("save_as_AnsysSound_Orders() is not yet implemented.")
+        if self._output is None:
+            raise PyAnsysSoundException(
+                f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
+            )
+
+        if self.orders is None or order not in self.orders:
+            raise PyAnsysSoundException(
+                f"Order {order} is not in the list of orders in :attr:`orders`."
+            )
+
+        index = self.orders.index(order)
+        return self.get_order_levels_dB(reference_value=reference_value)[index]
+
+    def get_rpm_scale(self) -> np.ndarray:
+        """Get the RPM scale associated with the order levels.
+
+        Returns
+        -------
+        numpy.ndarray
+            RPM values where the order levels are defined.
+        """
+        return self.get_output_as_nparray()[2]
+
+    def get_time_scale(self) -> np.ndarray:
+        """Get the time scale associated with the order levels.
+
+        Returns
+        -------
+        numpy.ndarray
+            Time values, in seconds, where the order levels are defined.
+        """
+        return self.get_output_as_nparray()[3]
+
+    def plot(self, display_in_dB: bool = True, reference_value: float = 1.0):
+        """Plot the order levels over RPM.
+
+        Parameters
+        ----------
+        display_in_dB : bool, default: True
+            Whether to display levels in squared units (False), or in dB (True).
+        reference_value : float, default: 1.0
+            Reference value for dB conversion. Ignored if ``display_in_dB`` is False. If the input
+            signal is in Pa, the reference value should be 2e-5 Pa to display levels in dB SPL.
+        """
+        if self._output is None:
+            raise PyAnsysSoundException(
+                f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
+            )
+
+        orders = self.orders
+        if len(orders) > 10:
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    "There are more than 10 order values. Only the first 10 are displayed."
+                )
+            )
+            orders = orders[:10]
+
+        rpm = self.get_rpm_scale()
+
+        if display_in_dB:
+            levels = self.get_order_levels_dB(reference_value=reference_value)
+        else:
+            levels = self.get_order_levels_squared_linear()
+
+        for i, order in enumerate(orders):
+            plt.plot(rpm, levels[i], label=f"Order {order}")
+
+        title = "Order Analysis"
+        if len(self.signal.name) > 0:
+            title += f": {self.signal.name}"
+        plt.title(title)
+        plt.xlabel("RPM")
+
+        unit = self.signal.unit if isinstance(self.signal.unit, str) else self.signal.unit[1]
+
+        if display_in_dB:
+            str_unit = f"dB re {reference_value}"
+            if len(unit) > 0:
+                str_unit += f" {unit}"
+        elif len(unit) > 0:
+            if any(c in unit for c in [".", "/", "^"]):
+                str_unit = f"({unit})^2"
+            else:
+                str_unit = f"{unit}^2"
+        else:
+            str_unit = "squared units"
+
+        plt.ylabel(f"Level ({str_unit})")
+
+        plt.legend()
+        plt.grid()
+        plt.tight_layout()
+        plt.show()
+
+    def save_as_AnsysSound_Orders(self, filepath: str) -> None:
+        """Save computed order levels to a text file with AnsysSound_Orders header.
+
+        Parameters
+        ----------
+        filepath : str
+            Path to the saved file.
+        """
+        if self._output is None:
+            raise PyAnsysSoundException(
+                f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
+            )
+
+        if self.signal.unit != "Pa":
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    "The input signal is not in Pa, while the format only allows storing acoustic"
+                    "pressure data (Pa, Pa^2, dB SPL, etc.). The data will be saved as if it were"
+                    "acoustic pressure data, using Pa^2 as unit."
+                )
+            )
+
+        levels, orders, rpm_scale, _ = self.get_output_as_nparray()
+
+        path, _ = os.path.split(filepath)
+        if not os.path.exists(path):
+            os.makedirs(path)
+
+        with open(filepath, "w") as f:
+            # File header
+            f.write("AnsysSound_Orders\t1\nPa2\n")
+
+            # Table header (orders)
+            f.write("RPM\t")
+            f.write("\t".join(map(str, orders)))
+            f.write("\n")
+
+            # Table data (RPM value and corresponding order levels)
+            for i, rpm in enumerate(rpm_scale):
+                f.write(f"{rpm}\t")
+                f.write("\t".join(map(str, levels[:, i])))
+                f.write("\n")

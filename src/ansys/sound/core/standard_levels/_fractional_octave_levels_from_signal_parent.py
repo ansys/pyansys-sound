@@ -131,7 +131,7 @@ class FractionalOctaveLevelsFromSignalParent(
         # Retrieve frequency weighting at 1/3-octave-band center frequencies.
         weights_dB = self._get_frequency_weightings(center_frequencies)
 
-        # Convert weights to squared unit, and apply them to computed 1/3-octave levels.
+        # Convert weights to squared units, and apply them to computed 1/3-octave levels.
         weights = 10.0 ** (weights_dB / 10.0)
         levels *= weights
 
@@ -146,7 +146,7 @@ class FractionalOctaveLevelsFromSignalParent(
         Parameters
         ----------
         levels : numpy.ndarray
-            The computed levels to include in the output field, in squared unit. These will be
+            The computed levels to include in the output field, in squared units. These will be
             converted to dB in the set field.
         center_frequencies : numpy.ndarray
             The center frequencies corresponding to the computed levels, in Hz.
