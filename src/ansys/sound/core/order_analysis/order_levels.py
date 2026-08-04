@@ -194,6 +194,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
     def rpm_order_representation(self) -> FieldsContainer:
         """RPM-order representation of the input signal.
 
+
         Requires that the :meth:`process()` method be called to be populated.
         """
         return self.__rpm_order_representation
