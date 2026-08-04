@@ -145,7 +145,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
                 raise PyAnsysSoundException(
                     "Orders must be specified as a list of positive floats."
                 )
-            
+
             for order in orders:
                 if not isinstance(order, (int, float)) or order <= 0.0:
                     raise PyAnsysSoundException(
@@ -175,9 +175,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
     def order_width(self, width: float):
         """Set the width."""
         if width <= 0.0:
-            raise PyAnsysSoundException(
-                r"Width must be greater than 0.0 %."
-            )
+            raise PyAnsysSoundException(r"Width must be greater than 0.0 %.")
         self.__width = width
 
     @property
@@ -195,7 +193,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
     @property
     def rpm_order_representation(self) -> FieldsContainer:
         """RPM-order representation of the input signal.
-        
+
         Requires that the :meth:`process()` method be called to be populated.
         """
         return self.__rpm_order_representation
@@ -349,16 +347,14 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
             Level over RPM or time of the specified order, in squared linear unit.
         """
         if self.orders is None or order not in self.orders:
-            raise PyAnsysSoundException(
-                f"Order {order} is not in the `orders` list."
-            )
+            raise PyAnsysSoundException(f"Order {order} is not in the `orders` list.")
 
         index = self.orders.index(order)
         levels = self.get_order_levels_squared_linear()
 
         if len(levels) == 0:
             return np.array([])
-        
+
         return levels[index]
 
     def get_order_level_dB(self, order: float, reference_value: float = 1.0) -> np.ndarray:
