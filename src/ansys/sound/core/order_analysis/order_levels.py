@@ -141,14 +141,10 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
     def orders(self, orders: list[float]):
         """Set the orders."""
         if not (orders is None or isinstance(orders, (list, tuple, np.ndarray))):
-            raise PyAnsysSoundException(
-                "Orders must be specified as a list of floats."
-            )
+            raise PyAnsysSoundException("Orders must be specified as a list of floats.")
         for order in orders:
             if not isinstance(order, (int, float)):
-                raise PyAnsysSoundException(
-                    "Orders must be specified as a list of floats."
-                )
+                raise PyAnsysSoundException("Orders must be specified as a list of floats.")
         self.__orders = orders
 
     @property
@@ -192,7 +188,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
     @property
     def rpm_order_representation(self) -> FieldsContainer:
         """RPM-order representation of the input signal.
-        
+
         Requires that the :meth:`process()` method be called to be populated.
         """
         return self.__rpm_order_representation
@@ -204,9 +200,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         and then extracts the levels of the specified orders.
         """
         if self.signal is None:
-            raise PyAnsysSoundException(
-                f"No input signal set. Use `{__class__.__name__}.signal`."
-            )
+            raise PyAnsysSoundException(f"No input signal set. Use `{__class__.__name__}.signal`.")
 
         if self.rpm_profile is None:
             raise PyAnsysSoundException(
@@ -214,9 +208,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
             )
 
         if self.orders is None:
-            raise PyAnsysSoundException(
-                f"No order list set. Use `{__class__.__name__}.orders`."
-            )
+            raise PyAnsysSoundException(f"No order list set. Use `{__class__.__name__}.orders`.")
 
         # Step 1: Compute RPM-order representation.
         rpm_order_repr = RpmOrderRepresentation(
