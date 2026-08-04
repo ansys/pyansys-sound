@@ -130,7 +130,7 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
     @property
     def max_order(self) -> int:
         """Maximum order to consider in the RPM-order representation.
-        
+
         Signal content beyond this order value is ignored, and is not included in the output
         RPM-order representation.
         """
@@ -146,7 +146,7 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
     @property
     def order_resolution(self) -> float:
         """Order resolution, in percent of order.
-        
+
         This is the order step between each order value included in the RPM-order representation.
         """
         return self.__order_resolution
@@ -226,7 +226,7 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
             Time values, in seconds, corresponding to the columns of the output array.
         """
         output: FieldsContainer = self.get_output()
-        
+
         time_indexes = output.get_available_ids_for_label("time")
         Ntime = len(time_indexes)
         Nfft = len(output.get_field({"complex": 0, "time": 0}).data)
@@ -275,7 +275,7 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
             RPM values corresponding to the columns of the RPM-order representation.
         """
         return self.get_output_as_nparray()[2]
-    
+
     def get_associated_times(self) -> np.ndarray:
         """Get the associated time values.
 
