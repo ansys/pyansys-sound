@@ -266,8 +266,8 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         """
         return self.get_output_as_nparray()[1]
 
-    def get_associated_rpm(self) -> np.ndarray:
-        """Get the associated RPM values.
+    def get_rpm_scale(self) -> np.ndarray:
+        """Get the RPM scale associated with the RPM-order representation.
 
         Returns
         -------
@@ -276,8 +276,8 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         """
         return self.get_output_as_nparray()[2]
 
-    def get_associated_times(self) -> np.ndarray:
-        """Get the associated time values.
+    def get_time_scale(self) -> np.ndarray:
+        """Get the time scale associated with the RPM-order representation.
 
         Returns
         -------
