@@ -194,7 +194,6 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
     def rpm_order_representation(self) -> FieldsContainer:
         """RPM-order representation of the input signal.
 
-
         Requires that the :meth:`process()` method be called to be populated.
         """
         return self.__rpm_order_representation
@@ -230,8 +229,8 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
             warnings.warn(
                 PyAnsysSoundWarning(
                     f"Order width ({self.order_width} %) is smaller than the order resolution "
-                    f"({self.order_resolution} %). Results may be inaccurate. Consider increasing the "
-                    "order width or decreasing the order resolution."
+                    f"({self.order_resolution} %). Results may be inaccurate. Consider increasing "
+                    "the order width or decreasing the order resolution."
                 )
             )
 
@@ -264,8 +263,8 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         Returns
         -------
         FieldsContainer
-            FieldsContainer of order levels. Each field corresponds to a requested order in :attr:`orders`,
-            containing that order's level over RPM, in squared signal unit.
+            FieldsContainer of order levels. Each field corresponds to a requested order in
+            :attr:`orders`, containing that order's level over RPM, in squared signal unit.
         """
         if self._output is None:
             warnings.warn(
