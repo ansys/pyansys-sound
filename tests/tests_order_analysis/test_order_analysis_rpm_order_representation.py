@@ -25,7 +25,7 @@ import numpy as np
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-from ansys.sound.core.order_analysis import ComputeRPMOrderRepresentation
+from ansys.sound.core.order_analysis import RpmOrderRepresentation
 from ansys.sound.core.signal_utilities import LoadWav
 
 # Skip entire test module if Sound version < 2027.1.0
@@ -53,21 +53,21 @@ EXP_10_FRAME31_IDX780 = 140.056763  # order 2
 EXP_10_FRAME41_IDX1560 = 37.6345825  # order 4
 
 
-def test_compute_rpm_order_representation_instantiation():
-    """Test the instantiation of ComputeRPMOrderRepresentation with default values."""
-    obj = ComputeRPMOrderRepresentation()
+def test_rpm_order_representation_instantiation():
+    """Test the instantiation of RpmOrderRepresentation with default values."""
+    obj = RpmOrderRepresentation()
     assert obj is not None
     assert obj.signal is None
     assert obj.rpm_profile is None
-    assert obj.order_max == 100
+    assert obj.max_order == 100
     assert obj.order_resolution == 2.0
 
 
-def test_compute_rpm_order_representation_str():
-    """Test the __str__ method of ComputeRPMOrderRepresentation."""
-    obj = ComputeRPMOrderRepresentation()
+def test_rpm_order_representation_str():
+    """Test the __str__ method of RpmOrderRepresentation."""
+    obj = RpmOrderRepresentation()
     expected = (
-        "ComputeRPMOrderRepresentation object\n"
+        "RpmOrderRepresentation object\n"
         "Data:\n"
         "\tSignal name: Not set\n"
         "\tRPM profile name: Not set\n"
@@ -87,9 +87,9 @@ def test_compute_rpm_order_representation_str():
     assert "Not set" not in s
 
 
-def test_compute_rpm_order_representation_set_get_signal():
+def test_rpm_order_representation_set_get_signal():
     """Test the signal property setter and getter."""
-    obj = ComputeRPMOrderRepresentation()
+    obj = RpmOrderRepresentation()
     signal = Field()
     signal.data = 42.0 * np.ones(3)
     obj.signal = signal
@@ -98,26 +98,26 @@ def test_compute_rpm_order_representation_set_get_signal():
     assert retrieved.data[0, 2] == 42.0
 
 
-def test_compute_rpm_order_representation_set_signal_exception():
+def test_rpm_order_representation_set_signal_exception():
     """Test that assigning a non-Field to signal raises PyAnsysSoundException."""
-    obj = ComputeRPMOrderRepresentation()
+    obj = RpmOrderRepresentation()
     with pytest.raises(PyAnsysSoundException, match="Signal must be specified as a DPF field."):
         obj.signal = "WrongType"
     assert obj.signal is None
 
 
-def test_compute_rpm_order_representation_set_get_rpm_profile():
+def test_rpm_order_representation_set_get_rpm_profile():
     """Test the rpm_profile property setter and getter."""
-    obj = ComputeRPMOrderRepresentation()
+    obj = RpmOrderRepresentation()
     rpm = Field()
     rpm.append([1000.0, 2000.0, 3000.0], 1)
     obj.rpm_profile = rpm
     assert obj.rpm_profile.data[0, 2] == 3000.0
 
 
-def test_compute_rpm_order_representation_set_rpm_profile_exception():
+def test_rpm_order_representation_set_rpm_profile_exception():
     """Test that assigning a non-Field to rpm_profile raises PyAnsysSoundException."""
-    obj = ComputeRPMOrderRepresentation()
+    obj = RpmOrderRepresentation()
     with pytest.raises(
         PyAnsysSoundException, match="RPM profile must be specified as a DPF field."
     ):
@@ -125,51 +125,51 @@ def test_compute_rpm_order_representation_set_rpm_profile_exception():
     assert obj.rpm_profile is None
 
 
-def test_compute_rpm_order_representation_set_get_order_max():
+def test_rpm_order_representation_set_get_order_max():
     """Test the order_max property setter and getter."""
-    obj = ComputeRPMOrderRepresentation()
-    obj.order_max = 50
-    assert obj.order_max == 50
+    obj = RpmOrderRepresentation()
+    obj.max_order = 50
+    assert obj.max_order == 50
 
 
-def test_compute_rpm_order_representation_set_order_max_exception_zero():
+def test_rpm_order_representation_set_order_max_exception_zero():
     """Test that setting order_max to 0 raises PyAnsysSoundException."""
-    obj = ComputeRPMOrderRepresentation()
+    obj = RpmOrderRepresentation()
     with pytest.raises(PyAnsysSoundException, match="Maximum order must be greater than 0."):
-        obj.order_max = 0
+        obj.max_order = 0
 
 
-def test_compute_rpm_order_representation_set_order_max_exception_negative():
+def test_rpm_order_representation_set_order_max_exception_negative():
     """Test that setting order_max to a negative value raises PyAnsysSoundException."""
-    obj = ComputeRPMOrderRepresentation()
+    obj = RpmOrderRepresentation()
     with pytest.raises(PyAnsysSoundException, match="Maximum order must be greater than 0."):
-        obj.order_max = -5
+        obj.max_order = -5
 
 
-def test_compute_rpm_order_representation_set_get_order_resolution():
+def test_rpm_order_representation_set_get_order_resolution():
     """Test the order_resolution property setter and getter."""
-    obj = ComputeRPMOrderRepresentation()
+    obj = RpmOrderRepresentation()
     obj.order_resolution = 0.5
     assert obj.order_resolution == 0.5
 
 
-def test_compute_rpm_order_representation_set_order_resolution_exception_zero():
+def test_rpm_order_representation_set_order_resolution_exception_zero():
     """Test that setting order_resolution to 0.0 raises PyAnsysSoundException."""
-    obj = ComputeRPMOrderRepresentation()
+    obj = RpmOrderRepresentation()
     with pytest.raises(PyAnsysSoundException, match="Order resolution must be greater than 0.0."):
         obj.order_resolution = 0.0
 
 
-def test_compute_rpm_order_representation_process():
-    """Test the process method of ComputeRPMOrderRepresentation."""
-    obj = ComputeRPMOrderRepresentation()
+def test_rpm_order_representation_process():
+    """Test the process method of RpmOrderRepresentation."""
+    obj = RpmOrderRepresentation()
 
     # Error: no signal set
     with pytest.raises(PyAnsysSoundException) as excinfo:
         obj.process()
     assert (
         str(excinfo.value) == "No signal found for RPM order representation computation. "
-        "Use `ComputeRPMOrderRepresentation.signal`."
+        "Use `RpmOrderRepresentation.signal`."
     )
 
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
@@ -186,7 +186,7 @@ def test_compute_rpm_order_representation_process():
         obj.process()
     assert (
         str(excinfo.value) == "No RPM profile found for RPM order representation computation. "
-        "Use `ComputeRPMOrderRepresentation.rpm_profile`."
+        "Use `RpmOrderRepresentation.rpm_profile`."
     )
 
     obj.rpm_profile = rpm_profile
@@ -197,8 +197,8 @@ def test_compute_rpm_order_representation_process():
         assert False, "process() raised an unexpected exception"
 
 
-def test_compute_rpm_order_representation_get_output():
-    """Test the get_output method of ComputeRPMOrderRepresentation."""
+def test_rpm_order_representation_get_output():
+    """Test the get_output method of RpmOrderRepresentation."""
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
     fc = wav_loader.get_output()
@@ -207,12 +207,12 @@ def test_compute_rpm_order_representation_get_output():
     rpm_profile.time_freq_support = signal.time_freq_support
 
     # Use order_max=160 to match EXP_NUM_FRAMES_160 (frame count depends on order_max).
-    obj = ComputeRPMOrderRepresentation(signal=signal, rpm_profile=rpm_profile, order_max=160)
+    obj = RpmOrderRepresentation(signal=signal, rpm_profile=rpm_profile, max_order=160)
 
     with pytest.warns(
         PyAnsysSoundWarning,
         match="Output is not processed yet. "
-        "Use the `ComputeRPMOrderRepresentation.process\\(\\)` method.",
+        "Use the `RpmOrderRepresentation.process\\(\\)` method.",
     ):
         output = obj.get_output()
         assert output is None
@@ -224,15 +224,15 @@ def test_compute_rpm_order_representation_get_output():
     assert len(output) == EXP_NUM_FRAMES_160 * 2
 
 
-def test_compute_rpm_order_representation_get_output_as_nparray_not_processed():
+def test_rpm_order_representation_get_output_as_nparray_not_processed():
     """Test that get_output_as_nparray returns an empty array when not yet processed."""
-    obj = ComputeRPMOrderRepresentation()
+    obj = RpmOrderRepresentation()
     with pytest.warns(PyAnsysSoundWarning):
         arr = obj.get_output_as_nparray()
     assert arr.size == 0
 
 
-def test_compute_rpm_order_representation_get_output_as_nparray_order_max_160():
+def test_rpm_order_representation_get_output_as_nparray_order_max_160():
     """Test get_output_as_nparray with order_max=160 and order_resolution=2.0."""
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
@@ -241,8 +241,8 @@ def test_compute_rpm_order_representation_get_output_as_nparray_order_max_160():
     rpm_profile = fc[1]
     rpm_profile.time_freq_support = signal.time_freq_support
 
-    obj = ComputeRPMOrderRepresentation(
-        signal=signal, rpm_profile=rpm_profile, order_max=160, order_resolution=2.0
+    obj = RpmOrderRepresentation(
+        signal=signal, rpm_profile=rpm_profile, max_order=160, order_resolution=2.0
     )
     obj.process()
     arr = obj.get_output_as_nparray()
@@ -256,7 +256,7 @@ def test_compute_rpm_order_representation_get_output_as_nparray_order_max_160():
     assert arr[1628][102] == pytest.approx(EXP_160_FRAME814_IDX102, abs=1e-1)
 
 
-def test_compute_rpm_order_representation_get_output_as_nparray_order_max_10():
+def test_rpm_order_representation_get_output_as_nparray_order_max_10():
     """Test get_output_as_nparray with order_max=10 and order_resolution=0.125."""
     wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
     wav_loader.process()
@@ -265,8 +265,8 @@ def test_compute_rpm_order_representation_get_output_as_nparray_order_max_10():
     rpm_profile = fc[1]
     rpm_profile.time_freq_support = signal.time_freq_support
 
-    obj = ComputeRPMOrderRepresentation(
-        signal=signal, rpm_profile=rpm_profile, order_max=10, order_resolution=0.125
+    obj = RpmOrderRepresentation(
+        signal=signal, rpm_profile=rpm_profile, max_order=10, order_resolution=0.125
     )
     obj.process()
     arr = obj.get_output_as_nparray()
@@ -280,11 +280,11 @@ def test_compute_rpm_order_representation_get_output_as_nparray_order_max_10():
     assert arr[82][1560] == pytest.approx(EXP_10_FRAME41_IDX1560, abs=1e-2)
 
 
-def test_compute_rpm_order_representation_plot_exception():
+def test_rpm_order_representation_plot_exception():
     """Test that plot() raises PyAnsysSoundException (plotting is not supported)."""
-    obj = ComputeRPMOrderRepresentation()
+    obj = RpmOrderRepresentation()
     with pytest.raises(
         PyAnsysSoundException,
-        match="Plotting is not supported for class `ComputeRPMOrderRepresentation`",
+        match="Plotting is not supported for class `RpmOrderRepresentation`",
     ):
         obj.plot()
