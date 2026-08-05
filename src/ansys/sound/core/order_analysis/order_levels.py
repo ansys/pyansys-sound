@@ -42,15 +42,16 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
     This class analyzes a time-domain signal associated with its RPM profile to compute the levels
     over RPM of a specified list of orders. This is achieved with the following method:
 
-    -   Firstly, the spectrogram (time-frequency representation) of the input signal is computed;
-    -   Then, this spectrogram is converted to an RPM-order representation based on the input RPM
+    -   Firstly, an RPM-order representation is computed by applying a short-time Fourier transform
+        (STFT) to a resampled constant-angle version of the input signal, using the associated RPM
         profile;
-    -   Finally, the specified order levels are extracted from this converted representation.
+    -   Then, the specified order levels are extracted from this representation by integrating order
+        energy over the user-specified width.
 
     Two additional parameters allow you to refine the obtained result:
 
-    -   Order resolution (in percent of order): defines how fine the order definition in the
-        obtained RPM-order representation is;
+    -   Order resolution (in percent of order): defines how fine the order definition is in the
+        obtained RPM-order representation;
     -   Order width (in percent of order): defines the width over which the representation energy is
         summed to produce an order level. It is expected that order width is greater or equal to
         order resolution.
@@ -90,15 +91,17 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         orders : list[float], default: None
             List of orders at which to extract levels.
         order_width : float, default: 10.0
-            Width in percent of order for the order level extraction. It defines the range of order
-            values around each specified order in :attr:`orders` where the energy is integrated to
-            compute that order's level.
+            Width in percent of order for the order level extraction. It defines the order range
+            around each value in :attr:`orders` over which the energy is integrated to compute the
+            order level.
         max_order : int, default: 160
             Maximum order for the RPM-order representation computation. This is the maximum order
             value included in the computed RPM-order representation. Every order listed in
             :attr:`orders` must be less than or equal to this value.
         order_resolution : float, default: 2.0
-            Order resolution in percent of order for the RPM-order representation computation.
+            Order resolution in percent of order for the RPM-order representation computation. Note
+            that reducing this value increases the RPM step between each RPM value where order
+            levels are computed, and conversely.
         """
         super().__init__()
         self.signal = signal
@@ -186,7 +189,8 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         """Order resolution, in percent of order.
 
         This is the order step between each order value included in the computed RPM-order
-        representation.
+        representation. Note that reducing this value increases the RPM step between each RPM value
+        where order levels are computed, and conversely.
         """
         return self.__resolution
 
@@ -233,16 +237,12 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
     def rpm_order_representation(self) -> FieldsContainer:
         """RPM-order representation of the input signal.
 
-        Requires that the :meth:`process()` method be called to be populated.
+        The :meth:`process()` method must be called to populate this attribute.
         """
         return self.__rpm_order_representation
 
     def process(self):
-        """Run the order analysis.
-
-        This method first computes the RPM-order representation using the signal and its RPM
-        profile, and then extracts the levels of the specified orders.
-        """
+        """Run the order analysis with the parameters specified in this object."""
         if self.signal is None:
             raise PyAnsysSoundException(
                 f"No input signal is set. Use `{__class__.__name__}.signal`."
@@ -435,6 +435,11 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         reference_value : float, default: 1.0
             Reference value for dB conversion. Ignored if ``display_in_dB`` is False. If the input
             signal is in Pa, the reference value should be 2e-5 Pa to display levels in dB SPL.
+
+        Notes
+        -----
+        If more than 10 order values are specified in :attr:`orders`, only the first 10 are
+        displayed.
         """
         if self._output is None:
             raise PyAnsysSoundException(

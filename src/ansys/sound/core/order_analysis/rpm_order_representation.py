@@ -84,7 +84,8 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
             RPM-order representation. Signal content beyond this order value is ignored.
         order_resolution : float, default: 2.0
             Order resolution, in percent of order. This corresponds to the order step between
-            each row of the output RPM-order representation.
+            each row of the output RPM-order representation. Note that reducing this value increases
+            the RPM step between each RPM value in the RPM-order representation.
         """
         super().__init__()
         self.signal = signal
@@ -152,6 +153,8 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         """Order resolution, in percent of order.
 
         This is the order step between each order value included in the RPM-order representation.
+        Note that reducing this value increases the RPM step between each RPM value in the RPM-order
+        representation.
         """
         return self.__order_resolution
 
