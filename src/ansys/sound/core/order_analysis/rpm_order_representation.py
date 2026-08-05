@@ -37,20 +37,21 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
     """Compute the RPM order representation of a signal.
 
     This class computes an RPM-order representation of a signal, given an associated RPM profile. An
-    RPM-order describes how the signal level varies depending on order value and RPM. The output
-    takes the form of a matrix, where each row corresponds to a specific order value and each column
-    corresponds to a specific RPM or time value. This class is used for extracting order levels over
-    RPM or time, with the class :class:`ExtractOrderLevels`.
+    RPM-order representation describes how the signal level varies depending on order value and RPM.
+    The output takes the form of a matrix, where each row corresponds to a specific order value and
+    each column corresponds to a specific RPM or time value. This class is used for extracting order
+    levels over RPM or time, with the class :class:`OrderLevels`.
 
-    The RPM-order representation is obtained by applying a short-time Fourier transform (STFT) to
-    a resampled constant-angle version of the input signal, thanks to the provided RPM profile.
+    The method to obtain the RPM-order representation consists of a short-time Fourier transform
+    (STFT) applied to a resampled constant-angle version of the input signal, thanks to the provided
+    RPM profile.
 
     .. seealso::
-        :class:`ExtractOrderLevels`
+        :class:`OrderLevels`
 
     Examples
     --------
-    Compute the RPM order representation of a signal.
+    Compute the RPM order representation of a signal with its RPM profile.
 
     >>> from ansys.sound.core.order_analysis import RpmOrderRepresentation
     >>> rpm_order_representation = RpmOrderRepresentation(
@@ -215,36 +216,36 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         return self._output
 
     def get_output_as_nparray(self) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-        """Get the RPM order representation as a NumPy array.
+        """Get the RPM order representation as NumPy arrays.
 
         Returns
         -------
         numpy.ndarray
-            RPM order representation as a 2-D NumPy array. Each stored value corresponds to a
-            specific order value's complex level, in the input signal's unit, over RPM or time.
+            RPM order representation as a 2-D NumPy array. Each column corresponds to a specific
+            order's complex level over RPM or time, in the input signal's unit.
         numpy.ndarray
-            Order values corresponding to the rows of the output array.
+            Order values corresponding to the columns of the output array.
         numpy.ndarray
-            RPM values corresponding to the columns of the output array.
+            RPM values corresponding to the rows of the output array.
         numpy.ndarray
-            Time values, in seconds, corresponding to the columns of the output array.
+            Time values, in seconds, corresponding to the rows of the output array.
         """
         output = self.get_output()
 
         if output is None:
             return np.array([]), np.array([]), np.array([]), np.array([])
 
-        time_indexes = output.get_available_ids_for_label("time")
-        Ntime = len(time_indexes)
-        Nfft = len(output.get_field({"complex": 0, "time": 0}).data)
+        rpm_indexes = output.get_available_ids_for_label("time")
+        Nrpm = len(rpm_indexes)
+        Norders = len(output.get_field({"complex": 0, "time": 0}).data)
 
         # Pre-allocate memory for the output array.
-        out_as_np_array = np.empty((Ntime, Nfft), dtype=np.complex128)
+        rpm_order_representation = np.empty((Nrpm, Norders), dtype=np.complex128)
 
-        for i in time_indexes:
+        for i in rpm_indexes:
             f1 = output.get_field({"complex": 0, "time": i})
             f2 = output.get_field({"complex": 1, "time": i})
-            out_as_np_array[i] = f1.data + 1j * f2.data
+            rpm_order_representation[i] = f1.data + 1j * f2.data
 
         order_values = np.array(output[0].time_freq_support.time_frequencies.data)
         rpm_values = np.array(
@@ -252,26 +253,26 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         )
         time_values = np.array(output.time_freq_support.time_frequencies.data)
 
-        return out_as_np_array, order_values, rpm_values, time_values
+        return rpm_order_representation, order_values, rpm_values, time_values
 
     def get_rpm_order_representation(self) -> np.ndarray:
-        """Get the RPM order representation.
+        """Get the RPM-order representation.
 
         Returns
         -------
         numpy.ndarray
-            RPM order representation as a 2-D NumPy array. Each stored value corresponds to a
-            specific order value's complex level, in the input signal's unit, over RPM or time.
+            RPM order representation as a 2-D NumPy array. Each column corresponds to a specific
+            order's complex level over RPM or time, in the input signal's unit.
         """
         return self.get_output_as_nparray()[0]
 
     def get_orders(self) -> np.ndarray:
-        """Get the order values.
+        """Get the order values associated with the RPM-order representation.
 
         Returns
         -------
         numpy.ndarray
-            Order values corresponding to the rows of the RPM-order representation.
+            Order values corresponding to the columns of the RPM-order representation.
         """
         return self.get_output_as_nparray()[1]
 
@@ -281,7 +282,7 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         Returns
         -------
         numpy.ndarray
-            RPM values corresponding to the columns of the RPM-order representation.
+            RPM values corresponding to the rows of the RPM-order representation.
         """
         return self.get_output_as_nparray()[2]
 
@@ -291,6 +292,6 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         Returns
         -------
         numpy.ndarray
-            Time values, in seconds, corresponding to the columns of the RPM-order representation.
+            Time values, in seconds, corresponding to the rows of the RPM-order representation.
         """
         return self.get_output_as_nparray()[3]
