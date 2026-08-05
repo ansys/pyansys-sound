@@ -200,7 +200,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
     @property
     def order_width(self) -> float:
         """Order width in percent of order.
-        
+
         This defines the range of order values around each order specified in :attr:`orders` where
         the energy is integrated to produce that order's level.
         """
