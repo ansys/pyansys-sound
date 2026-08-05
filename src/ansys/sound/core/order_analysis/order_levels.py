@@ -240,8 +240,8 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
     def process(self):
         """Run the order analysis.
 
-        This method first computes the RPM-order representation using the signal and its RPM profile,
-        and then extracts the levels of the specified orders.
+        This method first computes the RPM-order representation using the signal and its RPM
+        profile, and then extracts the levels of the specified orders.
         """
         if self.signal is None:
             raise PyAnsysSoundException(
