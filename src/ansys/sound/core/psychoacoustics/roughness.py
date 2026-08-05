@@ -214,15 +214,15 @@ class Roughness(PsychoacousticsParent):
         Returns the frequencies corresponding to the Bark band indexes where the specific roughness
         is defined.
 
-        References
-        ----------
-        Traunmüller, Hartmut. "Analytical Expressions for the Tonotopic Sensory Scale." Journal of
-        the Acoustical Society of America. Vol. 88, Issue 1, 1990, pp. 97–100.
-
         Returns
         -------
         numpy.ndarray
             Bark band center frequencies, in Hz.
+
+        References
+        ----------
+        Traunmüller, Hartmut. "Analytical Expressions for the Tonotopic Sensory Scale." Journal of
+        the Acoustical Society of America. Vol. 88, Issue 1, 1990, pp. 97–100.
         """
         return self._convert_bark_to_hertz(self.get_bark_band_indexes())
 
