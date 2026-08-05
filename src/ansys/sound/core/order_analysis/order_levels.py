@@ -373,7 +373,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         return 10.0 * np.log10(levels_squared / reference_value**2 + 1e-12)
 
     def get_order_level_squared_linear(self, order: float) -> np.ndarray:
-        """Get a single order's level over RPM, in squared signal unit.
+        """Get the level over RPM of a single order, in squared signal unit.
 
         Parameters
         ----------
@@ -397,7 +397,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         return levels[index]
 
     def get_order_level_dB(self, order: float, reference_value: float = 1.0) -> np.ndarray:
-        """Get a single order's level over RPM, in dB.
+        """Get the level over RPM of a single order, in dB.
 
         Parameters
         ----------
