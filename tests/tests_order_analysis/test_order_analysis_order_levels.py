@@ -71,33 +71,33 @@ EXP_NUM_ORDERS = 3
 EXP_NUM_RPM_POINTS = 848
 
 # Pa^2 output
-EXP_PA2_ORDER2_IDX0 = 0.0053486785509092695
-EXP_PA2_ORDER2_IDX10 = 0.008893666678337932
-EXP_PA2_ORDER2_IDX100 = 0.00047953474928854608
-EXP_PA2_ORDER2_IDX500 = 0.00090051242185874196
-EXP_PA2_ORDER4_IDX0 = 5.554353083763535e-05
-EXP_PA2_ORDER4_IDX10 = 0.00011636148361238936
-EXP_PA2_ORDER4_IDX100 = 0.00018775817776853440
-EXP_PA2_ORDER4_IDX500 = 0.00063774500269680350
-EXP_PA2_ORDER10_IDX0 = 4.6480690136126773e-07
-EXP_PA2_ORDER10_IDX10 = 2.8781593669622625e-06
+EXP_PA2_ORDER2_RPM0 = 0.0053486785509092695
+EXP_PA2_ORDER2_RPM10 = 0.008893666678337932
+EXP_PA2_ORDER2_RPM100 = 0.00047953474928854608
+EXP_PA2_ORDER2_RPM500 = 0.00090051242185874196
+EXP_PA2_ORDER4_RPM0 = 5.554353083763535e-05
+EXP_PA2_ORDER4_RPM10 = 0.00011636148361238936
+EXP_PA2_ORDER4_RPM100 = 0.00018775817776853440
+EXP_PA2_ORDER4_RPM500 = 0.00063774500269680350
+EXP_PA2_ORDER10_RPM0 = 4.6480690136126773e-07
+EXP_PA2_ORDER10_RPM10 = 2.8781593669622625e-06
 
 # Pa^2 output (width=100%)
-EXP_PA2_ORDER2_IDX0_W100 = 0.007259188930523296
-EXP_PA2_ORDER2_IDX10_W100 = 0.009584942415342615
-EXP_PA2_ORDER4_IDX0_W100 = 8.988746071167709e-05
-EXP_PA2_ORDER4_IDX10_W100 = 0.00014242398895127672
+EXP_PA2_ORDER2_RPM0_WIDTH100 = 0.007259188930523296
+EXP_PA2_ORDER2_RPM10_WIDTH100 = 0.009584942415342615
+EXP_PA2_ORDER4_RPM0_WIDTH100 = 8.988746071167709e-05
+EXP_PA2_ORDER4_RPM10_WIDTH100 = 0.00014242398895127672
 
 # dB output (dBFS and dBSPL)
-EXP_DBFS_ORDER2_IDX0 = -22.7175350189209
-EXP_DBFS_ORDER4_IDX0 = -42.55366516113281
-EXP_DBSPL_ORDER2_IDX0 = 71.26186506779948
-EXP_DBSPL_ORDER4_IDX0 = 51.42573492558756
+EXP_DBFS_ORDER2_RPM0 = -22.7175350189209
+EXP_DBFS_ORDER4_RPM0 = -42.55366516113281
+EXP_DBSPL_ORDER2_RPM0 = 71.26186506779948
+EXP_DBSPL_ORDER4_RPM0 = 51.42573492558756
 
 # RPM values
-EXP_RPM_IDX0 = 974.4971313476562
-EXP_RPM_IDX100 = 2030.80322265625
-EXP_RPM_IDX500 = 4209.921875
+EXP_RPM_RPM0 = 974.4971313476562
+EXP_RPM_RPM100 = 2030.80322265625
+EXP_RPM_RPM500 = 4209.921875
 EXP_RPM_LAST = 4821.28173828125
 
 
@@ -401,16 +401,16 @@ def test_order_levels_get_output_as_nparray(load_accel_and_rpm):
     levels, orders, rpm = order_levels.get_output_as_nparray()
     assert len(levels) == EXP_NUM_ORDERS
     assert len(levels[0]) == EXP_NUM_RPM_POINTS
-    assert levels[0][0] == pytest.approx(EXP_PA2_ORDER2_IDX0, rel=1e-4)
-    assert levels[0][10] == pytest.approx(EXP_PA2_ORDER2_IDX10, rel=1e-4)
-    assert levels[0][100] == pytest.approx(EXP_PA2_ORDER2_IDX100, rel=1e-4)
-    assert levels[0][500] == pytest.approx(EXP_PA2_ORDER2_IDX500, rel=1e-4)
-    assert levels[1][0] == pytest.approx(EXP_PA2_ORDER4_IDX0, rel=1e-4)
-    assert levels[1][10] == pytest.approx(EXP_PA2_ORDER4_IDX10, rel=1e-4)
-    assert levels[1][100] == pytest.approx(EXP_PA2_ORDER4_IDX100, rel=1e-4)
-    assert levels[1][500] == pytest.approx(EXP_PA2_ORDER4_IDX500, rel=1e-4)
-    assert levels[2][0] == pytest.approx(EXP_PA2_ORDER10_IDX0, rel=1e-4)
-    assert levels[2][10] == pytest.approx(EXP_PA2_ORDER10_IDX10, rel=1e-4)
+    assert levels[0][0] == pytest.approx(EXP_PA2_ORDER2_RPM0, rel=1e-4)
+    assert levels[0][10] == pytest.approx(EXP_PA2_ORDER2_RPM10, rel=1e-4)
+    assert levels[0][100] == pytest.approx(EXP_PA2_ORDER2_RPM100, rel=1e-4)
+    assert levels[0][500] == pytest.approx(EXP_PA2_ORDER2_RPM500, rel=1e-4)
+    assert levels[1][0] == pytest.approx(EXP_PA2_ORDER4_RPM0, rel=1e-4)
+    assert levels[1][10] == pytest.approx(EXP_PA2_ORDER4_RPM10, rel=1e-4)
+    assert levels[1][100] == pytest.approx(EXP_PA2_ORDER4_RPM100, rel=1e-4)
+    assert levels[1][500] == pytest.approx(EXP_PA2_ORDER4_RPM500, rel=1e-4)
+    assert levels[2][0] == pytest.approx(EXP_PA2_ORDER10_RPM0, rel=1e-4)
+    assert levels[2][10] == pytest.approx(EXP_PA2_ORDER10_RPM10, rel=1e-4)
     assert len(orders) == EXP_NUM_ORDERS
     assert orders[0] == 2.0
     assert orders[1] == 4.0
@@ -428,10 +428,10 @@ def test_order_levels_get_output_as_nparray_width_100(load_accel_and_rpm):
     levels, _, _ = order_levels.get_output_as_nparray()
     assert len(levels) == EXP_NUM_ORDERS
     assert len(levels[0]) == EXP_NUM_RPM_POINTS
-    assert levels[0][0] == pytest.approx(EXP_PA2_ORDER2_IDX0_W100, rel=1e-4)
-    assert levels[0][10] == pytest.approx(EXP_PA2_ORDER2_IDX10_W100, rel=1e-4)
-    assert levels[1][0] == pytest.approx(EXP_PA2_ORDER4_IDX0_W100, rel=1e-4)
-    assert levels[1][10] == pytest.approx(EXP_PA2_ORDER4_IDX10_W100, rel=1e-4)
+    assert levels[0][0] == pytest.approx(EXP_PA2_ORDER2_RPM0_WIDTH100, rel=1e-4)
+    assert levels[0][10] == pytest.approx(EXP_PA2_ORDER2_RPM10_WIDTH100, rel=1e-4)
+    assert levels[1][0] == pytest.approx(EXP_PA2_ORDER4_RPM0_WIDTH100, rel=1e-4)
+    assert levels[1][10] == pytest.approx(EXP_PA2_ORDER4_RPM10_WIDTH100, rel=1e-4)
 
 
 def test_order_levels_get_order_levels_squared_linear(load_accel_and_rpm):
@@ -442,16 +442,16 @@ def test_order_levels_get_order_levels_squared_linear(load_accel_and_rpm):
     levels = order_levels.get_order_levels_squared_linear()
     assert len(levels) == EXP_NUM_ORDERS
     assert len(levels[0]) == EXP_NUM_RPM_POINTS
-    assert levels[0][0] == pytest.approx(EXP_PA2_ORDER2_IDX0, rel=1e-4)
-    assert levels[0][10] == pytest.approx(EXP_PA2_ORDER2_IDX10, rel=1e-4)
-    assert levels[0][100] == pytest.approx(EXP_PA2_ORDER2_IDX100, rel=1e-4)
-    assert levels[0][500] == pytest.approx(EXP_PA2_ORDER2_IDX500, rel=1e-4)
-    assert levels[1][0] == pytest.approx(EXP_PA2_ORDER4_IDX0, rel=1e-4)
-    assert levels[1][10] == pytest.approx(EXP_PA2_ORDER4_IDX10, rel=1e-4)
-    assert levels[1][100] == pytest.approx(EXP_PA2_ORDER4_IDX100, rel=1e-4)
-    assert levels[1][500] == pytest.approx(EXP_PA2_ORDER4_IDX500, rel=1e-4)
-    assert levels[2][0] == pytest.approx(EXP_PA2_ORDER10_IDX0, rel=1e-4)
-    assert levels[2][10] == pytest.approx(EXP_PA2_ORDER10_IDX10, rel=1e-4)
+    assert levels[0][0] == pytest.approx(EXP_PA2_ORDER2_RPM0, rel=1e-4)
+    assert levels[0][10] == pytest.approx(EXP_PA2_ORDER2_RPM10, rel=1e-4)
+    assert levels[0][100] == pytest.approx(EXP_PA2_ORDER2_RPM100, rel=1e-4)
+    assert levels[0][500] == pytest.approx(EXP_PA2_ORDER2_RPM500, rel=1e-4)
+    assert levels[1][0] == pytest.approx(EXP_PA2_ORDER4_RPM0, rel=1e-4)
+    assert levels[1][10] == pytest.approx(EXP_PA2_ORDER4_RPM10, rel=1e-4)
+    assert levels[1][100] == pytest.approx(EXP_PA2_ORDER4_RPM100, rel=1e-4)
+    assert levels[1][500] == pytest.approx(EXP_PA2_ORDER4_RPM500, rel=1e-4)
+    assert levels[2][0] == pytest.approx(EXP_PA2_ORDER10_RPM0, rel=1e-4)
+    assert levels[2][10] == pytest.approx(EXP_PA2_ORDER10_RPM10, rel=1e-4)
 
 
 def test_order_levels_get_order_levels_dB(load_accel_and_rpm):
@@ -464,14 +464,14 @@ def test_order_levels_get_order_levels_dB(load_accel_and_rpm):
     levels = order_levels.get_order_levels_dB(reference_value=1.0)
     assert len(levels) == EXP_NUM_ORDERS
     assert len(levels[0]) == EXP_NUM_RPM_POINTS
-    assert levels[0][0] == pytest.approx(EXP_DBFS_ORDER2_IDX0, rel=1e-4)
-    assert levels[1][0] == pytest.approx(EXP_DBFS_ORDER4_IDX0, rel=1e-4)
+    assert levels[0][0] == pytest.approx(EXP_DBFS_ORDER2_RPM0, rel=1e-4)
+    assert levels[1][0] == pytest.approx(EXP_DBFS_ORDER4_RPM0, rel=1e-4)
 
     levels = order_levels.get_order_levels_dB(reference_value=2e-5)
     assert len(levels) == EXP_NUM_ORDERS
     assert len(levels[0]) == EXP_NUM_RPM_POINTS
-    assert levels[0][0] == pytest.approx(EXP_DBSPL_ORDER2_IDX0, rel=1e-4)
-    assert levels[1][0] == pytest.approx(EXP_DBSPL_ORDER4_IDX0, rel=1e-4)
+    assert levels[0][0] == pytest.approx(EXP_DBSPL_ORDER2_RPM0, rel=1e-4)
+    assert levels[1][0] == pytest.approx(EXP_DBSPL_ORDER4_RPM0, rel=1e-4)
 
 
 def test_order_levels_get_order_levels_dB_exceptions(load_accel_and_rpm):
@@ -502,10 +502,10 @@ def test_order_levels_get_order_level_squared_linear(load_accel_and_rpm):
     levels = order_levels.get_order_level_squared_linear(2.0)
     assert isinstance(levels, np.ndarray)
     assert len(levels) == EXP_NUM_RPM_POINTS
-    assert levels[0] == pytest.approx(EXP_PA2_ORDER2_IDX0, rel=1e-4)
-    assert levels[10] == pytest.approx(EXP_PA2_ORDER2_IDX10, rel=1e-4)
-    assert levels[100] == pytest.approx(EXP_PA2_ORDER2_IDX100, rel=1e-4)
-    assert levels[500] == pytest.approx(EXP_PA2_ORDER2_IDX500, rel=1e-4)
+    assert levels[0] == pytest.approx(EXP_PA2_ORDER2_RPM0, rel=1e-4)
+    assert levels[10] == pytest.approx(EXP_PA2_ORDER2_RPM10, rel=1e-4)
+    assert levels[100] == pytest.approx(EXP_PA2_ORDER2_RPM100, rel=1e-4)
+    assert levels[500] == pytest.approx(EXP_PA2_ORDER2_RPM500, rel=1e-4)
 
 
 def test_order_levels_get_order_level_squared_linear_exceptions(load_accel_and_rpm):
@@ -535,7 +535,7 @@ def test_order_levels_get_order_level_dB(load_accel_and_rpm):
     levels = order_levels.get_order_level_dB(2.0)
     assert isinstance(levels, np.ndarray)
     assert len(levels) == EXP_NUM_RPM_POINTS
-    assert levels[0] == pytest.approx(EXP_DBFS_ORDER2_IDX0, rel=1e-4)
+    assert levels[0] == pytest.approx(EXP_DBFS_ORDER2_RPM0, rel=1e-4)
 
 
 def test_order_levels_get_rpm_scale(load_accel_and_rpm):
@@ -548,9 +548,9 @@ def test_order_levels_get_rpm_scale(load_accel_and_rpm):
     rpm = order_levels.get_rpm_scale()
     assert isinstance(rpm, np.ndarray)
     assert len(rpm) == EXP_NUM_RPM_POINTS
-    assert rpm[0] == pytest.approx(EXP_RPM_IDX0, rel=1e-4)
-    assert rpm[100] == pytest.approx(EXP_RPM_IDX100, rel=1e-4)
-    assert rpm[500] == pytest.approx(EXP_RPM_IDX500, rel=1e-4)
+    assert rpm[0] == pytest.approx(EXP_RPM_RPM0, rel=1e-4)
+    assert rpm[100] == pytest.approx(EXP_RPM_RPM100, rel=1e-4)
+    assert rpm[500] == pytest.approx(EXP_RPM_RPM500, rel=1e-4)
     assert rpm[-1] == pytest.approx(EXP_RPM_LAST, rel=1e-4)
 
 
