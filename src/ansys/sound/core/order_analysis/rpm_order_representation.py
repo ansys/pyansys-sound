@@ -158,7 +158,7 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
     def order_resolution(self, order_resolution: float):
         """Set the order resolution."""
         if order_resolution <= 0.0:
-            raise PyAnsysSoundException("Order resolution must be greater than 0.0.")
+            raise PyAnsysSoundException("Order resolution must be greater than 0.0 %.")
         self.__order_resolution = order_resolution
 
     def process(self):

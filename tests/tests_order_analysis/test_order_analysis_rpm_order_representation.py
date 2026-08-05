@@ -182,7 +182,7 @@ def test_rpm_order_representation_order_resolution_property():
 def test_rpm_order_representation_order_resolution_property_exceptions():
     """Test the order_resolution property exceptions."""
     obj = RpmOrderRepresentation()
-    with pytest.raises(PyAnsysSoundException, match="Order resolution must be greater than 0.0."):
+    with pytest.raises(PyAnsysSoundException, match="Order resolution must be greater than 0.0 %."):
         obj.order_resolution = 0.0
 
 
