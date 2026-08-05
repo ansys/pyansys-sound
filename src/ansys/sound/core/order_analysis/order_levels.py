@@ -39,8 +39,33 @@ ID_EXTRACT_ORDER_LEVELS = "extract_order_levels"
 class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
     """Compute order levels from a signal and its associated RPM profile.
 
-    This class computes the order levels of a signal by first computing the RPM order
-    representation, and then extracting order levels at the specified orders.
+    This class analyzes a time-domain signal associated with its RPM profile to compute the levels
+    over RPM of a specified list of orders. This is achieved with the following method:
+    -   Firstly, the spectrogram (time-frequency representation) of the input signal is computed;
+    -   Then, this spectrogram is converted to an RPM-order representation based on the input RPM
+        profile;
+    -   Finally, the specified order levels are extracted from this converted representation.
+
+    Two additional parameters allow you to refine the obtained result:
+    -   Order resolution (in percent of order): defines how fine the order definition in the
+        obtained RPM-order representation is;
+    -   Order width (in percent of order): defines the width over which the representation energy is
+        summed to produce an order level. It is expected that order width is greater or equal to
+        order resolution.
+
+    .. seealso::
+        :class:`RpmOrderRepresentation`
+
+    Examples
+    --------
+    >>> from ansys.sound.core import OrderLevels
+    >>> my_order_analysis = OrderLevels(
+    ...     signal=my_signal,
+    ...     rpm_profile=my_rpm_profile,
+    ...     orders=[1, 2, 3]
+    ... )
+    >>> my_order_analysis.process()
+    >>> order_levels = my_order_analysis.get_order_levels_dB(reference_value=2e-5)
     """
 
     def __init__(

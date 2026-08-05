@@ -29,7 +29,6 @@ import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ansys.sound.core.order_analysis import OrderLevels
-from ansys.sound.core.signal_utilities import LoadWav
 
 # Skip entire test module if Sound version < 2027.1.0
 if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
@@ -102,20 +101,6 @@ EXP_RPM_IDX500 = 4209.921875
 EXP_RPM_LAST = 4821.28173828125
 
 
-# --- Test helpers & fixtures ---
-
-
-def _load_signal_and_rpm():
-    """Return (signal, rpm_profile) from the shared accel_with_rpm test file."""
-    wav = LoadWav(pytest.data_path_accel_with_rpm)
-    wav.process()
-    fc = wav.get_output()
-    signal = fc[0]
-    rpm_profile = fc[1]
-    rpm_profile.time_freq_support = signal.time_freq_support
-    return signal, rpm_profile
-
-
 # --- Instantiation ---
 
 
@@ -130,9 +115,9 @@ def test_order_levels_instantiation_default():
     assert order_levels.max_order == 160
 
 
-def test_order_levels_instantiation_all_set():
+def test_order_levels_instantiation_all_set(load_accel_and_rpm):
     """Test instantiation with default values."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(
         signal=signal,
         rpm_profile=rpm_profile,
@@ -158,9 +143,9 @@ def test_order_levels___str___not_set():
     assert str(order_levels) == EXP_STR_NOT_SET
 
 
-def test_order_levels___str___all_set():
+def test_order_levels___str___all_set(load_accel_and_rpm):
     """Test __str__ after setting signal, RPM profile and orders."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(
         signal=signal,
         rpm_profile=rpm_profile,
@@ -290,12 +275,12 @@ def test_order_levels_max_order_property_exceptions():
         order_levels.max_order = -10
 
 
-def test_order_levels_rpm_order_representation_property():
+def test_order_levels_rpm_order_representation_property(load_accel_and_rpm):
     """Test the rpm_order_representation property getter."""
     order_levels = OrderLevels()
     assert order_levels.rpm_order_representation is None
 
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0])
     order_levels.process()
     assert isinstance(order_levels.rpm_order_representation, FieldsContainer)
@@ -304,9 +289,9 @@ def test_order_levels_rpm_order_representation_property():
 # --- process ---
 
 
-def test_order_levels_process():
+def test_order_levels_process(load_accel_and_rpm):
     """Test the process method."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(signal, rpm_profile, orders=[2.0, 4.0])
 
     order_levels.process()
@@ -327,9 +312,9 @@ def test_order_levels_process():
     assert order_levels._output is not None
 
 
-def test_order_levels_process_exceptions():
+def test_order_levels_process_exceptions(load_accel_and_rpm):
     """Test the process method's exceptions."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
 
     order_levels = OrderLevels(rpm_profile=rpm_profile, orders=[2.0, 4.0])
     with pytest.raises(
@@ -359,9 +344,9 @@ def test_order_levels_process_exceptions():
         order_levels.process()
 
 
-def test_order_levels_process_warnings():
+def test_order_levels_process_warnings(load_accel_and_rpm):
     """Test the process method's warnings."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
 
     order_levels = OrderLevels(
         signal, rpm_profile, orders=[2.0, 4.0], order_width=1.0, order_resolution=2.0
@@ -380,9 +365,9 @@ def test_order_levels_process_warnings():
 # --- Outputs ---
 
 
-def test_order_levels_get_output():
+def test_order_levels_get_output(load_accel_and_rpm):
     """Test the get_output method."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0])
     order_levels.process()
     output = order_levels.get_output()
@@ -401,7 +386,7 @@ def test_order_levels_get_output_warnings():
     assert output is None
 
 
-def test_order_levels_get_output_as_nparray():
+def test_order_levels_get_output_as_nparray(load_accel_and_rpm):
     """Test the get_output_as_nparray method."""
     order_levels = OrderLevels()
     with pytest.warns(PyAnsysSoundWarning):
@@ -410,7 +395,7 @@ def test_order_levels_get_output_as_nparray():
     assert len(orders) == 0
     assert len(rpm) == 0
 
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0])
     order_levels.process()
     levels, orders, rpm = order_levels.get_output_as_nparray()
@@ -433,9 +418,9 @@ def test_order_levels_get_output_as_nparray():
     assert len(rpm) == EXP_NUM_RPM_POINTS
 
 
-def test_order_levels_get_output_as_nparray_width_100():
+def test_order_levels_get_output_as_nparray_width_100(load_accel_and_rpm):
     """Test get_output_as_nparray with width=100%."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(
         signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0], order_width=100.0
     )
@@ -449,9 +434,9 @@ def test_order_levels_get_output_as_nparray_width_100():
     assert levels[1][10] == pytest.approx(EXP_PA2_ORDER4_IDX10_W100, rel=1e-4)
 
 
-def test_order_levels_get_order_levels_squared_linear():
+def test_order_levels_get_order_levels_squared_linear(load_accel_and_rpm):
     """Test the get_order_levels_squared_linear method."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0])
     order_levels.process()
     levels = order_levels.get_order_levels_squared_linear()
@@ -469,9 +454,9 @@ def test_order_levels_get_order_levels_squared_linear():
     assert levels[2][10] == pytest.approx(EXP_PA2_ORDER10_IDX10, rel=1e-4)
 
 
-def test_order_levels_get_order_levels_dB():
+def test_order_levels_get_order_levels_dB(load_accel_and_rpm):
     """Test the get_order_levels_dB method."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(
         signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0], max_order=160
     )
@@ -489,9 +474,9 @@ def test_order_levels_get_order_levels_dB():
     assert levels[1][0] == pytest.approx(EXP_DBSPL_ORDER4_IDX0, rel=1e-4)
 
 
-def test_order_levels_get_order_levels_dB_exceptions():
+def test_order_levels_get_order_levels_dB_exceptions(load_accel_and_rpm):
     """Test the get_order_levels_dB method's exceptions."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0])
     order_levels.process()
 
@@ -502,9 +487,9 @@ def test_order_levels_get_order_levels_dB_exceptions():
         order_levels.get_order_levels_dB(reference_value=-1.0)
 
 
-def test_order_levels_get_order_level_squared_linear():
+def test_order_levels_get_order_level_squared_linear(load_accel_and_rpm):
     """Test the get_order_level_squared_linear method."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(
         signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], max_order=160
     )
@@ -523,9 +508,9 @@ def test_order_levels_get_order_level_squared_linear():
     assert levels[500] == pytest.approx(EXP_PA2_ORDER2_IDX500, rel=1e-4)
 
 
-def test_order_levels_get_order_level_squared_linear_exceptions():
+def test_order_levels_get_order_level_squared_linear_exceptions(load_accel_and_rpm):
     """Test the get_order_level_squared_linear method's exceptions."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0])
     order_levels.process()
     with pytest.raises(
@@ -535,9 +520,9 @@ def test_order_levels_get_order_level_squared_linear_exceptions():
         order_levels.get_order_level_squared_linear(99.0)
 
 
-def test_order_levels_get_order_level_dB():
+def test_order_levels_get_order_level_dB(load_accel_and_rpm):
     """Test the get_order_level_dB method."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(
         signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], max_order=160
     )
@@ -553,9 +538,9 @@ def test_order_levels_get_order_level_dB():
     assert levels[0] == pytest.approx(EXP_DBFS_ORDER2_IDX0, rel=1e-4)
 
 
-def test_order_levels_get_rpm_scale():
+def test_order_levels_get_rpm_scale(load_accel_and_rpm):
     """Test the get_rpm_scale method."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(
         signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], max_order=160
     )
@@ -573,9 +558,9 @@ def test_order_levels_get_rpm_scale():
 
 
 @patch("matplotlib.pyplot.show")
-def test_order_levels_plot(mock_show):
+def test_order_levels_plot(mock_show, load_accel_and_rpm):
     """Test the plot method."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0])
     order_levels.process()
     order_levels.plot()
@@ -596,9 +581,9 @@ def test_order_levels_plot(mock_show):
 
 
 @patch("matplotlib.pyplot.show")
-def test_order_levels_plot_in_dB(mock_show):
+def test_order_levels_plot_in_dB(mock_show, load_accel_and_rpm):
     """Test the plot method when display_in_dB is True."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0])
     order_levels.process()
     order_levels.plot(display_in_dB=True, reference_value=2e-5)
@@ -611,9 +596,9 @@ def test_order_levels_plot_in_dB(mock_show):
     mock_show.assert_called_once()
 
 
-def test_order_levels_plot_exceptions():
+def test_order_levels_plot_exceptions(load_accel_and_rpm):
     """Test the plot method's exceptions."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0])
 
     with pytest.raises(
@@ -624,9 +609,9 @@ def test_order_levels_plot_exceptions():
 
 
 @patch("matplotlib.pyplot.show")
-def test_order_levels_plot_warnings(mock_show):
+def test_order_levels_plot_warnings(mock_show, load_accel_and_rpm):
     """Test the plot method's warnings."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     orders_11 = [float(i) for i in range(1, 12)]
     order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=orders_11)
     order_levels.process()
@@ -641,9 +626,9 @@ def test_order_levels_plot_warnings(mock_show):
 # --- export ---
 
 
-def test_order_levels_save_as_AnsysSound_Orders():
+def test_order_levels_save_as_AnsysSound_Orders(load_accel_and_rpm):
     """Test that save_as_AnsysSound_Orders raises NotImplementedError."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0])
     order_levels.process()
 
@@ -652,9 +637,9 @@ def test_order_levels_save_as_AnsysSound_Orders():
     assert os.path.exists(path_to_save)
 
 
-def test_order_levels_save_as_AnsysSound_Orders_exceptions():
+def test_order_levels_save_as_AnsysSound_Orders_exceptions(load_accel_and_rpm):
     """Test the save_as_AnsysSound_Orders method's exceptions."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0])
 
     path_to_save = os.path.join(pytest.output_folder, "test_order_levels_save.txt")
@@ -665,9 +650,9 @@ def test_order_levels_save_as_AnsysSound_Orders_exceptions():
         order_levels.save_as_AnsysSound_Orders(path_to_save)
 
 
-def test_order_levels_save_as_AnsysSound_Orders_warnings():
+def test_order_levels_save_as_AnsysSound_Orders_warnings(load_accel_and_rpm):
     """Test the save_as_AnsysSound_Orders method's warnings."""
-    signal, rpm_profile = _load_signal_and_rpm()
+    signal, rpm_profile = load_accel_and_rpm
     signal.unit = "m/s^2"
     order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0])
     order_levels.process()

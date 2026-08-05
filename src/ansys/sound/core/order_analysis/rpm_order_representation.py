@@ -42,6 +42,9 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
     corresponds to a specific RPM or time value. This class is used for extracting order levels over
     RPM or time, with the class :class:`ExtractOrderLevels`.
 
+    The RPM-order representation is obtained by applying a short-time Fourier transform (STFT) to
+    a resampled constant-angle version of the input signal, thanks to the provided RPM profile.
+
     .. seealso::
         :class:`ExtractOrderLevels`
 
@@ -166,15 +169,16 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         """
         if self.signal is None:
             raise PyAnsysSoundException(
-                "No signal found for RPM order representation computation. "
-                f"Use `{__class__.__name__}.signal`."
+                f"No input signal is set. Use `{__class__.__name__}.signal`."
             )
 
         if self.rpm_profile is None:
             raise PyAnsysSoundException(
-                "No RPM profile found for RPM order representation computation. "
-                f"Use `{__class__.__name__}.rpm_profile`."
+                f"No RPM profile is set. Use `{__class__.__name__}.rpm_profile`."
             )
+
+        if self.order_resolution >= self.max_order:
+            raise PyAnsysSoundException("Order resolution must be less than the maximum order.")
 
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, self.rpm_profile)
@@ -225,7 +229,10 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         numpy.ndarray
             Time values, in seconds, corresponding to the columns of the output array.
         """
-        output: FieldsContainer = self.get_output()
+        output = self.get_output()
+
+        if output is None:
+            return np.array([]), np.array([]), np.array([]), np.array([])
 
         time_indexes = output.get_available_ids_for_label("time")
         Ntime = len(time_indexes)
@@ -240,7 +247,9 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
             out_as_np_array[i] = f1.data + 1j * f2.data
 
         order_values = np.array(output[0].time_freq_support.time_frequencies.data)
-        rpm_values = np.array(output.get_support("RPM").time_frequencies.data)
+        rpm_values = np.array(
+            output.get_support("RPM").field_support_by_property("time_freqs").data
+        )
         time_values = np.array(output.time_freq_support.time_frequencies.data)
 
         return out_as_np_array, order_values, rpm_values, time_values
