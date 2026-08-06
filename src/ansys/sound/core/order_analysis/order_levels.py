@@ -311,7 +311,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         Returns
         -------
         FieldsContainer
-            FieldsContainer of order levels. Each field corresponds to a requested order in
+            Order levels as a fields container where each field corresponds to a requested order in
             :attr:`orders`, and contains that order's level over RPM, in squared signal unit.
         """
         if self._output is None:
