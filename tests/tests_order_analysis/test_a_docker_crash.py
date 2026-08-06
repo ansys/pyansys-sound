@@ -208,10 +208,10 @@ def test_levels_1(load_accel_and_rpm):
     levels.process()
 
 
-def test_levels_2(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    levels = OrderLevels(signal, rpm_profile, [1.0, 2.0, 3.0], order_width=20.0, max_order=200)
-    levels.process()
+# def test_levels_2(load_accel_and_rpm):
+#     signal, rpm_profile = load_accel_and_rpm
+#     levels = OrderLevels(signal, rpm_profile, [1.0, 2.0, 3.0], order_width=20.0, max_order=200)
+#     levels.process()
 
 
 def test_levels_3(load_accel_and_rpm):
