@@ -275,6 +275,21 @@ def test_order_levels_max_order_property_exceptions():
         order_levels.max_order = -10
 
 
+def test_order_levels_representation_max_order_property_warnings():
+    """Test the max_order property warnings."""
+    order_levels = OrderLevels()
+
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match=(
+            "Maximum order is specified as a float \(3.7\). It will be rounded to the nearest "
+            "integer \(4\)."
+        ),
+    ):
+        order_levels.max_order = 3.7
+    assert order_levels.max_order == 4
+
+
 def test_order_levels_rpm_order_representation_property(load_accel_and_rpm):
     """Test the rpm_order_representation property getter."""
     order_levels = OrderLevels()
@@ -308,6 +323,15 @@ def test_order_levels_process(load_accel_and_rpm):
     assert order_levels._output is not None
 
     order_levels.orders = [2, 4, 6]
+    order_levels.process()
+    assert order_levels._output is not None
+
+    # Other parameters provided with inverted int/float types
+    order_levels.order_width = 10
+    with pytest.warns(PyAnsysSoundWarning):
+        order_levels.max_order = 100.7
+    assert order_levels.max_order == 101
+    order_levels.order_resolution = 1
     order_levels.process()
     assert order_levels._output is not None
 

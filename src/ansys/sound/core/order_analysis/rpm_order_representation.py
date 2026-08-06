@@ -146,7 +146,16 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         """Set the maximum order."""
         if max_order <= 0:
             raise PyAnsysSoundException("Maximum order must be greater than 0.")
-        self.__max_order = max_order
+
+        if isinstance(max_order, float) and not max_order.is_integer():
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    f"Maximum order is specified as a float ({max_order}). It will be rounded to "
+                    f"the nearest integer ({round(max_order)})."
+                )
+            )
+
+        self.__max_order = round(max_order)
 
     @property
     def order_resolution(self) -> float:
@@ -187,7 +196,7 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, self.rpm_profile)
         self.__operator.connect(2, self.max_order)
-        self.__operator.connect(3, self.order_resolution)
+        self.__operator.connect(3, float(self.order_resolution))
 
         # Runs the operator
         self.__operator.run()

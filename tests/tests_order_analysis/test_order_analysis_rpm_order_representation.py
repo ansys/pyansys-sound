@@ -172,6 +172,21 @@ def test_rpm_order_representation_max_order_property_exceptions():
         obj.max_order = -5
 
 
+def test_rpm_order_representation_max_order_property_warnings():
+    """Test the max_order property warnings."""
+    obj = RpmOrderRepresentation()
+
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match=(
+            "Maximum order is specified as a float \(3.7\). It will be rounded to the nearest "
+            "integer \(4\)."
+        ),
+    ):
+        obj.max_order = 3.7
+    assert obj.max_order == 4
+
+
 def test_rpm_order_representation_order_resolution_property():
     """Test the order_resolution property setter and getter."""
     obj = RpmOrderRepresentation()
@@ -190,6 +205,17 @@ def test_rpm_order_representation_process(load_accel_and_rpm):
     """Test the process method."""
     signal, rpm_profile = load_accel_and_rpm
     obj = RpmOrderRepresentation(signal=signal, rpm_profile=rpm_profile)
+    obj.process()
+    assert obj._output is not None
+
+    # Test with float order_max and integer order_resolution
+    with pytest.warns(PyAnsysSoundWarning):
+        obj = RpmOrderRepresentation(
+            signal=signal, rpm_profile=rpm_profile, max_order=100.6, order_resolution=1
+        )
+    assert obj.max_order == 101
+    assert obj.order_resolution == 1.0
+
     obj.process()
     assert obj._output is not None
 
@@ -222,7 +248,7 @@ def test_rpm_order_representation_process_exceptions(load_accel_and_rpm):
 def test_rpm_order_representation_get_output(load_accel_and_rpm):
     """Test the get_output method."""
     signal, rpm_profile = load_accel_and_rpm
-    obj = RpmOrderRepresentation(signal=signal, rpm_profile=rpm_profile, max_order=160)
+    obj = RpmOrderRepresentation(signal=signal, rpm_profile=rpm_profile, max_order=160.0)
 
     with pytest.warns(
         PyAnsysSoundWarning,

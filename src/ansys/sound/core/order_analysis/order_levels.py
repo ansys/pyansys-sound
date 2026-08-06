@@ -231,7 +231,16 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         """Set the maximum order."""
         if max_order <= 0.0:
             raise PyAnsysSoundException("Maximum order must be greater than 0.")
-        self.__max_order = max_order
+
+        if isinstance(max_order, float) and not max_order.is_integer():
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    f"Maximum order is specified as a float ({max_order}). It will be "
+                    f"rounded to the nearest integer ({round(max_order)})."
+                )
+            )
+
+        self.__max_order = round(max_order)
 
     @property
     def rpm_order_representation(self) -> FieldsContainer:
@@ -288,7 +297,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
 
         self.__operator.connect(0, self.__rpm_order_representation)
         self.__operator.connect(1, list(orders))
-        self.__operator.connect(2, self.order_width)
+        self.__operator.connect(2, float(self.order_width))
 
         # Runs the operator
         self.__operator.run()
