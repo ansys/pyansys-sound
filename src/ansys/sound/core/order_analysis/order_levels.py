@@ -293,10 +293,8 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         self.__rpm_order_representation = rpm_order_repr.get_output()
 
         # Step 2: Extract order levels.
-        orders = map(float, self.orders)
-
         self.__operator.connect(0, self.__rpm_order_representation)
-        self.__operator.connect(1, list(orders))
+        self.__operator.connect(1, list(map(float, self.orders)))
         self.__operator.connect(2, float(self.order_width))
 
         # Runs the operator
