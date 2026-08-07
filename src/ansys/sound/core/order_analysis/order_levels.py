@@ -310,7 +310,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         -------
         FieldsContainer
             Order levels as a fields container where each field corresponds to a requested order in
-            :attr:`orders`, and contains that order's level over RPM, in squared signal unit.
+            :attr:`orders`, and contains that order's level over RPM, in squared signal units.
         """
         if self._output is None:
             warnings.warn(
@@ -352,7 +352,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         Returns
         -------
         numpy.ndarray
-            Order levels as a 2-D NumPy array, in squared signal unit. Each row corresponds to a
+            Order levels as a 2-D NumPy array, in squared signal units. Each row corresponds to a
             specific order value, and each column corresponds to a specific RPM value.
         """
         return self.get_output_as_nparray()[0]
@@ -380,7 +380,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         return 10.0 * np.log10(levels_squared / reference_value**2 + 1e-12)
 
     def get_order_level_squared_linear(self, order: float) -> np.ndarray:
-        """Get the level over RPM of a single order, in squared signal unit.
+        """Get the level over RPM of a single order, in squared signal units.
 
         Parameters
         ----------
