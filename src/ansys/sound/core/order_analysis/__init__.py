@@ -20,13 +20,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Spectrogram processing classes.
+"""Order analysis classes."""
 
-Helper functions related to spectrogram processing.
-"""
+from ._order_analysis_parent import OrderAnalysisParent  # isort:skip
+from .isolate_orders import IsolateOrders
+from .order_levels import OrderLevels
+from .rpm_order_representation import RpmOrderRepresentation
 
-from ._spectrogram_processing_parent import SpectrogramProcessingParent  # isort:skip
-from .istft import Istft
-from .stft import Stft
-
-__all__ = "SpectrogramProcessingParent", "Stft", "Istft"
+__all__ = (
+    "OrderAnalysisParent",
+    "RpmOrderRepresentation",
+    "IsolateOrders",
+    "OrderLevels",
+)

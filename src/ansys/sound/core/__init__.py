@@ -32,6 +32,7 @@ __version__ = importlib_metadata.version(__name__.replace(".", "-"))
 
 from . import (
     examples_helpers,
+    order_analysis,
     psychoacoustics,
     server_helpers,
     signal_utilities,
@@ -46,6 +47,7 @@ from ._pyansys_sound import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
 __all__ = (
     "REFERENCE_ACOUSTIC_PRESSURE_IN_AIR",
     "examples_helpers",
+    "order_analysis",
     "psychoacoustics",
     "server_helpers",
     "signal_utilities",

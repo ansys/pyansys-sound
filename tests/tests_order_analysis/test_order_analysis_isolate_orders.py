@@ -27,8 +27,8 @@ import numpy as np
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.order_analysis import IsolateOrders
 from ansys.sound.core.signal_utilities import LoadWav
-from ansys.sound.core.spectrogram_processing import IsolateOrders
 
 EXP_SIZE = 909956
 
