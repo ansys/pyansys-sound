@@ -35,6 +35,55 @@ from ansys.sound.core.order_analysis.rpm_order_representation import RpmOrderRep
 if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
     pytest.skip("Requires Sound version >= 2027.1.0", allow_module_level=True)
 
+def test_repr_operator_100_1_1(load_accel_and_rpm):
+    signal, rpm_profile = load_accel_and_rpm
+    op = Operator("compute_rpm_order_representation")
+    op.connect(0, signal)
+    op.connect(1, rpm_profile)
+    op.connect(2, 100)
+    op.connect(3, 1.0)
+    op.run()
+
+
+def test_repr_operator_100_1_2(load_accel_and_rpm):
+    signal, rpm_profile = load_accel_and_rpm
+    op = Operator("compute_rpm_order_representation")
+    op.connect(0, signal)
+    op.connect(1, rpm_profile)
+    op.connect(2, 100)
+    op.connect(3, 1.0)
+    op.run()
+
+
+def test_repr_operator_100_1_3(load_accel_and_rpm):
+    signal, rpm_profile = load_accel_and_rpm
+    op = Operator("compute_rpm_order_representation")
+    op.connect(0, signal)
+    op.connect(1, rpm_profile)
+    op.connect(2, 100)
+    op.connect(3, 1.0)
+    op.run()
+
+
+def test_repr_operator_100_1_4(load_accel_and_rpm):
+    signal, rpm_profile = load_accel_and_rpm
+    op = Operator("compute_rpm_order_representation")
+    op.connect(0, signal)
+    op.connect(1, rpm_profile)
+    op.connect(2, 100)
+    op.connect(3, 1.0)
+    op.run()
+
+
+def test_repr_operator_100_1_5(load_accel_and_rpm):
+    signal, rpm_profile = load_accel_and_rpm
+    op = Operator("compute_rpm_order_representation")
+    op.connect(0, signal)
+    op.connect(1, rpm_profile)
+    op.connect(2, 100)
+    op.connect(3, 1.0)
+    op.run()
+
 def test_repr_operator_def1(load_accel_and_rpm):
     signal, rpm_profile = load_accel_and_rpm
     op = Operator("compute_rpm_order_representation")
