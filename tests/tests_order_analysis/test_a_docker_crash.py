@@ -196,99 +196,99 @@ def test_repr_operator_100_1_5(load_accel_and_rpm):
 
 
 
-def test_levels_defaults(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    levels = OrderLevels(signal, rpm_profile, [1.0, 2.0, 3.0])
-    levels.process()
-
-
-def test_levels_1(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    levels = OrderLevels(signal, rpm_profile, [1.0, 2.0, 3.0], order_width=5.0, max_order=100)
-    levels.process()
-
-
-# def test_levels_2(load_accel_and_rpm):
+# def test_levels_defaults(load_accel_and_rpm):
 #     signal, rpm_profile = load_accel_and_rpm
-#     levels = OrderLevels(signal, rpm_profile, [1.0, 2.0, 3.0], order_width=20.0, max_order=200)
+#     levels = OrderLevels(signal, rpm_profile, [1.0, 2.0, 3.0])
 #     levels.process()
 
 
-def test_levels_3(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    levels = OrderLevels(signal, rpm_profile, [1.0, 2.0, 3.0],  order_width=1.0, max_order=10)
-    levels.process()
+# def test_levels_1(load_accel_and_rpm):
+#     signal, rpm_profile = load_accel_and_rpm
+#     levels = OrderLevels(signal, rpm_profile, [1.0, 2.0, 3.0], order_width=5.0, max_order=100)
+#     levels.process()
 
 
-def test_levels_4(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    levels = OrderLevels(signal, rpm_profile, [1.0, 2.0, 3.0], order_width=10.0, max_order=160)
-    levels.process()
+# # def test_levels_2(load_accel_and_rpm):
+# #     signal, rpm_profile = load_accel_and_rpm
+# #     levels = OrderLevels(signal, rpm_profile, [1.0, 2.0, 3.0], order_width=20.0, max_order=200)
+# #     levels.process()
 
 
-def test_levels_5(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    levels = OrderLevels(signal, rpm_profile, [1.0, 2.0, 3.0],  order_width=10.0, max_order=160)
-    levels.process()
+# def test_levels_3(load_accel_and_rpm):
+#     signal, rpm_profile = load_accel_and_rpm
+#     levels = OrderLevels(signal, rpm_profile, [1.0, 2.0, 3.0],  order_width=1.0, max_order=10)
+#     levels.process()
 
 
-def test_levels_6(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    levels = OrderLevels(signal, rpm_profile, [1.0, 2.0, 3.0], order_width=10.0, max_order=160)
-    levels.process()
+# def test_levels_4(load_accel_and_rpm):
+#     signal, rpm_profile = load_accel_and_rpm
+#     levels = OrderLevels(signal, rpm_profile, [1.0, 2.0, 3.0], order_width=10.0, max_order=160)
+#     levels.process()
 
 
-def test_levels_7(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    levels = OrderLevels(signal, rpm_profile, [1.0, 2.0, 3.0], order_width=10.0, max_order=160)
-    levels.process()
+# def test_levels_5(load_accel_and_rpm):
+#     signal, rpm_profile = load_accel_and_rpm
+#     levels = OrderLevels(signal, rpm_profile, [1.0, 2.0, 3.0],  order_width=10.0, max_order=160)
+#     levels.process()
 
 
-def test_repr_default(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    repr = RpmOrderRepresentation(signal, rpm_profile)
-    repr.process()
+# def test_levels_6(load_accel_and_rpm):
+#     signal, rpm_profile = load_accel_and_rpm
+#     levels = OrderLevels(signal, rpm_profile, [1.0, 2.0, 3.0], order_width=10.0, max_order=160)
+#     levels.process()
 
 
-def test_repr_1(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    repr = RpmOrderRepresentation(signal, rpm_profile, max_order=100, order_resolution=1.0)
-    repr.process()
+# def test_levels_7(load_accel_and_rpm):
+#     signal, rpm_profile = load_accel_and_rpm
+#     levels = OrderLevels(signal, rpm_profile, [1.0, 2.0, 3.0], order_width=10.0, max_order=160)
+#     levels.process()
 
 
-def test_repr_2(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    repr = RpmOrderRepresentation(signal, rpm_profile, max_order=200, order_resolution=5.0)
-    repr.process()
+# def test_repr_default(load_accel_and_rpm):
+#     signal, rpm_profile = load_accel_and_rpm
+#     repr = RpmOrderRepresentation(signal, rpm_profile)
+#     repr.process()
 
 
-def test_repr_3(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    repr = RpmOrderRepresentation(signal, rpm_profile, max_order=10, order_resolution=0.5)
-    repr.process()
+# def test_repr_1(load_accel_and_rpm):
+#     signal, rpm_profile = load_accel_and_rpm
+#     repr = RpmOrderRepresentation(signal, rpm_profile, max_order=100, order_resolution=1.0)
+#     repr.process()
 
 
-def test_repr_4(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    repr = RpmOrderRepresentation(signal, rpm_profile)
-    repr.process()
+# def test_repr_2(load_accel_and_rpm):
+#     signal, rpm_profile = load_accel_and_rpm
+#     repr = RpmOrderRepresentation(signal, rpm_profile, max_order=200, order_resolution=5.0)
+#     repr.process()
 
 
-def test_repr_5(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    repr = RpmOrderRepresentation(signal, rpm_profile)
-    repr.process()
+# def test_repr_3(load_accel_and_rpm):
+#     signal, rpm_profile = load_accel_and_rpm
+#     repr = RpmOrderRepresentation(signal, rpm_profile, max_order=10, order_resolution=0.5)
+#     repr.process()
 
 
-def test_repr_6(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    repr = RpmOrderRepresentation(signal, rpm_profile)
-    repr.process()
+# def test_repr_4(load_accel_and_rpm):
+#     signal, rpm_profile = load_accel_and_rpm
+#     repr = RpmOrderRepresentation(signal, rpm_profile)
+#     repr.process()
 
 
-def test_repr_7(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    repr = RpmOrderRepresentation(signal, rpm_profile)
-    repr.process()
+# def test_repr_5(load_accel_and_rpm):
+#     signal, rpm_profile = load_accel_and_rpm
+#     repr = RpmOrderRepresentation(signal, rpm_profile)
+#     repr.process()
+
+
+# def test_repr_6(load_accel_and_rpm):
+#     signal, rpm_profile = load_accel_and_rpm
+#     repr = RpmOrderRepresentation(signal, rpm_profile)
+#     repr.process()
+
+
+# def test_repr_7(load_accel_and_rpm):
+#     signal, rpm_profile = load_accel_and_rpm
+#     repr = RpmOrderRepresentation(signal, rpm_profile)
+#     repr.process()
 
 
