@@ -43,8 +43,8 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
     levels over RPM or time, with the class :class:`OrderLevels`.
 
     The method to obtain the RPM-order representation consists of a short-time Fourier transform
-    (STFT) applied to a resampled constant-angle version of the input signal, thanks to the provided
-    RPM profile.
+    (STFT) applied to a resampled constant-angle version of the input signal, using the provided RPM
+    profile.
 
     .. seealso::
         :class:`OrderLevels`
