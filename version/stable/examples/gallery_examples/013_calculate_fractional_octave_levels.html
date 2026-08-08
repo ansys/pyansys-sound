@@ -1,0 +1,1063 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Octave and one-third-octave levels computation &#8212; PyAnsys Sound</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles\ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../../_static/documentation_options.js?v=f129cdf0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/gallery_examples/013_calculate_fractional_octave_levels';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://sound.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.3';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="icon" href="../../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Contribute" href="../../contribute.html" />
+    <link rel="prev" title="Predict listening test ratings" href="012_predict_listening_test_ratings.html" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.3.0" />
+  <meta property="og:site_name" content="PyAnsys" />
+  <meta name="physics" content="Acoustics" />
+  <link rel="canonical" href="https://sound.docs.pyansys.com/version/stable/examples/gallery_examples/013_calculate_fractional_octave_levels.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyAnsys Sound - Home"/>
+    <img src="../../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark pst-js-only" alt="PyAnsys Sound - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html" title="PyAnsys Sound home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../contribute.html">
+    Contribute
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav>
+</div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyansys-sound" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    <div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(
+      (text) => (document.getElementById("announcement_msg").innerHTML = text),
+    )
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html" title="PyAnsys Sound home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contribute.html">
+    Contribute
+  </a>
+</li>
+
+  </ul>
+</nav>
+</div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyansys-sound" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="001_initialize_server_and_deal_with_license.html">Initialize PyAnsys Sound and check out the license</a></li>
+<li class="toctree-l1"><a class="reference internal" href="002_load_resample_amplify_write_wav_files.html">Basic operations on a signal from a WAV file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="003_compute_stft.html">Spectrogram: compute the STFT and ISTFT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="004_isolate_orders.html">Isolate orders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="005_xtract_feature.html">Extract tonal, transient, and noise components (Xtract)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="006_calculate_PR_and_TNR.html">Calculate TNR and PR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="007_calculate_psychoacoustic_indicators.html">Calculate psychoacoustic indicators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="008_calculate_levels.html">Calculate RMS, dBSPL and dBA levels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="009_calculate_tonality_indicators.html">Calculate tonality indicators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="010_sound_composer_load_project.html">Use an existing Sound Composer project file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="011_sound_composer_create_project.html">Create a Sound Composer project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="012_predict_listening_test_ratings.html">Predict listening test ratings</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Octave and one-third-octave levels computation</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../index.html" class="nav-link">Examples</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Octave and one-third-octave levels computation</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-examples-gallery-examples-013-calculate-fractional-octave-levels-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="octave-and-one-third-octave-levels-computation">
+<span id="calculate-fractional-octave-levels"></span><span id="sphx-glr-examples-gallery-examples-013-calculate-fractional-octave-levels-py"></span><h1>Octave and one-third-octave levels computation<a class="headerlink" href="#octave-and-one-third-octave-levels-computation" title="Link to this heading">#</a></h1>
+<p>This example shows how to compute 1/3-octave and octave levels, with different methods that are
+illustrated and compared. Theoretical explanations are also provided at the end of the example, in
+section <a class="reference internal" href="#fractional-octave-theory"><span class="std std-ref">Theory</span></a>, to help understand why these different computation methods
+exist.</p>
+<p>PyAnsys Sound allows computation of octave and one-third-octave levels, whether the input data is:</p>
+<ul class="simple">
+<li><p>a time-domain signal, with classes <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OctaveLevelsFromSignal.html#ansys.sound.core.standard_levels.OctaveLevelsFromSignal" title="ansys.sound.core.standard_levels.OctaveLevelsFromSignal"><code class="xref py py-class docutils literal notranslate"><span class="pre">OctaveLevelsFromSignal</span></code></a> and
+<a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromSignal.html#ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromSignal" title="ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromSignal"><code class="xref py py-class docutils literal notranslate"><span class="pre">OneThirdOctaveLevelsFromSignal</span></code></a></p></li>
+<li><p>a power spectral density (PSD), with classes <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OctaveLevelsFromPSD.html#ansys.sound.core.standard_levels.OctaveLevelsFromPSD" title="ansys.sound.core.standard_levels.OctaveLevelsFromPSD"><code class="xref py py-class docutils literal notranslate"><span class="pre">OctaveLevelsFromPSD</span></code></a> and
+<a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.html#ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD" title="ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD"><code class="xref py py-class docutils literal notranslate"><span class="pre">OneThirdOctaveLevelsFromPSD</span></code></a></p></li>
+</ul>
+<p>In the latter case, a specific attribute <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986.html#ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986" title="ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986"><code class="xref py py-attr docutils literal notranslate"><span class="pre">use_ansi_s1_11_1986</span></code></a>
+enables you to replicate, when computing band levels from PSD, the effects of the ANSI S1.11-1986
+and IEC 61260:1995 band-pass filters used in signal-based classes. This allows meaningful
+comparisons between levels computed from PSD (for example, from numerical simulations) and levels
+computed from time-domain signals. See section <a class="reference internal" href="#fromsignal-vs-frompsd"><span class="std std-ref">Comparing octave and one-third-octave levels from signal and from PSD</span></a> for more details.</p>
+<section id="set-up-analysis">
+<h2>Set up analysis<a class="headerlink" href="#set-up-analysis" title="Link to this heading">#</a></h2>
+<p>Setting up the analysis consists of loading Ansys libraries, connecting to the DPF server, and
+downloading the necessary data files.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load standard libraries.</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># Load Ansys libraries.</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core</span><span class="w"> </span><span class="kn">import</span> <a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">REFERENCE_ACOUSTIC_PRESSURE_IN_AIR</span></a>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.examples_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">download_flute_wav</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.server_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">connect_to_or_start_server</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.signal_utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoadWav</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.spectral_processing</span><span class="w"> </span><span class="kn">import</span> <span class="n">PowerSpectralDensity</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.standard_levels</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">OctaveLevelsFromSignal</span><span class="p">,</span>
+    <span class="n">OneThirdOctaveLevelsFromPSD</span><span class="p">,</span>
+    <span class="n">OneThirdOctaveLevelsFromSignal</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Connect to a remote DPF server or start a local DPF server.</span>
+<a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_types/GrpcServer.html#ansys.dpf.core.server_types.GrpcServer" title="ansys.dpf.core.server_types.GrpcServer" class="sphx-glr-backref-module-ansys-dpf-core-server_types sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_server</span></a><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_context/LicenseContextManager.html#ansys.dpf.core.server_context.LicenseContextManager" title="ansys.dpf.core.server_context.LicenseContextManager" class="sphx-glr-backref-module-ansys-dpf-core-server_context sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_license_context</span></a> <span class="o">=</span> <span class="n">connect_to_or_start_server</span><span class="p">(</span><span class="n">use_license_context</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Download the necessary files for this example.</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">flute_wav_files_path</span></a> <span class="o">=</span> <span class="n">download_flute_wav</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="octave-and-one-third-octave-levels-from-signal">
+<h2>Octave and one-third-octave levels from signal<a class="headerlink" href="#octave-and-one-third-octave-levels-from-signal" title="Link to this heading">#</a></h2>
+<p>Here we show how to compute octave levels using the class <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OctaveLevelsFromSignal.html#ansys.sound.core.standard_levels.OctaveLevelsFromSignal" title="ansys.sound.core.standard_levels.OctaveLevelsFromSignal"><code class="xref py py-class docutils literal notranslate"><span class="pre">OctaveLevelsFromSignal</span></code></a>. The
+same workflow can be replicated for one-third-octave levels using the class
+<a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromSignal.html#ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromSignal" title="ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromSignal"><code class="xref py py-class docutils literal notranslate"><span class="pre">OneThirdOctaveLevelsFromSignal</span></code></a>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the time-domain signal from a WAV file.</span>
+<span class="n">wav_loader</span> <span class="o">=</span> <span class="n">LoadWav</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">flute_wav_files_path</span></a><span class="p">)</span>
+<span class="n">wav_loader</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+<a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal_flute</span></a> <span class="o">=</span> <span class="n">wav_loader</span><span class="o">.</span><span class="n">get_output</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Compute octave levels.</span>
+<span class="n">octave_levels</span> <span class="o">=</span> <span class="n">OctaveLevelsFromSignal</span><span class="p">(</span>
+    <span class="n">signal</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal_flute</span></a><span class="p">,</span>
+    <span class="n">reference_value</span><span class="o">=</span><a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">REFERENCE_ACOUSTIC_PRESSURE_IN_AIR</span></a><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">octave_levels</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">band_levels_from_signal</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">center_frequencies</span></a> <span class="o">=</span> <span class="n">octave_levels</span><span class="o">.</span><span class="n">get_output_as_nparray</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For comparison, let us compute the power spectral density (PSD) from the time-domain signal, and
+display octave levels and PSD on the same graph.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the PSD.</span>
+<span class="n">psd</span> <span class="o">=</span> <span class="n">PowerSpectralDensity</span><span class="p">(</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal_flute</span></a><span class="p">,</span> <span class="n">fft_size</span><span class="o">=</span><span class="mi">8192</span><span class="p">,</span> <span class="n">window_length</span><span class="o">=</span><span class="mi">8192</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+<span class="n">psd</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">psd_levels_dB_per_Hz</span></a> <span class="o">=</span> <span class="n">psd</span><span class="o">.</span><span class="n">get_PSD_dB_as_nparray</span><span class="p">(</span><span class="n">ref_value</span><span class="o">=</span><a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">REFERENCE_ACOUSTIC_PRESSURE_IN_AIR</span></a><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">psd_frequencies</span></a> <span class="o">=</span> <span class="n">psd</span><span class="o">.</span><span class="n">get_frequencies</span><span class="p">()</span>
+
+<span class="c1"># Plot octave levels and PSD on a single graph.</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">limit_frequencies</span></a> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">[</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">center_frequencies</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)]</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">center_frequencies</span></a><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+    <span class="o">+</span> <span class="p">[</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">center_frequencies</span></a><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)]</span>
+<span class="p">)</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">levels_at_limit_frequencies_from_signal</span></a> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">band_levels_from_signal</span></a> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.semilogx.html#matplotlib.pyplot.semilogx" title="matplotlib.pyplot.semilogx" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">semilogx</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">psd_frequencies</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">psd_levels_dB_per_Hz</span></a><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;PSD&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.semilogx.html#matplotlib.pyplot.semilogx" title="matplotlib.pyplot.semilogx" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">semilogx</span></a><span class="p">(</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">limit_frequencies</span></a><span class="p">,</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">levels_at_limit_frequencies_from_signal</span></a><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Octave levels from signal&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="matplotlib.pyplot.title" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s2">&quot;Octave levels from signal&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="matplotlib.pyplot.xlabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s2">&quot;Frequency (Hz)&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="matplotlib.pyplot.ylabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Octave levels (dB re </span><span class="si">{</span><a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">REFERENCE_ACOUSTIC_PRESSURE_IN_AIR</span></a><span class="si">}</span><span class="s2"> </span><span class="si">{</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal_flute</span></a><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.grid.html#matplotlib.pyplot.grid" title="matplotlib.pyplot.grid" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">grid</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_013_calculate_fractional_octave_levels_001.png" srcset="../../_images/sphx_glr_013_calculate_fractional_octave_levels_001.png" alt="Octave levels from signal" class = "sphx-glr-single-img"/></section>
+<section id="comparing-octave-and-one-third-octave-levels-from-signal-and-from-psd">
+<span id="fromsignal-vs-frompsd"></span><h2>Comparing octave and one-third-octave levels from signal and from PSD<a class="headerlink" href="#comparing-octave-and-one-third-octave-levels-from-signal-and-from-psd" title="Link to this heading">#</a></h2>
+<p>Let us now consider a scenario where we wish to compare one-third-octave levels between
+simulation results - in the form of a PSD - and test data - in the form of a recorded time-domain
+signal. We consider the case of one-third-octave levels here, but the same can be done for octave
+levels. For demonstration purposes, we can use the PSD already computed above. As it comes from
+the same signal, we would then expect the same band levels regardless of the class used,
+<a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromSignal.html#ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromSignal" title="ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromSignal"><code class="xref py py-class docutils literal notranslate"><span class="pre">OneThirdOctaveLevelsFromSignal</span></code></a> or <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.html#ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD" title="ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD"><code class="xref py py-class docutils literal notranslate"><span class="pre">OneThirdOctaveLevelsFromPSD</span></code></a>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute 1/3-octave levels from the signal.</span>
+<span class="n">one_third_octave_levels</span> <span class="o">=</span> <span class="n">OneThirdOctaveLevelsFromSignal</span><span class="p">(</span>
+    <span class="n">signal</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal_flute</span></a><span class="p">,</span>
+    <span class="n">reference_value</span><span class="o">=</span><a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">REFERENCE_ACOUSTIC_PRESSURE_IN_AIR</span></a><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">one_third_octave_levels</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">band_levels_from_signal</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">center_frequencies</span></a> <span class="o">=</span> <span class="n">one_third_octave_levels</span><span class="o">.</span><span class="n">get_output_as_nparray</span><span class="p">()</span>
+
+<span class="c1"># Compute 1/3-octave levels from the PSD (previously computed from the same signal).</span>
+<span class="n">one_third_octave_levels_psd</span> <span class="o">=</span> <span class="n">OneThirdOctaveLevelsFromPSD</span><span class="p">(</span>
+    <span class="n">psd</span><span class="o">.</span><span class="n">get_output</span><span class="p">(),</span>
+    <span class="n">reference_value</span><span class="o">=</span><a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">REFERENCE_ACOUSTIC_PRESSURE_IN_AIR</span></a><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">one_third_octave_levels_psd</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">band_levels_from_psd</span></a> <span class="o">=</span> <span class="n">one_third_octave_levels_psd</span><span class="o">.</span><span class="n">get_band_levels</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now, let us compare the two.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prepare data for staircase plot of band levels.</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">limit_frequencies</span></a> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">[</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">center_frequencies</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)]</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">center_frequencies</span></a><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+    <span class="o">+</span> <span class="p">[</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">center_frequencies</span></a><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)]</span>
+<span class="p">)</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">levels_at_limit_frequencies_from_signal</span></a> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">band_levels_from_signal</span></a> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">levels_at_limit_frequencies_from_psd</span></a> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">band_levels_from_psd</span></a> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+
+<span class="c1"># Plot band levels from both data types.</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.semilogx.html#matplotlib.pyplot.semilogx" title="matplotlib.pyplot.semilogx" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">semilogx</span></a><span class="p">(</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">limit_frequencies</span></a><span class="p">,</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">levels_at_limit_frequencies_from_signal</span></a><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;1/3-octave levels from signal&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.semilogx.html#matplotlib.pyplot.semilogx" title="matplotlib.pyplot.semilogx" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">semilogx</span></a><span class="p">(</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">limit_frequencies</span></a><span class="p">,</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">levels_at_limit_frequencies_from_psd</span></a><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;1/3-octave levels from PSD&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="matplotlib.pyplot.title" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s2">&quot;1/3-octave levels from signal and from PSD&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="matplotlib.pyplot.xlabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s2">&quot;Frequency (Hz)&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="matplotlib.pyplot.ylabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;1/3-octave levels (dB re </span><span class="si">{</span><a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">REFERENCE_ACOUSTIC_PRESSURE_IN_AIR</span></a><span class="si">}</span><span class="s2"> </span><span class="si">{</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal_flute</span></a><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.xticks.html#matplotlib.pyplot.xticks" title="matplotlib.pyplot.xticks" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">xticks</span></a><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.grid.html#matplotlib.pyplot.grid" title="matplotlib.pyplot.grid" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">grid</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="matplotlib.pyplot.legend" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_013_calculate_fractional_octave_levels_002.png" srcset="../../_images/sphx_glr_013_calculate_fractional_octave_levels_002.png" alt="1/3-octave levels from signal and from PSD" class = "sphx-glr-single-img"/><p>Contrary to our initial assumption, the two methods do not yield identical results, with even
+very large differences (20-30 dB) in some bands. This discrepancy is due to the neighboring-band
+leakage effect that is inherent to the filterbank specified in the ANSI S1.11-1986 and
+IEC 61260:1995 standards, and that the class <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromSignal.html#ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromSignal" title="ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromSignal"><code class="xref py py-class docutils literal notranslate"><span class="pre">OneThirdOctaveLevelsFromSignal</span></code></a> implements:
+since the frequency responses of the specified band-pass filters are not perfectly rectangular
+(due to their finite filter order), each estimated band level is also affected by
+neighbouring-band frequency contributions. With class <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.html#ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD" title="ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD"><code class="xref py py-class docutils literal notranslate"><span class="pre">OneThirdOctaveLevelsFromPSD</span></code></a>,
+however, the PSD is simply summed up within each band, excluding any contribution from
+frequencies outside the band. See <a class="reference internal" href="#fractional-octave-theory"><span class="std std-ref">Theory</span></a> for more computational details.</p>
+<p>Now, let us repeat the PSD-based computation, this time setting the attribute
+<a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986.html#ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986" title="ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986"><code class="xref py py-attr docutils literal notranslate"><span class="pre">use_ansi_s1_11_1986</span></code></a> to <code class="docutils literal notranslate"><span class="pre">True</span></code> to replicate the effect
+of the ANSI S1.11-1986 and IEC 61260:1995 standards’ band-pass filters on the PSD, before
+computing the band levels.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">one_third_octave_levels_psd</span><span class="o">.</span><span class="n">use_ansi_s1_11_1986</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">one_third_octave_levels_psd</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">band_levels_from_psd</span></a> <span class="o">=</span> <span class="n">one_third_octave_levels_psd</span><span class="o">.</span><span class="n">get_band_levels</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Let us compare the results again.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prepare data for staircase plot of band levels.</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">levels_at_limit_frequencies_from_psd</span></a> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">band_levels_from_psd</span></a> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+
+<span class="c1"># Plot against the signal-based levels again.</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.semilogx.html#matplotlib.pyplot.semilogx" title="matplotlib.pyplot.semilogx" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">semilogx</span></a><span class="p">(</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">limit_frequencies</span></a><span class="p">,</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">levels_at_limit_frequencies_from_signal</span></a><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;1/3-octave levels from signal&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.semilogx.html#matplotlib.pyplot.semilogx" title="matplotlib.pyplot.semilogx" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">semilogx</span></a><span class="p">(</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">limit_frequencies</span></a><span class="p">,</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">levels_at_limit_frequencies_from_psd</span></a><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;1/3-octave levels from PSD (use_ansi_s1_11_1986=True)&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="matplotlib.pyplot.title" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s2">&quot;1/3-octave levels from signal and from PSD&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="matplotlib.pyplot.xlabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s2">&quot;Frequency (Hz)&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="matplotlib.pyplot.ylabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;1/3-octave levels (dB re </span><span class="si">{</span><a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">REFERENCE_ACOUSTIC_PRESSURE_IN_AIR</span></a><span class="si">}</span><span class="s2"> </span><span class="si">{</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal_flute</span></a><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.grid.html#matplotlib.pyplot.grid" title="matplotlib.pyplot.grid" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">grid</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="matplotlib.pyplot.legend" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_013_calculate_fractional_octave_levels_003.png" srcset="../../_images/sphx_glr_013_calculate_fractional_octave_levels_003.png" alt="1/3-octave levels from signal and from PSD" class = "sphx-glr-single-img"/><p>Now, the levels computed from the PSD (with ANSI S1.11-1986 weighting) match those from the
+signal much more closely.</p>
+</section>
+<section id="takeaways">
+<h2>Takeaways<a class="headerlink" href="#takeaways" title="Link to this heading">#</a></h2>
+<p>The previous exemplified scenario emphasizes the importance of selecting the appropriate approach
+depending on the nature of the input data, and the goal of the analysis:</p>
+<ul class="simple">
+<li><p>For time-domain signals, use signal-based classes to follow the standards, or compute their PSD
+and then use PSD-based classes to avoid the neighboring-band leakage effect.</p></li>
+<li><p>For PSD data, use PSD-based classes, with the
+<a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986.html#ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986" title="ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986"><code class="xref py py-attr docutils literal notranslate"><span class="pre">use_ansi_s1_11_1986</span></code></a> set to <code class="docutils literal notranslate"><span class="pre">False</span></code> if you wish to avoid
+the neighboring-band leakage effect, or <code class="docutils literal notranslate"><span class="pre">True</span></code> if you wish to approximate standardized
+results.</p></li>
+<li><p>Finally, when working with both signal and PSD data, to ensure comparability of results, either
+compute PSD from signals and then use PSD-based classes, or use both signal- and PSD-based
+classes, but make sure to set the <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986.html#ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986" title="ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986"><code class="xref py py-attr docutils literal notranslate"><span class="pre">use_ansi_s1_11_1986</span></code></a>
+attribute of PSD-based classes to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+</ul>
+<p>In any case, keep in mind that following the ANSI S1.11-1986 and IEC 61260:1995 standards
+(signal-based classes, or PSD-based classes with
+<a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986.html#ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986" title="ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986"><code class="xref py py-attr docutils literal notranslate"><span class="pre">use_ansi_s1_11_1986</span></code></a> set to <code class="docutils literal notranslate"><span class="pre">True</span></code>) affects the results
+with the neighboring-band leakage effect. However, using the <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.spectral_processing.PowerSpectralDensity.html#ansys.sound.core.spectral_processing.PowerSpectralDensity" title="ansys.sound.core.spectral_processing.PowerSpectralDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">PowerSpectralDensity</span></code></a> class
+to compute PSD from signals before using PSD-based classes also affects the results, as the PSD
+computation parameters have a significant influence on the computed band levels, notably in the
+narrower, low-frequency bands.</p>
+<p>The table below summarizes the different approaches, and their specificities (for the case of
+octave levels only, but it equally applies for the case of one-third-octave levels).</p>
+<div class="pst-scrollable-table-container"><table class="table table-center">
+<tbody>
+<tr class="row-odd"><td><p><strong>Input data</strong></p></td>
+<td><p><strong>Method (classes used)</strong></p></td>
+<td><p><a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OctaveLevelsFromPSD.use_ansi_s1_11_1986.html#ansys.sound.core.standard_levels.OctaveLevelsFromPSD.use_ansi_s1_11_1986" title="ansys.sound.core.standard_levels.OctaveLevelsFromPSD.use_ansi_s1_11_1986"><code class="xref py py-attr docutils literal notranslate"><span class="pre">use_ansi_s1_11_1986</span></code></a></p></td>
+<td><p><strong>Standard-compliant</strong></p></td>
+<td><p><strong>Neighboring-band leakage effect</strong></p></td>
+<td><p><strong>PSD parameters’ effect</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Signal</p></td>
+<td><p><a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OctaveLevelsFromSignal.html#ansys.sound.core.standard_levels.OctaveLevelsFromSignal" title="ansys.sound.core.standard_levels.OctaveLevelsFromSignal"><code class="xref py py-class docutils literal notranslate"><span class="pre">OctaveLevelsFromSignal</span></code></a></p></td>
+<td><p>N/A</p></td>
+<td><p>Yes</p></td>
+<td><p>x</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Signal</p></td>
+<td><div class="line-block">
+<div class="line"><a class="reference internal" href="../../api/_autosummary/ansys.sound.core.spectral_processing.PowerSpectralDensity.html#ansys.sound.core.spectral_processing.PowerSpectralDensity" title="ansys.sound.core.spectral_processing.PowerSpectralDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">PowerSpectralDensity</span></code></a></div>
+<div class="line"><a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OctaveLevelsFromPSD.html#ansys.sound.core.standard_levels.OctaveLevelsFromPSD" title="ansys.sound.core.standard_levels.OctaveLevelsFromPSD"><code class="xref py py-class docutils literal notranslate"><span class="pre">OctaveLevelsFromPSD</span></code></a></div>
+</div>
+</td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>No</p></td>
+<td></td>
+<td><p>x</p></td>
+</tr>
+<tr class="row-even"><td><p>PSD</p></td>
+<td><p><a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OctaveLevelsFromPSD.html#ansys.sound.core.standard_levels.OctaveLevelsFromPSD" title="ansys.sound.core.standard_levels.OctaveLevelsFromPSD"><code class="xref py py-class docutils literal notranslate"><span class="pre">OctaveLevelsFromPSD</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>No</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>PSD</p></td>
+<td><p><a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OctaveLevelsFromPSD.html#ansys.sound.core.standard_levels.OctaveLevelsFromPSD" title="ansys.sound.core.standard_levels.OctaveLevelsFromPSD"><code class="xref py py-class docutils literal notranslate"><span class="pre">OctaveLevelsFromPSD</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p></td>
+<td><p>Yes</p></td>
+<td><p>x</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Signal &amp; PSD</p></td>
+<td><p><a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OctaveLevelsFromSignal.html#ansys.sound.core.standard_levels.OctaveLevelsFromSignal" title="ansys.sound.core.standard_levels.OctaveLevelsFromSignal"><code class="xref py py-class docutils literal notranslate"><span class="pre">OctaveLevelsFromSignal</span></code></a> <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OctaveLevelsFromPSD.html#ansys.sound.core.standard_levels.OctaveLevelsFromPSD" title="ansys.sound.core.standard_levels.OctaveLevelsFromPSD"><code class="xref py py-class docutils literal notranslate"><span class="pre">OctaveLevelsFromPSD</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p></td>
+<td><p>Yes</p></td>
+<td><p>x</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Signal &amp; PSD</p></td>
+<td><div class="line-block">
+<div class="line"><a class="reference internal" href="../../api/_autosummary/ansys.sound.core.spectral_processing.PowerSpectralDensity.html#ansys.sound.core.spectral_processing.PowerSpectralDensity" title="ansys.sound.core.spectral_processing.PowerSpectralDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">PowerSpectralDensity</span></code></a></div>
+<div class="line"><a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OctaveLevelsFromPSD.html#ansys.sound.core.standard_levels.OctaveLevelsFromPSD" title="ansys.sound.core.standard_levels.OctaveLevelsFromPSD"><code class="xref py py-class docutils literal notranslate"><span class="pre">OctaveLevelsFromPSD</span></code></a></div>
+</div>
+</td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>No</p></td>
+<td></td>
+<td><p>x</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="theory">
+<span id="fractional-octave-theory"></span><h2>Theory<a class="headerlink" href="#theory" title="Link to this heading">#</a></h2>
+<p>This section provides details on the different methods used to compute octave- and
+one-third-octave-band levels from a time-domain signal and from a power spectral density (PSD).</p>
+<section id="octave-and-one-third-octave-levels">
+<h3>Octave and one-third-octave levels<a class="headerlink" href="#octave-and-one-third-octave-levels" title="Link to this heading">#</a></h3>
+<p>Octave and one-third-octave levels are analysis methods to assess how the energy of a signal
+is distributed across specific frequency bands, defined logarithmically to better match how the
+frequency scale is perceived by human ears.</p>
+<p>An octave is the frequency interval between two frequencies that have a ratio of 2. For example,
+there is exactly one octave between 50 Hz and 100 Hz, but also between 1000 Hz and 2000 Hz.
+“Octave bands” are generally understood as a set of 10 predefined, contiguous frequency bands
+extending over one octave exactly and covering the entire audible frequency range. Notably, each
+octave band is twice as wide as the previous one, and half as wide as the next one.</p>
+<p>One-third-octave bands are a further logarithmic subdivision of each octave band into 3 sub-bands.</p>
+<p>The ANSI S1.11-1986 and IEC 61260:1995 standards specify band-pass filters allowing the
+computation of 29 one-third-octave-band levels from a time-domain signal. Octave-band levels are
+then derived from one-third-octave levels by summing the computed energy within each set of 3
+consecutive one-third-octave bands.</p>
+</section>
+<section id="levels-from-signal">
+<h3>Levels from signal<a class="headerlink" href="#levels-from-signal" title="Link to this heading">#</a></h3>
+<p>Band level computation in classes <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromSignal.html#ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromSignal" title="ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromSignal"><code class="xref py py-class docutils literal notranslate"><span class="pre">OneThirdOctaveLevelsFromSignal</span></code></a> and
+<a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OctaveLevelsFromSignal.html#ansys.sound.core.standard_levels.OctaveLevelsFromSignal" title="ansys.sound.core.standard_levels.OctaveLevelsFromSignal"><code class="xref py py-class docutils literal notranslate"><span class="pre">OctaveLevelsFromSignal</span></code></a> follows the ANSI S1.11-1986 and IEC 61260:1995 standards.</p>
+<ol class="arabic simple">
+<li><p>The signal is filtered using one-third-octave band-pass filters, resulting in as many
+band-filtered signals as there are one-third-octaves. Each band-pass filter has a bandwidth of
+1/3 of an octave.</p></li>
+<li><p>For each band, the band level is obtained by calculating the overall level of the
+band-pass-filtered signal.</p></li>
+<li><p>In the case of octave levels, the band levels are then derived by summing the energies
+obtained for the 3 consecutive one-third-octave bands within each octave band.</p></li>
+</ol>
+<p>The figure below illustrates this process.</p>
+<img alt="../../_images/example013_method1.png" src="../../_images/example013_method1.png" />
+</section>
+<section id="levels-from-psd">
+<h3>Levels from PSD<a class="headerlink" href="#levels-from-psd" title="Link to this heading">#</a></h3>
+<p>Band level computation in classes <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.html#ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD" title="ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD"><code class="xref py py-class docutils literal notranslate"><span class="pre">OneThirdOctaveLevelsFromPSD</span></code></a> and
+<a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OctaveLevelsFromPSD.html#ansys.sound.core.standard_levels.OctaveLevelsFromPSD" title="ansys.sound.core.standard_levels.OctaveLevelsFromPSD"><code class="xref py py-class docutils literal notranslate"><span class="pre">OctaveLevelsFromPSD</span></code></a>, when attribute
+<a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986.html#ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986" title="ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986"><code class="xref py py-attr docutils literal notranslate"><span class="pre">use_ansi_s1_11_1986</span></code></a> is set to <code class="docutils literal notranslate"><span class="pre">False</span></code> (default), simply
+consists of the integration of the PSD over the frequency range corresponding to a each octave or
+one-third-octave band.</p>
+<p>The figure below illustrates this process.</p>
+<img alt="../../_images/example013_method2.png" src="../../_images/example013_method2.png" />
+</section>
+<section id="levels-from-psd-with-ansi-s1-11-1986-weighting">
+<h3>Levels from PSD with ANSI S1.11-1986 weighting<a class="headerlink" href="#levels-from-psd-with-ansi-s1-11-1986-weighting" title="Link to this heading">#</a></h3>
+<p>Band level computation in classes <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.html#ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD" title="ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD"><code class="xref py py-class docutils literal notranslate"><span class="pre">OneThirdOctaveLevelsFromPSD</span></code></a> and
+<a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OctaveLevelsFromPSD.html#ansys.sound.core.standard_levels.OctaveLevelsFromPSD" title="ansys.sound.core.standard_levels.OctaveLevelsFromPSD"><code class="xref py py-class docutils literal notranslate"><span class="pre">OctaveLevelsFromPSD</span></code></a>, when their attribute
+<a class="reference internal" href="../../api/_autosummary/ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986.html#ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986" title="ansys.sound.core.standard_levels.OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986"><code class="xref py py-attr docutils literal notranslate"><span class="pre">use_ansi_s1_11_1986</span></code></a> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, precedes the
+band-wise PSD integration with a PSD weighting according to the frequency responses of the
+band-pass filters defined in the ANSI S1.11-1986 and IEC61260:1995 standards.</p>
+<p>This allows comparing simulation results with measurements in a meaningful way.</p>
+<ol class="arabic simple">
+<li><p>For each band, the PSD level values are weighted using the frequency response of the band
+filter defined in the ANSI S1.11-1986 and IEC61260:1995 standards.</p></li>
+<li><p>Each band level is then calculated by integrating the weighted PSD over the whole frequency
+range.</p></li>
+<li><p>In the case of octave levels, the band levels are again derived by summing the energies
+obtained for the 3 consecutive one-third-octave bands within each octave band.</p></li>
+</ol>
+<p>The figure below illustrates this process.</p>
+<img alt="../../_images/example013_method3.png" src="../../_images/example013_method3.png" />
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 5.680 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-gallery-examples-013-calculate-fractional-octave-levels-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/b183be7b03a7d0aa88797e7726190e54/013_calculate_fractional_octave_levels.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">013_calculate_fractional_octave_levels.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/71579daef1aef8d6bcb8680430e90c26/013_calculate_fractional_octave_levels.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">013_calculate_fractional_octave_levels.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/0e318877559e4504f8bfa588932536cc/013_calculate_fractional_octave_levels.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">013_calculate_fractional_octave_levels.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-analysis">Set up analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#octave-and-one-third-octave-levels-from-signal">Octave and one-third-octave levels from signal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-octave-and-one-third-octave-levels-from-signal-and-from-psd">Comparing octave and one-third-octave levels from signal and from PSD</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#takeaways">Takeaways</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#theory">Theory</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#octave-and-one-third-octave-levels">Octave and one-third-octave levels</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#levels-from-signal">Levels from signal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#levels-from-psd">Levels from PSD</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#levels-from-psd-with-ansi-s1-11-1986-weighting">Levels from PSD with ANSI S1.11-1986 weighting</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+<!-- If there is no fix edit button function, use the PyData edit-this-button-->
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/examples/gallery_examples/013_calculate_fractional_octave_levels.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"ignoreLocation": true, "keys": ["title", "text", "objectID"], "limit": 10, "min_chars_for_search": 2, "threshold": 0.5}');
+const SEARCH_FILE = "../../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2026 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the
+  <a href="https://sphinxdocs.ansys.com/version/stable/index.html"
+    >Ansys Sphinx Theme</a
+  >
+  1.6.4. <br />Last updated on
+  <span id="ast_build_date"></span>
+</p>
+<script>
+  var options = { day: "numeric", month: "long", year: "numeric" };
+  var ast_lastModifiedDate = new Date(document.lastModified);
+  var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+  document.getElementById("ast_build_date").innerHTML = ast_build_date;
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

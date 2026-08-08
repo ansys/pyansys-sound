@@ -1,0 +1,6 @@
+get\_time\_scale
+================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: ProminenceRatioForOrdersOverTime.get_time_scale

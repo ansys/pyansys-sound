@@ -1,0 +1,6 @@
+window\_overlap
+===============
+
+.. currentmodule:: ansys.sound.core.spectrogram_processing
+
+.. autoproperty:: IsolateOrders.window_overlap

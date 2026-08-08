@@ -1,0 +1,6 @@
+delete\_microphone\_signal
+==========================
+
+.. currentmodule:: ansys.sound.core.sound_power
+
+.. automethod:: SoundPowerLevelISO3744.delete_microphone_signal

@@ -1,0 +1,60 @@
+﻿RoughnessECMA418\_2
+===================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: RoughnessECMA418_2
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      RoughnessECMA418_2.get_bark_band_frequencies
+      
+      
+      RoughnessECMA418_2.get_bark_band_indexes
+      
+      
+      RoughnessECMA418_2.get_output
+      
+      
+      RoughnessECMA418_2.get_output_as_nparray
+      
+      
+      RoughnessECMA418_2.get_roughness
+      
+      
+      RoughnessECMA418_2.get_roughness_over_time
+      
+      
+      RoughnessECMA418_2.get_specific_roughness
+      
+      
+      RoughnessECMA418_2.get_time_scale
+      
+      
+      RoughnessECMA418_2.plot
+      
+      
+      RoughnessECMA418_2.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      RoughnessECMA418_2.field_type
+      RoughnessECMA418_2.signal
+   
+   

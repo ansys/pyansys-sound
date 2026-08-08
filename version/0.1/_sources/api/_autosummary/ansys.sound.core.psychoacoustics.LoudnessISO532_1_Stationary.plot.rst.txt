@@ -1,0 +1,6 @@
+plot
+====
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: LoudnessISO532_1_Stationary.plot

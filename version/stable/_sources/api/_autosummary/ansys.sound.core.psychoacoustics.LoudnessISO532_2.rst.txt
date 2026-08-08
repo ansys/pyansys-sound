@@ -1,0 +1,67 @@
+﻿LoudnessISO532\_2
+=================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: LoudnessISO532_2
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      LoudnessISO532_2.get_binaural_loudness_level_phon
+      
+      
+      LoudnessISO532_2.get_binaural_loudness_sone
+      
+      
+      LoudnessISO532_2.get_binaural_specific_loudness
+      
+      
+      LoudnessISO532_2.get_erb_center_frequencies
+      
+      
+      LoudnessISO532_2.get_erbn_numbers
+      
+      
+      LoudnessISO532_2.get_monaural_loudness_level_phon
+      
+      
+      LoudnessISO532_2.get_monaural_loudness_sone
+      
+      
+      LoudnessISO532_2.get_monaural_specific_loudness
+      
+      
+      LoudnessISO532_2.get_output
+      
+      
+      LoudnessISO532_2.get_output_as_nparray
+      
+      
+      LoudnessISO532_2.plot
+      
+      
+      LoudnessISO532_2.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      LoudnessISO532_2.field_type
+      LoudnessISO532_2.recording_type
+      LoudnessISO532_2.signal
+   
+   

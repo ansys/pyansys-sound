@@ -1,0 +1,6 @@
+local\_emergence
+================
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoproperty:: XtractTonalParameters.local_emergence

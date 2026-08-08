@@ -1,0 +1,69 @@
+﻿ToneToNoiseRatio
+================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: ToneToNoiseRatio
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      ToneToNoiseRatio.get_TNR_values
+      
+      
+      ToneToNoiseRatio.get_max_TNR_value
+      
+      
+      ToneToNoiseRatio.get_nb_tones
+      
+      
+      ToneToNoiseRatio.get_output
+      
+      
+      ToneToNoiseRatio.get_output_as_nparray
+      
+      
+      ToneToNoiseRatio.get_peaks_frequencies
+      
+      
+      ToneToNoiseRatio.get_peaks_high_frequencies
+      
+      
+      ToneToNoiseRatio.get_peaks_levels
+      
+      
+      ToneToNoiseRatio.get_peaks_low_frequencies
+      
+      
+      ToneToNoiseRatio.get_reference_curve
+      
+      
+      ToneToNoiseRatio.get_single_tone_info
+      
+      
+      ToneToNoiseRatio.plot
+      
+      
+      ToneToNoiseRatio.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ToneToNoiseRatio.frequency_list
+      ToneToNoiseRatio.psd
+   
+   

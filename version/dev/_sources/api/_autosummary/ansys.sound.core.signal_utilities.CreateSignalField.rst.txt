@@ -1,0 +1,43 @@
+﻿CreateSignalField
+=================
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoclass:: CreateSignalField
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      CreateSignalField.get_output
+      
+      
+      CreateSignalField.get_output_as_nparray
+      
+      
+      CreateSignalField.plot
+      
+      
+      CreateSignalField.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      CreateSignalField.data
+      CreateSignalField.sampling_frequency
+      CreateSignalField.unit
+   
+   

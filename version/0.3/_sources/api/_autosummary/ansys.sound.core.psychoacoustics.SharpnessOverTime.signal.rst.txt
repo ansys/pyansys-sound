@@ -1,0 +1,6 @@
+signal
+======
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: SharpnessOverTime.signal

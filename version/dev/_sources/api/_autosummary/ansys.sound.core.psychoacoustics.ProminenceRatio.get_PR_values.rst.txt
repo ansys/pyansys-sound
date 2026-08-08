@@ -1,0 +1,6 @@
+get\_PR\_values
+===============
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: ProminenceRatio.get_PR_values

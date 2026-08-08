@@ -1,0 +1,6 @@
+duration\_zeros
+===============
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoproperty:: ZeroPad.duration_zeros
