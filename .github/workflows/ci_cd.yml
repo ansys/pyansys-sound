@@ -123,7 +123,7 @@ jobs:
       - name: "Print log file"
         if: always()
         run: |
-          $log = Get-ChildItem C:/dpf_logs -File | Sort-Object CreationTime -Descending | Select-Object -First 1
+          $log = Get-ChildItem C:/dpf_logs -File -Recurse | Sort-Object CreationTime -Descending | Select-Object -First 1
           if ($log) { Get-Content $log.FullName } else { Write-Host "No log file found." }
 
       - name: "Upload log file"
@@ -131,8 +131,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: log-${{ matrix.docker-image }}
-          # Upload the whole directory; the latest file will be included alongside any others.
-          path: C:/dpf_logs/
+          path: C:/dpf_logs/**
           retention-days: 1
 
       - name: "Upload Coverage Results"
