@@ -134,6 +134,7 @@ jobs:
     env:
       PYVISTA_OFF_SCREEN: true
       MPLBACKEND: Agg  # non-interactive mode ("headless backend") for matplotlib: no GUI is used when plotting
+      UV_NO_CACHE: "true"
     strategy:
       fail-fast: false
       matrix:
@@ -236,6 +237,8 @@ jobs:
     permissions:
       contents: read  # Required to create documentation
       packages: read  # Required to use the DPF Sound Docker image
+    env:
+      UV_NO_CACHE: "true"
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
