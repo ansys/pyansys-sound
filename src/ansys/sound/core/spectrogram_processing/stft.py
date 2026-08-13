@@ -278,7 +278,7 @@ class Stft(SpectrogramProcessingParent):
         # Plotting
         f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
         p = ax1.imshow(magnitude, origin="lower", aspect="auto", cmap="jet", extent=extent)
-        f.colorbar(p, ax=ax1, label=f"Amplitude (dB re {reference_value} {mag_unit})")
+        f.colorbar(p, ax=ax1, label=f"Amplitude (dB re. {reference_value} {mag_unit})")
         ax1.set_title("Amplitude")
         ax1.set_ylabel(f"Frequency ({freq_unit})")
         p = ax2.imshow(phase, origin="lower", aspect="auto", cmap="jet", extent=extent)
