@@ -31,357 +31,176 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.order_analysis import OrderLevels
 from ansys.sound.core.order_analysis.rpm_order_representation import RpmOrderRepresentation
 
-# Skip entire test module if Sound version < 2027.1.0
-if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
-    pytest.skip("Requires Sound version >= 2027.1.0", allow_module_level=True)
+# # Skip entire test module if Sound version < 2027.1.0
+# if not pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
+#     pytest.skip("Requires Sound version >= 2027.1.0", allow_module_level=True)
 
-def test_repr_operator_100_1_1(load_accel_and_rpm):
+def _test(load_accel_and_rpm, max_order, order_resolution):
     signal, rpm_profile = load_accel_and_rpm
     op = Operator("compute_rpm_order_representation")
     op.connect(0, signal)
     op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
+    op.connect(2, max_order)
+    op.connect(3, order_resolution)
     op.run()
+    out = op.get_output(0, "fields_container")
+    out2 = out
+
+def test_repr_operator_100_1_1(load_accel_and_rpm):
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_2(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_3(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_4(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_5(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_6(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_7(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_8(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_9(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_10(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_11(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_12(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_13(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_14(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_15(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_16(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_17(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_18(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_19(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_20(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_def1(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 160)
-    op.connect(3, 2.0)
-    op.run()
+    _test(load_accel_and_rpm, 160, 2.0)
 
 
 def test_repr_operator_def2(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 160)
-    op.connect(3, 2.0)
-    op.run()
+    _test(load_accel_and_rpm, 160, 2.0)
 
 
 def test_repr_operator_def3(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 160)
-    op.connect(3, 2.0)
-    op.run()
+    _test(load_accel_and_rpm, 160, 2.0)
 
 
 def test_repr_operator_def4(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 160)
-    op.connect(3, 2.0)
-    op.run()
+    _test(load_accel_and_rpm, 160, 2.0)
 
 
 def test_repr_operator_def5(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 160)
-    op.connect(3, 2.0)
-    op.run()
+    _test(load_accel_and_rpm, 160, 2.0)
 
 
 def test_repr_operator_100_1_21(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_22(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_23(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_24(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
 
 
 def test_repr_operator_100_1_25(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 100)
-    op.connect(3, 1.0)
-    op.run()
+    _test(load_accel_and_rpm, 100, 1.0)
+
+
+def _make_repr_operator_100_1_test(index):
+    """Create a replicated 100/1.0 rpm order representation test."""
+
+    def _generated_test(load_accel_and_rpm):
+        """Run a replicated 100/1.0 rpm order representation test."""
+        _test(load_accel_and_rpm, 100, 1.0)
+
+    _generated_test.__name__ = f"test_repr_operator_100_1_{index}"
+    return _generated_test
+
+
+for test_index in range(26, 526):
+    globals()[f"test_repr_operator_100_1_{test_index}"] = _make_repr_operator_100_1_test(test_index)
+
+
+del test_index
 
 def test_repr_operator_10_0p1_1(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 10)
-    op.connect(3, 0.1)
-    op.run()
+    _test(load_accel_and_rpm, 10, 0.1)
 
 
 def test_repr_operator_10_0p1_2(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 10)
-    op.connect(3, 0.1)
-    op.run()
+    _test(load_accel_and_rpm, 10, 0.1)
 
 
 def test_repr_operator_10_0p1_3(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 10)
-    op.connect(3, 0.1)
-    op.run()
+    _test(load_accel_and_rpm, 10, 0.1)
 
 
 def test_repr_operator_10_0p1_4(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 10)
-    op.connect(3, 0.1)
-    op.run()
+    _test(load_accel_and_rpm, 10, 0.1)
 
 
 def test_repr_operator_10_0p1_5(load_accel_and_rpm):
-    signal, rpm_profile = load_accel_and_rpm
-    op = Operator("compute_rpm_order_representation")
-    op.connect(0, signal)
-    op.connect(1, rpm_profile)
-    op.connect(2, 10)
-    op.connect(3, 0.1)
-    op.run()
+    _test(load_accel_and_rpm, 10, 0.1)
 
 
 
