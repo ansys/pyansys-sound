@@ -481,7 +481,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         unit = self.signal.unit if isinstance(self.signal.unit, str) else self.signal.unit[1]
 
         if display_in_dB:
-            str_unit = f"dB re {reference_value}"
+            str_unit = f"dB re. {reference_value}"
             if len(unit) > 0:
                 str_unit += f" {unit}"
         elif len(unit) > 0:
