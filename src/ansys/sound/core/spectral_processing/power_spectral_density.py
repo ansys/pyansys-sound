@@ -348,7 +348,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
             # Plot the PSD in dB/Hz.
             plt.plot(frequencies.data, psd_dB_values)
             plt.title("Power Spectral Density (PSD)")
-            plt.ylabel(f"Level (dB/Hz re {ref_value})")
+            plt.ylabel(f"Level (dB/Hz re. {ref_value})")
         plt.xlabel(f"Frequency ({frequencies.unit})")
         plt.tight_layout()
         plt.show()

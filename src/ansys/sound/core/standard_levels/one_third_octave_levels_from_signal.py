@@ -77,10 +77,10 @@ class OneThirdOctaveLevelsFromSignal(
         if len(self.frequency_weighting) > 0:
             ylabel = (
                 f"{self.frequency_weighting}-weighted 1/3-octave-band level "
-                f"(dB{self.frequency_weighting} re {self.reference_value})"
+                f"(dB{self.frequency_weighting} re. {self.reference_value})"
             )
         else:
-            ylabel = f"1/3-octave-band level (dB re {self.reference_value})"
+            ylabel = f"1/3-octave-band level (dB re. {self.reference_value})"
 
         plt.figure()
         plt.bar(freq_str, levels)

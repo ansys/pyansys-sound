@@ -45,16 +45,16 @@ EXP_STR_ALL_SET = (
 EXP_STR_ALL_PROCESSED = (
     'OctaveLevelsFromSignal object.\nData\n\tSignal: "Name of the signal"\n'
     "\tReference value: 2e-05\n\tFrequency weighting: A\nOutput levels:\n"
-    "\t31.5 Hz:\t-18.4 dBA (re 2e-05)\n"
-    "\t63.0 Hz:\t6.2 dBA (re 2e-05)\n"
-    "\t125.0 Hz:\t26.9 dBA (re 2e-05)\n"
-    "\t250.0 Hz:\t68.3 dBA (re 2e-05)\n"
-    "\t500.0 Hz:\t81.9 dBA (re 2e-05)\n"
-    "\t1000.0 Hz:\t82.6 dBA (re 2e-05)\n"
-    "\t2000.0 Hz:\t81.3 dBA (re 2e-05)\n"
-    "\t4000.0 Hz:\t60.4 dBA (re 2e-05)\n"
-    "\t8000.0 Hz:\t50.6 dBA (re 2e-05)\n"
-    "\t16000.0 Hz:\t39.1 dBA (re 2e-05)"
+    "\t31.5 Hz:\t-18.4 dBA re. 2e-05\n"
+    "\t63.0 Hz:\t6.2 dBA re. 2e-05\n"
+    "\t125.0 Hz:\t26.9 dBA re. 2e-05\n"
+    "\t250.0 Hz:\t68.3 dBA re. 2e-05\n"
+    "\t500.0 Hz:\t81.9 dBA re. 2e-05\n"
+    "\t1000.0 Hz:\t82.6 dBA re. 2e-05\n"
+    "\t2000.0 Hz:\t81.3 dBA re. 2e-05\n"
+    "\t4000.0 Hz:\t60.4 dBA re. 2e-05\n"
+    "\t8000.0 Hz:\t50.6 dBA re. 2e-05\n"
+    "\t16000.0 Hz:\t39.1 dBA re. 2e-05"
 )
 EXP_BAND_COUNT = 10
 EXP_LEVEL_DEFAULT_0 = -77.08947

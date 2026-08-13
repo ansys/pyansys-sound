@@ -71,10 +71,10 @@ class FractionalOctaveLevelsFromSignalParent(
         str_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
         if len(self.frequency_weighting) > 0:
             str_frequency_weighting = self.frequency_weighting
-            str_unit = f"dB{self.frequency_weighting} (re {self.reference_value})"
+            str_unit = f"dB{self.frequency_weighting} re. {self.reference_value}"
         else:
             str_frequency_weighting = "None"
-            str_unit = f"dB (re {self.reference_value})"
+            str_unit = f"dB re. {self.reference_value}"
 
         if self._output is not None:
             levels, frequencies = self.get_output_as_nparray()
