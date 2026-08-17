@@ -40,21 +40,21 @@ EXP_STR_NOT_SET = (
 )
 EXP_STR_ALL_SET = (
     'OctaveLevelsFromSignal object.\nData\n\tSignal: "Name of the signal"\n'
-    "\tReference value: 2e-05\n\tFrequency weighting: A\nOutput levels: Not processed"
+    "\tReference value: 2e-05 Pa\n\tFrequency weighting: A\nOutput levels: Not processed"
 )
 EXP_STR_ALL_PROCESSED = (
     'OctaveLevelsFromSignal object.\nData\n\tSignal: "Name of the signal"\n'
-    "\tReference value: 2e-05\n\tFrequency weighting: A\nOutput levels:\n"
-    "\t31.5 Hz:\t-18.4 dBA re. 2e-05\n"
-    "\t63.0 Hz:\t6.2 dBA re. 2e-05\n"
-    "\t125.0 Hz:\t26.9 dBA re. 2e-05\n"
-    "\t250.0 Hz:\t68.3 dBA re. 2e-05\n"
-    "\t500.0 Hz:\t81.9 dBA re. 2e-05\n"
-    "\t1000.0 Hz:\t82.6 dBA re. 2e-05\n"
-    "\t2000.0 Hz:\t81.3 dBA re. 2e-05\n"
-    "\t4000.0 Hz:\t60.4 dBA re. 2e-05\n"
-    "\t8000.0 Hz:\t50.6 dBA re. 2e-05\n"
-    "\t16000.0 Hz:\t39.1 dBA re. 2e-05"
+    "\tReference value: 2e-05 Pa\n\tFrequency weighting: A\nOutput levels:\n"
+    "\t31.5 Hz:\t-18.4 dBA re. 2e-05 Pa\n"
+    "\t63.0 Hz:\t6.2 dBA re. 2e-05 Pa\n"
+    "\t125.0 Hz:\t26.9 dBA re. 2e-05 Pa\n"
+    "\t250.0 Hz:\t68.3 dBA re. 2e-05 Pa\n"
+    "\t500.0 Hz:\t81.9 dBA re. 2e-05 Pa\n"
+    "\t1000.0 Hz:\t82.6 dBA re. 2e-05 Pa\n"
+    "\t2000.0 Hz:\t81.3 dBA re. 2e-05 Pa\n"
+    "\t4000.0 Hz:\t60.4 dBA re. 2e-05 Pa\n"
+    "\t8000.0 Hz:\t50.6 dBA re. 2e-05 Pa\n"
+    "\t16000.0 Hz:\t39.1 dBA re. 2e-05 Pa"
 )
 EXP_BAND_COUNT = 10
 EXP_LEVEL_DEFAULT_0 = -77.08947
@@ -296,3 +296,17 @@ def test_octave_levels_from_signal_plot(mock_show):
     level_obj.reference_value = 2e-5
     level_obj.process()
     level_obj.plot()
+
+
+def test_octave_levels_from_signal_plot_exceptions():
+    """Test OctaveLevelsFromSignal plot method's exceptions."""
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
+    loader.process()
+    signal = loader.get_output()[0]
+
+    level_obj = OctaveLevelsFromSignal(signal=signal)
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Output is not processed yet. Use the `OctaveLevelsFromSignal.process\(\)` method.",
+    ):
+        level_obj.plot()

@@ -279,3 +279,13 @@ def test_octave_levels_from_psd_plot(mock_show, create_psd_from_txt_data):
     level_obj.reference_value = 2e-5
     level_obj.process()
     level_obj.plot()
+
+
+def test_octave_levels_from_psd_plot_exceptions(create_psd_from_txt_data):
+    """Test OctaveLevelsFromPSD plot method's exceptions."""
+    level_obj = OctaveLevelsFromPSD(psd=create_psd_from_txt_data)
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Output is not processed yet. Use the `OctaveLevelsFromPSD.process\(\)` method.",
+    ):
+        level_obj.plot()

@@ -40,40 +40,40 @@ EXP_STR_NOT_SET = (
 )
 EXP_STR_ALL_SET = (
     'OneThirdOctaveLevelsFromSignal object.\nData\n\tSignal: "Name of the signal"\n'
-    "\tReference value: 2e-05\n\tFrequency weighting: A\nOutput levels: Not processed"
+    "\tReference value: 2e-05 Pa\n\tFrequency weighting: A\nOutput levels: Not processed"
 )
 EXP_STR_ALL_PROCESSED = (
     'OneThirdOctaveLevelsFromSignal object.\nData\n\tSignal: "Name of the signal"\n'
-    "\tReference value: 2e-05\n\tFrequency weighting: A\nOutput levels:\n"
-    "\t25.0 Hz:\t-39.9 dBA re. 2e-05\n"
-    "\t31.5 Hz:\t-30.9 dBA re. 2e-05\n"
-    "\t40.0 Hz:\t-18.7 dBA re. 2e-05\n"
-    "\t50.0 Hz:\t-10.6 dBA re. 2e-05\n"
-    "\t63.0 Hz:\t-4.4 dBA re. 2e-05\n"
-    "\t80.0 Hz:\t5.7 dBA re. 2e-05\n"
-    "\t100.0 Hz:\t12.0 dBA re. 2e-05\n"
-    "\t125.0 Hz:\t19.2 dBA re. 2e-05\n"
-    "\t160.0 Hz:\t25.9 dBA re. 2e-05\n"
-    "\t200.0 Hz:\t42.2 dBA re. 2e-05\n"
-    "\t250.0 Hz:\t68.0 dBA re. 2e-05\n"
-    "\t315.0 Hz:\t56.6 dBA re. 2e-05\n"
-    "\t400.0 Hz:\t56.5 dBA re. 2e-05\n"
-    "\t500.0 Hz:\t81.6 dBA re. 2e-05\n"
-    "\t630.0 Hz:\t70.2 dBA re. 2e-05\n"
-    "\t800.0 Hz:\t81.7 dBA re. 2e-05\n"
-    "\t1000.0 Hz:\t74.0 dBA re. 2e-05\n"
-    "\t1250.0 Hz:\t69.3 dBA re. 2e-05\n"
-    "\t1600.0 Hz:\t77.0 dBA re. 2e-05\n"
-    "\t2000.0 Hz:\t79.2 dBA re. 2e-05\n"
-    "\t2500.0 Hz:\t65.3 dBA re. 2e-05\n"
-    "\t3150.0 Hz:\t57.5 dBA re. 2e-05\n"
-    "\t4000.0 Hz:\t56.3 dBA re. 2e-05\n"
-    "\t5000.0 Hz:\t50.1 dBA re. 2e-05\n"
-    "\t6300.0 Hz:\t48.2 dBA re. 2e-05\n"
-    "\t8000.0 Hz:\t44.9 dBA re. 2e-05\n"
-    "\t10000.0 Hz:\t42.4 dBA re. 2e-05\n"
-    "\t12500.0 Hz:\t38.8 dBA re. 2e-05\n"
-    "\t16000.0 Hz:\t27.5 dBA re. 2e-05"
+    "\tReference value: 2e-05 Pa\n\tFrequency weighting: A\nOutput levels:\n"
+    "\t25.0 Hz:\t-39.9 dBA re. 2e-05 Pa\n"
+    "\t31.5 Hz:\t-30.9 dBA re. 2e-05 Pa\n"
+    "\t40.0 Hz:\t-18.7 dBA re. 2e-05 Pa\n"
+    "\t50.0 Hz:\t-10.6 dBA re. 2e-05 Pa\n"
+    "\t63.0 Hz:\t-4.4 dBA re. 2e-05 Pa\n"
+    "\t80.0 Hz:\t5.7 dBA re. 2e-05 Pa\n"
+    "\t100.0 Hz:\t12.0 dBA re. 2e-05 Pa\n"
+    "\t125.0 Hz:\t19.2 dBA re. 2e-05 Pa\n"
+    "\t160.0 Hz:\t25.9 dBA re. 2e-05 Pa\n"
+    "\t200.0 Hz:\t42.2 dBA re. 2e-05 Pa\n"
+    "\t250.0 Hz:\t68.0 dBA re. 2e-05 Pa\n"
+    "\t315.0 Hz:\t56.6 dBA re. 2e-05 Pa\n"
+    "\t400.0 Hz:\t56.5 dBA re. 2e-05 Pa\n"
+    "\t500.0 Hz:\t81.6 dBA re. 2e-05 Pa\n"
+    "\t630.0 Hz:\t70.2 dBA re. 2e-05 Pa\n"
+    "\t800.0 Hz:\t81.7 dBA re. 2e-05 Pa\n"
+    "\t1000.0 Hz:\t74.0 dBA re. 2e-05 Pa\n"
+    "\t1250.0 Hz:\t69.3 dBA re. 2e-05 Pa\n"
+    "\t1600.0 Hz:\t77.0 dBA re. 2e-05 Pa\n"
+    "\t2000.0 Hz:\t79.2 dBA re. 2e-05 Pa\n"
+    "\t2500.0 Hz:\t65.3 dBA re. 2e-05 Pa\n"
+    "\t3150.0 Hz:\t57.5 dBA re. 2e-05 Pa\n"
+    "\t4000.0 Hz:\t56.3 dBA re. 2e-05 Pa\n"
+    "\t5000.0 Hz:\t50.1 dBA re. 2e-05 Pa\n"
+    "\t6300.0 Hz:\t48.2 dBA re. 2e-05 Pa\n"
+    "\t8000.0 Hz:\t44.9 dBA re. 2e-05 Pa\n"
+    "\t10000.0 Hz:\t42.4 dBA re. 2e-05 Pa\n"
+    "\t12500.0 Hz:\t38.8 dBA re. 2e-05 Pa\n"
+    "\t16000.0 Hz:\t27.5 dBA re. 2e-05 Pa"
 )
 EXP_BAND_COUNT = 29
 EXP_LEVEL_DEFAULT_16 = -19.97085
@@ -320,3 +320,20 @@ def test_one_third_octave_levels_from_signal_plot(mock_show):
     level_obj.reference_value = 2e-5
     level_obj.process()
     level_obj.plot()
+
+
+def test_one_third_octave_levels_from_signal_plot_exceptions():
+    """Test OneThirdOctaveLevelsFromSignal plot method's exceptions."""
+    loader = LoadWav(pytest.data_path_flute_nonUnitaryCalib)
+    loader.process()
+    signal = loader.get_output()[0]
+
+    level_obj = OneThirdOctaveLevelsFromSignal(signal=signal)
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=(
+            "Output is not processed yet. Use the `OneThirdOctaveLevelsFromSignal.process\(\)` "
+            "method."
+        ),
+    ):
+        level_obj.plot()
