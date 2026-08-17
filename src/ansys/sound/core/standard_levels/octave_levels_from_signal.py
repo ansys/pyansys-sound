@@ -96,8 +96,7 @@ class OctaveLevelsFromSignal(FractionalOctaveLevelsFromSignalParent, min_sound_v
         levels, frequencies = self.get_output_as_nparray()
         freq_str = [str(f) for f in frequencies]
 
-        signal = self.input_signal
-        signal_unit = signal.unit if isinstance(signal.unit, str) else signal.unit[1]
+        signal_unit = self.signal.unit if isinstance(self.signal.unit, str) else self.signal.unit[1]
         signal_unit_str = f" {signal_unit}" if len(signal_unit) > 0 else ""
 
         if len(self.frequency_weighting) > 0:
