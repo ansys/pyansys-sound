@@ -37,9 +37,10 @@ class OctaveLevelsFromSignal(FractionalOctaveLevelsFromSignalParent, min_sound_v
 
     .. note::
         For consistency with other Ansys Sound applications, octave-band levels are derived from
-        one-third-octave levels, and frequency weighting is applied before the conversion. In other
-        words, each octave-band level is obtained by summing the 3 one-third-octave levels within
-        (in squared units), each weighted with the frequency weighting obtained at the
+        one-third-octave levels computed using the filters defined in ANSI S1.11-1986. The frequency
+        weighting is applied to the one-third-octave levels before conversion to octave levels. In
+        other words, each octave-band level is obtained by summing the 3 one-third-octave levels
+        within (in squared units), each weighted with the frequency weighting obtained at the
         one-third-octave-band center frequency. Note that the highest-frequency octave band
         (centered at 16000 Hz) is obtained by only summing the 2 highest one-third-octave bands
         (since the 30th one-third-octave band centered at 20000 Hz is not considered).
@@ -95,13 +96,17 @@ class OctaveLevelsFromSignal(FractionalOctaveLevelsFromSignalParent, min_sound_v
         levels, frequencies = self.get_output_as_nparray()
         freq_str = [str(f) for f in frequencies]
 
+        signal = self.input_signal
+        signal_unit = signal.unit if isinstance(signal.unit, str) else signal.unit[1]
+        signal_unit_str = f" {signal_unit}" if len(signal_unit) > 0 else ""
+
         if len(self.frequency_weighting) > 0:
             ylabel = (
                 f"{self.frequency_weighting}-weighted octave-band level "
-                f"(dB{self.frequency_weighting} re. {self.reference_value})"
+                f"(dB{self.frequency_weighting} re. {self.reference_value}{signal_unit_str})"
             )
         else:
-            ylabel = f"Octave-band level (dB re. {self.reference_value})"
+            ylabel = f"Octave-band level (dB re. {self.reference_value}{signal_unit_str})"
 
         plt.figure()
         plt.bar(freq_str, levels)

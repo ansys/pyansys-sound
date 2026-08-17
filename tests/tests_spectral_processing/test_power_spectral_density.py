@@ -313,4 +313,4 @@ def test_power_spectral_density_plot(mock_show):
         psd.plot()
     psd.process()
     psd.plot()  # Plot in unit^2/Hz.
-    psd.plot(display_in_dB=True, ref_value=2e-5)  # Plot in dB re. 2e-5/Hz.
+    psd.plot(display_in_dB=True, ref_value=2e-5)  # Plot in dB/Hz re. 2e-5.

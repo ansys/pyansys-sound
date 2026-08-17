@@ -68,13 +68,16 @@ class FractionalOctaveLevelsFromSignalParent(
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
+        signal = self.input_signal
+        signal_unit = signal.unit if isinstance(signal.unit, str) else signal.unit[1]
+        signal_unit_str = f" {signal_unit}" if len(signal_unit) > 0 else ""
         str_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
         if len(self.frequency_weighting) > 0:
             str_frequency_weighting = self.frequency_weighting
-            str_unit = f"dB{self.frequency_weighting} re. {self.reference_value}"
+            str_unit = f"dB{self.frequency_weighting} re. {self.reference_value}{signal_unit_str}"
         else:
             str_frequency_weighting = "None"
-            str_unit = f"dB re. {self.reference_value}"
+            str_unit = f"dB re. {self.reference_value}{signal_unit_str}"
 
         if self._output is not None:
             levels, frequencies = self.get_output_as_nparray()
