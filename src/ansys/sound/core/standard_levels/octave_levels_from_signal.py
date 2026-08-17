@@ -97,7 +97,7 @@ class OctaveLevelsFromSignal(FractionalOctaveLevelsFromSignalParent, min_sound_v
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
             )
-        
+
         levels, frequencies = self.get_output_as_nparray()
         freq_str = [str(f) for f in frequencies]
 
