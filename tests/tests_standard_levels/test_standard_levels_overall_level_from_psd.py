@@ -46,7 +46,7 @@ EXP_STR_ALL_SET = (
 EXP_STR_ALL_PROCESSED = (
     'OverallLevelFromPSD object.\nData\n\tPSD: "Name of the PSD"\n\tScale type: dB\n'
     "\tReference value: 2e-05\n\tFrequency weighting: A\n"
-    "Output level value: 97.6 dBA (re 2e-05)"
+    "Output level value: 97.6 dBA re. 2e-05"
 )
 EXP_STR_ALL_SET_PROCESSED = (
     'OverallLevelFromPSD object.\nData\n\tPSD: "Name of the PSD"\n\tScale type: RMS\n'

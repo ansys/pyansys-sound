@@ -47,35 +47,35 @@ EXP_STR_ALL_PROCESSED = (
     'OneThirdOctaveLevelsFromPSD object.\nData\n\tPSD: "Name of the PSD"\n'
     "\tANSI S1.11-1986 filterbank simulation: Yes\n\tReference value: 2e-05\n"
     "\tFrequency weighting: A\nOutput levels:\n"
-    "\t25.0 Hz:\t-45.7 dBA (re 2e-05)\n"
-    "\t31.5 Hz:\t-36.6 dBA (re 2e-05)\n"
-    "\t40.0 Hz:\t-24.7 dBA (re 2e-05)\n"
-    "\t50.0 Hz:\t-16.5 dBA (re 2e-05)\n"
-    "\t63.0 Hz:\t-10.3 dBA (re 2e-05)\n"
-    "\t80.0 Hz:\t-0.3 dBA (re 2e-05)\n"
-    "\t100.0 Hz:\t6.2 dBA (re 2e-05)\n"
-    "\t125.0 Hz:\t13.3 dBA (re 2e-05)\n"
-    "\t160.0 Hz:\t20.2 dBA (re 2e-05)\n"
-    "\t200.0 Hz:\t36.8 dBA (re 2e-05)\n"
-    "\t250.0 Hz:\t62.4 dBA (re 2e-05)\n"
-    "\t315.0 Hz:\t51.2 dBA (re 2e-05)\n"
-    "\t400.0 Hz:\t50.9 dBA (re 2e-05)\n"
-    "\t500.0 Hz:\t76.0 dBA (re 2e-05)\n"
-    "\t630.0 Hz:\t64.7 dBA (re 2e-05)\n"
-    "\t800.0 Hz:\t76.1 dBA (re 2e-05)\n"
-    "\t1000.0 Hz:\t68.5 dBA (re 2e-05)\n"
-    "\t1250.0 Hz:\t63.7 dBA (re 2e-05)\n"
-    "\t1600.0 Hz:\t71.5 dBA (re 2e-05)\n"
-    "\t2000.0 Hz:\t73.6 dBA (re 2e-05)\n"
-    "\t2500.0 Hz:\t59.7 dBA (re 2e-05)\n"
-    "\t3150.0 Hz:\t51.9 dBA (re 2e-05)\n"
-    "\t4000.0 Hz:\t50.7 dBA (re 2e-05)\n"
-    "\t5000.0 Hz:\t44.6 dBA (re 2e-05)\n"
-    "\t6300.0 Hz:\t42.6 dBA (re 2e-05)\n"
-    "\t8000.0 Hz:\t39.4 dBA (re 2e-05)\n"
-    "\t10000.0 Hz:\t36.8 dBA (re 2e-05)\n"
-    "\t12500.0 Hz:\t33.2 dBA (re 2e-05)\n"
-    "\t16000.0 Hz:\t21.5 dBA (re 2e-05)"
+    "\t25.0 Hz:\t-45.7 dBA re. 2e-05\n"
+    "\t31.5 Hz:\t-36.6 dBA re. 2e-05\n"
+    "\t40.0 Hz:\t-24.7 dBA re. 2e-05\n"
+    "\t50.0 Hz:\t-16.5 dBA re. 2e-05\n"
+    "\t63.0 Hz:\t-10.3 dBA re. 2e-05\n"
+    "\t80.0 Hz:\t-0.3 dBA re. 2e-05\n"
+    "\t100.0 Hz:\t6.2 dBA re. 2e-05\n"
+    "\t125.0 Hz:\t13.3 dBA re. 2e-05\n"
+    "\t160.0 Hz:\t20.2 dBA re. 2e-05\n"
+    "\t200.0 Hz:\t36.8 dBA re. 2e-05\n"
+    "\t250.0 Hz:\t62.4 dBA re. 2e-05\n"
+    "\t315.0 Hz:\t51.2 dBA re. 2e-05\n"
+    "\t400.0 Hz:\t50.9 dBA re. 2e-05\n"
+    "\t500.0 Hz:\t76.0 dBA re. 2e-05\n"
+    "\t630.0 Hz:\t64.7 dBA re. 2e-05\n"
+    "\t800.0 Hz:\t76.1 dBA re. 2e-05\n"
+    "\t1000.0 Hz:\t68.5 dBA re. 2e-05\n"
+    "\t1250.0 Hz:\t63.7 dBA re. 2e-05\n"
+    "\t1600.0 Hz:\t71.5 dBA re. 2e-05\n"
+    "\t2000.0 Hz:\t73.6 dBA re. 2e-05\n"
+    "\t2500.0 Hz:\t59.7 dBA re. 2e-05\n"
+    "\t3150.0 Hz:\t51.9 dBA re. 2e-05\n"
+    "\t4000.0 Hz:\t50.7 dBA re. 2e-05\n"
+    "\t5000.0 Hz:\t44.6 dBA re. 2e-05\n"
+    "\t6300.0 Hz:\t42.6 dBA re. 2e-05\n"
+    "\t8000.0 Hz:\t39.4 dBA re. 2e-05\n"
+    "\t10000.0 Hz:\t36.8 dBA re. 2e-05\n"
+    "\t12500.0 Hz:\t33.2 dBA re. 2e-05\n"
+    "\t16000.0 Hz:\t21.5 dBA re. 2e-05"
 )
 EXP_BAND_COUNT = 29
 EXP_LEVEL_DEFAULT_16 = -25.79326
@@ -301,3 +301,14 @@ def test_one_third_octave_levels_from_psd_plot(mock_show, create_psd_from_txt_da
     level_obj.reference_value = 2e-5
     level_obj.process()
     level_obj.plot()
+
+
+def test_one_third_octave_levels_from_psd_plot_exceptions(create_psd_from_txt_data):
+    """Test OneThirdOctaveLevelsFromPSD plot method's exceptions."""
+    level_obj = OneThirdOctaveLevelsFromPSD(psd=create_psd_from_txt_data)
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Output is not processed yet. Use the `OneThirdOctaveLevelsFromPSD.process\(\)` "
+        "method.",
+    ):
+        level_obj.plot()
