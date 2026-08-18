@@ -47,16 +47,16 @@ EXP_STR_ALL_PROCESSED = (
     'OctaveLevelsFromPSD object.\nData\n\tPSD: "Name of the PSD"\n'
     "\tANSI S1.11-1986 filterbank simulation: Yes\n\tReference value: 2e-05\n"
     "\tFrequency weighting: A\nOutput levels:\n"
-    "\t31.5 Hz:\t-28.6 dBA (re 2e-05)\n"
-    "\t63.0 Hz:\t-2.7 dBA (re 2e-05)\n"
-    "\t125.0 Hz:\t19.2 dBA (re 2e-05)\n"
-    "\t250.0 Hz:\t62.6 dBA (re 2e-05)\n"
-    "\t500.0 Hz:\t76.3 dBA (re 2e-05)\n"
-    "\t1000.0 Hz:\t77.7 dBA (re 2e-05)\n"
-    "\t2000.0 Hz:\t75.8 dBA (re 2e-05)\n"
-    "\t4000.0 Hz:\t54.7 dBA (re 2e-05)\n"
-    "\t8000.0 Hz:\t44.7 dBA (re 2e-05)\n"
-    "\t16000.0 Hz:\t31.3 dBA (re 2e-05)"
+    "\t31.5 Hz:\t-28.6 dBA re. 2e-05\n"
+    "\t63.0 Hz:\t-2.7 dBA re. 2e-05\n"
+    "\t125.0 Hz:\t19.2 dBA re. 2e-05\n"
+    "\t250.0 Hz:\t62.6 dBA re. 2e-05\n"
+    "\t500.0 Hz:\t76.3 dBA re. 2e-05\n"
+    "\t1000.0 Hz:\t77.7 dBA re. 2e-05\n"
+    "\t2000.0 Hz:\t75.8 dBA re. 2e-05\n"
+    "\t4000.0 Hz:\t54.7 dBA re. 2e-05\n"
+    "\t8000.0 Hz:\t44.7 dBA re. 2e-05\n"
+    "\t16000.0 Hz:\t31.3 dBA re. 2e-05"
 )
 EXP_BAND_COUNT = 10
 EXP_LEVEL_DEFAULT_0 = -83.10991
@@ -279,3 +279,13 @@ def test_octave_levels_from_psd_plot(mock_show, create_psd_from_txt_data):
     level_obj.reference_value = 2e-5
     level_obj.process()
     level_obj.plot()
+
+
+def test_octave_levels_from_psd_plot_exceptions(create_psd_from_txt_data):
+    """Test OctaveLevelsFromPSD plot method's exceptions."""
+    level_obj = OctaveLevelsFromPSD(psd=create_psd_from_txt_data)
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Output is not processed yet. Use the `OctaveLevelsFromPSD.process\(\)` method.",
+    ):
+        level_obj.plot()
