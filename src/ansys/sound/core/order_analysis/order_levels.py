@@ -77,7 +77,6 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         rpm_profile: Field = None,
         orders: list[float] = None,
         order_width: float = 10.0,
-        max_order: int = 160,
         order_resolution: float = 2.0,
     ):
         """Class instantiation takes the following parameters.
@@ -94,10 +93,6 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
             Width in percent of order for the order level extraction. It defines the order range
             around each value in :attr:`orders` over which the energy is integrated to compute the
             order level.
-        max_order : int, default: 160
-            Maximum order for the RPM-order representation computation. This is the maximum order
-            value included in the computed RPM-order representation. Every order listed in
-            :attr:`orders` must be less than or equal to this value.
         order_resolution : float, default: 2.0
             Order resolution in percent of order for the RPM-order representation computation. Note
             that reducing this value increases the RPM step between each RPM value where order
@@ -109,7 +104,6 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         self.orders = orders
         self.order_resolution = order_resolution
         self.order_width = order_width
-        self.max_order = max_order
         self.__rpm_order_representation = None
         self.__operator = Operator(ID_EXTRACT_ORDER_LEVELS)
 
@@ -134,7 +128,6 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
             f"\tRPM profile name: {str_rpm}\n"
             f"\t{str_orders}\n"
             f"\tOrder analysis width: {self.order_width} %\n"
-            f"\tMaximum order: {self.max_order}\n"
             f"\tOrder analysis resolution: {self.order_resolution} %"
         )
 
@@ -218,31 +211,6 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         self.__width = width
 
     @property
-    def max_order(self) -> int:
-        """Maximum order of the RPM-order representation.
-
-        Signal content beyond this order value is ignored, and is not included in the computed
-        RPM-order representation.
-        """
-        return self.__max_order
-
-    @max_order.setter
-    def max_order(self, max_order: int):
-        """Set the maximum order."""
-        if max_order <= 0.0:
-            raise PyAnsysSoundException("Maximum order must be greater than 0.")
-
-        if isinstance(max_order, float) and not max_order.is_integer():
-            warnings.warn(
-                PyAnsysSoundWarning(
-                    f"Maximum order is specified as a float ({max_order}). It will be "
-                    f"rounded to the nearest integer ({round(max_order)})."
-                )
-            )
-
-        self.__max_order = round(max_order)
-
-    @property
     def rpm_order_representation(self) -> FieldsContainer:
         """RPM-order representation of the input signal.
 
@@ -267,12 +235,6 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
                 f"No input order list is set. Use `{__class__.__name__}.orders`."
             )
 
-        if max([order + self.order_width / 2 for order in self.orders]) > self.max_order:
-            raise PyAnsysSoundException(
-                f"Maximum order ({self.max_order}) must be greater than the highest value in the "
-                "`orders` list."
-            )
-
         if self.order_width < self.order_resolution:
             warnings.warn(
                 PyAnsysSoundWarning(
@@ -282,11 +244,15 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
                 )
             )
 
+        # Compute the maximum order to be included in the RPM-order representation so as to cover
+        # the order range defined by the user-specified orders and order width.
+        max_order = np.ceil(max(self.orders) + self.order_width / 100.0 / 2 + 1)
+
         # Step 1: Compute RPM-order representation.
         rpm_order_repr = RpmOrderRepresentation(
             signal=self.signal,
             rpm_profile=self.rpm_profile,
-            max_order=self.max_order,
+            max_order=max_order,
             order_resolution=self.order_resolution,
         )
         rpm_order_repr.process()

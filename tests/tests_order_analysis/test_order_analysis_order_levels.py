@@ -41,7 +41,6 @@ EXP_STR_NOT_SET = (
     "\tRPM profile name: Not set\n"
     "\tOrders: Not set\n"
     "\tOrder analysis width: 10.0 %\n"
-    "\tMaximum order: 160\n"
     "\tOrder analysis resolution: 2.0 %"
 )
 
@@ -52,7 +51,6 @@ EXP_STR_ALL_SET_2_ORDERS = (
     '\tRPM profile name: "Acceleration_with_Tacho_RPM"\n'
     "\tOrders (2): [2.0, 4.0]\n"
     "\tOrder analysis width: 30.0 %\n"
-    "\tMaximum order: 100\n"
     "\tOrder analysis resolution: 1.0 %"
 )
 
@@ -63,11 +61,10 @@ EXP_STR_ALL_SET_15_ORDERS = (
     '\tRPM profile name: "Acceleration_with_Tacho_RPM"\n'
     "\tOrders (15): [1, 2, 3, 4, 5, ... 11, 12, 13, 14, 15]\n"
     "\tOrder analysis width: 30.0 %\n"
-    "\tMaximum order: 100\n"
     "\tOrder analysis resolution: 1.0 %"
 )
 
-EXP_NUM_ORDERS = 3
+EXP_NUM_ORDERS = 4
 EXP_NUM_RPM_POINTS = 848
 
 # Pa^2 output
@@ -112,7 +109,6 @@ def test_order_levels_instantiation_default():
     assert order_levels.orders is None
     assert order_levels.order_resolution == 2.0
     assert order_levels.order_width == 10.0
-    assert order_levels.max_order == 160
 
 
 def test_order_levels_instantiation_all_set(load_accel_and_rpm):
@@ -124,14 +120,12 @@ def test_order_levels_instantiation_all_set(load_accel_and_rpm):
         orders=[2.0, 4.0],
         order_resolution=1.0,
         order_width=30.0,
-        max_order=100,
     )
     assert order_levels.signal is signal
     assert order_levels.rpm_profile is rpm_profile
     assert order_levels.orders == [2.0, 4.0]
     assert order_levels.order_resolution == 1.0
     assert order_levels.order_width == 30.0
-    assert order_levels.max_order == 100
 
 
 # -- __str__ ---
@@ -152,7 +146,6 @@ def test_order_levels___str___all_set(load_accel_and_rpm):
         orders=[2.0, 4.0],
         order_resolution=1.0,
         order_width=30.0,
-        max_order=100,
     )
     assert str(order_levels) == EXP_STR_ALL_SET_2_ORDERS
 
@@ -258,38 +251,6 @@ def test_order_levels_order_width_property_exceptions():
         order_levels.order_width = -5.0
 
 
-def test_order_levels_max_order_property():
-    """Test the max_order property setter and getter."""
-    order_levels = OrderLevels()
-    order_levels.max_order = 50
-    assert order_levels.max_order == 50
-
-
-def test_order_levels_max_order_property_exceptions():
-    """Test the max_order setter's exceptions."""
-    order_levels = OrderLevels()
-    with pytest.raises(PyAnsysSoundException, match="Maximum order must be greater than 0."):
-        order_levels.max_order = 0
-
-    with pytest.raises(PyAnsysSoundException, match="Maximum order must be greater than 0."):
-        order_levels.max_order = -10
-
-
-def test_order_levels_representation_max_order_property_warnings():
-    """Test the max_order property warnings."""
-    order_levels = OrderLevels()
-
-    with pytest.warns(
-        PyAnsysSoundWarning,
-        match=(
-            "Maximum order is specified as a float \(3.7\). It will be rounded to the nearest "
-            "integer \(4\)."
-        ),
-    ):
-        order_levels.max_order = 3.7
-    assert order_levels.max_order == 4
-
-
 def test_order_levels_rpm_order_representation_property(load_accel_and_rpm):
     """Test the rpm_order_representation property getter."""
     order_levels = OrderLevels()
@@ -326,11 +287,8 @@ def test_order_levels_process(load_accel_and_rpm):
     order_levels.process()
     assert order_levels._output is not None
 
-    # Other parameters provided with inverted int/float types
+    # Other parameters provided as integers (while floats are expected)
     order_levels.order_width = 10
-    with pytest.warns(PyAnsysSoundWarning):
-        order_levels.max_order = 100.7
-    assert order_levels.max_order == 101
     order_levels.order_resolution = 1
     order_levels.process()
     assert order_levels._output is not None
@@ -355,15 +313,6 @@ def test_order_levels_process_exceptions(load_accel_and_rpm):
     order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile)
     with pytest.raises(
         PyAnsysSoundException, match="No input order list is set. Use `OrderLevels.orders`."
-    ):
-        order_levels.process()
-
-    order_levels = OrderLevels(
-        signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], max_order=3
-    )
-    with pytest.raises(
-        PyAnsysSoundException,
-        match="Maximum order \(3\) must be greater than the highest value in the `orders` list.",
     ):
         order_levels.process()
 
@@ -392,7 +341,9 @@ def test_order_levels_process_warnings(load_accel_and_rpm):
 def test_order_levels_get_output(load_accel_and_rpm):
     """Test the get_output method."""
     signal, rpm_profile = load_accel_and_rpm
-    order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0])
+    order_levels = OrderLevels(
+        signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0, 158.0]
+    )
     order_levels.process()
     output = order_levels.get_output()
     assert isinstance(output, FieldsContainer)
@@ -420,7 +371,9 @@ def test_order_levels_get_output_as_nparray(load_accel_and_rpm):
     assert len(rpm) == 0
 
     signal, rpm_profile = load_accel_and_rpm
-    order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0])
+    order_levels = OrderLevels(
+        signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0, 158.0]
+    )
     order_levels.process()
     levels, orders, rpm = order_levels.get_output_as_nparray()
     assert len(levels) == EXP_NUM_ORDERS
@@ -446,7 +399,7 @@ def test_order_levels_get_output_as_nparray_width_100(load_accel_and_rpm):
     """Test get_output_as_nparray with width=100%."""
     signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(
-        signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0], order_width=100.0
+        signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0, 158.0], order_width=100.0
     )
     order_levels.process()
     levels, _, _ = order_levels.get_output_as_nparray()
@@ -461,7 +414,9 @@ def test_order_levels_get_output_as_nparray_width_100(load_accel_and_rpm):
 def test_order_levels_get_order_levels_squared_linear(load_accel_and_rpm):
     """Test the get_order_levels_squared_linear method."""
     signal, rpm_profile = load_accel_and_rpm
-    order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0])
+    order_levels = OrderLevels(
+        signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0, 158.0]
+    )
     order_levels.process()
     levels = order_levels.get_order_levels_squared_linear()
     assert len(levels) == EXP_NUM_ORDERS
@@ -482,7 +437,7 @@ def test_order_levels_get_order_levels_dB(load_accel_and_rpm):
     """Test the get_order_levels_dB method."""
     signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(
-        signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0], max_order=160
+        signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0, 158.0]
     )
     order_levels.process()
     levels = order_levels.get_order_levels_dB(reference_value=1.0)
@@ -514,9 +469,7 @@ def test_order_levels_get_order_levels_dB_exceptions(load_accel_and_rpm):
 def test_order_levels_get_order_level_squared_linear(load_accel_and_rpm):
     """Test the get_order_level_squared_linear method."""
     signal, rpm_profile = load_accel_and_rpm
-    order_levels = OrderLevels(
-        signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], max_order=160
-    )
+    order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 158.0])
 
     with pytest.warns(PyAnsysSoundWarning):
         levels = order_levels.get_order_level_squared_linear(2.0)
@@ -547,9 +500,7 @@ def test_order_levels_get_order_level_squared_linear_exceptions(load_accel_and_r
 def test_order_levels_get_order_level_dB(load_accel_and_rpm):
     """Test the get_order_level_dB method."""
     signal, rpm_profile = load_accel_and_rpm
-    order_levels = OrderLevels(
-        signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], max_order=160
-    )
+    order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 158.0])
 
     with pytest.warns(PyAnsysSoundWarning):
         levels = order_levels.get_order_level_dB(2.0)
@@ -565,9 +516,7 @@ def test_order_levels_get_order_level_dB(load_accel_and_rpm):
 def test_order_levels_get_rpm_scale(load_accel_and_rpm):
     """Test the get_rpm_scale method."""
     signal, rpm_profile = load_accel_and_rpm
-    order_levels = OrderLevels(
-        signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0], max_order=160
-    )
+    order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 158.0])
     order_levels.process()
     rpm = order_levels.get_rpm_scale()
     assert isinstance(rpm, np.ndarray)
@@ -636,8 +585,8 @@ def test_order_levels_plot_exceptions(load_accel_and_rpm):
 def test_order_levels_plot_warnings(mock_show, load_accel_and_rpm):
     """Test the plot method's warnings."""
     signal, rpm_profile = load_accel_and_rpm
-    orders_11 = [float(i) for i in range(1, 12)]
-    order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=orders_11)
+    orders = [float(i) for i in range(1, 12)]
+    order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=orders)
     order_levels.process()
     with pytest.warns(
         PyAnsysSoundWarning,
