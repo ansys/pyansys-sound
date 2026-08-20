@@ -244,15 +244,21 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
                 )
             )
 
-        # Compute the maximum order to be included in the RPM-order representation so as to cover
-        # the order range defined by the user-specified orders and order width.
-        max_order = np.ceil(max(self.orders) + self.order_width / 100.0 / 2 + 1)
+        # Compute the maximum order for the RPM-order representation, so that:
+        # - it is greater enough cover the requested order range.
+        # - The RPM-order representation is computed with a resolution close to the requested one.
+        # - it uses SAS-proposed values when applicable
+        self.__max_order = self.__compute_max_order(
+            orders=self.orders,
+            order_width=self.order_width,
+            order_resolution=self.order_resolution
+        )
 
         # Step 1: Compute RPM-order representation.
         rpm_order_repr = RpmOrderRepresentation(
             signal=self.signal,
             rpm_profile=self.rpm_profile,
-            max_order=max_order,
+            max_order=self.__max_order,
             order_resolution=self.order_resolution,
         )
         rpm_order_repr.process()
@@ -507,3 +513,22 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
                 f.write(f"{rpm}\t")
                 f.write("\t".join(map(str, levels[:, i])))
                 f.write("\n")
+
+    def __compute_max_order(self):
+        '''
+        Compute the maximum order for the RPM-order representation, so that:
+        - it is greater enough cover the requested order range.
+        - The RPM-order representation is computed with a resolution close to the requested one.
+        - it uses SAS-proposed values when applicable (eg: order_resolution = 2 can lead to 5, 10, 20, 40, ...).
+
+        Returns
+        -------
+        float
+            Computed maximum order.
+        '''
+
+        K = np.ceil(max(self.orders) + self.order_width / 100.0 / 2 + 1)
+        SixtyTwo = 62.5 # this value is to fit to the SAS-proposed values when applicable.
+        max_order = SixtyTwo * self.order_resolution / 100.0 * 2**np.ceil(np.log2(K / (SixtyTwo * self.order_resolution / 100.0)))
+
+        return max_order
