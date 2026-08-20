@@ -249,9 +249,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         # - The RPM-order representation is computed with a resolution close to the requested one.
         # - it uses SAS-proposed values when applicable
         self.__max_order = self.__compute_max_order(
-            orders=self.orders,
-            order_width=self.order_width,
-            order_resolution=self.order_resolution
+            orders=self.orders, order_width=self.order_width, order_resolution=self.order_resolution
         )
 
         # Step 1: Compute RPM-order representation.
@@ -515,7 +513,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
                 f.write("\n")
 
     def __compute_max_order(self):
-        '''
+        """
         Compute the maximum order for the RPM-order representation, so that:
         - it is greater enough cover the requested order range.
         - The RPM-order representation is computed with a resolution close to the requested one.
@@ -525,10 +523,15 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         -------
         float
             Computed maximum order.
-        '''
+        """
 
         K = np.ceil(max(self.orders) + self.order_width / 100.0 / 2 + 1)
-        SixtyTwo = 62.5 # this value is to fit to the SAS-proposed values when applicable.
-        max_order = SixtyTwo * self.order_resolution / 100.0 * 2**np.ceil(np.log2(K / (SixtyTwo * self.order_resolution / 100.0)))
+        SixtyTwo = 62.5  # this value is to fit to the SAS-proposed values when applicable.
+        max_order = (
+            SixtyTwo
+            * self.order_resolution
+            / 100.0
+            * 2 ** np.ceil(np.log2(K / (SixtyTwo * self.order_resolution / 100.0)))
+        )
 
         return max_order

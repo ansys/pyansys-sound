@@ -642,19 +642,11 @@ def test_order_levels_save_as_AnsysSound_Orders_warnings(load_accel_and_rpm):
         order_levels.save_as_AnsysSound_Orders(path_to_save)
     assert os.path.exists(path_to_save)
 
+
 @pytest.mark.parametrize(
     "resolution, max_order_requested, max_order_expected",
-    [
-        (2, 8, 10),
-        (2, 12, 20),
-        (2, 15, 20),
-        (1, 8, 10),
-        (1, 12, 20),
-        (1.5, 8, 15),
-        (2, 158, 160)
-    ],
+    [(2, 8, 10), (2, 12, 20), (2, 15, 20), (1, 8, 10), (1, 12, 20), (1.5, 8, 15), (2, 158, 160)],
 )
 def test_order_levels___compute_max_order(resolution, max_order_requested, max_order_expected):
-    order_levels = OrderLevels(orders = [max_order_requested], order_resolution=resolution)
+    order_levels = OrderLevels(orders=[max_order_requested], order_resolution=resolution)
     assert order_levels._OrderLevels__compute_max_order() == max_order_expected
-    
