@@ -20,13 +20,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Spectrogram processing classes.
+"""Order analysis."""
 
-Helper functions related to spectrogram processing.
-"""
+from .._pyansys_sound import PyAnsysSound
 
-from ._spectrogram_processing_parent import SpectrogramProcessingParent  # isort:skip
-from .istft import Istft
-from .stft import Stft
 
-__all__ = "SpectrogramProcessingParent", "Stft", "Istft"
+class OrderAnalysisParent(PyAnsysSound):
+    """
+    Provides the base class for order analysis.
+
+    This is the base class of all order analysis classes and should not be used as is.
+    """

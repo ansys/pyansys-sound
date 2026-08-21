@@ -295,3 +295,14 @@ def create_psd_from_txt_data() -> Field:
     psd.unit = "Pa^2/Hz"
 
     yield psd
+
+
+@pytest.fixture
+def load_accel_and_rpm():
+    """Load Accel_with_Tacho.wav and yield the signal and RPM profile."""
+    from ansys.sound.core.signal_utilities import LoadWav
+
+    wav_loader = LoadWav(pytest.data_path_accel_with_rpm)
+    wav_loader.process()
+    signal, rpm = wav_loader.get_output()
+    yield signal, rpm
