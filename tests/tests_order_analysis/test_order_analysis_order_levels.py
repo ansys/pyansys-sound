@@ -600,7 +600,7 @@ def test_order_levels_plot_warnings(mock_show, load_accel_and_rpm):
 
 
 def test_order_levels_save_as_AnsysSound_Orders(load_accel_and_rpm):
-    """Test that save_as_AnsysSound_Orders raises NotImplementedError."""
+    """Test that save_as_AnsysSound_Orders method."""
     signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0])
     order_levels.process()
@@ -659,6 +659,6 @@ def test_order_levels_save_as_AnsysSound_Orders_warnings(load_accel_and_rpm):
     ],
 )
 def test_order_levels__compute_max_order(orders, resolution, expected_output):
-    """Test the private method _compute_max_order."""
+    """Test the _compute_max_order method."""
     order_levels = OrderLevels(orders=orders, order_resolution=resolution)
     assert order_levels._compute_max_order() == expected_output
