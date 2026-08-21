@@ -659,6 +659,6 @@ def test_order_levels_save_as_AnsysSound_Orders_warnings(load_accel_and_rpm):
     ],
 )
 def test_order_levels__compute_max_order(orders, resolution, expected_output):
-    """Test the private method __compute_max_order."""
+    """Test the private method _compute_max_order."""
     order_levels = OrderLevels(orders=orders, order_resolution=resolution)
     assert order_levels._compute_max_order() == expected_output
