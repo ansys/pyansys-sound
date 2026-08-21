@@ -96,7 +96,9 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         order_resolution : float, default: 2.0
             Order resolution in percent of order for the RPM-order representation computation. Note
             that reducing this value increases the RPM step between each RPM value where order
-            levels are computed, and conversely.
+            levels are computed, and conversely. Note also that the actual order resolution of the
+            computed RPM-order representation might slightly differ from the value specified here,
+            because the number of order values in the representation must be a power of two.
         """
         super().__init__()
         self.signal = signal
@@ -183,7 +185,9 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
 
         This is the order step between each order value included in the computed RPM-order
         representation. Note that reducing this value increases the RPM step between each RPM value
-        where order levels are computed, and conversely.
+        where order levels are computed, and conversely. Note also that the actual order resolution
+        of the computed RPM-order representation might slightly differ from the value specified
+        here, because the number of order values in the representation must be a power of two.
         """
         return self.__resolution
 
@@ -244,19 +248,11 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
                 )
             )
 
-        # Compute the maximum order for the RPM-order representation, so that:
-        # - it is greater enough cover the requested order range.
-        # - The RPM-order representation is computed with a resolution close to the requested one.
-        # - it uses SAS-proposed values when applicable
-        self.__max_order = self.__compute_max_order(
-            orders=self.orders, order_width=self.order_width, order_resolution=self.order_resolution
-        )
-
         # Step 1: Compute RPM-order representation.
         rpm_order_repr = RpmOrderRepresentation(
             signal=self.signal,
             rpm_profile=self.rpm_profile,
-            max_order=self.__max_order,
+            max_order=self.__compute_max_order(),
             order_resolution=self.order_resolution,
         )
         rpm_order_repr.process()
@@ -512,29 +508,30 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
                 f.write("\t".join(map(str, levels[:, i])))
                 f.write("\n")
 
-    def __compute_max_order(self):
+    def __compute_max_order(self) -> float:
         """Compute the maximum order for the RPM-order representation.
 
-        The maximum order computation method ensures that:
-
-        -   it is large enough to cover the requested order range;
-        -   the order resolution of the computed RPM-order representation is close to the requested
-            one;
-        -   it uses SAS-proposed values when applicable (for example, if order_resolution=2, then
-            the value should be 5, 10, 20, 40, ...).
+        The maximum order computation method ensures that the actual order resolution of the
+        computed RPM-order representation is close to the value specified in
+        :attr:`order_resolution`, with the constraint that the number of order values in the
+        representation be a power of two. This constraint comes from the fact that the RPM-order
+        representation is computed with a short-time Fourier transform.
 
         Returns
         -------
         float
-            Maximum order.
+            Maximum order of the RPM-order representation.
         """
-        K = np.ceil(max(self.orders) + self.order_width / 100.0 / 2 + 1)
-        SixtyTwo = 62.5  # this value is to fit to the SAS-proposed values when applicable.
-        max_order = (
-            SixtyTwo
-            * self.order_resolution
-            / 100.0
-            * 2 ** np.ceil(np.log2(K / (SixtyTwo * self.order_resolution / 100.0)))
-        )
+        # Calibration factor of the maximum order computation.
+        K = 62.5
 
-        return max_order
+        order_step = self.order_resolution / 100.0
+        order_width = self.order_width / 100.0
+
+        # Minimum order required to cover the requested order range: max(orders) + order_width/2 + 1
+        minimum_order_required = np.ceil(max(self.orders) + order_width / 2 + 1)
+
+        # Number of expected order values in the RPM-order representation.
+        order_count = K * 2 ** np.ceil(np.log2(minimum_order_required / (K * order_step)))
+
+        return order_step * order_count
