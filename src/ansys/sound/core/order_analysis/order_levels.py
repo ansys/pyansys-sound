@@ -252,7 +252,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         rpm_order_repr = RpmOrderRepresentation(
             signal=self.signal,
             rpm_profile=self.rpm_profile,
-            max_order=self.__compute_max_order(),
+            max_order=self._compute_max_order(),
             order_resolution=self.order_resolution,
         )
         rpm_order_repr.process()
@@ -508,7 +508,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
                 f.write("\t".join(map(str, levels[:, i])))
                 f.write("\n")
 
-    def __compute_max_order(self) -> float:
+    def _compute_max_order(self) -> float:
         """Compute the maximum order for the RPM-order representation.
 
         The maximum order computation method ensures that the actual order resolution of the
