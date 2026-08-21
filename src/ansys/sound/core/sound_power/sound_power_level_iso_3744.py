@@ -122,7 +122,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
             + "  Measurement surface:\n"
             + f"    Shape: {self.surface_shape}\n"
             + f"    Radius: {np.round(self.surface_radius, 1)} m\n"
-            + f"    Area: {np.round(self.__get_surface_area(), 1)} m^2\n"
+            + f"    Area: {np.round(self._get_surface_area(), 1)} m^2\n"
             + f"    Number of microphone signals: {len(self.__signals)}\n"
             + "  Correction coefficient:\n"
             + f"    K1 (background noise): {np.round(self.K1, 1)} dB\n"
@@ -328,7 +328,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         # Equation A.7 of ISO 3744.
         A = alpha * 2 * (length * width + length * height + width * height)
 
-        S = self.__get_surface_area()
+        S = self._get_surface_area()
 
         # Equation A.2 of ISO 3744.
         K2 = 10 * np.log10(1 + 4 * S / A)
@@ -608,7 +608,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         plt.tight_layout()
         plt.show()
 
-    def __get_surface_area(self) -> float:
+    def _get_surface_area(self) -> float:
         """Calculate measurement surface.
 
         Calculates measurement surface area from its shape and radius, as indicated in section
