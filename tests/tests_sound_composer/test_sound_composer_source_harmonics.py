@@ -691,13 +691,13 @@ def test_source_harmonics_plot_control_exceptions():
         source_obj.plot_control()
 
 
-def test_source_harmonics___extract_harmonics_info():
-    """Test SourceHarmonics __extract_harmonics_info method."""
+def test_source_harmonics__extract_harmonics_info():
+    """Test SourceHarmonics _extract_harmonics_info method."""
     source_harmonics_obj = SourceHarmonics()
-    assert source_harmonics_obj._SourceHarmonics__extract_harmonics_info() == ([], "", [])
+    assert source_harmonics_obj._extract_harmonics_info() == ([], "", [])
 
     source_harmonics_obj.load_source_harmonics(pytest.data_path_sound_composer_harmonics_source)
-    orders, name, rpms = source_harmonics_obj._SourceHarmonics__extract_harmonics_info()
+    orders, name, rpms = source_harmonics_obj._extract_harmonics_info()
     assert orders[0] == pytest.approx(EXP_ORDERS[0])
     assert orders[2] == pytest.approx(EXP_ORDERS[1])
     assert orders[4] == pytest.approx(EXP_ORDERS[2])

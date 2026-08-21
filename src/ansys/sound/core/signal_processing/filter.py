@@ -197,7 +197,7 @@ class Filter(SignalProcessingParent):
         self.__a_coefficients = coefficients
 
         # Update the FRF to match the new coefficients (if both are set).
-        self.__compute_FRF_from_coefficients()
+        self._compute_FRF_from_coefficients()
 
     @property
     def b_coefficients(self) -> list[float]:
@@ -210,7 +210,7 @@ class Filter(SignalProcessingParent):
         self.__b_coefficients = coefficients
 
         # Update the FRF to match the new coefficients (if both are set).
-        self.__compute_FRF_from_coefficients()
+        self._compute_FRF_from_coefficients()
 
     @property
     def frf(self) -> Field:
@@ -235,7 +235,7 @@ class Filter(SignalProcessingParent):
         self.__frf = frf
 
         # Update coefficients to match the FRF.
-        self.__compute_coefficients_from_FRF()
+        self._compute_coefficients_from_FRF()
 
     @property
     def signal(self) -> Field:
@@ -406,7 +406,7 @@ class Filter(SignalProcessingParent):
         plt.grid(True)
         plt.show()
 
-    def __compute_coefficients_from_FRF(self):
+    def _compute_coefficients_from_FRF(self):
         """Design a minimum-phase FIR filter from the frequency response function (FRF).
 
         Computes the filter coefficients according to the filter sampling frequency and the
@@ -436,7 +436,7 @@ class Filter(SignalProcessingParent):
             )
 
     @scipy_required
-    def __compute_FRF_from_coefficients(self):
+    def _compute_FRF_from_coefficients(self):
         """Compute the frequency response function (FRF) from the filter coefficients.
 
         Computes the FRF from the filter coefficients, using the function ``scipy.signal.freqz()``.

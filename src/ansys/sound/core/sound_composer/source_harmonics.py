@@ -96,7 +96,7 @@ class SourceHarmonics(SourceParent):
         """Return the string representation of the object."""
         # Source info.
         if self.source_harmonics is not None:
-            orders, control_name, control_values = self.__extract_harmonics_info()
+            orders, control_name, control_values = self._extract_harmonics_info()
 
             # Source name.
             str_name = self.source_harmonics.name
@@ -432,18 +432,17 @@ class SourceHarmonics(SourceParent):
         plt.tight_layout()
         plt.show()
 
-    def __extract_harmonics_info(self) -> tuple[list[float], str, list[float]]:
+    def _extract_harmonics_info(self) -> tuple[list[float], str, list[float]]:
         """Extract the harmonics source information.
 
         Returns
         -------
-        tuple[list[float], str, list[float]]
-            Harmonics source information, consisting of the following elements:
-                First element: list of order values.
-
-                Second element: name of the control parameter.
-
-                Third element: list of control parameter values.
+        list[float]
+            List of order values.
+        str
+            Name of the control parameter.
+        list[float]
+            List of control parameter values.
         """
         if self.source_harmonics is None:
             return ([], "", [])
