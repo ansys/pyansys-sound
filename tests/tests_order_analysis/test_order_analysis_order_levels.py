@@ -643,7 +643,7 @@ def test_order_levels_save_as_AnsysSound_Orders_warnings(load_accel_and_rpm):
     assert os.path.exists(path_to_save)
 
 
-# --- private methods ---
+# --- internal methods ---
 
 
 @pytest.mark.parametrize(
