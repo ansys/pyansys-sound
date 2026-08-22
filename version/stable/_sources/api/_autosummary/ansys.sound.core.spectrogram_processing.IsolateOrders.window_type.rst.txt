@@ -1,0 +1,6 @@
+window\_type
+============
+
+.. currentmodule:: ansys.sound.core.spectrogram_processing
+
+.. autoproperty:: IsolateOrders.window_type

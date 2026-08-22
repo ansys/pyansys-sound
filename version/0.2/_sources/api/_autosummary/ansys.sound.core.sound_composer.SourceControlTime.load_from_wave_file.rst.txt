@@ -1,0 +1,6 @@
+load\_from\_wave\_file
+======================
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. automethod:: SourceControlTime.load_from_wave_file

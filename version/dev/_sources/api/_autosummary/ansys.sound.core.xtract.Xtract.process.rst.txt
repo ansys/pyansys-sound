@@ -1,0 +1,6 @@
+process
+=======
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. automethod:: Xtract.process

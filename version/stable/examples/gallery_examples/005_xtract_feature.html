@@ -1,0 +1,1057 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Extract tonal, transient, and noise components (Xtract) &#8212; PyAnsys Sound</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles\ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../../_static/documentation_options.js?v=f129cdf0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/gallery_examples/005_xtract_feature';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://sound.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.3';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="icon" href="../../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Calculate TNR and PR" href="006_calculate_PR_and_TNR.html" />
+    <link rel="prev" title="Isolate orders" href="004_isolate_orders.html" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.3.0" />
+  <meta property="og:site_name" content="PyAnsys" />
+  <meta name="physics" content="Acoustics" />
+  <link rel="canonical" href="https://sound.docs.pyansys.com/version/stable/examples/gallery_examples/005_xtract_feature.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyAnsys Sound - Home"/>
+    <img src="../../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark pst-js-only" alt="PyAnsys Sound - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html" title="PyAnsys Sound home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../contribute.html">
+    Contribute
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav>
+</div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyansys-sound" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    <div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(
+      (text) => (document.getElementById("announcement_msg").innerHTML = text),
+    )
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html" title="PyAnsys Sound home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contribute.html">
+    Contribute
+  </a>
+</li>
+
+  </ul>
+</nav>
+</div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyansys-sound" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="001_initialize_server_and_deal_with_license.html">Initialize PyAnsys Sound and check out the license</a></li>
+<li class="toctree-l1"><a class="reference internal" href="002_load_resample_amplify_write_wav_files.html">Basic operations on a signal from a WAV file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="003_compute_stft.html">Spectrogram: compute the STFT and ISTFT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="004_isolate_orders.html">Isolate orders</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Extract tonal, transient, and noise components (Xtract)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="006_calculate_PR_and_TNR.html">Calculate TNR and PR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="007_calculate_psychoacoustic_indicators.html">Calculate psychoacoustic indicators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="008_calculate_levels.html">Calculate RMS, dBSPL and dBA levels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="009_calculate_tonality_indicators.html">Calculate tonality indicators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="010_sound_composer_load_project.html">Use an existing Sound Composer project file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="011_sound_composer_create_project.html">Create a Sound Composer project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="012_predict_listening_test_ratings.html">Predict listening test ratings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="013_calculate_fractional_octave_levels.html">Octave and one-third-octave levels computation</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../index.html" class="nav-link">Examples</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Extract tonal, transient, and noise components (Xtract)</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-examples-gallery-examples-005-xtract-feature-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="extract-tonal-transient-and-noise-components-xtract">
+<span id="xtract-feature-example"></span><span id="sphx-glr-examples-gallery-examples-005-xtract-feature-py"></span><h1>Extract tonal, transient, and noise components (Xtract)<a class="headerlink" href="#extract-tonal-transient-and-noise-components-xtract" title="Link to this heading">#</a></h1>
+<p>This example shows how to use the Xtract feature in PyAnsys Sound.
+It demonstrates the different capabilities of this feature, namely,
+noise extraction, tonal extraction, and transient extraction.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Maximum frequency for STFT plots, change according to your need</span>
+<a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">MAX_FREQUENCY_PLOT_STFT</span></a> <span class="o">=</span> <span class="mf">5000.0</span>
+</pre></div>
+</div>
+<section id="set-up-analysis">
+<h2>Set up analysis<a class="headerlink" href="#set-up-analysis" title="Link to this heading">#</a></h2>
+<p>Setting up the analysis consists of loading Ansys libraries, connecting to the
+DPF server, and retrieving the example files.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load Ansys libraries.</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.examples_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">download_xtract_demo_signal_1_wav</span><span class="p">,</span>
+    <span class="n">download_xtract_demo_signal_2_wav</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.server_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">connect_to_or_start_server</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.signal_utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">CropSignal</span><span class="p">,</span> <span class="n">LoadWav</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.spectrogram_processing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Stft</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.xtract</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Xtract</span><span class="p">,</span>
+    <span class="n">XtractDenoiser</span><span class="p">,</span>
+    <span class="n">XtractDenoiserParameters</span><span class="p">,</span>
+    <span class="n">XtractTonal</span><span class="p">,</span>
+    <span class="n">XtractTonalParameters</span><span class="p">,</span>
+    <span class="n">XtractTransient</span><span class="p">,</span>
+    <span class="n">XtractTransientParameters</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="c1"># Connect to a remote DPF server or start a local DPF server.</span>
+<a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_types/GrpcServer.html#ansys.dpf.core.server_types.GrpcServer" title="ansys.dpf.core.server_types.GrpcServer" class="sphx-glr-backref-module-ansys-dpf-core-server_types sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_server</span></a><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_context/LicenseContextManager.html#ansys.dpf.core.server_context.LicenseContextManager" title="ansys.dpf.core.server_context.LicenseContextManager" class="sphx-glr-backref-module-ansys-dpf-core-server_context sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_license_context</span></a> <span class="o">=</span> <span class="n">connect_to_or_start_server</span><span class="p">(</span><span class="n">use_license_context</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="define-custom-stft-plot-function">
+<h2>Define custom STFT plot function<a class="headerlink" href="#define-custom-stft-plot-function" title="Link to this heading">#</a></h2>
+<p>Define a custom function for STFT plots. It differs from the <code class="docutils literal notranslate"><span class="pre">Stft.plot()</span></code> method in that it
+does not display the phase and allows setting custom title, maximum SPL, and maximum frequency.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_stft</span><span class="p">(</span>
+    <span class="n">stft</span><span class="p">:</span> <span class="n">Stft</span><span class="p">,</span>
+    <a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fs</span></a><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">SPLmax</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;STFT&quot;</span><span class="p">,</span>
+    <span class="n">maximum_frequency</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">MAX_FREQUENCY_PLOT_STFT</span></a><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot a short-term Fourier transform (STFT) into a figure window.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    stft: Stft</span>
+<span class="sd">        Object containing the STFT.</span>
+<span class="sd">    fs: float</span>
+<span class="sd">        Sampling frequency of the signal in Hz.</span>
+<span class="sd">    SPLmax: float</span>
+<span class="sd">        Maximum value (here in dB SPL) for the colormap.</span>
+<span class="sd">    title: str, default: &quot;STFT&quot;</span>
+<span class="sd">        Title of the figure.</span>
+<span class="sd">    maximum_frequency: float, default: MAX_FREQUENCY_PLOT_STFT</span>
+<span class="sd">        Maximum frequency in Hz to display.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">magnitude</span> <span class="o">=</span> <span class="n">stft</span><span class="o">.</span><span class="n">get_stft_magnitude_as_nparray</span><span class="p">()</span>
+    <span class="n">magnitude_unit</span> <span class="o">=</span> <span class="n">stft</span><span class="o">.</span><span class="n">get_output</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span>
+    <span class="n">frequency_unit</span> <span class="o">=</span> <span class="n">stft</span><span class="o">.</span><span class="n">get_output</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">time_freq_support</span><span class="o">.</span><span class="n">time_frequencies</span><span class="o">.</span><span class="n">unit</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_unit</span></a> <span class="o">=</span> <span class="n">stft</span><span class="o">.</span><span class="n">get_output</span><span class="p">()</span><span class="o">.</span><span class="n">time_freq_support</span><span class="o">.</span><span class="n">time_frequencies</span><span class="o">.</span><span class="n">unit</span>
+
+    <span class="c1"># Only extract the first half of the STFT, as it is symmetrical</span>
+    <span class="n">half_nfft</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">magnitude</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># Voluntarily ignore a numpy warning</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.seterr.html#numpy.seterr" title="numpy.seterr" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">seterr</span></a><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+    <span class="n">magnitude</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><span class="n">magnitude</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">half_nfft</span><span class="p">,</span> <span class="p">:])</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.seterr.html#numpy.seterr" title="numpy.seterr" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">seterr</span></a><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s2">&quot;warn&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Obtain sampling frequency, time steps, and number of time samples</span>
+    <span class="n">time_data_spectrogram</span> <span class="o">=</span> <span class="n">stft</span><span class="o">.</span><span class="n">get_output</span><span class="p">()</span><span class="o">.</span><span class="n">time_freq_support</span><span class="o">.</span><span class="n">time_frequencies</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="c1"># Define boundaries of the plot</span>
+    <span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="n">time_data_spectrogram</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">time_data_spectrogram</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">,</span> <a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fs</span></a> <span class="o">/</span> <span class="mf">2.0</span><span class="p">]</span>
+
+    <span class="c1"># Plot</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="matplotlib.pyplot.imshow" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span></a><span class="p">(</span>
+        <span class="n">magnitude</span><span class="p">,</span>
+        <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span>
+        <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">,</span>
+        <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>
+        <span class="n">vmax</span><span class="o">=</span><span class="n">SPLmax</span><span class="p">,</span>
+        <span class="n">vmin</span><span class="o">=</span><span class="n">SPLmax</span> <span class="o">-</span> <span class="mf">70.0</span><span class="p">,</span>
+    <span class="p">)</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="matplotlib.pyplot.colorbar" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Magnitude (</span><span class="si">{</span><span class="n">magnitude_unit</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="matplotlib.pyplot.ylabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Frequency (</span><span class="si">{</span><span class="n">frequency_unit</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="matplotlib.pyplot.xlabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time (</span><span class="si">{</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_unit</span></a><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.ylim.html#matplotlib.pyplot.ylim" title="matplotlib.pyplot.ylim" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">ylim</span></a><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">maximum_frequency</span><span class="p">])</span>  <span class="c1"># Change the value of MAX_FREQUENCY_PLOT_STFT if needed</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="matplotlib.pyplot.title" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="load-a-demo-signal-for-xtract">
+<h2>Load a demo signal for Xtract<a class="headerlink" href="#load-a-demo-signal-for-xtract" title="Link to this heading">#</a></h2>
+<p>Load a demo signal from a WAV file using the <code class="docutils literal notranslate"><span class="pre">LoadWav</span></code> class.
+The WAV file contains harmonics and shocks.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Return the input data of the example file</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_xtract_demo_signal_1</span></a> <span class="o">=</span> <span class="n">download_xtract_demo_signal_1_wav</span><span class="p">(</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_types/GrpcServer.html#ansys.dpf.core.server_types.GrpcServer" title="ansys.dpf.core.server_types.GrpcServer" class="sphx-glr-backref-module-ansys-dpf-core-server_types sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_server</span></a><span class="p">)</span>
+
+<span class="c1"># Load the WAV file</span>
+<span class="n">wav_loader</span> <span class="o">=</span> <span class="n">LoadWav</span><span class="p">(</span><span class="n">path_to_wav</span><span class="o">=</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_xtract_demo_signal_1</span></a><span class="p">)</span>
+<span class="n">wav_loader</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+
+<span class="c1"># Plot the signal in time domain</span>
+<a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a> <span class="o">=</span> <span class="n">wav_loader</span><span class="o">.</span><span class="n">get_output</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fs</span></a> <span class="o">=</span> <span class="n">wav_loader</span><span class="o">.</span><span class="n">get_sampling_frequency</span><span class="p">()</span>
+<a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time</span></a> <span class="o">=</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a><span class="o">.</span><span class="n">time_freq_support</span><span class="o">.</span><span class="n">time_frequencies</span>
+<span class="n">time_vector</span> <span class="o">=</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time</span></a><span class="o">.</span><span class="n">data</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_unit</span></a> <span class="o">=</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time</span></a><span class="o">.</span><span class="n">unit</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="matplotlib.pyplot.plot" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">time_vector</span><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="matplotlib.pyplot.title" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s2">&quot;Xtract Demo Signal 1&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.grid.html#matplotlib.pyplot.grid" title="matplotlib.pyplot.grid" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">grid</span></a><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="matplotlib.pyplot.xlabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time (</span><span class="si">{</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_unit</span></a><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="matplotlib.pyplot.ylabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Amplitude (</span><span class="si">{</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+
+<span class="c1"># Compute the spectrogram of the signal and plot it</span>
+<span class="n">stft_original</span> <span class="o">=</span> <span class="n">Stft</span><span class="p">(</span><span class="n">signal</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a><span class="p">,</span> <span class="n">fft_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">window_overlap</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+<span class="n">stft_original</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">max_stft</span></a> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.max.html#numpy.max" title="numpy.max" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">max</span></a><span class="p">(</span><span class="n">stft_original</span><span class="o">.</span><span class="n">get_stft_magnitude_as_nparray</span><span class="p">()))</span>
+
+<span class="n">plot_stft</span><span class="p">(</span><span class="n">stft_original</span><span class="p">,</span> <a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fs</span></a><span class="p">,</span> <span class="n">SPLmax</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">max_stft</span></a><span class="p">,</span> <span class="n">maximum_frequency</span><span class="o">=</span><span class="mf">20000.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="sphx-glr-horizontal">
+<li><img src="../../_images/sphx_glr_005_xtract_feature_001.png" srcset="../../_images/sphx_glr_005_xtract_feature_001.png" alt="Xtract Demo Signal 1" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../_images/sphx_glr_005_xtract_feature_002.png" srcset="../../_images/sphx_glr_005_xtract_feature_002.png" alt="STFT" class = "sphx-glr-multi-img"/></li>
+</ul>
+</section>
+<section id="use-individual-extraction-features">
+<h2>Use individual extraction features<a class="headerlink" href="#use-individual-extraction-features" title="Link to this heading">#</a></h2>
+<p>The following topics show how to use different capabilities of Xtract independently.</p>
+<section id="noise-extraction">
+<h3>Noise extraction<a class="headerlink" href="#noise-extraction" title="Link to this heading">#</a></h3>
+<p>The goal is to isolate a fan noise deprived of any tonal content in the demo signal.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a noise pattern using the first two seconds of the signal.</span>
+<span class="c1"># First crop the first two seconds of the signal.</span>
+<span class="n">signal_cropper</span> <span class="o">=</span> <span class="n">CropSignal</span><span class="p">(</span><span class="n">signal</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="n">signal_cropper</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+<a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cropped_signal</span></a> <span class="o">=</span> <span class="n">signal_cropper</span><span class="o">.</span><span class="n">get_output</span><span class="p">()</span>
+
+<span class="c1"># Then use the &#39;XtractDenoiserParameters&#39; class to create the noise pattern.</span>
+<span class="n">xtract_denoiser_params</span> <span class="o">=</span> <span class="n">XtractDenoiserParameters</span><span class="p">()</span>
+<span class="n">xtract_denoiser_params</span><span class="o">.</span><span class="n">noise_psd</span> <span class="o">=</span> <span class="n">xtract_denoiser_params</span><span class="o">.</span><span class="n">create_noise_psd_from_noise_samples</span><span class="p">(</span>
+    <span class="n">signal</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cropped_signal</span></a><span class="p">,</span> <span class="n">sampling_frequency</span><span class="o">=</span><a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fs</span></a><span class="p">,</span> <span class="n">window_length</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+
+<span class="c1"># Denoise the signal using the &#39;XtractDenoiser&#39; class.</span>
+<span class="n">xtract_denoiser</span> <span class="o">=</span> <span class="n">XtractDenoiser</span><span class="p">(</span>
+    <span class="n">input_signal</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a><span class="p">,</span> <span class="n">input_parameters</span><span class="o">=</span><span class="n">xtract_denoiser_params</span>
+<span class="p">)</span>
+<span class="n">xtract_denoiser</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+
+<a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">noise_signal</span></a> <span class="o">=</span> <span class="n">xtract_denoiser</span><span class="o">.</span><span class="n">get_output</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Plot the original signal and the noise signal in the same window</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="matplotlib.pyplot.plot" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">time_vector</span><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Original Signal&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="matplotlib.pyplot.plot" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">time_vector</span><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">noise_signal</span></a><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Noise Signal&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.grid.html#matplotlib.pyplot.grid" title="matplotlib.pyplot.grid" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">grid</span></a><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="matplotlib.pyplot.xlabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time (</span><span class="si">{</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_unit</span></a><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="matplotlib.pyplot.ylabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Amplitude (</span><span class="si">{</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="matplotlib.pyplot.title" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s2">&quot;Original Signal and Noise Signal&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="matplotlib.pyplot.legend" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_005_xtract_feature_003.png" srcset="../../_images/sphx_glr_005_xtract_feature_003.png" alt="Original Signal and Noise Signal" class = "sphx-glr-single-img"/></section>
+<section id="tone-extraction">
+<h3>Tone extraction<a class="headerlink" href="#tone-extraction" title="Link to this heading">#</a></h3>
+<p>The goal is to isolate the tones using the right settings.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Try a first attempt of tone extraction with a</span>
+<span class="c1"># First set of parameters using the &#39;XtractTonalParameters&#39; class.</span>
+<span class="n">xtract_tonal_params</span> <span class="o">=</span> <span class="n">XtractTonalParameters</span><span class="p">()</span>
+<span class="n">xtract_tonal_params</span><span class="o">.</span><span class="n">regularity</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">xtract_tonal_params</span><span class="o">.</span><span class="n">maximum_slope</span> <span class="o">=</span> <span class="mf">1000.0</span>
+<span class="n">xtract_tonal_params</span><span class="o">.</span><span class="n">minimum_duration</span> <span class="o">=</span> <span class="mf">0.22</span>
+<span class="n">xtract_tonal_params</span><span class="o">.</span><span class="n">intertonal_gap</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">xtract_tonal_params</span><span class="o">.</span><span class="n">local_emergence</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="n">xtract_tonal_params</span><span class="o">.</span><span class="n">fft_size</span> <span class="o">=</span> <span class="mi">2048</span>
+
+<span class="c1">## Now perform the tonal extraction using the &#39;XtractTonal&#39; class</span>
+<span class="n">xtract_tonal</span> <span class="o">=</span> <span class="n">XtractTonal</span><span class="p">(</span><span class="n">input_signal</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a><span class="p">,</span> <span class="n">input_parameters</span><span class="o">=</span><span class="n">xtract_tonal_params</span><span class="p">)</span>
+<span class="n">xtract_tonal</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Plot the spectrogram to assess the quality of the output.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">stft_modified_signal</span> <span class="o">=</span> <span class="n">Stft</span><span class="p">(</span><span class="n">signal</span><span class="o">=</span><span class="n">xtract_tonal</span><span class="o">.</span><span class="n">get_output</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">fft_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">window_overlap</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+<span class="n">stft_modified_signal</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Plot of the spectrograms with tonal extraction parameters that do not work.&quot;</span><span class="p">)</span>
+
+<span class="c1">## Spectrogram of the original signal</span>
+<span class="n">plot_stft</span><span class="p">(</span><span class="n">stft_original</span><span class="p">,</span> <a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fs</span></a><span class="p">,</span> <span class="n">SPLmax</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">max_stft</span></a><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Original Signal&quot;</span><span class="p">)</span>
+
+<span class="c1">## Spectrogram of the modified signal</span>
+<span class="n">plot_stft</span><span class="p">(</span><span class="n">stft_modified_signal</span><span class="p">,</span> <a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fs</span></a><span class="p">,</span> <span class="n">SPLmax</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">max_stft</span></a><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Extracted Tones&quot;</span><span class="p">)</span>
+<span class="c1"># You can see from the obtained plot that the tones are not properly extracted.</span>
+</pre></div>
+</div>
+<ul class="sphx-glr-horizontal">
+<li><img src="../../_images/sphx_glr_005_xtract_feature_004.png" srcset="../../_images/sphx_glr_005_xtract_feature_004.png" alt="Original Signal" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../_images/sphx_glr_005_xtract_feature_005.png" srcset="../../_images/sphx_glr_005_xtract_feature_005.png" alt="Extracted Tones" class = "sphx-glr-multi-img"/></li>
+</ul>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Plot of the spectrograms with tonal extraction parameters that do not work.
+</pre></div>
+</div>
+<p>Try again with a different parameter for the maximum slope.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">xtract_tonal_params</span><span class="o">.</span><span class="n">maximum_slope</span> <span class="o">=</span> <span class="mf">5000.0</span>
+<span class="n">xtract_tonal</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+
+<span class="c1"># Recheck the plots</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Plot of the spectrograms with the right tonal extraction parameters.&quot;</span><span class="p">)</span>
+<span class="n">plot_stft</span><span class="p">(</span><span class="n">stft_original</span><span class="p">,</span> <a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fs</span></a><span class="p">,</span> <span class="n">SPLmax</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">max_stft</span></a><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Original Signal&quot;</span><span class="p">)</span>
+
+<span class="c1"># Spectrogram of the modified signal</span>
+<span class="n">stft_modified_signal</span><span class="o">.</span><span class="n">signal</span> <span class="o">=</span> <span class="n">xtract_tonal</span><span class="o">.</span><span class="n">get_output</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">stft_modified_signal</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+<span class="n">plot_stft</span><span class="p">(</span><span class="n">stft_modified_signal</span><span class="p">,</span> <a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fs</span></a><span class="p">,</span> <span class="n">SPLmax</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">max_stft</span></a><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Extracted Tones&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="sphx-glr-horizontal">
+<li><img src="../../_images/sphx_glr_005_xtract_feature_006.png" srcset="../../_images/sphx_glr_005_xtract_feature_006.png" alt="Original Signal" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../_images/sphx_glr_005_xtract_feature_007.png" srcset="../../_images/sphx_glr_005_xtract_feature_007.png" alt="Extracted Tones" class = "sphx-glr-multi-img"/></li>
+</ul>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Plot of the spectrograms with the right tonal extraction parameters.
+</pre></div>
+</div>
+</section>
+<section id="transient-extraction">
+<h3>Transient extraction<a class="headerlink" href="#transient-extraction" title="Link to this heading">#</a></h3>
+<p>The goal is to isolate the transients using the right settings.
+While these settings are not as easy to handle, they are well explained in the tutorial videos
+available on the <a class="reference external" href="https://www.youtube.com/playlist?list=PL0lZXwHtV6OkhEaatUbk3bHIX5SIiTNew">Ansys Sound YouTube channel</a>. You can also find
+the <a class="reference external" href="https://learninghub.ansys.com/share/asset/view/108">SAS - XTRACT transient</a> video on the
+Ansys Learning Hub.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a set of transient parameters.</span>
+<span class="c1"># This example assumes that the best minimum and maximum thresholds are known.</span>
+<span class="c1"># You can use the SAS interface to help set up these thresholds interactively.</span>
+<span class="n">xtract_transient_params</span> <span class="o">=</span> <span class="n">XtractTransientParameters</span><span class="p">(</span><span class="n">lower_threshold</span><span class="o">=</span><span class="mf">51.5</span><span class="p">,</span> <span class="n">upper_threshold</span><span class="o">=</span><span class="mf">60.0</span><span class="p">)</span>
+
+<span class="c1"># Perform the transient extraction using the &#39;XtractTransient&#39; class.</span>
+<span class="n">xtract_transient</span> <span class="o">=</span> <span class="n">XtractTransient</span><span class="p">(</span>
+    <span class="n">input_signal</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a><span class="p">,</span> <span class="n">input_parameters</span><span class="o">=</span><span class="n">xtract_transient_params</span>
+<span class="p">)</span>
+<span class="n">xtract_transient</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+<a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">transient_signal</span></a> <span class="o">=</span> <span class="n">xtract_transient</span><span class="o">.</span><span class="n">get_output</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Plot the original signal and the transient signal in the same window</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="matplotlib.pyplot.plot" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">time_vector</span><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Original Signal&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="matplotlib.pyplot.plot" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">time_vector</span><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">transient_signal</span></a><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Transient Signal&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.grid.html#matplotlib.pyplot.grid" title="matplotlib.pyplot.grid" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">grid</span></a><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="matplotlib.pyplot.xlabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time (</span><span class="si">{</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_unit</span></a><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="matplotlib.pyplot.ylabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Amplitude (</span><span class="si">{</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="matplotlib.pyplot.title" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s2">&quot;Original Signal and Transient signal&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/legend_api.html#matplotlib.legend.Legend" title="matplotlib.legend.Legend" class="sphx-glr-backref-module-matplotlib-legend sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">leg</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="matplotlib.pyplot.legend" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">()</span>
+<span class="k">for</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D" title="matplotlib.lines.Line2D" class="sphx-glr-backref-module-matplotlib-lines sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">line</span></a> <span class="ow">in</span> <a href="https://matplotlib.org/stable/api/legend_api.html#matplotlib.legend.Legend.get_lines" title="matplotlib.legend.Legend.get_lines" class="sphx-glr-backref-module-matplotlib-legend sphx-glr-backref-type-py-method"><span class="n">leg</span><span class="o">.</span><span class="n">get_lines</span></a><span class="p">():</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D.set_linewidth" title="matplotlib.lines.Line2D.set_linewidth" class="sphx-glr-backref-module-matplotlib-lines sphx-glr-backref-type-py-method"><span class="n">line</span><span class="o">.</span><span class="n">set_linewidth</span></a><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_005_xtract_feature_008.png" srcset="../../_images/sphx_glr_005_xtract_feature_008.png" alt="Original Signal and Transient signal" class = "sphx-glr-single-img"/></section>
+</section>
+<section id="use-a-combination-of-extraction-features-and-loop-on-several-signals">
+<h2>Use a combination of extraction features and loop on several signals<a class="headerlink" href="#use-a-combination-of-extraction-features-and-loop-on-several-signals" title="Link to this heading">#</a></h2>
+<p>The idea here is to loop over several signals and use the <code class="docutils literal notranslate"><span class="pre">Xtract</span></code> class to combine
+all previous classes.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_xtract_demo_signal_2</span></a> <span class="o">=</span> <span class="n">download_xtract_demo_signal_2_wav</span><span class="p">(</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_types/GrpcServer.html#ansys.dpf.core.server_types.GrpcServer" title="ansys.dpf.core.server_types.GrpcServer" class="sphx-glr-backref-module-ansys-dpf-core-server_types sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_server</span></a><span class="p">)</span>
+
+<a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">paths</span></a> <span class="o">=</span> <span class="p">[</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_xtract_demo_signal_1</span></a><span class="p">,</span> <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_xtract_demo_signal_2</span></a><span class="p">]</span>
+
+<span class="c1"># Instantiate the &#39;Xtract&#39; class with the parameters previously set</span>
+<span class="n">xtract</span> <span class="o">=</span> <span class="n">Xtract</span><span class="p">(</span>
+    <span class="n">parameters_denoiser</span><span class="o">=</span><span class="n">xtract_denoiser_params</span><span class="p">,</span>
+    <span class="n">parameters_tonal</span><span class="o">=</span><span class="n">xtract_tonal_params</span><span class="p">,</span>
+    <span class="n">parameters_transient</span><span class="o">=</span><span class="n">xtract_transient_params</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Loop over all signal paths contained in the &#39;paths&#39; variable</span>
+<span class="k">for</span> <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">p</span></a> <span class="ow">in</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">paths</span></a><span class="p">:</span>
+    <span class="c1"># Name the signal using the file name</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal_name</span></a> <span class="o">=</span> <a href="https://docs.python.org/dev/library/os.path.html#os.path.basename" title="os.path.basename" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span></a><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">p</span></a><span class="p">)</span>
+
+    <span class="c1"># Load the signal</span>
+    <span class="n">wav_loader</span><span class="o">.</span><span class="n">path_to_wav</span> <span class="o">=</span> <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">p</span></a>
+    <span class="n">wav_loader</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+    <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a> <span class="o">=</span> <span class="n">wav_loader</span><span class="o">.</span><span class="n">get_output</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fs</span></a> <span class="o">=</span> <span class="n">wav_loader</span><span class="o">.</span><span class="n">get_sampling_frequency</span><span class="p">()</span>
+
+    <span class="c1"># Plot the time domain signal</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ylims</span></a> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">]</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="matplotlib.pyplot.plot" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">time_vector</span><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Original Signal&quot;</span><span class="p">)</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.ylim.html#matplotlib.pyplot.ylim" title="matplotlib.pyplot.ylim" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">ylim</span></a><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ylims</span></a><span class="p">)</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="matplotlib.pyplot.xlabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time (</span><span class="si">{</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_unit</span></a><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="matplotlib.pyplot.ylabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Amplitude (</span><span class="si">{</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.grid.html#matplotlib.pyplot.grid" title="matplotlib.pyplot.grid" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">grid</span></a><span class="p">()</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="matplotlib.pyplot.legend" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">()</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="matplotlib.pyplot.title" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal_name</span></a><span class="p">)</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+
+    <span class="c1"># Compute and plot the STFT</span>
+    <span class="n">stft_original</span><span class="o">.</span><span class="n">signal</span> <span class="o">=</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a>
+    <span class="n">stft_original</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+    <span class="n">plot_stft</span><span class="p">(</span><span class="n">stft</span><span class="o">=</span><span class="n">stft_original</span><span class="p">,</span> <a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fs</span></a><span class="o">=</span><a href="https://docs.python.org/dev/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fs</span></a><span class="p">,</span> <span class="n">SPLmax</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">max_stft</span></a><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;STFT for signal </span><span class="si">{</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal_name</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Use Xtract with the loaded signal</span>
+    <span class="n">xtract</span><span class="o">.</span><span class="n">input_signal</span> <span class="o">=</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a>
+    <span class="n">xtract</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+
+    <span class="c1"># Collect outputs and plot everything in one window</span>
+    <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">noise_signal</span></a><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tonal_signal</span></a><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">transient_signal</span></a><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">remainder_signal</span></a> <span class="o">=</span> <span class="n">xtract</span><span class="o">.</span><span class="n">get_output</span><span class="p">()</span>
+
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_vector</span><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Original Signal&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_vector</span><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">noise_signal</span></a><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Noise Signal&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_vector</span><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tonal_signal</span></a><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Tonal Signal&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Amplitude (</span><span class="si">{</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_domain_signal</span></a><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>  <span class="c1"># Set ylabel for middle plot only</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_vector</span><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">transient_signal</span></a><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Transient Signal&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;purple&quot;</span><span class="p">)</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_vector</span><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">remainder_signal</span></a><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Remainder Signal&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="matplotlib.axes.Axes" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a> <span class="ow">in</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axs</span></a><span class="p">:</span>
+        <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_ylim.html#matplotlib.axes.Axes.set_ylim" title="matplotlib.axes.Axes.set_ylim" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span></a><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ylims</span></a><span class="p">)</span>
+        <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.grid.html#matplotlib.axes.Axes.grid" title="matplotlib.axes.Axes.grid" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">grid</span></a><span class="p">()</span>
+        <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.legend.html#matplotlib.axes.Axes.legend" title="matplotlib.axes.Axes.legend" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">legend</span></a><span class="p">()</span>
+        <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_aspect.html#matplotlib.axes.Axes.set_aspect" title="matplotlib.axes.Axes.set_aspect" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span></a><span class="p">(</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="matplotlib.pyplot.xlabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time (</span><span class="si">{</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">time_unit</span></a><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="matplotlib.pyplot.legend" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">()</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.suptitle.html#matplotlib.pyplot.suptitle" title="matplotlib.pyplot.suptitle" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original and extracted signals for </span><span class="si">{</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal_name</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<ul class="sphx-glr-horizontal">
+<li><img src="../../_images/sphx_glr_005_xtract_feature_009.png" srcset="../../_images/sphx_glr_005_xtract_feature_009.png" alt="xtract_demo_signal_1.wav" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../_images/sphx_glr_005_xtract_feature_010.png" srcset="../../_images/sphx_glr_005_xtract_feature_010.png" alt="STFT for signal xtract_demo_signal_1.wav" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../_images/sphx_glr_005_xtract_feature_011.png" srcset="../../_images/sphx_glr_005_xtract_feature_011.png" alt="Original and extracted signals for xtract_demo_signal_1.wav" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../_images/sphx_glr_005_xtract_feature_012.png" srcset="../../_images/sphx_glr_005_xtract_feature_012.png" alt="xtract_demo_signal_2.wav" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../_images/sphx_glr_005_xtract_feature_013.png" srcset="../../_images/sphx_glr_005_xtract_feature_013.png" alt="STFT for signal xtract_demo_signal_2.wav" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../_images/sphx_glr_005_xtract_feature_014.png" srcset="../../_images/sphx_glr_005_xtract_feature_014.png" alt="Original and extracted signals for xtract_demo_signal_2.wav" class = "sphx-glr-multi-img"/></li>
+</ul>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (4 minutes 23.535 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-gallery-examples-005-xtract-feature-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/076326beb951b431d70d3622e9ee9e3a/005_xtract_feature.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">005_xtract_feature.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/432877ab5914b4ced495ed3a071e2895/005_xtract_feature.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">005_xtract_feature.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/2432df1bd7e9b010097672f7e80be015/005_xtract_feature.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">005_xtract_feature.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-analysis">Set up analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-custom-stft-plot-function">Define custom STFT plot function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-a-demo-signal-for-xtract">Load a demo signal for Xtract</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-individual-extraction-features">Use individual extraction features</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noise-extraction">Noise extraction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tone-extraction">Tone extraction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transient-extraction">Transient extraction</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-a-combination-of-extraction-features-and-loop-on-several-signals">Use a combination of extraction features and loop on several signals</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+<!-- If there is no fix edit button function, use the PyData edit-this-button-->
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/examples/gallery_examples/005_xtract_feature.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"ignoreLocation": true, "keys": ["title", "text", "objectID"], "limit": 10, "min_chars_for_search": 2, "threshold": 0.5}');
+const SEARCH_FILE = "../../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2026 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the
+  <a href="https://sphinxdocs.ansys.com/version/stable/index.html"
+    >Ansys Sphinx Theme</a
+  >
+  1.6.4. <br />Last updated on
+  <span id="ast_build_date"></span>
+</p>
+<script>
+  var options = { day: "numeric", month: "long", year: "numeric" };
+  var ast_lastModifiedDate = new Date(document.lastModified);
+  var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+  document.getElementById("ast_build_date").innerHTML = ast_build_date;
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

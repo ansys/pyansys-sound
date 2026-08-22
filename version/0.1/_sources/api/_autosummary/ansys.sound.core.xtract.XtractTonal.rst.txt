@@ -1,0 +1,47 @@
+﻿XtractTonal
+===========
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoclass:: XtractTonal
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      XtractTonal.convert_fields_container_to_np_array
+      
+      
+      XtractTonal.get_output
+      
+      
+      XtractTonal.get_output_as_nparray
+      
+      
+      XtractTonal.plot
+      
+      
+      XtractTonal.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      XtractTonal.input_parameters
+      XtractTonal.input_signal
+      XtractTonal.output_non_tonal_signals
+      XtractTonal.output_tonal_signals
+   
+   

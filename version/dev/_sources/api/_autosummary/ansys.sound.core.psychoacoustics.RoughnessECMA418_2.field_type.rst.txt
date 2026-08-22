@@ -1,0 +1,6 @@
+field\_type
+===========
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: RoughnessECMA418_2.field_type

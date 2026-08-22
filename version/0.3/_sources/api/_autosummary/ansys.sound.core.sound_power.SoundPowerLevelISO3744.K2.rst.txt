@@ -1,0 +1,6 @@
+K2
+==
+
+.. currentmodule:: ansys.sound.core.sound_power
+
+.. autoproperty:: SoundPowerLevelISO3744.K2

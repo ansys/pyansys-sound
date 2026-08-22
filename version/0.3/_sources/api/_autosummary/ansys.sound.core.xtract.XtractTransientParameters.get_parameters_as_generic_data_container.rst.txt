@@ -1,0 +1,6 @@
+get\_parameters\_as\_generic\_data\_container
+=============================================
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. automethod:: XtractTransientParameters.get_parameters_as_generic_data_container

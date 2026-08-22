@@ -1,0 +1,6 @@
+get\_order\_levels\_dB
+======================
+
+.. currentmodule:: ansys.sound.core.order_analysis
+
+.. automethod:: OrderLevels.get_order_levels_dB

@@ -1,0 +1,82 @@
+﻿TonalityDIN45681
+================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: TonalityDIN45681
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      TonalityDIN45681.convert_fields_container_to_np_array
+      
+      
+      TonalityDIN45681.get_decisive_difference_over_time
+      
+      
+      TonalityDIN45681.get_decisive_frequency_over_time
+      
+      
+      TonalityDIN45681.get_mean_difference
+      
+      
+      TonalityDIN45681.get_output
+      
+      
+      TonalityDIN45681.get_output_as_nparray
+      
+      
+      TonalityDIN45681.get_spectrum_details
+      
+      
+      TonalityDIN45681.get_spectrum_number
+      
+      
+      TonalityDIN45681.get_time_scale
+      
+      
+      TonalityDIN45681.get_tonal_adjustment
+      
+      
+      TonalityDIN45681.get_tonal_adjustment_over_time
+      
+      
+      TonalityDIN45681.get_tone_details
+      
+      
+      TonalityDIN45681.get_tone_number
+      
+      
+      TonalityDIN45681.get_uncertainty
+      
+      
+      TonalityDIN45681.get_uncertainty_over_time
+      
+      
+      TonalityDIN45681.plot
+      
+      
+      TonalityDIN45681.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      TonalityDIN45681.overlap
+      TonalityDIN45681.signal
+      TonalityDIN45681.window_length
+   
+   

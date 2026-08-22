@@ -1,0 +1,6 @@
+get\_tonal\_audibility\_over\_time
+==================================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: TonalityISO1996_2_OverTime.get_tonal_audibility_over_time
