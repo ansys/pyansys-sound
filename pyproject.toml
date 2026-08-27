@@ -33,7 +33,7 @@ dependencies = [
 [project.optional-dependencies]
 full = [
     "ansys-dpf-core==0.16.1",
-    "ansys-tools-common==0.5.1",
+    "ansys-tools-common==0.5.2",
     "matplotlib==3.10.9",
     "pyuff==2.5.3",
     "platformdirs==4.11.2",
@@ -45,7 +45,7 @@ full = [
 
 tests = [
     "ansys-dpf-core==0.16.1",
-    "ansys-tools-common==0.5.1",
+    "ansys-tools-common==0.5.2",
     "matplotlib==3.10.9",
     "pytest==9.1.1",
     "pytest-cov==7.1.0",
