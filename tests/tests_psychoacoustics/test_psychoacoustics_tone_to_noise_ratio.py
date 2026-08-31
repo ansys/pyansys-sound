@@ -67,6 +67,7 @@ else:
 
     EXP_TNR_MAX = 38.04449462890625
 
+
 def test_tone_to_noise_ratio_instantiation():
     """Test the instantiation of ToneToNoiseRatio class."""
     tnr = ToneToNoiseRatio()
