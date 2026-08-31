@@ -32,22 +32,23 @@ from ansys.sound.core.psychoacoustics import ToneToNoiseRatio
 EXP_TONE_COUNT = 11
 
 if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
-    EXP_FREQ_0 = 261.090087890625
-    EXP_FREQ_6 = 1835.70556640625
+    # Bug fix (ID#1457510)
+    EXP_FREQ_0 = 261.1
+    EXP_FREQ_6 = 1835.7
 
-    EXP_TNR_0 = 38.04449462890625
-    EXP_TNR_6 = 32.670352935791016
+    EXP_TNR_0 = 37.18471
+    EXP_TNR_6 = 32.55953
 
-    EXP_LEVEL_0 = 71.11832305908203
+    EXP_LEVEL_0 = 71.11819
     EXP_LEVEL_6 = 72.64159843444824
 
-    EXP_BANDWIDTH_LOW_0 = 231.48193359375
-    EXP_BANDWIDTH_LOW_6 = 1808.7890625
+    EXP_BANDWIDTH_LOW_0 = 231.5
+    EXP_BANDWIDTH_LOW_6 = 1808.9
 
-    EXP_BANDWIDTH_HIGH_0 = 282.623291015625
-    EXP_BANDWIDTH_HIGH_6 = 1929.913330078125
+    EXP_BANDWIDTH_HIGH_0 = 280.8
+    EXP_BANDWIDTH_HIGH_6 = 1929.1
 
-    EXP_TNR_MAX = 38.04449462890625
+    EXP_TNR_MAX = 37.75109
 else:
     EXP_FREQ_0 = 261.090087890625
     EXP_FREQ_6 = 1835.70556640625
@@ -401,15 +402,15 @@ def test_tone_to_noise_ratio_with_frequency_list(create_psd_from_txt_data):
     """Test ToneToNoiseRatio computation with a custom frequency list."""
     psd = create_psd_from_txt_data
     frequency_list = [
-        261.090087890625,
-        524.871826171875,
-        785.9619140625,
-        1047.052001953125,
-        1310.833740234375,
-        1571.923828125,
-        1835.70556640625,
-        2096.795654296875,
-        2360.577392578125,
+        261.1,
+        524.9,
+        786.0,
+        1047.1,
+        1310.8,
+        1571.9,
+        1835.7,
+        2096.8,
+        2360.5,
     ]
     frequency_list_rounded = [
         261.0,
