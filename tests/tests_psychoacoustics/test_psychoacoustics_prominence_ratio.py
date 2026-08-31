@@ -31,22 +31,40 @@ from ansys.sound.core.psychoacoustics import ProminenceRatio
 
 EXP_TONE_COUNT = 14
 
-EXP_FREQ_0 = 261.0901
-EXP_FREQ_6 = 3671.411
+if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
+    EXP_FREQ_0 = 261.0901
+    EXP_FREQ_6 = 3671.411
 
-EXP_PR_0 = 38.79766083
-EXP_PR_6 = 2.68530488
+    EXP_PR_0 = 38.79766083
+    EXP_PR_6 = 2.68530488
 
-EXP_LEVEL_0 = 71.11832306
-EXP_LEVEL_6 = 45.19826385
+    EXP_LEVEL_0 = 71.11832306
+    EXP_LEVEL_6 = 45.19826385
 
-EXP_BANDWIDTH_LOW_0 = 250.0
-EXP_BANDWIDTH_LOW_6 = 3600.0
+    EXP_BANDWIDTH_LOW_0 = 250.0
+    EXP_BANDWIDTH_LOW_6 = 3600.0
 
-EXP_BANDWIDTH_HIGH_0 = 270.0
-EXP_BANDWIDTH_HIGH_6 = 3750.0
+    EXP_BANDWIDTH_HIGH_0 = 270.0
+    EXP_BANDWIDTH_HIGH_6 = 3750.0
 
-EXP_PR_MAX = 40.0
+    EXP_PR_MAX = 40.0
+else:
+    EXP_FREQ_0 = 261.0901
+    EXP_FREQ_6 = 3671.411
+
+    EXP_PR_0 = 38.79766083
+    EXP_PR_6 = 2.68530488
+
+    EXP_LEVEL_0 = 71.11832306
+    EXP_LEVEL_6 = 45.19826385
+
+    EXP_BANDWIDTH_LOW_0 = 250.0
+    EXP_BANDWIDTH_LOW_6 = 3600.0
+
+    EXP_BANDWIDTH_HIGH_0 = 270.0
+    EXP_BANDWIDTH_HIGH_6 = 3750.0
+
+    EXP_PR_MAX = 40.0
 
 
 def test_prominence_ratio_instantiation():
@@ -378,16 +396,16 @@ def test_prominence_ratio_with_frequency_list(create_psd_from_txt_data):
     """Test ProminenceRatio computation with a custom frequency list."""
     psd = create_psd_from_txt_data
     frequency_list = [
-        261.090087890625,
-        524.871826171875,
-        785.9619140625,
-        1047.052001953125,
-        1835.70556640625,
-        3404.937744140625,
-        3671.4111328125,
-        3929.8095703125,
-        5765.51513671875,
-        6029.296875,
+        261.1,
+        524.9,
+        786.0,
+        1047.1,
+        1835.7,
+        3404.9,
+        3671.4,
+        3929.8,
+        5765.5,
+        6029.3,
     ]
     frequency_list_rounded = [
         261.0,
@@ -407,4 +425,4 @@ def test_prominence_ratio_with_frequency_list(create_psd_from_txt_data):
 
     assert len(frequency_list) == len(pr.get_peaks_frequencies())
     for l_i in range(len(frequency_list)):
-        assert frequency_list[l_i] == pytest.approx(pr.get_peaks_frequencies()[l_i])
+        assert pr.get_peaks_frequencies()[l_i] == pytest.approx(frequency_list[l_i])

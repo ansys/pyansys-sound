@@ -29,6 +29,42 @@ import pytest
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.psychoacoustics import ToneToNoiseRatio
 
+EXP_TONE_COUNT = 11
+
+if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
+    EXP_FREQ_0 = 261.090087890625
+    EXP_FREQ_6 = 1835.70556640625
+
+    EXP_TNR_0 = 38.04449462890625
+    EXP_TNR_6 = 32.670352935791016
+
+    EXP_LEVEL_0 = 71.11832305908203
+    EXP_LEVEL_6 = 72.64159843444824
+
+    EXP_BANDWIDTH_LOW_0 = 231.48193359375
+    EXP_BANDWIDTH_LOW_6 = 1808.7890625
+
+    EXP_BANDWIDTH_HIGH_0 = 282.623291015625
+    EXP_BANDWIDTH_HIGH_6 = 1929.913330078125
+
+    EXP_TNR_MAX = 38.04449462890625
+else:
+    EXP_FREQ_0 = 261.090087890625
+    EXP_FREQ_6 = 1835.70556640625
+
+    EXP_TNR_0 = 38.04449462890625
+    EXP_TNR_6 = 32.670352935791016
+
+    EXP_LEVEL_0 = 71.11832305908203
+    EXP_LEVEL_6 = 72.64159843444824
+
+    EXP_BANDWIDTH_LOW_0 = 231.48193359375
+    EXP_BANDWIDTH_LOW_6 = 1808.7890625
+
+    EXP_BANDWIDTH_HIGH_0 = 282.623291015625
+    EXP_BANDWIDTH_HIGH_6 = 1929.913330078125
+
+    EXP_TNR_MAX = 38.04449462890625
 
 def test_tone_to_noise_ratio_instantiation():
     """Test the instantiation of ToneToNoiseRatio class."""
@@ -116,33 +152,33 @@ def test_tone_to_noise_ratio_get_output_as_nparray(create_psd_from_txt_data):
     ) = tnr.get_output_as_nparray()
 
     assert type(frequency_Hz) == np.ndarray
-    assert frequency_Hz.size == 11
-    assert frequency_Hz[0] == pytest.approx(261.090087890625)
-    assert frequency_Hz[6] == pytest.approx(1835.70556640625)
+    assert frequency_Hz.size == EXP_TONE_COUNT
+    assert frequency_Hz[0] == pytest.approx(EXP_FREQ_0)
+    assert frequency_Hz[6] == pytest.approx(EXP_FREQ_6)
 
     assert type(tnr_db) == np.ndarray
-    assert tnr_db.size == 11
-    assert tnr_db[0] == pytest.approx(38.04449462890625)
-    assert tnr_db[6] == pytest.approx(32.670352935791016)
+    assert tnr_db.size == EXP_TONE_COUNT
+    assert tnr_db[0] == pytest.approx(EXP_TNR_0)
+    assert tnr_db[6] == pytest.approx(EXP_TNR_6)
 
     assert type(level_db) == np.ndarray
-    assert level_db.size == 11
-    assert level_db[0] == pytest.approx(71.11832305908203)
-    assert level_db[6] == pytest.approx(72.64159843444824)
+    assert level_db.size == EXP_TONE_COUNT
+    assert level_db[0] == pytest.approx(EXP_LEVEL_0)
+    assert level_db[6] == pytest.approx(EXP_LEVEL_6)
 
     assert type(bandwidth_low) == np.ndarray
-    assert bandwidth_low.size == 11
-    assert bandwidth_low[0] == pytest.approx(231.48193359375)
-    assert bandwidth_low[6] == pytest.approx(1808.7890625)
+    assert bandwidth_low.size == EXP_TONE_COUNT
+    assert bandwidth_low[0] == pytest.approx(EXP_BANDWIDTH_LOW_0)
+    assert bandwidth_low[6] == pytest.approx(EXP_BANDWIDTH_LOW_6)
 
     assert type(bandwidth_high) == np.ndarray
-    assert bandwidth_high.size == 11
-    assert bandwidth_high[0] == pytest.approx(282.623291015625)
-    assert bandwidth_high[6] == pytest.approx(1929.913330078125)
+    assert bandwidth_high.size == EXP_TONE_COUNT
+    assert bandwidth_high[0] == pytest.approx(EXP_BANDWIDTH_HIGH_0)
+    assert bandwidth_high[6] == pytest.approx(EXP_BANDWIDTH_HIGH_6)
 
     assert type(tnr_max) == np.ndarray
     assert tnr_max.size == 1
-    assert tnr_max == pytest.approx(38.04449462890625)
+    assert tnr_max == pytest.approx(EXP_TNR_MAX)
 
 
 def test_tone_to_noise_ratio_get_nb_tones(create_psd_from_txt_data):
@@ -181,9 +217,9 @@ def test_tone_to_noise_ratio_get_peaks_frequencies(create_psd_from_txt_data):
     tnr.process()
     peaks_frequencies = tnr.get_peaks_frequencies()
     assert type(peaks_frequencies) == np.ndarray
-    assert peaks_frequencies.size == 11
-    assert peaks_frequencies[0] == pytest.approx(261.090087890625)
-    assert peaks_frequencies[6] == pytest.approx(1835.70556640625)
+    assert peaks_frequencies.size == EXP_TONE_COUNT
+    assert peaks_frequencies[0] == pytest.approx(EXP_FREQ_0)
+    assert peaks_frequencies[6] == pytest.approx(EXP_FREQ_6)
 
 
 def test_tone_to_noise_ratio_get_TNR_values(create_psd_from_txt_data):
@@ -199,9 +235,9 @@ def test_tone_to_noise_ratio_get_TNR_values(create_psd_from_txt_data):
     tnr.process()
     tnr_db = tnr.get_TNR_values()
     assert type(tnr_db) == np.ndarray
-    assert tnr_db.size == 11
-    assert tnr_db[0] == pytest.approx(38.04449462890625)
-    assert tnr_db[6] == pytest.approx(32.670352935791016)
+    assert tnr_db.size == EXP_TONE_COUNT
+    assert tnr_db[0] == pytest.approx(EXP_TNR_0)
+    assert tnr_db[6] == pytest.approx(EXP_TNR_6)
 
 
 def test_tone_to_noise_ratio_get_peaks_levels(create_psd_from_txt_data):
@@ -217,9 +253,9 @@ def test_tone_to_noise_ratio_get_peaks_levels(create_psd_from_txt_data):
     tnr.process()
     level_db = tnr.get_peaks_levels()
     assert type(level_db) == np.ndarray
-    assert level_db.size == 11
-    assert level_db[0] == pytest.approx(71.11832305908203)
-    assert level_db[6] == pytest.approx(72.64159843444824)
+    assert level_db.size == EXP_TONE_COUNT
+    assert level_db[0] == pytest.approx(EXP_LEVEL_0)
+    assert level_db[6] == pytest.approx(EXP_LEVEL_6)
 
 
 def test_tone_to_noise_ratio_get_peaks_low_frequencies(create_psd_from_txt_data):
@@ -235,9 +271,9 @@ def test_tone_to_noise_ratio_get_peaks_low_frequencies(create_psd_from_txt_data)
     tnr.process()
     bandwidth_low = tnr.get_peaks_low_frequencies()
     assert type(bandwidth_low) == np.ndarray
-    assert bandwidth_low.size == 11
-    assert bandwidth_low[0] == pytest.approx(231.48193359375)
-    assert bandwidth_low[6] == pytest.approx(1808.7890625)
+    assert bandwidth_low.size == EXP_TONE_COUNT
+    assert bandwidth_low[0] == pytest.approx(EXP_BANDWIDTH_LOW_0)
+    assert bandwidth_low[6] == pytest.approx(EXP_BANDWIDTH_LOW_6)
 
 
 def test_tone_to_noise_ratio_get_peaks_high_frequencies(create_psd_from_txt_data):
@@ -253,9 +289,9 @@ def test_tone_to_noise_ratio_get_peaks_high_frequencies(create_psd_from_txt_data
     tnr.process()
     bandwidth_high = tnr.get_peaks_high_frequencies()
     assert type(bandwidth_high) == np.ndarray
-    assert bandwidth_high.size == 11
-    assert bandwidth_high[0] == pytest.approx(282.623291015625)
-    assert bandwidth_high[6] == pytest.approx(1929.913330078125)
+    assert bandwidth_high.size == EXP_TONE_COUNT
+    assert bandwidth_high[0] == pytest.approx(EXP_BANDWIDTH_HIGH_0)
+    assert bandwidth_high[6] == pytest.approx(EXP_BANDWIDTH_HIGH_6)
 
 
 def test_tone_to_noise_ratio_get_max_TNR_value(create_psd_from_txt_data):
@@ -272,7 +308,7 @@ def test_tone_to_noise_ratio_get_max_TNR_value(create_psd_from_txt_data):
     tnr_max = tnr.get_max_TNR_value()
     assert type(tnr_max) == np.ndarray
     assert tnr_max.size == 1
-    assert tnr_max == pytest.approx(38.04449462890625)
+    assert tnr_max == pytest.approx(EXP_TNR_MAX)
 
 
 def test_tone_to_noise_ratio_get_all_tone_infos(create_psd_from_txt_data):
@@ -302,11 +338,11 @@ def test_tone_to_noise_ratio_get_all_tone_infos(create_psd_from_txt_data):
         bandwidth_high,
     ) = tnr.get_single_tone_info(6)
 
-    assert peaks_frequency == pytest.approx(1835.70556640625)
-    assert tnr_db == pytest.approx(32.670352935791016)
-    assert level_db == pytest.approx(72.64159843444824)
-    assert bandwidth_low == pytest.approx(1808.7890625)
-    assert bandwidth_high == pytest.approx(1929.913330078125)
+    assert peaks_frequency == pytest.approx(EXP_FREQ_6)
+    assert tnr_db == pytest.approx(EXP_TNR_6)
+    assert level_db == pytest.approx(EXP_LEVEL_6)
+    assert bandwidth_low == pytest.approx(EXP_BANDWIDTH_LOW_6)
+    assert bandwidth_high == pytest.approx(EXP_BANDWIDTH_HIGH_6)
 
     # flat PSD -> nothing to detect
     psd.data = np.ones(len(psd.data))
