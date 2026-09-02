@@ -98,7 +98,7 @@ class SourceBroadbandNoise(SourceParent):
         # Source info.
         if self.source_bbn is not None:
             spectrum_type, delta_f, control_name, control_unit, control_values = (
-                self.__extract_bbn_info()
+                self._extract_bbn_info()
             )
 
             # Source name.
@@ -420,23 +420,22 @@ class SourceBroadbandNoise(SourceParent):
         plt.tight_layout()
         plt.show()
 
-    def __extract_bbn_info(self) -> tuple[str, float, str, str, list[float]]:
+    def _extract_bbn_info(self) -> tuple[str, float, str, str, list[float]]:
         """Extract the broadband noise source information.
 
         Returns
         -------
-        tuple[str, float, str, str, list[float]]
-            Broadband noise source information, consisting of the following elements:
-                -   First element: spectrum type ('Narrow band', 'Octave', or 'Third octave').
-
-                -   Second element: spectrum frequency resolution in Hz (only if spectrum type is
-                    'Narrow band', 0.0 otherwise).
-
-                -   Third element: name of the control parameter.
-
-                -   Fourth element: unit of the control parameter.
-
-                -   Fifth element: list of control parameter values.
+        str
+            Spectrum type ('Narrow band', 'Octave', or 'Third octave').
+        float
+            Spectrum frequency resolution in Hz (only if spectrum type is 'Narrow band', 0.0
+            otherwise).
+        str
+            Name of the control parameter.
+        str
+            Unit of the control parameter.
+        list[float]
+            List of control parameter values.
         """
         if self.source_bbn is None:
             return ("", 0.0, "", "", [])
