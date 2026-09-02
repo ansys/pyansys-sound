@@ -550,13 +550,13 @@ def test_source_broadband_noise_plot_control_exceptions():
         source_bbn_obj.plot_control()
 
 
-def test_source_broadband_noise___extract_bbn_info():
-    """Test SourceBroadbandNoise __extract_bbn_info method."""
+def test_source_broadband_noise__extract_bbn_info():
+    """Test SourceBroadbandNoise _extract_bbn_info method."""
     source_bbn_obj = SourceBroadbandNoise()
-    assert source_bbn_obj._SourceBroadbandNoise__extract_bbn_info() == ("", 0.0, "", "", [])
+    assert source_bbn_obj._extract_bbn_info() == ("", 0.0, "", "", [])
 
     source_bbn_obj.load_source_bbn(pytest.data_path_sound_composer_bbn_source)
-    assert source_bbn_obj._SourceBroadbandNoise__extract_bbn_info() == (
+    assert source_bbn_obj._extract_bbn_info() == (
         "Octave",
         31.0,
         "Speed of wind",
@@ -566,7 +566,7 @@ def test_source_broadband_noise___extract_bbn_info():
 
     # Test with empty control support (delta_f not applicable).
     source_bbn_obj.source_bbn[0].time_freq_support.time_frequencies.data = []
-    assert source_bbn_obj._SourceBroadbandNoise__extract_bbn_info() == (
+    assert source_bbn_obj._extract_bbn_info() == (
         "Octave",
         0.0,
         "Speed of wind",

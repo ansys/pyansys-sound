@@ -501,11 +501,11 @@ def test_filter_plot_FRF_exception():
         filter.plot_FRF()
 
 
-def test_filter___compute_coefficients_from_FRF():
-    """Test Filter's __compute_coefficients_from_FRF method."""
+def test_filter__compute_coefficients_from_FRF():
+    """Test Filter's _compute_coefficients_from_FRF method."""
     filter = Filter()
 
-    filter._Filter__compute_coefficients_from_FRF()
+    filter._compute_coefficients_from_FRF()
     assert filter.a_coefficients is None
     assert filter.b_coefficients is None
 
@@ -514,7 +514,7 @@ def test_filter___compute_coefficients_from_FRF():
     op.run()
     filter.frf = op.get_output(0, "field")
 
-    filter._Filter__compute_coefficients_from_FRF()
+    filter._compute_coefficients_from_FRF()
     assert len(filter.a_coefficients) == 1
     assert filter.a_coefficients[0] == pytest.approx(1.0)
     assert filter.b_coefficients[0] == pytest.approx(EXP_B0)
@@ -522,17 +522,17 @@ def test_filter___compute_coefficients_from_FRF():
     assert filter.b_coefficients[13] == pytest.approx(EXP_B13)
 
 
-def test_filter___compute_FRF_from_coefficients():
-    """Test Filter's __compute_FRF_from_coefficients method."""
+def test_filter__compute_FRF_from_coefficients():
+    """Test Filter's _compute_FRF_from_coefficients method."""
     filter = Filter()
 
-    filter._Filter__compute_FRF_from_coefficients()
+    filter._compute_FRF_from_coefficients()
     assert filter.frf is None
 
     filter.a_coefficients = [1.0]
     filter.b_coefficients = [1.0, 0.5]
 
-    filter._Filter__compute_FRF_from_coefficients()
+    filter._compute_FRF_from_coefficients()
     assert len(filter.frf.data) == 2
     assert filter.frf.data[0] == pytest.approx(EXP_FRF1)
     assert filter.frf.data[1] == pytest.approx(EXP_FRF2)
