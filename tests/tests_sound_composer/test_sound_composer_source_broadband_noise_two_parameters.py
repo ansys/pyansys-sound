@@ -746,10 +746,10 @@ def test_source_broadband_noise_two_parameters_plot_control_exceptions():
         source_bbn_two_parameters_obj.plot_control()
 
 
-def test_source_broadband_noise_two_parameters___extract_bbn_two_parameters_info():
-    """Test SourceBroadbandNoiseTwoParameters __extract_bbn_two_parameters_info method."""
+def test_source_broadband_noise_two_parameters__extract_bbn_two_parameters_info():
+    """Test SourceBroadbandNoiseTwoParameters _extract_bbn_two_parameters_info method."""
     source = SourceBroadbandNoiseTwoParameters()
-    assert source._SourceBroadbandNoiseTwoParameters__extract_bbn_two_parameters_info() == (
+    assert source._extract_bbn_two_parameters_info() == (
         "",
         0.0,
         "",
@@ -761,7 +761,7 @@ def test_source_broadband_noise_two_parameters___extract_bbn_two_parameters_info
     )
 
     source.load_source_bbn_two_parameters(pytest.data_path_sound_composer_bbn_source_2p)
-    assert source._SourceBroadbandNoiseTwoParameters__extract_bbn_two_parameters_info() == (
+    assert source._extract_bbn_two_parameters_info() == (
         "Narrow band",
         1000.0,
         "temperature",
@@ -774,7 +774,7 @@ def test_source_broadband_noise_two_parameters___extract_bbn_two_parameters_info
 
     # Test with empty control support (delta_f not applicable).
     source.source_bbn_two_parameters[0].time_freq_support.time_frequencies.data = []
-    assert source._SourceBroadbandNoiseTwoParameters__extract_bbn_two_parameters_info() == (
+    assert source._extract_bbn_two_parameters_info() == (
         "Narrow band",
         0.0,
         "temperature",

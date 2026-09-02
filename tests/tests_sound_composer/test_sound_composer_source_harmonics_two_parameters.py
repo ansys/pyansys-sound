@@ -832,10 +832,10 @@ def test_source_harmonics_two_parameters_plot_control_exceptions():
         source_obj.plot_control()
 
 
-def test_source_harmonics_two_parameters___extract_harmonics_two_parameters_info():
-    """Test SourceHarmonicsTwoParameters __extract_harmonics_two_parameters_info method."""
+def test_source_harmonics_two_parameters__extract_harmonics_two_parameters_info():
+    """Test SourceHarmonicsTwoParameters _extract_harmonics_two_parameters_info method."""
     source = SourceHarmonicsTwoParameters()
-    assert source._SourceHarmonicsTwoParameters__extract_harmonics_two_parameters_info() == (
+    assert source._extract_harmonics_two_parameters_info() == (
         [],
         "",
         (),
@@ -845,7 +845,7 @@ def test_source_harmonics_two_parameters___extract_harmonics_two_parameters_info
     )
 
     source.load_source_harmonics_two_parameters(pytest.data_path_sound_composer_harmonics_source_2p)
-    assert source._SourceHarmonicsTwoParameters__extract_harmonics_two_parameters_info() == (
+    assert source._extract_harmonics_two_parameters_info() == (
         [12.0, 24.0, 36.0, 48.0],
         "RPM",
         (500.0, 3000.0),
