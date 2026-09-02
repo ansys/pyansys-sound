@@ -117,7 +117,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
                 control_name,
                 control_unit,
                 control_min_max,
-            ) = self.__extract_harmonics_two_parameters_info()
+            ) = self._extract_harmonics_two_parameters_info()
 
             # Source name.
             str_name = self.source_harmonics_two_parameters.name
@@ -518,26 +518,25 @@ class SourceHarmonicsTwoParameters(SourceParent):
         plt.tight_layout()
         plt.show()
 
-    def __extract_harmonics_two_parameters_info(
+    def _extract_harmonics_two_parameters_info(
         self,
     ) -> tuple[list[float], str, tuple[float], str, str, tuple[float]]:
-        """Extract the harmonics source with two parameters information.
+        """Extract the information of the harmonics source with two parameters.
 
         Returns
         -------
-        tuple[list[float], str, tuple[float], str, str, tuple[float]]
-            Harmonics source with two parameters information, consisting of the following elements:
-                First element: list of order values.
-
-                Second element: name of the RPM control.
-
-                Third element: min and max values of the RPM control.
-
-                Fourth element: name of the second control parameter.
-
-                Fifth element: unit of the second control parameter.
-
-                Sixth element: min and max values of the second control parameter.
+        list[float]
+            List of order values.
+        str
+            Name of the RPM control.
+        tuple[float]
+            Minimum and maximum values of the RPM control.
+        str
+            Name of the second control parameter.
+        str
+            Unit of the second control parameter.
+        tuple[float]
+            Minimum and maximum values of the second control parameter.
         """
         if self.source_harmonics_two_parameters is None:
             return ([], "", (), "", "", ())
