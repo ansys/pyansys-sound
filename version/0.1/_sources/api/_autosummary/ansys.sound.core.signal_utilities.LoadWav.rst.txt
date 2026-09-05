@@ -1,0 +1,44 @@
+﻿LoadWav
+=======
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoclass:: LoadWav
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      LoadWav.convert_fields_container_to_np_array
+      
+      
+      LoadWav.get_output
+      
+      
+      LoadWav.get_output_as_nparray
+      
+      
+      LoadWav.plot
+      
+      
+      LoadWav.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      LoadWav.path_to_wav
+   
+   

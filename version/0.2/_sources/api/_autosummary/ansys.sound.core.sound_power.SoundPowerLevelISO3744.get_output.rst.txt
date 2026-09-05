@@ -1,0 +1,6 @@
+get\_output
+===========
+
+.. currentmodule:: ansys.sound.core.sound_power
+
+.. automethod:: SoundPowerLevelISO3744.get_output

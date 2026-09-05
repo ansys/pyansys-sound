@@ -1,0 +1,6 @@
+get\_orders
+===========
+
+.. currentmodule:: ansys.sound.core.order_analysis
+
+.. automethod:: RpmOrderRepresentation.get_orders

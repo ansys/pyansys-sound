@@ -1,0 +1,64 @@
+﻿OrderLevels
+===========
+
+.. currentmodule:: ansys.sound.core.order_analysis
+
+.. autoclass:: OrderLevels
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      OrderLevels.get_order_level_dB
+      
+      
+      OrderLevels.get_order_level_squared_linear
+      
+      
+      OrderLevels.get_order_levels_dB
+      
+      
+      OrderLevels.get_order_levels_squared_linear
+      
+      
+      OrderLevels.get_output
+      
+      
+      OrderLevels.get_output_as_nparray
+      
+      
+      OrderLevels.get_rpm_scale
+      
+      
+      OrderLevels.plot
+      
+      
+      OrderLevels.process
+      
+      
+      OrderLevels.save_as_AnsysSound_Orders
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      OrderLevels.order_resolution
+      OrderLevels.order_width
+      OrderLevels.orders
+      OrderLevels.rpm_order_representation
+      OrderLevels.rpm_profile
+      OrderLevels.signal
+   
+   

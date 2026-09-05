@@ -1,0 +1,6 @@
+Hybrid
+======
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. autoattribute:: SpectrumSynthesisMethods.Hybrid

@@ -1,0 +1,6 @@
+get\_erb\_center\_frequencies
+=============================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: LoudnessISO532_2.get_erb_center_frequencies

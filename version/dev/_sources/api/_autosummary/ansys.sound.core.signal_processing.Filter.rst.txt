@@ -1,0 +1,53 @@
+﻿Filter
+======
+
+.. currentmodule:: ansys.sound.core.signal_processing
+
+.. autoclass:: Filter
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Filter.design_FIR_from_FRF_file
+      
+      
+      Filter.get_output
+      
+      
+      Filter.get_output_as_nparray
+      
+      
+      Filter.get_sampling_frequency
+      
+      
+      Filter.plot
+      
+      
+      Filter.plot_FRF
+      
+      
+      Filter.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Filter.a_coefficients
+      Filter.b_coefficients
+      Filter.frf
+      Filter.signal
+   
+   
