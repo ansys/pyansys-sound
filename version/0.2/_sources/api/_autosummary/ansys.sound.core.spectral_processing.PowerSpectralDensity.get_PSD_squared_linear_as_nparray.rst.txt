@@ -1,0 +1,6 @@
+get\_PSD\_squared\_linear\_as\_nparray
+======================================
+
+.. currentmodule:: ansys.sound.core.spectral_processing
+
+.. automethod:: PowerSpectralDensity.get_PSD_squared_linear_as_nparray

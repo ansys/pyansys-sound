@@ -1,0 +1,6 @@
+signal
+======
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: RoughnessECMA418_2.signal

@@ -1,0 +1,6 @@
+get\_time\_scale
+================
+
+.. currentmodule:: ansys.sound.core.order_analysis
+
+.. automethod:: RpmOrderRepresentation.get_time_scale

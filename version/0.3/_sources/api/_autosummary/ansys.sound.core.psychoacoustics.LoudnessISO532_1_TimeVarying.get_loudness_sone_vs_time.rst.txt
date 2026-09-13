@@ -1,0 +1,6 @@
+get\_loudness\_sone\_vs\_time
+=============================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: LoudnessISO532_1_TimeVarying.get_loudness_sone_vs_time

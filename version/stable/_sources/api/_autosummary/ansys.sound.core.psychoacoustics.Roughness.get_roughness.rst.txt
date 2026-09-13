@@ -1,0 +1,6 @@
+get\_roughness
+==============
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: Roughness.get_roughness

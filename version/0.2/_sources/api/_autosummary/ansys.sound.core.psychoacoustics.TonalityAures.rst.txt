@@ -1,0 +1,62 @@
+﻿TonalityAures
+=============
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: TonalityAures
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      TonalityAures.convert_fields_container_to_np_array
+      
+      
+      TonalityAures.get_loudness_weighting_over_time
+      
+      
+      TonalityAures.get_output
+      
+      
+      TonalityAures.get_output_as_nparray
+      
+      
+      TonalityAures.get_time_scale
+      
+      
+      TonalityAures.get_tonal_weighting_over_time
+      
+      
+      TonalityAures.get_tonality
+      
+      
+      TonalityAures.get_tonality_over_time
+      
+      
+      TonalityAures.plot
+      
+      
+      TonalityAures.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      TonalityAures.account_for_w1
+      TonalityAures.overlap
+      TonalityAures.signal
+      TonalityAures.w1_threshold
+   
+   

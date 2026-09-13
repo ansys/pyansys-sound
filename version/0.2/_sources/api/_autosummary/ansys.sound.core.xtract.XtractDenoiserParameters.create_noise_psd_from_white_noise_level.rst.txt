@@ -1,0 +1,6 @@
+create\_noise\_psd\_from\_white\_noise\_level
+=============================================
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. automethod:: XtractDenoiserParameters.create_noise_psd_from_white_noise_level

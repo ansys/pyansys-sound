@@ -1,0 +1,6 @@
+source\_harmonics\_two\_parameters
+==================================
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. autoproperty:: SourceHarmonicsTwoParameters.source_harmonics_two_parameters

@@ -1,0 +1,6 @@
+C1
+==
+
+.. currentmodule:: ansys.sound.core.sound_power
+
+.. autoproperty:: SoundPowerLevelISO3744.C1

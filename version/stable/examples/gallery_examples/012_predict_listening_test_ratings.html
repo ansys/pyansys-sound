@@ -1,0 +1,1036 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Predict listening test ratings &#8212; PyAnsys Sound</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles\ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../../_static/documentation_options.js?v=f129cdf0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/gallery_examples/012_predict_listening_test_ratings';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://sound.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.3';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="icon" href="../../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Octave and one-third-octave levels computation" href="013_calculate_fractional_octave_levels.html" />
+    <link rel="prev" title="Create a Sound Composer project" href="011_sound_composer_create_project.html" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.3.0" />
+  <meta property="og:site_name" content="PyAnsys" />
+  <meta name="physics" content="Acoustics" />
+  <link rel="canonical" href="https://sound.docs.pyansys.com/version/stable/examples/gallery_examples/012_predict_listening_test_ratings.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyAnsys Sound - Home"/>
+    <img src="../../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark pst-js-only" alt="PyAnsys Sound - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html" title="PyAnsys Sound home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../contribute.html">
+    Contribute
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav>
+</div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyansys-sound" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    <div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(
+      (text) => (document.getElementById("announcement_msg").innerHTML = text),
+    )
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html" title="PyAnsys Sound home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contribute.html">
+    Contribute
+  </a>
+</li>
+
+  </ul>
+</nav>
+</div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyansys-sound" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="001_initialize_server_and_deal_with_license.html">Initialize PyAnsys Sound and check out the license</a></li>
+<li class="toctree-l1"><a class="reference internal" href="002_load_resample_amplify_write_wav_files.html">Basic operations on a signal from a WAV file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="003_compute_stft.html">Spectrogram: compute the STFT and ISTFT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="004_isolate_orders.html">Isolate orders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="005_xtract_feature.html">Extract tonal, transient, and noise components (Xtract)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="006_calculate_PR_and_TNR.html">Calculate TNR and PR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="007_calculate_psychoacoustic_indicators.html">Calculate psychoacoustic indicators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="008_calculate_levels.html">Calculate RMS, dBSPL and dBA levels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="009_calculate_tonality_indicators.html">Calculate tonality indicators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="010_sound_composer_load_project.html">Use an existing Sound Composer project file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="011_sound_composer_create_project.html">Create a Sound Composer project</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Predict listening test ratings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="013_calculate_fractional_octave_levels.html">Octave and one-third-octave levels computation</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../index.html" class="nav-link">Examples</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Predict listening test ratings</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-examples-gallery-examples-012-predict-listening-test-ratings-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="predict-listening-test-ratings">
+<span id="sphx-glr-examples-gallery-examples-012-predict-listening-test-ratings-py"></span><span id="id1"></span><h1>Predict listening test ratings<a class="headerlink" href="#predict-listening-test-ratings" title="Link to this heading">#</a></h1>
+<p>This example shows how to predict the mean ratings of automotive HVAC sounds based on
+psychoacoustic indicators, using the data from a listening test conducted with Ansys Sound - Jury
+Listening Test (JLT).</p>
+<p>Here, we demonstrate how to build an objective indicator to help predict automotive HVAC sound
+ratings, on the basis of 4 psychoacoustic indicators that are typically used for such sounds:</p>
+<ul class="simple">
+<li><p>Loudness (ISO 532-1),</p></li>
+<li><p>Sharpness (DIN 45692),</p></li>
+<li><p>Fluctuation strength (Sontacchi method),</p></li>
+<li><p>Tonality (ECMA 418-2).</p></li>
+</ul>
+<p>The sound ratings used in this example were obtained from a listening test designed with Ansys
+Sound JLT. In this test, 29 participants evaluated 20 automotive HVAC sounds. This example uses the
+data obtained when exporting, in JLT, the analyzed results to a CSV file. With a standard
+installation of JLT, the corresponding listening test project should be located here:
+<cite>C:/Users/Public/Documents/Ansys/Acoustics/JLT/CE - Automotive HVAC</cite>.</p>
+<section id="set-up-analysis">
+<h2>Set up analysis<a class="headerlink" href="#set-up-analysis" title="Link to this heading">#</a></h2>
+<p>Setting up the analysis consists of loading Ansys libraries, connecting to the DPF server, and
+downloading the necessary data files.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load standard libraries.</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <a href="https://docs.python.org/dev/library/math.html#math.sqrt" title="math.sqrt" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-function"><span class="n">sqrt</span></a>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.dpf.core</span><span class="w"> </span><span class="kn">import</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class"><span class="n">Field</span></a>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">linear_model</span>
+
+<span class="c1"># Load Ansys libraries.</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.examples_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">download_all_carHVAC_wav</span><span class="p">,</span>
+    <span class="n">download_HVAC_test_wav</span><span class="p">,</span>
+    <span class="n">download_JLT_CE_data_csv</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.psychoacoustics</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">FluctuationStrength</span><span class="p">,</span>
+    <span class="n">LoudnessISO532_1_Stationary</span><span class="p">,</span>
+    <span class="n">SharpnessDIN45692</span><span class="p">,</span>
+    <span class="n">TonalityECMA418_2</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.server_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">connect_to_or_start_server</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.signal_utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoadWav</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.signal_utilities.crop_signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">CropSignal</span>
+
+<span class="c1"># Connect to a remote DPF server or start a local DPF server.</span>
+<a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_types/GrpcServer.html#ansys.dpf.core.server_types.GrpcServer" title="ansys.dpf.core.server_types.GrpcServer" class="sphx-glr-backref-module-ansys-dpf-core-server_types sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_server</span></a><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_context/LicenseContextManager.html#ansys.dpf.core.server_context.LicenseContextManager" title="ansys.dpf.core.server_context.LicenseContextManager" class="sphx-glr-backref-module-ansys-dpf-core-server_context sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_license_context</span></a> <span class="o">=</span> <span class="n">connect_to_or_start_server</span><span class="p">(</span><span class="n">use_license_context</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Download the necessary files for this example.</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">model_wav_files_path</span></a> <span class="o">=</span> <span class="n">download_all_carHVAC_wav</span><span class="p">()</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">JLT_ratings_path</span></a> <span class="o">=</span> <span class="n">download_JLT_CE_data_csv</span><span class="p">()</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">test_wav_file_path</span></a> <span class="o">=</span> <span class="n">download_HVAC_test_wav</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="define-indicator-computation-function">
+<h2>Define indicator computation function<a class="headerlink" href="#define-indicator-computation-function" title="Link to this heading">#</a></h2>
+<p>Here we define a function that calculates the 4 psychoacoustic indicators of interest (listed at
+the beginning of the example), given an input sound signal as a DPF field.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_indicators</span><span class="p">(</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="p">:</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class"><span class="n">Field</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute psychoacoustic indicators for a given sound signal.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    signal : Field</span>
+<span class="sd">        Sound signal to analyze.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        List of psychoacoustic indicator values: loudness level in phon, sharpness in acum,</span>
+<span class="sd">        fluctuation strength in vacil, and tonality in tuHMS.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Loudness level (ISO 532-1)</span>
+    <span class="n">indicator</span> <span class="o">=</span> <span class="n">LoudnessISO532_1_Stationary</span><span class="p">(</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="p">)</span>
+    <span class="n">indicator</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+    <span class="n">LN</span> <span class="o">=</span> <span class="n">indicator</span><span class="o">.</span><span class="n">get_loudness_level_phon</span><span class="p">()</span>
+
+    <span class="c1"># Sharpness (DIN 45692)</span>
+    <span class="n">indicator</span> <span class="o">=</span> <span class="n">SharpnessDIN45692</span><span class="p">(</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="p">)</span>
+    <span class="n">indicator</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="n">indicator</span><span class="o">.</span><span class="n">get_sharpness</span><span class="p">()</span>
+
+    <span class="c1"># Fluctuation strength (Sontacchi method)</span>
+    <span class="n">indicator</span> <span class="o">=</span> <span class="n">FluctuationStrength</span><span class="p">(</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="p">)</span>
+    <span class="n">indicator</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+    <span class="n">FS</span> <span class="o">=</span> <span class="n">indicator</span><span class="o">.</span><span class="n">get_fluctuation_strength</span><span class="p">()</span>
+
+    <span class="c1"># Tonality (ECMA 418-2)</span>
+    <span class="n">indicator</span> <span class="o">=</span> <span class="n">TonalityECMA418_2</span><span class="p">(</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="p">,</span> <span class="n">field_type</span><span class="o">=</span><span class="s2">&quot;Free&quot;</span><span class="p">,</span> <span class="n">edition</span><span class="o">=</span><span class="s2">&quot;3rd&quot;</span><span class="p">)</span>
+    <span class="n">indicator</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">indicator</span><span class="o">.</span><span class="n">get_tonality</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">LN</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">FS</span><span class="p">,</span> <span class="n">T</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="define-prediction-function">
+<h2>Define prediction function<a class="headerlink" href="#define-prediction-function" title="Link to this heading">#</a></h2>
+<p>Here we define a function that predicts the rating for an automotive HVAC sound signal, given a
+set of regression coefficients. The function computes 4 relevant psychoacoustic indicators for
+automotive HVAC sounds, and then applies the regression formula to obtain the predicted rating:</p>
+<div class="math notranslate nohighlight">
+\[rating = a_0 + a_1 \cdot LN + a_2 \cdot S + a_3 \cdot FS + a_4 \cdot T\]</div>
+<p>where <span class="math notranslate nohighlight">\(a_0\)</span> is the intercept and <span class="math notranslate nohighlight">\(a_1\)</span>, <span class="math notranslate nohighlight">\(a_2\)</span>, <span class="math notranslate nohighlight">\(a_3\)</span>, and <span class="math notranslate nohighlight">\(a_4\)</span> are
+the coefficients of the model, and <span class="math notranslate nohighlight">\(LN\)</span>, <span class="math notranslate nohighlight">\(S\)</span>, <span class="math notranslate nohighlight">\(FS\)</span>, and <span class="math notranslate nohighlight">\(T\)</span> are the
+loudness level, sharpness, fluctuation strength, and tonality, respectively.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">apply_prediction_formula</span><span class="p">(</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="p">:</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class"><span class="n">Field</span></a><span class="p">,</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coefficients</span></a><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply the regression formula to predict the rating of a sound signal.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    signal : Field</span>
+<span class="sd">        Sound signal to evaluate.</span>
+
+<span class="sd">    coefficients : list, default: None.</span>
+<span class="sd">        List of regression coefficients (including the intercept): a0, a1, a2, a3, and a4. If None,</span>
+<span class="sd">        the coefficients are [1, 0, 0, 0, 0].</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        Predicted rating of the input sound signal.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coefficients</span></a> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coefficients</span></a> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coefficients</span></a><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coefficients</span></a><span class="p">)</span> <span class="o">!=</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;coefficients must be a list of 5 elements.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Compute the psychoacoustic indicators for the sound file.</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">indicators</span></a> <span class="o">=</span> <span class="n">compute_indicators</span><span class="p">(</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="p">)</span>
+
+    <span class="c1"># Apply the formula to compute the rating.</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coefficients</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="o">+</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coefficients</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">indicators</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="o">+</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coefficients</span></a><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">indicators</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="o">+</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coefficients</span></a><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">indicators</span></a><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="o">+</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coefficients</span></a><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">indicators</span></a><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="read-the-ansys-sound-jlt-data">
+<h2>Read the Ansys Sound JLT data<a class="headerlink" href="#read-the-ansys-sound-jlt-data" title="Link to this heading">#</a></h2>
+<p>Read the CSV file produced with Ansys Sound JLT. This file contains descriptive statistics of the
+sound ratings obtained during the listening test conduction. Most notably, it contains the
+rating of each sound averaged over the test participants.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize lists to store file names and ratings.</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">filenames</span></a> <span class="o">=</span> <span class="p">[]</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ratings</span></a> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Print the file content for information.</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">JLT_ratings_path</span></a><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Test name ; Demo CE - Automotive HVAC
+Method ; Comparative Evaluation
+Low-range anchor ; carHVAC15
+High-range anchor ; carHVAC10
+
+Groups names;All participants; ; ; ;
+;Mean;Median;Standard deviation;Standard error;95% confidence interval width
+carHVAC1;27.8966;23;21.2693;3.9496;15.4824
+carHVAC2;29.5862;29;15.3309;2.84688;11.1598
+carHVAC3;89.1034;91;11.6077;2.1555;8.44955
+carHVAC4;25.3793;17;24.6539;4.57812;17.9462
+carHVAC5;91.7586;96;9.89825;1.83806;7.20519
+carHVAC6;43.4483;42;19.0555;3.53852;13.871
+carHVAC7;35.4138;32;18.2552;3.3899;13.2884
+carHVAC8;84.7241;86;10.8328;2.0116;7.88548
+carHVAC9;53.8966;43;32.768;6.08486;23.8526
+carHVAC10;97.5287;99.3333;2.99274;0.555738;2.17849
+carHVAC11;12.2414;9;15.7427;2.92335;11.4595
+carHVAC12;56.8966;56;15.6304;2.9025;11.3778
+carHVAC13;48.1724;54;23.107;4.29086;16.8202
+carHVAC14;93.0345;93;7.34109;1.36321;5.34377
+carHVAC15;1.65517;0;3.69629;0.686384;2.69062
+carHVAC16;60.1724;67;15.1541;2.81405;11.0311
+carHVAC17;61;59;17.8666;3.31774;13.0055
+carHVAC18;93.7586;98;8.12692;1.50913;5.91579
+carHVAC19;3.37931;0;4.91654;0.912979;3.57888
+carHVAC20;9.7931;8;10.0441;1.86515;7.31137
+</pre></div>
+</div>
+<p>Extract HVAC sound file names and mean ratings from the CSV file.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">JLT_ratings_path</span></a><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lines</span></a> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lines</span></a> <span class="o">=</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lines</span></a><span class="p">[</span><span class="mi">7</span><span class="p">:]</span>  <span class="c1"># Skip the first 7 lines (general info, and table header).</span>
+
+    <span class="c1"># Store file names and mean ratings (first and second columns).</span>
+    <span class="k">for</span> <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">line</span></a> <span class="ow">in</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lines</span></a><span class="p">:</span>
+        <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">row</span></a> <span class="o">=</span> <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">line</span></a><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+        <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">filenames</span></a><span class="o">.</span><span class="n">append</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">row</span></a><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ratings</span></a><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">row</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</pre></div>
+</div>
+</section>
+<section id="calculate-the-psychoacoustic-indicators">
+<h2>Calculate the psychoacoustic indicators<a class="headerlink" href="#calculate-the-psychoacoustic-indicators" title="Link to this heading">#</a></h2>
+<p>Compute the psychoacoustic indicators for each sound file. The following indicators are computed:</p>
+<ul class="simple">
+<li><p>Loudness (ISO 532-1),</p></li>
+<li><p>Sharpness (DIN 45692),</p></li>
+<li><p>Fluctuation strength (Sontacchi method),</p></li>
+<li><p>Tonality (ECMA 418-2).</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This computation step may be long, as some indicators (fluctuation strength, and tonality) are
+quite heavy to compute. Note also that, although the sounds of the test are stereo (binaural
+recordings) and 5 seconds long, we are using the first second of the left channel only. You
+get similar results if you use the right channel or the average of the two, and the full
+signal duration.</p>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a list to store the indicators for each file. The list will contain sublists, each</span>
+<span class="c1"># sublist containing the values of the selected indicators for each sound.</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">indicators</span></a> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Process each sound file one by one.</span>
+<span class="k">for</span> <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file_name</span></a> <span class="ow">in</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">filenames</span></a><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Calculating indicators for file: </span><span class="si">{</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file_name</span></a><span class="si">}</span><span class="s2"> ...&quot;</span><span class="p">)</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wav_file_path</span></a> <span class="o">=</span> <a href="https://docs.python.org/dev/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">model_wav_files_path</span></a><span class="p">,</span> <a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file_name</span></a> <span class="o">+</span> <span class="s2">&quot;.wav&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Load the sound file.</span>
+    <span class="n">wav_loader</span> <span class="o">=</span> <span class="n">LoadWav</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">wav_file_path</span></a><span class="p">)</span>
+    <span class="n">wav_loader</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+
+    <span class="c1"># Keep the first channel only.</span>
+    <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a> <span class="o">=</span> <span class="n">wav_loader</span><span class="o">.</span><span class="n">get_output</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Keep the first second of signal only.</span>
+    <span class="n">cropper</span> <span class="o">=</span> <span class="n">CropSignal</span><span class="p">(</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">cropper</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+    <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a> <span class="o">=</span> <span class="n">cropper</span><span class="o">.</span><span class="n">get_output</span><span class="p">()</span>
+
+    <span class="c1"># Compute and append the indicator values for the current sound to the list.</span>
+    <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">indicators</span></a><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">compute_indicators</span><span class="p">(</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="p">))</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Calculating indicators for file: carHVAC1 ...
+Calculating indicators for file: carHVAC2 ...
+Calculating indicators for file: carHVAC3 ...
+Calculating indicators for file: carHVAC4 ...
+Calculating indicators for file: carHVAC5 ...
+Calculating indicators for file: carHVAC6 ...
+Calculating indicators for file: carHVAC7 ...
+Calculating indicators for file: carHVAC8 ...
+Calculating indicators for file: carHVAC9 ...
+Calculating indicators for file: carHVAC10 ...
+Calculating indicators for file: carHVAC11 ...
+Calculating indicators for file: carHVAC12 ...
+Calculating indicators for file: carHVAC13 ...
+Calculating indicators for file: carHVAC14 ...
+Calculating indicators for file: carHVAC15 ...
+Calculating indicators for file: carHVAC16 ...
+Calculating indicators for file: carHVAC17 ...
+Calculating indicators for file: carHVAC18 ...
+Calculating indicators for file: carHVAC19 ...
+Calculating indicators for file: carHVAC20 ...
+</pre></div>
+</div>
+</section>
+<section id="calculate-the-multiple-linear-regression">
+<h2>Calculate the multiple linear regression<a class="headerlink" href="#calculate-the-multiple-linear-regression" title="Link to this heading">#</a></h2>
+<p>Use package <code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn</span></code> (<a class="reference external" href="https://scikit-learn.org/">https://scikit-learn.org/</a>) to create a multiple linear
+regression model, to predict the ratings based on the computed psychoacoustic indicators.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create and compute the model.</span>
+<span class="n">regression</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">regression</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">indicators</span></a><span class="p">,</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ratings</span></a><span class="p">)</span>
+
+<span class="c1"># Compute the predicted ratings using the regression model.</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ratings_hat</span></a> <span class="o">=</span> <span class="n">regression</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">indicators</span></a><span class="p">)</span>
+
+<span class="c1"># Display the model coefficients and the correlation coefficient.</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Linear regression model coefficients: </span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">regression</span><span class="o">.</span><span class="n">coef_</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Correlation coefficient: </span><span class="si">{</span><a href="https://docs.python.org/dev/library/math.html#math.sqrt" title="math.sqrt" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-function"><span class="n">sqrt</span></a><span class="p">(</span><span class="n">regression</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">indicators</span></a><span class="p">,</span><span class="w"> </span><a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ratings</span></a><span class="p">))</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Linear regression model coefficients: [  1.78647762   9.1338461  202.52997427  56.17964625]
+Correlation coefficient: 0.983
+</pre></div>
+</div>
+<p>Plot the predicted ratings against the actual ratings.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="matplotlib.pyplot.plot" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="s2">&quot;k--&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.scatter.html#matplotlib.pyplot.scatter" title="matplotlib.pyplot.scatter" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ratings_hat</span></a><span class="p">,</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ratings</span></a><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="matplotlib.pyplot.xlabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s2">&quot;Predicted ratings&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="matplotlib.pyplot.ylabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s2">&quot;Actual ratings&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="matplotlib.pyplot.title" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s2">&quot;Predicted vs Actual ratings&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.xlim.html#matplotlib.pyplot.xlim" title="matplotlib.pyplot.xlim" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">xlim</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.ylim.html#matplotlib.pyplot.ylim" title="matplotlib.pyplot.ylim" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">ylim</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.grid.html#matplotlib.pyplot.grid" title="matplotlib.pyplot.grid" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">grid</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_012_predict_listening_test_ratings_001.png" srcset="../../_images/sphx_glr_012_predict_listening_test_ratings_001.png" alt="Predicted vs Actual ratings" class = "sphx-glr-single-img"/><p>The correlation coefficient (0.983) is very close to 1, and the points in the plot are
+well aligned. This shows that the rating prediction model is quite accurate for the sounds of
+the listening test.</p>
+</section>
+<section id="use-the-regression-coefficients-for-prediction">
+<h2>Use the regression coefficients for prediction<a class="headerlink" href="#use-the-regression-coefficients-for-prediction" title="Link to this heading">#</a></h2>
+<p>Use the model coefficients to estimate the rating of a new sound file. Using the model
+coefficients consists of computing the indicators and applying the formula:</p>
+<div class="math notranslate nohighlight">
+\[rating = a_0 + a_1 \cdot LN + a_2 \cdot S + a_3 \cdot FS + a_4 \cdot T\]</div>
+<p>where <span class="math notranslate nohighlight">\(a_0\)</span> is the intercept and <span class="math notranslate nohighlight">\(a_1\)</span>, <span class="math notranslate nohighlight">\(a_2\)</span>, <span class="math notranslate nohighlight">\(a_3\)</span>, and <span class="math notranslate nohighlight">\(a_4\)</span> are
+the coefficients of the model, and <span class="math notranslate nohighlight">\(LN\)</span>, <span class="math notranslate nohighlight">\(S\)</span>, <span class="math notranslate nohighlight">\(FS\)</span>, and <span class="math notranslate nohighlight">\(T\)</span> are the
+loudness level, sharpness, fluctuation strength, and tonality, respectively.</p>
+<p>The coefficients of the model are stored in the regression object, and can be accessed using the
+<code class="docutils literal notranslate"><span class="pre">coef_</span></code> attribute. The intercept is stored in the <code class="docutils literal notranslate"><span class="pre">intercept_</span></code> attribute of the regression
+object.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the sound file for which to predict the rating.</span>
+<span class="n">wav_loader</span> <span class="o">=</span> <span class="n">LoadWav</span><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">test_wav_file_path</span></a><span class="p">)</span>
+<span class="n">wav_loader</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+
+<span class="c1"># Keep the first channel only.</span>
+<a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a> <span class="o">=</span> <span class="n">wav_loader</span><span class="o">.</span><span class="n">get_output</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Apply the regression formula to predict the rating of the sound file.</span>
+<span class="c1"># Note: the intercept (offset) must be added to the coefficients list.</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coefficients</span></a> <span class="o">=</span> <span class="p">[</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">regression</span><span class="o">.</span><span class="n">intercept_</span></a><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">regression</span><span class="o">.</span><span class="n">coef_</span></a><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">rating_hat</span></a> <span class="o">=</span> <span class="n">apply_prediction_formula</span><span class="p">(</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="p">,</span> <a href="https://docs.python.org/dev/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">coefficients</span></a><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Predicted rating (0-100) for file </span><span class="si">{</span><a href="https://docs.python.org/dev/library/os.path.html#os.path.split" title="os.path.split" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span></a><span class="p">(</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">test_wav_file_path</span></a><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">rating_hat</span></a><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Predicted rating (0-100) for file HVAC_test.wav: 28.52
+</pre></div>
+</div>
+<p>This predicted rating (28.52) tells us that the sound is not very pleasant in comparison with the
+other sounds of the listening test, and that it would have probably ranked poorly, had it been
+included during the test conduction.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (4 minutes 44.794 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-gallery-examples-012-predict-listening-test-ratings-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/e92dfe16597773086c8b0a66cb1a2112/012_predict_listening_test_ratings.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">012_predict_listening_test_ratings.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/1bd3b11dd24f0502c01081b683c4ba07/012_predict_listening_test_ratings.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">012_predict_listening_test_ratings.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/556a7ae332bc3df16f023ff810271aaf/012_predict_listening_test_ratings.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">012_predict_listening_test_ratings.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-analysis">Set up analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-indicator-computation-function">Define indicator computation function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-prediction-function">Define prediction function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-ansys-sound-jlt-data">Read the Ansys Sound JLT data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-the-psychoacoustic-indicators">Calculate the psychoacoustic indicators</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-the-multiple-linear-regression">Calculate the multiple linear regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-the-regression-coefficients-for-prediction">Use the regression coefficients for prediction</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+<!-- If there is no fix edit button function, use the PyData edit-this-button-->
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/examples/gallery_examples/012_predict_listening_test_ratings.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"ignoreLocation": true, "keys": ["title", "text", "objectID"], "limit": 10, "min_chars_for_search": 2, "threshold": 0.5}');
+const SEARCH_FILE = "../../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2026 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the
+  <a href="https://sphinxdocs.ansys.com/version/stable/index.html"
+    >Ansys Sphinx Theme</a
+  >
+  1.6.4. <br />Last updated on
+  <span id="ast_build_date"></span>
+</p>
+<script>
+  var options = { day: "numeric", month: "long", year: "numeric" };
+  var ast_lastModifiedDate = new Date(document.lastModified);
+  var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+  document.getElementById("ast_build_date").innerHTML = ast_build_date;
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+﻿RpmOrderRepresentation
+======================
+
+.. currentmodule:: ansys.sound.core.order_analysis
+
+.. autoclass:: RpmOrderRepresentation
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      RpmOrderRepresentation.get_orders
+      
+      
+      RpmOrderRepresentation.get_output
+      
+      
+      RpmOrderRepresentation.get_output_as_nparray
+      
+      
+      RpmOrderRepresentation.get_rpm_order_representation
+      
+      
+      RpmOrderRepresentation.get_rpm_scale
+      
+      
+      RpmOrderRepresentation.get_time_scale
+      
+      
+      RpmOrderRepresentation.plot
+      
+      
+      RpmOrderRepresentation.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      RpmOrderRepresentation.max_order
+      RpmOrderRepresentation.order_resolution
+      RpmOrderRepresentation.rpm_profile
+      RpmOrderRepresentation.signal
+   
+   

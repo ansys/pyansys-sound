@@ -1,0 +1,6 @@
+signal
+======
+
+.. currentmodule:: ansys.sound.core.order_analysis
+
+.. autoproperty:: IsolateOrders.signal

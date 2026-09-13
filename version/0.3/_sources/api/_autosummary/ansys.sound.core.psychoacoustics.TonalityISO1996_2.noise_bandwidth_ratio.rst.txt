@@ -1,0 +1,6 @@
+noise\_bandwidth\_ratio
+=======================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: TonalityISO1996_2.noise_bandwidth_ratio

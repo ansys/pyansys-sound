@@ -1,0 +1,47 @@
+﻿OverallLevelFromPSD
+===================
+
+.. currentmodule:: ansys.sound.core.standard_levels
+
+.. autoclass:: OverallLevelFromPSD
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      OverallLevelFromPSD.get_level
+      
+      
+      OverallLevelFromPSD.get_output
+      
+      
+      OverallLevelFromPSD.get_output_as_nparray
+      
+      
+      OverallLevelFromPSD.plot
+      
+      
+      OverallLevelFromPSD.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      OverallLevelFromPSD.frequency_weighting
+      OverallLevelFromPSD.psd
+      OverallLevelFromPSD.reference_value
+      OverallLevelFromPSD.scale
+   
+   

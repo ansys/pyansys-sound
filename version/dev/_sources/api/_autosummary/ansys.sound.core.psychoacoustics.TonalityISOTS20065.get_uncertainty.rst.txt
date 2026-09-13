@@ -1,0 +1,6 @@
+get\_uncertainty
+================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: TonalityISOTS20065.get_uncertainty

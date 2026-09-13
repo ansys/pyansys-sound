@@ -1,0 +1,6 @@
+intertonal\_gap
+===============
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoproperty:: XtractTonalParameters.intertonal_gap

@@ -1,0 +1,6 @@
+get\_decisive\_difference\_over\_time
+=====================================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: TonalityDIN45681.get_decisive_difference_over_time

@@ -1,0 +1,6 @@
+get\_output
+===========
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: FluctuationStrength.get_output

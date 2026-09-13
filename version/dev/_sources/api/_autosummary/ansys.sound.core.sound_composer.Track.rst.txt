@@ -1,0 +1,50 @@
+﻿Track
+=====
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. autoclass:: Track
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Track.get_as_generic_data_containers
+      
+      
+      Track.get_output
+      
+      
+      Track.get_output_as_nparray
+      
+      
+      Track.plot
+      
+      
+      Track.process
+      
+      
+      Track.set_from_generic_data_containers
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Track.filter
+      Track.gain
+      Track.name
+      Track.source
+   
+   

@@ -1,0 +1,6 @@
+get\_octave\_center\_frequencies
+================================
+
+.. currentmodule:: ansys.sound.core.sound_power
+
+.. automethod:: SoundPowerLevelISO3744.get_octave_center_frequencies

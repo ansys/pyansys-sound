@@ -1,0 +1,45 @@
+﻿XtractTransientParameters
+=========================
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoclass:: XtractTransientParameters
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      XtractTransientParameters.get_output
+      
+      
+      XtractTransientParameters.get_output_as_nparray
+      
+      
+      XtractTransientParameters.get_parameters_as_generic_data_container
+      
+      
+      XtractTransientParameters.plot
+      
+      
+      XtractTransientParameters.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      XtractTransientParameters.lower_threshold
+      XtractTransientParameters.upper_threshold
+   
+   

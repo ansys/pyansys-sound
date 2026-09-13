@@ -1,0 +1,6 @@
+convert\_fields\_container\_to\_np\_array
+=========================================
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. automethod:: XtractDenoiser.convert_fields_container_to_np_array

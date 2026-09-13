@@ -1,0 +1,6 @@
+parameters\_tonal
+=================
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoproperty:: Xtract.parameters_tonal

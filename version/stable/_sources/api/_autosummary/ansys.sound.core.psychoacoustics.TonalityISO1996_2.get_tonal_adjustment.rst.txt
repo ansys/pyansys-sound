@@ -1,0 +1,6 @@
+get\_tonal\_adjustment
+======================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: TonalityISO1996_2.get_tonal_adjustment

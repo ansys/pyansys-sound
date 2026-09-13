@@ -1,0 +1,6 @@
+﻿validate\_dpf\_sound\_connection
+================================
+
+.. currentmodule:: ansys.sound.core.server_helpers._validate_dpf_sound_connection
+
+.. autofunction:: validate_dpf_sound_connection
