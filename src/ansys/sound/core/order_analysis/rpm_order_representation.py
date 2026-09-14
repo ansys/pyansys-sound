@@ -25,6 +25,7 @@
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator, types
+import matplotlib.pyplot as plt
 import numpy as np
 
 from . import OrderAnalysisParent
@@ -307,3 +308,73 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
             Time values, in seconds, corresponding to the rows of the RPM-order representation.
         """
         return self.get_output_as_nparray()[3]
+
+    def plot(
+        self,
+        display_in_dB: bool = False,
+        reference_value: float = 1.0,
+    ):
+        """Plot the RPM-order representation as a colormap of level versus order and RPM.
+
+        Parameters
+        ----------
+        display_in_dB : bool, default: False
+            Whether to display levels in the input signal's unit (False), or in dB (True).
+        reference_value : float, default: 1.0
+            Reference value for dB conversion. Ignored if ``display_in_dB`` is False. If the input
+            signal is in Pa, the reference value should be 2e-5 Pa to display levels in dB SPL.
+        """
+        if self._output is None:
+            raise PyAnsysSoundException(
+                f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
+            )
+
+        if display_in_dB and reference_value <= 0:
+            raise PyAnsysSoundException("Reference value must be greater than 0.")
+
+        representation, orders, rpm_values, _ = self.get_output_as_nparray()
+
+        if self.max_order is not None:
+            order_mask = orders <= self.max_order
+            orders = orders[order_mask]
+            representation = representation[:, order_mask]
+
+        # Transpose so that orders are on the vertical axis and RPM on the horizontal axis.
+        magnitude = np.abs(representation.transpose())
+
+        unit = self.signal.unit if isinstance(self.signal.unit, str) else self.signal.unit[1]
+
+        if display_in_dB:
+            magnitude = 20.0 * np.log10(magnitude / reference_value)# + 1e-12)
+            str_unit = f"dB re. {reference_value}"
+            if len(unit) > 0:
+                str_unit += f" {unit}"
+        else:
+            str_unit = unit if len(unit) > 0 else "linear units"
+
+        # Limit the colormap scale to the top 60 dB range when displaying in dB.
+        vmax = np.max(magnitude) if display_in_dB else None
+        vmin = vmax - 60.0 if display_in_dB else None
+
+        plt.figure()
+
+        # Use pcolormesh instead of imshow, because rpm_values is not necessarily regularly spaced.
+        plt.pcolormesh(
+            rpm_values,
+            orders,
+            magnitude,
+            shading="gouraud",
+            cmap="jet",
+            vmin=vmin,
+            vmax=vmax,
+        )
+        plt.colorbar(label=f"Level ({str_unit})")
+
+        title = "RPM-order representation"
+        if len(self.signal.name) > 0:
+            title += f": {self.signal.name}"
+        plt.title(title)
+        plt.xlabel("RPM")
+        plt.ylabel("Order")
+        plt.tight_layout()
+        plt.show()

@@ -220,7 +220,10 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
 
         The :meth:`process()` method must be called to populate this attribute.
         """
-        return self.__rpm_order_representation
+        if self.__rpm_order_representation is None:
+            return None
+
+        return self.__rpm_order_representation.get_output()
 
     def process(self):
         """Run the order analysis with the parameters specified in this object."""
@@ -256,10 +259,10 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
             order_resolution=self.order_resolution,
         )
         rpm_order_repr.process()
-        self.__rpm_order_representation = rpm_order_repr.get_output()
+        self.__rpm_order_representation = rpm_order_repr
 
         # Step 2: Extract order levels.
-        self.__operator.connect(0, self.__rpm_order_representation)
+        self.__operator.connect(0, rpm_order_repr.get_output())
         self.__operator.connect(1, list(map(float, self.orders)))
         self.__operator.connect(2, float(self.order_width))
 
@@ -464,6 +467,30 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         plt.grid()
         plt.tight_layout()
         plt.show()
+
+    def plot_rpm_order_representation(
+        self, display_in_dB: bool = False, reference_value: float = 1.0
+    ):
+        """Plot the RPM-order representation computed during :meth:`process()`.
+
+        The representation is displayed as a colormap of level versus order and RPM.
+
+        Parameters
+        ----------
+        display_in_dB : bool, default: False
+            Whether to display levels in the input signal's unit (False), or in dB (True).
+        reference_value : float, default: 1.0
+            Reference value for dB conversion. Ignored if ``display_in_dB`` is False. If the input
+            signal is in Pa, the reference value should be 2e-5 Pa to display levels in dB SPL.
+        """
+        if self.__rpm_order_representation is None:
+            raise PyAnsysSoundException(
+                f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
+            )
+
+        self.__rpm_order_representation.plot(
+            display_in_dB=display_in_dB, reference_value=reference_value
+        )
 
     def save_as_AnsysSound_Orders(self, filepath: str) -> None:
         """Save the computed order levels to a text file with AnsysSound_Orders header.
