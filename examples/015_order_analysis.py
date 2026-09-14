@@ -36,6 +36,7 @@ The example also illustrates the effect of the parameter
 from an intermediate RPM-order representation (see :class:`.RpmOrderRepresentation`), whose order
 resolution directly drives the combined RPM and order resolution of the result.
 """
+
 # sphinx_gallery_start_ignore
 # sphinx_gallery_thumbnail_path = '_static/_image/example015_thumbnail.png'
 # sphinx_gallery_end_ignore
@@ -53,7 +54,6 @@ import matplotlib.pyplot as plt
 from ansys.sound.core import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
 from ansys.sound.core.examples_helpers import download_accel_with_rpm_wav
 from ansys.sound.core.order_analysis import OrderLevels
-from ansys.sound.core.order_analysis.rpm_order_representation import RpmOrderRepresentation
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
 
