@@ -76,6 +76,7 @@ from ansys.sound.core.spectrogram_processing import Stft
 # Connect to a remote DPF server or start a local DPF server.
 my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
+
 # %%
 # Define custom STFT plot function
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -141,6 +142,7 @@ def plot_stft(
     plt.ylim([0.0, maximum_frequency])  # Change the value of MAX_FREQUENCY_PLOT_STFT if needed.
     plt.title(title)
     plt.show()
+
 
 # %%
 # Load a signal with an RPM profile
