@@ -456,9 +456,7 @@ def test_rpm_order_representation_plot_exceptions(load_accel_and_rpm):
 
     with pytest.raises(
         PyAnsysSoundException,
-        match=(
-            "Output is not processed yet. Use the `RpmOrderRepresentation.process\(\)` method."
-        ),
+        match=("Output is not processed yet. Use the `RpmOrderRepresentation.process\(\)` method."),
     ):
         obj.plot()
 
