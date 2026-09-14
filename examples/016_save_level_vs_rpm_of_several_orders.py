@@ -35,6 +35,12 @@ The resulting file can then be used to define a harmonics source in the Sound Co
 the :class:`.SourceHarmonics` class of PyAnsys Sound, or with the Sound Composer module of Ansys
 Sound SAS, in order to generate a sound corresponding to the identified orders.
 
+This example also shows how to reload the saved file into a :class:`.SourceHarmonics` object, and use
+it in a minimal :class:`.SoundComposer` project to synthesize a new sound driven by an independent RPM
+profile. This illustrates a typical product simulation use case: orders identified on an existing
+system can be reused to synthesize the acoustic behavior of that system under different operating
+conditions, or of a product variant, without having to record a new sound.
+
 .. seealso::
     :ref:`sound_composer_create_project`
         Example demonstrating how to create a Sound Composer project, including a harmonics source.
@@ -55,7 +61,13 @@ from ansys.sound.core import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
 from ansys.sound.core.examples_helpers import download_accel_with_rpm_wav
 from ansys.sound.core.order_analysis import OrderLevels
 from ansys.sound.core.server_helpers import connect_to_or_start_server
-from ansys.sound.core.signal_utilities import LoadWav
+from ansys.sound.core.signal_utilities import LoadWav, WriteWav
+from ansys.sound.core.sound_composer import (
+    SoundComposer,
+    SourceControlTime,
+    SourceHarmonics,
+    Track,
+)
 
 # Connect to a remote DPF server or start a local DPF server.
 my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
@@ -118,3 +130,94 @@ output_path = path_accel_wav[:-4] + "_order_levels.txt"
 order_levels.save_as_AnsysSound_Orders(output_path)
 
 print(f"Order levels saved to {output_path}")
+
+# %%
+# Reload the order levels into a harmonics source
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Reload the file that was just saved into a ``SourceHarmonics`` object, to be used as a source in
+# a Sound Composer project. This is the object that carries the orders identified on the original
+# recording, independently of any particular RPM profile.
+
+source_harmonics = SourceHarmonics(file=output_path)
+
+# %%
+# Build an independent RPM profile to drive the synthesis
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Rather than reusing the original RPM profile, build a new, independent one to drive the
+# synthesis. This mimics a product simulation scenario, where the orders extracted from an
+# existing system are used to predict the sound of that same system running under different
+# operating conditions. For the sake of simplicity, this new profile is obtained here by simply
+# reversing the original RPM profile along the time axis.
+rpm_profile_synthesis = rpm_profile.deep_copy()
+rpm_profile_synthesis.data = np.flip(rpm_profile.data)
+
+source_control = SourceControlTime()
+source_control.control = rpm_profile_synthesis
+source_harmonics.source_control = source_control
+
+# %%
+# Create a Sound Composer project with a single track, made of the harmonics source only (no
+# filter, no additional source), to keep the synthesis focused on the identified orders.
+track = Track(name="Order-based synthesis", source=source_harmonics)
+
+sound_composer_project = SoundComposer()
+sound_composer_project.name = "Order levels synthesis"
+sound_composer_project.add_track(track)
+
+# %%
+# Generate the synthesized signal, using the same sampling frequency as the original signal.
+sampling_frequency = 1.0 / (time.data[1] - time.data[0])
+sound_composer_project.process(sampling_frequency=sampling_frequency)
+sound_composer_project.plot()
+
+synthesized_signal = sound_composer_project.get_output()
+
+# %%
+# Display the synthesized signal and the RPM profile used to drive its synthesis
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Plot the synthesized signal together with the RPM profile that was used to generate it. Because
+# the synthesis is driven by the reversed RPM profile, the resulting sound reproduces the orders
+# identified on the original recording, but played back as if the machine had followed this new,
+# different speed variation.
+
+time_synthesis = synthesized_signal.time_freq_support.time_frequencies
+time_rpm_synthesis = rpm_profile_synthesis.time_freq_support.time_frequencies
+fig, ax = plt.subplots(nrows=2, sharex=True)
+ax[0].plot(time_synthesis.data, synthesized_signal.data)
+ax[0].set_title("Synthesized signal")
+ax[0].set_ylabel(f"Amplitude ({synthesized_signal.unit})")
+ax[0].grid(True)
+ax[1].plot(time_rpm_synthesis.data, rpm_profile_synthesis.data, color="red")
+ax[1].set_title("RPM profile used for synthesis")
+ax[1].set_ylabel("RPM")
+ax[1].grid(True)
+plt.xlabel(f"Time ({time_synthesis.unit})")
+plt.show()
+
+# %%
+# Save the synthesized signal to a WAV file
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Save the synthesized signal to a WAV file, so that it can be listened to.
+
+output_path_wav = path_accel_wav[:-4] + "_synthesized_from_orders.wav"
+WriteWav(signal=synthesized_signal, path_to_write=output_path_wav).process()
+
+print(f"Synthesized signal saved to {output_path_wav}")
+
+# %%
+# Conclusion
+# ~~~~~~~~~~
+# This example computed the level over RPM of a set of orders from a recorded signal and its RPM
+# profile, and saved the result to an ``AnsysSound_Orders`` file. That file was then reloaded to
+# drive a harmonics source in a minimal Sound Composer project, and used to synthesize a new sound
+# from an independent RPM profile, unrelated to the one of the original recording.
+#
+# This shows that, once orders have been identified and stored, they become reusable building
+# blocks: they can be combined with any RPM profile to generate new sounds, without needing a new
+# recording. In a product simulation context, this makes it possible, for instance, to identify
+# orders on an existing system and then synthesize the sound of a variant of that product, whose
+# operating conditions, or whose harmonic content itself, may differ from the original.
+#
+# In a real Sound Composer project, a harmonics source like this one is typically combined with
+# other sources (for example broadband noise), each capturing a different physical contribution to
+# the overall sound, as shown in the :ref:`sound_composer_create_project` example.
