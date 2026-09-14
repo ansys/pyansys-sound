@@ -76,6 +76,7 @@ from ansys.sound.core.spectrogram_processing import Stft
 # Connect to a remote DPF server or start a local DPF server.
 my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
+
 # %%
 # Define custom STFT plot function
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -141,6 +142,7 @@ def plot_stft(
     plt.ylim([0.0, maximum_frequency])  # Change the value of MAX_FREQUENCY_PLOT_STFT if needed.
     plt.title(title)
     plt.show()
+
 
 # %%
 # Load a signal with an RPM profile
@@ -265,16 +267,6 @@ plt.xlabel(f"Time ({time_synthesis.unit})")
 plt.show()
 
 # %%
-# Save the synthesized signal to a WAV file
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Save the synthesized signal to a WAV file, so that it can be listened to.
-
-output_path_wav = path_accel_wav[:-4] + "_synthesized_from_orders.wav"
-WriteWav(signal=synthesized_signal, path_to_write=output_path_wav).process()
-
-print(f"Synthesized signal saved to {output_path_wav}")
-
-# %%
 # Display the spectrogram of the synthesized signal
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Compute and display the spectrogram of the synthesized signal, using the ``Stft`` class, to
@@ -284,6 +276,16 @@ stft = Stft(signal=synthesized_signal, fft_size=8192, window_overlap=0.9)
 stft.process()
 max_stft = 20 * np.log10(np.max(stft.get_stft_magnitude_as_nparray()))
 plot_stft(stft, sampling_frequency, max_stft)
+
+# %%
+# Save the synthesized signal to a WAV file
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Save the synthesized signal to a WAV file, so that it can be listened to.
+
+output_path_wav = path_accel_wav[:-4] + "_synthesized_from_orders.wav"
+WriteWav(signal=synthesized_signal, path_to_write=output_path_wav).process()
+
+print(f"Synthesized signal saved to {output_path_wav}")
 
 # %%
 # Conclusion
