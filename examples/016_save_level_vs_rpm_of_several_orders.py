@@ -35,11 +35,11 @@ The resulting file can then be used to define a harmonics source in the Sound Co
 the :class:`.SourceHarmonics` class of PyAnsys Sound, or with the Sound Composer module of Ansys
 Sound SAS, in order to generate a sound corresponding to the identified orders.
 
-This example also shows how to reload the saved file into a :class:`.SourceHarmonics` object, and use
-it in a minimal :class:`.SoundComposer` project to synthesize a new sound driven by an independent RPM
-profile. This illustrates a typical product simulation use case: orders identified on an existing
-system can be reused to synthesize the acoustic behavior of that system under different operating
-conditions, or of a product variant, without having to record a new sound.
+This example also shows how to reload the saved file into a :class:`.SourceHarmonics` object, 
+and use it in a minimal :class:`.SoundComposer` project to synthesize a new sound driven by 
+an independent RPM profile. This illustrates a typical product simulation use case: orders 
+identified on an existing system can be reused to synthesize the acoustic behavior of that system 
+under different operating conditions, or of a product variant.
 
 .. seealso::
     :ref:`sound_composer_create_project`
