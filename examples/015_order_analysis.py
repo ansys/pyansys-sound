@@ -31,10 +31,11 @@ This example shows how to compute the levels over RPM of a list of orders using 
 with the related tachometric information. Orders are harmonic components of a sound or vibration
 that are related to the rotation speed of a machine.
 
-The example also illustrates the effect of the parameter
-:attr:`~.OrderLevels.order_resolution` on the computed order levels: the order levels are extracted
-from an intermediate RPM-order representation (see :class:`.RpmOrderRepresentation`), whose order
-resolution directly drives the combined RPM and order resolution of the result.
+The example also illustrates the effect of the parameters
+:attr:`~.OrderLevels.order_resolution` and :attr:`~.OrderLevels.order_width` on the computed order
+levels: the order levels are extracted from an intermediate RPM-order representation (see
+:class:`.RpmOrderRepresentation`), whose order resolution directly drives the combined RPM and
+order resolution of the result.
 """
 
 # sphinx_gallery_start_ignore
@@ -131,8 +132,14 @@ order_levels_coarse.process()
 # the time. The orders appear as horizontal lines, which makes it easy to identify the dominant
 # ones.
 #
-# This representation is directly available from the ``OrderLevels`` object, so there is no need to
-# compute it again with the :class:`.RpmOrderRepresentation` class.
+# This representation is useful for visualizing the distribution of energy across orders and RPM
+# values. It is also convenient to adjust the value of :attr:`~.OrderLevels.order_width` to control
+# the integration range around each order.
+# One should set it according to the proximity between neighboring orders, the level of the
+# background noise outside of the order itself on the graph, and the apparent width on the colormap.
+#
+# Note: this representation is directly available from the ``OrderLevels`` object, so there is no
+# need to compute it again with the :class:`.RpmOrderRepresentation` class.
 
 order_levels_coarse.plot_rpm_order_representation(
     display_in_dB=True, reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
