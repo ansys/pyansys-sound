@@ -24,27 +24,22 @@
 .. _save_level_vs_rpm_of_several_orders_example:
 
 Save the level vs RPM of several orders for the Sound Composer
-----------------------------------------------------------------
-
-Orders are harmonic and partial components in the sound related to the speed of a rotating
-machine. This example shows how to compute the level over RPM of several orders of a signal
-associated with an RPM profile, and how to save the result to a text file whose format (with the
-``AnsysSound_Orders`` header) is compatible with the Sound Composer.
 
 The resulting file can then be used to define a harmonics source in the Sound Composer, either with
 the :class:`.SourceHarmonics` class of PyAnsys Sound, or with the Sound Composer module of Ansys
 Sound SAS, in order to generate a sound corresponding to the identified orders.
 
-This example also shows how to reload the saved file into a :class:`.SourceHarmonics` object,
-and use it in a minimal :class:`.SoundComposer` project to synthesize a new sound driven by
-an independent RPM profile. This illustrates a typical product simulation use case: orders
-identified on an existing system can be reused to synthesize the acoustic behavior of that system
-under different operating conditions, or of a product variant.
-
-.. seealso::
-    :ref:`sound_composer_create_project`
-        Example demonstrating how to create a Sound Composer project, including a harmonics source.
+# This example also shows how to reload the saved file into a :class:`.SourceHarmonics` object,
+# and use it in a minimal :class:`.SoundComposer` project to synthesize a new sound driven by
+# an independent RPM profile. This illustrates a typical product simulation use case: orders
 """
+
+# %%
+# Plot the RPM profile used for synthesis and the spectrogram of the synthesized signal
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# The synthesis is driven by the provided RPM profile. Instead of plotting the waveform, we
+# display the RPM profile (left) and the spectrogram of the synthesized signal (right), to make
+# the relation between speed and spectral content easier to inspect.
 
 # Maximum frequency for STFT plots, change according to your need
 MAX_FREQUENCY_PLOT_STFT = 2000.0
@@ -60,8 +55,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Load Ansys libraries.
-from ansys.sound.core import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
 from ansys.sound.core.examples_helpers import download_accel_with_rpm_wav
+from ansys.sound.core.examples_helpers.download import download_rpm_acceleration_deceleration
 from ansys.sound.core.order_analysis import OrderLevels
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav, WriteWav
@@ -88,8 +83,9 @@ def plot_stft(
     SPLmax: float,
     title: str = "STFT",
     maximum_frequency: float = MAX_FREQUENCY_PLOT_STFT,
+    ax=None,
 ) -> None:
-    """Plot a short-term Fourier transform (STFT) into a figure window.
+    """Plot a short-term Fourier transform (STFT) into a Matplotlib axis or a new figure.
 
     Parameters
     ----------
@@ -100,9 +96,11 @@ def plot_stft(
     SPLmax: float
         Maximum value (here in dB SPL) for the colormap.
     title: str, default: "STFT"
-        Title of the figure.
+        Title of the figure or axis.
     maximum_frequency: float, default: MAX_FREQUENCY_PLOT_STFT
         Maximum frequency in Hz to display.
+    ax: matplotlib.axes.Axes, optional
+        Axis to draw the spectrogram into. If ``None``, a new figure is created.
     """
     magnitude = stft.get_stft_magnitude_as_nparray()
     magnitude_unit = stft.get_output()[0].unit
@@ -125,9 +123,13 @@ def plot_stft(
     # Define boundaries of the plot
     extent = [time_data_spectrogram[0], time_data_spectrogram[-1], 0.0, fs / 2.0]
 
-    # Plot
-    plt.figure()
-    plt.imshow(
+    # Plot into provided axis or create a new figure
+    target_ax = ax if ax is not None else None
+    if target_ax is None:
+        plt.figure()
+        target_ax = plt.gca()
+
+    im = target_ax.imshow(
         magnitude,
         origin="lower",
         aspect="auto",
@@ -136,12 +138,17 @@ def plot_stft(
         vmax=SPLmax,
         vmin=SPLmax - 70.0,
     )
-    plt.colorbar(label=f"Magnitude ({magnitude_unit})")
-    plt.ylabel(f"Frequency ({frequency_unit})")
-    plt.xlabel(f"Time ({time_unit})")
-    plt.ylim([0.0, maximum_frequency])  # Change the value of MAX_FREQUENCY_PLOT_STFT if needed.
-    plt.title(title)
-    plt.show()
+
+    # Attach colorbar to the figure containing the target axis
+    plt.colorbar(im, ax=target_ax, label=f"Magnitude ({magnitude_unit})")
+    target_ax.set_ylabel(f"Frequency ({frequency_unit})")
+    target_ax.set_xlabel(f"Time ({time_unit})")
+    target_ax.set_ylim(
+        [0.0, maximum_frequency]
+    )  # Change the value of MAX_FREQUENCY_PLOT_STFT if needed.
+    target_ax.set_title(title)
+    if ax is None:
+        plt.show()
 
 
 # %%
@@ -164,18 +171,26 @@ signal, rpm_profile = wav_loader.get_output()
 # The AnsysSound_Orders file format only supports acoustic pressure data.
 signal.unit = "Pa"
 
-# Plot the signal and its associated RPM profile.
+# Compute the spectrogram
+stft = Stft(signal=signal, fft_size=8192, window_overlap=0.9)
+stft.process()
+max_stft = 20 * np.log10(np.max(stft.get_stft_magnitude_as_nparray()))
+
+# Plot the RPM profile (left) and the spectrogram (right) side-by-side.
 time = signal.time_freq_support.time_frequencies
-fig, ax = plt.subplots(nrows=2, sharex=True)
-ax[0].plot(time.data, signal.data)
-ax[0].set_title("Audio signal")
-ax[0].set_ylabel(f"Amplitude ({signal.unit})")
-ax[0].grid(True)
-ax[1].plot(time.data, rpm_profile.data, color="red")
-ax[1].set_title("RPM profile")
-ax[1].set_ylabel("RPM")
-ax[1].grid(True)
-plt.xlabel(f"Time ({time.unit})")
+fig, axs = plt.subplots(nrows=1, ncols=2, sharex=True, figsize=(12, 5))
+
+# Left: RPM profile
+axs[0].plot(time.data, rpm_profile.data, color="red")
+axs[0].set_title("RPM profile")
+axs[0].set_ylabel("RPM")
+axs[0].grid(True)
+axs[0].set_xlabel(f"Time ({time.unit})")
+
+# Right: spectrogram (use the custom plot_stft to draw into the provided axis)
+plot_stft(stft, 44100, max_stft, title="STFT", maximum_frequency=MAX_FREQUENCY_PLOT_STFT, ax=axs[1])
+
+plt.tight_layout()
 plt.show()
 
 # %%
@@ -189,10 +204,6 @@ order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=orders
 order_levels.process()
 
 # %%
-# Display the resulting order levels, in dB SPL, over RPM.
-order_levels.plot(display_in_dB=True, reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR)
-
-# %%
 # Save the order levels to a Sound Composer-compatible file
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Save the computed order levels to a text file with the ``AnsysSound_Orders`` header, using the
@@ -204,8 +215,8 @@ order_levels.save_as_AnsysSound_Orders(output_path)
 print(f"Order levels saved to {output_path}")
 
 # %%
-# Reload the order levels into a harmonics source
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Reload the order levels into a harmonics source and synthesize a signal
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Reload the file that was just saved into a ``SourceHarmonics`` object, to be used as a source in
 # a Sound Composer project. This is the object that carries the orders identified on the original
 # recording, independently of any particular RPM profile.
@@ -213,18 +224,12 @@ print(f"Order levels saved to {output_path}")
 source_harmonics = SourceHarmonics(file=output_path)
 
 # %%
-# Build an independent RPM profile to drive the synthesis
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Rather than reusing the original RPM profile, build a new, independent one to drive the
-# synthesis. This mimics a product simulation scenario, where the orders extracted from an
-# existing system are used to predict the sound of that same system running under different
-# operating conditions. For the sake of simplicity, this new profile is obtained here by simply
-# reversing the original RPM profile along the time axis.
-rpm_profile_synthesis = rpm_profile.deep_copy()
-rpm_profile_synthesis.data = np.flip(rpm_profile.data)
-
-source_control = SourceControlTime()
-source_control.control = rpm_profile_synthesis
+# Load the RPM profile for the synthesis. This profile illustrates the time-varying speed of the machine with an
+# acceleration and deceleration phases.
+# rpm_acceleration_deceleration_path = download_rpm_acceleration_deceleration()
+# source_control = SourceControlTime(rpm_acceleration_deceleration_path, expected_unit="RPM")
+source_control = SourceControlTime("c:/temp/rpm_acceleration-deceleration.txt",
+                                   expected_unit="RPM")
 source_harmonics.source_control = source_control
 
 # %%
@@ -245,47 +250,50 @@ sound_composer_project.plot()
 synthesized_signal = sound_composer_project.get_output()
 
 # %%
-# Display the synthesized signal and the RPM profile used to drive its synthesis
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Plot the synthesized signal together with the RPM profile that was used to generate it. Because
 # the synthesis is driven by the reversed RPM profile, the resulting sound reproduces the orders
 # identified on the original recording, but played back as if the machine had followed this new,
 # different speed variation.
 
 time_synthesis = synthesized_signal.time_freq_support.time_frequencies
-time_rpm_synthesis = rpm_profile_synthesis.time_freq_support.time_frequencies
-fig, ax = plt.subplots(nrows=2, sharex=True)
-ax[0].plot(time_synthesis.data, synthesized_signal.data)
-ax[0].set_title("Synthesized signal")
-ax[0].set_ylabel(f"Amplitude ({synthesized_signal.unit})")
-ax[0].grid(True)
-ax[1].plot(time_rpm_synthesis.data, rpm_profile_synthesis.data, color="red")
-ax[1].set_title("RPM profile used for synthesis")
-ax[1].set_ylabel("RPM")
-ax[1].grid(True)
-plt.xlabel(f"Time ({time_synthesis.unit})")
-plt.show()
+time_rpm_synthesis = source_control.control.time_freq_support.time_frequencies
 
-# %%
-# Display the spectrogram of the synthesized signal
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Compute and display the spectrogram of the synthesized signal, using the ``Stft`` class, to
-# visualize the orders that were used to drive the synthesis.
+# Plot RPM profile (left) and spectrogram of the synthesized signal (right)
+fig, axs = plt.subplots(nrows=1, ncols=2, sharex=True, figsize=(12, 5))
+
+# Left: RPM profile used for synthesis
+axs[0].plot(time_rpm_synthesis.data, source_control.control.data, color="red")
+axs[0].set_title("RPM profile used for synthesis")
+axs[0].set_ylabel("RPM")
+axs[0].grid(True)
+axs[0].set_xlabel(f"Time ({time_rpm_synthesis.unit})")
+
+# Right: spectrogram of the synthesized signal
 synthesized_signal.unit = "Pa"
-stft = Stft(signal=synthesized_signal, fft_size=8192, window_overlap=0.9)
-stft.process()
-max_stft = 20 * np.log10(np.max(stft.get_stft_magnitude_as_nparray()))
-plot_stft(stft, sampling_frequency, max_stft)
+stft_synth = Stft(signal=synthesized_signal, fft_size=8192, window_overlap=0.9)
+stft_synth.process()
+max_stft_synth = 20 * np.log10(np.max(stft_synth.get_stft_magnitude_as_nparray()))
+plot_stft(
+    stft_synth,
+    sampling_frequency,
+    max_stft_synth,
+    title="STFT (synthesized)",
+    maximum_frequency=MAX_FREQUENCY_PLOT_STFT,
+    ax=axs[1],
+)
+
+plt.tight_layout()
+plt.show()
 
 # %%
 # Save the synthesized signal to a WAV file
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Save the synthesized signal to a WAV file, so that it can be listened to.
 
-output_path_wav = path_accel_wav[:-4] + "_synthesized_from_orders.wav"
-WriteWav(signal=synthesized_signal, path_to_write=output_path_wav).process()
+# output_path_wav = rpm_acceleration_deceleration_path[:-4] + "_synthesized_from_orders.wav"
+# WriteWav(signal=synthesized_signal, path_to_write=output_path_wav).process()
 
-print(f"Synthesized signal saved to {output_path_wav}")
+# print(f"Synthesized signal saved to {output_path_wav}")
 
 # %%
 # Conclusion
