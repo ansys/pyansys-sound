@@ -228,8 +228,7 @@ source_harmonics = SourceHarmonics(file=output_path)
 # acceleration and deceleration phases.
 # rpm_acceleration_deceleration_path = download_rpm_acceleration_deceleration()
 # source_control = SourceControlTime(rpm_acceleration_deceleration_path, expected_unit="RPM")
-source_control = SourceControlTime("c:/temp/rpm_acceleration-deceleration.txt",
-                                   expected_unit="RPM")
+source_control = SourceControlTime("c:/temp/rpm_acceleration-deceleration.txt", expected_unit="RPM")
 source_harmonics.source_control = source_control
 
 # %%
