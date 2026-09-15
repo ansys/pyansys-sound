@@ -38,10 +38,6 @@ levels: the order levels are extracted from an intermediate RPM-order representa
 order resolution of the result.
 """
 
-# sphinx_gallery_start_ignore
-# sphinx_gallery_thumbnail_path = '_static/_image/example015_thumbnail.png'
-# sphinx_gallery_end_ignore
-
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
@@ -57,6 +53,10 @@ from ansys.sound.core.examples_helpers import download_accel_with_rpm_wav
 from ansys.sound.core.order_analysis import OrderLevels
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
+
+# sphinx_gallery_start_ignore
+# sphinx_gallery_thumbnail_path = '_static/_image/example015_thumbnail.png'
+# sphinx_gallery_end_ignore
 
 # Connect to a remote DPF server or start a local DPF server.
 my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
