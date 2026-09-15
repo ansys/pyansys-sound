@@ -1,0 +1,53 @@
+﻿SoundComposer
+=============
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. autoclass:: SoundComposer
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SoundComposer.add_track
+      
+      
+      SoundComposer.convert_fields_container_to_np_array
+      
+      
+      SoundComposer.get_output
+      
+      
+      SoundComposer.get_output_as_nparray
+      
+      
+      SoundComposer.load
+      
+      
+      SoundComposer.plot
+      
+      
+      SoundComposer.process
+      
+      
+      SoundComposer.save
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SoundComposer.tracks
+   
+   

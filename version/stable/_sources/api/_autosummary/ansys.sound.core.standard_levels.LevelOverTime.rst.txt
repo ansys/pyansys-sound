@@ -1,0 +1,57 @@
+﻿LevelOverTime
+=============
+
+.. currentmodule:: ansys.sound.core.standard_levels
+
+.. autoclass:: LevelOverTime
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      LevelOverTime.get_level_max
+      
+      
+      LevelOverTime.get_level_over_time
+      
+      
+      LevelOverTime.get_output
+      
+      
+      LevelOverTime.get_output_as_nparray
+      
+      
+      LevelOverTime.get_time_scale
+      
+      
+      LevelOverTime.plot
+      
+      
+      LevelOverTime.process
+      
+      
+      LevelOverTime.set_custom_parameters
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      LevelOverTime.frequency_weighting
+      LevelOverTime.reference_value
+      LevelOverTime.scale
+      LevelOverTime.signal
+      LevelOverTime.time_weighting
+   
+   

@@ -1,0 +1,6 @@
+get\_erbn\_numbers
+==================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: LoudnessISO532_2.get_erbn_numbers

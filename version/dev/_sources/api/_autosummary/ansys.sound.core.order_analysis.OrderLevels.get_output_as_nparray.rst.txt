@@ -1,0 +1,6 @@
+get\_output\_as\_nparray
+========================
+
+.. currentmodule:: ansys.sound.core.order_analysis
+
+.. automethod:: OrderLevels.get_output_as_nparray

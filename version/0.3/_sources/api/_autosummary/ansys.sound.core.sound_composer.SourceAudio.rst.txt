@@ -1,0 +1,59 @@
+﻿SourceAudio
+===========
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. autoclass:: SourceAudio
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SourceAudio.get_as_generic_data_containers
+      
+      
+      SourceAudio.get_output
+      
+      
+      SourceAudio.get_output_as_nparray
+      
+      
+      SourceAudio.is_source_control_valid
+      
+      
+      SourceAudio.load_from_text_file
+      
+      
+      SourceAudio.load_from_wave_file
+      
+      
+      SourceAudio.plot
+      
+      
+      SourceAudio.plot_control
+      
+      
+      SourceAudio.process
+      
+      
+      SourceAudio.set_from_generic_data_containers
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SourceAudio.source_audio_data
+   
+   

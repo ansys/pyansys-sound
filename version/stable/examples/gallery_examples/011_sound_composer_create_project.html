@@ -1,0 +1,910 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Create a Sound Composer project &#8212; PyAnsys Sound</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles\ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../../_static/documentation_options.js?v=f129cdf0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/gallery_examples/011_sound_composer_create_project';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://sound.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.3';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="icon" href="../../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Predict listening test ratings" href="012_predict_listening_test_ratings.html" />
+    <link rel="prev" title="Use an existing Sound Composer project file" href="010_sound_composer_load_project.html" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.3.0" />
+  <meta property="og:site_name" content="PyAnsys" />
+  <meta name="physics" content="Acoustics" />
+  <link rel="canonical" href="https://sound.docs.pyansys.com/version/stable/examples/gallery_examples/011_sound_composer_create_project.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyAnsys Sound - Home"/>
+    <img src="../../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark pst-js-only" alt="PyAnsys Sound - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html" title="PyAnsys Sound home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../contribute.html">
+    Contribute
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav>
+</div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyansys-sound" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    <div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(
+      (text) => (document.getElementById("announcement_msg").innerHTML = text),
+    )
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html" title="PyAnsys Sound home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contribute.html">
+    Contribute
+  </a>
+</li>
+
+  </ul>
+</nav>
+</div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyansys-sound" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="001_initialize_server_and_deal_with_license.html">Initialize PyAnsys Sound and check out the license</a></li>
+<li class="toctree-l1"><a class="reference internal" href="002_load_resample_amplify_write_wav_files.html">Basic operations on a signal from a WAV file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="003_compute_stft.html">Spectrogram: compute the STFT and ISTFT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="004_isolate_orders.html">Isolate orders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="005_xtract_feature.html">Extract tonal, transient, and noise components (Xtract)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="006_calculate_PR_and_TNR.html">Calculate TNR and PR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="007_calculate_psychoacoustic_indicators.html">Calculate psychoacoustic indicators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="008_calculate_levels.html">Calculate RMS, dBSPL and dBA levels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="009_calculate_tonality_indicators.html">Calculate tonality indicators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="010_sound_composer_load_project.html">Use an existing Sound Composer project file</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Create a Sound Composer project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="012_predict_listening_test_ratings.html">Predict listening test ratings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="013_calculate_fractional_octave_levels.html">Octave and one-third-octave levels computation</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../index.html" class="nav-link">Examples</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Create a Sound Composer project</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-examples-gallery-examples-011-sound-composer-create-project-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="create-a-sound-composer-project">
+<span id="sound-composer-create-project"></span><span id="sphx-glr-examples-gallery-examples-011-sound-composer-create-project-py"></span><h1>Create a Sound Composer project<a class="headerlink" href="#create-a-sound-composer-project" title="Link to this heading">#</a></h1>
+<p>The Sound Composer is a tool that allows you to generate the sound of a system by combining the
+sounds of its components, which we call sources here. Each source can be made of data coming from
+test analysis, or from a simulation, or simply consist of a single audio recording. The sources are
+combined into a Sound Composer project, where each source is assigned to a track.</p>
+<p>A track is a data structure made of a source data, a source control data, an output gain, and,
+optionally, a transfer function in the form of a digital filter (which models the transfer from the
+source to the listening/recording position). It can generate the sound of the
+component (as characterized by the source data), in specific operating conditions (the source
+control), and filtered according to the transfer function.</p>
+<p>This example shows how to create a Sound Composer project, with the <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.sound_composer.SoundComposer.html#ansys.sound.core.sound_composer.SoundComposer" title="ansys.sound.core.sound_composer.SoundComposer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SoundComposer</span></code></a> class.
+It first creates a new project, then adds tracks to it, and finally generates the sound of the
+project.</p>
+<p>The example shows how to perform these operations:</p>
+<ul class="simple">
+<li><p>Create a project,</p></li>
+<li><p>Create a track with a source of type Harmonics, and add it to the project,</p></li>
+<li><p>Create a track with a source of type Spectrum, and add it to the project,</p></li>
+<li><p>Generate the signal of the project,</p></li>
+<li><p>Display the spectrogram of the generated signal,</p></li>
+<li><p>Save the project as an .scn file.</p></li>
+</ul>
+<section id="set-up-analysis">
+<h2>Set up analysis<a class="headerlink" href="#set-up-analysis" title="Link to this heading">#</a></h2>
+<p>Setting up the analysis consists of loading the required libraries,
+connecting to the DPF server, and downloading the data files required in this example.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.examples_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">download_sound_composer_FRF_eMotor</span><span class="p">,</span>
+    <span class="n">download_sound_composer_source_control_eMotor</span><span class="p">,</span>
+    <span class="n">download_sound_composer_source_control_WindRoadNoise</span><span class="p">,</span>
+    <span class="n">download_sound_composer_source_eMotor</span><span class="p">,</span>
+    <span class="n">download_sound_composer_source_WindRoadNoise</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Load Ansys libraries.</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.server_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">connect_to_or_start_server</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.signal_processing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Filter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.sound_composer</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SoundComposer</span><span class="p">,</span>
+    <span class="n">SourceBroadbandNoise</span><span class="p">,</span>
+    <span class="n">SourceControlTime</span><span class="p">,</span>
+    <span class="n">SourceHarmonics</span><span class="p">,</span>
+    <span class="n">Track</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.sound.core.spectrogram_processing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Stft</span>
+
+
+<span class="c1"># Connect to a remote DPF server or start a local DPF server.</span>
+<a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_types/GrpcServer.html#ansys.dpf.core.server_types.GrpcServer" title="ansys.dpf.core.server_types.GrpcServer" class="sphx-glr-backref-module-ansys-dpf-core-server_types sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_server</span></a><span class="p">,</span> <a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_context/LicenseContextManager.html#ansys.dpf.core.server_context.LicenseContextManager" title="ansys.dpf.core.server_context.LicenseContextManager" class="sphx-glr-backref-module-ansys-dpf-core-server_context sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_license_context</span></a> <span class="o">=</span> <span class="n">connect_to_or_start_server</span><span class="p">(</span><span class="n">use_license_context</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Download the necessary files for each source considered in this exeample: the source file</span>
+<span class="c1"># containing the acoustic definition of the source, the control profile file containing the</span>
+<span class="c1"># operating conditions of the source (engine or vehicle speed over time), and optionally the FRF</span>
+<span class="c1"># file containing the source&#39;s transfer function.</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_sound_composer_source_eMotor</span></a> <span class="o">=</span> <span class="n">download_sound_composer_source_eMotor</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_types/GrpcServer.html#ansys.dpf.core.server_types.GrpcServer" title="ansys.dpf.core.server_types.GrpcServer" class="sphx-glr-backref-module-ansys-dpf-core-server_types sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_server</span></a><span class="p">)</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_sound_composer_sourcecontrol_eMotor</span></a> <span class="o">=</span> <span class="n">download_sound_composer_source_control_eMotor</span><span class="p">(</span>
+    <span class="n">server</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_types/GrpcServer.html#ansys.dpf.core.server_types.GrpcServer" title="ansys.dpf.core.server_types.GrpcServer" class="sphx-glr-backref-module-ansys-dpf-core-server_types sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_server</span></a>
+<span class="p">)</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_sound_composer_FRF_eMotor</span></a> <span class="o">=</span> <span class="n">download_sound_composer_FRF_eMotor</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_types/GrpcServer.html#ansys.dpf.core.server_types.GrpcServer" title="ansys.dpf.core.server_types.GrpcServer" class="sphx-glr-backref-module-ansys-dpf-core-server_types sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_server</span></a><span class="p">)</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_sound_composer_source_WindRoadNoise</span></a> <span class="o">=</span> <span class="n">download_sound_composer_source_WindRoadNoise</span><span class="p">(</span>
+    <span class="n">server</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_types/GrpcServer.html#ansys.dpf.core.server_types.GrpcServer" title="ansys.dpf.core.server_types.GrpcServer" class="sphx-glr-backref-module-ansys-dpf-core-server_types sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_server</span></a>
+<span class="p">)</span>
+<a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_sound_composer_sourcecontrol_WindRoadNoise</span></a> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">download_sound_composer_source_control_WindRoadNoise</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/server_types/GrpcServer.html#ansys.dpf.core.server_types.GrpcServer" title="ansys.dpf.core.server_types.GrpcServer" class="sphx-glr-backref-module-ansys-dpf-core-server_types sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">my_server</span></a><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="create-a-new-sound-composer-project">
+<h2>Create a new Sound Composer project<a class="headerlink" href="#create-a-new-sound-composer-project" title="Link to this heading">#</a></h2>
+<p>To create a new Sound Composer project, instantiate the <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.sound_composer.SoundComposer.html#ansys.sound.core.sound_composer.SoundComposer" title="ansys.sound.core.sound_composer.SoundComposer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SoundComposer</span></code></a> class.
+Sources will be combined as tracks into this instance, allowing you to generate the sound of the
+project.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sound_composer_project</span> <span class="o">=</span> <span class="n">SoundComposer</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Let us give the new project a name.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sound_composer_project</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Electric vehicle interior sound&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="create-track-1-for-the-e-motor-source">
+<h2>Create track #1 for the e-motor source<a class="headerlink" href="#create-track-1-for-the-e-motor-source" title="Link to this heading">#</a></h2>
+<p>To model the noise of the e-motor, we create a track with a harmonics source, which contains the
+harmonics of the e-motor noise. The track also contains a source control that defines the
+operating conditions of the e-motor, and a filter that represents the transfer function of the
+e-motor noise source to the receiver point, usually the driver position.</p>
+<p>Create a new Sound Composer track, meant as a recipient for the e-motor data.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">track_eMotor</span> <span class="o">=</span> <span class="n">Track</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;eMotor harmonics noise&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a harmonics source, using the <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.sound_composer.SourceHarmonics.html#ansys.sound.core.sound_composer.SourceHarmonics" title="ansys.sound.core.sound_composer.SourceHarmonics"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceHarmonics</span></code></a> class, passing the path to the
+source file as an argument. This file contains the levels of the harmonics of the e-motor noise
+for several engine speed values.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">source_eMotor</span> <span class="o">=</span> <span class="n">SourceHarmonics</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_sound_composer_source_eMotor</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a source control profile, using the <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.sound_composer.SourceControlTime.html#ansys.sound.core.sound_composer.SourceControlTime" title="ansys.sound.core.sound_composer.SourceControlTime"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceControlTime</span></code></a> class.
+This source control profile defines the operating conditions of the e-motor, here the speed of
+the e-motor, increasing from 250 to 5000 rpm in 8 seconds.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">source_control_eMotor</span> <span class="o">=</span> <span class="n">SourceControlTime</span><span class="p">(</span><span class="n">file_str</span><span class="o">=</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_sound_composer_sourcecontrol_eMotor</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a filter, using the <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.signal_processing.Filter.html#ansys.sound.core.signal_processing.Filter" title="ansys.sound.core.signal_processing.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a> class.
+This filter models the transfer function (FRF) of the e-motor noise source to the receiver point.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">filter_eMotor</span> <span class="o">=</span> <span class="n">Filter</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_sound_composer_FRF_eMotor</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<p>Assign created objects to the track.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assign the source control to the source.</span>
+<span class="n">source_eMotor</span><span class="o">.</span><span class="n">source_control</span> <span class="o">=</span> <span class="n">source_control_eMotor</span>
+
+<span class="c1"># Assign the source to the track.</span>
+<span class="n">track_eMotor</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">source_eMotor</span>
+
+<span class="c1"># Assign the filter to the track.</span>
+<span class="n">track_eMotor</span><span class="o">.</span><span class="n">filter</span> <span class="o">=</span> <span class="n">filter_eMotor</span>
+</pre></div>
+</div>
+<p>Add the track to the Sound Composer project. It is the first track of this project.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sound_composer_project</span><span class="o">.</span><span class="n">add_track</span><span class="p">(</span><span class="n">track_eMotor</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="create-track-2-for-the-wind-and-road-noise-source">
+<h2>Create track #2 for the wind and road noise source<a class="headerlink" href="#create-track-2-for-the-wind-and-road-noise-source" title="Link to this heading">#</a></h2>
+<p>To model the wind and road noise produced in the cabin while driving, we create a track with a
+broadband noise source, whose spectrum envelope changes according to change in the speed of the
+vehicle over time.</p>
+<p>Create a new Sound Composer track, meant as a recipient for the wind and road noise data.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">track_WindRoadNoise</span> <span class="o">=</span> <span class="n">Track</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Wind and road noise&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a broadband noise source, using the <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.sound_composer.SourceBroadbandNoise.html#ansys.sound.core.sound_composer.SourceBroadbandNoise" title="ansys.sound.core.sound_composer.SourceBroadbandNoise"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceBroadbandNoise</span></code></a> class.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">source_WindRoadNoise</span> <span class="o">=</span> <span class="n">SourceBroadbandNoise</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_sound_composer_source_WindRoadNoise</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a source control profile, using the <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.sound_composer.SourceControlTime.html#ansys.sound.core.sound_composer.SourceControlTime" title="ansys.sound.core.sound_composer.SourceControlTime"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceControlTime</span></code></a> class. This source control
+describes the change of vehicle speed over time.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">source_control_WindRoadNoise</span> <span class="o">=</span> <span class="n">SourceControlTime</span><span class="p">(</span>
+    <span class="n">file_str</span><span class="o">=</span><a href="https://docs.python.org/dev/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">path_sound_composer_sourcecontrol_WindRoadNoise</span></a>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Assign created objects to the track.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assign the source control to the source.</span>
+<span class="n">source_WindRoadNoise</span><span class="o">.</span><span class="n">source_control</span> <span class="o">=</span> <span class="n">source_control_WindRoadNoise</span>
+
+<span class="c1"># Assign the source to the track</span>
+<span class="n">track_WindRoadNoise</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">source_WindRoadNoise</span>
+</pre></div>
+</div>
+<p>Add the track to the Sound Composer project. It is the second track of this project.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sound_composer_project</span><span class="o">.</span><span class="n">add_track</span><span class="p">(</span><span class="n">track_WindRoadNoise</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="generate-the-signal-of-the-project">
+<h2>Generate the signal of the project<a class="headerlink" href="#generate-the-signal-of-the-project" title="Link to this heading">#</a></h2>
+<p>Now, let us generate the signal of the project using the <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.sound_composer.SoundComposer.process.html#ansys.sound.core.sound_composer.SoundComposer.process" title="ansys.sound.core.sound_composer.SoundComposer.process"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SoundComposer.process()</span></code></a> method.
+This method generates, for each track, the acoustic signal of the source, filters it with the
+associated filter, if any, and applies the track gain, and finally sums all resulting tracks’
+signals together.</p>
+<p>Generate the signal of the project, using a sampling frequency of 44100 Hz.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sound_composer_project</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">sampling_frequency</span><span class="o">=</span><span class="mf">44100.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Display the generated signal using the <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.sound_composer.SoundComposer.plot.html#ansys.sound.core.sound_composer.SoundComposer.plot" title="ansys.sound.core.sound_composer.SoundComposer.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SoundComposer.plot()</span></code></a> method.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sound_composer_project</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_011_sound_composer_create_project_001.png" srcset="../../_images/sphx_glr_011_sound_composer_create_project_001.png" alt="Generated signal" class = "sphx-glr-single-img"/><p>Use the built-in <a class="reference external" href="https://docs.python.org/dev/library/functions.html#print" title="(in Python v3.15)"><code class="xref py py-func docutils literal notranslate"><span class="pre">print()</span></code></a> function to display a summary of the content of the project.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">sound_composer_project</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>SoundComposer object: &quot;Electric vehicle interior sound&quot; (2 track(s))
+        Track 1: SourceHarmonics, &quot;eMotor harmonics noise&quot;, gain = +0.0 dB
+        Track 2: SourceBroadbandNoise, &quot;Wind and road noise&quot;, gain = +0.0 dB
+</pre></div>
+</div>
+<p>Retrieve the resulting signal as a DPF <a class="reference external" href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="(in PyDPF-Core v0.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></a> object.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">generated_signal_from_project</span></a> <span class="o">=</span> <span class="n">sound_composer_project</span><span class="o">.</span><span class="n">get_output</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Display the spectrogram of the generated signal using the <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.spectrogram_processing.Stft.html#ansys.sound.core.spectrogram_processing.Stft" title="ansys.sound.core.spectrogram_processing.Stft"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stft</span></code></a> class.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">spectrogram</span> <span class="o">=</span> <span class="n">Stft</span><span class="p">(</span><span class="n">signal</span><span class="o">=</span><a href="https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/field/Field.html#ansys.dpf.core.field.Field" title="ansys.dpf.core.field.Field" class="sphx-glr-backref-module-ansys-dpf-core-field sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">generated_signal_from_project</span></a><span class="p">)</span>
+<span class="n">spectrogram</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+<span class="n">spectrogram</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_011_sound_composer_create_project_002.png" srcset="../../_images/sphx_glr_011_sound_composer_create_project_002.png" alt="STFT, Amplitude, Phase" class = "sphx-glr-single-img"/></section>
+<section id="save-the-entire-sound-composer-project">
+<h2>Save the entire Sound Composer project<a class="headerlink" href="#save-the-entire-sound-composer-project" title="Link to this heading">#</a></h2>
+<p>You can save the Sound Composer project for later use, using the <a class="reference internal" href="../../api/_autosummary/ansys.sound.core.sound_composer.SoundComposer.save.html#ansys.sound.core.sound_composer.SoundComposer.save" title="ansys.sound.core.sound_composer.SoundComposer.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SoundComposer.save()</span></code></a>
+method. This saves the project into a file with the extension “<cite>.scn</cite>” (Sound Composer project
+file). This file can be loaded in Ansys Sound Analysis &amp; Specification.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sound_composer_project</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">project_path</span><span class="o">=</span><span class="s2">&quot;My_SoundComposer_Project.scn&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
+<p>This workflow allows you to analyze and listen to the sound of an e-motor, in
+realistic conditions, that is, including the background noise inside the cabin.</p>
+<p>By analyzing the spectrogram, you can anticipate how some harmonic tones from the e-motor
+may be perceived by the passengers in the cabin.</p>
+<p>Further investigations can be conducted, using other tools included in PyAnsys
+Sound, such as modules <a class="reference internal" href="../../api/standard_levels.html#module-ansys.sound.core.standard_levels" title="ansys.sound.core.standard_levels"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Standard</span> <span class="pre">levels</span></code></a>,
+<a class="reference internal" href="../../api/psychoacoustics.html#module-ansys.sound.core.psychoacoustics" title="ansys.sound.core.psychoacoustics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Psychoacoustics</span></code></a> and
+<a class="reference internal" href="../../api/spectral_processing.html#module-ansys.sound.core.spectral_processing" title="ansys.sound.core.spectral_processing"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Spectral</span> <span class="pre">processing</span></code></a>.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 23.076 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-gallery-examples-011-sound-composer-create-project-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/8651521019736da156005993a712b16b/011_sound_composer_create_project.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">011_sound_composer_create_project.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/32a90c2b78abc5103e316b81b37fdfd5/011_sound_composer_create_project.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">011_sound_composer_create_project.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/2cc813380612de136c8ba5ebd277b03c/011_sound_composer_create_project.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">011_sound_composer_create_project.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-analysis">Set up analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-new-sound-composer-project">Create a new Sound Composer project</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-track-1-for-the-e-motor-source">Create track #1 for the e-motor source</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-track-2-for-the-wind-and-road-noise-source">Create track #2 for the wind and road noise source</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-the-signal-of-the-project">Generate the signal of the project</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#save-the-entire-sound-composer-project">Save the entire Sound Composer project</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+<!-- If there is no fix edit button function, use the PyData edit-this-button-->
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/examples/gallery_examples/011_sound_composer_create_project.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"ignoreLocation": true, "keys": ["title", "text", "objectID"], "limit": 10, "min_chars_for_search": 2, "threshold": 0.5}');
+const SEARCH_FILE = "../../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2026 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the
+  <a href="https://sphinxdocs.ansys.com/version/stable/index.html"
+    >Ansys Sphinx Theme</a
+  >
+  1.6.4. <br />Last updated on
+  <span id="ast_build_date"></span>
+</p>
+<script>
+  var options = { day: "numeric", month: "long", year: "numeric" };
+  var ast_lastModifiedDate = new Date(document.lastModified);
+  var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+  document.getElementById("ast_build_date").innerHTML = ast_build_date;
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
