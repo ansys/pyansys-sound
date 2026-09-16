@@ -45,6 +45,7 @@ from ansys.sound.core.examples_helpers import (
     download_uff_sample_4_channels_type58b,
     download_xtract_demo_signal_1_wav,
     download_xtract_demo_signal_2_wav,
+    download_rpm_acceleration_deceleration,
 )
 from ansys.sound.core.examples_helpers.download import EXAMPLES_PATH
 
@@ -193,3 +194,10 @@ def test_download_uff_sample_4_channels_type58b():
     p = str(EXAMPLES_PATH) + "/4_channels_type58b.uff"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 10483384
+
+
+def test_download_rpm_acceleration_deceleration():
+    download_rpm_acceleration_deceleration()
+    p = str(EXAMPLES_PATH) + "/rpm_acceleration-deceleration.txt"
+    assert pathlib.Path(p).exists() == True
+    assert os.path.getsize(p) == 1254
