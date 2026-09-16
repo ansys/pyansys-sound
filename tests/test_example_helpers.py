@@ -35,6 +35,7 @@ from ansys.sound.core.examples_helpers import (
     download_flute_wav,
     download_HVAC_test_wav,
     download_JLT_CE_data_csv,
+    download_rpm_acceleration_deceleration,
     download_sound_composer_FRF_eMotor,
     download_sound_composer_project_whatif,
     download_sound_composer_source_control_eMotor,
@@ -45,7 +46,6 @@ from ansys.sound.core.examples_helpers import (
     download_uff_sample_4_channels_type58b,
     download_xtract_demo_signal_1_wav,
     download_xtract_demo_signal_2_wav,
-    download_rpm_acceleration_deceleration,
 )
 from ansys.sound.core.examples_helpers.download import EXAMPLES_PATH
 
