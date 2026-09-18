@@ -32,7 +32,7 @@ noise extraction, tonal extraction, and transient extraction.
 
 """
 
-# Maximum frequency for STFT plots, change according to your need
+# Maximum frequency for STFT plots, change according to your need.
 MAX_FREQUENCY_PLOT_STFT = 5000.0
 
 # %%

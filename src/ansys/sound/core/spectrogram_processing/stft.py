@@ -232,7 +232,7 @@ class Stft(SpectrogramProcessingParent):
         return np.arctan2(np.imag(output), np.real(output))
 
     def plot(self, reference_value: float = 1.0):
-        """Plot signals.
+        """Plot the STFT.
 
         This method plots the STFT amplitude and the associated phase.
 

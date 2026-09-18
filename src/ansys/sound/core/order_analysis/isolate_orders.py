@@ -35,7 +35,7 @@ from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 class IsolateOrders(OrderAnalysisParent):
     """Isolate the orders of a signal.
 
-    This class isolates the order of a signal that has an associated RPM profile.
+    This class isolates the orders of a signal that has an associated RPM profile.
 
     Examples
     --------
