@@ -27,8 +27,8 @@ Synthesize harmonics source from order analysis
 -----------------------------------------------
 
 Orders are harmonic components in the sound related to the speed of a rotating machine. This example
-shows how to compute the level over RPM of several orders of a signal associated with an RPM profile,
-and how to save the result to a text file with the `AnsysSound_Orders` format.
+shows how to compute the level over RPM of several orders of a signal associated with an RPM
+profile, and how to save the result to a text file with the `AnsysSound_Orders` format.
 
 This file can then be used to define a harmonics source in the Sound Composer, either with
 the :class:`.SourceHarmonics` class of PyAnsys Sound, or with the Sound Composer module of Ansys
@@ -51,13 +51,13 @@ under different operating conditions.
 # Setting up the analysis consists of loading the required libraries, connecting to the DPF server,
 # and retrieving the example file.
 
-# Load Ansys libraries.
 from ansys.dpf.core import upload_file_in_tmp_folder
 
 # Load standard libraries.
 import matplotlib.pyplot as plt
 import numpy as np
 
+# Load Ansys libraries.
 from ansys.sound.core.examples_helpers import download_accel_with_rpm_wav
 from ansys.sound.core.examples_helpers.download import download_rpm_acceleration_deceleration
 from ansys.sound.core.order_analysis import OrderLevels
