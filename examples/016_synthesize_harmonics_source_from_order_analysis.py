@@ -23,7 +23,7 @@
 """
 .. _synthesize_harmonics_source_from_order_analysis:
 
-Synthesize harmonics source from order analysis  
+Synthesize harmonics source from order analysis
 -----------------------------------------------
 
 Orders are harmonic components in the sound related to the speed of a rotating machine. This example
@@ -51,12 +51,13 @@ under different operating conditions.
 # Setting up the analysis consists of loading the required libraries, connecting to the DPF server,
 # and retrieving the example file.
 
+# Load Ansys libraries.
+from ansys.dpf.core import upload_file_in_tmp_folder
+
 # Load standard libraries.
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Load Ansys libraries.
-from ansys.dpf.core import upload_file_in_tmp_folder
 from ansys.sound.core.examples_helpers import download_accel_with_rpm_wav
 from ansys.sound.core.examples_helpers.download import download_rpm_acceleration_deceleration
 from ansys.sound.core.order_analysis import OrderLevels
@@ -82,6 +83,7 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 
 # Maximum frequency for STFT plots, change according to your need.
 MAX_FREQUENCY_PLOT_STFT = 2000.0
+
 
 def plot_stft(
     stft: Stft,
@@ -193,7 +195,14 @@ axs[0].grid(True)
 axs[0].set_xlabel(f"Time ({time.unit})")
 
 # Right: spectrogram with the custom ``plot_stft`` function.
-plot_stft(stft, sampling_frequency, max_stft, title="STFT", maximum_frequency=MAX_FREQUENCY_PLOT_STFT, ax=axs[1])
+plot_stft(
+    stft,
+    sampling_frequency,
+    max_stft,
+    title="STFT",
+    maximum_frequency=MAX_FREQUENCY_PLOT_STFT,
+    ax=axs[1],
+)
 
 plt.tight_layout()
 plt.show()
@@ -301,7 +310,7 @@ print(f"Synthesized signal saved to {wav_output_path}")
 # This shows that, once orders have been identified and stored, they become a reusable material:
 # they can be combined with any RPM profile to generate a new sound, without needing a new
 # recording. In a product simulation context, this makes it possible, for instance, to identify
-# orders on an existing system and then synthesize the sound that this system would have produced in 
+# orders on an existing system and then synthesize the sound that this system would have produced in
 # operating conditions that differ from the original.
 #
 # In a realistic sound simulation context, however, such harmonics sources are typically combined
