@@ -33,7 +33,7 @@ and the loudness of the isolated signals.
 
 """
 
-# Maximum frequency for STFT plots, change according to your need
+# Maximum frequency for STFT plots, change according to your need.
 MAX_FREQUENCY_PLOT_STFT = 2000.0
 
 # %%
