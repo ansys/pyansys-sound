@@ -1,0 +1,6 @@
+get\_output
+===========
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: SharpnessDIN45692OverTime.get_output

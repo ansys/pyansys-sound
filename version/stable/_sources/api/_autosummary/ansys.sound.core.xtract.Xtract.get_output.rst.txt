@@ -1,0 +1,6 @@
+get\_output
+===========
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. automethod:: Xtract.get_output

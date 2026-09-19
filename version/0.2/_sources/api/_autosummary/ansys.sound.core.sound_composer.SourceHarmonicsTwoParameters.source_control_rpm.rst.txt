@@ -1,0 +1,6 @@
+source\_control\_rpm
+====================
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. autoproperty:: SourceHarmonicsTwoParameters.source_control_rpm

@@ -1,0 +1,6 @@
+source\_spectrum\_data
+======================
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. autoproperty:: SourceSpectrum.source_spectrum_data

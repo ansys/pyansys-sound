@@ -1,0 +1,58 @@
+﻿SourceHarmonicsTwoParameters
+============================
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. autoclass:: SourceHarmonicsTwoParameters
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SourceHarmonicsTwoParameters.get_as_generic_data_containers
+      
+      
+      SourceHarmonicsTwoParameters.get_output
+      
+      
+      SourceHarmonicsTwoParameters.get_output_as_nparray
+      
+      
+      SourceHarmonicsTwoParameters.is_source_control_valid
+      
+      
+      SourceHarmonicsTwoParameters.load_source_harmonics_two_parameters
+      
+      
+      SourceHarmonicsTwoParameters.plot
+      
+      
+      SourceHarmonicsTwoParameters.plot_control
+      
+      
+      SourceHarmonicsTwoParameters.process
+      
+      
+      SourceHarmonicsTwoParameters.set_from_generic_data_containers
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SourceHarmonicsTwoParameters.source_control2
+      SourceHarmonicsTwoParameters.source_control_rpm
+      SourceHarmonicsTwoParameters.source_harmonics_two_parameters
+   
+   

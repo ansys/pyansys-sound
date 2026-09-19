@@ -1,0 +1,6 @@
+rpm\_profile
+============
+
+.. currentmodule:: ansys.sound.core.order_analysis
+
+.. autoproperty:: OrderLevels.rpm_profile

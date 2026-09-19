@@ -1,0 +1,52 @@
+﻿ToneToNoiseRatioForOrdersOverTime
+=================================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: ToneToNoiseRatioForOrdersOverTime
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      ToneToNoiseRatioForOrdersOverTime.get_order_tone_to_noise_ratio_over_time
+      
+      
+      ToneToNoiseRatioForOrdersOverTime.get_output
+      
+      
+      ToneToNoiseRatioForOrdersOverTime.get_output_as_nparray
+      
+      
+      ToneToNoiseRatioForOrdersOverTime.get_rpm_scale
+      
+      
+      ToneToNoiseRatioForOrdersOverTime.get_time_scale
+      
+      
+      ToneToNoiseRatioForOrdersOverTime.plot
+      
+      
+      ToneToNoiseRatioForOrdersOverTime.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ToneToNoiseRatioForOrdersOverTime.order_list
+      ToneToNoiseRatioForOrdersOverTime.profile
+      ToneToNoiseRatioForOrdersOverTime.signal
+   
+   

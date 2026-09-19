@@ -1,0 +1,6 @@
+control
+=======
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. autoproperty:: SourceControlTime.control

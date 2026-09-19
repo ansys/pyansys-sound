@@ -1,0 +1,6 @@
+get\_sampling\_frequency
+========================
+
+.. currentmodule:: ansys.sound.core.signal_processing
+
+.. automethod:: Filter.get_sampling_frequency
