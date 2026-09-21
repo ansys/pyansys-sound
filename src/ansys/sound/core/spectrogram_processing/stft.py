@@ -178,12 +178,12 @@ class Stft(SpectrogramProcessingParent):
         FieldsContainer
             Complex STFT, as a fields container, indexed by labels "time" and "complex". Each
             indexed field corresponds to the real or imaginary part of a time-wise STFT slice.
-            
+
             The label "complex" indicates whether the field corresponds to the real (0) or imaginary
             (1) part of the STFT slice. The module of each STFT slice is a two-sided RMS spectrum
             between 0 Hz and the sampling frequency, at a specific time, as indexed with label
             "time". The spectrum values are in the input signal's unit.
-            
+
             The support of the fields container, labeled "time", provides the actual time values, in
             seconds, corresponding to each "time" label index.
 
