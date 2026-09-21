@@ -233,6 +233,7 @@ orders_file_path = str(EXAMPLES_PATH) + f"/{filename[:-4]}_order_levels.txt"
 order_levels.save_as_AnsysSound_Orders(orders_file_path)
 
 print(f"Order levels saved to {orders_file_path}")
+print(f"File exists?: {Path(orders_file_path).exists()}")
 
 # %%
 # Synthesize harmonics source from the saved order levels
@@ -244,6 +245,7 @@ if my_server.has_client():
     # In remote DPF Server case, the file must be uploaded to the server's temporary folder.
     path = upload_file_in_tmp_folder(file_path=orders_file_path, server=my_server)
 
+print(f"Path (server) to use for SourceHarmonics: {path}")
 source_harmonics = SourceHarmonics(file=path)
 
 # %%

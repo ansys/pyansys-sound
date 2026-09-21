@@ -392,7 +392,7 @@ def download_uff_sample_4_channels_type58b():
 
 
 def download_rpm_acceleration_deceleration(server=None):
-    """Download the ``rpm_acceleration_deceleration.txt`` file.
+    """Download the ``rpm_acceleration-deceleration.txt`` file.
 
     This file contains RPM data for acceleration and deceleration scenarios.
 
