@@ -401,4 +401,6 @@ def download_rpm_acceleration_deceleration(server=None):
     str
         Path for the ``rpm_acceleration-deceleration.txt`` file.
     """
-    return _download_file_and_upload_to_server_tmp_folder("rpm_acceleration-deceleration.txt", server=server)
+    return _download_file_and_upload_to_server_tmp_folder(
+        "rpm_acceleration-deceleration.txt", server=server
+    )
