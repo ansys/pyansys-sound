@@ -30,7 +30,18 @@ from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundW
 from ansys.sound.core.signal_utilities import LoadWav
 from ansys.sound.core.spectrogram_processing import Stft
 
-if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
+if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
+    # bug fix (ID#1515224) in DPF Sound 2027 R1
+    EXP_FC_SIZE = 308
+    EXP_STFT_SIZE = 154
+    EXP_FC_98_0 = -4.276798e-5
+    EXP_FC_198_0 = -3.598906e-5
+    EXP_FC_298_0 = -4.154918e-5
+    TESTED_IDX = 49
+    EXP_STFT_100_IDX = -0.0010489814449101686 - 0.0013704965822398663j
+    EXP_STFT_200_IDX = 0.0004997600335627794 + 0.0003071507962886244j
+    EXP_STFT_300_IDX = -2.9794588044751436e-05 - 0.0004804507188964635j
+elif pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
     # bug fix (ID#1247009) & third-party update (IPP) in DPF Sound 2026 R1
     EXP_FC_SIZE = 308  # real and complex parts in separate fields
     EXP_STFT_SIZE = 154  # real and complex parts combined (EXP_STFT_SIZE = EXP_FC_SIZE / 2)
@@ -100,9 +111,9 @@ def test_stft_get_output():
 
     assert len(fc_out) == EXP_FC_SIZE
     assert len(fc_out[100].data) == stft.fft_size
-    assert fc_out[100].data[0] == EXP_FC_98_0
-    assert fc_out[200].data[0] == EXP_FC_198_0
-    assert fc_out[300].data[0] == EXP_FC_298_0
+    assert fc_out[100].data[0] == pytest.approx(EXP_FC_98_0)
+    assert fc_out[200].data[0] == pytest.approx(EXP_FC_198_0)
+    assert fc_out[300].data[0] == pytest.approx(EXP_FC_298_0)
 
 
 def test_stft_get_output_as_np_array():
@@ -117,9 +128,12 @@ def test_stft_get_output_as_np_array():
 
     assert np.shape(arr) == (stft.fft_size, EXP_STFT_SIZE)
     assert type(arr[100, 0]) == np.complex128
-    assert arr[100, TESTED_IDX] == EXP_STFT_100_IDX
-    assert arr[200, TESTED_IDX] == EXP_STFT_200_IDX
-    assert arr[300, TESTED_IDX] == EXP_STFT_300_IDX
+    assert arr[100, TESTED_IDX].real == pytest.approx(EXP_STFT_100_IDX.real)
+    assert arr[100, TESTED_IDX].imag == pytest.approx(EXP_STFT_100_IDX.imag)
+    assert arr[200, TESTED_IDX].real == pytest.approx(EXP_STFT_200_IDX.real)
+    assert arr[200, TESTED_IDX].imag == pytest.approx(EXP_STFT_200_IDX.imag)
+    assert arr[300, TESTED_IDX].real == pytest.approx(EXP_STFT_300_IDX.real)
+    assert arr[300, TESTED_IDX].imag == pytest.approx(EXP_STFT_300_IDX.imag)
 
 
 def test_stft_set_get_signal():
