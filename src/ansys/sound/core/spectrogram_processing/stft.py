@@ -28,8 +28,10 @@ from ansys.dpf.core import Field, FieldsContainer, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
+from ansys.sound.core.server_helpers._check_version import _check_sound_version
+
 from . import SpectrogramProcessingParent
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning, scipy_required
 
 
 class Stft(SpectrogramProcessingParent):
@@ -71,8 +73,8 @@ class Stft(SpectrogramProcessingParent):
             Use a power of 2 for better performance.
         window_type : str, default: 'HANN'
             Window type used for the FFT computation. Options are ``'TRIANGULAR'``, ``'BLACKMAN'``,
-            ``'BLACKMANHARRIS'``, ``'HAMMING'``, ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``, and
-            ``'RECTANGULAR'``.
+            ``'BLACKMANHARRIS'``, ``'HAMMING'``, ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``,
+            ``'RECTANGULAR'``, and ``'BARTLETT'``.
         window_overlap : float, default: 0.5
             Overlap value between two successive FFT computations. Values can range from 0 to 1.
             For example, ``0`` means no overlap, and ``0.5`` means 50% overlap.
@@ -114,7 +116,7 @@ class Stft(SpectrogramProcessingParent):
         """Window type.
 
         Supported options are ``'TRIANGULAR'``, ``'BLACKMAN'``, ``'BLACKMANHARRIS'``, ``'HAMMING'``,
-        ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``, and ``'RECTANGULAR'``.
+        ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``, ``'RECTANGULAR'``, and ``'BARTLETT'``.
         """
         return self.__window_type
 
@@ -130,10 +132,11 @@ class Stft(SpectrogramProcessingParent):
             "GAUSS",
             "FLATTOP",
             "RECTANGULAR",
+            "BARTLETT",
         ]:
             raise PyAnsysSoundException(
                 "Window type is invalid. Options are 'TRIANGULAR', 'BLACKMAN', 'BLACKMANHARRIS', "
-                "'HAMMING', 'HANN', 'GAUSS', 'FLATTOP' and 'RECTANGULAR'."
+                "'HAMMING', 'HANN', 'GAUSS', 'FLATTOP', 'RECTANGULAR', and 'BARTLETT'."
             )
 
         self.__window_type = window_type
@@ -178,16 +181,18 @@ class Stft(SpectrogramProcessingParent):
         FieldsContainer
             Complex STFT, as a fields container, indexed by labels "time" and "complex". Each
             indexed field corresponds to the real or imaginary part of a time-wise STFT slice.
-            
+
             The label "complex" indicates whether the field corresponds to the real (0) or imaginary
             (1) part of the STFT slice. The module of each STFT slice is a two-sided RMS spectrum
             between 0 Hz and the sampling frequency, at a specific time, as indexed with label
             "time". The spectrum values are in the input signal's unit.
-            
+
             The support of the fields container, labeled "time", provides the actual time values, in
             seconds, corresponding to each "time" label index.
 
-            For more information about the RMS spectrum, see [RMS spectrum](https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v261/en/Sound_SAS_UG/Sound/UG_SAS/rms_spectrum.html)
+            For more information, see `RMS spectrum <https://ansyshelp.ansys.com/public/account/
+            secured?returnurl=/Views/Secured/corp/v261/en/Sound_SAS_UG/Sound/UG_SAS/
+            rms_spectrum.html>`_.
         """
         if self._output == None:
             warnings.warn(PyAnsysSoundWarning("Output is not processed yet. \
@@ -220,9 +225,15 @@ class Stft(SpectrogramProcessingParent):
         for i in time_indexes:
             f1 = output.get_field({"complex": 0, "time": i, "channel_number": 0})
             f2 = output.get_field({"complex": 1, "time": i, "channel_number": 0})
+
             # Scale the STFT by sqrt(2) to account for the energy sum of the positive and negative
             # frequency bins (two-sided to one-sided STFT conversion).
             out_as_np_array[i] = np.sqrt(2) * (f1.data[:Nbins] + 1j * f2.data[:Nbins])
+
+            if not _check_sound_version("2027.1.0"):
+                # Prior to sound version 2027.1.0, the returned STFT is not properly scaled for RMS
+                # spectrum.
+                out_as_np_array[i] *= self._compute_rms_spectrum_scaling()
 
         return np.transpose(out_as_np_array)
 
@@ -305,3 +316,32 @@ class Stft(SpectrogramProcessingParent):
 
         f.suptitle("STFT")
         plt.show()
+
+    @scipy_required
+    def _compute_rms_spectrum_scaling(self) -> float:
+        """Compute the scaling factor for the RMS spectrum."""
+        if self.window_type == "RECTANGULAR":
+            return 1.0 / self.fft_size
+        else:
+            from scipy.signal import windows
+
+            match self.window_type:
+                case "TRIANGULAR":
+                    window = windows.triang(self.fft_size, sym=False)
+                case "BLACKMAN":
+                    window = windows.blackman(self.fft_size, sym=False)
+                case "BLACKMANHARRIS":
+                    window = windows.blackmanharris(self.fft_size, sym=False)
+                case "HAMMING":
+                    window = windows.hamming(self.fft_size, sym=False)
+                case "HANN":
+                    window = windows.hann(self.fft_size, sym=False)
+                case "GAUSS":
+                    window = windows.gaussian(self.fft_size, std=self.fft_size / 6, sym=False)
+                case "FLATTOP":
+                    window = windows.flattop(self.fft_size, sym=False)
+                case "BARTLETT":
+                    window = windows.bartlett(self.fft_size, sym=False)
+                case _:
+                    raise PyAnsysSoundException(f"Unsupported window type: {self.window_type}")
+            return 1.0 / np.sum(window)
