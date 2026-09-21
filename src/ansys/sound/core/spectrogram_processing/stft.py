@@ -176,10 +176,20 @@ class Stft(SpectrogramProcessingParent):
         Returns
         -------
         FieldsContainer
-            STFT of the signal in a DPF fields container.
+            Complex STFT, as a fields container, indexed by labels "time" and "complex". Each
+            indexed field corresponds to the real or imaginary part of a time-wise STFT slice.
+            
+            The label "complex" indicates whether the field corresponds to the real (0) or imaginary
+            (1) part of the STFT slice. The module of each STFT slice is a two-sided RMS spectrum
+            between 0 Hz and the sampling frequency, at a specific time, as indexed with label
+            "time". The spectrum values are in the input signal's unit.
+            
+            The support of the fields container, labeled "time", provides the actual time values, in
+            seconds, corresponding to each "time" label index.
+
+            For more information about the RMS spectrum, see [RMS spectrum](https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v261/en/Sound_SAS_UG/Sound/UG_SAS/rms_spectrum.html)
         """
         if self._output == None:
-            # Computing output if needed
             warnings.warn(PyAnsysSoundWarning("Output is not processed yet. \
                     Use the 'Stft.process()' method."))
 
@@ -191,7 +201,9 @@ class Stft(SpectrogramProcessingParent):
         Returns
         -------
         numpy.ndarray
-            STFT of the signal in a NumPy array.
+            Complex STFT of the signal, in the signal's unit. The returned STFT is one-sided, which
+            means it only contains the positive frequency components up to half the signal's
+            sampling frequency.
         """
         output = self.get_output()
 
@@ -199,48 +211,56 @@ class Stft(SpectrogramProcessingParent):
         Ntime = len(time_indexes)
         Nfft = output.get_field({"complex": 0, "time": 0, "channel_number": 0}).data.shape[0]
 
+        # Only extract the first half of the two-sided STFT, as it is symmetrical
+        Nbins = int(np.floor(Nfft / 2)) + 1
+
         # Pre-allocate memory for the output array.
-        out_as_np_array = np.empty((Ntime, Nfft), dtype=np.complex128)
+        out_as_np_array = np.empty((Ntime, Nbins), dtype=np.complex128)
 
         for i in time_indexes:
             f1 = output.get_field({"complex": 0, "time": i, "channel_number": 0})
             f2 = output.get_field({"complex": 1, "time": i, "channel_number": 0})
-            out_as_np_array[i] = f1.data + 1j * f2.data
+            # Scale the STFT by sqrt(2) to account for the energy sum of the positive and negative
+            # frequency bins (two-sided to one-sided STFT conversion).
+            out_as_np_array[i] = np.sqrt(2) * (f1.data[:Nbins] + 1j * f2.data[:Nbins])
 
         return np.transpose(out_as_np_array)
 
     def get_stft_magnitude_as_nparray(self) -> np.ndarray:
-        """Get the amplitude of the STFT as a NumPy array.
+        """Get the magnitude of the STFT.
 
         Returns
         -------
         numpy.ndarray
-            Amplitude of the STFT in a NumPy array.
+            Magnitude of the STFT, in the input signal's unit. The returned STFT magnitude is
+            one-sided, which means it only contains the positive frequency components up to half the
+            signal's sampling  frequency.
         """
         output = self.get_output_as_nparray()
         return np.absolute(output)
 
     def get_stft_phase_as_nparray(self) -> np.ndarray:
-        """Get the phase of the STFT as a NumPy array.
+        """Get the phase of the STFT.
 
         Returns
         -------
         numpy.ndarray
-            Phase of the STFT in a NumPy array.
+            Phase of the STFT, in rad. The returned STFT phase is one-sided, which means it only
+            contains the positive frequency components up to half the signal's sampling frequency.
         """
         output = self.get_output_as_nparray()
-        return np.arctan2(np.imag(output), np.real(output))
+        return np.angle(output)
 
     def plot(self, reference_value: float = 1.0):
         """Plot signals.
 
-        This method plots the STFT amplitude and the associated phase.
+        This method plots the STFT magnitude and the associated phase.
 
         Parameters
         ----------
         reference_value : float, default: 1.0
-            Reference STFT amplitude value for dB conversion. For example, for an input sound
-            pressure signal, the reference value is typically 2e-5 (Pa).
+            STFT reference value for dB conversion. For example, for an input sound pressure signal,
+            the reference value is typically 2e-5 (Pa).
         """
         if self._output is None:
             raise PyAnsysSoundException(
@@ -254,18 +274,14 @@ class Stft(SpectrogramProcessingParent):
 
         magnitude = self.get_stft_magnitude_as_nparray()
         unit = self.get_output()[0].unit
-        mag_unit = unit if isinstance(unit, str) else unit[1]
-        freq_unit = self.get_output()[0].time_freq_support.time_frequencies.unit
+        magnitude_unit = unit if isinstance(unit, str) else unit[1]
+        frequency_unit = self.get_output()[0].time_freq_support.time_frequencies.unit
         time_unit = self.get_output().time_freq_support.time_frequencies.unit
 
-        # Only extract the first half of the STFT, as it is symmetrical
-        half_nfft = int(np.shape(magnitude)[0] / 2) + 1
-
         np.seterr(divide="ignore")
-        magnitude = 20 * np.log10(magnitude[0:half_nfft, :] / reference_value)
+        magnitude = 20 * np.log10(magnitude / reference_value)
         np.seterr(divide="warn")
         phase = self.get_stft_phase_as_nparray()
-        phase = phase[0:half_nfft, :]
         time_data_signal = self.signal.time_freq_support.time_frequencies.data
         time_step = time_data_signal[1] - time_data_signal[0]
         fs = 1.0 / time_step
@@ -278,14 +294,14 @@ class Stft(SpectrogramProcessingParent):
         # Plotting
         f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
         p = ax1.imshow(magnitude, origin="lower", aspect="auto", cmap="jet", extent=extent)
-        f.colorbar(p, ax=ax1, label=f"Amplitude (dB re. {reference_value} {mag_unit})")
+        f.colorbar(p, ax=ax1, label=f"Amplitude (dB re. {reference_value} {magnitude_unit})")
         ax1.set_title("Amplitude")
-        ax1.set_ylabel(f"Frequency ({freq_unit})")
+        ax1.set_ylabel(f"Frequency ({frequency_unit})")
         p = ax2.imshow(phase, origin="lower", aspect="auto", cmap="jet", extent=extent)
         f.colorbar(p, ax=ax2, label="Phase (rad)")
         ax2.set_title("Phase")
         ax2.set_xlabel(f"Time ({time_unit})")
-        ax2.set_ylabel(f"Frequency ({freq_unit})")
+        ax2.set_ylabel(f"Frequency ({frequency_unit})")
 
         f.suptitle("STFT")
         plt.show()

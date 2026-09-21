@@ -83,7 +83,7 @@ stft = Stft(signal, fft_size=1024)
 stft.process()
 
 # Plot the output
-stft.plot()
+stft.plot(reference_value=2e-5)
 
 # %%
 # Modify the STFT parameters using the setters of the ``Stft`` class.
@@ -97,7 +97,7 @@ stft.window_type = "TRIANGULAR"
 stft.process()
 
 # Plot the modified output
-stft.plot()
+stft.plot(reference_value=2e-5)
 
 # %%
 # Compute and plot ISTFT
