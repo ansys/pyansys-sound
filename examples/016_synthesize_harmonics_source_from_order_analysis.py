@@ -233,12 +233,8 @@ print(f"Order levels saved to {orders_file_path}")
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load the saved file into a :class:`.SourceHarmonics` object, to be used as a source in a Sound
 # Composer project.
-path = orders_file_path
-if my_server.has_client():
-    # In remote DPF Server case, the file must be uploaded to the server's temporary folder.
-    path = upload_file_in_tmp_folder(orders_file_path, my_server)
 
-source_harmonics = SourceHarmonics(file=path)
+source_harmonics = SourceHarmonics(file=orders_file_path)
 
 # %%
 # Load a new RPM profile for the synthesis, with acceleration and deceleration phases.
