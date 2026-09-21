@@ -77,7 +77,7 @@ from ansys.sound.core.sound_composer import (
 from ansys.sound.core.spectrogram_processing import Stft
 
 # Connect to a remote DPF server or start a local DPF server.
-my_server, my_license_context = connect_to_or_start_server(use_license_context=True, port=50052)
+my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
 
 # %%
