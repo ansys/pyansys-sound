@@ -51,6 +51,8 @@ under different operating conditions.
 # Setting up the analysis consists of loading the required libraries, connecting to the DPF server,
 # and retrieving the example file.
 
+from pathlib import Path
+
 from ansys.dpf.core import upload_file_in_tmp_folder
 
 # Load standard libraries.
@@ -58,8 +60,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Load Ansys libraries.
-from ansys.sound.core.examples_helpers import download_accel_with_rpm_wav
-from ansys.sound.core.examples_helpers.download import download_rpm_acceleration_deceleration
+from ansys.sound.core.examples_helpers import (
+    download_accel_with_rpm_wav,
+    download_rpm_acceleration_deceleration,
+)
+from ansys.sound.core.examples_helpers.download import EXAMPLES_PATH
 from ansys.sound.core.order_analysis import OrderLevels
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav, WriteWav
@@ -72,7 +77,7 @@ from ansys.sound.core.sound_composer import (
 from ansys.sound.core.spectrogram_processing import Stft
 
 # Connect to a remote DPF server or start a local DPF server.
-my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
+my_server, my_license_context = connect_to_or_start_server(use_license_context=True, port=50052)
 
 
 # %%
@@ -223,7 +228,8 @@ order_levels.process()
 # :class:`.OrderLevels` class and its
 # :meth:`save_as_AnsysSound_Orders() <.OrderLevels.save_as_AnsysSound_Orders>` method.
 
-orders_file_path = path_accel_wav[:-4] + "_order_levels.txt"
+filename = Path(path_accel_wav).name
+orders_file_path = str(EXAMPLES_PATH) + f"/{filename[:-4]}_order_levels.txt"
 order_levels.save_as_AnsysSound_Orders(orders_file_path)
 
 print(f"Order levels saved to {orders_file_path}")
@@ -233,8 +239,12 @@ print(f"Order levels saved to {orders_file_path}")
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load the saved file into a :class:`.SourceHarmonics` object, to be used as a source in a Sound
 # Composer project.
+path = orders_file_path
+if my_server.has_client():
+    # In remote DPF Server case, the file must be uploaded to the server's temporary folder.
+    path = upload_file_in_tmp_folder(file_path=orders_file_path, server=my_server)
 
-source_harmonics = SourceHarmonics(file=orders_file_path)
+source_harmonics = SourceHarmonics(file=path)
 
 # %%
 # Load a new RPM profile for the synthesis, with acceleration and deceleration phases.
