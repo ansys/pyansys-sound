@@ -199,6 +199,11 @@ def test_download_uff_sample_4_channels_type58b():
 def test_download_rpm_acceleration_deceleration():
     path = download_rpm_acceleration_deceleration()
     p = str(EXAMPLES_PATH) + "/rpm_acceleration-deceleration.txt"
-    assert (path, p, pathlib.Path(p).exists(), pathlib.Path(path).exists()) == ("toto", "tata", True, True) 
+    assert (path, p, pathlib.Path(p).exists(), pathlib.Path(path).exists()) == (
+        "toto",
+        "tata",
+        True,
+        True,
+    )
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 1254
