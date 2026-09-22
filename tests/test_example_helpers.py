@@ -55,7 +55,7 @@ def test_download_flute_psd():
     download_flute_psd()
     p = str(SOUND_EXAMPLES_PATH) + "/flute_psd.txt"
     assert pathlib.Path(p).exists() == True
-    assert os.path.getsize(p) == 126313
+    assert os.path.getsize(p) == 118119
 
 
 def test_download_flute_wav():
@@ -133,7 +133,7 @@ def test_download_sound_composer_source_eMotor():
     download_sound_composer_source_eMotor()
     p = str(SOUND_EXAMPLES_PATH) + "/eMotor - FEM - orders levels (harmonics source).txt"
     assert pathlib.Path(p).exists() == True
-    assert os.path.getsize(p) == 3174
+    assert os.path.getsize(p) == 3153
 
 
 def test_download_sound_composer_sourcecontrol_eMotor():
