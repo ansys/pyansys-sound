@@ -94,7 +94,7 @@ def plot_stft(
     maximum_frequency: float, default: MAX_FREQUENCY_PLOT_STFT
         Maximum frequency in Hz to display.
     """
-    magnitude = stft.get_stft_magnitude_as_nparray()
+    magnitude = stft.get_magnitude()
     magnitude_unit = stft.get_output()[0].unit
     if isinstance(magnitude_unit, tuple):
         magnitude_unit = magnitude_unit[1]
@@ -178,7 +178,7 @@ plt.show()
 
 stft = Stft(signal=signal, window_overlap=0.9, fft_size=8192)
 stft.process()
-max_stft = 20 * np.log10(np.max(stft.get_stft_magnitude_as_nparray()))
+max_stft = 20 * np.log10(np.max(stft.get_magnitude()))
 plot_stft(stft, fs, max_stft)
 
 # %%

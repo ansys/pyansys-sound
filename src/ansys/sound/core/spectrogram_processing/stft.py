@@ -31,7 +31,7 @@ import numpy as np
 from ansys.sound.core.server_helpers._check_version import _check_sound_version
 
 from . import SpectrogramProcessingParent
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning, scipy_required
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
 class Stft(SpectrogramProcessingParent):
@@ -193,10 +193,27 @@ class Stft(SpectrogramProcessingParent):
             For more information, see `RMS spectrum <https://ansyshelp.ansys.com/public/account/
             secured?returnurl=/Views/Secured/corp/v261/en/Sound_SAS_UG/Sound/UG_SAS/
             rms_spectrum.html>`_.
+
+        Notes
+        -----
+        Prior to Sound version 2027.1.0, RMS spectrum scaling is not applied in the returned STFT.
+        As a consequence, the stored STFT values are not in the input signal's unit if the used
+        Sound version is not 2027.1.0 or higher. In such case, to scale the STFT values, you need to
+        divide them by the sum of the values of the window function that is specified with
+        attributes :attr:`window_type` and :attr:`fft_size` (the window size is equal to the FFT
+        size in :attr:`fft_size`).
         """
         if self._output == None:
             warnings.warn(PyAnsysSoundWarning("Output is not processed yet. \
                     Use the 'Stft.process()' method."))
+
+        if not _check_sound_version("2027.1.0"):
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    "Output STFT is not scaled for RMS spectrum in Sound version prior to 2027.1.0. "
+                    "You can scale it by dividing the STFT values by the sum of the window values."
+                )
+            )
 
         return self._output
 
@@ -209,6 +226,15 @@ class Stft(SpectrogramProcessingParent):
             Complex STFT of the signal, in the signal's unit. The returned STFT is one-sided, which
             means it only contains the positive frequency components up to half the signal's
             sampling frequency.
+
+        Notes
+        -----
+        Prior to Sound version 2027.1.0, RMS spectrum scaling is not applied in the returned STFT.
+        As a consequence, the stored STFT values are not in the input signal's unit if the used
+        Sound version is not 2027.1.0 or higher. In such case, to scale the STFT values, you need to
+        divide them by the sum of the values of the window function that is specified with
+        attributes :attr:`window_type` and :attr:`fft_size` (the window size is equal to the FFT
+        size in :attr:`fft_size`).
         """
         output = self.get_output()
 
@@ -216,28 +242,17 @@ class Stft(SpectrogramProcessingParent):
         Ntime = len(time_indexes)
         Nfft = output.get_field({"complex": 0, "time": 0, "channel_number": 0}).data.shape[0]
 
-        # Only extract the first half of the two-sided STFT, as it is symmetrical
-        Nbins = int(np.floor(Nfft / 2)) + 1
-
         # Pre-allocate memory for the output array.
-        out_as_np_array = np.empty((Ntime, Nbins), dtype=np.complex128)
+        out_as_np_array = np.empty((Ntime, Nfft), dtype=np.complex128)
 
         for i in time_indexes:
             f1 = output.get_field({"complex": 0, "time": i, "channel_number": 0})
             f2 = output.get_field({"complex": 1, "time": i, "channel_number": 0})
-
-            # Scale the STFT by sqrt(2) to account for the energy sum of the positive and negative
-            # frequency bins (two-sided to one-sided STFT conversion).
-            out_as_np_array[i] = np.sqrt(2) * (f1.data[:Nbins] + 1j * f2.data[:Nbins])
-
-            if not _check_sound_version("2027.1.0"):
-                # Prior to sound version 2027.1.0, the returned STFT is not properly scaled for RMS
-                # spectrum.
-                out_as_np_array[i] *= self._compute_rms_spectrum_scaling()
+            out_as_np_array[i] = f1.data + 1j * f2.data
 
         return np.transpose(out_as_np_array)
 
-    def get_stft_magnitude_as_nparray(self) -> np.ndarray:
+    def get_magnitude(self) -> np.ndarray:
         """Get the magnitude of the STFT.
 
         Returns
@@ -246,11 +261,28 @@ class Stft(SpectrogramProcessingParent):
             Magnitude of the STFT, in the input signal's unit. The returned STFT magnitude is
             one-sided, which means it only contains the positive frequency components up to half the
             signal's sampling  frequency.
+
+        Notes
+        -----
+        Prior to Sound version 2027.1.0, RMS spectrum scaling is not applied in the returned STFT.
+        As a consequence, the stored STFT values are not in the input signal's unit if the used
+        Sound version is not 2027.1.0 or higher. In such case, to scale the STFT values, you need to
+        divide them by the sum of the values of the window function that is specified with
+        attributes :attr:`window_type` and :attr:`fft_size` (the window size is equal to the FFT
+        size in :attr:`fft_size`).
         """
         output = self.get_output_as_nparray()
+
+        # Only extract the first half of the two-sided STFT, as it is symmetrical
+        half_nfft = int(np.floor(output.shape[0] / 2)) + 1
+
+        # Scale the STFT by sqrt(2) to account for the energy sum of the positive and negative
+        # frequency bins (two-sided to one-sided STFT conversion).
+        output = np.sqrt(2) * output[:half_nfft, :]
+
         return np.absolute(output)
 
-    def get_stft_phase_as_nparray(self) -> np.ndarray:
+    def get_phase(self) -> np.ndarray:
         """Get the phase of the STFT.
 
         Returns
@@ -272,6 +304,12 @@ class Stft(SpectrogramProcessingParent):
         reference_value : float, default: 1.0
             STFT reference value for dB conversion. For example, for an input sound pressure signal,
             the reference value is typically 2e-5 (Pa).
+
+        Notes
+        -----
+        Prior to Sound version 2027.1.0, RMS spectrum scaling is not applied in the returned STFT.
+        As a consequence, the displayed STFT magnitude will be incorrect with Sound versions prior
+        to 2027.1.0.
         """
         if self._output is None:
             raise PyAnsysSoundException(
@@ -283,16 +321,14 @@ class Stft(SpectrogramProcessingParent):
                 "Reference value for dB conversion must be strictly greater than 0."
             )
 
-        magnitude = self.get_stft_magnitude_as_nparray()
+        magnitude = self.get_magnitude()
         unit = self.get_output()[0].unit
         magnitude_unit = unit if isinstance(unit, str) else unit[1]
         frequency_unit = self.get_output()[0].time_freq_support.time_frequencies.unit
         time_unit = self.get_output().time_freq_support.time_frequencies.unit
 
-        np.seterr(divide="ignore")
-        magnitude = 20 * np.log10(magnitude / reference_value)
-        np.seterr(divide="warn")
-        phase = self.get_stft_phase_as_nparray()
+        magnitude = 20 * np.log10(magnitude / reference_value + 1e-12)
+        phase = self.get_phase()
         time_data_signal = self.signal.time_freq_support.time_frequencies.data
         time_step = time_data_signal[1] - time_data_signal[0]
         fs = 1.0 / time_step
@@ -316,32 +352,3 @@ class Stft(SpectrogramProcessingParent):
 
         f.suptitle("STFT")
         plt.show()
-
-    @scipy_required
-    def _compute_rms_spectrum_scaling(self) -> float:
-        """Compute the scaling factor for the RMS spectrum."""
-        if self.window_type == "RECTANGULAR":
-            return 1.0 / self.fft_size
-        else:
-            from scipy.signal import windows
-
-            match self.window_type:
-                case "TRIANGULAR":
-                    window = windows.triang(self.fft_size, sym=False)
-                case "BLACKMAN":
-                    window = windows.blackman(self.fft_size, sym=False)
-                case "BLACKMANHARRIS":
-                    window = windows.blackmanharris(self.fft_size, sym=False)
-                case "HAMMING":
-                    window = windows.hamming(self.fft_size, sym=False)
-                case "HANN":
-                    window = windows.hann(self.fft_size, sym=False)
-                case "GAUSS":
-                    window = windows.gaussian(self.fft_size, std=self.fft_size / 6, sym=False)
-                case "FLATTOP":
-                    window = windows.flattop(self.fft_size, sym=False)
-                case "BARTLETT":
-                    window = windows.bartlett(self.fft_size, sym=False)
-                case _:
-                    raise PyAnsysSoundException(f"Unsupported window type: {self.window_type}")
-            return 1.0 / np.sum(window)
