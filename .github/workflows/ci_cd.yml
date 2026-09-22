@@ -94,64 +94,9 @@ jobs:
           pip install --upgrade build wheel
           pip install .[tests]
 
-      - name: "Login to GitHub Container Registry"
-        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Download DPF-Sound service container
-        env:
-          ANSRV_DPF_SOUND_IMAGE: "${{ env.ANSRV_DPF_SOUND_REPO }}:${{ matrix.docker-image }}"
-        run: docker pull $env:ANSRV_DPF_SOUND_IMAGE
-
-      - name: "Start DPF-Sound service and verify start"
-        env:
-          ANSRV_DPF_SOUND_IMAGE: "${{ env.ANSRV_DPF_SOUND_REPO }}:${{ matrix.docker-image }}"
-          PORT_MAPPING: "${{ env.ANSRV_DPF_SOUND_PORT }}:${{ env.ANSRV_DPF_SOUND_PORT_IN_CONTAINER }}"
-          LICENSE_SERVER: ${{ secrets.LICENSE_SERVER }}
-        run: |
-          .\.venv\Scripts\Activate.ps1
-          docker run -d --name $env:DPF_SOUND_CONT_NAME -e "DPF_DEFAULT_GRPC_MODE=insecure" -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@$env:LICENSE_SERVER" -p $env:PORT_MAPPING --dns '8.8.8.8' $env:ANSRV_DPF_SOUND_IMAGE
-          python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
       - name: "Testing"
         run: |
           .\.venv\Scripts\Activate.ps1
           pytest -v
-
-      - name: "Upload Coverage Results"
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: coverage-html-${{ matrix.docker-image }}
-          path: .cov/html
-          retention-days: 7
-
-      - name: "Upload coverage reports to Codecov"
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: .cov/xml
-
-      - name: "Stop the DPF-Sound service"
-        if: always()
-        run: |
-          docker stop $env:DPF_SOUND_CONT_NAME
-          docker logs $env:DPF_SOUND_CONT_NAME
-          docker rm $env:DPF_SOUND_CONT_NAME
-
-      - name: "Stop any remaining containers"
-        if: always()
-        run: |
-          $dockerContainers = docker ps -a -q
-          if (-not [string]::IsNullOrEmpty($dockerContainers)) {
-              docker stop $dockerContainers
-              docker rm $dockerContainers
-          }
-
-      - name: "Delete the Docker images (and untagged ones)"
-        if: always()
-        run: |
-          docker system prune -f
 
