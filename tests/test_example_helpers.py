@@ -51,6 +51,7 @@ from ansys.sound.core.examples_helpers.download import EXAMPLES_PATH
 
 SOUND_EXAMPLES_PATH = os.path.join(EXAMPLES_PATH, "pyansys-sound")
 
+
 def test_download_flute_psd():
     download_flute_psd()
     p = str(SOUND_EXAMPLES_PATH) + "/flute_psd.txt"
@@ -152,7 +153,10 @@ def test_download_sound_composer_FRF_eMotor():
 
 def test_download_sound_composer_source_WindRoadNoise():
     download_sound_composer_source_WindRoadNoise()
-    p = str(SOUND_EXAMPLES_PATH) + "/Wind and Road noise - spectrum vs vehicle speed (BBN source).txt"
+    p = (
+        str(SOUND_EXAMPLES_PATH)
+        + "/Wind and Road noise - spectrum vs vehicle speed (BBN source).txt"
+    )
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 147261
 
