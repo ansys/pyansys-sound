@@ -107,9 +107,9 @@ def _download_file_and_upload_to_server_tmp_folder(filename, server=None):
     if server.has_client():
         # If the server has a client, then it is a remote server and we need to upload the file
         # to the server's temporary folder.
-        return upload_file_in_tmp_folder(file_path=local_path, server=server)  # pragma: no cover
+        return upload_file_in_tmp_folder(file_path=local_path, server=server), local_path  # pragma: no cover
     # Otherwise, the server is a local server, and we can use the local path directly.
-    return local_path  # pragma: no cover
+    return local_path, local_path  # pragma: no cover
 
 
 def download_flute_psd():
