@@ -321,13 +321,14 @@ class Stft(SpectrogramProcessingParent):
                 "Reference value for dB conversion must be strictly greater than 0."
             )
 
-        magnitude = self.get_magnitude()
         unit = self.get_output()[0].unit
-        magnitude_unit = unit if isinstance(unit, str) else unit[1]
+        linear_unit = unit if isinstance(unit, str) else unit[1]
         frequency_unit = self.get_output()[0].time_freq_support.time_frequencies.unit
         time_unit = self.get_output().time_freq_support.time_frequencies.unit
 
-        magnitude = 20 * np.log10(magnitude / reference_value + 1e-12)
+        np.seterr(divide="ignore")
+        magnitude_dB = 20 * np.log10(self.get_magnitude() / reference_value)
+        np.seterr(divide="warn")
         phase = self.get_phase()
         time_data_signal = self.signal.time_freq_support.time_frequencies.data
         time_step = time_data_signal[1] - time_data_signal[0]
@@ -340,8 +341,8 @@ class Stft(SpectrogramProcessingParent):
 
         # Plotting
         f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
-        p = ax1.imshow(magnitude, origin="lower", aspect="auto", cmap="jet", extent=extent)
-        f.colorbar(p, ax=ax1, label=f"Amplitude (dB re. {reference_value} {magnitude_unit})")
+        p = ax1.imshow(magnitude_dB, origin="lower", aspect="auto", cmap="jet", extent=extent)
+        f.colorbar(p, ax=ax1, label=f"Amplitude (dB re. {reference_value} {linear_unit})")
         ax1.set_title("Amplitude")
         ax1.set_ylabel(f"Frequency ({frequency_unit})")
         p = ax2.imshow(phase, origin="lower", aspect="auto", cmap="jet", extent=extent)
