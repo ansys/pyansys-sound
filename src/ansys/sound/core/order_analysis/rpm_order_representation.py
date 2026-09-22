@@ -334,6 +334,8 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
 
         representation, orders, rpm_values, _ = self.get_output_as_nparray()
 
+        # as the RPM-order representation is made of two-sided spectra, we only consider the orders
+        # from 0 to the maximum order for plotting.
         if self.max_order is not None:
             order_mask = orders <= self.max_order
             orders = orders[order_mask]
@@ -342,10 +344,14 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         # Transpose so that orders are on the vertical axis and RPM on the horizontal axis.
         magnitude = np.abs(representation.transpose())
 
+        # as we only consider the one-sided spectrum, we multiply by sqrt(2) to account for the
+        # energy of the negative orders.
+        magnitude = magnitude * np.sqrt(2)
+
         unit = self.signal.unit if isinstance(self.signal.unit, str) else self.signal.unit[1]
 
         if display_in_dB:
-            magnitude = 20.0 * np.log10(magnitude / reference_value)  # + 1e-12)
+            magnitude = 20.0 * np.log10(magnitude / reference_value + 1e-12)
             str_unit = f"dB re. {reference_value}"
             if len(unit) > 0:
                 str_unit += f" {unit}"
