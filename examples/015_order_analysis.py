@@ -67,7 +67,7 @@ path_accel_wav = download_accel_with_rpm_wav(server=my_server)
 # %%
 # Load a signal with its RPM profile
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load the WAV file. It contains two channels:
+# Load the previously downloaded WAV file. It contains two channels:
 #
 # - the actual signal (an acceleration recording of the sound pressure in a car),
 # - the associated RPM profile of the engine, in rev/min.
@@ -77,10 +77,10 @@ wav_loader.process()
 
 signal, rpm_profile = wav_loader.get_output()
 
-# fix RPM profile unit
+# Fix RPM profile unit
 rpm_profile.unit = "RPM"
 
-# Plot the signal and its associated RPM profile.
+# Plot the signal and its associated RPM profile
 time = signal.time_freq_support.time_frequencies
 
 fig, ax = plt.subplots(nrows=2, sharex=True)
@@ -106,11 +106,11 @@ plt.show()
 # resolution.
 #
 # Note:
-# The order width (50 % of the order value here) defines the order range around each requested
-# order over which the energy is integrated to obtain the order levels. This is generally a
-# sufficient value in most cases, but it may need to be adjusted depending on the specific signal
-# characteristics, such as the presence of background noise, the proximity of neighboring orders,
-# and the slope of the RPM profile curve.
+# :attr:`~.OrderLevels.order_width` (50 % of the order value here) defines the order range around
+# each requested # order over which the energy is integrated to obtain the order levels. This is
+# generally a # sufficient value in most cases, but it may need to be adjusted depending on the
+# specific signal # characteristics, such as the presence of background noise, the proximity of
+# neighboring orders, # and the slope of the RPM profile curve.
 
 orders = [2, 4, 6, 8, 10]
 
@@ -180,6 +180,7 @@ order_levels_fine.process()
 order_levels_fine.plot(display_in_dB=True, reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR)
 
 # %%
-# Compare the number of RPM values obtained in both cases.
+# Compare the number of RPM values obtained in both cases and observe that a higher
+# order resolution results in more RPM values being computed for each order.
 print(f"Order resolution 4 %:   {len(order_levels_coarse.get_rpm_scale())} RPM values.")
 print(f"Order resolution 0.5 %: {len(order_levels_fine.get_rpm_scale())} RPM values.")
