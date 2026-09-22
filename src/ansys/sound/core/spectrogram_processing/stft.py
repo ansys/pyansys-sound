@@ -210,8 +210,9 @@ class Stft(SpectrogramProcessingParent):
         if not _check_sound_version("2027.1.0"):
             warnings.warn(
                 PyAnsysSoundWarning(
-                    "Output STFT is not scaled for RMS spectrum in Sound version prior to 2027.1.0. "
-                    "You can scale it by dividing the STFT values by the sum of the window values."
+                    "Output STFT is not scaled for RMS spectrum in Sound version prior to "
+                    "2027.1.0. You can scale it by dividing the STFT values by the sum of the "
+                    "window values."
                 )
             )
 
