@@ -41,6 +41,9 @@ if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
     EXP_STFT_100_IDX = -0.0010489814449101686 - 0.0013704965822398663j
     EXP_STFT_200_IDX = 0.0004997600335627794 + 0.0003071507962886244j
     EXP_STFT_300_IDX = -2.9794588044751436e-5 - 0.0004804507188964635j
+    EXP_MAGNITUDE_100_IDX = 0.0024407469978254526
+    EXP_MAGNITUDE_200_IDX = 0.0008295802586940055
+    EXP_MAGNITUDE_300_IDX = 0.0006807651735582324
 elif pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
     # bug fix (ID#1247009) & third-party update (IPP) in DPF Sound 2026 R1
     EXP_FC_SIZE = 308  # real and complex parts in separate fields
@@ -52,6 +55,9 @@ elif pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
     EXP_STFT_100_IDX = -1.0736324787139893 - 1.4027032852172852j
     EXP_STFT_200_IDX = 0.5115044116973877 + 0.3143688440322876j
     EXP_STFT_300_IDX = -0.03049476072192192 - 0.4917412996292114j
+    EXP_MAGNITUDE_100_IDX = 0.0024407469978254526
+    EXP_MAGNITUDE_200_IDX = 0.8490754186573622
+    EXP_MAGNITUDE_300_IDX = 0.696763139370207
 else:  # DPF Sound <= 2025 R2
     EXP_FC_SIZE = 310  # real and complex parts in separate fields
     EXP_STFT_SIZE = 155  # real and complex parts combined (EXP_STFT_SIZE = EXP_FC_SIZE / 2)
@@ -62,8 +68,22 @@ else:  # DPF Sound <= 2025 R2
     EXP_STFT_100_IDX = -1.0736324787139893 - 1.4027032852172852j
     EXP_STFT_200_IDX = 0.511505126953125 + 0.3143689036369324j
     EXP_STFT_300_IDX = -0.03049434721469879 - 0.49174121022224426j
+    EXP_MAGNITUDE_100_IDX = 2.4981045637478463
+    EXP_MAGNITUDE_200_IDX = 0.8490763245706706
+    EXP_MAGNITUDE_300_IDX = 0.696762976976946
+
+EXP_PHASE_100_IDX = -2.2240823488563417
+EXP_PHASE_200_IDX = 0.5510831859508833
+EXP_PHASE_300_IDX = -1.63273084147678
 
 EXP_HALF_NFFT = 1025
+
+
+@pytest.fixture
+def load_flute_wav():
+    wav_loader = LoadWav(pytest.data_path_flute)
+    wav_loader.process()
+    yield wav_loader.get_output()[0]
 
 
 def test_stft_instantiation():
@@ -72,21 +92,17 @@ def test_stft_instantiation():
     assert stft != None
 
 
-def test_stft_process():
+def test_stft_process(load_flute_wav):
     """Test the process method of Stft class."""
     stft = Stft()
-    wav_loader = LoadWav(pytest.data_path_flute)
 
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
         stft.process()
     assert str(excinfo.value) == "No signal found for STFT. Use 'Stft.signal'."
 
-    wav_loader.process()
-    signal = wav_loader.get_output()[0]
-
     # Testing input fields container (no error expected)
-    stft.signal = signal
+    stft.signal = load_flute_wav
     try:
         stft.process()
     except:
@@ -94,12 +110,9 @@ def test_stft_process():
         assert False
 
 
-def test_stft_get_output():
+def test_stft_get_output(load_flute_wav):
     """Test the get_output method of Stft class."""
-    wav_loader = LoadWav(pytest.data_path_flute)
-    wav_loader.process()
-    signal = wav_loader.get_output()[0]
-    stft = Stft(signal=signal)
+    stft = Stft(signal=load_flute_wav)
 
     with pytest.warns(
         PyAnsysSoundWarning,
@@ -118,12 +131,9 @@ def test_stft_get_output():
     assert fc_out[300].data[0] == pytest.approx(EXP_FC_298_0)
 
 
-def test_stft_get_output_as_np_array():
+def test_stft_get_output_as_np_array(load_flute_wav):
     """Test the get_output_as_nparray method of Stft class."""
-    wav_loader = LoadWav(pytest.data_path_flute)
-    wav_loader.process()
-    signal = wav_loader.get_output()[0]
-    stft = Stft(signal=signal)
+    stft = Stft(signal=load_flute_wav)
 
     stft.process()
     arr = stft.get_output_as_nparray()
@@ -136,6 +146,34 @@ def test_stft_get_output_as_np_array():
     assert arr[200, TESTED_IDX].imag == pytest.approx(EXP_STFT_200_IDX.imag)
     assert arr[300, TESTED_IDX].real == pytest.approx(EXP_STFT_300_IDX.real)
     assert arr[300, TESTED_IDX].imag == pytest.approx(EXP_STFT_300_IDX.imag)
+
+
+def test_stft_get_magnitude(load_flute_wav):
+    """Test the get_magnitude method of Stft class."""
+    stft = Stft(signal=load_flute_wav)
+
+    stft.process()
+    magnitude = stft.get_magnitude()
+
+    assert magnitude.shape == (EXP_HALF_NFFT, EXP_STFT_SIZE)
+    assert type(magnitude[100, 0]) == np.float64
+    assert magnitude[100, TESTED_IDX] == pytest.approx(EXP_MAGNITUDE_100_IDX)
+    assert magnitude[200, TESTED_IDX] == pytest.approx(EXP_MAGNITUDE_200_IDX)
+    assert magnitude[300, TESTED_IDX] == pytest.approx(EXP_MAGNITUDE_300_IDX)
+
+
+def test_stft_get_phase(load_flute_wav):
+    """Test the get_phase method of Stft class."""
+    stft = Stft(signal=load_flute_wav)
+
+    stft.process()
+    phase = stft.get_phase()
+
+    assert phase.shape == (EXP_HALF_NFFT, EXP_STFT_SIZE)
+    assert type(phase[100, 0]) == np.float64
+    assert phase[100, TESTED_IDX] == pytest.approx(EXP_PHASE_100_IDX)
+    assert phase[200, TESTED_IDX] == pytest.approx(EXP_PHASE_200_IDX)
+    assert phase[300, TESTED_IDX] == pytest.approx(EXP_PHASE_300_IDX)
 
 
 def test_stft_set_get_signal():
@@ -201,23 +239,20 @@ def test_stft_set_get_window_type():
 
 
 @patch("matplotlib.pyplot.show")
-def test_stft_plot(mock_show):
+def test_stft_plot(mock_show, load_flute_wav):
     """Test the plot method of Stft class."""
-    wav_loader = LoadWav(pytest.data_path_flute)
-    wav_loader.process()
-    signal = wav_loader.get_output()[0]
-    stft = Stft(signal=signal)
+    stft = Stft(signal=load_flute_wav)
     stft.process()
     stft.plot()
+    mock_show.assert_called_once()
+    mock_show.reset_mock()
     stft.plot(reference_value=2e-5)
+    mock_show.assert_called_once()
 
 
-def test_stft_plot_exceptions():
+def test_stft_plot_exceptions(load_flute_wav):
     """Test the plot method of Stft class."""
-    wav_loader = LoadWav(pytest.data_path_flute)
-    wav_loader.process()
-    signal = wav_loader.get_output()[0]
-    stft = Stft(signal=signal)
+    stft = Stft(signal=load_flute_wav)
     with pytest.raises(
         PyAnsysSoundException,
         match="Output is not processed yet. Use the `Stft.process\\(\\)` method.",

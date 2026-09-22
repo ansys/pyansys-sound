@@ -293,7 +293,11 @@ class Stft(SpectrogramProcessingParent):
             contains the positive frequency components up to half the signal's sampling frequency.
         """
         output = self.get_output_as_nparray()
-        return np.angle(output)
+
+        # Only extract the first half of the two-sided STFT, as it is symmetrical
+        half_nfft = int(np.floor(output.shape[0] / 2)) + 1
+
+        return np.angle(output[:half_nfft, :])
 
     def plot(self, reference_value: float = 1.0):
         """Plot signals.
