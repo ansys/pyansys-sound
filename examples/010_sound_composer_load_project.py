@@ -158,7 +158,10 @@ track_gear.plot()
 
 spectrogram_gear = Stft(signal=track_gear.get_output())
 spectrogram_gear.process()
-spectrogram_gear.plot_magnitude_dB(reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR)
+spectrogram_gear.plot_custom(
+    display_phase=False,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+)
 
 # %%
 # If needed, you can access the output signal of a track using :meth:`.Track.get_output()`.
@@ -183,7 +186,10 @@ sound_composer_project.plot()
 
 spectrogram = Stft(signal=sound_composer_project.get_output())
 spectrogram.process()
-spectrogram.plot_magnitude_dB(reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR)
+spectrogram.plot_custom(
+    display_phase=False,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+)
 
 # %%
 # Conclusion

@@ -101,9 +101,10 @@ max_stft_dBSPL = 20 * np.log10(
     np.max(stft_original.get_magnitude()) / REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
 )
 max_frequency_Hz = 20000.0
-stft_original.plot_magnitude_dB(
+stft_original.plot_custom(
+    display_phase=False,
     reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
-    max_dB=max_stft_dBSPL,
+    max_magnitude=max_stft_dBSPL,
     max_frequency=max_frequency_Hz,
 )
 
@@ -173,17 +174,19 @@ print("Plot of the spectrograms with tonal extraction parameters that do not wor
 
 ## Spectrogram of the original signal
 max_frequency_Hz = 5000.0
-stft_original.plot_magnitude_dB(
+stft_original.plot_custom(
+    display_phase=False,
     reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
-    max_dB=max_stft_dBSPL,
+    max_magnitude=max_stft_dBSPL,
     max_frequency=max_frequency_Hz,
     title="Original Signal",
 )
 
 ## Spectrogram of the modified signal
-stft_modified_signal.plot_magnitude_dB(
+stft_modified_signal.plot_custom(
+    display_phase=False,
     reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
-    max_dB=max_stft_dBSPL,
+    max_magnitude=max_stft_dBSPL,
     max_frequency=max_frequency_Hz,
     title="Extracted Tones",
 )
@@ -196,9 +199,10 @@ xtract_tonal.process()
 
 # Recheck the plots
 print("Plot of the spectrograms with the right tonal extraction parameters.")
-stft_original.plot_magnitude_dB(
+stft_original.plot_custom(
+    display_phase=False,
     reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
-    max_dB=max_stft_dBSPL,
+    max_magnitude=max_stft_dBSPL,
     max_frequency=max_frequency_Hz,
     title="Original Signal",
 )
@@ -206,9 +210,10 @@ stft_original.plot_magnitude_dB(
 # Spectrogram of the modified signal
 stft_modified_signal.signal = xtract_tonal.get_output()[0]
 stft_modified_signal.process()
-stft_modified_signal.plot_magnitude_dB(
+stft_modified_signal.plot_custom(
+    display_phase=False,
     reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
-    max_dB=max_stft_dBSPL,
+    max_magnitude=max_stft_dBSPL,
     max_frequency=max_frequency_Hz,
     title="Extracted Tones",
 )
@@ -274,24 +279,13 @@ for p in paths:
     signal = wav_loader.get_output()[0]
     fs = wav_loader.get_sampling_frequency()
 
-    # Plot the time domain signal
-    ylims = [-3.0, 3.0]
-    plt.figure()
-    plt.plot(time.data, signal.data, label="Original Signal")
-    plt.ylim(ylims)
-    plt.xlabel(f"Time ({time.unit})")
-    plt.ylabel(f"Amplitude ({signal.unit})")
-    plt.grid()
-    plt.legend()
-    plt.title(signal_name)
-    plt.show()
-
     # Compute and plot the STFT
     stft_original.signal = signal
     stft_original.process()
-    stft_original.plot_magnitude_dB(
+    stft_original.plot_custom(
+        display_phase=False,
         reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
-        max_dB=max_stft_dBSPL,
+        max_magnitude=max_stft_dBSPL,
         max_frequency=max_frequency_Hz,
         title=f"STFT for signal {signal_name}",
     )
@@ -311,6 +305,7 @@ for p in paths:
     axs[3].plot(time.data, transient_signal.data, label="Transient Signal", color="purple")
     axs[4].plot(time.data, remainder_signal.data, label="Remainder Signal", color="black")
 
+    ylims = [-3.0, 3.0]
     for ax in axs:
         ax.set_ylim(ylims)
         ax.grid()

@@ -221,7 +221,10 @@ generated_signal_from_project = sound_composer_project.get_output()
 # Display the spectrogram of the generated signal using the :class:`.Stft` class.
 spectrogram = Stft(signal=generated_signal_from_project)
 spectrogram.process()
-spectrogram.plot_magnitude_dB(reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR)
+spectrogram.plot_custom(
+    display_phase=False,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+)
 
 # %%
 # Save the entire Sound Composer project

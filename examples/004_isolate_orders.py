@@ -109,9 +109,10 @@ stft = Stft(signal=signal, window_overlap=0.9, fft_size=8192)
 stft.process()
 max_stft_dBSPL = 20 * np.log10(np.max(stft.get_magnitude()) / REFERENCE_ACOUSTIC_PRESSURE_IN_AIR)
 max_frequency_Hz = 2000.0
-stft.plot_magnitude_dB(
+stft.plot_custom(
+    display_phase=False,
     reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
-    max_dB=max_stft_dBSPL,
+    max_magnitude=max_stft_dBSPL,
     max_frequency=max_frequency_Hz,
 )
 
@@ -146,9 +147,10 @@ isolate_orders.process()
 # Plot the spectrogram of the isolated orders.
 stft.signal = isolate_orders.get_output()
 stft.process()
-stft.plot_magnitude_dB(
+stft.plot_custom(
+    display_phase=False,
     reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
-    max_dB=max_stft_dBSPL,
+    max_magnitude=max_stft_dBSPL,
     max_frequency=max_frequency_Hz,
 )
 
@@ -167,9 +169,10 @@ isolate_orders.process()
 # Plot the spectrogram of the isolated orders.
 stft.signal = isolate_orders.get_output()
 stft.process()
-stft.plot_magnitude_dB(
+stft.plot_custom(
+    display_phase=False,
     reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
-    max_dB=max_stft_dBSPL,
+    max_magnitude=max_stft_dBSPL,
     max_frequency=max_frequency_Hz,
 )
 

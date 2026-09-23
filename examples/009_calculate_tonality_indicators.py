@@ -78,7 +78,11 @@ signal_turbo = wav_loader.get_output()[0]
 # Calculate and display the spectrogram of the signal used in this example.
 stft = Stft(signal_turbo, fft_size=2048, window_overlap=0.8)
 stft.process()
-stft.plot_magnitude_dB(reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR, max_frequency=5000.0)
+stft.plot_custom(
+    display_phase=False,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+    max_frequency=5000.0,
+)
 
 # %%
 # From the spectrogram, you can see that the signal contains some tonal components,

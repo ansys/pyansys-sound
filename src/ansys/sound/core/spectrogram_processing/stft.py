@@ -299,16 +299,53 @@ class Stft(SpectrogramProcessingParent):
 
         return np.angle(output[:half_nfft, :])
 
-    def plot(self, reference_value: float = 1.0):
-        """Plot signals.
+    def plot(self):
+        """Plot the STFT.
 
         This method plots the STFT magnitude and the associated phase.
 
+        Notes
+        -----
+        Prior to Sound version 2027.1.0, RMS spectrum scaling is not applied in the returned STFT.
+        As a consequence, the displayed STFT magnitude will be incorrect with Sound versions prior
+        to 2027.1.0.
+        """
+        self.plot_custom()
+
+    def plot_custom(
+        self,
+        display_phase: bool = True,
+        display_in_dB: bool = True,
+        reference_value: float = 1.0,
+        max_magnitude: float = None,
+        min_magnitude: float = None,
+        max_frequency: float = None,
+        min_frequency: float = 0.0,
+        title: str = "STFT",
+    ) -> None:
+        """Plot the STFT with custom display settings.
+
         Parameters
         ----------
-        reference_value : float, default: 1.0
-            STFT reference value for dB conversion. For example, for an input sound pressure signal,
-            the reference value is typically 2e-5 (Pa).
+        display_phase: bool, default: True
+            Whether to include the STFT phase in the plot.
+        display_in_dB: bool, default: True
+            Whether to display the STFT magnitude in dB or in the input signal's unit.
+        reference_value: float, default: 1.0
+            Reference value for dB conversion. Ignored if `display_in_dB` is False.
+        max_magnitude: float, default: None
+            Maximum magnitude value for the colormap. If None, it is determined as the maximum
+            magnitude in the STFT data.
+        min_magnitude: float, default: None
+            Minimum magnitude value for the colormap. If None, it is determined as 0 if
+            `display_in_dB` is False, otherwise as the maximum magnitude minus 70 dB.
+        max_frequency: float, default: None
+            Maximum frequency in Hz to display. If None, the full frequency range, that is, up to
+            half the sampling frequency, is shown.
+        min_frequency: float, default: 0.0
+            Minimum frequency in Hz to display.
+        title: str, default: "STFT"
+            Title of the figure.
 
         Notes
         -----
@@ -326,13 +363,17 @@ class Stft(SpectrogramProcessingParent):
                 "Reference value for dB conversion must be strictly greater than 0."
             )
 
-        np.seterr(divide="ignore")
-        magnitude_dB = 20 * np.log10(self.get_magnitude() / reference_value)
-        np.seterr(divide="warn")
+        magnitude = self.get_magnitude()
+        unit = self.get_output()[0].unit
+        magnitude_unit = unit if isinstance(unit, str) else unit[1]
+        if display_in_dB:
+            # Convert magnitude to dB.
+            magnitude = 20 * np.log10(self.get_magnitude() / reference_value + 1e-12)
+            str_unit = f" {magnitude_unit}" if len(magnitude_unit) > 0 else ""
+            magnitude_unit = f"dB re. {reference_value}{str_unit}"
+
         phase = self.get_phase()
 
-        unit = self.get_output()[0].unit
-        linear_unit = unit if isinstance(unit, str) else unit[1]
         frequency_unit = self.get_output()[0].time_freq_support.time_frequencies.unit
         time_unit = self.get_output().time_freq_support.time_frequencies.unit
         time_spectrogram = self.get_output().time_freq_support.time_frequencies.data
@@ -342,76 +383,66 @@ class Stft(SpectrogramProcessingParent):
         # Boundaries of the plot
         extent = [time_spectrogram[0], time_spectrogram[-1], 0.0, fs / 2.0]
 
-        # Plotting
-        f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
-        p = ax1.imshow(magnitude_dB, origin="lower", aspect="auto", cmap="jet", extent=extent)
-        f.colorbar(p, ax=ax1, label=f"Magnitude (dB re. {reference_value} {linear_unit})")
-        ax1.set_title("Magnitude")
-        ax1.set_ylabel(f"Frequency ({frequency_unit})")
-        p = ax2.imshow(phase, origin="lower", aspect="auto", cmap="jet", extent=extent)
-        f.colorbar(p, ax=ax2, label="Phase (rad)")
-        ax2.set_title("Phase")
-        ax2.set_xlabel(f"Time ({time_unit})")
-        ax2.set_ylabel(f"Frequency ({frequency_unit})")
+        if max_magnitude is None:
+            max_magnitude = np.max(magnitude)
 
-        f.suptitle("STFT")
-        plt.show()
+        if min_magnitude is None:
+            if display_in_dB:
+                min_magnitude = max_magnitude - 70.0
+            else:
+                min_magnitude = 0.0
 
-    def plot_magnitude_dB(
-        self,
-        reference_value: float = 1.0,
-        max_dB: float = None,
-        max_frequency: float = None,
-        title: str = "STFT",
-    ) -> None:
-        """Plot the magnitude in dB of the STFT.
-
-        Parameters
-        ----------
-        reference_value: float, default: 1.0
-            Reference value for dB conversion.
-        max_dB: float, default: None
-            Maximum dB value for the colormap. If None, it is determined from the data.
-        title: str, default: "STFT"
-            Title of the figure.
-        max_frequency: float, default: None
-            Maximum frequency in Hz to display. If None, the full frequency range is shown.
-        """
-        np.seterr(divide="ignore")
-        magnitude_dB = 20 * np.log10(self.get_magnitude() / reference_value)
-        np.seterr(divide="warn")
-
-        unit = self.get_output()[0].unit
-        linear_unit = unit if isinstance(unit, str) else unit[1]
-        frequency_unit = self.get_output()[0].time_freq_support.time_frequencies.unit
-        time_unit = self.get_output().time_freq_support.time_frequencies.unit
-        time_spectrogram = self.get_output().time_freq_support.time_frequencies.data
-        time_signal = self.signal.time_freq_support.time_frequencies.data
-        fs = 1.0 / (time_signal[1] - time_signal[0])
-
-        # Boundaries of the plot
-        extent = [time_spectrogram[0], time_spectrogram[-1], 0.0, fs / 2.0]
-
-        if max_dB is None:
-            max_dB = np.max(magnitude_dB)
+        if max_frequency is None:
+            max_frequency = fs / 2.0
 
         # Plot
-        plt.figure()
-        plt.imshow(
-            magnitude_dB,
-            origin="lower",
-            aspect="auto",
-            cmap="jet",
-            extent=extent,
-            vmax=max_dB,
-            vmin=max_dB - 70.0,
-        )
-        str_unit = f" {linear_unit}" if len(linear_unit) > 0 else ""
-        plt.colorbar(label=f"Magnitude (dB re. {reference_value}{str_unit})")
-        plt.ylabel(f"Frequency ({frequency_unit})")
-        plt.xlabel(f"Time ({time_unit})")
-        if max_frequency is not None:
-            plt.ylim([0.0, max_frequency])
-        plt.title(title)
-        plt.tight_layout()
-        plt.show()
+        str_unit = f" ({magnitude_unit})" if len(magnitude_unit) > 0 else ""
+        if display_phase:
+            f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
+
+            # Top subplot: STFT magnitude.
+            p = ax1.imshow(
+                magnitude,
+                origin="lower",
+                aspect="auto",
+                cmap="jet",
+                extent=extent,
+                vmax=max_magnitude,
+                vmin=min_magnitude,
+            )
+            f.colorbar(p, ax=ax1, label=f"Magnitude{str_unit}")
+            ax1.set_ylim([min_frequency, max_frequency])
+            ax1.set_ylabel(f"Frequency ({frequency_unit})")
+            ax1.set_title("Magnitude")
+
+            # Bottom subplot: STFT phase.
+            p = ax2.imshow(phase, origin="lower", aspect="auto", cmap="jet", extent=extent)
+            f.colorbar(p, ax=ax2, label="Phase (rad)")
+            ax2.set_ylim([min_frequency, max_frequency])
+            ax2.set_ylabel(f"Frequency ({frequency_unit})")
+            ax2.set_title("Phase")
+            ax2.set_xlabel(f"Time ({time_unit})")
+    
+            f.suptitle("STFT")
+            f.tight_layout()
+            
+        else:
+            # Plot STFT magnitude only.
+            plt.figure()
+            plt.imshow(
+                magnitude,
+                origin="lower",
+                aspect="auto",
+                cmap="jet",
+                extent=extent,
+                vmax=max_magnitude,
+                vmin=min_magnitude,
+            )
+            str_unit = f" ({magnitude_unit})" if len(magnitude_unit) > 0 else ""
+            plt.colorbar(label=f"Magnitude{str_unit}")
+            plt.ylabel(f"Frequency ({frequency_unit})")
+            plt.xlabel(f"Time ({time_unit})")
+            plt.ylim([min_frequency, max_frequency])
+            plt.title(title)
+            plt.tight_layout()
+            plt.show()
