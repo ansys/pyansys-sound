@@ -29,6 +29,7 @@ Extract tonal, transient, and noise components (Xtract)
 This example shows how to use the Xtract feature in PyAnsys Sound.
 It demonstrates the different capabilities of this feature, namely,
 noise extraction, tonal extraction, and transient extraction.
+
 """
 
 # %%
@@ -73,8 +74,8 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # %%
 # Load a demo signal for Xtract
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load a demo signal from a WAV file using the :class:`.LoadWav` class.
-# The WAV file contains harmonics and impact sound components.
+# Load a demo signal from a WAV file using the ``LoadWav`` class.
+# The WAV file contains harmonics and shocks.
 
 # Return the input data of the example file.
 path_xtract_demo_signal_1 = download_xtract_demo_signal_1_wav(my_server)
@@ -253,7 +254,7 @@ plt.show()
 # %%
 # Use a combination of extraction features and loop on several signals
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# The idea here is to loop over several signals and use the :class:`.Xtract` class to combine
+# The idea here is to loop over several signals and use the ``Xtract`` class to combine
 # all previous classes.
 
 
@@ -278,6 +279,18 @@ for p in paths:
     wav_loader.process()
     signal = wav_loader.get_output()[0]
     fs = wav_loader.get_sampling_frequency()
+
+    # Plot the time domain signal
+    ylims = [-3.0, 3.0]
+    plt.figure()
+    plt.plot(time.data, signal.data, label="Original Signal")
+    plt.ylim(ylims)
+    plt.xlabel(f"Time ({time.unit})")
+    plt.ylabel(f"Amplitude ({signal.unit})")
+    plt.grid()
+    plt.legend()
+    plt.title(signal_name)
+    plt.show()
 
     # Compute and plot the STFT
     stft_original.signal = signal
@@ -305,7 +318,6 @@ for p in paths:
     axs[3].plot(time.data, transient_signal.data, label="Transient Signal", color="purple")
     axs[4].plot(time.data, remainder_signal.data, label="Remainder Signal", color="black")
 
-    ylims = [-3.0, 3.0]
     for ax in axs:
         ax.set_ylim(ylims)
         ax.grid()

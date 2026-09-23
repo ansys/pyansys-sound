@@ -251,7 +251,7 @@ def test_stft_set_get_window_type():
     assert (
         str(excinfo.value)
         == "Window type is invalid. Options are 'TRIANGULAR', 'BLACKMAN', 'BLACKMANHARRIS', "
-        "'HAMMING', 'HANN', 'GAUSS', 'FLATTOP', 'RECTANGULAR', and 'BARTLETT'."
+        "'HAMMING', 'HANN', 'GAUSS', 'FLATTOP' and 'RECTANGULAR'."
     )
 
     stft.window_type = "GAUSS"

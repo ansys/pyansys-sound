@@ -52,18 +52,11 @@ UFF files containing type 58 or type 58b data blocks.
 # Setting up the analysis consists of loading the required libraries, connecting to the DPF server,
 # and downloading the necessary data files.
 
-import warnings
-
 import matplotlib.pyplot as plt
 import numpy as np
 
 try:
-    # Workaround for pyuff issue `#113 <https://github.com/ladisk/pyuff/issues/113>`_ about silent
-    # warning filters wipe. Remove once the issue is fixed.
-    tmp = warnings.filters[:]
     import pyuff
-
-    warnings.filters[:] = tmp
 except ImportError:
     raise ImportError(
         "The 'pyuff' package is required for this example. "

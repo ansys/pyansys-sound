@@ -30,6 +30,7 @@ Orders are harmonic and partial components in the sound related to the speed of 
 rotating machine. This example shows how to isolate orders in a signal containing an RPM profile.
 It also uses additional classes from PyAnsys Sound to compute spectrograms
 and the loudness of the isolated signals.
+
 """
 
 # %%
@@ -67,7 +68,8 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # %%
 # Load a signal with an RPM profile
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load a signal from a WAV file using the :class:`.LoadWav` class.
+# Load a signal that has been generated with Ansys Sound Analysis
+# and Specification (SAS) from a WAV file using the ``LoadWav`` class.
 # This class contains two channels:
 #
 # - The actual signal (an acceleration recording)
@@ -119,7 +121,7 @@ stft.plot_custom(
 # %%
 # Isolate orders
 # ~~~~~~~~~~~~~~
-# Isolate orders 2, 4, and 6 with the :class:`.IsolateOrders` class.
+# Isolate orders 2, 4, and 6 with the ``IsolateOrders`` class.
 
 rpm_profile = wav_loader.get_output()[1]
 
@@ -130,7 +132,7 @@ window_type = "HANN"  # Window type
 window_overlap = 0.9  # Window overlap
 width_selection = 3  # Width of the order selection in Hz
 
-# Instantiate the :class:`.IsolateOrders` class with the parameters.
+# Instantiate the ``IsolateOrders`` class with the parameters.
 isolate_orders = IsolateOrders(
     signal=signal,
     rpm_profile=rpm_profile,
@@ -181,11 +183,10 @@ stft.plot_custom(
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Plot the signal containing the isolated orders and compute its loudness.
 
-# Plot the signal directly using the method from the :class:`.IsolateOrders` class.
+# Plot the signal directly using the method from the ``IsolateOrders`` class.
 isolate_orders.plot()
 
-# Use the :class:`.LoudnessISO532_1_Stationary` class to compute the loudness of the order-isolated
-# signal.
+# Use the ``Loudness`` class to compute the loudness of the isolate signal.
 signal_isolated = isolate_orders.get_output()
 signal_isolated.unit = "Pa"
 loudness = LoudnessISO532_1_Stationary(signal=signal_isolated)
