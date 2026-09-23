@@ -120,6 +120,7 @@ def test_stft_get_output(load_flute_wav):
                     Use the 'Stft.process\\(\\)' method.",
     ):
         fc_out = stft.get_output()
+    assert fc_out is None
 
     stft.process()
     fc_out = stft.get_output()
@@ -129,6 +130,24 @@ def test_stft_get_output(load_flute_wav):
     assert fc_out[100].data[0] == pytest.approx(EXP_FC_98_0)
     assert fc_out[200].data[0] == pytest.approx(EXP_FC_198_0)
     assert fc_out[300].data[0] == pytest.approx(EXP_FC_298_0)
+
+@pytest.mark.skipif(
+    pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1,
+    reason="Incorrect STFT values' warning is only produced in versions prior to 2027.1",
+)
+def test_stft_get_output_version_warning(load_flute_wav):
+    """Test the version warning of the get_output method of Stft class."""
+    stft = Stft(signal=load_flute_wav)
+
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match=(
+            "Output STFT is not scaled for RMS spectrum in Sound version prior to 2027.1.0. You can "
+            "scale it by dividing the STFT values by the sum of the window values."
+        )
+    ):
+        fc_out = stft.get_output()
+    assert fc_out is None
 
 
 def test_stft_get_output_as_np_array(load_flute_wav):
@@ -245,9 +264,6 @@ def test_stft_plot(mock_show, load_flute_wav):
     stft.process()
     stft.plot()
     mock_show.assert_called_once()
-    mock_show.reset_mock()
-    stft.plot(reference_value=2e-5)
-    mock_show.assert_called_once()
 
 
 def test_stft_plot_exceptions(load_flute_wav):
@@ -259,8 +275,50 @@ def test_stft_plot_exceptions(load_flute_wav):
     ):
         stft.plot()
     stft.process()
+
+
+@patch("matplotlib.pyplot.show")
+def test_stft_plot_custom(mock_show, load_flute_wav):
+    """Test the plot_custom method of Stft class."""
+    stft = Stft(signal=load_flute_wav)
+    stft.process()
+    stft.plot_custom(display_phase=True)
+    mock_show.assert_called_once()
+    mock_show.reset_mock()
+    stft.plot_custom(display_phase=False)
+    mock_show.assert_called_once()
+    mock_show.reset_mock()
+    stft.plot_custom(display_phase=False, display_in_dB=False)
+    mock_show.assert_called_once()
+    mock_show.reset_mock()
+    stft.plot_custom(display_phase=False, display_in_dB=True, reference_value=2e-5)
+    mock_show.assert_called_once()
+    mock_show.reset_mock()
+    stft.plot_custom(
+        display_phase=False,
+        display_in_dB=True,
+        reference_value=2e-5,
+        max_magnitude=80.0,
+        min_magnitude=0.0,
+        max_frequency=5000.0,
+        min_frequency=0.0,
+        title="Custom STFT plot with all options"
+    )
+    mock_show.assert_called_once()
+
+
+def test_stft_plot_custom_exceptions(load_flute_wav):
+    """Test the plot_custom method of Stft class for exceptions."""
+    stft = Stft(signal=load_flute_wav)
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Output is not processed yet. Use the `Stft.process\\(\\)` method.",
+    ):
+        stft.plot_custom()
+
+    stft.process()
     with pytest.raises(
         PyAnsysSoundException,
         match="Reference value for dB conversion must be strictly greater than 0.",
     ):
-        stft.plot(reference_value=0.0)
+        stft.plot_custom(reference_value=0.0)

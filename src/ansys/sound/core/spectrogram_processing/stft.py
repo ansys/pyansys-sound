@@ -423,7 +423,7 @@ class Stft(SpectrogramProcessingParent):
             ax2.set_title("Phase")
             ax2.set_xlabel(f"Time ({time_unit})")
 
-            f.suptitle("STFT")
+            f.suptitle(title)
             f.tight_layout()
 
         else:
@@ -445,4 +445,5 @@ class Stft(SpectrogramProcessingParent):
             plt.ylim([min_frequency, max_frequency])
             plt.title(title)
             plt.tight_layout()
-            plt.show()
+
+        plt.show()
