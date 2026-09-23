@@ -39,7 +39,6 @@ signal corresponding to a given spectrogram.
 # DPF server, and retrieving the example files.
 
 # Load Ansys libraries.
-from ansys.sound.core import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
 from ansys.sound.core.examples_helpers import download_flute_wav
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
@@ -77,6 +76,7 @@ wav_loader.plot()
 
 # Instantiate an instance of the ``Stft`` class using the previously loaded signal
 # as an input. Use an FFT size of 1024 points and then display the STFT colormap.
+
 stft = Stft(signal, fft_size=1024)
 
 # Process the STFT
