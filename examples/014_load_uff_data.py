@@ -53,6 +53,7 @@ UFF files containing type 58 or type 58b data blocks.
 # and downloading the necessary data files.
 
 import warnings
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -61,6 +62,7 @@ try:
     # warning filters wipe. Remove once the issue is fixed.
     tmp = warnings.filters[:]
     import pyuff
+
     warnings.filters[:] = tmp
 except ImportError:
     raise ImportError(
