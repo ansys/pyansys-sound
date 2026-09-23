@@ -131,6 +131,7 @@ def test_stft_get_output(load_flute_wav):
     assert fc_out[200].data[0] == pytest.approx(EXP_FC_198_0)
     assert fc_out[300].data[0] == pytest.approx(EXP_FC_298_0)
 
+
 @pytest.mark.skipif(
     pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1,
     reason="Incorrect STFT values' warning is only produced in versions prior to 2027.1",
@@ -144,7 +145,7 @@ def test_stft_get_output_version_warning(load_flute_wav):
         match=(
             "Output STFT is not scaled for RMS spectrum in Sound version prior to 2027.1.0. You can "
             "scale it by dividing the STFT values by the sum of the window values."
-        )
+        ),
     ):
         fc_out = stft.get_output()
     assert fc_out is None
@@ -302,7 +303,7 @@ def test_stft_plot_custom(mock_show, load_flute_wav):
         min_magnitude=0.0,
         max_frequency=5000.0,
         min_frequency=0.0,
-        title="Custom STFT plot with all options"
+        title="Custom STFT plot with all options",
     )
     mock_show.assert_called_once()
 
