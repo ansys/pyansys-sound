@@ -422,10 +422,10 @@ class Stft(SpectrogramProcessingParent):
             ax2.set_ylabel(f"Frequency ({frequency_unit})")
             ax2.set_title("Phase")
             ax2.set_xlabel(f"Time ({time_unit})")
-    
+
             f.suptitle("STFT")
             f.tight_layout()
-            
+
         else:
             # Plot STFT magnitude only.
             plt.figure()
