@@ -54,7 +54,7 @@ from ansys.tools.common.example_download import download_manager
 import platformdirs
 
 # Setup data directory
-USER_DATA_PATH = platformdirs.user_data_dir(appname="pyansys", appauthor="Ansys")
+USER_DATA_PATH = platformdirs.user_data_dir(appname="ansys_sound_core", appauthor="Ansys")
 EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
 
 
