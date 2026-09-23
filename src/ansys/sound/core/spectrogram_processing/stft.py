@@ -223,9 +223,9 @@ class Stft(SpectrogramProcessingParent):
         Returns
         -------
         numpy.ndarray
-            Complex STFT of the signal, in the signal's unit. The returned STFT is one-sided, which
-            means it only contains the positive frequency components up to half the signal's
-            sampling frequency.
+            Complex STFT of the signal, in the signal's unit. The returned STFT is two-sided, which
+            means the lower half of the frequencies, between 0 Hz and half of the signal's sampling
+            frequency, is mirrored in the upper half, up to the sampling frequency.
 
         Notes
         -----
@@ -260,7 +260,9 @@ class Stft(SpectrogramProcessingParent):
         numpy.ndarray
             Magnitude of the STFT, in the input signal's unit. The returned STFT magnitude is
             one-sided, which means it only contains the positive frequency components up to half the
-            signal's sampling  frequency.
+            signal's sampling frequency. Each STFT component accounts for both the positive and
+            negative frequencies' energy contributions: each component is scaled by sqrt(2) since
+            the STFT is symmetrical around half the signal's sampling frequency.
 
         Notes
         -----
@@ -301,7 +303,7 @@ class Stft(SpectrogramProcessingParent):
     def plot(self):
         """Plot the STFT.
 
-        This method plots the STFT magnitude and the associated phase.
+        This method plots the STFT magnitude in dB and the associated phase in radians.
 
         Notes
         -----
@@ -337,7 +339,7 @@ class Stft(SpectrogramProcessingParent):
             magnitude in the STFT data.
         min_magnitude: float, default: None
             Minimum magnitude value for the colormap. If None, it is determined as 0 if
-            `display_in_dB` is False, otherwise as the maximum magnitude minus 70 dB.
+            `display_in_dB` is False, otherwise as the maximum magnitude minus 60 dB.
         max_frequency: float, default: None
             Maximum frequency in Hz to display. If None, the full frequency range, that is, up to
             half the sampling frequency, is shown.
@@ -387,7 +389,7 @@ class Stft(SpectrogramProcessingParent):
 
         if min_magnitude is None:
             if display_in_dB:
-                min_magnitude = max_magnitude - 70.0
+                min_magnitude = max_magnitude - 60.0
             else:
                 min_magnitude = 0.0
 
