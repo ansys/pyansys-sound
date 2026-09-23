@@ -152,17 +152,17 @@ def test_download_sound_composer_FRF_eMotor():
 
 def test_download_sound_composer_source_WindRoadNoise():
     download_sound_composer_source_WindRoadNoise()
-    p = str(SOUND_EXAMPLES_PATH) + "/Wind and Road noise - spectrum vs vehicle speed (BBN source).txt"
+    p = (
+        str(SOUND_EXAMPLES_PATH)
+        + "/Wind and Road noise - spectrum vs vehicle speed (BBN source).txt"
+    )
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 147261
 
 
 def test_download_sound_composer_sourcecontrol_WindRoadNoise():
     download_sound_composer_source_control_WindRoadNoise()
-    p = (
-        str(SOUND_EXAMPLES_PATH)
-        + "/WindRoadNoise - vehicle speed.txt"
-    )
+    p = str(SOUND_EXAMPLES_PATH) + "/WindRoadNoise - vehicle speed.txt"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 80
 
