@@ -112,7 +112,7 @@ max_frequency_Hz = 2000.0
 stft.plot_magnitude_dB(
     reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
     max_dB=max_stft_dBSPL,
-    max_frequency=max_frequency_Hz
+    max_frequency=max_frequency_Hz,
 )
 
 # %%
@@ -149,7 +149,7 @@ stft.process()
 stft.plot_magnitude_dB(
     reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
     max_dB=max_stft_dBSPL,
-    max_frequency=max_frequency_Hz
+    max_frequency=max_frequency_Hz,
 )
 
 # %%
@@ -170,7 +170,7 @@ stft.process()
 stft.plot_magnitude_dB(
     reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
     max_dB=max_stft_dBSPL,
-    max_frequency=max_frequency_Hz
+    max_frequency=max_frequency_Hz,
 )
 
 # %%
