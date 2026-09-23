@@ -55,7 +55,7 @@ import platformdirs
 
 # Setup data directory
 USER_DATA_PATH = platformdirs.user_data_dir(appname="pyansys", appauthor="Ansys")
-SOUND_EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
+EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
 
 
 def _download_file_in_local_examples_folder(filename):
@@ -74,7 +74,7 @@ def _download_file_in_local_examples_folder(filename):
     Local path of the downloaded example file.
     """
     return download_manager.download_file(
-        filename, "pyansys-sound", SOUND_EXAMPLES_PATH, force=True, timeout=10.0
+        filename, "pyansys-sound", EXAMPLES_PATH, force=True, timeout=10.0
     )
 
 
