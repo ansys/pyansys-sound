@@ -54,10 +54,8 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # %%
 # Load a signal
 # ~~~~~~~~~~~~~
-# Load a signal from a WAV file using the ``LoadWav`` class. It is returned as a DPF
-# field container. For more information, see `fields_container
-# <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_
-# in the DPF-Core API documentation.
+# Load a signal from a WAV file using the ``LoadWav`` class. It is returned as a list of
+# :class:`Field <ansys.dpf.core.field.Field>`.
 
 # Return the input data of the example file
 path_flute_wav = download_flute_wav(server=my_server)
