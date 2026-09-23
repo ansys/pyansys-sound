@@ -261,14 +261,14 @@ path_xtract_demo_signal_2 = download_xtract_demo_signal_2_wav(my_server)
 
 paths = [path_xtract_demo_signal_1, path_xtract_demo_signal_2]
 
-# Instantiate the 'Xtract' class with the parameters previously set
+# Instantiate the :class:`.Xtract` class with the parameters previously set
 xtract = Xtract(
     parameters_denoiser=xtract_denoiser_params,
     parameters_tonal=xtract_tonal_params,
     parameters_transient=xtract_transient_params,
 )
 
-# Loop over all signal paths contained in the 'paths' variable
+# Loop over all signal paths contained in the ``paths`` variable
 for p in paths:
     # Name the signal using the file name
     signal_name = os.path.basename(p)
