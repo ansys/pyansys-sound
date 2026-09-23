@@ -97,12 +97,14 @@ plt.show()
 # Compute the spectrogram of the signal and plot it.
 stft_original = Stft(signal=signal, fft_size=1024, window_overlap=0.9)
 stft_original.process()
-max_stft_dBSPL = 20 * np.log10(np.max(stft_original.get_magnitude()) / REFERENCE_ACOUSTIC_PRESSURE_IN_AIR)
+max_stft_dBSPL = 20 * np.log10(
+    np.max(stft_original.get_magnitude()) / REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
+)
 max_frequency_Hz = 20000.0
 stft_original.plot_magnitude_dB(
     reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
     max_dB=max_stft_dBSPL,
-    max_frequency=max_frequency_Hz
+    max_frequency=max_frequency_Hz,
 )
 
 # %%
