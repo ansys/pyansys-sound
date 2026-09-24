@@ -316,8 +316,8 @@ class Stft(SpectrogramProcessingParent):
         display_phase: bool = True,
         display_in_dB: bool = True,
         reference_value: float = 1.0,
-        max_magnitude: float = None,
         range_magnitude: float = None,
+        max_magnitude: float = None,
         max_frequency: float = None,
         title: str = "STFT",
     ) -> None:
