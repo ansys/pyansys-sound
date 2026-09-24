@@ -88,8 +88,8 @@ You can also find relevant PyAnsys Sound workflow examples in :doc:`examples/ind
     already available to the server, since it runs on the same system as the Python process.
     However, if a `remote` server is connected to instead, and this server runs on a separate system,
     you must upload the files to the DPF Server with the dedicated `PyDPF Core upload function`_.
-    This function then returns the remote file path, which shall be used in PyAnsys Sound instead of
-    the local path it originates from.
+    This function then returns the file's server-side path, which shall be used in PyAnsys Sound
+    instead of the local path it originates from.
 
 .. LINKS AND REFERENCES
 .. _PyDPF-Core: https://dpf.docs.pyansys.com/version/stable/
