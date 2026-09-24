@@ -58,12 +58,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 try:
-    # Workaround for pyuff issue `#113 <https://github.com/ladisk/pyuff/issues/113>`_ about silent
-    # warning filters wipe. Remove once the issue is fixed.
-    tmp = warnings.filters[:]
     import pyuff
-
-    warnings.filters[:] = tmp
 except ImportError:
     raise ImportError(
         "The 'pyuff' package is required for this example. "
