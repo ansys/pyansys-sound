@@ -23,9 +23,9 @@ run PyAnsys Sound.
 
     my_server = connect_to_or_start_server()
 
-If the ``ANSRV_DPF_SOUND_PORT`` environment variable is set, PyAnsys Sound
-attempts to connect to a remote server (in a Docker container, for example). The default port is
-``6780``. You can also explicitly specify the port by passing the port number to the
+If the ``ANSRV_DPF_SOUND_PORT`` environment variable is set, PyAnsys Sound attempts to connect to a
+remote server (in a Docker container, for example). You can also explicitly specify the port by
+passing the port number in argument to the
 :func:`~.server_helpers._connect_to_or_start_server.connect_to_or_start_server()`
 function.
 
@@ -38,8 +38,9 @@ function.
 Otherwise, PyAnsys Sound attempts to locate and start a local server, following the priority order
 specified in `Manage multiple DPF Server installations`_.
 
-For more information on local and remote DPF servers, see `DPF Server`_ in the `PyDPF-Core`_
-documentation.
+For more information on local and remote DPF servers, see the documentation of the function
+:func:`~.server_helpers._connect_to_or_start_server.connect_to_or_start_server()`, and `DPF Server`_
+in the `PyDPF-Core`_ documentation.
 
 Basic PyAnsys Sound usage example
 ---------------------------------
@@ -85,10 +86,10 @@ You can also find relevant PyAnsys Sound workflow examples in :doc:`examples/ind
     `local` server is started with
     :func:`~.server_helpers._connect_to_or_start_server.connect_to_or_start_server()`, the files are
     already available to the server, since it runs on the same system as the Python process.
-    However, if a _remote_ server is connected to, an extra step is required to make the files
-    available to it. This step is automatically done when calling the download functions from module
-    :mod:`ansys.sound.core.examples_helpers.download`. But if you wish to use your own files, you
-    must upload them to the DPF Server with the dedicated `PyDPF Core upload function`_.
+    However, if a `remote` server is connected to instead, and this server runs on a separate system,
+    you must upload the files to the DPF Server with the dedicated `PyDPF Core upload function`_.
+    This function then returns the remote file path, which shall be used in PyAnsys Sound instead of
+    the local path it originates from.
 
 .. LINKS AND REFERENCES
 .. _PyDPF-Core: https://dpf.docs.pyansys.com/version/stable/
