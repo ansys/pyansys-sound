@@ -258,11 +258,9 @@ class Stft(SpectrogramProcessingParent):
         Returns
         -------
         numpy.ndarray
-            Magnitude of the STFT, in the input signal's unit. The returned STFT magnitude is
-            one-sided, which means it only contains the positive frequency components up to half the
-            signal's sampling frequency. Each STFT component accounts for both the positive and
-            negative frequencies' energy contributions: each component is scaled by sqrt(2) since
-            the STFT is symmetrical around half the signal's sampling frequency.
+            STFT magnitude in the input signal's unit. The result is one-sided and contains positive
+            frequencies only, up to half the sampling frequency. Magnitudes are scaled by sqrt(2) to
+            account for both the positive- and negative-frequency energy.
 
         Notes
         -----
@@ -319,9 +317,8 @@ class Stft(SpectrogramProcessingParent):
         display_in_dB: bool = True,
         reference_value: float = 1.0,
         max_magnitude: float = None,
-        min_magnitude: float = None,
+        range_magnitude: float = None,
         max_frequency: float = None,
-        min_frequency: float = 0.0,
         title: str = "STFT",
     ) -> None:
         """Plot the STFT with custom display settings.
@@ -334,17 +331,16 @@ class Stft(SpectrogramProcessingParent):
             Whether to display the STFT magnitude in dB or in the input signal's unit.
         reference_value: float, default: 1.0
             Reference value for dB conversion. Ignored if `display_in_dB` is False.
+        range_magnitude: float, default: None
+            Range of magnitude values for the colormap. If None, it is set to 60 dB if
+            ``display_in_dB`` is True, otherwise it is set to the maximum magnitude (see
+            ``max_magnitude``).
         max_magnitude: float, default: None
             Maximum magnitude value for the colormap. If None, it is determined as the maximum
             magnitude in the STFT data.
-        min_magnitude: float, default: None
-            Minimum magnitude value for the colormap. If None, it is determined as 0 if
-            `display_in_dB` is False, otherwise as the maximum magnitude minus 60 dB.
         max_frequency: float, default: None
             Maximum frequency in Hz to display. If None, the full frequency range, that is, up to
             half the sampling frequency, is shown.
-        min_frequency: float, default: 0.0
-            Minimum frequency in Hz to display.
         title: str, default: "STFT"
             Title of the figure.
 
@@ -359,9 +355,14 @@ class Stft(SpectrogramProcessingParent):
                 f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
             )
 
-        if reference_value <= 0:
+        if reference_value <= 0.0:
             raise PyAnsysSoundException(
                 "Reference value for dB conversion must be strictly greater than 0."
+            )
+
+        if range_magnitude is not None and range_magnitude <= 0.0:
+            raise PyAnsysSoundException(
+                "Range of magnitude values for the colormap must be strictly greater than 0."
             )
 
         magnitude = self.get_magnitude()
@@ -387,11 +388,11 @@ class Stft(SpectrogramProcessingParent):
         if max_magnitude is None:
             max_magnitude = np.max(magnitude)
 
-        if min_magnitude is None:
+        if range_magnitude is None:
             if display_in_dB:
-                min_magnitude = max_magnitude - 60.0
+                range_magnitude = 60.0
             else:
-                min_magnitude = 0.0
+                range_magnitude = max_magnitude
 
         if max_frequency is None:
             max_frequency = fs / 2.0
@@ -409,17 +410,17 @@ class Stft(SpectrogramProcessingParent):
                 cmap="jet",
                 extent=extent,
                 vmax=max_magnitude,
-                vmin=min_magnitude,
+                vmin=max_magnitude - range_magnitude,
             )
             f.colorbar(p, ax=ax1, label=f"Magnitude{str_unit}")
-            ax1.set_ylim([min_frequency, max_frequency])
+            ax1.set_ylim([0, max_frequency])
             ax1.set_ylabel(f"Frequency ({frequency_unit})")
             ax1.set_title("Magnitude")
 
             # Bottom subplot: STFT phase.
             p = ax2.imshow(phase, origin="lower", aspect="auto", cmap="jet", extent=extent)
             f.colorbar(p, ax=ax2, label="Phase (rad)")
-            ax2.set_ylim([min_frequency, max_frequency])
+            ax2.set_ylim([0, max_frequency])
             ax2.set_ylabel(f"Frequency ({frequency_unit})")
             ax2.set_title("Phase")
             ax2.set_xlabel(f"Time ({time_unit})")
@@ -437,13 +438,13 @@ class Stft(SpectrogramProcessingParent):
                 cmap="jet",
                 extent=extent,
                 vmax=max_magnitude,
-                vmin=min_magnitude,
+                vmin=max_magnitude - range_magnitude,
             )
             str_unit = f" ({magnitude_unit})" if len(magnitude_unit) > 0 else ""
             plt.colorbar(label=f"Magnitude{str_unit}")
             plt.ylabel(f"Frequency ({frequency_unit})")
             plt.xlabel(f"Time ({time_unit})")
-            plt.ylim([min_frequency, max_frequency])
+            plt.ylim([0, max_frequency])
             plt.title(title)
             plt.tight_layout()
 

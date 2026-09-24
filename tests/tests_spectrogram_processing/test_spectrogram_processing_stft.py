@@ -300,9 +300,8 @@ def test_stft_plot_custom(mock_show, load_flute_wav):
         display_in_dB=True,
         reference_value=2e-5,
         max_magnitude=80.0,
-        min_magnitude=0.0,
+        range_magnitude=70.0,
         max_frequency=5000.0,
-        min_frequency=0.0,
         title="Custom STFT plot with all options",
     )
     mock_show.assert_called_once()
@@ -323,3 +322,9 @@ def test_stft_plot_custom_exceptions(load_flute_wav):
         match="Reference value for dB conversion must be strictly greater than 0.",
     ):
         stft.plot_custom(reference_value=0.0)
+
+    with pytest.raises(
+        PyAnsysSoundException,
+        match="Range of magnitude values for the colormap must be strictly greater than 0.",
+    ):
+        stft.plot_custom(range_magnitude=0.0)
