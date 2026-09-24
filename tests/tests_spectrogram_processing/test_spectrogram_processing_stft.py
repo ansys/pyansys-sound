@@ -325,6 +325,15 @@ def test_stft_plot_custom_exceptions(load_flute_wav):
 
     with pytest.raises(
         PyAnsysSoundException,
+        match=(
+            "Maximum magnitude for the colormap must be strictly greater than 0, if the magnitude "
+            "is displayed in linear scale."
+        ),
+    ):
+        stft.plot_custom(display_in_dB=False, max_magnitude=0.0)
+
+    with pytest.raises(
+        PyAnsysSoundException,
         match="Range of magnitude values for the colormap must be strictly greater than 0.",
     ):
         stft.plot_custom(range_magnitude=0.0)

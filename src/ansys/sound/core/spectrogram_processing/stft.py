@@ -360,6 +360,12 @@ class Stft(SpectrogramProcessingParent):
                 "Reference value for dB conversion must be strictly greater than 0."
             )
 
+        if display_in_dB is False and max_magnitude is not None and max_magnitude <= 0.0:
+            raise PyAnsysSoundException(
+                "Maximum magnitude for the colormap must be strictly greater than 0, if the "
+                "magnitude is displayed in linear scale."
+            )
+
         if range_magnitude is not None and range_magnitude <= 0.0:
             raise PyAnsysSoundException(
                 "Range of magnitude values for the colormap must be strictly greater than 0."
