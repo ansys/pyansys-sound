@@ -84,8 +84,7 @@ stft.plot()
 
 # %%
 # To display the STFT in dB SPL (that is, dB relative to 20 µPa), prefer the
-# :meth:`~.Stft.plot_custom()` method with the proper
-# reference value.
+# :meth:`~.Stft.plot_custom()` method with the proper reference value.
 stft.plot_custom(
     reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
     max_magnitude=80,
@@ -112,7 +111,8 @@ stft.plot_custom(
 # Compute and plot ISTFT
 # ~~~~~~~~~~~~~~~~~~~~~~
 # Convert the STFT back to a time-domain signal using the :class:`.Istft` class.
-# The input of the :class:`.Istft` class is the output of the :class:`.Stft` class.
+# The required input format of the :class:`.Istft` class is the same as the output format of the
+# :class:`.Stft` class.
 
 spectrogram = stft.get_output()
 

@@ -45,8 +45,6 @@ the PyDPF-Core documentation:
   <https://dpf.docs.pyansys.com/version/stable/getting_started/install.html#installation>`_.
 - If you want to use the DPF standalone version, see `Install DPF Server
   <https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#dpf-server>`_.
-
-
 """
 
 # %%

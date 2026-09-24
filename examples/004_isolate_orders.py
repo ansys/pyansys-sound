@@ -123,7 +123,7 @@ stft.plot_custom(
 
 rpm_profile = wav_loader.get_output()[1]
 
-# Define parameters for order isolation
+# Define parameters for order isolation.
 order_to_isolate = [2, 4, 6]  # Orders indexes to isolate as a list
 fft_size = 8192  # FFT Size (in samples)
 window_type = "HANN"  # Window type
