@@ -204,8 +204,18 @@ class Stft(SpectrogramProcessingParent):
         size in :attr:`fft_size`).
         """
         if self._output == None:
-            warnings.warn(PyAnsysSoundWarning("Output is not processed yet. \
-                    Use the 'Stft.process()' method."))
+            warnings.warn(
+                PyAnsysSoundWarning("Output is not processed yet. Use the 'Stft.process()' method.")
+            )
+
+        if not _check_sound_version("2027.1.0"):
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    "Output STFT is not scaled for RMS spectrum in Sound version prior to "
+                    "2027.1.0. You can scale it by dividing the STFT values by the sum of the "
+                    "window values."
+                )
+            )
 
         if not _check_sound_version("2027.1.0"):
             warnings.warn(
@@ -218,15 +228,21 @@ class Stft(SpectrogramProcessingParent):
 
         return self._output
 
-    def get_output_as_nparray(self) -> np.ndarray:
-        """Get the STFT of the signal as a NumPy array.
+    def get_output_as_nparray(self) -> tuple[np.ndarray]:
+        """Get the STFT of the signal as a tuple of NumPy arrays.
 
         Returns
         -------
         numpy.ndarray
-            Complex STFT of the signal, in the signal's unit. The returned STFT is one-sided, which
-            means it only contains the positive frequency components up to half the signal's
-            sampling frequency.
+            Complex STFT of the signal, in the signal's unit. The returned STFT is two-sided, which
+            means the lower half of the frequencies, between 0 Hz and half of the signal's sampling
+            frequency, is mirrored in the upper half, up to the sampling frequency. Each row of
+            the STFT corresponds to a specific frequency, and each column corresponds to a specific
+            time.
+        numpy.ndarray
+            Frequencies in Hz corresponding to the rows of the STFT.
+        numpy.ndarray
+            Times in seconds corresponding to the columns of the STFT.
 
         Notes
         -----
@@ -238,6 +254,8 @@ class Stft(SpectrogramProcessingParent):
         size in :attr:`fft_size`).
         """
         output = self.get_output()
+        if output is None:
+            return np.array([]), np.array([]), np.array([])
 
         time_indexes = output.get_available_ids_for_label("time")
         Ntime = len(time_indexes)
@@ -251,7 +269,10 @@ class Stft(SpectrogramProcessingParent):
             f2 = output.get_field({"complex": 1, "time": i, "channel_number": 0})
             out_as_np_array[i] = f1.data + 1j * f2.data
 
-        return np.transpose(out_as_np_array)
+        times = self.get_output().time_freq_support.time_frequencies.data
+        frequencies = self.get_output()[0].time_freq_support.time_frequencies.data
+
+        return np.transpose(out_as_np_array), np.array(frequencies), np.array(times)
 
     def get_magnitude(self) -> np.ndarray:
         """Get the magnitude of the STFT.
@@ -259,9 +280,9 @@ class Stft(SpectrogramProcessingParent):
         Returns
         -------
         numpy.ndarray
-            Magnitude of the STFT, in the input signal's unit. The returned STFT magnitude is
-            one-sided, which means it only contains the positive frequency components up to half the
-            signal's sampling  frequency.
+            STFT magnitude in the input signal's unit. The result is one-sided and contains positive
+            frequencies only, up to half the sampling frequency. Magnitudes are scaled by sqrt(2) to
+            account for both the positive- and negative-frequency energy.
 
         Notes
         -----
@@ -272,16 +293,15 @@ class Stft(SpectrogramProcessingParent):
         attributes :attr:`window_type` and :attr:`fft_size` (the window size is equal to the FFT
         size in :attr:`fft_size`).
         """
-        output = self.get_output_as_nparray()
-
-        # Only extract the first half of the two-sided STFT, as it is symmetrical
-        half_nfft = int(np.floor(output.shape[0] / 2)) + 1
+        complex_stft = self.get_output_as_nparray()[0]
+        if len(complex_stft) == 0:
+            return np.array([])
 
         # Scale the STFT by sqrt(2) to account for the energy sum of the positive and negative
         # frequency bins (two-sided to one-sided STFT conversion).
-        output = np.sqrt(2) * output[:half_nfft, :]
+        complex_stft = np.sqrt(2) * complex_stft[: self._one_sided_length(), :]
 
-        return np.absolute(output)
+        return np.absolute(complex_stft)
 
     def get_phase(self) -> np.ndarray:
         """Get the phase of the STFT.
@@ -292,17 +312,41 @@ class Stft(SpectrogramProcessingParent):
             Phase of the STFT, in rad. The returned STFT phase is one-sided, which means it only
             contains the positive frequency components up to half the signal's sampling frequency.
         """
-        output = self.get_output_as_nparray()
+        complex_stft = self.get_output_as_nparray()[0]
+        if len(complex_stft) == 0:
+            return np.array([])
 
-        # Only extract the first half of the two-sided STFT, as it is symmetrical
-        half_nfft = int(np.floor(output.shape[0] / 2)) + 1
+        return np.angle(complex_stft[: self._one_sided_length(), :])
 
-        return np.angle(output[:half_nfft, :])
+    def get_frequencies(self) -> np.ndarray:
+        """Get the frequency scale of the STFT magnitude and phase.
+
+        Returns
+        -------
+        numpy.ndarray
+            Frequencies, in Hz, corresponding to the rows of the STFT magnitude and phase, returned
+            by :meth:`get_magnitude` and :meth:`get_phase`, respectively.
+        """
+        frequencies = self.get_output_as_nparray()[1]
+        if len(frequencies) == 0:
+            return np.array([])
+
+        return frequencies[: self._one_sided_length()]
+
+    def get_time_scale(self) -> np.ndarray:
+        """Get the time scale of the STFT.
+
+        Returns
+        -------
+        numpy.ndarray
+            Time values, in seconds, corresponding to the columns of the STFT.
+        """
+        return self.get_output_as_nparray()[2]
 
     def plot(self):
         """Plot the STFT.
 
-        This method plots the STFT magnitude and the associated phase.
+        This method plots the STFT magnitude in dB and the associated phase in radians.
 
         Notes
         -----
@@ -317,10 +361,9 @@ class Stft(SpectrogramProcessingParent):
         display_phase: bool = True,
         display_in_dB: bool = True,
         reference_value: float = 1.0,
+        range_magnitude: float = None,
         max_magnitude: float = None,
-        min_magnitude: float = None,
         max_frequency: float = None,
-        min_frequency: float = 0.0,
         title: str = "STFT",
     ) -> None:
         """Plot the STFT with custom display settings.
@@ -333,17 +376,16 @@ class Stft(SpectrogramProcessingParent):
             Whether to display the STFT magnitude in dB or in the input signal's unit.
         reference_value: float, default: 1.0
             Reference value for dB conversion. Ignored if `display_in_dB` is False.
+        range_magnitude: float, default: None
+            Range of magnitude values for the colormap. If None, it is set to 60 dB if
+            ``display_in_dB`` is True, otherwise it is set to the maximum magnitude (see
+            ``max_magnitude``).
         max_magnitude: float, default: None
             Maximum magnitude value for the colormap. If None, it is determined as the maximum
             magnitude in the STFT data.
-        min_magnitude: float, default: None
-            Minimum magnitude value for the colormap. If None, it is determined as 0 if
-            `display_in_dB` is False, otherwise as the maximum magnitude minus 70 dB.
         max_frequency: float, default: None
             Maximum frequency in Hz to display. If None, the full frequency range, that is, up to
             half the sampling frequency, is shown.
-        min_frequency: float, default: 0.0
-            Minimum frequency in Hz to display.
         title: str, default: "STFT"
             Title of the figure.
 
@@ -358,9 +400,20 @@ class Stft(SpectrogramProcessingParent):
                 f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
             )
 
-        if reference_value <= 0:
+        if reference_value <= 0.0:
             raise PyAnsysSoundException(
                 "Reference value for dB conversion must be strictly greater than 0."
+            )
+
+        if display_in_dB is False and max_magnitude is not None and max_magnitude <= 0.0:
+            raise PyAnsysSoundException(
+                "Maximum magnitude for the colormap must be strictly greater than 0, if the "
+                "magnitude is displayed in linear scale."
+            )
+
+        if range_magnitude is not None and range_magnitude <= 0.0:
+            raise PyAnsysSoundException(
+                "Range of magnitude values for the colormap must be strictly greater than 0."
             )
 
         magnitude = self.get_magnitude()
@@ -375,25 +428,24 @@ class Stft(SpectrogramProcessingParent):
         phase = self.get_phase()
 
         frequency_unit = self.get_output()[0].time_freq_support.time_frequencies.unit
+        frequencies = self.get_frequencies()
         time_unit = self.get_output().time_freq_support.time_frequencies.unit
-        time_spectrogram = self.get_output().time_freq_support.time_frequencies.data
-        time_signal = self.signal.time_freq_support.time_frequencies.data
-        fs = 1.0 / (time_signal[1] - time_signal[0])
+        times = self.get_time_scale()
 
         # Boundaries of the plot
-        extent = [time_spectrogram[0], time_spectrogram[-1], 0.0, fs / 2.0]
+        extent = [times[0], times[-1], frequencies[0], frequencies[-1]]
 
         if max_magnitude is None:
             max_magnitude = np.max(magnitude)
 
-        if min_magnitude is None:
+        if range_magnitude is None:
             if display_in_dB:
-                min_magnitude = max_magnitude - 70.0
+                range_magnitude = 60.0
             else:
-                min_magnitude = 0.0
+                range_magnitude = max_magnitude
 
         if max_frequency is None:
-            max_frequency = fs / 2.0
+            max_frequency = frequencies[-1]
 
         # Plot
         str_unit = f" ({magnitude_unit})" if len(magnitude_unit) > 0 else ""
@@ -408,17 +460,17 @@ class Stft(SpectrogramProcessingParent):
                 cmap="jet",
                 extent=extent,
                 vmax=max_magnitude,
-                vmin=min_magnitude,
+                vmin=max_magnitude - range_magnitude,
             )
             f.colorbar(p, ax=ax1, label=f"Magnitude{str_unit}")
-            ax1.set_ylim([min_frequency, max_frequency])
+            ax1.set_ylim([0, max_frequency])
             ax1.set_ylabel(f"Frequency ({frequency_unit})")
             ax1.set_title("Magnitude")
 
             # Bottom subplot: STFT phase.
             p = ax2.imshow(phase, origin="lower", aspect="auto", cmap="jet", extent=extent)
             f.colorbar(p, ax=ax2, label="Phase (rad)")
-            ax2.set_ylim([min_frequency, max_frequency])
+            ax2.set_ylim([0, max_frequency])
             ax2.set_ylabel(f"Frequency ({frequency_unit})")
             ax2.set_title("Phase")
             ax2.set_xlabel(f"Time ({time_unit})")
@@ -436,14 +488,23 @@ class Stft(SpectrogramProcessingParent):
                 cmap="jet",
                 extent=extent,
                 vmax=max_magnitude,
-                vmin=min_magnitude,
+                vmin=max_magnitude - range_magnitude,
             )
             str_unit = f" ({magnitude_unit})" if len(magnitude_unit) > 0 else ""
             plt.colorbar(label=f"Magnitude{str_unit}")
             plt.ylabel(f"Frequency ({frequency_unit})")
             plt.xlabel(f"Time ({time_unit})")
-            plt.ylim([min_frequency, max_frequency])
+            plt.ylim([0, max_frequency])
             plt.title(title)
             plt.tight_layout()
 
         plt.show()
+
+    def _one_sided_length(self) -> int:
+        """Compute and return the length of a one-sided spectrum.
+
+        Returns:
+            int: Length of a one-sided spectrum.
+        """
+        nfft = len(self.get_output_as_nparray()[1])
+        return int(np.floor(nfft / 2)) + 1
