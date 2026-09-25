@@ -389,3 +389,18 @@ def download_uff_sample_4_channels_type58b():
         Local path for the ``4_channels_type58b.uff`` file.
     """
     return _download_file_in_local_examples_folder("4_channels_type58b.uff")
+
+
+def download_rpm_acceleration_deceleration(server=None):
+    """Download the ``rpm_acceleration-deceleration.txt`` file.
+
+    This file contains RPM data for acceleration and deceleration scenarios.
+
+    Returns
+    -------
+    str
+        Path for the ``rpm_acceleration-deceleration.txt`` file.
+    """
+    return _download_file_and_upload_to_server_tmp_folder(
+        "rpm_acceleration-deceleration.txt", server=server
+    )

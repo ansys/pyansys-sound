@@ -35,6 +35,7 @@ from ansys.sound.core.examples_helpers import (
     download_flute_wav,
     download_HVAC_test_wav,
     download_JLT_CE_data_csv,
+    download_rpm_acceleration_deceleration,
     download_sound_composer_FRF_eMotor,
     download_sound_composer_project_whatif,
     download_sound_composer_source_control_eMotor,
@@ -198,3 +199,10 @@ def test_download_uff_sample_4_channels_type58b():
     p = str(SOUND_EXAMPLES_PATH) + "/4_channels_type58b.uff"
     assert pathlib.Path(p).exists() == True
     assert os.path.getsize(p) == 10483384
+
+
+def test_download_rpm_acceleration_deceleration():
+    download_rpm_acceleration_deceleration()
+    p = str(EXAMPLES_PATH) + "/rpm_acceleration-deceleration.txt"
+    assert pathlib.Path(p).exists() == True
+    assert os.path.getsize(p) == 1254

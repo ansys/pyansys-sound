@@ -37,6 +37,7 @@ from .download import (
     download_flute_wav,
     download_HVAC_test_wav,
     download_JLT_CE_data_csv,
+    download_rpm_acceleration_deceleration,
     download_sound_composer_FRF_eMotor,
     download_sound_composer_project_whatif,
     download_sound_composer_source_control_eMotor,
@@ -71,4 +72,5 @@ __all__ = (
     "download_sound_composer_source_WindRoadNoise",
     "download_sound_composer_source_control_WindRoadNoise",
     "download_uff_sample_4_channels_type58b",
+    "download_rpm_acceleration_deceleration",
 )
