@@ -595,6 +595,33 @@ def test_order_levels_plot_warnings(mock_show, load_accel_and_rpm):
         order_levels.plot()
     mock_show.assert_called_once()
 
+    @patch("matplotlib.pyplot.show")
+    def test_order_levels_plot_rpm_order_representation(mock_show, load_accel_and_rpm):
+        """Test the plot_rpm_order_representation method."""
+        signal, rpm_profile = load_accel_and_rpm
+        order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0])
+        order_levels.process()
+        order_levels.plot_rpm_order_representation()
+        mock_show.assert_called_once()
+
+        # Additional code paths
+        signal.name = ""
+        signal.unit = ""
+        mock_show.reset_mock()
+        order_levels.plot_rpm_order_representation(display_in_dB=True, reference_value=2e-5)
+        mock_show.assert_called_once()
+
+    def test_order_levels_plot_rpm_order_representation_exceptions(load_accel_and_rpm):
+        """Test the plot_rpm_order_representation method's exceptions."""
+        signal, rpm_profile = load_accel_and_rpm
+        order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0])
+
+        with pytest.raises(
+            PyAnsysSoundException,
+            match=("Output is not processed yet. Use the `OrderLevels.process\(\)` method."),
+        ):
+            order_levels.plot_rpm_order_representation()
+
 
 # --- export ---
 
