@@ -88,7 +88,6 @@ stft.plot()
 stft.plot_custom(
     reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
     max_magnitude=80,
-    min_magnitude=0,
 )
 
 # %%
@@ -104,7 +103,6 @@ stft.process()
 stft.plot_custom(
     reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
     max_magnitude=80,
-    min_magnitude=0,
 )
 
 # %%

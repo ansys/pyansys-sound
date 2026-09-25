@@ -118,7 +118,8 @@ stft_original.plot_custom(
 # ^^^^^^^^^^^^^^^^
 # The goal is to remove the fan noise from the demo signal. For this, we first need to isolate a
 # portion of the demo signal that only contains the fan noise, and deprived of any tonal content.
-# Then, this serves as the basis noise pattern to remove the fan noise from the rest demo signal.
+# Then, this serves as the basis noise pattern to remove the fan noise from the rest of the demo
+# signal.
 
 # %%
 # Crop the first two seconds of signal, where only the fan noise is present, to create the noise
