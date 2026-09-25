@@ -32,9 +32,6 @@ noise extraction, tonal extraction, and transient extraction.
 
 """
 
-# Maximum frequency for STFT plots, change according to your need
-MAX_FREQUENCY_PLOT_STFT = 5000.0
-
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
@@ -48,6 +45,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Load Ansys libraries.
+from ansys.sound.core import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
 from ansys.sound.core.examples_helpers import (
     download_xtract_demo_signal_1_wav,
     download_xtract_demo_signal_2_wav,
@@ -71,73 +69,6 @@ from ansys.sound.core.xtract import (
 
 # Connect to a remote DPF server or start a local DPF server.
 my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
-
-
-# %%
-# Define custom STFT plot function
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Define a custom function for STFT plots. It differs from the ``Stft.plot()`` method in that it
-# does not display the phase and allows setting custom title, maximum SPL, and maximum frequency.
-def plot_stft(
-    stft: Stft,
-    fs: float,
-    SPLmax: float,
-    title: str = "STFT",
-    maximum_frequency: float = MAX_FREQUENCY_PLOT_STFT,
-) -> None:
-    """Plot a short-term Fourier transform (STFT) into a figure window.
-
-    Parameters
-    ----------
-    stft: Stft
-        Object containing the STFT.
-    fs: float
-        Sampling frequency of the signal in Hz.
-    SPLmax: float
-        Maximum value (here in dB SPL) for the colormap.
-    title: str, default: "STFT"
-        Title of the figure.
-    maximum_frequency: float, default: MAX_FREQUENCY_PLOT_STFT
-        Maximum frequency in Hz to display.
-    """
-    magnitude = stft.get_stft_magnitude_as_nparray()
-    magnitude_unit = stft.get_output()[0].unit
-    if isinstance(magnitude_unit, tuple):
-        magnitude_unit = magnitude_unit[1]
-    frequency_unit = stft.get_output()[0].time_freq_support.time_frequencies.unit
-    time_unit = stft.get_output().time_freq_support.time_frequencies.unit
-
-    # Only extract the first half of the STFT, as it is symmetrical
-    half_nfft = int(magnitude.shape[0] / 2) + 1
-
-    # Voluntarily ignore a numpy warning
-    np.seterr(divide="ignore")
-    magnitude = 20 * np.log10(magnitude[0:half_nfft, :])
-    np.seterr(divide="warn")
-
-    # Obtain sampling frequency, time steps, and number of time samples
-    time_data_spectrogram = stft.get_output().time_freq_support.time_frequencies.data
-
-    # Define boundaries of the plot
-    extent = [time_data_spectrogram[0], time_data_spectrogram[-1], 0.0, fs / 2.0]
-
-    # Plot
-    plt.figure()
-    plt.imshow(
-        magnitude,
-        origin="lower",
-        aspect="auto",
-        cmap="jet",
-        extent=extent,
-        vmax=SPLmax,
-        vmin=SPLmax - 70.0,
-    )
-    plt.colorbar(label=f"Magnitude ({magnitude_unit})")
-    plt.ylabel(f"Frequency ({frequency_unit})")
-    plt.xlabel(f"Time ({time_unit})")
-    plt.ylim([0.0, maximum_frequency])  # Change the value of MAX_FREQUENCY_PLOT_STFT if needed.
-    plt.title(title)
-    plt.show()
 
 
 # %%
@@ -167,9 +98,16 @@ plt.show()
 # Compute the spectrogram of the signal and plot it.
 stft_original = Stft(signal=signal, fft_size=1024, window_overlap=0.9)
 stft_original.process()
-max_stft = 20 * np.log10(np.max(stft_original.get_stft_magnitude_as_nparray()))
-
-plot_stft(stft_original, fs, SPLmax=max_stft, maximum_frequency=20000.0)
+max_stft_dBSPL = 20 * np.log10(
+    np.max(stft_original.get_magnitude()) / REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
+)
+max_frequency_Hz = 20000.0
+stft_original.plot_custom(
+    display_phase=False,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+    max_magnitude=max_stft_dBSPL,
+    max_frequency=max_frequency_Hz,
+)
 
 # %%
 # Use individual extraction features
@@ -236,10 +174,23 @@ stft_modified_signal.process()
 print("Plot of the spectrograms with tonal extraction parameters that do not work.")
 
 ## Spectrogram of the original signal
-plot_stft(stft_original, fs, SPLmax=max_stft, title="Original Signal")
+max_frequency_Hz = 5000.0
+stft_original.plot_custom(
+    display_phase=False,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+    max_magnitude=max_stft_dBSPL,
+    max_frequency=max_frequency_Hz,
+    title="Original Signal",
+)
 
 ## Spectrogram of the modified signal
-plot_stft(stft_modified_signal, fs, SPLmax=max_stft, title="Extracted Tones")
+stft_modified_signal.plot_custom(
+    display_phase=False,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+    max_magnitude=max_stft_dBSPL,
+    max_frequency=max_frequency_Hz,
+    title="Extracted Tones",
+)
 # You can see from the obtained plot that the tones are not properly extracted.
 
 # %%
@@ -249,12 +200,24 @@ xtract_tonal.process()
 
 # Recheck the plots
 print("Plot of the spectrograms with the right tonal extraction parameters.")
-plot_stft(stft_original, fs, SPLmax=max_stft, title="Original Signal")
+stft_original.plot_custom(
+    display_phase=False,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+    max_magnitude=max_stft_dBSPL,
+    max_frequency=max_frequency_Hz,
+    title="Original Signal",
+)
 
 # Spectrogram of the modified signal
 stft_modified_signal.signal = xtract_tonal.get_output()[0]
 stft_modified_signal.process()
-plot_stft(stft_modified_signal, fs, SPLmax=max_stft, title="Extracted Tones")
+stft_modified_signal.plot_custom(
+    display_phase=False,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+    max_magnitude=max_stft_dBSPL,
+    max_frequency=max_frequency_Hz,
+    title="Extracted Tones",
+)
 
 # %%
 # Transient extraction
@@ -332,7 +295,13 @@ for p in paths:
     # Compute and plot the STFT
     stft_original.signal = signal
     stft_original.process()
-    plot_stft(stft=stft_original, fs=fs, SPLmax=max_stft, title=f"STFT for signal {signal_name}")
+    stft_original.plot_custom(
+        display_phase=False,
+        reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+        max_magnitude=max_stft_dBSPL,
+        max_frequency=max_frequency_Hz,
+        title=f"STFT for signal {signal_name}",
+    )
 
     # Use Xtract with the loaded signal
     xtract.input_signal = signal

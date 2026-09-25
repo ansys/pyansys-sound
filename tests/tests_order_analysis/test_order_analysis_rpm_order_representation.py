@@ -55,18 +55,18 @@ EXP_ORDER_COUNT = 8192
 
 # Expected numerical values for order_max=160, order_resolution=2.0
 # (using Acceleration_with_Tacho.wav == accel_with_rpm.wav)
-EXP_RPM0_ORDER0_MAX160 = -0.120336
-EXP_RPM0_ORDER500_MAX160 = -0.00803356
-EXP_RPM12_ORDER836_MAX160 = -0.250228
-EXP_RPM24_ORDER51_MAX160 = 272.303345  # order 2
-EXP_RPM814_ORDER102_MAX160 = 118.96640  # order 4
+EXP_RPM0_ORDER0_MAX160 = -2.938259e-5
+EXP_RPM0_ORDER500_MAX160 = -1.961512e-6
+EXP_RPM12_ORDER836_MAX160 = -6.109861e-5
+EXP_RPM24_ORDER51_MAX160 = 6.648842e-2  # order 2
+EXP_RPM814_ORDER102_MAX160 = 2.904808e-2  # order 4
 
 # Expected numerical values for order_max=10, order_resolution=0.125
-EXP_RPM0_ORDER0_MAX10 = -0.0132574
-EXP_RPM0_ORDER500_MAX10 = 0.00075042
-EXP_RPM12_ORDER836_MAX10 = 1.93926
-EXP_RPM31_ORDER780_MAX10 = 140.056763  # order 2
-EXP_RPM41_ORDER1560_MAX10 = 37.6345825  # order 4
+EXP_RPM0_ORDER0_MAX10 = -3.237077e-6
+EXP_RPM0_ORDER500_MAX10 = 1.832497e-7
+EXP_RPM12_ORDER836_MAX10 = 4.735032e-4
+EXP_RPM31_ORDER780_MAX10 = 3.419849e-2  # order 2
+EXP_RPM41_ORDER1560_MAX10 = 9.188209e-3  # order 4
 
 EXP_RPM0 = 974.50
 EXP_RPM12 = 977.29
@@ -262,19 +262,11 @@ def test_rpm_order_representation_get_output(load_accel_and_rpm):
     assert isinstance(rpm_order_representation, FieldsContainer)
     assert len(rpm_order_representation) == EXP_RPM_COUNT_MAX160 * 2  # *2: Real and imaginary parts
     assert len(rpm_order_representation[0].data) == EXP_ORDER_COUNT
-    assert rpm_order_representation[0].data[0] == pytest.approx(EXP_RPM0_ORDER0_MAX160, abs=1e-4)
-    assert rpm_order_representation[0].data[500] == pytest.approx(
-        EXP_RPM0_ORDER500_MAX160, abs=1e-4
-    )
-    assert rpm_order_representation[24].data[836] == pytest.approx(
-        EXP_RPM12_ORDER836_MAX160, abs=1e-4
-    )
-    assert rpm_order_representation[48].data[51] == pytest.approx(
-        EXP_RPM24_ORDER51_MAX160, abs=1e-4
-    )
-    assert rpm_order_representation[1628].data[102] == pytest.approx(
-        EXP_RPM814_ORDER102_MAX160, abs=1e-1
-    )
+    assert rpm_order_representation[0].data[0] == pytest.approx(EXP_RPM0_ORDER0_MAX160)
+    assert rpm_order_representation[0].data[500] == pytest.approx(EXP_RPM0_ORDER500_MAX160)
+    assert rpm_order_representation[24].data[836] == pytest.approx(EXP_RPM12_ORDER836_MAX160)
+    assert rpm_order_representation[48].data[51] == pytest.approx(EXP_RPM24_ORDER51_MAX160)
+    assert rpm_order_representation[1628].data[102] == pytest.approx(EXP_RPM814_ORDER102_MAX160)
     assert rpm_order_representation.get_support("RPM") is not None
     assert rpm_order_representation.get_support("time") is not None
 
