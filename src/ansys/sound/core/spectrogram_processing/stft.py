@@ -309,12 +309,13 @@ class Stft(SpectrogramProcessingParent):
         return np.angle(complex_stft[: self._one_sided_length(), :])
 
     def get_frequencies(self) -> np.ndarray:
-        """Get the frequency scale of the STFT.
+        """Get the frequency scale of the STFT magnitude and phase.
 
         Returns
         -------
         numpy.ndarray
-            Frequencies, in Hz, corresponding to the rows of the STFT.
+            Frequencies, in Hz, corresponding to the rows of the STFT magnitude and phase, returned
+            by :meth:`get_frequencies` and :meth:`get_phase`, respectively.
         """
         frequencies = self.get_output_as_nparray()[1]
         if len(frequencies) == 0:
