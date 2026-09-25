@@ -420,8 +420,6 @@ class Stft(SpectrogramProcessingParent):
         frequencies = self.get_frequencies()
         time_unit = self.get_output().time_freq_support.time_frequencies.unit
         time_spectrogram = self.get_output().time_freq_support.time_frequencies.data
-        time_signal = self.signal.time_freq_support.time_frequencies.data
-        fs = 1.0 / (time_signal[1] - time_signal[0])
 
         # Boundaries of the plot
         extent = [time_spectrogram[0], time_spectrogram[-1], 0.0, frequencies[-1]]
