@@ -33,7 +33,7 @@ from ansys.sound.core.spectrogram_processing import Stft
 if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
     # bug fix (ID#1515224) in DPF Sound 2027 R1
     EXP_FC_SIZE = 308
-    EXP_STFT_SIZE = 154
+    EXP_TIME_LENGTH = 154
     EXP_FC_98_0 = -4.276798e-5
     EXP_FC_198_0 = -3.598906e-5
     EXP_FC_298_0 = -4.154918e-5
@@ -44,10 +44,13 @@ if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
     EXP_MAGNITUDE_100_IDX = 0.0024407469978254526
     EXP_MAGNITUDE_200_IDX = 0.0008295802586940055
     EXP_MAGNITUDE_300_IDX = 0.0006807651735582324
+    EXP_TIME_0 = -0.02321995
+    EXP_TIME_TESTED_IDX = 1.114558
+    EXP_TIME_LAST = 3.529433
 elif pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
     # bug fix (ID#1247009) & third-party update (IPP) in DPF Sound 2026 R1
     EXP_FC_SIZE = 308  # real and complex parts in separate fields
-    EXP_STFT_SIZE = 154  # real and complex parts combined (EXP_STFT_SIZE = EXP_FC_SIZE / 2)
+    EXP_TIME_LENGTH = 154  # real and complex parts combined (EXP_STFT_SIZE = EXP_FC_SIZE / 2)
     EXP_FC_98_0 = -0.04377303272485733
     EXP_FC_198_0 = -0.03683480620384216
     EXP_FC_298_0 = -0.042525582015514374
@@ -58,9 +61,12 @@ elif pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1:
     EXP_MAGNITUDE_100_IDX = 2.4981045637478467
     EXP_MAGNITUDE_200_IDX = 0.8490754186573622
     EXP_MAGNITUDE_300_IDX = 0.696763139370207
+    EXP_TIME_0 = -0.02321995
+    EXP_TIME_TESTED_IDX = 1.114558
+    EXP_TIME_LAST = 3.529433
 else:  # DPF Sound <= 2025 R2
     EXP_FC_SIZE = 310  # real and complex parts in separate fields
-    EXP_STFT_SIZE = 155  # real and complex parts combined (EXP_STFT_SIZE = EXP_FC_SIZE / 2)
+    EXP_TIME_LENGTH = 155  # real and complex parts combined (EXP_STFT_SIZE = EXP_FC_SIZE / 2)
     EXP_FC_98_0 = -0.11434437334537506
     EXP_FC_198_0 = -0.09117653965950012
     EXP_FC_298_0 = -0.019828863441944122
@@ -71,10 +77,16 @@ else:  # DPF Sound <= 2025 R2
     EXP_MAGNITUDE_100_IDX = 2.4981045637478463
     EXP_MAGNITUDE_200_IDX = 0.8490763245706706
     EXP_MAGNITUDE_300_IDX = 0.696762976976946
+    EXP_TIME_0 = -0.02321995
+    EXP_TIME_TESTED_IDX = 1.137778
+    EXP_TIME_LAST = 3.552653
 
 EXP_PHASE_100_IDX = -2.2240823488563417
 EXP_PHASE_200_IDX = 0.5510831859508833
 EXP_PHASE_300_IDX = -1.63273084147678
+EXP_FREQUENCY_100 = 2153.320
+EXP_FREQUENCY_200 = 4306.641
+EXP_FREQUENCY_300 = 6459.961
 
 EXP_HALF_NFFT = 1025
 
@@ -116,8 +128,7 @@ def test_stft_get_output(load_flute_wav):
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. \
-                    Use the 'Stft.process\\(\\)' method.",
+        match="Output is not processed yet. Use the 'Stft.process\\(\\)' method.",
     ):
         fc_out = stft.get_output()
     assert fc_out is None
@@ -142,10 +153,7 @@ def test_stft_get_output_version_warning(load_flute_wav):
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match=(
-            "Output STFT is not scaled for RMS spectrum in Sound version prior to 2027.1.0. You "
-            "can scale it by dividing the STFT values by the sum of the window values."
-        ),
+        match="Output is not processed yet. Use the 'Stft.process\\(\\)' method.",
     ):
         fc_out = stft.get_output()
     assert fc_out is None
@@ -155,27 +163,53 @@ def test_stft_get_output_as_np_array(load_flute_wav):
     """Test the get_output_as_nparray method of Stft class."""
     stft = Stft(signal=load_flute_wav)
 
-    stft.process()
-    arr = stft.get_output_as_nparray()
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. Use the 'Stft.process\\(\\)' method.",
+    ):
+        complex_stft, frequencies, times = stft.get_output_as_nparray()
+    assert len(complex_stft) == 0
+    assert len(frequencies) == 0
+    assert len(times) == 0
 
-    assert np.shape(arr) == (stft.fft_size, EXP_STFT_SIZE)
-    assert type(arr[100, 0]) == np.complex128
-    assert arr[100, TESTED_IDX].real == pytest.approx(EXP_STFT_100_IDX.real)
-    assert arr[100, TESTED_IDX].imag == pytest.approx(EXP_STFT_100_IDX.imag)
-    assert arr[200, TESTED_IDX].real == pytest.approx(EXP_STFT_200_IDX.real)
-    assert arr[200, TESTED_IDX].imag == pytest.approx(EXP_STFT_200_IDX.imag)
-    assert arr[300, TESTED_IDX].real == pytest.approx(EXP_STFT_300_IDX.real)
-    assert arr[300, TESTED_IDX].imag == pytest.approx(EXP_STFT_300_IDX.imag)
+    stft.process()
+    complex_stft, frequencies, times = stft.get_output_as_nparray()
+
+    assert np.shape(complex_stft) == (stft.fft_size, EXP_TIME_LENGTH)
+    assert type(complex_stft[100, 0]) == np.complex128
+    assert complex_stft[100, TESTED_IDX].real == pytest.approx(EXP_STFT_100_IDX.real)
+    assert complex_stft[100, TESTED_IDX].imag == pytest.approx(EXP_STFT_100_IDX.imag)
+    assert complex_stft[200, TESTED_IDX].real == pytest.approx(EXP_STFT_200_IDX.real)
+    assert complex_stft[200, TESTED_IDX].imag == pytest.approx(EXP_STFT_200_IDX.imag)
+    assert complex_stft[300, TESTED_IDX].real == pytest.approx(EXP_STFT_300_IDX.real)
+    assert complex_stft[300, TESTED_IDX].imag == pytest.approx(EXP_STFT_300_IDX.imag)
+
+    assert len(frequencies) == stft.fft_size
+    assert frequencies[100] == pytest.approx(EXP_FREQUENCY_100)
+    assert frequencies[200] == pytest.approx(EXP_FREQUENCY_200)
+    assert frequencies[300] == pytest.approx(EXP_FREQUENCY_300)
+
+    assert len(times) == EXP_TIME_LENGTH
+    assert times[0] == pytest.approx(EXP_TIME_0)
+    assert times[EXP_TIME_LENGTH - 1] == pytest.approx(EXP_TIME_LAST)
+    assert times[TESTED_IDX] == pytest.approx(EXP_TIME_TESTED_IDX)
 
 
 def test_stft_get_magnitude(load_flute_wav):
     """Test the get_magnitude method of Stft class."""
     stft = Stft(signal=load_flute_wav)
 
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. Use the 'Stft.process\\(\\)' method.",
+    ):
+        magnitude = stft.get_magnitude()
+    assert len(magnitude) == 0
+
     stft.process()
     magnitude = stft.get_magnitude()
 
-    assert magnitude.shape == (EXP_HALF_NFFT, EXP_STFT_SIZE)
+    assert magnitude.shape == (EXP_HALF_NFFT, EXP_TIME_LENGTH)
     assert type(magnitude[100, 0]) == np.float64
     assert magnitude[100, TESTED_IDX] == pytest.approx(EXP_MAGNITUDE_100_IDX)
     assert magnitude[200, TESTED_IDX] == pytest.approx(EXP_MAGNITUDE_200_IDX)
@@ -186,14 +220,54 @@ def test_stft_get_phase(load_flute_wav):
     """Test the get_phase method of Stft class."""
     stft = Stft(signal=load_flute_wav)
 
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. Use the 'Stft.process\\(\\)' method.",
+    ):
+        phase = stft.get_phase()
+    assert len(phase) == 0
+
     stft.process()
     phase = stft.get_phase()
 
-    assert phase.shape == (EXP_HALF_NFFT, EXP_STFT_SIZE)
+    assert phase.shape == (EXP_HALF_NFFT, EXP_TIME_LENGTH)
     assert type(phase[100, 0]) == np.float64
     assert phase[100, TESTED_IDX] == pytest.approx(EXP_PHASE_100_IDX)
     assert phase[200, TESTED_IDX] == pytest.approx(EXP_PHASE_200_IDX)
     assert phase[300, TESTED_IDX] == pytest.approx(EXP_PHASE_300_IDX)
+
+
+def test_stft_get_frequencies(load_flute_wav):
+    """Test the get_frequencies method of Stft class."""
+    stft = Stft(signal=load_flute_wav)
+
+    with pytest.warns(
+        PyAnsysSoundWarning,
+        match="Output is not processed yet. Use the 'Stft.process\\(\\)' method.",
+    ):
+        frequencies = stft.get_frequencies()
+    assert len(frequencies) == 0
+
+    stft.process()
+    frequencies = stft.get_frequencies()
+
+    assert len(frequencies) == EXP_HALF_NFFT
+    assert frequencies[100] == pytest.approx(EXP_FREQUENCY_100)
+    assert frequencies[200] == pytest.approx(EXP_FREQUENCY_200)
+    assert frequencies[300] == pytest.approx(EXP_FREQUENCY_300)
+
+
+def test_stft_get_time_scale(load_flute_wav):
+    """Test the get_time_scale method of Stft class."""
+    stft = Stft(signal=load_flute_wav)
+
+    stft.process()
+    time_scale = stft.get_time_scale()
+
+    assert len(time_scale) == EXP_TIME_LENGTH
+    assert time_scale[0] == pytest.approx(EXP_TIME_0)
+    assert time_scale[TESTED_IDX] == pytest.approx(EXP_TIME_TESTED_IDX)
+    assert time_scale[-1] == pytest.approx(EXP_TIME_LAST)
 
 
 def test_stft_set_get_signal():
@@ -337,3 +411,11 @@ def test_stft_plot_custom_exceptions(load_flute_wav):
         match="Range of magnitude values for the colormap must be strictly greater than 0.",
     ):
         stft.plot_custom(range_magnitude=0.0)
+
+
+def test_stft__one_sided_length(load_flute_wav):
+    """Test the _one_sided_length method of Stft class."""
+    stft = Stft(signal=load_flute_wav)
+    stft.process()
+    one_sided_length = stft._one_sided_length()
+    assert one_sided_length == EXP_HALF_NFFT
