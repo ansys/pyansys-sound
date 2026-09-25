@@ -153,7 +153,10 @@ def test_stft_get_output_version_warning(load_flute_wav):
 
     with pytest.warns(
         PyAnsysSoundWarning,
-        match="Output is not processed yet. Use the 'Stft.process\\(\\)' method.",
+        match=(
+            "Output STFT is not scaled for RMS spectrum in Sound version prior to 2027.1.0. You "
+            "can scale it by dividing the STFT values by the sum of the window values."
+        ),
     ):
         fc_out = stft.get_output()
     assert fc_out is None
