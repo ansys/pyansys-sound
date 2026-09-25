@@ -183,7 +183,7 @@ sampling_frequency = wav_loader.get_sampling_frequency()
 # Compute the spectrogram.
 stft = Stft(signal=signal, fft_size=8192, window_overlap=0.9)
 stft.process()
-max_stft = 20 * np.log10(np.max(stft.get_magnitude()/REFERENCE_ACOUSTIC_PRESSURE_IN_AIR))
+max_stft = 20 * np.log10(np.max(stft.get_magnitude() / REFERENCE_ACOUSTIC_PRESSURE_IN_AIR))
 
 # %%
 # Plot the RPM profile and the spectrogram side-by-side.
@@ -283,7 +283,9 @@ axs[0].set_xlabel(f"Time ({time_rpm.unit})")
 # Right: spectrogram of the synthesized signal.
 stft_synth = Stft(signal=synthesized_signal, fft_size=8192, window_overlap=0.9)
 stft_synth.process()
-max_stft_synth = 20 * np.log10(np.max(stft_synth.get_magnitude()) / REFERENCE_ACOUSTIC_PRESSURE_IN_AIR)
+max_stft_synth = 20 * np.log10(
+    np.max(stft_synth.get_magnitude()) / REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
+)
 plot_stft(
     stft_synth,
     sampling_frequency,
