@@ -58,6 +58,7 @@ The example shows how to perform these operations:
 # connecting to the DPF server, and downloading the data files required in this example.
 
 # Load Ansys libraries.
+from ansys.sound.core._pyansys_sound import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
 from ansys.sound.core.examples_helpers import (
     download_sound_composer_FRF_eMotor,
     download_sound_composer_source_control_eMotor,
@@ -220,7 +221,10 @@ generated_signal_from_project = sound_composer_project.get_output()
 # Display the spectrogram of the generated signal using the :class:`.Stft` class.
 spectrogram = Stft(signal=generated_signal_from_project)
 spectrogram.process()
-spectrogram.plot()
+spectrogram.plot_custom(
+    display_phase=False,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+)
 
 # %%
 # Save the entire Sound Composer project

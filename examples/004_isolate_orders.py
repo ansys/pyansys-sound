@@ -33,9 +33,6 @@ and the loudness of the isolated signals.
 
 """
 
-# Maximum frequency for STFT plots, change according to your need
-MAX_FREQUENCY_PLOT_STFT = 2000.0
-
 # %%
 # Set up analysis
 # ~~~~~~~~~~~~~~~
@@ -48,6 +45,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Load Ansys libraries.
+from ansys.sound.core import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
 from ansys.sound.core.examples_helpers import (
     download_accel_with_rpm_2_wav,
     download_accel_with_rpm_3_wav,
@@ -65,73 +63,6 @@ from ansys.sound.core.spectrogram_processing import Stft
 
 # Connect to a remote DPF server or start a local DPF server.
 my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
-
-
-# %%
-# Define custom STFT plot function
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Define a custom function for STFT plots. It differs from the ``Stft.plot()`` method in that it
-# does not display the phase and allows setting custom title, maximum SPL, and maximum frequency.
-def plot_stft(
-    stft: Stft,
-    fs: float,
-    SPLmax: float,
-    title: str = "STFT",
-    maximum_frequency: float = MAX_FREQUENCY_PLOT_STFT,
-) -> None:
-    """Plot a short-term Fourier transform (STFT) into a figure window.
-
-    Parameters
-    ----------
-    stft: Stft
-        Object containing the STFT.
-    fs: float
-        Sampling frequency of the signal in Hz.
-    SPLmax: float
-        Maximum value (here in dB SPL) for the colormap.
-    title: str, default: "STFT"
-        Title of the figure.
-    maximum_frequency: float, default: MAX_FREQUENCY_PLOT_STFT
-        Maximum frequency in Hz to display.
-    """
-    magnitude = stft.get_stft_magnitude_as_nparray()
-    magnitude_unit = stft.get_output()[0].unit
-    if isinstance(magnitude_unit, tuple):
-        magnitude_unit = magnitude_unit[1]
-    frequency_unit = stft.get_output()[0].time_freq_support.time_frequencies.unit
-    time_unit = stft.get_output().time_freq_support.time_frequencies.unit
-
-    # Only extract the first half of the STFT, as it is symmetrical
-    half_nfft = int(magnitude.shape[0] / 2) + 1
-
-    # Voluntarily ignore a numpy warning
-    np.seterr(divide="ignore")
-    magnitude = 20 * np.log10(magnitude[0:half_nfft, :])
-    np.seterr(divide="warn")
-
-    # Obtain sampling frequency, time steps, and number of time samples
-    time_data_spectrogram = stft.get_output().time_freq_support.time_frequencies.data
-
-    # Define boundaries of the plot
-    extent = [time_data_spectrogram[0], time_data_spectrogram[-1], 0.0, fs / 2.0]
-
-    # Plot
-    plt.figure()
-    plt.imshow(
-        magnitude,
-        origin="lower",
-        aspect="auto",
-        cmap="jet",
-        extent=extent,
-        vmax=SPLmax,
-        vmin=SPLmax - 70.0,
-    )
-    plt.colorbar(label=f"Magnitude ({magnitude_unit})")
-    plt.ylabel(f"Frequency ({frequency_unit})")
-    plt.xlabel(f"Time ({time_unit})")
-    plt.ylim([0.0, maximum_frequency])  # Change the value of MAX_FREQUENCY_PLOT_STFT if needed.
-    plt.title(title)
-    plt.show()
 
 
 # %%
@@ -178,8 +109,14 @@ plt.show()
 
 stft = Stft(signal=signal, window_overlap=0.9, fft_size=8192)
 stft.process()
-max_stft = 20 * np.log10(np.max(stft.get_stft_magnitude_as_nparray()))
-plot_stft(stft, fs, max_stft)
+max_stft_dBSPL = 20 * np.log10(np.max(stft.get_magnitude()) / REFERENCE_ACOUSTIC_PRESSURE_IN_AIR)
+max_frequency_Hz = 2000.0
+stft.plot_custom(
+    display_phase=False,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+    max_magnitude=max_stft_dBSPL,
+    max_frequency=max_frequency_Hz,
+)
 
 # %%
 # Isolate orders
@@ -212,7 +149,12 @@ isolate_orders.process()
 # Plot the spectrogram of the isolated orders.
 stft.signal = isolate_orders.get_output()
 stft.process()
-plot_stft(stft, fs, max_stft)
+stft.plot_custom(
+    display_phase=False,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+    max_magnitude=max_stft_dBSPL,
+    max_frequency=max_frequency_Hz,
+)
 
 # %%
 # Isolate different orders
@@ -229,7 +171,12 @@ isolate_orders.process()
 # Plot the spectrogram of the isolated orders.
 stft.signal = isolate_orders.get_output()
 stft.process()
-plot_stft(stft, fs, max_stft)
+stft.plot_custom(
+    display_phase=False,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+    max_magnitude=max_stft_dBSPL,
+    max_frequency=max_frequency_Hz,
+)
 
 # %%
 # Work with the isolated signal
