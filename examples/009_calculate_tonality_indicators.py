@@ -46,6 +46,7 @@ and the results are commented, compared, and discussed.
 # DPF server, and retrieving the example file.
 
 # Load required libraries.
+from ansys.sound.core import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
 from ansys.sound.core.examples_helpers import download_turbo_whistling_wav
 from ansys.sound.core.psychoacoustics import (
     TonalityAures,
@@ -80,7 +81,11 @@ signal_aircraft = wav_loader.get_output()[0]
 # Calculate and display the spectrogram of the signal used in this example.
 stft = Stft(signal_aircraft, fft_size=1024, window_overlap=0.8)
 stft.process()
-stft.plot()
+stft.plot_custom(
+    display_phase=False,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+    max_frequency=5000.0,
+)
 
 # %%
 # From the spectrogram, you can see that the signal contains some tonal components,

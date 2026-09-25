@@ -28,6 +28,8 @@ from ansys.dpf.core import Field, FieldsContainer, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
+from ansys.sound.core.server_helpers._check_version import _check_sound_version
+
 from . import SpectrogramProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
@@ -176,24 +178,74 @@ class Stft(SpectrogramProcessingParent):
         Returns
         -------
         FieldsContainer
-            STFT of the signal in a DPF fields container.
+            Complex STFT, as a fields container, indexed by labels "time" and "complex". Each
+            indexed field corresponds to the real or imaginary part of a time-wise STFT slice.
+
+            The label "complex" indicates whether the field corresponds to the real (0) or imaginary
+            (1) part of the STFT slice. The module of each STFT slice is a two-sided RMS spectrum
+            between 0 Hz and the sampling frequency, at a specific time, as indexed with label
+            "time". The spectrum values are in the input signal's unit.
+
+            The support of the fields container, labeled "time", provides the actual time values, in
+            seconds, corresponding to each "time" label index.
+
+            For more information, see `RMS spectrum <https://ansyshelp.ansys.com/public/account/
+            secured?returnurl=/Views/Secured/corp/v261/en/Sound_SAS_UG/Sound/UG_SAS/
+            rms_spectrum.html>`_.
+
+        Notes
+        -----
+        Prior to Sound version 2027.1.0, RMS spectrum scaling is not applied in the returned STFT.
+        As a consequence, the stored STFT values are not in the input signal's unit if the used
+        Sound version is not 2027.1.0 or higher. In such case, to scale the STFT values, you need to
+        divide them by the sum of the values of the window function that is specified with
+        attributes :attr:`window_type` and :attr:`fft_size` (the window size is equal to the FFT
+        size in :attr:`fft_size`).
         """
         if self._output == None:
-            # Computing output if needed
-            warnings.warn(PyAnsysSoundWarning("Output is not processed yet. \
-                    Use the 'Stft.process()' method."))
+            warnings.warn(
+                PyAnsysSoundWarning("Output is not processed yet. Use the 'Stft.process()' method.")
+            )
+
+        if not _check_sound_version("2027.1.0"):
+            warnings.warn(
+                PyAnsysSoundWarning(
+                    "Output STFT is not scaled for RMS spectrum in Sound version prior to "
+                    "2027.1.0. You can scale it by dividing the STFT values by the sum of the "
+                    "window values."
+                )
+            )
 
         return self._output
 
-    def get_output_as_nparray(self) -> np.ndarray:
-        """Get the STFT of the signal as a NumPy array.
+    def get_output_as_nparray(self) -> tuple[np.ndarray]:
+        """Get the STFT of the signal as a tuple of NumPy arrays.
 
         Returns
         -------
         numpy.ndarray
-            STFT of the signal in a NumPy array.
+            Complex STFT of the signal, in the signal's unit. The returned STFT is two-sided, which
+            means the lower half of the frequencies, between 0 Hz and half of the signal's sampling
+            frequency, is mirrored in the upper half, up to the sampling frequency. Each row of
+            the STFT corresponds to a specific frequency, and each column corresponds to a specific
+            time.
+        numpy.ndarray
+            Frequencies in Hz corresponding to the rows of the STFT.
+        numpy.ndarray
+            Times in seconds corresponding to the columns of the STFT.
+
+        Notes
+        -----
+        Prior to Sound version 2027.1.0, RMS spectrum scaling is not applied in the returned STFT.
+        As a consequence, the stored STFT values are not in the input signal's unit if the used
+        Sound version is not 2027.1.0 or higher. In such case, to scale the STFT values, you need to
+        divide them by the sum of the values of the window function that is specified with
+        attributes :attr:`window_type` and :attr:`fft_size` (the window size is equal to the FFT
+        size in :attr:`fft_size`).
         """
         output = self.get_output()
+        if output is None:
+            return np.array([]), np.array([]), np.array([])
 
         time_indexes = output.get_available_ids_for_label("time")
         Ntime = len(time_indexes)
@@ -207,85 +259,242 @@ class Stft(SpectrogramProcessingParent):
             f2 = output.get_field({"complex": 1, "time": i, "channel_number": 0})
             out_as_np_array[i] = f1.data + 1j * f2.data
 
-        return np.transpose(out_as_np_array)
+        times = self.get_output().time_freq_support.time_frequencies.data
+        frequencies = self.get_output()[0].time_freq_support.time_frequencies.data
 
-    def get_stft_magnitude_as_nparray(self) -> np.ndarray:
-        """Get the amplitude of the STFT as a NumPy array.
+        return np.transpose(out_as_np_array), np.array(frequencies), np.array(times)
 
-        Returns
-        -------
-        numpy.ndarray
-            Amplitude of the STFT in a NumPy array.
-        """
-        output = self.get_output_as_nparray()
-        return np.absolute(output)
-
-    def get_stft_phase_as_nparray(self) -> np.ndarray:
-        """Get the phase of the STFT as a NumPy array.
+    def get_magnitude(self) -> np.ndarray:
+        """Get the magnitude of the STFT.
 
         Returns
         -------
         numpy.ndarray
-            Phase of the STFT in a NumPy array.
-        """
-        output = self.get_output_as_nparray()
-        return np.arctan2(np.imag(output), np.real(output))
+            STFT magnitude in the input signal's unit. The result is one-sided and contains positive
+            frequencies only, up to half the sampling frequency. Magnitudes are scaled by sqrt(2) to
+            account for both the positive- and negative-frequency energy.
 
-    def plot(self, reference_value: float = 1.0):
+        Notes
+        -----
+        Prior to Sound version 2027.1.0, RMS spectrum scaling is not applied in the returned STFT.
+        As a consequence, the stored STFT values are not in the input signal's unit if the used
+        Sound version is not 2027.1.0 or higher. In such case, to scale the STFT values, you need to
+        divide them by the sum of the values of the window function that is specified with
+        attributes :attr:`window_type` and :attr:`fft_size` (the window size is equal to the FFT
+        size in :attr:`fft_size`).
+        """
+        complex_stft = self.get_output_as_nparray()[0]
+        if len(complex_stft) == 0:
+            return np.array([])
+
+        # Scale the STFT by sqrt(2) to account for the energy sum of the positive and negative
+        # frequency bins (two-sided to one-sided STFT conversion).
+        complex_stft = np.sqrt(2) * complex_stft[: self._one_sided_length(), :]
+
+        return np.absolute(complex_stft)
+
+    def get_phase(self) -> np.ndarray:
+        """Get the phase of the STFT.
+
+        Returns
+        -------
+        numpy.ndarray
+            Phase of the STFT, in rad. The returned STFT phase is one-sided, which means it only
+            contains the positive frequency components up to half the signal's sampling frequency.
+        """
+        complex_stft = self.get_output_as_nparray()[0]
+        if len(complex_stft) == 0:
+            return np.array([])
+
+        return np.angle(complex_stft[: self._one_sided_length(), :])
+
+    def get_frequencies(self) -> np.ndarray:
+        """Get the frequency scale of the STFT magnitude and phase.
+
+        Returns
+        -------
+        numpy.ndarray
+            Frequencies, in Hz, corresponding to the rows of the STFT magnitude and phase, returned
+            by :meth:`get_magnitude` and :meth:`get_phase`, respectively.
+        """
+        frequencies = self.get_output_as_nparray()[1]
+        if len(frequencies) == 0:
+            return np.array([])
+
+        return frequencies[: self._one_sided_length()]
+
+    def get_time_scale(self) -> np.ndarray:
+        """Get the time scale of the STFT.
+
+        Returns
+        -------
+        numpy.ndarray
+            Time values, in seconds, corresponding to the columns of the STFT.
+        """
+        return self.get_output_as_nparray()[2]
+
+    def plot(self):
         """Plot the STFT.
 
-        This method plots the STFT amplitude and the associated phase.
+        This method plots the STFT magnitude in dB and the associated phase in radians.
+
+        Notes
+        -----
+        Prior to Sound version 2027.1.0, RMS spectrum scaling is not applied in the returned STFT.
+        As a consequence, the displayed STFT magnitude will be incorrect with Sound versions prior
+        to 2027.1.0.
+        """
+        self.plot_custom()
+
+    def plot_custom(
+        self,
+        display_phase: bool = True,
+        display_in_dB: bool = True,
+        reference_value: float = 1.0,
+        range_magnitude: float = None,
+        max_magnitude: float = None,
+        max_frequency: float = None,
+        title: str = "STFT",
+    ) -> None:
+        """Plot the STFT with custom display settings.
 
         Parameters
         ----------
-        reference_value : float, default: 1.0
-            Reference STFT amplitude value for dB conversion. For example, for an input sound
-            pressure signal, the reference value is typically 2e-5 (Pa).
+        display_phase: bool, default: True
+            Whether to include the STFT phase in the plot.
+        display_in_dB: bool, default: True
+            Whether to display the STFT magnitude in dB or in the input signal's unit.
+        reference_value: float, default: 1.0
+            Reference value for dB conversion. Ignored if `display_in_dB` is False.
+        range_magnitude: float, default: None
+            Range of magnitude values for the colormap. If None, it is set to 60 dB if
+            ``display_in_dB`` is True, otherwise it is set to the maximum magnitude (see
+            ``max_magnitude``).
+        max_magnitude: float, default: None
+            Maximum magnitude value for the colormap. If None, it is determined as the maximum
+            magnitude in the STFT data.
+        max_frequency: float, default: None
+            Maximum frequency in Hz to display. If None, the full frequency range, that is, up to
+            half the sampling frequency, is shown.
+        title: str, default: "STFT"
+            Title of the figure.
+
+        Notes
+        -----
+        Prior to Sound version 2027.1.0, RMS spectrum scaling is not applied in the returned STFT.
+        As a consequence, the displayed STFT magnitude will be incorrect with Sound versions prior
+        to 2027.1.0.
         """
         if self._output is None:
             raise PyAnsysSoundException(
                 f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
             )
 
-        if reference_value <= 0:
+        if reference_value <= 0.0:
             raise PyAnsysSoundException(
                 "Reference value for dB conversion must be strictly greater than 0."
             )
 
-        magnitude = self.get_stft_magnitude_as_nparray()
+        if display_in_dB is False and max_magnitude is not None and max_magnitude <= 0.0:
+            raise PyAnsysSoundException(
+                "Maximum magnitude for the colormap must be strictly greater than 0, if the "
+                "magnitude is displayed in linear scale."
+            )
+
+        if range_magnitude is not None and range_magnitude <= 0.0:
+            raise PyAnsysSoundException(
+                "Range of magnitude values for the colormap must be strictly greater than 0."
+            )
+
+        magnitude = self.get_magnitude()
         unit = self.get_output()[0].unit
-        mag_unit = unit if isinstance(unit, str) else unit[1]
-        freq_unit = self.get_output()[0].time_freq_support.time_frequencies.unit
+        magnitude_unit = unit if isinstance(unit, str) else unit[1]
+        if display_in_dB:
+            # Convert magnitude to dB.
+            magnitude = 20 * np.log10(self.get_magnitude() / reference_value + 1e-12)
+            str_unit = f" {magnitude_unit}" if len(magnitude_unit) > 0 else ""
+            magnitude_unit = f"dB re. {reference_value}{str_unit}"
+
+        phase = self.get_phase()
+
+        frequency_unit = self.get_output()[0].time_freq_support.time_frequencies.unit
+        frequencies = self.get_frequencies()
         time_unit = self.get_output().time_freq_support.time_frequencies.unit
-
-        # Only extract the first half of the STFT, as it is symmetrical
-        half_nfft = int(np.shape(magnitude)[0] / 2) + 1
-
-        np.seterr(divide="ignore")
-        magnitude = 20 * np.log10(magnitude[0:half_nfft, :] / reference_value)
-        np.seterr(divide="warn")
-        phase = self.get_stft_phase_as_nparray()
-        phase = phase[0:half_nfft, :]
-        time_data_signal = self.signal.time_freq_support.time_frequencies.data
-        time_step = time_data_signal[1] - time_data_signal[0]
-        fs = 1.0 / time_step
-
-        time_data_spectrogram = self.get_output().time_freq_support.time_frequencies.data
+        times = self.get_time_scale()
 
         # Boundaries of the plot
-        extent = [time_data_spectrogram[0], time_data_spectrogram[-1], 0.0, fs / 2.0]
+        extent = [times[0], times[-1], frequencies[0], frequencies[-1]]
 
-        # Plotting
-        f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
-        p = ax1.imshow(magnitude, origin="lower", aspect="auto", cmap="jet", extent=extent)
-        f.colorbar(p, ax=ax1, label=f"Amplitude (dB re. {reference_value} {mag_unit})")
-        ax1.set_title("Amplitude")
-        ax1.set_ylabel(f"Frequency ({freq_unit})")
-        p = ax2.imshow(phase, origin="lower", aspect="auto", cmap="jet", extent=extent)
-        f.colorbar(p, ax=ax2, label="Phase (rad)")
-        ax2.set_title("Phase")
-        ax2.set_xlabel(f"Time ({time_unit})")
-        ax2.set_ylabel(f"Frequency ({freq_unit})")
+        if max_magnitude is None:
+            max_magnitude = np.max(magnitude)
 
-        f.suptitle("STFT")
+        if range_magnitude is None:
+            if display_in_dB:
+                range_magnitude = 60.0
+            else:
+                range_magnitude = max_magnitude
+
+        if max_frequency is None:
+            max_frequency = frequencies[-1]
+
+        # Plot
+        str_unit = f" ({magnitude_unit})" if len(magnitude_unit) > 0 else ""
+        if display_phase:
+            f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
+
+            # Top subplot: STFT magnitude.
+            p = ax1.imshow(
+                magnitude,
+                origin="lower",
+                aspect="auto",
+                cmap="jet",
+                extent=extent,
+                vmax=max_magnitude,
+                vmin=max_magnitude - range_magnitude,
+            )
+            f.colorbar(p, ax=ax1, label=f"Magnitude{str_unit}")
+            ax1.set_ylim([0, max_frequency])
+            ax1.set_ylabel(f"Frequency ({frequency_unit})")
+            ax1.set_title("Magnitude")
+
+            # Bottom subplot: STFT phase.
+            p = ax2.imshow(phase, origin="lower", aspect="auto", cmap="jet", extent=extent)
+            f.colorbar(p, ax=ax2, label="Phase (rad)")
+            ax2.set_ylim([0, max_frequency])
+            ax2.set_ylabel(f"Frequency ({frequency_unit})")
+            ax2.set_title("Phase")
+            ax2.set_xlabel(f"Time ({time_unit})")
+
+            f.suptitle(title)
+            f.tight_layout()
+
+        else:
+            # Plot STFT magnitude only.
+            plt.figure()
+            plt.imshow(
+                magnitude,
+                origin="lower",
+                aspect="auto",
+                cmap="jet",
+                extent=extent,
+                vmax=max_magnitude,
+                vmin=max_magnitude - range_magnitude,
+            )
+            str_unit = f" ({magnitude_unit})" if len(magnitude_unit) > 0 else ""
+            plt.colorbar(label=f"Magnitude{str_unit}")
+            plt.ylabel(f"Frequency ({frequency_unit})")
+            plt.xlabel(f"Time ({time_unit})")
+            plt.ylim([0, max_frequency])
+            plt.title(title)
+            plt.tight_layout()
+
         plt.show()
+
+    def _one_sided_length(self) -> int:
+        """Compute and return the length of a one-sided spectrum.
+
+        Returns:
+            int: Length of a one-sided spectrum.
+        """
+        nfft = len(self.get_output_as_nparray()[1])
+        return int(np.floor(nfft / 2)) + 1
