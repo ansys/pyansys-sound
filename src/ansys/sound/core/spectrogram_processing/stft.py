@@ -289,7 +289,7 @@ class Stft(SpectrogramProcessingParent):
 
         # Scale the STFT by sqrt(2) to account for the energy sum of the positive and negative
         # frequency bins (two-sided to one-sided STFT conversion).
-        complex_stft = np.sqrt(2) * complex_stft[:self._one_sided_length(), :]
+        complex_stft = np.sqrt(2) * complex_stft[: self._one_sided_length(), :]
 
         return np.absolute(complex_stft)
 
@@ -306,7 +306,7 @@ class Stft(SpectrogramProcessingParent):
         if len(complex_stft) == 0:
             return np.array([])
 
-        return np.angle(complex_stft[:self._one_sided_length(), :])
+        return np.angle(complex_stft[: self._one_sided_length(), :])
 
     def get_frequencies(self) -> np.ndarray:
         """Get the frequency scale of the STFT.
@@ -319,8 +319,8 @@ class Stft(SpectrogramProcessingParent):
         frequencies = self.get_output_as_nparray()[1]
         if len(frequencies) == 0:
             return np.array([])
-        
-        return frequencies[:self._one_sided_length()]
+
+        return frequencies[: self._one_sided_length()]
 
     def get_time_scale(self) -> np.ndarray:
         """Get the time scale of the STFT.
@@ -493,7 +493,7 @@ class Stft(SpectrogramProcessingParent):
 
     def _one_sided_length(self) -> int:
         """Compute and return the length of a one-sided spectrum.
-        
+
         Returns:
             int: Length of a one-sided spectrum.
         """
