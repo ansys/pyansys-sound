@@ -315,7 +315,7 @@ class Stft(SpectrogramProcessingParent):
         -------
         numpy.ndarray
             Frequencies, in Hz, corresponding to the rows of the STFT magnitude and phase, returned
-            by :meth:`get_frequencies` and :meth:`get_phase`, respectively.
+            by :meth:`get_magnitude` and :meth:`get_phase`, respectively.
         """
         frequencies = self.get_output_as_nparray()[1]
         if len(frequencies) == 0:
