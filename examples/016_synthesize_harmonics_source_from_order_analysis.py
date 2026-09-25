@@ -60,6 +60,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Load Ansys libraries.
+from ansys.sound.core import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
 from ansys.sound.core.examples_helpers import (
     download_accel_with_rpm_wav,
     download_rpm_acceleration_deceleration,
@@ -115,19 +116,16 @@ def plot_stft(
     ax: matplotlib.axes.Axes, optional
         Axis to draw the spectrogram into. If ``None``, a new figure is created.
     """
-    magnitude = stft.get_stft_magnitude_as_nparray()
+    magnitude = stft.get_magnitude()
     magnitude_unit = stft.get_output()[0].unit
     if isinstance(magnitude_unit, tuple):
         magnitude_unit = magnitude_unit[1]
     frequency_unit = stft.get_output()[0].time_freq_support.time_frequencies.unit
     time_unit = stft.get_output().time_freq_support.time_frequencies.unit
 
-    # Only extract the first half of the STFT, as it is symmetrical.
-    half_nfft = int(magnitude.shape[0] / 2) + 1
-
     # Voluntarily ignore a numpy warning.
     np.seterr(divide="ignore")
-    magnitude = 20 * np.log10(magnitude[0:half_nfft, :])
+    magnitude = 20 * np.log10(magnitude / REFERENCE_ACOUSTIC_PRESSURE_IN_AIR)
     np.seterr(divide="warn")
 
     # Obtain sampling frequency, time steps, and number of time samples.
@@ -185,7 +183,7 @@ sampling_frequency = wav_loader.get_sampling_frequency()
 # Compute the spectrogram.
 stft = Stft(signal=signal, fft_size=8192, window_overlap=0.9)
 stft.process()
-max_stft = 20 * np.log10(np.max(stft.get_stft_magnitude_as_nparray()))
+max_stft = 20 * np.log10(np.max(stft.get_magnitude()/REFERENCE_ACOUSTIC_PRESSURE_IN_AIR))
 
 # %%
 # Plot the RPM profile and the spectrogram side-by-side.
@@ -233,7 +231,6 @@ orders_file_path = str(EXAMPLES_PATH) + f"/{filename[:-4]}_order_levels.txt"
 order_levels.save_as_AnsysSound_Orders(orders_file_path)
 
 print(f"Order levels saved to {orders_file_path}")
-print(f"File exists?: {Path(orders_file_path).exists()}")
 
 # %%
 # Synthesize harmonics source from the saved order levels
@@ -245,7 +242,6 @@ if my_server.has_client():
     # In remote DPF Server case, the file must be uploaded to the server's temporary folder.
     path = upload_file_in_tmp_folder(file_path=orders_file_path, server=my_server)
 
-print(f"Path (server) to use for SourceHarmonics: {path}")
 source_harmonics = SourceHarmonics(file=path)
 
 # %%
@@ -287,7 +283,7 @@ axs[0].set_xlabel(f"Time ({time_rpm.unit})")
 # Right: spectrogram of the synthesized signal.
 stft_synth = Stft(signal=synthesized_signal, fft_size=8192, window_overlap=0.9)
 stft_synth.process()
-max_stft_synth = 20 * np.log10(np.max(stft_synth.get_stft_magnitude_as_nparray()))
+max_stft_synth = 20 * np.log10(np.max(stft_synth.get_magnitude()) / REFERENCE_ACOUSTIC_PRESSURE_IN_AIR)
 plot_stft(
     stft_synth,
     sampling_frequency,
