@@ -420,10 +420,10 @@ class Stft(SpectrogramProcessingParent):
         frequency_unit = self.get_output()[0].time_freq_support.time_frequencies.unit
         frequencies = self.get_frequencies()
         time_unit = self.get_output().time_freq_support.time_frequencies.unit
-        time_spectrogram = self.get_output().time_freq_support.time_frequencies.data
+        times = self.get_time_scale()
 
         # Boundaries of the plot
-        extent = [time_spectrogram[0], time_spectrogram[-1], frequencies[0], frequencies[-1]]
+        extent = [times[0], times[-1], frequencies[0], frequencies[-1]]
 
         if max_magnitude is None:
             max_magnitude = np.max(magnitude)
