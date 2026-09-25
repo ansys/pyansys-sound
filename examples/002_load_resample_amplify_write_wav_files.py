@@ -30,7 +30,6 @@ This example shows how to load a signal from a WAV file, modify the signal's
 sampling frequency, and amplify it. It also shows how to access the corresponding
 data, display it using Matplotlib, and then write the modified signal to the disk as
 a new WAV file.
-
 """
 
 # %%

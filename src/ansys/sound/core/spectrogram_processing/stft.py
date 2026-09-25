@@ -73,8 +73,8 @@ class Stft(SpectrogramProcessingParent):
             Use a power of 2 for better performance.
         window_type : str, default: 'HANN'
             Window type used for the FFT computation. Options are ``'TRIANGULAR'``, ``'BLACKMAN'``,
-            ``'BLACKMANHARRIS'``, ``'HAMMING'``, ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``, and
-            ``'RECTANGULAR'``.
+            ``'BLACKMANHARRIS'``, ``'HAMMING'``, ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``,
+            ``'RECTANGULAR'``, and ``'BARTLETT'``.
         window_overlap : float, default: 0.5
             Overlap value between two successive FFT computations. Values can range from 0 to 1.
             For example, ``0`` means no overlap, and ``0.5`` means 50% overlap.
@@ -116,7 +116,7 @@ class Stft(SpectrogramProcessingParent):
         """Window type.
 
         Supported options are ``'TRIANGULAR'``, ``'BLACKMAN'``, ``'BLACKMANHARRIS'``, ``'HAMMING'``,
-        ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``, and ``'RECTANGULAR'``.
+        ``'HANN'``, ``'GAUSS'``, ``'FLATTOP'``, ``'RECTANGULAR'``, and ``'BARTLETT'``.
         """
         return self.__window_type
 
@@ -132,10 +132,11 @@ class Stft(SpectrogramProcessingParent):
             "GAUSS",
             "FLATTOP",
             "RECTANGULAR",
+            "BARTLETT",
         ]:
             raise PyAnsysSoundException(
                 "Window type is invalid. Options are 'TRIANGULAR', 'BLACKMAN', 'BLACKMANHARRIS', "
-                "'HAMMING', 'HANN', 'GAUSS', 'FLATTOP' and 'RECTANGULAR'."
+                "'HAMMING', 'HANN', 'GAUSS', 'FLATTOP', 'RECTANGULAR', and 'BARTLETT'."
             )
 
         self.__window_type = window_type

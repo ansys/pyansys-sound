@@ -29,7 +29,6 @@ Spectrogram: compute the STFT and ISTFT
 This example shows how to compute the short-time Fourier transform (STFT) of a signal, that is, its
 `spectrogram`. It also shows how to use the inverse short-time Fourier transform (ISTFT) to get the
 signal corresponding to a given spectrogram.
-
 """
 
 # %%
@@ -39,6 +38,7 @@ signal corresponding to a given spectrogram.
 # DPF server, and retrieving the example files.
 
 # Load Ansys libraries.
+from ansys.sound.core import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
 from ansys.sound.core.examples_helpers import download_flute_wav
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav
@@ -54,57 +54,63 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # %%
 # Load a signal
 # ~~~~~~~~~~~~~
-# Load a signal from a WAV file using the ``LoadWav`` class. It is returned as a DPF
-# field container. For more information, see `fields_container
-# <https://dpf.docs.pyansys.com/version/stable/api/ansys.dpf.core.operators.utility.fields_container.html>`_
-# in the DPF-Core API documentation.
+# Load a signal from a WAV file using the :class:`.LoadWav` class. It is returned as a list of
+# :class:`Field <ansys.dpf.core.field.Field>`.
 
-# Return the input data of the example file
+# Return the input data of the example file.
 path_flute_wav = download_flute_wav(server=my_server)
 
-# Load the WAV file
+# Load the WAV file.
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
 signal = wav_loader.get_output()[0]
 
-# Plot the input signal
+# Plot the input signal.
 wav_loader.plot()
 
 # %%
 # Compute and plot STFT
 # ~~~~~~~~~~~~~~~~~~~~~
+# Use the :class:`.Stft` class using the previously loaded signal as input.
 
-# Instantiate an instance of the ``Stft`` class using the previously loaded signal
-# as an input. Use an FFT size of 1024 points and then display the STFT colormap.
+# Set the STFT parameters to match your analysis needs.
+stft = Stft(signal, fft_size=1024, window_type="HANN", window_overlap=0.5)
 
-stft = Stft(signal, fft_size=1024)
-
-# Process the STFT
+# Process the STFT.
 stft.process()
 
-# Plot the output
+# Plot the output.
 stft.plot()
 
 # %%
-# Modify the STFT parameters using the setters of the ``Stft`` class.
-# Display the new STFT colormap.
+# To display the STFT in dB SPL (that is, dB relative to 20 µPa), prefer the
+# :meth:`~.Stft.plot_custom()` method with the proper reference value.
+stft.plot_custom(
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+    max_magnitude=80,
+)
 
+# %%
+# Modify the STFT parameters using the properties of the :class:`.Stft` class.
 stft.fft_size = 4096
 stft.window_overlap = 0.95
 stft.window_type = "TRIANGULAR"
 
-# Reprocess the STFT with the new parameters
+# Reprocess the STFT with the new parameters.
 stft.process()
 
-# Plot the modified output
-stft.plot()
+# Plot the modified output.
+stft.plot_custom(
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+    max_magnitude=80,
+)
 
 # %%
 # Compute and plot ISTFT
 # ~~~~~~~~~~~~~~~~~~~~~~
-
-# Obtain a time-domain signal using the ``Istft`` class.
-# The input of the ``Istft`` class is the output STFT object previously computed.
+# Convert the STFT back to a time-domain signal using the :class:`.Istft` class.
+# The required input format of the :class:`.Istft` class is the same as the output format of the
+# :class:`.Stft` class.
 
 spectrogram = stft.get_output()
 
@@ -116,5 +122,4 @@ istft.process()
 
 # %%
 # Plot the output, which is the original signal.
-
 istft.plot()
