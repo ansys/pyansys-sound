@@ -1,0 +1,54 @@
+﻿SharpnessDIN45692OverTime
+=========================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: SharpnessDIN45692OverTime
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SharpnessDIN45692OverTime.convert_fields_container_to_np_array
+      
+      
+      SharpnessDIN45692OverTime.get_max_sharpness
+      
+      
+      SharpnessDIN45692OverTime.get_output
+      
+      
+      SharpnessDIN45692OverTime.get_output_as_nparray
+      
+      
+      SharpnessDIN45692OverTime.get_sharpness_over_time
+      
+      
+      SharpnessDIN45692OverTime.get_time_scale
+      
+      
+      SharpnessDIN45692OverTime.plot
+      
+      
+      SharpnessDIN45692OverTime.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SharpnessDIN45692OverTime.field_type
+      SharpnessDIN45692OverTime.signal
+   
+   

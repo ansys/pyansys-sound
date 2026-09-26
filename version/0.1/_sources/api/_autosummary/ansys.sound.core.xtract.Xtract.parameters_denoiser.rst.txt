@@ -1,0 +1,6 @@
+parameters\_denoiser
+====================
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoproperty:: Xtract.parameters_denoiser

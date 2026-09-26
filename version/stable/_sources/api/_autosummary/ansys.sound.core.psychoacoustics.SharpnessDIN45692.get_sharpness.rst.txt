@@ -1,0 +1,6 @@
+get\_sharpness
+==============
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: SharpnessDIN45692.get_sharpness

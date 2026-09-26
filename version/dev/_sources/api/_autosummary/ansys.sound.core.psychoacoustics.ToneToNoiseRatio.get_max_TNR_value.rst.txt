@@ -1,0 +1,6 @@
+get\_max\_TNR\_value
+====================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: ToneToNoiseRatio.get_max_TNR_value

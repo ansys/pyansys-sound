@@ -1,0 +1,6 @@
+load\_source\_bbn
+=================
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. automethod:: SourceBroadbandNoise.load_source_bbn

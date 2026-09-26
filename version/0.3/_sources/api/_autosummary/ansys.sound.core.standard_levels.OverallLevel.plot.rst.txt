@@ -1,0 +1,6 @@
+plot
+====
+
+.. currentmodule:: ansys.sound.core.standard_levels
+
+.. automethod:: OverallLevel.plot

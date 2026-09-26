@@ -1,0 +1,6 @@
+convert\_fields\_container\_to\_np\_array
+=========================================
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. automethod:: SourceBroadbandNoise.convert_fields_container_to_np_array

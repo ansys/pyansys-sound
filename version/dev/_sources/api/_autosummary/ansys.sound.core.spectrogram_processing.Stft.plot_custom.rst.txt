@@ -1,0 +1,6 @@
+plot\_custom
+============
+
+.. currentmodule:: ansys.sound.core.spectrogram_processing
+
+.. automethod:: Stft.plot_custom
