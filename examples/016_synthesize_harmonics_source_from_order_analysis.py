@@ -51,6 +51,7 @@ under different operating conditions.
 # Setting up the analysis consists of loading the required libraries, connecting to the DPF server,
 # and retrieving the example file.
 
+import os
 from pathlib import Path
 
 from ansys.dpf.core import upload_file_in_tmp_folder
@@ -60,7 +61,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Load Ansys libraries.
-from ansys.sound.core import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
 from ansys.sound.core.examples_helpers import (
     download_accel_with_rpm_wav,
     download_rpm_acceleration_deceleration,
@@ -77,89 +77,12 @@ from ansys.sound.core.sound_composer import (
 )
 from ansys.sound.core.spectrogram_processing import Stft
 
+# sphinx_gallery_start_ignore
+# sphinx_gallery_thumbnail_number = 5
+# sphinx_gallery_end_ignore
+
 # Connect to a remote DPF server or start a local DPF server.
 my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
-
-
-# %%
-# Define custom STFT plot function
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Define a custom function for STFT plots. It differs from the ``Stft.plot()`` method in that it
-# does not display the phase and allows setting custom title, maximum SPL, and maximum frequency.
-
-# Maximum frequency for STFT plots, change according to your need.
-MAX_FREQUENCY_PLOT_STFT = 2000.0
-
-
-def plot_stft(
-    stft: Stft,
-    fs: float,
-    SPLmax: float,
-    title: str = "STFT",
-    maximum_frequency: float = MAX_FREQUENCY_PLOT_STFT,
-    ax=None,
-) -> None:
-    """Plot a short-term Fourier transform (STFT) into a Matplotlib axis or a new figure.
-
-    Parameters
-    ----------
-    stft: Stft
-        Object containing the STFT.
-    fs: float
-        Sampling frequency of the signal in Hz.
-    SPLmax: float
-        Maximum value (here in dB SPL) for the colormap.
-    title: str, default: "STFT"
-        Title of the figure or axis.
-    maximum_frequency: float, default: MAX_FREQUENCY_PLOT_STFT
-        Maximum frequency in Hz to display.
-    ax: matplotlib.axes.Axes, optional
-        Axis to draw the spectrogram into. If ``None``, a new figure is created.
-    """
-    magnitude = stft.get_magnitude()
-    magnitude_unit = stft.get_output()[0].unit
-    if isinstance(magnitude_unit, tuple):
-        magnitude_unit = magnitude_unit[1]
-    frequency_unit = stft.get_output()[0].time_freq_support.time_frequencies.unit
-    time_unit = stft.get_output().time_freq_support.time_frequencies.unit
-
-    # Voluntarily ignore a numpy warning.
-    np.seterr(divide="ignore")
-    magnitude = 20 * np.log10(magnitude / REFERENCE_ACOUSTIC_PRESSURE_IN_AIR)
-    np.seterr(divide="warn")
-
-    # Obtain sampling frequency, time steps, and number of time samples.
-    time_data_spectrogram = stft.get_output().time_freq_support.time_frequencies.data
-
-    # Define boundaries of the plot.
-    extent = [time_data_spectrogram[0], time_data_spectrogram[-1], 0.0, fs / 2.0]
-
-    # Plot into provided axis or create a new figure.
-    target_ax = ax if ax is not None else None
-    if target_ax is None:
-        plt.figure()
-        target_ax = plt.gca()
-
-    im = target_ax.imshow(
-        magnitude,
-        origin="lower",
-        aspect="auto",
-        cmap="jet",
-        extent=extent,
-        vmax=SPLmax,
-        vmin=SPLmax - 70.0,
-    )
-
-    # Attach colorbar to the figure containing the target axis.
-    plt.colorbar(im, ax=target_ax, label=f"Magnitude ({magnitude_unit})")
-    target_ax.set_ylabel(f"Frequency ({frequency_unit})")
-    target_ax.set_xlabel(f"Time ({time_unit})")
-    target_ax.set_ylim(
-        [0.0, maximum_frequency]
-    )  # Change the value of MAX_FREQUENCY_PLOT_STFT if needed.
-    target_ax.set_title(title)
-    if ax is None:
-        plt.show()
 
 
 # %%
@@ -183,32 +106,27 @@ sampling_frequency = wav_loader.get_sampling_frequency()
 # Compute the spectrogram.
 stft = Stft(signal=signal, fft_size=8192, window_overlap=0.9)
 stft.process()
-max_stft = 20 * np.log10(np.max(stft.get_magnitude() / REFERENCE_ACOUSTIC_PRESSURE_IN_AIR))
 
 # %%
-# Plot the RPM profile and the spectrogram side-by-side.
+# Plot the RPM profile and the spectrogram.
 time = signal.time_freq_support.time_frequencies
-fig, axs = plt.subplots(nrows=1, ncols=2, sharex=True, figsize=(12, 5))
 
-# Left: RPM profile.
-axs[0].plot(time.data, rpm_profile.data, color="red")
-axs[0].set_title("RPM profile")
-axs[0].set_ylabel("RPM")
-axs[0].grid(True)
-axs[0].set_xlabel(f"Time ({time.unit})")
-
-# Right: spectrogram with the custom ``plot_stft`` function.
-plot_stft(
-    stft,
-    sampling_frequency,
-    max_stft,
-    title="STFT",
-    maximum_frequency=MAX_FREQUENCY_PLOT_STFT,
-    ax=axs[1],
-)
-
-plt.tight_layout()
+# RPM profile.
+plt.figure()
+plt.plot(time.data, rpm_profile.data, color="red")
+plt.title("RPM profile")
+plt.ylabel("RPM")
+plt.xlabel(f"Time ({time.unit})")
+plt.grid(True)
 plt.show()
+
+# Spectrogram.
+max_frequency = 2000.0
+stft.plot_custom(
+    display_phase=False,
+    max_frequency=max_frequency,
+    title="STFT",
+)
 
 # %%
 # Compute and save order levels over RPM
@@ -217,7 +135,6 @@ plt.show()
 # class.
 
 orders = list(np.arange(1.0, 20.5, 0.5))
-
 order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=orders)
 order_levels.process()
 
@@ -227,7 +144,7 @@ order_levels.process()
 # :meth:`save_as_AnsysSound_Orders() <.OrderLevels.save_as_AnsysSound_Orders>` method.
 
 filename = Path(path_accel_wav).name
-orders_file_path = str(EXAMPLES_PATH) + f"/{filename[:-4]}_order_levels.txt"
+orders_file_path = os.path.join(EXAMPLES_PATH, "pyansys-sound", f"{filename[:-4]}_order_levels.txt")
 order_levels.save_as_AnsysSound_Orders(orders_file_path)
 
 print(f"Order levels saved to {orders_file_path}")
@@ -259,44 +176,35 @@ sound_composer_project.name = "Order levels synthesis"
 sound_composer_project.add_track(track)
 
 # %%
-# Synthesize the signal.
+# Synthesize the signal and plot it.
 sound_composer_project.process(sampling_frequency=sampling_frequency)
 sound_composer_project.plot()
 
 synthesized_signal = sound_composer_project.get_output()
 
 # %%
-# Plot the synthesized signal together with the RPM profile that was used to generate it. The
-# resulting sound reproduces the orders identified in the original recording, but with a different
-# temporal evolution, as if the machine speed had followed the new RPM profile.
+# Plot the STFT of the synthesized signal together with the RPM profile used to generate it.
+# The resulting sound reproduces the orders identified in the original recording, but with a
+# different temporal evolution, as if the machine speed had followed the new RPM profile.
 
-fig, axs = plt.subplots(nrows=1, ncols=2, sharex=True, figsize=(12, 5))
 
-# Left: RPM profile used for synthesis.
+# RPM profile used for synthesis.
 time_rpm = source_control.control.time_freq_support.time_frequencies
-axs[0].plot(time_rpm.data, source_control.control.data, color="red")
-axs[0].set_title("RPM profile used for synthesis")
-axs[0].set_ylabel("RPM")
-axs[0].grid(True)
-axs[0].set_xlabel(f"Time ({time_rpm.unit})")
+plt.plot(time_rpm.data, source_control.control.data, color="red")
+plt.title("RPM profile used for synthesis")
+plt.ylabel("RPM")
+plt.xlabel(f"Time ({time_rpm.unit})")
+plt.grid(True)
+plt.show()
 
-# Right: spectrogram of the synthesized signal.
+# Spectrogram of the synthesized signal.
 stft_synth = Stft(signal=synthesized_signal, fft_size=8192, window_overlap=0.9)
 stft_synth.process()
-max_stft_synth = 20 * np.log10(
-    np.max(stft_synth.get_magnitude()) / REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
-)
-plot_stft(
-    stft_synth,
-    sampling_frequency,
-    max_stft_synth,
+stft_synth.plot_custom(
+    display_phase=False,
+    max_frequency=max_frequency,
     title="STFT (synthesized)",
-    maximum_frequency=MAX_FREQUENCY_PLOT_STFT,
-    ax=axs[1],
 )
-
-plt.tight_layout()
-plt.show()
 
 # %%
 # Save the synthesized signal to a WAV file.
