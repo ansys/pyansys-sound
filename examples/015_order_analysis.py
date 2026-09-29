@@ -184,4 +184,3 @@ print(f"Order resolution 0.5 %: {len(order_levels_fine.get_rpm_scale())} RPM val
 #
 # In practice, the order resolution is a trade-off: decrease it to obtain smooth and well-separated
 # order levels on slow run-ups, and increase it to follow rapid level variations on fast run-ups.
-
