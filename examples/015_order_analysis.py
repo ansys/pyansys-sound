@@ -100,17 +100,8 @@ plt.show()
 # Compute order levels with a coarse order resolution
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Let us compute the levels over RPM for orders 2, 4, 6, 8, and 10, which are the dominant orders in
-# a four-cylinder engine. In this first example, we use a coarse
-# :attr:`~.OrderLevels.order_resolution` value of 4 %.
-# This means the order axis is divided into increments of 4 % of order. Note that, since this method
-# relies on the short-time Fourier transform, a coarser order resolution yields a finer RPM
-# resolution.
-#
-# The :attr:`~.OrderLevels.order_width` attribute defines the range around each requested order
-# over which the energy is integrated to obtain its order level. The value of 50 % set here is
-# sufficient in most cases, but it may need to be adjusted depending on the specific signal
-# characteristics, such as the presence of background noise, the proximity and magnitudes of
-# neighboring orders, and the slope of the RPM profile curve.
+# a four-cylinder engine.
+
 orders = [2, 4, 6, 8, 10]
 
 order_levels_coarse = OrderLevels(
@@ -123,20 +114,36 @@ order_levels_coarse = OrderLevels(
 order_levels_coarse.process()
 
 # %%
+# In this first example, we use a coarse :attr:`~.OrderLevels.order_resolution` value of 4 %.
+# This means the order axis is divided into increments of 4 % of order. Note that, since this
+# method relies on the short-time Fourier transform, a coarser order resolution yields a finer RPM
+# resolution.
+#
+# The :attr:`~.OrderLevels.order_width` attribute defines the range around each requested order
+# over which the energy is integrated to obtain its order level. The value of 50 % set here is
+# sufficient in most cases, but it may need to be adjusted depending on the specific signal
+# characteristics, such as the presence of background noise, the proximity and magnitudes of
+# neighboring orders, and the slope of the RPM profile curve.
+
+# %%
 # Display the RPM-order representation of the signal
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # The order levels are extracted from an intermediate RPM-order representation. It is similar to a
 # spectrogram, except the vertical axis represents order instead of frequency, and the horizontal
-# axis, RPM instead of time. The order magnitudes appear as horizontal lines, which makes it easy to
-# see how energy is distributed across orders as RPM changes. The RPM-order representation also
-# helps to adjust the value of :attr:`~.OrderLevels.order_width` as it shows how order energy is
-# spread around each order, with respect to the background noise and other orders' proximity.
-#
-# Note: this representation is directly available from the :class:`.OrderLevels` object, so there is
-# no need to compute it again with the :class:`.RpmOrderRepresentation` class.
+# axis, RPM instead of time.
+
 order_levels_coarse.plot_rpm_order_representation(
     display_in_dB=True, reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
 )
+
+# %%
+# The order magnitudes appear as horizontal lines, which makes it easy to see how energy is
+# distributed across orders as RPM changes. The RPM-order representation also helps to adjust the
+# value of :attr:`~.OrderLevels.order_width` as it shows how order energy is spread around each
+# order, with respect to the background noise and other orders' proximity.
+#
+# Note: this representation is directly available from the :class:`.OrderLevels` object, so there is
+# no need to compute it again with the :class:`.RpmOrderRepresentation` class.
 
 # %%
 # Plot the order levels
@@ -154,13 +161,6 @@ order_levels_coarse.plot(display_in_dB=True, reference_value=REFERENCE_ACOUSTIC_
 # Now let us repeat the same analysis, keeping the same order width (50 %), but with a much finer
 # order resolution of 0.5 %.
 #
-# With a fine order resolution, more signal samples are required to estimate each point of the
-# RPM-order representation. As a consequence, the RPM step is larger, and fewer RPM values are used.
-# The resulting curves are smoother, but less precise in RPM.
-#
-# In practice, the order resolution is a trade-off: decrease it to obtain smooth and well-separated
-# order levels on slow run-ups, and increase it to follow rapid level variations on fast run-ups.
-
 order_levels_fine = OrderLevels(
     signal=signal,
     rpm_profile=rpm_profile,
@@ -176,3 +176,12 @@ order_levels_fine.plot(display_in_dB=True, reference_value=REFERENCE_ACOUSTIC_PR
 # RPM values being used in the analysis.
 print(f"Order resolution 4 %:   {len(order_levels_coarse.get_rpm_scale())} RPM values.")
 print(f"Order resolution 0.5 %: {len(order_levels_fine.get_rpm_scale())} RPM values.")
+
+# %%
+# With a fine order resolution, more signal samples are required to estimate each point of the
+# RPM-order representation. As a consequence, the RPM step is larger, and fewer RPM values are used.
+# The resulting curves are smoother, but less precise in RPM.
+#
+# In practice, the order resolution is a trade-off: decrease it to obtain smooth and well-separated
+# order levels on slow run-ups, and increase it to follow rapid level variations on fast run-ups.
+
