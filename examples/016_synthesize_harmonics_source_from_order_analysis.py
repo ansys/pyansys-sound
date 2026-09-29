@@ -157,14 +157,14 @@ order_levels.save_as_AnsysSound_Orders(orders_file_path)
 # %%
 # Synthesize harmonics source from the saved order levels
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Here we are going to synthesize a sound from the previously computed order levels, but following 
+# Here we are going to synthesize a sound from the previously computed order levels, but following
 # another operating condition (new RPM profile).
-# 
+#
 # To do this, we use the saved file as input of a :class:`.SourceHarmonics` object, which is made to
 # generate a sound from an harmonics source, according to a given input RPM profile (called source
 # control). This object is then used as a source in a Sound Composer project,
 # using:class:`.SoundComposer`.
-# 
+#
 # Note: this Sound Composer project can be further extended with additional tracks and sources if
 # needed, for example to add the sources of rolling noise, aerodynamic noise, HVAC noise, etc.
 
