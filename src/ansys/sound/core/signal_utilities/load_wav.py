@@ -27,7 +27,7 @@ import warnings
 from ansys.dpf.core import DataSources, Field, Operator, types
 import numpy as np
 
-from ansys.sound.core.server_helpers import requires_sound_version
+from ansys.sound.core.server_helpers import requires_sound_version, server_load_path
 
 from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -87,23 +87,24 @@ class LoadWav(SignalUtilitiesParent):
                 f"`{self.__class__.__name__}.path_to_wav`."
             )
 
-        # Load a WAV file
-        data_source_in = DataSources()
+        with server_load_path(self.path_to_wav) as path:
+            # Load a WAV file
+            data_source_in = DataSources()
 
-        # Create input path
-        data_source_in.add_file_path(self.path_to_wav, ".wav")
+            # Create input path
+            data_source_in.add_file_path(path, ".wav")
 
-        # Load WAV file and store it in a container
-        self.__operator.connect(0, data_source_in)
+            # Load WAV file and store it in a container
+            self.__operator.connect(0, data_source_in)
 
-        # Run the operator
-        self.__operator.run()
+            # Run the operator
+            self.__operator.run()
 
-        # Store outputs
-        self._output = [f for f in self.__operator.get_output(0, types.fields_container)]
-        # Note: sampling frequency and format are retrieved within their respective getter methods,
-        # because their availabilility depends on the DPF Sound plugin version (which is managed by
-        # these methods' `requires_sound_version` decorator).
+            # Store outputs
+            self._output = [f for f in self.__operator.get_output(0, types.fields_container)]
+            # Note: sampling frequency and format are retrieved within their respective getter
+            # methods, because their availabilility depends on the DPF Sound plugin version (which
+            # is managed by these methods' `requires_sound_version` decorator).
 
     def get_output(self) -> list[Field]:
         """Get the signal loaded from the WAV file as list of DPF fields.

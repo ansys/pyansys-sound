@@ -29,6 +29,8 @@ from ansys.dpf.core.available_result import Homogeneity
 import matplotlib.pyplot as plt
 import numpy as np
 
+from ansys.sound.core.server_helpers import server_load_path
+
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning, scipy_required
 from ..server_helpers._check_version import _check_sound_version
 from ..signal_processing import SignalProcessingParent
@@ -291,14 +293,15 @@ class Filter(SignalProcessingParent):
             file shall have the same text format (with the header `AnsysSound_FRF`), as supported
             by Ansys Sound SAS.
         """
-        # Set operator inputs.
-        self.__operator_load.connect(0, file)
+        with server_load_path(file) as path:
+            # Set operator inputs.
+            self.__operator_load.connect(0, path)
 
-        # Run the operator.
-        self.__operator_load.run()
+            # Run the operator.
+            self.__operator_load.run()
 
-        # Get the output.
-        self.frf = self.__operator_load.get_output(0, "field")
+            # Get the output.
+            self.frf = self.__operator_load.get_output(0, "field")
 
     def process(self):
         """Filter the signal with the current coefficients."""

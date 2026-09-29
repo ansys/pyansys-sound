@@ -28,6 +28,8 @@ from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operato
 from matplotlib import pyplot as plt
 import numpy as np
 
+from ansys.sound.core.server_helpers._server_io import server_load_path
+
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._source_parent import SourceParent
 from .source_control_time import SourceControlTime
@@ -299,16 +301,17 @@ class SourceHarmonicsTwoParameters(SourceParent):
             text format (with the `AnsysSound_Orders_MultipleParameters` header) as supported by
             Ansys Sound SAS.
         """
-        # Set operator inputs.
-        self.__operator_load.connect(0, file)
+        with server_load_path(file) as path:
+            # Set operator inputs.
+            self.__operator_load.connect(0, path)
 
-        # Run the operator.
-        self.__operator_load.run()
+            # Run the operator.
+            self.__operator_load.run()
 
-        # Get the loaded sound power level parameters.
-        self.source_harmonics_two_parameters = self.__operator_load.get_output(
-            0, "fields_container"
-        )
+            # Get the loaded sound power level parameters.
+            self.source_harmonics_two_parameters = self.__operator_load.get_output(
+                0, "fields_container"
+            )
 
     def set_from_generic_data_containers(
         self,
