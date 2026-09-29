@@ -314,7 +314,7 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         display_in_dB: bool = False,
         reference_value: float = 1.0,
     ):
-        """Plot the RPM-order representation as a colormap of level versus order and RPM.
+        """Plot the RPM-order representation as a colormap of level against order and RPM.
 
         Parameters
         ----------
@@ -334,17 +334,17 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
 
         representation, orders, rpm_values, _ = self.get_output_as_nparray()
 
-        # as the RPM-order representation is made of two-sided spectra, we only consider the orders
-        # from 0 to the maximum order for plotting.
+        # As the RPM-order representation is made of two-sided spectra, we only plot the orders from
+        # 0 to the maximum order.
         if self.max_order is not None:
             order_mask = orders <= self.max_order
             orders = orders[order_mask]
             representation = representation[:, order_mask]
 
-        # Transpose so that orders are on the vertical axis and RPM on the horizontal axis.
+        # Compute the magnitude of the RPM-order representation.
         magnitude = np.abs(representation.transpose())
 
-        # as we only consider the one-sided spectrum, we multiply by sqrt(2) to account for the
+        # As we only consider the one-sided spectrum, we multiply by sqrt(2) to account for the
         # energy of the negative orders.
         magnitude = magnitude * np.sqrt(2)
 
@@ -358,13 +358,13 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         else:
             str_unit = unit if len(unit) > 0 else "linear units"
 
-        # Limit the colormap scale to the top 60 dB range when displaying in dB.
+        # Limit the colormap scale to the top 60-dB range when displaying in dB.
         vmax = np.max(magnitude) if display_in_dB else None
         vmin = vmax - 60.0 if display_in_dB else None
 
         plt.figure()
 
-        # Use pcolormesh instead of imshow, because rpm_values is not necessarily regularly spaced.
+        # Use pcolormesh instead of imshow, because rpm_values is not regularly spaced.
         plt.pcolormesh(
             rpm_values,
             orders,

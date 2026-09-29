@@ -51,7 +51,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
     Two additional parameters allow you to refine the obtained result:
 
     -   :attr:`~.OrderLevels.order_resolution` (in percent of order): defines how fine the order
-        definition is in the obtained RPM-order representation;
+        resolution is in the obtained RPM-order representation;
     -   :attr:`~.OrderLevels.order_width` (in percent of order): defines the width over which the
         representation energy is summed to produce an order level. It is expected that the order
         width is greater or equal to the order resolution.
@@ -106,7 +106,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         self.orders = orders
         self.order_resolution = order_resolution
         self.order_width = order_width
-        self.__rpm_order_representation = None
+        self.__rpm_order_representation: RpmOrderRepresentation = None
         self.__operator = Operator(ID_EXTRACT_ORDER_LEVELS)
 
     def __str__(self):
