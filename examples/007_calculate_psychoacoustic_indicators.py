@@ -87,13 +87,13 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # :class:`Field <ansys.dpf.core.field.Field>` objects, where each field corresponds to a channel.
 
 # Load a first signal from a WAV file: recording of a flute.
-path_flute_wav = download_flute_wav(server=my_server)
+path_flute_wav = download_flute_wav()
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
 signal_flute = wav_loader.get_output()[0]
 
 # Load another signal from a WAV file: recording of an acceleration inside a car cabin.
-path_accel_wav = download_accel_with_rpm_wav(server=my_server)
+path_accel_wav = download_accel_with_rpm_wav()
 wav_loader = LoadWav(path_accel_wav)
 wav_loader.process()
 signal_car_acceleration = wav_loader.get_output()[0]

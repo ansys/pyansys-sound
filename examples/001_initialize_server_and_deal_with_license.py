@@ -96,7 +96,7 @@ print(f"DPF Sound plugin version: {get_sound_version()}")
 # Execute the PyAnsys Sound ``LoadWav`` operator several times in a row
 # and measure the execution time.
 
-path_flute_wav = download_flute_wav(server=my_server)
+path_flute_wav = download_flute_wav()
 
 for i in range(5):
     now = datetime.datetime.now()
@@ -130,7 +130,7 @@ print("Connecting to the server using a LicenseContextManager")
 my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
 # Execute the same and measure the execution time
-path_flute_wav = download_flute_wav(server=my_server)
+path_flute_wav = download_flute_wav()
 
 for i in range(5):
     now = datetime.datetime.now()

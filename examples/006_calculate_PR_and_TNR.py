@@ -164,7 +164,7 @@ print(
 # (PR).
 
 # Load example data from a WAV file (recording of a flute).
-path_flute_wav = download_flute_wav(server=my_server)
+path_flute_wav = download_flute_wav()
 wav_loader = LoadWav(path_flute_wav)
 wav_loader.process()
 flute_signal = wav_loader.get_output()[0]
@@ -235,7 +235,7 @@ print(
 # Load example data from a WAV file: this is a recording of the noise in a car cabin
 # during an acceleration. Note that this file contains the RPM profile as well,
 # in its second channel.
-path_accel_wav = download_accel_with_rpm_wav(server=my_server)
+path_accel_wav = download_accel_with_rpm_wav()
 wav_loader = LoadWav(path_accel_wav)
 wav_loader.process()
 accel_signal = wav_loader.get_output()[0]
