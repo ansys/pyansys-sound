@@ -27,18 +27,19 @@ Synthesize harmonics source from order analysis
 -----------------------------------------------
 
 Orders are harmonic components in the sound related to the speed of a rotating machine. This example
-shows how to compute the level over RPM of several orders of a signal associated with an RPM
-profile, and how to save the result to a text file with the `AnsysSound_Orders` format.
+shows how to compute the level over RPM of several orders from a recorded acoustic signal,
+associated with its RPM profile, and how to save the result to a text file with the
+`AnsysSound_Orders` format.
 
 This file can then be used to define a harmonics source in the Sound Composer, either with
 the :class:`.SourceHarmonics` class of PyAnsys Sound, or with the Sound Composer module of Ansys
-Sound SAS, in order to generate a sound corresponding to the specified orders.
+Sound SAS, in order to generate a sound from these orders.
 
 This example shows how to load the saved file into a :class:`.SourceHarmonics` object,
-and use it in a :class:`.SoundComposer` project to synthesize a new sound driven by
-a new RPM profile. This illustrates a typical product simulation use case: orders
-identified on an existing system can be reused to synthesize the acoustic behavior of that system
-under different operating conditions.
+and use it in a :class:`.SoundComposer` project to synthesize a new sound, driven by
+an RPM profile different from the original one used at the analysis step. This illustrates a typical
+product simulation use case: orders identified on an existing system can be reused to synthesize the
+acoustic behavior of that system under different operating conditions.
 
 .. seealso::
     :ref:`sound_composer_create_project`
@@ -61,6 +62,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Load Ansys libraries.
+from ansys.sound.core import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
 from ansys.sound.core.examples_helpers import (
     download_accel_with_rpm_wav,
     download_rpm_acceleration_deceleration,
@@ -89,7 +91,8 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # Load a signal with an RPM profile
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load a signal from a WAV file, using the :class:`.LoadWav` class. This signal contains two
-# channels: the actual signal (an acceleration recording), and the associated RPM profile.
+# channels: the actual acoustic signal (an acceleration recording in a car cabin), and the
+# associated RPM profile (engine speed recording).
 
 # Return the input data of the example file.
 path_accel_wav = download_accel_with_rpm_wav(server=my_server)
@@ -101,6 +104,9 @@ wav_loader.process()
 # Extract the audio signal and the RPM profile.
 signal, rpm_profile = wav_loader.get_output()
 sampling_frequency = wav_loader.get_sampling_frequency()
+
+# Fix RPM profile unit
+rpm_profile.unit = "RPM"
 
 # %%
 # Compute the spectrogram.
@@ -125,16 +131,17 @@ max_frequency = 2000.0
 stft.plot_custom(
     display_phase=False,
     max_frequency=max_frequency,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
     title="STFT",
 )
 
 # %%
 # Compute and save order levels over RPM
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Compute the level over RPM of every half-order between 1 to 20.5 with the :class:`.OrderLevels`
+# Compute the level over RPM of every half-order between 1 to 20 with the :class:`.OrderLevels`
 # class.
 
-orders = list(np.arange(1.0, 20.5, 0.5))
+orders = list(np.arange(1.0, 20.0 + 0.5, 0.5))
 order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=orders)
 order_levels.process()
 
@@ -147,28 +154,39 @@ filename = Path(path_accel_wav).name
 orders_file_path = os.path.join(EXAMPLES_PATH, "pyansys-sound", f"{filename[:-4]}_order_levels.txt")
 order_levels.save_as_AnsysSound_Orders(orders_file_path)
 
-print(f"Order levels saved to {orders_file_path}")
-
 # %%
 # Synthesize harmonics source from the saved order levels
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load the saved file into a :class:`.SourceHarmonics` object, to be used as a source in a Sound
-# Composer project.
+# Here we are going to synthesize a sound from the previously computed order levels, but following 
+# another operating condition (new RPM profile).
+# 
+# To do this, we use the saved file as input of a :class:`.SourceHarmonics` object, which is made to
+# generate a sound from an harmonics source, according to a given input RPM profile (called source
+# control). This object is then used as a source in a Sound Composer project,
+# using:class:`.SoundComposer`.
+# 
+# Note: this Sound Composer project can be further extended with additional tracks and sources if
+# needed, for example to add the sources of rolling noise, aerodynamic noise, HVAC noise, etc.
+
 path = orders_file_path
 if my_server.has_client():
-    # In remote DPF Server case, the file must be uploaded to the server's temporary folder.
+    # In remote DPF Server case, the file must be uploaded to the server's temporary folder to be
+    # accessible by the server.
     path = upload_file_in_tmp_folder(file_path=orders_file_path, server=my_server)
 
+# Create the SourceHarmonics object from the saved order levels file.
 source_harmonics = SourceHarmonics(file=path)
 
 # %%
-# Load a new RPM profile for the synthesis, with acceleration and deceleration phases.
+# Load the RPM profile to be used for the sound synthesis. This profile includes acceleration and
+# deceleration phases (you can find the profile displayed in a figure below).
 new_rpm_path = download_rpm_acceleration_deceleration()
 source_control = SourceControlTime(new_rpm_path, expected_unit="RPM")
 source_harmonics.source_control = source_control
 
 # %%
-# Create a Sound Composer project with a single track, made of the harmonics source only.
+# Create a Sound Composer project with a single track, made of the harmonics source previously
+# created.
 track = Track(name="Order-based synthesis", source=source_harmonics)
 
 sound_composer_project = SoundComposer()
@@ -176,19 +194,19 @@ sound_composer_project.name = "Order levels synthesis"
 sound_composer_project.add_track(track)
 
 # %%
-# Synthesize the signal and plot it.
+# Synthesize the signal using :meth:`process() <.SoundComposer.process>` and plot it.
 sound_composer_project.process(sampling_frequency=sampling_frequency)
 sound_composer_project.plot()
 
-synthesized_signal = sound_composer_project.get_output()
-
 # %%
-# Plot the STFT of the synthesized signal together with the RPM profile used to generate it.
-# The resulting sound reproduces the orders identified in the original recording, but with a
-# different temporal evolution, as if the machine speed had followed the new RPM profile.
+# Spectrogram of the synthesized signal
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Here we plot the spectrogram of the synthesized signal together with the RPM profile used to
+# generate it. Observe that the resulting sound reproduces the orders analyzed in the original
+# recording, but with a different temporal evolution, as if the machine speed had followed the new
+# RPM profile given as input.
 
-
-# RPM profile used for synthesis.
+# Display the RPM profile used for synthesis.
 time_rpm = source_control.control.time_freq_support.time_frequencies
 plt.plot(time_rpm.data, source_control.control.data, color="red")
 plt.title("RPM profile used for synthesis")
@@ -197,17 +215,22 @@ plt.xlabel(f"Time ({time_rpm.unit})")
 plt.grid(True)
 plt.show()
 
-# Spectrogram of the synthesized signal.
+# Get the synthesized signal.
+synthesized_signal = sound_composer_project.get_output()
+
+# Calculate and display the spectrogram of the synthesized signal.
 stft_synth = Stft(signal=synthesized_signal, fft_size=8192, window_overlap=0.9)
 stft_synth.process()
 stft_synth.plot_custom(
     display_phase=False,
     max_frequency=max_frequency,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
     title="STFT (synthesized)",
 )
 
 # %%
-# Save the synthesized signal to a WAV file.
+# Save the synthesized signal to a WAV file. You can listen to this sound by opening the generated
+# WAV file in Ansys Sound SAS, or any audio player.
 wav_output_path = new_rpm_path[:-4] + "_synthesized_from_orders.wav"
 WriteWav(signal=synthesized_signal, path_to_write=wav_output_path).process()
 
@@ -216,9 +239,9 @@ print(f"Synthesized signal saved to {wav_output_path}")
 # %%
 # Conclusion
 # ~~~~~~~~~~
-# This example demonstrates how to compute the level over RPM of a set of orders from a recorded
-# signal and its RPM profile, and save the result to an `AnsysSound_Orders` file. It then
-# demonstrates how that file can be used to synthesize a harmonics source in a Sound Composer
+# This example demonstrated how to compute the level over RPM of a set of orders from a recorded
+# signal and its RPM profile, then saved the result to an `AnsysSound_Orders` file. It then
+# demonstrated how that file can be used to synthesize a harmonics source in a Sound Composer
 # project, following an RPM profile that is different from that of the original recording.
 #
 # This shows that, once orders have been identified and stored, they become a reusable material:
