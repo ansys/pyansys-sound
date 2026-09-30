@@ -78,7 +78,7 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # The WAV file contains harmonics and shocks.
 
 # Return the input data of the example file.
-path_xtract_demo_signal_1 = download_xtract_demo_signal_1_wav(my_server)
+path_xtract_demo_signal_1 = download_xtract_demo_signal_1_wav()
 
 # Load the WAV file.
 wav_loader = LoadWav(path_to_wav=path_xtract_demo_signal_1)
@@ -258,7 +258,7 @@ plt.show()
 # all previous classes.
 
 
-path_xtract_demo_signal_2 = download_xtract_demo_signal_2_wav(my_server)
+path_xtract_demo_signal_2 = download_xtract_demo_signal_2_wav()
 
 paths = [path_xtract_demo_signal_1, path_xtract_demo_signal_2]
 
