@@ -29,7 +29,7 @@ from ansys.dpf.core import Field, GenericDataContainersCollection, Operator, typ
 from matplotlib import pyplot as plt
 import numpy as np
 
-from ansys.sound.core.server_helpers._server_io import server_upload, server_download
+from ansys.sound.core.server_helpers._server_io import server_download, server_upload
 from ansys.sound.core.signal_utilities import SumSignals
 from ansys.sound.core.sound_composer._sound_composer_parent import SoundComposerParent
 from ansys.sound.core.sound_composer.track import Track

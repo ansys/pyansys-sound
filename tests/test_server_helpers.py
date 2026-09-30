@@ -31,8 +31,8 @@ from ansys.sound.core.server_helpers import (
     _check_sound_version_and_raise,
     connect_to_or_start_server,
     requires_sound_version,
-    server_upload,
     server_download,
+    server_upload,
     validate_dpf_sound_connection,
 )
 from ansys.sound.core.server_helpers._check_version import get_sound_version
