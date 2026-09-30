@@ -138,7 +138,6 @@ stft.plot_custom(
 # Compute the level over RPM of every half-order between 1 to 20 with the :class:`.OrderLevels`
 # class.
 
-# numpy.arange stops before the end value, so we use 20.5 to include 20.0 in the range.
 orders = list(np.arange(1.0, 20.5, 0.5))
 order_levels = OrderLevels(signal=signal, rpm_profile=rpm_profile, orders=orders)
 order_levels.process()
