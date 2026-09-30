@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+"""Helpers to manage file upload and download to/from a remote DPF server."""
+
 from contextlib import contextmanager
 import os
 
@@ -32,11 +34,16 @@ from ansys.dpf.core import upload_file_in_tmp_folder
 def server_upload(client_path, server=None):
     """Manage file upload to server in case of a remote server.
 
+    In case of a remote server, this context manager uploads the file to the server and yields the
+    upload path on entering the context. No server-side cleanup is performed on exiting the context,
+    this is managed by the server itself on shutdown. In case of a local server, no upload is
+    performed, and the context manager simply yields the client path.
+
     Parameters
     ----------
     client_path : str
         Source path on the client host where the file to upload is located.
-    server : ansys.dpf.core.server.Server, default: None
+    server : GrpcServer | InProcessServer | None, default: None
         Server to which the file is uploaded. If None, the global server is used.
     """
     if server is None:
@@ -51,19 +58,24 @@ def server_upload(client_path, server=None):
         yield upload_file_in_tmp_folder(file_path=client_path, server=server)
 
         # No server-side cleanup done on context manager exit. The uploaded files are automatically
-        # cleaned up on server shutdown (see ansys.dpf.core documentation, notably function
-        # ``upload_file_in_tmp_folder``).
+        # cleaned up on server shutdown.
 
 
 @contextmanager
 def server_download(client_path, server=None):
     """Manage file download from server in case of a remote server.
 
+    In case of a remote server, this context manager yields the server path in the server temporary
+    directory where the file shall be created. On context exit, the file is downloaded back to the
+    client host. No server-side cleanup is performed, as it is managed by the server itself on
+    shutdown. In case of a local server, the context manager simply yields the client path, and no
+    download is performed on context exit.
+
     Parameters
     ----------
     client_path : str
         Target path on the client host where the file is downloaded from the server after saving.
-    server : ansys.dpf.core.server.Server, default: None
+    server : GrpcServer | InProcessServer | None, default: None
         Server from which the file is downloaded after saving. If None, the global server is used.
     """
     if server is None:
@@ -85,5 +97,4 @@ def server_download(client_path, server=None):
         download_file(server_path, client_path, server)
 
         # No server-side file cleanup done on context manager exit. The saved files are
-        # automatically cleaned up on server shutdown (see ansys.dpf.core documentation, notably
-        # function ``make_tmp_dir_server``).
+        # automatically cleaned up on server shutdown.
