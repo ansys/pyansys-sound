@@ -37,9 +37,9 @@ Sound SAS, in order to generate a sound from these orders.
 
 This example shows how to load the saved file into a :class:`.SourceHarmonics` object,
 and use it in a :class:`.SoundComposer` project to synthesize a new sound, driven by
-an RPM profile different from the original one used at the analysis step. This illustrates a typical
-product simulation use case: orders identified on an existing system can be reused to synthesize the
-acoustic behavior of that system under different operating conditions.
+a different RPM profile. This illustrates a typical product simulation use case: orders identified
+on an existing system can be reused to synthesize the acoustic behavior of that system under
+different operating conditions.
 
 .. seealso::
     :ref:`sound_composer_create_project`
@@ -154,29 +154,33 @@ order_levels.save_as_AnsysSound_Orders(orders_file_path)
 # %%
 # Synthesize harmonics source from the saved order levels
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Here we are going to synthesize a sound from the previously computed order levels, but following
-# another operating condition (new RPM profile).
+# Let us synthesize a sound from the previously computed order levels, under different operating
+# conditions (that is, with a new RPM profile).
 #
-# To do this, we use the saved file as input of a :class:`.SourceHarmonics` object, which is made to
-# generate a sound from an harmonics source, according to a given input RPM profile (called source
-# control). This object is then used as a source in a Sound Composer project,
-# using:class:`.SoundComposer`.
+# To do this, the saved file is input to a :class:`.SourceHarmonics` object meant to generate sound
+# from a harmonics source, following a given RPM profile (called source control). The created source
+# is then added as a track to a Sound Composer project, using the :class:`.SoundComposer` class.
 #
-# Note: this Sound Composer project can be further extended with additional tracks and sources if
-# needed, for example to add the sources of rolling noise, aerodynamic noise, HVAC noise, etc.
+# Although the :class:`.SourceHarmonics` object suffices here to synthesize the sound, the
+# :class:`.SoundComposer` instance would allow further simulation scenarios:
+# 
+# - combine this source with other sources of various types, such as rolling noise, aerodynamic
+#   noise, or HVAC noise; 
+# - apply source gains and filters, typically to simulate real-world acoustic environments.
 
 path = orders_file_path
 if my_server.has_client():
     # In remote DPF Server case, the file must be uploaded to the server's temporary folder to be
-    # accessible by the server.
+    # available to DPF operators.
     path = upload_file_in_tmp_folder(file_path=orders_file_path, server=my_server)
 
-# Create the SourceHarmonics object from the saved order levels file.
+# Create the :class:`.SourceHarmonics` object from the saved order levels file.
 source_harmonics = SourceHarmonics(file=path)
 
 # %%
-# Load the RPM profile to be used for the sound synthesis. This profile includes acceleration and
-# deceleration phases (you can find the profile displayed in a figure below).
+# Load the RPM profile for the sound synthesis. This profile includes acceleration and
+# deceleration phases, and is displayed in the next section, with the synthesized signal's
+# spectrogram.
 new_rpm_path = download_rpm_acceleration_deceleration()
 source_control = SourceControlTime(new_rpm_path, expected_unit="RPM")
 source_harmonics.source_control = source_control
@@ -191,17 +195,17 @@ sound_composer_project.name = "Order levels synthesis"
 sound_composer_project.add_track(track)
 
 # %%
-# Synthesize the signal using :meth:`process() <.SoundComposer.process>` and plot it.
+# Synthesize the signal and plot it.
 sound_composer_project.process(sampling_frequency=sampling_frequency)
 sound_composer_project.plot()
 
 # %%
-# Spectrogram of the synthesized signal
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Here we plot the spectrogram of the synthesized signal together with the RPM profile used to
-# generate it. Observe that the resulting sound reproduces the orders analyzed in the original
-# recording, but with a different temporal evolution, as if the machine speed had followed the new
-# RPM profile given as input.
+# Display the spectrogram of the synthesized signal
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Let us now plot the spectrogram of the synthesized signal together with the RPM profile used to
+# generate it. The resulting sound reproduces the orders extracted from the original recording, but
+# with a different temporal evolution, as if the machine speed had followed the new RPM profile
+# given as input.
 
 # Display the RPM profile used for synthesis.
 time_rpm = source_control.control.time_freq_support.time_frequencies
@@ -226,8 +230,7 @@ stft_synth.plot_custom(
 )
 
 # %%
-# Save the synthesized signal to a WAV file. You can listen to this sound by opening the generated
-# WAV file in Ansys Sound SAS, or any audio player.
+# Save the synthesized signal to a WAV file.
 wav_output_path = new_rpm_path[:-4] + "_synthesized_from_orders.wav"
 WriteWav(signal=synthesized_signal, path_to_write=wav_output_path).process()
 
@@ -236,12 +239,12 @@ print(f"Synthesized signal saved to {wav_output_path}")
 # %%
 # Conclusion
 # ~~~~~~~~~~
-# This example demonstrated how to compute the level over RPM of a set of orders from a recorded
-# signal and its RPM profile, then saved the result to an `AnsysSound_Orders` file. It then
-# demonstrated how that file can be used to synthesize a harmonics source in a Sound Composer
+# This example demonstrates how to compute the level over RPM of a set of orders from a recorded
+# signal and its RPM profile, and save the result to an `AnsysSound_Orders` file. It then
+# demonstrates how that file can be used to synthesize a harmonics source in a Sound Composer
 # project, following an RPM profile that is different from that of the original recording.
 #
-# This shows that, once orders have been identified and stored, they become a reusable material:
+# This shows that, once orders are identified and stored, they become a reusable material:
 # they can be combined with any RPM profile to generate a new sound, without needing a new
 # recording. In a product simulation context, this makes it possible, for instance, to identify
 # orders on an existing system and then synthesize the sound that this system would have produced in
