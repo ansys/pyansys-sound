@@ -45,9 +45,14 @@ def server_upload(client_path, server=None):
     if server.local_server:
         # Local server, no upload needed.
         yield client_path
+
     else:
         # Remote server, the file needs to be uploaded to the server for the DPF operator to use it.
         yield upload_file_in_tmp_folder(file_path=client_path, server=server)
+
+        # No server-side cleanup done on context manager exit. The uploaded files are automatically
+        # cleaned up on server shutdown (see ansys.dpf.core documentation, notably function
+        # ``upload_file_in_tmp_folder``).
 
 
 @contextmanager
@@ -78,3 +83,7 @@ def server_download(client_path, server=None):
         client_dir = os.path.dirname(os.path.abspath(client_path))
         os.makedirs(client_dir, exist_ok=True)
         download_file(server_path, client_path, server)
+
+        # No server-side file cleanup done on context manager exit. The saved files are
+        # automatically cleaned up on server shutdown (see ansys.dpf.core documentation, notably
+        # function ``make_tmp_dir_server``).
