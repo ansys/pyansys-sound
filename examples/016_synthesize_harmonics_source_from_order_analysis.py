@@ -163,9 +163,9 @@ order_levels.save_as_AnsysSound_Orders(orders_file_path)
 #
 # Although the :class:`.SourceHarmonics` object suffices here to synthesize the sound, the
 # :class:`.SoundComposer` instance would allow further simulation scenarios:
-# 
+#
 # - combine this source with other sources of various types, such as rolling noise, aerodynamic
-#   noise, or HVAC noise; 
+#   noise, or HVAC noise;
 # - apply source gains and filters, typically to simulate real-world acoustic environments.
 
 path = orders_file_path
