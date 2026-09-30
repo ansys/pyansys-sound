@@ -42,12 +42,12 @@ def server_upload(client_path, server=None):
     if server is None:
         server = server_module.get_or_create_server(None)
 
-    if server.has_client():
-        # Remote server, the file needs to be uploaded to the server for the DPF operator to use it.
-        yield upload_file_in_tmp_folder(file_path=client_path, server=server)
-    else:  # pragma nocover
+    if server.local_server:
         # Local server, no upload needed.
         yield client_path
+    else:
+        # Remote server, the file needs to be uploaded to the server for the DPF operator to use it.
+        yield upload_file_in_tmp_folder(file_path=client_path, server=server)
 
 
 @contextmanager
@@ -64,7 +64,11 @@ def server_download(client_path, server=None):
     if server is None:
         server = server_module.get_or_create_server(None)
 
-    if server.has_client():
+    if server.local_server:
+        # Local server, we use the client path directly.
+        yield client_path
+
+    else:
         # Remote server, yield the server path in the server temporary directory where the file
         # shall be created before being downloaded back to the client host.
         server_path = os.path.join(make_tmp_dir_server(server), os.path.basename(client_path))
@@ -74,7 +78,3 @@ def server_download(client_path, server=None):
         client_dir = os.path.dirname(os.path.abspath(client_path))
         os.makedirs(client_dir, exist_ok=True)
         download_file(server_path, client_path, server)
-
-    else:  # pragma nocover
-        # Local server, we use the client path directly.
-        yield client_path

@@ -23,6 +23,7 @@
 import os
 
 from ansys.dpf.core import download_file, upload_file_in_tmp_folder
+from ansys.dpf.core.server import get_or_create_server
 from ansys.tools.common.exceptions import VersionError, VersionSyntaxError
 import pytest
 
@@ -181,14 +182,24 @@ def test_server_upload_remote_case():
     assert os.path.exists(local_path2)
     assert os.path.getsize(local_path2) == os.path.getsize(local_path1)
 
+    # Clean up.
+    os.remove(local_path2)
 
-@pytest.mark.skipif(pytest.is_server_remote, reason="Test only runs with a local server.")
+
 def test_server_upload_local_case():
     """Test the server_upload function in the local server case."""
     local_path = pytest.data_path_flute
 
+    # Mock a local server.
+    server = get_or_create_server(None)
+    is_local = server.local_server
+    server.local_server = True
+
     with server_upload(local_path) as server_path:
         assert server_path == local_path
+
+    # Restore the original local_server property.
+    server.local_server = is_local
 
 
 @pytest.mark.skipif(not pytest.is_server_remote, reason="Test only runs with a remote server.")
@@ -214,13 +225,17 @@ def test_server_download_remote_case():
     assert os.path.exists(local_path)
 
 
-@pytest.mark.skipif(pytest.is_server_remote, reason="Test only runs with a local server.")
 def test_server_download_local_case():
     """Test the server_download function in the local server case."""
     # Create a dummy file for testing.
     local_path = os.path.join(os.path.dirname(pytest.data_path_flute), "download_check.txt")
     with open(local_path, "w") as f:
         f.write("dummy content")
+
+    # Mock a local server.
+    server = get_or_create_server(None)
+    is_local = server.local_server
+    server.local_server = True
 
     with server_download(local_path) as server_path:
         assert server_path == local_path
@@ -231,3 +246,6 @@ def test_server_download_local_case():
 
     # Check that the file is still absent (nothing happened on context manager exit).
     assert not os.path.exists(local_path)
+
+    # Restore the original local_server property.
+    server.local_server = is_local
