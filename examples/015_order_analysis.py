@@ -34,8 +34,8 @@ vibration that are related to the rotational speed of a machine.
 The example also illustrates the effects of the parameters
 :attr:`~.OrderLevels.order_resolution` and :attr:`~.OrderLevels.order_width` on the computed order
 levels: the order levels are extracted from an intermediate RPM-order representation (see
-:class:`.RpmOrderRepresentation`), whose order resolution directly drives both the RPM and
-order resolutions of the result.
+:class:`.RpmOrderRepresentation`), whose order resolution directly influences both the RPM and
+level accuracy of the final result.
 """
 
 # %%
