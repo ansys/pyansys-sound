@@ -33,7 +33,7 @@ from ._check_version import (
     requires_sound_version,
 )
 from ._connect_to_or_start_server import connect_to_or_start_server
-from ._server_io import server_upload, server_download
+from ._server_io import server_download, server_upload
 from ._validate_dpf_sound_connection import validate_dpf_sound_connection
 
 __all__ = (

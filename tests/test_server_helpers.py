@@ -31,8 +31,8 @@ from ansys.sound.core.server_helpers import (
     _check_sound_version_and_raise,
     connect_to_or_start_server,
     requires_sound_version,
-    server_upload,
     server_download,
+    server_upload,
     validate_dpf_sound_connection,
 )
 from ansys.sound.core.server_helpers._check_version import get_sound_version
@@ -160,7 +160,7 @@ def test_get_sound_version():
 
 
 @pytest.mark.skipif(not pytest.is_server_remote, reason="Test only runs with a remote server.")
-def test_server_upload():
+def test_server_upload_remote_case():
     """Test the server_upload function in the remote server case."""
     local_path1 = pytest.data_path_flute
 
@@ -171,33 +171,40 @@ def test_server_upload():
         os.remove(local_path2)
     assert not os.path.exists(local_path2)
 
-    with server_upload(local_path1) as path:
-        # Variable path contains the server-side path.
-        assert path != local_path1 and path != local_path2
+    with server_upload(local_path1) as server_path:
+        assert server_path != local_path1 and server_path != local_path2
 
         # Re-download the uploaded file to check it exists server-side.
-        download_file(path, local_path2)
+        download_file(server_path, local_path2)
 
     # Verify the downloaded file.
     assert os.path.exists(local_path2)
     assert os.path.getsize(local_path2) == os.path.getsize(local_path1)
 
 
+@pytest.mark.skipif(pytest.is_server_remote, reason="Test only runs with a local server.")
+def test_server_upload_local_case():
+    """Test the server_upload function in the local server case."""
+    local_path = pytest.data_path_flute
+
+    with server_upload(local_path) as server_path:
+        assert server_path == local_path
+
+
 @pytest.mark.skipif(not pytest.is_server_remote, reason="Test only runs with a remote server.")
-def test_server_download():
+def test_server_download_remote_case():
     """Test the server_download function in the remote server case."""
     # Create a dummy file for testing.
     local_path = os.path.join(os.path.dirname(pytest.data_path_flute), "download_check.txt")
     with open(local_path, "w") as f:
         f.write("dummy content")
 
-    with server_download(local_path) as path:
-        # Variable path contains the server-side path.
-        assert path != local_path
+    with server_download(local_path) as server_path:
+        assert server_path != local_path
 
         # To mock an operator saving a file at the returned server path, upload the dummy file.
         server_path = upload_file_in_tmp_folder(file_path=local_path)
-        assert server_path == path
+        assert server_path == server_path
 
         # Delete the local file to later check the download.
         os.remove(local_path)
@@ -205,3 +212,22 @@ def test_server_download():
 
     # After exiting the context manager, the file should have been downloaded from the server.
     assert os.path.exists(local_path)
+
+
+@pytest.mark.skipif(pytest.is_server_remote, reason="Test only runs with a local server.")
+def test_server_download_local_case():
+    """Test the server_download function in the local server case."""
+    # Create a dummy file for testing.
+    local_path = os.path.join(os.path.dirname(pytest.data_path_flute), "download_check.txt")
+    with open(local_path, "w") as f:
+        f.write("dummy content")
+
+    with server_download(local_path) as server_path:
+        assert server_path == local_path
+
+        # Delete the file.
+        os.remove(local_path)
+        assert not os.path.exists(local_path)
+
+    # Check that the file is still absent (nothing happened on context manager exit).
+    assert not os.path.exists(local_path)
