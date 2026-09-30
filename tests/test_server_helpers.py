@@ -160,7 +160,7 @@ def test_get_sound_version():
         assert len(version.split(".")) == 3
 
 
-@pytest.mark.skipif(not pytest.is_server_remote, reason="Test only runs with a remote server.")
+@pytest.mark.skipif(pytest.is_server_local, reason="Test only runs with a remote server.")
 def test_server_upload_remote_case():
     """Test the server_upload function in the remote server case."""
     local_path1 = pytest.data_path_flute
@@ -202,7 +202,7 @@ def test_server_upload_local_case():
     server.local_server = is_local
 
 
-@pytest.mark.skipif(not pytest.is_server_remote, reason="Test only runs with a remote server.")
+@pytest.mark.skipif(pytest.is_server_local, reason="Test only runs with a remote server.")
 def test_server_download_remote_case():
     """Test the server_download function in the remote server case."""
     # Create a dummy file for testing.

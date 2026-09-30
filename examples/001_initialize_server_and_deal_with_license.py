@@ -80,7 +80,7 @@ print("Connecting to the server without using a LicenseContextManager")
 my_server, my_license_context = connect_to_or_start_server(use_license_context=False)
 
 # Check if you are using a local or remote server
-is_server_local = not my_server.has_client()
+is_server_local = my_server.local_server
 print(f"Local server: {is_server_local}")
 
 # If using a local server, display the path to the server

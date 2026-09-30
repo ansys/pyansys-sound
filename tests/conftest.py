@@ -43,7 +43,7 @@ def pytest_configure(config):
     config.dpf_server = server
     config.dpf_lic_context = lic_context
 
-    pytest.is_server_remote = server.has_client()
+    pytest.is_server_local = server.local_server
 
     # Define global variables for DPF Sound plugin version checks: store them in the pytest object
     # to make them global and available in all tests where we import pytest.
@@ -177,7 +177,7 @@ def pytest_configure(config):
     pytest.data_path_psd_nonregular = get_test_file_path("Overall_level_from_PSD_nonregular.txt")
 
     # Define the output folder where the output files are saved.
-    if server.has_client():
+    if not pytest.is_server_local:
         # Remote server => the "output" folder does not exist within the temporary folder where
         # input data are uploaded => we use the same folder path for input and output.
         pytest.output_folder = os.path.dirname(pytest.data_path_flute)
