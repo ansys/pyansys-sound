@@ -11,12 +11,12 @@ repos:
   - id: black
 
 - repo: https://github.com/pycqa/isort
-  rev: 9.0.1
+  rev: 9.0.2
   hooks:
   - id: isort
 
 - repo: https://github.com/PyCQA/flake8
-  rev: 7.3.0
+  rev: 7.4.1
   hooks:
   - id: flake8
 
@@ -50,6 +50,6 @@ repos:
       - --start_year=2023
 
 - repo: https://github.com/python-jsonschema/check-jsonschema
-  rev: 0.38.0
+  rev: 0.38.2
   hooks:
     - id: check-github-workflows
