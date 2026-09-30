@@ -105,9 +105,6 @@ wav_loader.process()
 signal, rpm_profile = wav_loader.get_output()
 sampling_frequency = wav_loader.get_sampling_frequency()
 
-# Fix RPM profile unit
-rpm_profile.unit = "RPM"
-
 # %%
 # Compute the spectrogram.
 stft = Stft(signal=signal, fft_size=8192, window_overlap=0.9)
