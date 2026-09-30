@@ -43,6 +43,8 @@ def pytest_configure(config):
     config.dpf_server = server
     config.dpf_lic_context = lic_context
 
+    pytest.is_server_remote = server.has_client()
+
     # Define global variables for DPF Sound plugin version checks: store them in the pytest object
     # to make them global and available in all tests where we import pytest.
     pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2025R2 = _check_sound_version("2025.2.0")

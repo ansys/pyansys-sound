@@ -45,7 +45,7 @@ def server_load_path(client_path, server=None):
     if server.has_client():
         # Remote server, the file needs to be uploaded to the server for the DPF operator to use it.
         yield upload_file_in_tmp_folder(file_path=client_path, server=server)
-    else:
+    else:  # pragma nocover
         # Local server, no upload needed.
         yield client_path
 
@@ -75,6 +75,6 @@ def server_save_path(client_path, server=None):
         os.makedirs(client_dir, exist_ok=True)
         download_file(server_path, client_path, server)
 
-    else:
+    else:  # pragma nocover
         # Local server, we use the client path directly.
         yield client_path
