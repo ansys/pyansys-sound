@@ -77,9 +77,6 @@ wav_loader.process()
 
 signal, rpm_profile = wav_loader.get_output()
 
-# Fix RPM profile unit
-rpm_profile.unit = "RPM"
-
 # Plot the signal and its associated RPM profile
 time = signal.time_freq_support.time_frequencies
 

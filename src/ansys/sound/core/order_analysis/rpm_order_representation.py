@@ -311,7 +311,7 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
 
     def plot(
         self,
-        display_in_dB: bool = False,
+        display_in_dB: bool = True,
         reference_value: float = 1.0,
     ):
         """Plot the RPM-order representation as a colormap of level against order and RPM.
@@ -336,10 +336,9 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
 
         # As the RPM-order representation is made of two-sided spectra, we only plot the orders from
         # 0 to the maximum order.
-        if self.max_order is not None:
-            order_mask = orders <= self.max_order
-            orders = orders[order_mask]
-            representation = representation[:, order_mask]
+        order_mask = orders <= self.max_order
+        orders = orders[order_mask]
+        representation = representation[:, order_mask]
 
         # Compute the magnitude of the RPM-order representation.
         magnitude = np.abs(representation.transpose())
@@ -356,7 +355,7 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
             if len(unit) > 0:
                 str_unit += f" {unit}"
         else:
-            str_unit = unit if len(unit) > 0 else "linear units"
+            str_unit = unit if len(unit) > 0 else ""
 
         # Limit the colormap scale to the top 60-dB range when displaying in dB.
         vmax = np.max(magnitude) if display_in_dB else None

@@ -252,17 +252,16 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
             )
 
         # Step 1: Compute RPM-order representation.
-        rpm_order_repr = RpmOrderRepresentation(
+        self.__rpm_order_representation = RpmOrderRepresentation(
             signal=self.signal,
             rpm_profile=self.rpm_profile,
             max_order=self._compute_max_order(),
             order_resolution=self.order_resolution,
         )
-        rpm_order_repr.process()
-        self.__rpm_order_representation = rpm_order_repr
+        self.__rpm_order_representation.process()
 
         # Step 2: Extract order levels.
-        self.__operator.connect(0, rpm_order_repr.get_output())
+        self.__operator.connect(0, self.__rpm_order_representation.get_output())
         self.__operator.connect(1, list(map(float, self.orders)))
         self.__operator.connect(2, float(self.order_width))
 
