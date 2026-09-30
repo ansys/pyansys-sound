@@ -27,7 +27,7 @@ import warnings
 from ansys.dpf.core import DataSources, Field, Operator, types
 import numpy as np
 
-from ansys.sound.core.server_helpers import requires_sound_version, server_load_path
+from ansys.sound.core.server_helpers import requires_sound_version, server_upload
 
 from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -87,7 +87,7 @@ class LoadWav(SignalUtilitiesParent):
                 f"`{self.__class__.__name__}.path_to_wav`."
             )
 
-        with server_load_path(self.path_to_wav) as path:
+        with server_upload(self.path_to_wav) as path:
             # Load a WAV file
             data_source_in = DataSources()
 

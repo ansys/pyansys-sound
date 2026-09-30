@@ -29,7 +29,7 @@ from ansys.dpf.core import upload_file_in_tmp_folder
 
 
 @contextmanager
-def server_load_path(client_path, server=None):
+def server_upload(client_path, server=None):
     """Manage file upload to server in case of a remote server.
 
     Parameters
@@ -51,7 +51,7 @@ def server_load_path(client_path, server=None):
 
 
 @contextmanager
-def server_save_path(client_path, server=None):
+def server_download(client_path, server=None):
     """Manage file download from server in case of a remote server.
 
     Parameters

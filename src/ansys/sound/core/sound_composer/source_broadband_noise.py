@@ -28,7 +28,7 @@ from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operato
 from matplotlib import pyplot as plt
 import numpy as np
 
-from ansys.sound.core.server_helpers._server_io import server_load_path
+from ansys.sound.core.server_helpers._server_io import server_upload
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._source_parent import SourceParent
@@ -238,7 +238,7 @@ class SourceBroadbandNoise(SourceParent):
             Path to the broadband noise source file. Supported files have the same text format
             (with the `AnsysSound_BBN` header) as supported by Ansys Sound SAS.
         """
-        with server_load_path(file) as path:
+        with server_upload(file) as path:
             # Set operator inputs.
             self.__operator_load.connect(0, path)
 

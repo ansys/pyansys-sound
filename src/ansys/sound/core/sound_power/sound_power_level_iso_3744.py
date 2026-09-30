@@ -28,7 +28,7 @@ from ansys.dpf.core import Field, Operator, fields_container_factory
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ansys.sound.core.server_helpers._server_io import server_load_path
+from ansys.sound.core.server_helpers._server_io import server_upload
 
 from . import SoundPowerParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -382,7 +382,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         filename: string
             Sound power level project file.
         """
-        with server_load_path(filename) as path:
+        with server_upload(filename) as path:
             # Set operator inputs.
             self.__operator_load.connect(0, path)
 

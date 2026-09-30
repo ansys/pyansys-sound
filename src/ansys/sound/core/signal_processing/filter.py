@@ -29,7 +29,7 @@ from ansys.dpf.core.available_result import Homogeneity
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ansys.sound.core.server_helpers import server_load_path
+from ansys.sound.core.server_helpers import server_upload
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning, scipy_required
 from ..server_helpers._check_version import _check_sound_version
@@ -293,7 +293,7 @@ class Filter(SignalProcessingParent):
             file shall have the same text format (with the header `AnsysSound_FRF`), as supported
             by Ansys Sound SAS.
         """
-        with server_load_path(file) as path:
+        with server_upload(file) as path:
             # Set operator inputs.
             self.__operator_load.connect(0, path)
 

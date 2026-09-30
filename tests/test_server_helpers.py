@@ -31,8 +31,8 @@ from ansys.sound.core.server_helpers import (
     _check_sound_version_and_raise,
     connect_to_or_start_server,
     requires_sound_version,
-    server_load_path,
-    server_save_path,
+    server_upload,
+    server_download,
     validate_dpf_sound_connection,
 )
 from ansys.sound.core.server_helpers._check_version import get_sound_version
@@ -160,8 +160,8 @@ def test_get_sound_version():
 
 
 @pytest.mark.skipif(not pytest.is_server_remote, reason="Test only runs with a remote server.")
-def test_server_load_path():
-    """Test the server_load_path function in the remote server case."""
+def test_server_upload():
+    """Test the server_upload function in the remote server case."""
     local_path1 = pytest.data_path_flute
 
     # Define a second local path, different from the first to avoid confusion with the original.
@@ -171,7 +171,7 @@ def test_server_load_path():
         os.remove(local_path2)
     assert not os.path.exists(local_path2)
 
-    with server_load_path(local_path1) as path:
+    with server_upload(local_path1) as path:
         # Variable path contains the server-side path.
         assert path != local_path1 and path != local_path2
 
@@ -184,14 +184,14 @@ def test_server_load_path():
 
 
 @pytest.mark.skipif(not pytest.is_server_remote, reason="Test only runs with a remote server.")
-def test_server_save_path():
-    """Test the server_save_path function in the remote server case."""
+def test_server_download():
+    """Test the server_download function in the remote server case."""
     # Create a dummy file for testing.
     local_path = os.path.join(os.path.dirname(pytest.data_path_flute), "download_check.txt")
     with open(local_path, "w") as f:
         f.write("dummy content")
 
-    with server_save_path(local_path) as path:
+    with server_download(local_path) as path:
         # Variable path contains the server-side path.
         assert path != local_path
 

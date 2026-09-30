@@ -27,7 +27,7 @@ import warnings
 from ansys.dpf.core import Field, Operator
 from matplotlib import pyplot as plt
 
-from ansys.sound.core.server_helpers._server_io import server_load_path
+from ansys.sound.core.server_helpers._server_io import server_upload
 from ansys.sound.core.signal_utilities.load_wav import LoadWav
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -169,7 +169,7 @@ class SourceControlTime(SourceControlParent):
         expected_unit : str, default: ""
             Expected unit of the loaded control data.
         """
-        with server_load_path(file_str) as path:
+        with server_upload(file_str) as path:
             # Set operator inputs.
             self.__operator_load.connect(0, path)
             if len(expected_unit) > 0:
