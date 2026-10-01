@@ -86,6 +86,9 @@ class Stft(SpectrogramProcessingParent):
         self.window_type = window_type
         self.__operator = Operator("compute_stft")
 
+        # Cache for the complex STFT. Necessary to avoid multiple recomputations.
+        self._complex_stft = None
+
     @property
     def signal(self) -> Field:
         """Input signal as a DPF field."""
@@ -160,6 +163,10 @@ class Stft(SpectrogramProcessingParent):
         """
         if self.signal is None:
             raise PyAnsysSoundException("No signal found for STFT. Use 'Stft.signal'.")
+
+        # Clear the cached complex STFT. It will be recomputed on next call to
+        # ``get_output_as_nparray()``.
+        self._complex_stft = None
 
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, int(self.fft_size))
@@ -244,25 +251,31 @@ class Stft(SpectrogramProcessingParent):
         size in :attr:`fft_size`).
         """
         output = self.get_output()
+
         if output is None:
             return np.array([]), np.array([]), np.array([])
 
-        time_indexes = output.get_available_ids_for_label("time")
-        Ntime = len(time_indexes)
-        Nfft = output.get_field({"complex": 0, "time": 0, "channel_number": 0}).data.shape[0]
+        times = np.array(output.time_freq_support.time_frequencies.data)
+        frequencies = np.array(output[0].time_freq_support.time_frequencies.data)
 
-        # Pre-allocate memory for the output array.
-        out_as_np_array = np.empty((Ntime, Nfft), dtype=np.complex128)
+        # Check if the complex STFT cache is populated.
+        if self._complex_stft is None:
+            # Compute the complex STFT from the fields container.
+            time_indexes = output.get_available_ids_for_label("time")
+            Ntime = len(time_indexes)
+            Nfft = output.get_field({"complex": 0, "time": 0, "channel_number": 0}).data.shape[0]
 
-        for i in time_indexes:
-            f1 = output.get_field({"complex": 0, "time": i, "channel_number": 0})
-            f2 = output.get_field({"complex": 1, "time": i, "channel_number": 0})
-            out_as_np_array[i] = f1.data + 1j * f2.data
+            # Pre-allocate memory for the output array.
+            complex_stft = np.empty((Ntime, Nfft), dtype=np.complex128)
 
-        times = self.get_output().time_freq_support.time_frequencies.data
-        frequencies = self.get_output()[0].time_freq_support.time_frequencies.data
+            for i in time_indexes:
+                f1 = output.get_field({"complex": 0, "time": i, "channel_number": 0})
+                f2 = output.get_field({"complex": 1, "time": i, "channel_number": 0})
+                complex_stft[i] = f1.data + 1j * f2.data
 
-        return np.transpose(out_as_np_array), np.array(frequencies), np.array(times)
+            self._complex_stft = np.transpose(complex_stft)
+
+        return self._complex_stft, frequencies, times
 
     def get_magnitude(self) -> np.ndarray:
         """Get the magnitude of the STFT.
@@ -406,8 +419,8 @@ class Stft(SpectrogramProcessingParent):
                 "Range of magnitude values for the colormap must be strictly greater than 0."
             )
 
-        magnitude = self.get_magnitude()
-        unit = self.get_output()[0].unit
+        output = self.get_output()
+        unit = output[0].unit
         magnitude_unit = unit if isinstance(unit, str) else unit[1]
         if display_in_dB:
             # Convert magnitude to dB.
@@ -417,9 +430,9 @@ class Stft(SpectrogramProcessingParent):
 
         phase = self.get_phase()
 
-        frequency_unit = self.get_output()[0].time_freq_support.time_frequencies.unit
+        frequency_unit = output[0].time_freq_support.time_frequencies.unit
         frequencies = self.get_frequencies()
-        time_unit = self.get_output().time_freq_support.time_frequencies.unit
+        time_unit = output.time_freq_support.time_frequencies.unit
         times = self.get_time_scale()
 
         # Boundaries of the plot
