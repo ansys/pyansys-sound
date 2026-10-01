@@ -420,11 +420,12 @@ class Stft(SpectrogramProcessingParent):
             )
 
         output = self.get_output()
+        magnitude = self.get_magnitude()
         unit = output[0].unit
         magnitude_unit = unit if isinstance(unit, str) else unit[1]
         if display_in_dB:
             # Convert magnitude to dB.
-            magnitude = 20 * np.log10(self.get_magnitude() / reference_value + 1e-12)
+            magnitude = 20 * np.log10(magnitude / reference_value + 1e-12)
             str_unit = f" {magnitude_unit}" if len(magnitude_unit) > 0 else ""
             magnitude_unit = f"dB re. {reference_value}{str_unit}"
 
