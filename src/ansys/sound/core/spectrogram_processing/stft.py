@@ -86,7 +86,8 @@ class Stft(SpectrogramProcessingParent):
         self.window_type = window_type
         self.__operator = Operator("compute_stft")
 
-        # Complex STFT (intermediate result). Necessary to avoid multiple recomputations.
+        # Complex STFT (intermediate result). Necessary to avoid multiple recomputations in
+        # ``get_output_as_nparray()``.
         self._complex_stft: np.ndarray = None
 
     @property
