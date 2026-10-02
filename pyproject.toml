@@ -32,7 +32,8 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-# Additional optional dependencies needed to cover the full scope of the package (examples included).
+# Additional optional dependencies needed to cover the full functional scope of pyansys-sound,
+# including examples.
 full = [
     "scipy>=1.14.1,<1.16; python_version<'3.11'",
     "scipy>=1.17.1; python_version>='3.11'",
