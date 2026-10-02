@@ -238,7 +238,7 @@ class Stft(SpectrogramProcessingParent):
             sampling frequency, is mirrored in the upper half, up to the sampling frequency. Each
             row of the STFT corresponds to a specific frequency, and each column corresponds to a
             specific time.
-            
+
             For more information, see `RMS spectrum <https://ansyshelp.ansys.com/public/account/
             secured?returnurl=/Views/Secured/corp/v261/en/Sound_SAS_UG/Sound/UG_SAS/
             rms_spectrum.html>`_.
