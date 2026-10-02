@@ -214,8 +214,8 @@ def test_server_download_remote_case():
         assert server_path != local_path
 
         # To mock an operator saving a file at the returned server path, upload the dummy file.
-        server_path = upload_file_in_tmp_folder(file_path=local_path)
-        assert server_path == server_path
+        returned_server_path = upload_file_in_tmp_folder(file_path=local_path)
+        assert returned_server_path == server_path
 
         # Delete the local file to later check the download.
         os.remove(local_path)
