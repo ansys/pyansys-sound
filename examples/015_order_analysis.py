@@ -36,6 +36,11 @@ The example also illustrates the effects of the parameters
 levels: the order levels are extracted from an intermediate RPM-order representation (see
 :class:`.RpmOrderRepresentation`), whose order resolution directly influences both the RPM and
 level accuracy of the final result.
+
+.. seealso::
+    :ref:`synthesize_harmonics_source_from_order_analysis`
+        Example demonstrating how to synthesize the sound of a harmonics source from an order
+        analysis.
 """
 
 # %%
