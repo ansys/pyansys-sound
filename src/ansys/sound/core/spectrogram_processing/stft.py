@@ -167,6 +167,10 @@ class Stft(SpectrogramProcessingParent):
         # Clear the cached complex STFT. It will be recomputed on next call to
         # ``get_output_as_nparray()``.
         self._complex_stft = None
+        self._magnitude = None
+        self._phase = None
+        self._frequencies = None
+        self._times = None
 
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, int(self.fft_size))
@@ -259,7 +263,7 @@ class Stft(SpectrogramProcessingParent):
         frequencies = np.array(output[0].time_freq_support.time_frequencies.data)
 
         # Check if the complex STFT cache is populated.
-        if True:#self._complex_stft is None:
+        if self._complex_stft is None:
             # Compute the complex STFT from the fields container.
             time_indexes = output.get_available_ids_for_label("time")
             Ntime = len(time_indexes)
@@ -275,7 +279,10 @@ class Stft(SpectrogramProcessingParent):
 
             self._complex_stft = np.transpose(complex_stft)
 
-        return self._complex_stft, frequencies, times
+            self._frequencies = frequencies
+            self._times = times
+
+        return self._complex_stft, self._frequencies, self._times
 
     def get_magnitude(self) -> np.ndarray:
         """Get the magnitude of the STFT.
@@ -296,6 +303,9 @@ class Stft(SpectrogramProcessingParent):
         attributes :attr:`window_type` and :attr:`fft_size` (the window size is equal to the FFT
         size in :attr:`fft_size`).
         """
+        if self._magnitude is not None:
+            return self._magnitude
+
         complex_stft = self.get_output_as_nparray()[0]
         if len(complex_stft) == 0:
             return np.array([])
@@ -304,7 +314,9 @@ class Stft(SpectrogramProcessingParent):
         # frequency bins (two-sided to one-sided STFT conversion).
         complex_stft = np.sqrt(2) * complex_stft[: self._one_sided_length(), :]
 
-        return np.absolute(complex_stft)
+        self._magnitude = np.absolute(complex_stft)
+
+        return self._magnitude
 
     def get_phase(self) -> np.ndarray:
         """Get the phase of the STFT.
@@ -315,11 +327,16 @@ class Stft(SpectrogramProcessingParent):
             Phase of the STFT, in rad. The returned STFT phase is one-sided, which means it only
             contains the positive frequency components up to half the signal's sampling frequency.
         """
+        if self._phase is not None:
+            return self._phase
+
         complex_stft = self.get_output_as_nparray()[0]
         if len(complex_stft) == 0:
             return np.array([])
 
-        return np.angle(complex_stft[: self._one_sided_length(), :])
+        self._phase = np.angle(complex_stft[: self._one_sided_length(), :])
+
+        return self._phase
 
     def get_frequencies(self) -> np.ndarray:
         """Get the frequency scale of the STFT magnitude and phase.
@@ -330,11 +347,15 @@ class Stft(SpectrogramProcessingParent):
             Frequencies, in Hz, corresponding to the rows of the STFT magnitude and phase, returned
             by :meth:`get_magnitude` and :meth:`get_phase`, respectively.
         """
+        if self._frequencies is not None:
+            return self._frequencies[: self._one_sided_length()]
+
         frequencies = self.get_output_as_nparray()[1]
         if len(frequencies) == 0:
             return np.array([])
 
-        return frequencies[: self._one_sided_length()]
+        self._frequencies = frequencies
+        return self._frequencies[: self._one_sided_length()]
 
     def get_time_scale(self) -> np.ndarray:
         """Get the time scale of the STFT.
@@ -344,7 +365,11 @@ class Stft(SpectrogramProcessingParent):
         numpy.ndarray
             Time values, in seconds, corresponding to the columns of the STFT.
         """
-        return self.get_output_as_nparray()[2]
+        if self._times is not None:
+            return self._times
+
+        self._times = self.get_output_as_nparray()[2]
+        return self._times
 
     def plot(self):
         """Plot the STFT.
