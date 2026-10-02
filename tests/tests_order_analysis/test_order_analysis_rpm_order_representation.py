@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from unittest.mock import patch
+
 from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
@@ -397,3 +399,59 @@ def test_rpm_order_representation_get_time_scale(load_accel_and_rpm):
     assert time[12] == pytest.approx(EXP_TIME12, abs=1e-2)
     assert time[31] == pytest.approx(EXP_TIME31, abs=1e-2)
     assert time[41] == pytest.approx(EXP_TIME41, abs=1e-2)
+
+
+# --- plot ---
+
+
+@patch("matplotlib.pyplot.show")
+def test_rpm_order_representation_plot(mock_show, load_accel_and_rpm):
+    """Test the plot method."""
+    signal, rpm_profile = load_accel_and_rpm
+    obj = RpmOrderRepresentation(
+        signal=signal, rpm_profile=rpm_profile, max_order=10, order_resolution=0.125
+    )
+    obj.process()
+    obj.plot()
+    mock_show.assert_called_once()
+
+    # Empty name and unit (affects title and colorbar label)
+    signal.name = ""
+    signal.unit = ""
+    mock_show.reset_mock()
+    obj.plot()
+    mock_show.assert_called_once()
+
+
+@patch("matplotlib.pyplot.show")
+def test_rpm_order_representation_plot_in_dB(mock_show, load_accel_and_rpm):
+    """Test the plot method when display_in_dB is True."""
+    signal, rpm_profile = load_accel_and_rpm
+    obj = RpmOrderRepresentation(
+        signal=signal, rpm_profile=rpm_profile, max_order=10, order_resolution=0.125
+    )
+    obj.process()
+    obj.plot(display_in_dB=True, reference_value=2e-5)
+    mock_show.assert_called_once()
+
+    # Empty unit (affects colorbar label)
+    signal.unit = ""
+    mock_show.reset_mock()
+    obj.plot(display_in_dB=True, reference_value=2e-5)
+    mock_show.assert_called_once()
+
+
+def test_rpm_order_representation_plot_exceptions(load_accel_and_rpm):
+    """Test the plot method's exceptions."""
+    signal, rpm_profile = load_accel_and_rpm
+    obj = RpmOrderRepresentation(signal=signal, rpm_profile=rpm_profile)
+
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=("Output is not processed yet. Use the `RpmOrderRepresentation.process\(\)` method."),
+    ):
+        obj.plot()
+
+    obj.process()
+    with pytest.raises(PyAnsysSoundException, match="Reference value must be greater than 0."):
+        obj.plot(display_in_dB=True, reference_value=0.0)
