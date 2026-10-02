@@ -259,7 +259,7 @@ class Stft(SpectrogramProcessingParent):
         frequencies = np.array(output[0].time_freq_support.time_frequencies.data)
 
         # Check if the complex STFT cache is populated.
-        if self._complex_stft is None:
+        if True:#self._complex_stft is None:
             # Compute the complex STFT from the fields container.
             time_indexes = output.get_available_ids_for_label("time")
             Ntime = len(time_indexes)
@@ -510,5 +510,5 @@ class Stft(SpectrogramProcessingParent):
         Returns:
             int: Length of a one-sided spectrum.
         """
-        nfft = len(self.get_output_as_nparray()[1])
-        return int(np.floor(nfft / 2)) + 1
+        # nfft = len(self.get_output_as_nparray()[1])
+        return int(np.floor(self.fft_size / 2)) + 1
