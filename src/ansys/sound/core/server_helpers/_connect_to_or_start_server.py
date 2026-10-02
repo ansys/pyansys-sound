@@ -43,14 +43,25 @@ def connect_to_or_start_server(
 ) -> tuple[server_types.InProcessServer | server_types.GrpcServer, LicenseContextManager]:
     """Connect to or start a DPF server with the DPF Sound plugin loaded.
 
+    This function connects to a remote DPF Server, or starts a local DPF Server, and loads the DPF
+    Sound plugin. If a port or IP address is passed in arguments, or if the environment variable
+    ``ANSRV_DPF_SOUND_PORT`` is set with a port number, the function attempts to connect to an the
+    already running remote server at the specified port and/or IP address. Otherwise, the function
+    attempts to start a local server, located at the path passed in ``ansys_path`` if specified, or
+    at the path specified in the environment variable ``ANSYS_DPF_PATH`` if set. Finally, if none of
+    these arguments and environment variables is set, the function attempts to start a local server
+    at the latest Ansys installation folder. Note that, in any case, arguments are prioritized over
+    environment variables.
+
     Parameters
     ----------
     port : int, default: None
-        Port that the DPF server is listening to.
+        Port that the DPF server is listening to (remote server only).
     ip : str, default: None
-        IP address for the DPF server.
+        IP address for the DPF server (remote server only).
     ansys_path : str, default: None
-        Root path for the Ansys installation. For example, `"C:/Program Files/ANSYS Inc/v242"`.
+        Root path for the Ansys installation (local server only). For example,
+        `"C:/Program Files/ANSYS Inc/v242"`.
         This parameter is ignored if either the port or IP address is set.
     use_license_context : bool, default: False
         Whether to check out the DPF Sound license increment before using PyAnsys Sound (see
@@ -78,17 +89,6 @@ def connect_to_or_start_server(
     LicenseContextManager
         Licensing context object. Retains the licence increment until the object is deleted.
         :obj:`None` if ``use_license_context`` is set to :obj:`False`.
-
-    Notes
-    -----
-    If a port or IP address is passed in arguments, or if the environment variable
-    ``ANSRV_DPF_SOUND_PORT`` is defined with a port number, this function attempts to connect to a
-    remote server at the specified port and/or IP address. Otherwise, the function attempts to
-    start a local server, located at the path passed in ``ansys_path`` if specified, or at the path
-    specified in the environment variable ``ANSYS_DPF_PATH`` if it is defined. Finally, if none of
-    these arguments and environment variables is defined, the function attempts to start a local
-    server from the latest Ansys installation folder. Note that, in any case, arguments are
-    prioritized over environment variables.
 
     Examples
     --------

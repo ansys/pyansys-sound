@@ -174,3 +174,5 @@ examples/*.csv
 /*.csv
 examples/*.scn
 /*.scn
+
+sandbox/*
