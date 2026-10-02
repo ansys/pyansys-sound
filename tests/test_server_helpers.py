@@ -21,7 +21,6 @@
 # SOFTWARE.
 
 import os
-from turtle import rt
 
 from ansys.dpf.core import download_file, upload_file_in_tmp_folder
 from ansys.dpf.core.server import get_or_create_server
