@@ -232,11 +232,16 @@ class Stft(SpectrogramProcessingParent):
         Returns
         -------
         numpy.ndarray
-            Complex STFT of the signal, in the signal's unit. The returned STFT is two-sided, which
-            means the lower half of the frequencies, between 0 Hz and half of the signal's sampling
-            frequency, is mirrored in the upper half, up to the sampling frequency. Each row of
-            the STFT corresponds to a specific frequency, and each column corresponds to a specific
-            time.
+            Complex STFT of the signal, in the signal's unit. The returned STFT is scaled such that
+            the module of the spectrum at each time step is an RMS spectrum. The STFT is two-sided,
+            which means the lower half of the frequencies, between 0 Hz and half of the signal's
+            sampling frequency, is mirrored in the upper half, up to the sampling frequency. Each
+            row of the STFT corresponds to a specific frequency, and each column corresponds to a
+            specific time.
+            
+            For more information, see `RMS spectrum <https://ansyshelp.ansys.com/public/account/
+            secured?returnurl=/Views/Secured/corp/v261/en/Sound_SAS_UG/Sound/UG_SAS/
+            rms_spectrum.html>`_.
         numpy.ndarray
             Frequencies in Hz corresponding to the rows of the STFT.
         numpy.ndarray
@@ -287,9 +292,14 @@ class Stft(SpectrogramProcessingParent):
         Returns
         -------
         numpy.ndarray
-            STFT magnitude in the input signal's unit. The result is one-sided and contains positive
-            frequencies only, up to half the sampling frequency. Magnitudes are scaled by sqrt(2) to
-            account for both the positive- and negative-frequency energy.
+            STFT magnitude in the input signal's unit. The result contains a one-sided RMS spectrum
+            for each time step, with positive frequencies only, up to half the sampling frequency.
+            Magnitudes are scaled by sqrt(2) to account for both the positive- and
+            negative-frequency energy.
+
+            For more information, see `RMS spectrum <https://ansyshelp.ansys.com/public/account/
+            secured?returnurl=/Views/Secured/corp/v261/en/Sound_SAS_UG/Sound/UG_SAS/
+            rms_spectrum.html>`_.
 
         Notes
         -----
