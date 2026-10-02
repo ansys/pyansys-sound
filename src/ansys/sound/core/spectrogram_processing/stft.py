@@ -86,7 +86,7 @@ class Stft(SpectrogramProcessingParent):
         self.window_type = window_type
         self.__operator = Operator("compute_stft")
 
-        # Cache for the complex STFT. Necessary to avoid multiple recomputations.
+        # Complex STFT (intermediate result). Necessary to avoid multiple recomputations.
         self._complex_stft = None
 
     @property
@@ -164,7 +164,7 @@ class Stft(SpectrogramProcessingParent):
         if self.signal is None:
             raise PyAnsysSoundException("No signal found for STFT. Use 'Stft.signal'.")
 
-        # Clear the cached complex STFT. It will be recomputed on next call to
+        # Clear the stored complex STFT. It will be recomputed on next call to
         # ``get_output_as_nparray()``.
         self._complex_stft = None
 
@@ -258,9 +258,9 @@ class Stft(SpectrogramProcessingParent):
         times = np.array(output.time_freq_support.time_frequencies.data)
         frequencies = np.array(output[0].time_freq_support.time_frequencies.data)
 
-        # Check if the complex STFT cache is populated.
+        # Check if the complex STFT is populated.
         if self._complex_stft is None:
-            # Compute the complex STFT from the fields container.
+            # Compute and store the complex STFT from the fields container.
             time_indexes = output.get_available_ids_for_label("time")
             Ntime = len(time_indexes)
             Nfft = output.get_field({"complex": 0, "time": 0, "channel_number": 0}).data.shape[0]
