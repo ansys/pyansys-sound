@@ -28,6 +28,8 @@ from ansys.dpf.core import Field, GenericDataContainer, Operator
 from matplotlib import pyplot as plt
 import numpy as np
 
+from ansys.sound.core.server_helpers._server_io import server_upload
+
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._source_control_parent import SpectrumSynthesisMethods as Methods
 from ._source_parent import SourceParent
@@ -183,14 +185,15 @@ class SourceSpectrum(SourceParent):
             Path to the spectrum source file. Supported files are the same XML and text (with the
             AnsysSound_Spectrum header) formats as supported by Ansys Sound SAS.
         """
-        # Set operator inputs.
-        self.__operator_load.connect(0, file_source)
+        with server_upload(file_source) as path:
+            # Set operator inputs.
+            self.__operator_load.connect(0, path)
 
-        # Run the operator.
-        self.__operator_load.run()
+            # Run the operator.
+            self.__operator_load.run()
 
-        # Get the loaded sound power level parameters.
-        self.source_spectrum_data = self.__operator_load.get_output(0, "field")
+            # Get the loaded sound power level parameters.
+            self.source_spectrum_data = self.__operator_load.get_output(0, "field")
 
     def set_from_generic_data_containers(
         self,

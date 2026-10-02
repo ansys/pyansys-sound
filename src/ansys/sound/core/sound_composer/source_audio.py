@@ -28,6 +28,7 @@ from ansys.dpf.core import Field, GenericDataContainer, Operator
 from matplotlib import pyplot as plt
 import numpy as np
 
+from ansys.sound.core.server_helpers._server_io import server_upload
 from ansys.sound.core.signal_utilities import LoadWav, Resample
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -152,14 +153,15 @@ class SourceAudio(SourceParent):
             Path to the text file containing the samples over time. Supported files have the same
             text format (with the `AnsysSound_SoundSamples` header) as supported by Ansys Sound SAS.
         """
-        # Set operator inputs.
-        self.__operator_load.connect(0, file)
+        with server_upload(file) as path:
+            # Set operator inputs.
+            self.__operator_load.connect(0, path)
 
-        # Run the operator.
-        self.__operator_load.run()
+            # Run the operator.
+            self.__operator_load.run()
 
-        # Get the loaded sound power level parameters.
-        self.source_audio_data = self.__operator_load.get_output(0, "field")
+            # Get the loaded sound power level parameters.
+            self.source_audio_data = self.__operator_load.get_output(0, "field")
 
     def set_from_generic_data_containers(
         self,

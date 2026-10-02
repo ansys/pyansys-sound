@@ -76,7 +76,7 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # - The associated RPM profile
 
 # Return the input data of the example file.
-path_accel_wav = download_accel_with_rpm_wav(server=my_server)
+path_accel_wav = download_accel_with_rpm_wav()
 
 # Load the WAV file.
 wav_loader = LoadWav(path_accel_wav)
@@ -208,8 +208,8 @@ print(f"The loudness level of the isolated signal is {loudness_level_isolated_si
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Loop over a list of given signals and write them as a WAV file.
 
-path_accel_wav_2 = download_accel_with_rpm_2_wav(server=my_server)
-path_accel_wav_3 = download_accel_with_rpm_3_wav(server=my_server)
+path_accel_wav_2 = download_accel_with_rpm_2_wav()
+path_accel_wav_3 = download_accel_with_rpm_3_wav()
 paths = (path_accel_wav, path_accel_wav_2, path_accel_wav_3)
 
 fft_sizes = [256, 2048, 4096]

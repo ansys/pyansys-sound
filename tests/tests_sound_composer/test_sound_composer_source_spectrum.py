@@ -34,6 +34,7 @@ import numpy as np
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.server_helpers import server_upload
 from ansys.sound.core.signal_utilities.load_wav import LoadWav
 from ansys.sound.core.sound_composer import SourceControlSpectrum, SourceSpectrum
 from ansys.sound.core.sound_composer import SpectrumSynthesisMethods as Methods
@@ -210,7 +211,8 @@ def test_source_spectrum_load_source_with_v4():
 def test_source_spectrum_set_from_generic_data_containers():
     """Test SourceSpectrum set_from_generic_data_containers method."""
     op = Operator("sound_composer_load_source_spectrum")
-    op.connect(0, pytest.data_path_sound_composer_spectrum_source)
+    with server_upload(pytest.data_path_sound_composer_spectrum_source) as path:
+        op.connect(0, path)
     op.run()
     f_data: Field = op.get_output(0, "field")
 

@@ -68,7 +68,7 @@ from ansys.sound.core.spectrogram_processing.stft import Stft
 my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
 # Load example data from a WAV file: flyover noise of an aircraft.
-path_turbo_whistle_wav = download_turbo_whistling_wav(server=my_server)
+path_turbo_whistle_wav = download_turbo_whistling_wav()
 wav_loader = LoadWav(path_turbo_whistle_wav)
 wav_loader.process()
 signal_aircraft = wav_loader.get_output()[0]

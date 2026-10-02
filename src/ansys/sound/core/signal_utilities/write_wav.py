@@ -26,6 +26,8 @@ import warnings
 
 from ansys.dpf.core import DataSources, Field, Operator, fields_container_factory
 
+from ansys.sound.core.server_helpers._server_io import server_download
+
 from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
@@ -146,20 +148,21 @@ class WriteWav(SignalUtilitiesParent):
             raise PyAnsysSoundException("No signal is specified for writing to a WAV file. \
                     Use `WriteWav.signal`.")
 
-        data_source_out = DataSources()
-        data_source_out.add_file_path(self.path_to_write, ".wav")
+        with server_download(self.path_to_write) as path:
+            data_source_out = DataSources()
+            data_source_out.add_file_path(path, ".wav")
 
-        signal = self.signal
-        if isinstance(signal, Field):
-            signal = [signal]
-        signal_as_fields_container = fields_container_factory.over_time_freq_fields_container(
-            signal
-        )
-        self.__operator.connect(0, signal_as_fields_container)
-        self.__operator.connect(1, data_source_out)
-        self.__operator.connect(2, self.bit_depth)
+            signal = self.signal
+            if isinstance(signal, Field):
+                signal = [signal]
+            signal_as_fields_container = fields_container_factory.over_time_freq_fields_container(
+                signal
+            )
+            self.__operator.connect(0, signal_as_fields_container)
+            self.__operator.connect(1, data_source_out)
+            self.__operator.connect(2, self.bit_depth)
 
-        self.__operator.run()
+            self.__operator.run()
 
     def plot(self):
         """Plot the output.

@@ -29,6 +29,7 @@ from ansys.dpf.core import Field, GenericDataContainersCollection, Operator, typ
 from matplotlib import pyplot as plt
 import numpy as np
 
+from ansys.sound.core.server_helpers._server_io import server_download, server_upload
 from ansys.sound.core.signal_utilities import SumSignals
 from ansys.sound.core.sound_composer._sound_composer_parent import SoundComposerParent
 from ansys.sound.core.sound_composer.track import Track
@@ -150,26 +151,29 @@ class SoundComposer(SoundComposerParent):
         project_path : str
             Path to the Sound Composer project file to load (.scn).
         """
-        self.__operator_load.connect(0, project_path)
+        with server_upload(project_path) as path:
+            self.__operator_load.connect(0, path)
 
-        self.__operator_load.run()
+            self.__operator_load.run()
 
-        track_collection = self.__operator_load.get_output(0, GenericDataContainersCollection)
-        self.name = self.__operator_load.get_output(1, types.string)
+            track_collection = self.__operator_load.get_output(0, GenericDataContainersCollection)
+            self.name = self.__operator_load.get_output(1, types.string)
 
-        if len(track_collection) == 0:
-            warnings.warn(
-                PyAnsysSoundWarning(
-                    f"The project file `{os.path.basename(project_path)}` does not contain any "
-                    "track."
+            if len(track_collection) == 0:
+                warnings.warn(
+                    PyAnsysSoundWarning(
+                        f"The project file `{os.path.basename(project_path)}` does not contain any "
+                        "track."
+                    )
                 )
-            )
 
-        self.tracks = []
-        for i in range(len(track_collection)):
-            track = Track()
-            track.set_from_generic_data_containers(track_collection.get_entry({"track_index": i}))
-            self.add_track(track)
+            self.tracks = []
+            for i in range(len(track_collection)):
+                track = Track()
+                track.set_from_generic_data_containers(
+                    track_collection.get_entry({"track_index": i})
+                )
+                self.add_track(track)
 
     def save(self, project_path: str):
         """Save the Sound Composer project.
@@ -194,12 +198,13 @@ class SoundComposer(SoundComposerParent):
         for i, track in enumerate(self.tracks):
             track_collection.add_entry({"track_index": i}, track.get_as_generic_data_containers())
 
-        # Save the Sound Composer project.
-        self.__operator_save.connect(0, project_path)
-        self.__operator_save.connect(1, track_collection)
-        self.__operator_save.connect(2, self.name)
+        with server_download(project_path) as path:
+            # Save the Sound Composer project.
+            self.__operator_save.connect(0, path)
+            self.__operator_save.connect(1, track_collection)
+            self.__operator_save.connect(2, self.name)
 
-        self.__operator_save.run()
+            self.__operator_save.run()
 
     def process(self, sampling_frequency: float = 44100.0):
         """Generate the signal of the current Sound Composer project.

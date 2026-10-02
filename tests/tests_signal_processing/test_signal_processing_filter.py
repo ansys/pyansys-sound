@@ -26,6 +26,7 @@ from ansys.dpf.core import Field, Operator, TimeFreqSupport, fields_factory, loc
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.server_helpers import server_upload
 from ansys.sound.core.signal_processing import Filter
 from ansys.sound.core.signal_utilities import LoadWav
 
@@ -510,7 +511,8 @@ def test_filter__compute_coefficients_from_FRF():
     assert filter.b_coefficients is None
 
     op = Operator("load_FRF_from_txt")
-    op.connect(0, pytest.data_path_filter_frf)
+    with server_upload(pytest.data_path_filter_frf) as path:
+        op.connect(0, path)
     op.run()
     filter.frf = op.get_output(0, "field")
 
