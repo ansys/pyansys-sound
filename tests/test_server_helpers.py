@@ -224,6 +224,9 @@ def test_server_download_remote_case():
     # After exiting the context manager, the file should have been downloaded from the server.
     assert os.path.exists(local_path)
 
+    # Clean up.
+    os.remove(local_path)
+
 
 def test_server_download_local_case():
     """Test the server_download function in the local server case."""
