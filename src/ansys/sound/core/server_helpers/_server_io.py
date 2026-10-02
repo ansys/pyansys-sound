@@ -45,6 +45,15 @@ def server_upload(client_path, server=None):
         Source path on the client host where the file to upload is located.
     server : GrpcServer | InProcessServer | None, default: None
         Server to which the file is uploaded. If None, the global server is used.
+
+    Examples
+    --------
+    >>> from ansys.sound.core.server_helpers._server_io import server_upload
+    >>> from ansys.sound.core.signal_utilities import LoadWav
+    >>> with server_upload(local_wav_path, server=my_server) as server_path:
+    >>>     loader = LoadWav(path_to_wav=server_path)
+    >>>     loader.process()
+    >>>     my_signal = loader.get_output()
     """
     if server is None:
         server = server_module.get_or_create_server(None)
@@ -77,6 +86,14 @@ def server_download(client_path, server=None):
         Target path on the client host where the file is downloaded from the server after saving.
     server : GrpcServer | InProcessServer | None, default: None
         Server from which the file is downloaded after saving. If None, the global server is used.
+
+    Examples
+    --------
+    >>> from ansys.sound.core.server_helpers._server_io import server_download
+    >>> from ansys.sound.core.signal_utilities import WriteWav
+    >>> with server_download(local_wav_path, server=my_server) as server_path:
+    >>>     writer = WriteWav(signal=my_signal, path_to_write=server_path)
+    >>>     writer.process()
     """
     if server is None:
         server = server_module.get_or_create_server(None)
