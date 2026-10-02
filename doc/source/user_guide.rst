@@ -83,9 +83,8 @@ You can also find relevant PyAnsys Sound workflow examples in :doc:`examples/ind
 .. note::
     Files that are meant to be used as inputs to PyAnsys Sound (WAV files for example) need to be
     made available to the DPF Server with DPF Sound plugin (see :ref:`start_pyansys_sound`). If a
-    `local` server is started with
-    :func:`~.server_helpers._connect_to_or_start_server.connect_to_or_start_server()`, the files are
-    already available to the server, since it runs on the same system as the Python process.
+    `local` server is started, the files are already available to the server, since it runs on the
+    same system as the Python process.
     However, if a `remote` server is connected to instead, and this server runs on a separate system,
     you must upload the files to the DPF Server with the dedicated `PyDPF Core upload function`_.
     This function then returns the file's server-side path, which shall be used in PyAnsys Sound
