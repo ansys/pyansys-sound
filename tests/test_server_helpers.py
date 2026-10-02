@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 import os
+from turtle import rt
 
 from ansys.dpf.core import download_file, upload_file_in_tmp_folder
 from ansys.dpf.core.server import get_or_create_server
@@ -193,13 +194,16 @@ def test_server_upload_local_case():
     # Mock a local server.
     server = get_or_create_server(None)
     is_local = server.local_server
-    server.local_server = True
 
-    with server_upload(local_path) as server_path:
-        assert server_path == local_path
+    try:
+        server.local_server = True
 
-    # Restore the original local_server property.
-    server.local_server = is_local
+        with server_upload(local_path) as server_path:
+            assert server_path == local_path
+
+    finally:
+        # Restore the original local_server property.
+        server.local_server = is_local
 
 
 @pytest.mark.skipif(pytest.is_server_local, reason="Test only runs with a remote server.")
@@ -238,17 +242,24 @@ def test_server_download_local_case():
     # Mock a local server.
     server = get_or_create_server(None)
     is_local = server.local_server
-    server.local_server = True
 
-    with server_download(local_path) as server_path:
-        assert server_path == local_path
+    try:
+        server.local_server = True
 
-        # Delete the file.
-        os.remove(local_path)
+        with server_download(local_path) as server_path:
+            assert server_path == local_path
+
+            # Delete the file.
+            os.remove(local_path)
+            assert not os.path.exists(local_path)
+
+        # Check that the file is still absent (nothing happened on context manager exit).
         assert not os.path.exists(local_path)
 
-    # Check that the file is still absent (nothing happened on context manager exit).
-    assert not os.path.exists(local_path)
+    finally:
+        # Restore the original local_server property.
+        server.local_server = is_local
 
-    # Restore the original local_server property.
-    server.local_server = is_local
+        # Clean up if necessary.
+        if os.path.exists(local_path):
+            os.remove(local_path)
