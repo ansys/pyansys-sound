@@ -87,7 +87,7 @@ class Stft(SpectrogramProcessingParent):
         self.__operator = Operator("compute_stft")
 
         # Complex STFT (intermediate result). Necessary to avoid multiple recomputations.
-        self._complex_stft = None
+        self._complex_stft: np.ndarray = None
 
     @property
     def signal(self) -> Field:
@@ -259,21 +259,24 @@ class Stft(SpectrogramProcessingParent):
         frequencies = np.array(output[0].time_freq_support.time_frequencies.data)
 
         # Check if the complex STFT is populated.
-        if self._complex_stft is None:
-            # Compute and store the complex STFT from the fields container.
-            time_indexes = output.get_available_ids_for_label("time")
-            Ntime = len(time_indexes)
-            Nfft = output.get_field({"complex": 0, "time": 0, "channel_number": 0}).data.shape[0]
+        if self._complex_stft is not None:
+            # No need to recompute.
+            return self._complex_stft, frequencies, times
 
-            # Pre-allocate memory for the output array.
-            complex_stft = np.empty((Ntime, Nfft), dtype=np.complex128)
+        time_indexes = output.get_available_ids_for_label("time")
+        Ntime = len(time_indexes)
+        Nfft = output.get_field({"complex": 0, "time": 0, "channel_number": 0}).data.shape[0]
 
-            for i in time_indexes:
-                f1 = output.get_field({"complex": 0, "time": i, "channel_number": 0})
-                f2 = output.get_field({"complex": 1, "time": i, "channel_number": 0})
-                complex_stft[i] = f1.data + 1j * f2.data
+        # Pre-allocate memory for the output array.
+        complex_stft = np.empty((Ntime, Nfft), dtype=np.complex128)
 
-            self._complex_stft = np.transpose(complex_stft)
+        for i in time_indexes:
+            f1 = output.get_field({"complex": 0, "time": i, "channel_number": 0})
+            f2 = output.get_field({"complex": 1, "time": i, "channel_number": 0})
+            complex_stft[i] = f1.data + 1j * f2.data
+
+        # Store the computed complex STFT for future calls.
+        self._complex_stft = np.transpose(complex_stft)
 
         return self._complex_stft, frequencies, times
 
