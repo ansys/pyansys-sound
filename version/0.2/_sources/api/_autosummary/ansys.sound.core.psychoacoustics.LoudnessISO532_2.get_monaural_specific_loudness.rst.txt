@@ -1,0 +1,6 @@
+get\_monaural\_specific\_loudness
+=================================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: LoudnessISO532_2.get_monaural_specific_loudness

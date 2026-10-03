@@ -1,0 +1,6 @@
+get\_tone\_details
+==================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: TonalityDIN45681.get_tone_details

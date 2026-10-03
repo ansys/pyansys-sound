@@ -1,0 +1,43 @@
+﻿ApplyGain
+=========
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoclass:: ApplyGain
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      ApplyGain.get_output
+      
+      
+      ApplyGain.get_output_as_nparray
+      
+      
+      ApplyGain.plot
+      
+      
+      ApplyGain.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ApplyGain.gain
+      ApplyGain.gain_in_db
+      ApplyGain.signal
+   
+   

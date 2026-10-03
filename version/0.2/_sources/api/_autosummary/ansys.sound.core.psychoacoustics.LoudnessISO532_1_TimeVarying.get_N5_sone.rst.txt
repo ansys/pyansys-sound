@@ -1,0 +1,6 @@
+get\_N5\_sone
+=============
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: LoudnessISO532_1_TimeVarying.get_N5_sone

@@ -1,0 +1,6 @@
+get\_Lmax\_phon
+===============
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: LoudnessISO532_1_TimeVarying.get_Lmax_phon

@@ -1,0 +1,6 @@
+method
+======
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. autoproperty:: SourceControlSpectrum.method

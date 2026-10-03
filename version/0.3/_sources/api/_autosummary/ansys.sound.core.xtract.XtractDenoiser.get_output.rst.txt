@@ -1,0 +1,6 @@
+get\_output
+===========
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. automethod:: XtractDenoiser.get_output

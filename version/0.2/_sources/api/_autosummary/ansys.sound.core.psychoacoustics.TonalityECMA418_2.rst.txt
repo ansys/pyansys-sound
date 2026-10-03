@@ -1,0 +1,59 @@
+﻿TonalityECMA418\_2
+==================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: TonalityECMA418_2
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      TonalityECMA418_2.convert_fields_container_to_np_array
+      
+      
+      TonalityECMA418_2.get_output
+      
+      
+      TonalityECMA418_2.get_output_as_nparray
+      
+      
+      TonalityECMA418_2.get_tonality
+      
+      
+      TonalityECMA418_2.get_tonality_over_time
+      
+      
+      TonalityECMA418_2.get_tonality_time_scale
+      
+      
+      TonalityECMA418_2.get_tone_frequency_over_time
+      
+      
+      TonalityECMA418_2.get_tone_frequency_time_scale
+      
+      
+      TonalityECMA418_2.plot
+      
+      
+      TonalityECMA418_2.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      TonalityECMA418_2.signal
+   
+   

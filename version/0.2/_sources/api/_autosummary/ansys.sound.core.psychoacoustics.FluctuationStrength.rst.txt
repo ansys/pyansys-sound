@@ -1,0 +1,56 @@
+﻿FluctuationStrength
+===================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: FluctuationStrength
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      FluctuationStrength.convert_fields_container_to_np_array
+      
+      
+      FluctuationStrength.get_bark_band_frequencies
+      
+      
+      FluctuationStrength.get_bark_band_indexes
+      
+      
+      FluctuationStrength.get_fluctuation_strength
+      
+      
+      FluctuationStrength.get_output
+      
+      
+      FluctuationStrength.get_output_as_nparray
+      
+      
+      FluctuationStrength.get_specific_fluctuation_strength
+      
+      
+      FluctuationStrength.plot
+      
+      
+      FluctuationStrength.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      FluctuationStrength.signal
+   
+   

@@ -1,0 +1,6 @@
+sampling\_frequency
+===================
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoproperty:: CreateSignalField.sampling_frequency

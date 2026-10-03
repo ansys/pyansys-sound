@@ -1,0 +1,76 @@
+﻿TonalityISOTS20065
+==================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: TonalityISOTS20065
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      TonalityISOTS20065.convert_fields_container_to_np_array
+      
+      
+      TonalityISOTS20065.get_decisive_audibility_over_time
+      
+      
+      TonalityISOTS20065.get_decisive_frequency_over_time
+      
+      
+      TonalityISOTS20065.get_mean_audibility
+      
+      
+      TonalityISOTS20065.get_output
+      
+      
+      TonalityISOTS20065.get_output_as_nparray
+      
+      
+      TonalityISOTS20065.get_spectrum_details
+      
+      
+      TonalityISOTS20065.get_spectrum_number
+      
+      
+      TonalityISOTS20065.get_time_scale
+      
+      
+      TonalityISOTS20065.get_tone_details
+      
+      
+      TonalityISOTS20065.get_tone_number
+      
+      
+      TonalityISOTS20065.get_uncertainty
+      
+      
+      TonalityISOTS20065.get_uncertainty_over_time
+      
+      
+      TonalityISOTS20065.plot
+      
+      
+      TonalityISOTS20065.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      TonalityISOTS20065.overlap
+      TonalityISOTS20065.signal
+      TonalityISOTS20065.window_length
+   
+   

@@ -1,0 +1,6 @@
+add\_microphone\_signal
+=======================
+
+.. currentmodule:: ansys.sound.core.sound_power
+
+.. automethod:: SoundPowerLevelISO3744.add_microphone_signal

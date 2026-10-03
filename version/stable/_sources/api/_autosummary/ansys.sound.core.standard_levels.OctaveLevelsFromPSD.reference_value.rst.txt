@@ -1,0 +1,6 @@
+reference\_value
+================
+
+.. currentmodule:: ansys.sound.core.standard_levels
+
+.. autoproperty:: OctaveLevelsFromPSD.reference_value

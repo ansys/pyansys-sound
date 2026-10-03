@@ -1,0 +1,41 @@
+﻿SumSignals
+==========
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoclass:: SumSignals
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SumSignals.get_output
+      
+      
+      SumSignals.get_output_as_nparray
+      
+      
+      SumSignals.plot
+      
+      
+      SumSignals.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SumSignals.signals
+   
+   

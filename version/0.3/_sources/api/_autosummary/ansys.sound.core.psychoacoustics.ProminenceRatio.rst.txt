@@ -1,0 +1,69 @@
+﻿ProminenceRatio
+===============
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: ProminenceRatio
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      ProminenceRatio.get_PR_values
+      
+      
+      ProminenceRatio.get_max_PR_value
+      
+      
+      ProminenceRatio.get_nb_tones
+      
+      
+      ProminenceRatio.get_output
+      
+      
+      ProminenceRatio.get_output_as_nparray
+      
+      
+      ProminenceRatio.get_peaks_frequencies
+      
+      
+      ProminenceRatio.get_peaks_high_frequencies
+      
+      
+      ProminenceRatio.get_peaks_levels
+      
+      
+      ProminenceRatio.get_peaks_low_frequencies
+      
+      
+      ProminenceRatio.get_reference_curve
+      
+      
+      ProminenceRatio.get_single_tone_info
+      
+      
+      ProminenceRatio.plot
+      
+      
+      ProminenceRatio.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ProminenceRatio.frequency_list
+      ProminenceRatio.psd
+   
+   

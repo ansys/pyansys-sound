@@ -1,0 +1,6 @@
+get\_rpm\_scale
+===============
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: ToneToNoiseRatioForOrdersOverTime.get_rpm_scale

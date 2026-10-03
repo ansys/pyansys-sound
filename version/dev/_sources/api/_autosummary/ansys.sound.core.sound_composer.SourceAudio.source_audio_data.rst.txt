@@ -1,0 +1,6 @@
+source\_audio\_data
+===================
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. autoproperty:: SourceAudio.source_audio_data
