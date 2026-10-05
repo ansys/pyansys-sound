@@ -49,11 +49,12 @@ def server_upload(client_path, server=None):
     Examples
     --------
     >>> from ansys.sound.core.server_helpers._server_io import server_upload
-    >>> from ansys.sound.core.signal_utilities import LoadWav
+    >>> from ansys.dpf.core import Operator
     >>> with server_upload(local_wav_path, server=my_server) as server_path:
-    >>>     loader = LoadWav(path_to_wav=server_path)
-    >>>     loader.process()
-    >>>     my_signal = loader.get_output()
+    >>>     op = Operator(operator_name)
+    >>>     op.connect(0, server_path)
+    >>>     op.run()
+    >>>     my_output = op.get_output(0, MyOutputType)
     """
     if server is None:
         server = server_module.get_or_create_server(None)
@@ -90,10 +91,12 @@ def server_download(client_path, server=None):
     Examples
     --------
     >>> from ansys.sound.core.server_helpers._server_io import server_download
-    >>> from ansys.sound.core.signal_utilities import WriteWav
+    >>> from ansys.dpf.core import Operator
     >>> with server_download(local_wav_path, server=my_server) as server_path:
-    >>>     writer = WriteWav(signal=my_signal, path_to_write=server_path)
-    >>>     writer.process()
+    >>>     op = Operator(operator_name)
+    >>>     op.connect(0, my_data_to_write)
+    >>>     op.connect(1, server_path)
+    >>>     op.run()
     """
     if server is None:
         server = server_module.get_or_create_server(None)
