@@ -47,7 +47,6 @@ The example shows how to perform these operations:
 - Calculate indicators on loaded WAV files.
 - Get calculation outputs.
 - Plot some corresponding curves.
-
 """
 
 # %%
