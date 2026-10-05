@@ -43,7 +43,6 @@ The example shows how to perform these operations:
 - Get calculation outputs.
 - Plot some corresponding curves.
 - Export levels into a .csv files.
-
 """
 
 # %%
