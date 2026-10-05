@@ -103,7 +103,7 @@ class LoadWav(SignalUtilitiesParent):
             # Store outputs
             self._output = [f for f in self.__operator.get_output(0, types.fields_container)]
             # Note: sampling frequency and format are retrieved within their respective getter
-            # methods, because their availabilility depends on the DPF Sound plugin version (which
+            # methods, because their availability depends on the DPF Sound plugin version (which
             # is managed by these methods' `requires_sound_version` decorator).
 
     def get_output(self) -> list[Field]:
