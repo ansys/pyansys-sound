@@ -197,7 +197,7 @@ def test_server_upload_local_case():
     try:
         server.local_server = True
 
-        with server_upload(local_path) as server_path:
+        with server_upload(local_path, server) as server_path:
             assert server_path == local_path
 
     finally:
@@ -245,7 +245,7 @@ def test_server_download_local_case():
     try:
         server.local_server = True
 
-        with server_download(local_path) as server_path:
+        with server_download(local_path, server) as server_path:
             assert server_path == local_path
 
             # Delete the file.
