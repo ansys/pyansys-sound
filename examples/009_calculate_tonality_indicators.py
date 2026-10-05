@@ -67,19 +67,16 @@ from ansys.sound.core.spectrogram_processing.stft import Stft
 # Connect to a remote DPF server or start a local DPF server.
 my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
-# Load example data from a WAV file: flyover noise of an aircraft.
+# Load example data from a WAV file: the whistling of a turbo in a diesel engine.
 path_turbo_whistle_wav = download_turbo_whistling_wav(server=my_server)
 wav_loader = LoadWav(path_turbo_whistle_wav)
 wav_loader.process()
-signal_aircraft = wav_loader.get_output()[0]
+signal_turbo = wav_loader.get_output()[0]
 
 
 # %%
-# The signal used in this example is the flyover noise of an aircraft. The signal is sampled at
-# 10 kHz, and the duration is about 26 seconds.
-
 # Calculate and display the spectrogram of the signal used in this example.
-stft = Stft(signal_aircraft, fft_size=1024, window_overlap=0.8)
+stft = Stft(signal_turbo, fft_size=2048, window_overlap=0.8)
 stft.process()
 stft.plot_custom(
     display_phase=False,
@@ -89,8 +86,7 @@ stft.plot_custom(
 
 # %%
 # From the spectrogram, you can see that the signal contains some tonal components,
-# especially the two tones whose frequencies start at around 800 Hz and decrease over the
-# duration of the signal, due to the Doppler effect.
+# especially the two tones whose frequencies oscillate around 600 and 1400 Hz.
 
 # %%
 # ISO 1996-2 annex C
@@ -99,7 +95,7 @@ stft.plot_custom(
 # annex C of the standard ISO 1996-2 using the class :class:`.TonalityISO1996_2`.
 
 # Calculate the ISO 1996-2 tonality.
-tonality_ISO1996_2 = TonalityISO1996_2(signal=signal_aircraft)
+tonality_ISO1996_2 = TonalityISO1996_2(signal=signal_turbo)
 tonality_ISO1996_2.process()
 
 # Display the results in the console.
@@ -111,20 +107,19 @@ print(
 
 # %%
 # You can also retrieve computation details using the method
-# :meth:`~.TonalityISO1996_2.get_computation_details()`. As you can notice, computing the ISO
-# 1996-2 tonality over the whole signal is not relevant, as the tonal audibility equals 0 dB in
-# that case, even if strong tonal components are audible. Rigorously speaking, the ISO 1996-2
-# standard requires at least 1 minute of stationary signal, which is often a very high bar to reach,
-# especially for transient signals. The ISO 1996-2 tonality is therefore not very useful for the
-# analysis of transient signals, and it is recommended to use the ISO 1996-2 tonality over time in
-# that case.
+# :meth:`~.TonalityISO1996_2.get_computation_details()`. Computing the ISO 1996-2 tonality over the
+# whole signal might sometimes be inaccurate, even if strong tonal components are audible.
+# Rigorously speaking, the ISO 1996-2 standard requires at least 1 minute of stationary signal,
+# which is often a very high bar to reach, especially for highly transient signals. The ISO 1996-2
+# tonality is therefore not very useful for the analysis of transient signals, and it is recommended
+# to use the ISO 1996-2 tonality over time in that case.
 
 # %%
 # Let us now calculate and plot the ISO 1996-2 tonality over time using the class
 # :class:`.TonalityISO1996_2_OverTime`.
 
 # Calculate the ISO 1996-2 tonality over time.
-tonality_ISO1996_2_over_time = TonalityISO1996_2_OverTime(signal=signal_aircraft)
+tonality_ISO1996_2_over_time = TonalityISO1996_2_OverTime(signal=signal_turbo)
 tonality_ISO1996_2_over_time.process()
 
 # Display the results over time in a figure.
@@ -132,10 +127,9 @@ tonality_ISO1996_2_over_time.plot()
 
 # %%
 # In this figure, you can notice that the tonal audibility and tonal adjustment show
-# strong tonal components near the beginning and the end of the signal.
-# Some tonal content is also detected in the middle part of the signal, but less consistently so.
-# The most likely reason is that, due to the Doppler effect, the frequencies of the tones are
-# changing at a higher rate than in the other parts of the signal.
+# a generally stronger tonal audibility than when it is computed over the whole signal.
+# The tonal audibility also tends to slightly drop in signal portions where the tonal components'
+# frequencies vary more rapidly.
 
 
 # %%
@@ -145,7 +139,7 @@ tonality_ISO1996_2_over_time.plot()
 # standard using the same signal and the class :class:`.TonalityDIN45681`.
 
 # Calculate the DIN 45681 tonality.
-tonality_DIN45681 = TonalityDIN45681(signal=signal_aircraft)
+tonality_DIN45681 = TonalityDIN45681(signal=signal_turbo)
 tonality_DIN45681.process()
 
 # Display the overall results in the console.
@@ -174,7 +168,9 @@ tonality_DIN45681.plot()
 # :attr:`.TonalityISO1996_2_OverTime.overlap` for ISO 1996-2.
 # Additionally, the DIN 45681 class provides the frequency of the most prominent tone at each
 # computation time step, with the method
-# :meth:`.TonalityDIN45681.get_decisive_frequency_over_time()`.
+# :meth:`.TonalityDIN45681.get_decisive_frequency_over_time()`. Note that in this case, the detected
+# frequency is not that of the turbo whistling, but rather that of the main order of the diesel
+# engine.
 
 # %%
 # ISO/TS 20065
@@ -183,7 +179,7 @@ tonality_DIN45681.plot()
 # standard using the same signal and the class :class:`TonalityISOTS20065`.
 
 # Calculate the ISO/TS 20065 tonality.
-tonality_ISOTS20065 = TonalityISOTS20065(signal=signal_aircraft)
+tonality_ISOTS20065 = TonalityISOTS20065(signal=signal_turbo)
 tonality_ISOTS20065.process()
 
 # Display the overall results in the console.
@@ -215,7 +211,7 @@ tonality_ISOTS20065.plot()
 # the same signal and the class :class:`.TonalityAures`.
 
 # Calculate the Aures tonality.
-tonality_Aures = TonalityAures(signal=signal_aircraft)
+tonality_Aures = TonalityAures(signal=signal_turbo)
 tonality_Aures.process()
 
 # Display the overall results in the console.
@@ -242,7 +238,7 @@ tonality_Aures.plot()
 # standard (3rd edition, 2024) using the same signal and the class :class:`.TonalityECMA418_2`.
 
 # Calculate the ECMA-418-2 tonality.
-tonality_ECMA418_2 = TonalityECMA418_2(signal=signal_aircraft, field_type="Free", edition="3rd")
+tonality_ECMA418_2 = TonalityECMA418_2(signal=signal_turbo, field_type="Free", edition="3rd")
 tonality_ECMA418_2.process()
 
 # Display the overall results in the console.
@@ -265,6 +261,6 @@ tonality_ECMA418_2.plot()
 
 # %%
 # The figure shows the psychoacoustic tonality over time, as well as the frequency of
-# the most prominent tone at each computation time step. The frequency seemingly follows the
-# Doppler effect that the previously displayed spectrogram showed, only switching back and forth
-# between the two main tones' frequencies.
+# the most prominent tone at each computation time step. The tone frequency seemingly follows the
+# turbo tones that the previously displayed spectrogram showed, only switching back and forth
+# between the two main turbo tones' frequencies.
