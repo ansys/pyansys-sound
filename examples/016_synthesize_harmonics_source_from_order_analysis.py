@@ -55,8 +55,6 @@ different operating conditions.
 import os
 from pathlib import Path
 
-from ansys.dpf.core import upload_file_in_tmp_folder
-
 # Load standard libraries.
 import matplotlib.pyplot as plt
 import numpy as np
