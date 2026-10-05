@@ -41,11 +41,24 @@ from ansys.sound.core.server_helpers._check_version import get_sound_version
 
 def test_validate_dpf_sound_connection():
     """Test the validate_dpf_sound_connection function."""
+    # This test may start a new server in some circumstances. To make sure the subsequent tests use
+    # the main test server (started or connected to in conftest.py), we need to retrieve it with
+    # ``get_or_create_server(None)`` and set it as the global server again at the end of this test.
+    conftest_server = get_or_create_server(None)
+
     validate_dpf_sound_connection()
+
+    # Set the main test server as the global server again.
+    conftest_server.set_as_global()
 
 
 def test_connect_to_or_start_server():
     """Test the connect_to_or_start_server function."""
+    # This test may start a new server in some circumstances. To make sure the subsequent tests use
+    # the main test server (started or connected to in conftest.py), we need to retrieve it with
+    # ``get_or_create_server(None)`` and set it as the global server again at the end of this test.
+    conftest_server = get_or_create_server(None)
+
     server, license_context = connect_to_or_start_server(use_license_context=False)
     assert server is not None
     assert license_context is None
@@ -53,6 +66,9 @@ def test_connect_to_or_start_server():
     server, license_context = connect_to_or_start_server(use_license_context=True)
     assert server is not None
     assert license_context is not None
+
+    # Set the main test server as the global server again.
+    conftest_server.set_as_global()
 
 
 def test_requires_sound_version():
