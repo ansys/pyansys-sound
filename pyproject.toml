@@ -8,7 +8,7 @@ name = "ansys-sound-core"
 version = "0.4.dev0"
 description = "A Python wrapper for Ansys DPF Sound."
 readme = "README.rst"
-requires-python = ">=3.10,<3.15"
+requires-python = ">=3.10,<4"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{ name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" }]
@@ -43,7 +43,8 @@ full = [
 tests = [
     "ansys-dpf-core==0.16.1",
     "ansys-tools-common==0.5.3",
-    "numpy==2.5.3",
+    "numpy==2.2.6; python_version<'3.12'",
+    "numpy==2.5.3; python_version>='3.12'",
     "matplotlib==3.10.9",
     "pytest==9.1.1",
     "pytest-cov==7.1.0",
