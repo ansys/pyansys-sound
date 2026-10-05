@@ -168,14 +168,8 @@ order_levels.save_as_AnsysSound_Orders(orders_file_path)
 #   noise, or HVAC noise;
 # - apply source gains and filters, typically to simulate real-world acoustic environments.
 
-path = orders_file_path
-if my_server.has_client():
-    # In remote DPF Server case, the file must be uploaded to the server's temporary folder to be
-    # available to DPF operators.
-    path = upload_file_in_tmp_folder(file_path=orders_file_path, server=my_server)
-
 # Create the :class:`.SourceHarmonics` object from the saved order levels file.
-source_harmonics = SourceHarmonics(file=path)
+source_harmonics = SourceHarmonics(file=orders_file_path)
 
 # %%
 # Load the RPM profile for the sound synthesis. This profile includes acceleration and
