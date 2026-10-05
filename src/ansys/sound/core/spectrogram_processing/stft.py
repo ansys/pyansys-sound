@@ -267,7 +267,8 @@ class Stft(SpectrogramProcessingParent):
 
         # Check if the complex STFT is populated.
         if self._complex_stft is not None:
-            # No need to recompute.
+            # No need to recompute. A copy is returned to prevent outside modifications of the
+            # stored complex STFT.
             return self._complex_stft.copy(), frequencies, times
 
         time_indexes = output.get_available_ids_for_label("time")
@@ -285,6 +286,8 @@ class Stft(SpectrogramProcessingParent):
         # Store the computed complex STFT for future calls.
         self._complex_stft = np.transpose(complex_stft)
 
+        # Return a copy of the stored complex STFT to prevent outside modifications, along with the
+        # corresponding frequencies and times.
         return self._complex_stft.copy(), frequencies, times
 
     def get_magnitude(self) -> np.ndarray:

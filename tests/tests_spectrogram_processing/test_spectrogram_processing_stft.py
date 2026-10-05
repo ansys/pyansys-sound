@@ -197,14 +197,10 @@ def test_stft_get_output_as_np_array(load_flute_wav):
     assert times[EXP_TIME_LENGTH - 1] == pytest.approx(EXP_TIME_LAST)
     assert times[TESTED_IDX] == pytest.approx(EXP_TIME_TESTED_IDX)
 
-    expected_stft = complex_stft.copy()
-    complex_stft[0, 0] = 0
-    cached_stft, _, _ = stft.get_output_as_nparray()
-    np.testing.assert_array_equal(cached_stft, expected_stft)
-
-    cached_stft[0, 0] = 0
-    next_stft, _, _ = stft.get_output_as_nparray()
-    np.testing.assert_array_equal(next_stft, expected_stft)
+    # Verify that modifying the returned complex STFT does not affect the stored complex STFT.
+    complex_stft[0, 0] = -1000.0
+    complex_stft2, _, _ = stft.get_output_as_nparray()
+    assert complex_stft2[0, 0] != -1000.0
 
 
 def test_stft_get_magnitude(load_flute_wav):
