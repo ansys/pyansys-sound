@@ -27,7 +27,7 @@ import warnings
 from ansys.dpf.core import DataSources, Field, Operator, types
 import numpy as np
 
-from ansys.sound.core.server_helpers import requires_sound_version, _server_upload
+from ansys.sound.core.server_helpers import _server_upload, requires_sound_version
 
 from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
