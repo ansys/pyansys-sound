@@ -347,7 +347,7 @@ def test_order_levels_get_output(load_accel_and_rpm):
     order_levels.process()
     output = order_levels.get_output()
     assert isinstance(output, FieldsContainer)
-    assert len(output) == EXP_NUM_ORDERS
+    assert len(output) == EXP_NUM_RPM_POINTS
 
 
 def test_order_levels_get_output_warnings():

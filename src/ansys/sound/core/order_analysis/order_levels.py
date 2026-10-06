@@ -308,9 +308,9 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
 
         order_levels = np.vstack([np.array(field.data) for field in output])
         order_values = np.array(self.orders)
-        rpm_values = np.array(output[0].time_freq_support.time_frequencies.data)
+        rpm_values = np.array(output.get_support("RPM").field_support_by_property("time_freqs").data)
 
-        return order_levels, order_values, rpm_values
+        return np.transpose(order_levels), order_values, rpm_values
 
     def get_order_levels_squared_linear(self) -> np.ndarray:
         """Get the order levels, in squared signal unit.
