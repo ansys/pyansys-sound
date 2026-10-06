@@ -31,7 +31,7 @@ from ansys.dpf.core import upload_file_in_tmp_folder
 
 
 @contextmanager
-def server_upload(client_path, server=None):
+def _server_upload(client_path, server=None):
     """Manage file upload to server in case of a remote server.
 
     In case of a remote server, this context manager uploads the file to the server and yields the
@@ -48,9 +48,9 @@ def server_upload(client_path, server=None):
 
     Examples
     --------
-    >>> from ansys.sound.core.server_helpers._server_io import server_upload
+    >>> from ansys.sound.core.server_helpers._server_io import _server_upload
     >>> from ansys.dpf.core import Operator
-    >>> with server_upload(local_wav_path, server=my_server) as server_path:
+    >>> with _server_upload(local_wav_path, server=my_server) as server_path:
     >>>     op = Operator(operator_name)
     >>>     op.connect(0, server_path)
     >>>     op.run()
@@ -72,7 +72,7 @@ def server_upload(client_path, server=None):
 
 
 @contextmanager
-def server_download(client_path, server=None):
+def _server_download(client_path, server=None):
     """Manage file download from server in case of a remote server.
 
     In case of a remote server, this context manager yields the server path in the server temporary
@@ -90,9 +90,9 @@ def server_download(client_path, server=None):
 
     Examples
     --------
-    >>> from ansys.sound.core.server_helpers._server_io import server_download
+    >>> from ansys.sound.core.server_helpers._server_io import _server_download
     >>> from ansys.dpf.core import Operator
-    >>> with server_download(local_wav_path, server=my_server) as server_path:
+    >>> with _server_download(local_wav_path, server=my_server) as server_path:
     >>>     op = Operator(operator_name)
     >>>     op.connect(0, my_data_to_write)
     >>>     op.connect(1, server_path)

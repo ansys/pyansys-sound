@@ -29,7 +29,7 @@ from ansys.dpf.core import Field, GenericDataContainersCollection, Operator, typ
 from matplotlib import pyplot as plt
 import numpy as np
 
-from ansys.sound.core.server_helpers._server_io import server_download, server_upload
+from ansys.sound.core.server_helpers._server_io import _server_download, _server_upload
 from ansys.sound.core.signal_utilities import SumSignals
 from ansys.sound.core.sound_composer._sound_composer_parent import SoundComposerParent
 from ansys.sound.core.sound_composer.track import Track
@@ -151,7 +151,7 @@ class SoundComposer(SoundComposerParent):
         project_path : str
             Path to the Sound Composer project file to load (.scn).
         """
-        with server_upload(project_path) as path:
+        with _server_upload(project_path) as path:
             self.__operator_load.connect(0, path)
 
             self.__operator_load.run()
@@ -198,7 +198,7 @@ class SoundComposer(SoundComposerParent):
         for i, track in enumerate(self.tracks):
             track_collection.add_entry({"track_index": i}, track.get_as_generic_data_containers())
 
-        with server_download(project_path) as path:
+        with _server_download(project_path) as path:
             # Save the Sound Composer project.
             self.__operator_save.connect(0, path)
             self.__operator_save.connect(1, track_collection)

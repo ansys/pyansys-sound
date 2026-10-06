@@ -34,7 +34,7 @@ import numpy as np
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-from ansys.sound.core.server_helpers._server_io import server_upload
+from ansys.sound.core.server_helpers._server_io import _server_upload
 from ansys.sound.core.signal_processing.filter import Filter
 from ansys.sound.core.sound_composer import (
     SourceAudio,
@@ -164,7 +164,7 @@ def test_track_set_from_generic_data_containers():
 
     # Add a filter to the generic data container.
     op_frf = Operator("load_FRF_from_txt")
-    with server_upload(pytest.data_path_filter_frf) as server_path:
+    with _server_upload(pytest.data_path_filter_frf) as server_path:
         op_frf.connect(0, server_path)
     op_frf.run()
     f_filter_frf: Field = op_frf.get_output(0, "field")

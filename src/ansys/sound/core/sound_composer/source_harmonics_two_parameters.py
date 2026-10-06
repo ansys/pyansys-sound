@@ -28,7 +28,7 @@ from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operato
 from matplotlib import pyplot as plt
 import numpy as np
 
-from ansys.sound.core.server_helpers._server_io import server_upload
+from ansys.sound.core.server_helpers._server_io import _server_upload
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._source_parent import SourceParent
@@ -301,7 +301,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
             text format (with the `AnsysSound_Orders_MultipleParameters` header) as supported by
             Ansys Sound SAS.
         """
-        with server_upload(file) as path:
+        with _server_upload(file) as path:
             # Set operator inputs.
             self.__operator_load.connect(0, path)
 

@@ -26,7 +26,7 @@ import warnings
 
 from ansys.dpf.core import DataSources, Field, Operator, fields_container_factory
 
-from ansys.sound.core.server_helpers._server_io import server_download
+from ansys.sound.core.server_helpers._server_io import _server_download
 
 from . import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
@@ -148,7 +148,7 @@ class WriteWav(SignalUtilitiesParent):
             raise PyAnsysSoundException("No signal is specified for writing to a WAV file. \
                     Use `WriteWav.signal`.")
 
-        with server_download(self.path_to_write) as path:
+        with _server_download(self.path_to_write) as path:
             data_source_out = DataSources()
             data_source_out.add_file_path(path, ".wav")
 
