@@ -175,7 +175,8 @@ if my_server.has_client():
     path = upload_file_in_tmp_folder(file_path=orders_file_path, server=my_server)
 
 # Create the :class:`.SourceHarmonics` object from the saved order levels file.
-source_harmonics = SourceHarmonics(file=path)
+source_harmonics = SourceHarmonics()
+source_harmonics.source_harmonics = order_levels.get_output()
 
 # %%
 # Load the RPM profile for the sound synthesis. This profile includes acceleration and

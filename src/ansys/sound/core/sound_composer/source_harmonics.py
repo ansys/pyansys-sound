@@ -209,7 +209,7 @@ class SourceHarmonics(SourceParent):
                         "each field must contain the same number of data points)."
                     )
 
-            support_data = source.get_support("control_parameter_1")
+            support_data = source.get_support(source.labels[0])
             support_properties = support_data.available_field_supported_properties()
             support_values = support_data.field_support_by_property(support_properties[0])
             if len(support_values) != len(source):
