@@ -52,12 +52,10 @@ different operating conditions.
 # Setting up the analysis consists of loading the required libraries, connecting to the DPF server,
 # and retrieving the example file.
 
+# Load standard libraries.
 import os
 from pathlib import Path
 
-from ansys.dpf.core import upload_file_in_tmp_folder
-
-# Load standard libraries.
 import matplotlib.pyplot as plt
 import numpy as np
 
