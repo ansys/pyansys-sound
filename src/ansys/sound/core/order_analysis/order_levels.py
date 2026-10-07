@@ -275,8 +275,11 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         Returns
         -------
         FieldsContainer
-            Order levels as a fields container where each field corresponds to a requested order in
-            :attr:`orders`, and contains that order's level over RPM, in squared signal units.
+            Order levels as a fields container where each field corresponds to a specific RPM point,
+            and contains the order levels at that RPM value, in squared signal units. Order values
+            are stored as a support of each field. Fields in the fields container are indexed with
+            the label "RPM". The "RPM" indexes correspond to the RPM values stored in the fields
+            container's support labelled "RPM".
         """
         if self._output is None:
             warnings.warn(
@@ -295,11 +298,11 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         -------
         numpy.ndarray
             Order levels as a 2-D NumPy array, in squared signal unit. Each row corresponds to a
-            specific order value, and each column corresponds to a specific RPM value.
+            specific RPM value, and each column corresponds to a specific order value.
         numpy.ndarray
-            Order values corresponding to the rows of the order levels array.
+            RPM values corresponding to the rows of the order levels array.
         numpy.ndarray
-            RPM values corresponding to the columns of the order levels array.
+            Order values corresponding to the columns of the order levels array.
         """
         output = self.get_output()
 
@@ -312,7 +315,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
             output.get_support("RPM").field_support_by_property("time_freqs").data
         )
 
-        return np.transpose(order_levels), order_values, rpm_values
+        return np.transpose(order_levels), rpm_values, order_values
 
     def get_order_levels_squared_linear(self) -> np.ndarray:
         """Get the order levels, in squared signal unit.
@@ -321,7 +324,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         -------
         numpy.ndarray
             Order levels as a 2-D NumPy array, in squared signal units. Each row corresponds to a
-            specific order value, and each column corresponds to a specific RPM value.
+            specific RPM value, and each column corresponds to a specific order value.
         """
         return self.get_output_as_nparray()[0]
 
@@ -338,8 +341,8 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         -------
         list[numpy.ndarray]
             Order levels in dB (actual unit depends on the reference value), as a 2-D NumPy array.
-            Each row corresponds to a specific order value, and each column corresponds to a
-            specific RPM value.
+            Each row corresponds to a specific RPM value, and each column corresponds to a
+            specific order value.
         """
         if reference_value <= 0:
             raise PyAnsysSoundException("Reference value must be greater than 0.")
@@ -398,7 +401,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         numpy.ndarray
             RPM values where the order levels are defined.
         """
-        return self.get_output_as_nparray()[2]
+        return self.get_output_as_nparray()[1]
 
     def plot(self, display_in_dB: bool = False, reference_value: float = 1.0):
         """Plot the order levels over RPM.
@@ -489,7 +492,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
                 )
             )
 
-        levels, orders, rpm_scale = self.get_output_as_nparray()
+        levels, rpm_scale, orders = self.get_output_as_nparray()
 
         path, _ = os.path.split(filepath)
         if not os.path.exists(path):  # pragma: no cover

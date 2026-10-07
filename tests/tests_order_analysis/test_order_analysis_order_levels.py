@@ -365,17 +365,17 @@ def test_order_levels_get_output_as_nparray(load_accel_and_rpm):
     """Test the get_output_as_nparray method."""
     order_levels = OrderLevels()
     with pytest.warns(PyAnsysSoundWarning):
-        levels, orders, rpm = order_levels.get_output_as_nparray()
+        levels, rpm, orders = order_levels.get_output_as_nparray()
     assert len(levels) == 0
-    assert len(orders) == 0
     assert len(rpm) == 0
+    assert len(orders) == 0
 
     signal, rpm_profile = load_accel_and_rpm
     order_levels = OrderLevels(
         signal=signal, rpm_profile=rpm_profile, orders=[2.0, 4.0, 10.0, 158.0]
     )
     order_levels.process()
-    levels, orders, rpm = order_levels.get_output_as_nparray()
+    levels, rpm, orders = order_levels.get_output_as_nparray()
     assert len(levels) == EXP_NUM_ORDERS
     assert len(levels[0]) == EXP_NUM_RPM_POINTS
     assert levels[0][0] == pytest.approx(EXP_PA2_ORDER2_RPM0, rel=1e-4)
