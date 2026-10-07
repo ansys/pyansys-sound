@@ -86,6 +86,10 @@ class Stft(SpectrogramProcessingParent):
         self.window_type = window_type
         self.__operator = Operator("compute_stft")
 
+        # Complex STFT (intermediate result). Necessary to avoid multiple recomputations in
+        # ``get_output_as_nparray()``.
+        self._complex_stft: np.ndarray = None
+
     @property
     def signal(self) -> Field:
         """Input signal as a DPF field."""
@@ -162,6 +166,10 @@ class Stft(SpectrogramProcessingParent):
         if self.signal is None:
             raise PyAnsysSoundException("No signal found for STFT. Use 'Stft.signal'.")
 
+        # Clear the stored complex STFT. It will be recomputed on next call to
+        # ``get_output_as_nparray()``.
+        self._complex_stft = None
+
         self.__operator.connect(0, self.signal)
         self.__operator.connect(1, int(self.fft_size))
         self.__operator.connect(2, str(self.window_type))
@@ -225,11 +233,16 @@ class Stft(SpectrogramProcessingParent):
         Returns
         -------
         numpy.ndarray
-            Complex STFT of the signal, in the signal's unit. The returned STFT is two-sided, which
-            means the lower half of the frequencies, between 0 Hz and half of the signal's sampling
-            frequency, is mirrored in the upper half, up to the sampling frequency. Each row of
-            the STFT corresponds to a specific frequency, and each column corresponds to a specific
-            time.
+            Complex STFT of the signal, in the signal's unit. The returned STFT is scaled such that
+            the module of the spectrum at each time step is an RMS spectrum. The STFT is two-sided,
+            which means the lower half of the frequencies, between 0 Hz and half of the signal's
+            sampling frequency, is mirrored in the upper half, up to the sampling frequency. Each
+            row of the STFT corresponds to a specific frequency, and each column corresponds to a
+            specific time.
+
+            For more information, see `RMS spectrum <https://ansyshelp.ansys.com/public/account/
+            secured?returnurl=/Views/Secured/corp/v261/en/Sound_SAS_UG/Sound/UG_SAS/
+            rms_spectrum.html>`_.
         numpy.ndarray
             Frequencies in Hz corresponding to the rows of the STFT.
         numpy.ndarray
@@ -245,25 +258,37 @@ class Stft(SpectrogramProcessingParent):
         size in :attr:`fft_size`).
         """
         output = self.get_output()
+
         if output is None:
             return np.array([]), np.array([]), np.array([])
+
+        times = np.array(output.time_freq_support.time_frequencies.data)
+        frequencies = np.array(output[0].time_freq_support.time_frequencies.data)
+
+        # Check if the complex STFT is populated.
+        if self._complex_stft is not None:
+            # No need to recompute. A copy is returned to prevent outside modifications of the
+            # stored complex STFT.
+            return self._complex_stft.copy(), frequencies, times
 
         time_indexes = output.get_available_ids_for_label("time")
         Ntime = len(time_indexes)
         Nfft = output.get_field({"complex": 0, "time": 0, "channel_number": 0}).data.shape[0]
 
         # Pre-allocate memory for the output array.
-        out_as_np_array = np.empty((Ntime, Nfft), dtype=np.complex128)
+        complex_stft = np.empty((Ntime, Nfft), dtype=np.complex128)
 
         for i in time_indexes:
             f1 = output.get_field({"complex": 0, "time": i, "channel_number": 0})
             f2 = output.get_field({"complex": 1, "time": i, "channel_number": 0})
-            out_as_np_array[i] = f1.data + 1j * f2.data
+            complex_stft[i] = f1.data + 1j * f2.data
 
-        times = self.get_output().time_freq_support.time_frequencies.data
-        frequencies = self.get_output()[0].time_freq_support.time_frequencies.data
+        # Store the computed complex STFT for future calls.
+        self._complex_stft = np.transpose(complex_stft)
 
-        return np.transpose(out_as_np_array), np.array(frequencies), np.array(times)
+        # Return a copy of the stored complex STFT to prevent outside modifications, along with the
+        # corresponding frequencies and times.
+        return self._complex_stft.copy(), frequencies, times
 
     def get_magnitude(self) -> np.ndarray:
         """Get the magnitude of the STFT.
@@ -271,9 +296,14 @@ class Stft(SpectrogramProcessingParent):
         Returns
         -------
         numpy.ndarray
-            STFT magnitude in the input signal's unit. The result is one-sided and contains positive
-            frequencies only, up to half the sampling frequency. Magnitudes are scaled by sqrt(2) to
-            account for both the positive- and negative-frequency energy.
+            STFT magnitude in the input signal's unit. The result contains a one-sided RMS spectrum
+            for each time step, with positive frequencies only, up to half the sampling frequency.
+            Magnitudes are scaled by sqrt(2) to account for both the positive- and
+            negative-frequency energy.
+
+            For more information, see `RMS spectrum <https://ansyshelp.ansys.com/public/account/
+            secured?returnurl=/Views/Secured/corp/v261/en/Sound_SAS_UG/Sound/UG_SAS/
+            rms_spectrum.html>`_.
 
         Notes
         -----
@@ -407,20 +437,21 @@ class Stft(SpectrogramProcessingParent):
                 "Range of magnitude values for the colormap must be strictly greater than 0."
             )
 
+        output = self.get_output()
         magnitude = self.get_magnitude()
-        unit = self.get_output()[0].unit
+        unit = output[0].unit
         magnitude_unit = unit if isinstance(unit, str) else unit[1]
         if display_in_dB:
             # Convert magnitude to dB.
-            magnitude = 20 * np.log10(self.get_magnitude() / reference_value + 1e-12)
+            magnitude = 20 * np.log10(magnitude / reference_value + 1e-12)
             str_unit = f" {magnitude_unit}" if len(magnitude_unit) > 0 else ""
             magnitude_unit = f"dB re. {reference_value}{str_unit}"
 
         phase = self.get_phase()
 
-        frequency_unit = self.get_output()[0].time_freq_support.time_frequencies.unit
+        frequency_unit = output[0].time_freq_support.time_frequencies.unit
         frequencies = self.get_frequencies()
-        time_unit = self.get_output().time_freq_support.time_frequencies.unit
+        time_unit = output.time_freq_support.time_frequencies.unit
         times = self.get_time_scale()
 
         # Boundaries of the plot
