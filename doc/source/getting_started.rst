@@ -77,6 +77,8 @@ By default, a DPF server is started from the latest installed Ansys version.
      - 0.2.0 and later
    * - 11.0 (Ansys 2026 R1 pre0)
      - 0.3.0 and later
+   * - 12.0 (Ansys 2027 R1 pre0)
+     - 0.4.0 and later
 
 
 Starting PyAnsys Sound
