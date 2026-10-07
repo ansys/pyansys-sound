@@ -78,7 +78,7 @@ print("Connecting to the server without using a LicenseContextManager")
 my_server, my_license_context = connect_to_or_start_server(use_license_context=False)
 
 # Check if you are using a local or remote server
-is_server_local = not my_server.has_client()
+is_server_local = my_server.local_server
 print(f"Local server: {is_server_local}")
 
 # If using a local server, display the path to the server
@@ -94,7 +94,7 @@ print(f"DPF Sound plugin version: {get_sound_version()}")
 # Execute the PyAnsys Sound ``LoadWav`` operator several times in a row
 # and measure the execution time.
 
-path_flute_wav = download_flute_wav(server=my_server)
+path_flute_wav = download_flute_wav()
 
 for i in range(5):
     now = datetime.datetime.now()
@@ -128,7 +128,7 @@ print("Connecting to the server using a LicenseContextManager")
 my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
 # Execute the same and measure the execution time
-path_flute_wav = download_flute_wav(server=my_server)
+path_flute_wav = download_flute_wav()
 
 for i in range(5):
     now = datetime.datetime.now()

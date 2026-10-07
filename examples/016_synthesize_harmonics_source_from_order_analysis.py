@@ -93,7 +93,7 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # associated RPM profile (engine speed recording).
 
 # Return the input data of the example file.
-path_accel_wav = download_accel_with_rpm_wav(server=my_server)
+path_accel_wav = download_accel_with_rpm_wav()
 
 # Load the WAV file.
 wav_loader = LoadWav(path_accel_wav)
