@@ -78,7 +78,7 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # project file has the extension .scn, and can be created with Ansys Sound SAS.
 
 # Download the Sound Composer project file used in this example.
-path_sound_composer_project_scn = download_sound_composer_project_whatif(server=my_server)
+path_sound_composer_project_scn = download_sound_composer_project_whatif()
 
 # Create a SoundComposer object and load the project.
 sound_composer_project = SoundComposer()

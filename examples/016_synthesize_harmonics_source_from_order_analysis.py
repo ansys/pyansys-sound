@@ -55,8 +55,6 @@ different operating conditions.
 import os
 from pathlib import Path
 
-from ansys.dpf.core import upload_file_in_tmp_folder
-
 # Load standard libraries.
 import matplotlib.pyplot as plt
 import numpy as np
@@ -95,7 +93,7 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # associated RPM profile (engine speed recording).
 
 # Return the input data of the example file.
-path_accel_wav = download_accel_with_rpm_wav(server=my_server)
+path_accel_wav = download_accel_with_rpm_wav()
 
 # Load the WAV file.
 wav_loader = LoadWav(path_accel_wav)
@@ -168,14 +166,8 @@ order_levels.save_as_AnsysSound_Orders(orders_file_path)
 #   noise, or HVAC noise;
 # - apply source gains and filters, typically to simulate real-world acoustic environments.
 
-path = orders_file_path
-if my_server.has_client():
-    # In remote DPF Server case, the file must be uploaded to the server's temporary folder to be
-    # available to DPF operators.
-    path = upload_file_in_tmp_folder(file_path=orders_file_path, server=my_server)
-
 # Create the :class:`.SourceHarmonics` object from the saved order levels file.
-source_harmonics = SourceHarmonics(file=path)
+source_harmonics = SourceHarmonics(file=orders_file_path)
 
 # %%
 # Load the RPM profile for the sound synthesis. This profile includes acceleration and
