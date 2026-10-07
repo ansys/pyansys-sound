@@ -1,0 +1,6 @@
+design\_FIR\_from\_FRF\_file
+============================
+
+.. currentmodule:: ansys.sound.core.signal_processing
+
+.. automethod:: Filter.design_FIR_from_FRF_file

@@ -1,0 +1,6 @@
+get\_phase
+==========
+
+.. currentmodule:: ansys.sound.core.spectrogram_processing
+
+.. automethod:: Stft.get_phase

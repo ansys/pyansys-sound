@@ -1,0 +1,50 @@
+﻿OneThirdOctaveLevelsFromPSD
+===========================
+
+.. currentmodule:: ansys.sound.core.standard_levels
+
+.. autoclass:: OneThirdOctaveLevelsFromPSD
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      OneThirdOctaveLevelsFromPSD.get_band_levels
+      
+      
+      OneThirdOctaveLevelsFromPSD.get_center_frequencies
+      
+      
+      OneThirdOctaveLevelsFromPSD.get_output
+      
+      
+      OneThirdOctaveLevelsFromPSD.get_output_as_nparray
+      
+      
+      OneThirdOctaveLevelsFromPSD.plot
+      
+      
+      OneThirdOctaveLevelsFromPSD.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      OneThirdOctaveLevelsFromPSD.frequency_weighting
+      OneThirdOctaveLevelsFromPSD.psd
+      OneThirdOctaveLevelsFromPSD.reference_value
+      OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986
+   
+   

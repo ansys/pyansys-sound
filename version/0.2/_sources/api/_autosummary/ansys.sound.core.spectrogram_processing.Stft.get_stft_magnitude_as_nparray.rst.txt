@@ -1,0 +1,6 @@
+get\_stft\_magnitude\_as\_nparray
+=================================
+
+.. currentmodule:: ansys.sound.core.spectrogram_processing
+
+.. automethod:: Stft.get_stft_magnitude_as_nparray

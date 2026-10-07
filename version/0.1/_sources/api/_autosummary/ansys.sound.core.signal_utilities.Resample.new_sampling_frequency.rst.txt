@@ -1,0 +1,6 @@
+new\_sampling\_frequency
+========================
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoproperty:: Resample.new_sampling_frequency

@@ -1,0 +1,6 @@
+order\_resolution
+=================
+
+.. currentmodule:: ansys.sound.core.order_analysis
+
+.. autoproperty:: OrderLevels.order_resolution

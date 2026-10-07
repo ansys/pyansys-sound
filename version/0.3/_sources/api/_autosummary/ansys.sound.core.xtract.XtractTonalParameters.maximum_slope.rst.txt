@@ -1,0 +1,6 @@
+maximum\_slope
+==============
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoproperty:: XtractTonalParameters.maximum_slope

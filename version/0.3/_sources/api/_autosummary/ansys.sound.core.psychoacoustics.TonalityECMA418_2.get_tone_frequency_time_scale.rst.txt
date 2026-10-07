@@ -1,0 +1,6 @@
+get\_tone\_frequency\_time\_scale
+=================================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: TonalityECMA418_2.get_tone_frequency_time_scale

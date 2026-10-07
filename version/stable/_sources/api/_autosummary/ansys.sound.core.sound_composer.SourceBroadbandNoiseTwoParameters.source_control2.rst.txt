@@ -1,0 +1,6 @@
+source\_control2
+================
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. autoproperty:: SourceBroadbandNoiseTwoParameters.source_control2

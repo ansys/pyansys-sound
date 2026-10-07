@@ -1,0 +1,6 @@
+process
+=======
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. automethod:: SourceBroadbandNoise.process

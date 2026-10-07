@@ -1,0 +1,6 @@
+get\_PSD\_dB\_as\_nparray
+=========================
+
+.. currentmodule:: ansys.sound.core.spectral_processing
+
+.. automethod:: PowerSpectralDensity.get_PSD_dB_as_nparray

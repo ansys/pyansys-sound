@@ -1,0 +1,6 @@
+get\_time\_scale
+================
+
+.. currentmodule:: ansys.sound.core.standard_levels
+
+.. automethod:: LevelOverTime.get_time_scale

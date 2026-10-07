@@ -1,0 +1,6 @@
+get\_loudness\_weighting\_over\_time
+====================================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: TonalityAures.get_loudness_weighting_over_time
