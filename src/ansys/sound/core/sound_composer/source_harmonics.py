@@ -182,6 +182,12 @@ class SourceHarmonics(SourceParent):
                     "Specified harmonics source must be provided as a DPF fields container."
                 )
 
+            if len(source.labels) != 1:
+                raise PyAnsysSoundException(
+                    "Specified harmonics source must contain exactly one label, that is, one "
+                    "control parameter."
+                )
+
             if (
                 len(source) < 1
                 or len(source[0].data) < 1
