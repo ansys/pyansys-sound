@@ -50,11 +50,11 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
 
     Two additional parameters allow you to refine the obtained result:
 
-    -   Order resolution (in percent of order): defines how fine the order definition is in the
-        obtained RPM-order representation;
-    -   Order width (in percent of order): defines the width over which the representation energy is
-        summed to produce an order level. It is expected that order width is greater or equal to
-        order resolution.
+    -   :attr:`~.OrderLevels.order_resolution` (in percent of order): defines how fine the order
+        resolution is in the obtained RPM-order representation;
+    -   :attr:`~.OrderLevels.order_width` (in percent of order): defines the width over which the
+        representation energy is summed to produce an order level. It is expected that the order
+        width is greater or equal to the order resolution.
 
     .. seealso::
         :class:`RpmOrderRepresentation`
@@ -106,7 +106,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         self.orders = orders
         self.order_resolution = order_resolution
         self.order_width = order_width
-        self.__rpm_order_representation = None
+        self.__rpm_order_representation: RpmOrderRepresentation = None
         self.__operator = Operator(ID_EXTRACT_ORDER_LEVELS)
 
     def __str__(self):
@@ -220,7 +220,10 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
 
         The :meth:`process()` method must be called to populate this attribute.
         """
-        return self.__rpm_order_representation
+        if self.__rpm_order_representation is None:
+            return None
+
+        return self.__rpm_order_representation.get_output()
 
     def process(self):
         """Run the order analysis with the parameters specified in this object."""
@@ -249,17 +252,16 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
             )
 
         # Step 1: Compute RPM-order representation.
-        rpm_order_repr = RpmOrderRepresentation(
+        self.__rpm_order_representation = RpmOrderRepresentation(
             signal=self.signal,
             rpm_profile=self.rpm_profile,
             max_order=self._compute_max_order(),
             order_resolution=self.order_resolution,
         )
-        rpm_order_repr.process()
-        self.__rpm_order_representation = rpm_order_repr.get_output()
+        self.__rpm_order_representation.process()
 
         # Step 2: Extract order levels.
-        self.__operator.connect(0, self.__rpm_order_representation)
+        self.__operator.connect(0, self.__rpm_order_representation.get_output())
         self.__operator.connect(1, list(map(float, self.orders)))
         self.__operator.connect(2, float(self.order_width))
 
@@ -464,6 +466,30 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         plt.grid()
         plt.tight_layout()
         plt.show()
+
+    def plot_rpm_order_representation(
+        self, display_in_dB: bool = False, reference_value: float = 1.0
+    ):
+        """Plot the RPM-order representation computed during :meth:`process()`.
+
+        The representation is displayed as a colormap of level versus order and RPM.
+
+        Parameters
+        ----------
+        display_in_dB : bool, default: False
+            Whether to display levels in the input signal's unit (False), or in dB (True).
+        reference_value : float, default: 1.0
+            Reference value for dB conversion. Ignored if ``display_in_dB`` is False. If the input
+            signal is in Pa, the reference value should be 2e-5 Pa to display levels in dB SPL.
+        """
+        if self.__rpm_order_representation is None:
+            raise PyAnsysSoundException(
+                f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
+            )
+
+        self.__rpm_order_representation.plot(
+            display_in_dB=display_in_dB, reference_value=reference_value
+        )
 
     def save_as_AnsysSound_Orders(self, filepath: str) -> None:
         """Save the computed order levels to a text file with AnsysSound_Orders header.
