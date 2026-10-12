@@ -58,7 +58,7 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # :class:`Field <ansys.dpf.core.field.Field>`.
 
 # Return the input data of the example file.
-path_flute_wav = download_flute_wav(server=my_server)
+path_flute_wav = download_flute_wav()
 
 # Load the WAV file.
 wav_loader = LoadWav(path_flute_wav)

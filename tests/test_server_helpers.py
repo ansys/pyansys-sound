@@ -20,12 +20,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import os
+
+from ansys.dpf.core import download_file, upload_file_in_tmp_folder
+from ansys.dpf.core.server import get_or_create_server
 from ansys.tools.common.exceptions import VersionError, VersionSyntaxError
 import pytest
 
 from ansys.sound.core.server_helpers import (
     _check_sound_version,
     _check_sound_version_and_raise,
+    _server_download,
+    _server_upload,
     connect_to_or_start_server,
     requires_sound_version,
     validate_dpf_sound_connection,
@@ -35,11 +41,24 @@ from ansys.sound.core.server_helpers._check_version import get_sound_version
 
 def test_validate_dpf_sound_connection():
     """Test the validate_dpf_sound_connection function."""
+    # This test may start a new server in some circumstances. To make sure the subsequent tests use
+    # the main test server (started or connected to in conftest.py), we need to retrieve it with
+    # ``get_or_create_server(None)`` and set it as the global server again at the end of this test.
+    conftest_server = get_or_create_server(None)
+
     validate_dpf_sound_connection()
+
+    # Set the main test server as the global server again.
+    conftest_server.set_as_global()
 
 
 def test_connect_to_or_start_server():
     """Test the connect_to_or_start_server function."""
+    # This test may start a new server in some circumstances. To make sure the subsequent tests use
+    # the main test server (started or connected to in conftest.py), we need to retrieve it with
+    # ``get_or_create_server(None)`` and set it as the global server again at the end of this test.
+    conftest_server = get_or_create_server(None)
+
     server, license_context = connect_to_or_start_server(use_license_context=False)
     assert server is not None
     assert license_context is None
@@ -47,6 +66,9 @@ def test_connect_to_or_start_server():
     server, license_context = connect_to_or_start_server(use_license_context=True)
     assert server is not None
     assert license_context is not None
+
+    # Set the main test server as the global server again.
+    conftest_server.set_as_global()
 
 
 def test_requires_sound_version():
@@ -152,3 +174,107 @@ def test_get_sound_version():
         version = get_sound_version()
         assert isinstance(version, str)
         assert len(version.split(".")) == 3
+
+
+@pytest.mark.skipif(pytest.is_server_local, reason="Test only runs with a remote server.")
+def test__server_upload_remote_case():
+    """Test the _server_upload function in the remote server case."""
+    local_path1 = pytest.data_path_flute
+
+    # Define a second local path, different from the first to avoid confusion with the original.
+    local_path2 = pytest.data_path_flute[:-4] + "_upload_check.wav"
+    # Delete the file if it exists.
+    if os.path.exists(local_path2):
+        os.remove(local_path2)
+    assert not os.path.exists(local_path2)
+
+    with _server_upload(local_path1) as server_path:
+        assert server_path != local_path1 and server_path != local_path2
+
+        # Re-download the uploaded file to check it exists server-side.
+        download_file(server_path, local_path2)
+
+    # Verify the downloaded file.
+    assert os.path.exists(local_path2)
+    assert os.path.getsize(local_path2) == os.path.getsize(local_path1)
+
+    # Clean up.
+    os.remove(local_path2)
+
+
+def test__server_upload_local_case():
+    """Test the _server_upload function in the local server case."""
+    local_path = pytest.data_path_flute
+
+    # Mock a local server.
+    server = get_or_create_server(None)
+    is_local = server.local_server
+
+    try:
+        server.local_server = True
+
+        with _server_upload(local_path, server) as server_path:
+            assert server_path == local_path
+
+    finally:
+        # Restore the original local_server property.
+        server.local_server = is_local
+
+
+@pytest.mark.skipif(pytest.is_server_local, reason="Test only runs with a remote server.")
+def test__server_download_remote_case():
+    """Test the _server_download function in the remote server case."""
+    # Create a dummy file for testing.
+    local_path = os.path.join(os.path.dirname(pytest.data_path_flute), "download_check.txt")
+    with open(local_path, "w") as f:
+        f.write("dummy content")
+
+    with _server_download(local_path) as server_path:
+        assert server_path != local_path
+
+        # To mock an operator saving a file at the returned server path, upload the dummy file.
+        uploaded_path = upload_file_in_tmp_folder(file_path=local_path)
+        assert uploaded_path == server_path
+
+        # Delete the local file to later check the download.
+        os.remove(local_path)
+        assert not os.path.exists(local_path)
+
+    # After exiting the context manager, the file should have been downloaded from the server.
+    assert os.path.exists(local_path)
+
+    # Clean up.
+    os.remove(local_path)
+
+
+def test__server_download_local_case():
+    """Test the _server_download function in the local server case."""
+    # Create a dummy file for testing.
+    local_path = os.path.join(os.path.dirname(pytest.data_path_flute), "download_check.txt")
+    with open(local_path, "w") as f:
+        f.write("dummy content")
+
+    # Mock a local server.
+    server = get_or_create_server(None)
+    is_local = server.local_server
+
+    try:
+        server.local_server = True
+
+        with _server_download(local_path, server) as server_path:
+            assert server_path == local_path
+
+            # Delete the file.
+            os.remove(local_path)
+            assert not os.path.exists(local_path)
+
+        # Check that the file is still absent (nothing happened on context manager exit).
+        assert not os.path.exists(local_path)
+
+    finally:
+        # Restore the original local_server property.
+        server.local_server = is_local
+
+        # Clean up if necessary.
+        if os.path.exists(local_path):
+            os.remove(local_path)

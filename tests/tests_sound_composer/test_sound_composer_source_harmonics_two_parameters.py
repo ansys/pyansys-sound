@@ -36,6 +36,7 @@ import numpy as np
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.server_helpers import _server_upload
 from ansys.sound.core.sound_composer import SourceControlTime, SourceHarmonicsTwoParameters
 from ansys.sound.core.spectral_processing import PowerSpectralDensity
 
@@ -337,7 +338,8 @@ def test_source_specrum_load_source_harmonics_two_parameters():
 def test_source_harmonics_two_parameters_set_from_generic_data_containers():
     """Test SourceHarmonicsTwoParameters set_from_generic_data_containers method."""
     op = Operator("sound_composer_load_source_harmonics_two_parameters")
-    op.connect(0, pytest.data_path_sound_composer_harmonics_source_2p)
+    with _server_upload(pytest.data_path_sound_composer_harmonics_source_2p) as path:
+        op.connect(0, path)
     op.run()
     fc_data: FieldsContainer = op.get_output(0, "fields_container")
 

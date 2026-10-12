@@ -88,16 +88,12 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # containing the acoustic definition of the source, the control profile file containing the
 # operating conditions of the source (engine or vehicle speed over time), and optionally the FRF
 # file containing the source's transfer function.
-path_sound_composer_source_eMotor = download_sound_composer_source_eMotor(server=my_server)
-path_sound_composer_sourcecontrol_eMotor = download_sound_composer_source_control_eMotor(
-    server=my_server
-)
-path_sound_composer_FRF_eMotor = download_sound_composer_FRF_eMotor(server=my_server)
-path_sound_composer_source_WindRoadNoise = download_sound_composer_source_WindRoadNoise(
-    server=my_server
-)
+path_sound_composer_source_eMotor = download_sound_composer_source_eMotor()
+path_sound_composer_sourcecontrol_eMotor = download_sound_composer_source_control_eMotor()
+path_sound_composer_FRF_eMotor = download_sound_composer_FRF_eMotor()
+path_sound_composer_source_WindRoadNoise = download_sound_composer_source_WindRoadNoise()
 path_sound_composer_sourcecontrol_WindRoadNoise = (
-    download_sound_composer_source_control_WindRoadNoise(server=my_server)
+    download_sound_composer_source_control_WindRoadNoise()
 )
 
 # %%

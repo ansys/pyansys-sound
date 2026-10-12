@@ -54,12 +54,10 @@ different operating conditions.
 # Setting up the analysis consists of loading the required libraries, connecting to the DPF server,
 # and retrieving the example file.
 
+# Load standard libraries.
 import os
 from pathlib import Path
 
-from ansys.dpf.core import upload_file_in_tmp_folder
-
-# Load standard libraries.
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -97,7 +95,7 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # associated RPM profile (engine speed recording).
 
 # Return the input data of the example file.
-path_accel_wav = download_accel_with_rpm_wav(server=my_server)
+path_accel_wav = download_accel_with_rpm_wav()
 
 # Load the WAV file.
 wav_loader = LoadWav(path_accel_wav)
@@ -154,14 +152,15 @@ orders_file_path = os.path.join(EXAMPLES_PATH, "pyansys-sound", f"{filename[:-4]
 order_levels.save_as_AnsysSound_Orders(orders_file_path)
 
 # %%
-# Synthesize harmonics source from the saved order levels
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Synthesize harmonics source from order levels
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Let us synthesize a sound from the previously computed order levels, under different operating
 # conditions (that is, with a new RPM profile).
 #
-# To do this, the saved file is input to a :class:`.SourceHarmonics` object meant to generate sound
-# from a harmonics source, following a given RPM profile (called source control). The created source
-# is then added as a track to a Sound Composer project, using the :class:`.SoundComposer` class.
+# To do this, the order levels are input to a :class:`.SourceHarmonics` object meant to generate
+# sound from a harmonics source, following a given RPM profile (called source control). The created
+# source is then added as a track to a Sound Composer project, using the :class:`.SoundComposer`
+# class.
 #
 # Although the :class:`.SourceHarmonics` object suffices here to synthesize the sound, the
 # :class:`.SoundComposer` instance would allow further simulation scenarios:
@@ -170,14 +169,10 @@ order_levels.save_as_AnsysSound_Orders(orders_file_path)
 #   noise, or HVAC noise;
 # - apply source gains and filters, typically to simulate real-world acoustic environments.
 
-path = orders_file_path
-if my_server.has_client():
-    # In remote DPF Server case, the file must be uploaded to the server's temporary folder to be
-    # available to DPF operators.
-    path = upload_file_in_tmp_folder(file_path=orders_file_path, server=my_server)
-
-# Create the :class:`.SourceHarmonics` object from the saved order levels file.
-source_harmonics = SourceHarmonics(file=path)
+# Create the :class:`.SourceHarmonics` object from the computed order levels. Note that the saved
+# order levels file could also be used as an alternative input, with entirely equivalent results.
+source_harmonics = SourceHarmonics()
+source_harmonics.source_harmonics = order_levels.get_output()
 
 # %%
 # Load the RPM profile for the sound synthesis. This profile includes acceleration and
@@ -243,7 +238,7 @@ print(f"Synthesized signal saved to {wav_output_path}")
 # ~~~~~~~~~~
 # This example demonstrates how to compute the level over RPM of a set of orders from a recorded
 # signal and its RPM profile, and save the result to an `AnsysSound_Orders` file. It then
-# demonstrates how that file can be used to synthesize a harmonics source in a Sound Composer
+# demonstrates how these data can be used to synthesize a harmonics source in a Sound Composer
 # project, following an RPM profile that is different from that of the original recording.
 #
 # This shows that, once orders are identified and stored, they become a reusable material:

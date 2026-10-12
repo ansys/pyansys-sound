@@ -80,19 +80,8 @@ Usually, PyAnsys Sound classes also have additional class-specific methods.
 
 You can also find relevant PyAnsys Sound workflow examples in :doc:`examples/index`.
 
-.. note::
-    Files that are meant to be used as inputs to PyAnsys Sound (WAV files for example) need to be
-    made available to the DPF Server with DPF Sound plugin (see :ref:`start_pyansys_sound`). If a
-    `local` server is started, the files are already available to the server, since it runs on the
-    same system as the Python process.
-    However, if a `remote` server is connected to instead, and this server runs on a separate system,
-    you must upload the files to the DPF Server with the dedicated `PyDPF Core upload function`_.
-    This function then returns the file's server-side path, which shall be used in PyAnsys Sound
-    instead of the local path it originates from.
-
 .. LINKS AND REFERENCES
 .. _PyDPF-Core: https://dpf.docs.pyansys.com/version/stable/
 .. _DPF Server: https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#
 .. _Manage multiple DPF Server installations: https://dpf.docs.pyansys.com/version/stable/getting_started/dpf_server.html#manage-multiple-dpf-server-installations
 .. _NumPy arrays: https://numpy.org/doc/stable/reference/generated/numpy.array.html
-.. _PyDPF Core upload function: https://dpf.docs.pyansys.com/version/stable/api/ansys/dpf/core/core/index.html#core.upload_file_in_tmp_folder

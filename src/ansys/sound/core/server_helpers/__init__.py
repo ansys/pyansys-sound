@@ -33,6 +33,7 @@ from ._check_version import (
     requires_sound_version,
 )
 from ._connect_to_or_start_server import connect_to_or_start_server
+from ._server_io import _server_download, _server_upload
 from ._validate_dpf_sound_connection import validate_dpf_sound_connection
 
 __all__ = (
@@ -42,4 +43,6 @@ __all__ = (
     "get_sound_version",
     "_check_sound_version",
     "_check_sound_version_and_raise",
+    "_server_upload",
+    "_server_download",
 )
