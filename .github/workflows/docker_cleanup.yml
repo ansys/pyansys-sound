@@ -18,7 +18,7 @@ permissions: {}
 
 env:
   # List of DPF Sound image tags to NOT delete
-  IMAGES_TO_KEEP: '25.2,26.1,latest'
+  IMAGES_TO_KEEP: '25.2,26.1,27.1,latest'
 
 jobs:
   cleanup-ghcr:
