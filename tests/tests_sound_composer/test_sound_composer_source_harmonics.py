@@ -160,22 +160,33 @@ def test_source_harmonics_properties_exceptions():
     """Test SourceHarmonics properties' exceptions."""
     source_harmonics_obj = SourceHarmonics()
 
-    # Test source_control setter exception (str instead of SourceControlTime).
+    # Test source_control setter exception: str instead of SourceControlTime.
     with pytest.raises(
         PyAnsysSoundException,
         match="Specified source control object must be of type SourceControlTime.",
     ):
         source_harmonics_obj.source_control = "InvalidType"
 
-    # Test source_harmonics setter exception 1 (str instead of FieldsContainer).
+    # Test source_harmonics setter exception: str instead of FieldsContainer.
     with pytest.raises(
         PyAnsysSoundException,
         match="Specified harmonics source must be provided as a DPF fields container.",
     ):
         source_harmonics_obj.source_harmonics = "InvalidType"
 
-    # Test source_harmonics setter exception 2 (less than 1 order level).
+    # Test source_harmonics setter exception: not exactly 1 label (1 control parameter).
     fc_source_harmonics = FieldsContainer()
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=(
+            "Specified harmonics source must contain exactly one label, that is, one control "
+            "parameter."
+        ),
+    ):
+        source_harmonics_obj.source_harmonics = fc_source_harmonics
+
+    # Test source_harmonics setter exception: less than 1 order level.
+    fc_source_harmonics.labels = ["label"]
     with pytest.raises(
         PyAnsysSoundException,
         match=(
@@ -185,7 +196,7 @@ def test_source_harmonics_properties_exceptions():
     ):
         source_harmonics_obj.source_harmonics = fc_source_harmonics
 
-    # Test source_harmonics setter exception 3 (within-field order level number mismatch).
+    # Test source_harmonics setter exception: within-field order level number mismatch.
     field = fields_factory.create_scalar_field(num_entities=1, location=locations.time_freq)
     field.append([1.0, 2.0, 3.0, 4.0, 5.0], 1)
     support = TimeFreqSupport()
@@ -204,7 +215,7 @@ def test_source_harmonics_properties_exceptions():
     ):
         source_harmonics_obj.source_harmonics = fc_source_harmonics
 
-    # Test source_harmonics setter exception 4 (between-field order level number mismatch).
+    # Test source_harmonics setter exception: between-field order level number mismatch.
     field2 = field.deep_copy()
     field.data = [1.0, 2.0]
     field2.data = [1.0, 2.0, 3.0, 4.0, 5.0]
@@ -220,7 +231,7 @@ def test_source_harmonics_properties_exceptions():
     ):
         source_harmonics_obj.source_harmonics = fc_source_harmonics
 
-    # Test source_harmonics setter exception 5 (empty harmonics source's control data).
+    # Test source_harmonics setter exception: empty harmonics source's control data.
     # For this, we use a valid dataset, and then remove the control data.
     source_harmonics_obj = SourceHarmonics()
     source_harmonics_obj.load_source_harmonics(pytest.data_path_sound_composer_harmonics_source)
