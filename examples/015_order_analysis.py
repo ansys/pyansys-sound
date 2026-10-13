@@ -67,7 +67,7 @@ from ansys.sound.core.signal_utilities import LoadWav
 my_server, my_license_context = connect_to_or_start_server(use_license_context=True)
 
 # Download the necessary file for this example.
-path_accel_wav = download_accel_with_rpm_wav(server=my_server)
+path_accel_wav = download_accel_with_rpm_wav()
 
 # %%
 # Load a signal with its RPM profile
