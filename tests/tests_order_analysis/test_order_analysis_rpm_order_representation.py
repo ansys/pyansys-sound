@@ -421,7 +421,7 @@ def test_rpm_order_representation_plot(mock_show, load_accel_and_rpm):
     mock_show.reset_mock()
     with patch("matplotlib.pyplot.colorbar") as mock_colorbar:
         obj.plot(display_in_dB=False)
-    mock_colorbar.assert_called_once_with(label="Level ()")
+    mock_colorbar.assert_called_once_with(label="Level ")
     mock_show.assert_called_once()
 
 

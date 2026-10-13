@@ -318,11 +318,12 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
 
         Parameters
         ----------
-        display_in_dB : bool, default: False
+        display_in_dB : bool, default: True
             Whether to display levels in the input signal's unit (False), or in dB (True).
         reference_value : float, default: 1.0
-            Reference value for dB conversion. Ignored if ``display_in_dB`` is False. If the input
-            signal is in Pa, the reference value should be 2e-5 Pa to display levels in dB SPL.
+            Reference value for dB conversion. Ignored if ``display_in_dB`` is False.
+            ex: if the input signal is in Pa, use a reference value equal to 2e-5 Pa to display
+            levels in dB SPL.
         """
         if self._output is None:
             raise PyAnsysSoundException(
@@ -373,7 +374,7 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
             vmin=vmin,
             vmax=vmax,
         )
-        plt.colorbar(label=f"Level ({str_unit})")
+        plt.colorbar(label=f"Level {str_unit}")
 
         title = "RPM-order representation"
         if len(self.signal.name) > 0:
