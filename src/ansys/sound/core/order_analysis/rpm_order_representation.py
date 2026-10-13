@@ -279,7 +279,7 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         """
         return self.get_output_as_nparray()[0]
 
-    def get_orders(self) -> np.ndarray:
+    def get_orders_scale(self) -> np.ndarray:
         """Get the order values associated with the RPM-order representation.
 
         Returns
