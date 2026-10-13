@@ -473,7 +473,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         plt.show()
 
     def plot_rpm_order_representation(
-        self, display_in_dB: bool = False, reference_value: float = 1.0
+        self, display_in_dB: bool = True, reference_value: float = 1.0
     ):
         """Plot the RPM-order representation computed during :meth:`process()`.
 
@@ -481,7 +481,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
 
         Parameters
         ----------
-        display_in_dB : bool, default: False
+        display_in_dB : bool, default: True
             Whether to display levels in the input signal's unit (False), or in dB (True).
         reference_value : float, default: 1.0
             Reference value for dB conversion. Ignored if ``display_in_dB`` is False. If the input
