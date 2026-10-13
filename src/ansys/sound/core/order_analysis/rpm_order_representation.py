@@ -277,13 +277,13 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
             RPM order representation as a 2-D NumPy array. Each column corresponds to a specific
             order's complex level over RPM or time, in the input signal's unit.
             Note: this method returns the "one-sided" rpm-order representation, i.e., only the
-            orders between 0 and :attr:`max_order` are included. Consequently, the level of the 
+            orders between 0 and :attr:`max_order` are included. Consequently, the level of the
             excluded symmetric part of the representation is compensated for in the one-sided
             representation (i.e., the overall level remains the same).
         """
         representation = self.get_output_as_nparray()[0]
         half_length = representation.shape[1] // 2
-        return representation[: , 0:half_length] * np.sqrt(2)
+        return representation[:, 0:half_length] * np.sqrt(2)
 
     def get_orders_scale(self) -> np.ndarray:
         """Get the order values associated with the RPM-order representation.
@@ -308,7 +308,6 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         """
         return self.get_output_as_nparray()[2]
 
-    
     def get_time_scale(self) -> np.ndarray:
         """Get the time scale associated with the RPM-order representation.
 
