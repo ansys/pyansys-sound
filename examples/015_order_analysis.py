@@ -184,5 +184,8 @@ print(f"Order resolution 0.5 %: {len(order_levels_fine.get_rpm_scale())} RPM val
 # RPM-order representation. As a consequence, the RPM step is larger, and fewer RPM values are used.
 # The resulting curves are smoother, but less precise in RPM.
 #
-# In practice, the order resolution is a trade-off: decrease it to obtain smooth and well-separated
-# order levels on slow run-ups, and increase it to follow rapid level variations on fast run-ups.
+# In practice, the order resolution is a trade-off:
+# - smooth and well-separated order levels are obtained using a fine order resolution. This is
+# typically used on slow run-ups,
+# - a coarser order resolution is preferred to follow rapid level variations, to the detriment of
+# the order precision. Typically used on fast run-ups.
