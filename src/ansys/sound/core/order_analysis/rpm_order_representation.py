@@ -276,8 +276,14 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         numpy.ndarray
             RPM order representation as a 2-D NumPy array. Each column corresponds to a specific
             order's complex level over RPM or time, in the input signal's unit.
+            Note: this method returns the "one-sided" rpm-order representation, i.e., only the
+            orders between 0 and :attr:`max_order` are included. Consequently, the level of the 
+            excluded symmetric part of the representation is compensated for in the one-sided
+            representation (i.e., the overall level remains the same).
         """
-        return self.get_output_as_nparray()[0]
+        representation = self.get_output_as_nparray()[0]
+        half_length = representation.shape[1] // 2
+        return representation[: , 0:half_length] * np.sqrt(2)
 
     def get_orders_scale(self) -> np.ndarray:
         """Get the order values associated with the RPM-order representation.
@@ -285,9 +291,12 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         Returns
         -------
         numpy.ndarray
-            Order values corresponding to the columns of the RPM-order representation.
+            Order values corresponding to the columns of the RPM-order representation returned by
+            :meth:`get_rpm_order_representation`. Return the values between 0 and :attr:`max_order`.
         """
-        return self.get_output_as_nparray()[1]
+        order_numbers = self.get_output_as_nparray()[1]
+        half_length = order_numbers.shape[0] // 2
+        return order_numbers[:half_length]
 
     def get_rpm_scale(self) -> np.ndarray:
         """Get the RPM scale associated with the RPM-order representation.
@@ -299,6 +308,7 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         """
         return self.get_output_as_nparray()[2]
 
+    
     def get_time_scale(self) -> np.ndarray:
         """Get the time scale associated with the RPM-order representation.
 
@@ -333,20 +343,12 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         if display_in_dB and reference_value <= 0:
             raise PyAnsysSoundException("Reference value must be greater than 0.")
 
-        representation, orders, rpm_values, _ = self.get_output_as_nparray()
-
-        # As the RPM-order representation is made of two-sided spectra, we only plot the orders from
-        # 0 to the maximum order.
-        order_mask = orders <= self.max_order
-        orders = orders[order_mask]
-        representation = representation[:, order_mask]
+        representation = self.get_rpm_order_representation()
+        orders = self.get_orders_scale()
+        rpm_values = self.get_rpm_scale()
 
         # Compute the magnitude of the RPM-order representation.
         magnitude = np.abs(representation.transpose())
-
-        # As we only consider the one-sided spectrum, we multiply by sqrt(2) to account for the
-        # energy of the negative orders.
-        magnitude = magnitude * np.sqrt(2)
 
         unit = self.signal.unit if isinstance(self.signal.unit, str) else self.signal.unit[1]
 

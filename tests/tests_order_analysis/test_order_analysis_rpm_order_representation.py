@@ -342,19 +342,21 @@ def test_rpm_order_representation_get_rpm_order_representation(load_accel_and_rp
     obj.process()
     rpm_order_representation = obj.get_rpm_order_representation()
     assert isinstance(rpm_order_representation, np.ndarray)
-    assert rpm_order_representation.shape == (EXP_RPM_COUNT_MAX160, EXP_ORDER_COUNT)
-    assert rpm_order_representation[0][0].real == pytest.approx(EXP_RPM0_ORDER0_MAX160, abs=1e-4)
+    assert rpm_order_representation.shape == (EXP_RPM_COUNT_MAX160, EXP_ORDER_COUNT // 2)
+    assert rpm_order_representation[0][0].real == pytest.approx(
+        EXP_RPM0_ORDER0_MAX160 * np.sqrt(2), abs=1e-4
+    )
     assert rpm_order_representation[0][500].real == pytest.approx(
-        EXP_RPM0_ORDER500_MAX160, abs=1e-4
+        EXP_RPM0_ORDER500_MAX160 * np.sqrt(2), abs=1e-4
     )
     assert rpm_order_representation[12][836].real == pytest.approx(
-        EXP_RPM12_ORDER836_MAX160, abs=1e-4
+        EXP_RPM12_ORDER836_MAX160 * np.sqrt(2), abs=1e-4
     )
     assert rpm_order_representation[24][51].real == pytest.approx(
-        EXP_RPM24_ORDER51_MAX160, abs=1e-2
+        EXP_RPM24_ORDER51_MAX160 * np.sqrt(2), abs=1e-2
     )
     assert rpm_order_representation[814][102].real == pytest.approx(
-        EXP_RPM814_ORDER102_MAX160, abs=1e-1
+        EXP_RPM814_ORDER102_MAX160 * np.sqrt(2), abs=1e-1
     )
 
 
@@ -365,7 +367,7 @@ def test_rpm_order_representation_get_orders(load_accel_and_rpm):
     obj.process()
     orders = obj.get_orders_scale()
     assert isinstance(orders, np.ndarray)
-    assert len(orders) == EXP_ORDER_COUNT
+    assert len(orders) == EXP_ORDER_COUNT // 2
     assert orders[0] == pytest.approx(EXP_ORDER0, abs=1e-2)
     assert orders[51] == pytest.approx(EXP_ORDER51, abs=1e-2)
     assert orders[102] == pytest.approx(EXP_ORDER102, abs=1e-2)
