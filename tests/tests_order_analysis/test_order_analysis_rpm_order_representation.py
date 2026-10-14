@@ -360,12 +360,12 @@ def test_rpm_order_representation_get_rpm_order_representation(load_accel_and_rp
     )
 
 
-def test_rpm_order_representation_get_orders(load_accel_and_rpm):
-    """Test the get_orders method."""
+def test_rpm_order_representation_get_order_scale(load_accel_and_rpm):
+    """Test the get_order_scale method."""
     signal, rpm_profile = load_accel_and_rpm
     obj = RpmOrderRepresentation(signal=signal, rpm_profile=rpm_profile, max_order=160)
     obj.process()
-    orders = obj.get_orders_scale()
+    orders = obj.get_order_scale()
     assert isinstance(orders, np.ndarray)
     assert len(orders) == EXP_ORDER_COUNT // 2
     assert orders[0] == pytest.approx(EXP_ORDER0, abs=1e-2)

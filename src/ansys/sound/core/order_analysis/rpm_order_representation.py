@@ -276,7 +276,10 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         numpy.ndarray
             RPM order representation as a 2-D NumPy array. Each column corresponds to a specific
             order's complex level over RPM or time, in the input signal's unit.
-            Note: this method returns the "one-sided" rpm-order representation, i.e., only the
+
+        Notes
+        -----
+            This method returns the "one-sided" rpm-order representation, which means only the
             orders between 0 and :attr:`max_order` are included. Consequently, the level of the
             excluded symmetric part of the representation is compensated for in the one-sided
             representation (i.e., the overall level remains the same).
@@ -285,7 +288,7 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         half_length = representation.shape[1] // 2
         return representation[:, 0:half_length] * np.sqrt(2)
 
-    def get_orders_scale(self) -> np.ndarray:
+    def get_order_scale(self) -> np.ndarray:
         """Get the order values associated with the RPM-order representation.
 
         Returns
@@ -331,8 +334,8 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
             Whether to display levels in the input signal's unit (False), or in dB (True).
         reference_value : float, default: 1.0
             Reference value for dB conversion. Ignored if ``display_in_dB`` is False.
-            ex: if the input signal is in Pa, use a reference value equal to 2e-5 Pa to display
-            levels in dB SPL.
+            For example, if the input signal is in Pa, use a reference value equal to 2e-5 Pa to
+            display levels in dB SPL.
         """
         if self._output is None:
             raise PyAnsysSoundException(
@@ -343,7 +346,7 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
             raise PyAnsysSoundException("Reference value must be greater than 0.")
 
         representation = self.get_rpm_order_representation()
-        orders = self.get_orders_scale()
+        orders = self.get_order_scale()
         rpm_values = self.get_rpm_scale()
 
         # Compute the magnitude of the RPM-order representation.
