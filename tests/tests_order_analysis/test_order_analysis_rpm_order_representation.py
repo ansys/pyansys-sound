@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from unittest.mock import patch
+
 from ansys.dpf.core import Field, FieldsContainer
 import numpy as np
 import pytest
@@ -340,30 +342,32 @@ def test_rpm_order_representation_get_rpm_order_representation(load_accel_and_rp
     obj.process()
     rpm_order_representation = obj.get_rpm_order_representation()
     assert isinstance(rpm_order_representation, np.ndarray)
-    assert rpm_order_representation.shape == (EXP_RPM_COUNT_MAX160, EXP_ORDER_COUNT)
-    assert rpm_order_representation[0][0].real == pytest.approx(EXP_RPM0_ORDER0_MAX160, abs=1e-4)
+    assert rpm_order_representation.shape == (EXP_RPM_COUNT_MAX160, EXP_ORDER_COUNT // 2)
+    assert rpm_order_representation[0][0].real == pytest.approx(
+        EXP_RPM0_ORDER0_MAX160 * np.sqrt(2), abs=1e-4
+    )
     assert rpm_order_representation[0][500].real == pytest.approx(
-        EXP_RPM0_ORDER500_MAX160, abs=1e-4
+        EXP_RPM0_ORDER500_MAX160 * np.sqrt(2), abs=1e-4
     )
     assert rpm_order_representation[12][836].real == pytest.approx(
-        EXP_RPM12_ORDER836_MAX160, abs=1e-4
+        EXP_RPM12_ORDER836_MAX160 * np.sqrt(2), abs=1e-4
     )
     assert rpm_order_representation[24][51].real == pytest.approx(
-        EXP_RPM24_ORDER51_MAX160, abs=1e-2
+        EXP_RPM24_ORDER51_MAX160 * np.sqrt(2), abs=1e-2
     )
     assert rpm_order_representation[814][102].real == pytest.approx(
-        EXP_RPM814_ORDER102_MAX160, abs=1e-1
+        EXP_RPM814_ORDER102_MAX160 * np.sqrt(2), abs=1e-1
     )
 
 
-def test_rpm_order_representation_get_orders(load_accel_and_rpm):
-    """Test the get_orders method."""
+def test_rpm_order_representation_get_order_scale(load_accel_and_rpm):
+    """Test the get_order_scale method."""
     signal, rpm_profile = load_accel_and_rpm
     obj = RpmOrderRepresentation(signal=signal, rpm_profile=rpm_profile, max_order=160)
     obj.process()
-    orders = obj.get_orders()
+    orders = obj.get_order_scale()
     assert isinstance(orders, np.ndarray)
-    assert len(orders) == EXP_ORDER_COUNT
+    assert len(orders) == EXP_ORDER_COUNT // 2
     assert orders[0] == pytest.approx(EXP_ORDER0, abs=1e-2)
     assert orders[51] == pytest.approx(EXP_ORDER51, abs=1e-2)
     assert orders[102] == pytest.approx(EXP_ORDER102, abs=1e-2)
@@ -397,3 +401,61 @@ def test_rpm_order_representation_get_time_scale(load_accel_and_rpm):
     assert time[12] == pytest.approx(EXP_TIME12, abs=1e-2)
     assert time[31] == pytest.approx(EXP_TIME31, abs=1e-2)
     assert time[41] == pytest.approx(EXP_TIME41, abs=1e-2)
+
+
+# --- plot ---
+
+
+@patch("matplotlib.pyplot.show")
+def test_rpm_order_representation_plot(mock_show, load_accel_and_rpm):
+    """Test the plot method."""
+    signal, rpm_profile = load_accel_and_rpm
+    obj = RpmOrderRepresentation(
+        signal=signal, rpm_profile=rpm_profile, max_order=10, order_resolution=0.125
+    )
+    obj.process()
+    obj.plot()
+    mock_show.assert_called_once()
+
+    # Empty name and unit (affects title and colorbar label)
+    signal.name = ""
+    signal.unit = ""
+    mock_show.reset_mock()
+    with patch("matplotlib.pyplot.colorbar") as mock_colorbar:
+        obj.plot(display_in_dB=False)
+    mock_colorbar.assert_called_once_with(label="Level ")
+    mock_show.assert_called_once()
+
+
+@patch("matplotlib.pyplot.show")
+def test_rpm_order_representation_plot_in_dB(mock_show, load_accel_and_rpm):
+    """Test the plot method when display_in_dB is True."""
+    signal, rpm_profile = load_accel_and_rpm
+    obj = RpmOrderRepresentation(
+        signal=signal, rpm_profile=rpm_profile, max_order=10, order_resolution=0.125
+    )
+    obj.process()
+    obj.plot(display_in_dB=True, reference_value=2e-5)
+    mock_show.assert_called_once()
+
+    # Empty unit (affects colorbar label)
+    signal.unit = ""
+    mock_show.reset_mock()
+    obj.plot(display_in_dB=True, reference_value=2e-5)
+    mock_show.assert_called_once()
+
+
+def test_rpm_order_representation_plot_exceptions(load_accel_and_rpm):
+    """Test the plot method's exceptions."""
+    signal, rpm_profile = load_accel_and_rpm
+    obj = RpmOrderRepresentation(signal=signal, rpm_profile=rpm_profile)
+
+    with pytest.raises(
+        PyAnsysSoundException,
+        match=("Output is not processed yet. Use the `RpmOrderRepresentation.process\(\)` method."),
+    ):
+        obj.plot()
+
+    obj.process()
+    with pytest.raises(PyAnsysSoundException, match="Reference value must be greater than 0."):
+        obj.plot(display_in_dB=True, reference_value=0.0)

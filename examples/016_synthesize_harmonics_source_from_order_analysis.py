@@ -42,6 +42,8 @@ on an existing system can be reused to synthesize the acoustic behavior of that 
 different operating conditions.
 
 .. seealso::
+    :ref:`order_analysis_example`
+        Example demonstrating how to perform an order analysis on a recorded acoustic signal.
     :ref:`sound_composer_create_project`
         Example demonstrating how to create a Sound Composer project, including a harmonics source.
 """

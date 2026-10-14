@@ -25,6 +25,7 @@
 import warnings
 
 from ansys.dpf.core import Field, FieldsContainer, Operator, types
+import matplotlib.pyplot as plt
 import numpy as np
 
 from . import OrderAnalysisParent
@@ -275,18 +276,30 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
         numpy.ndarray
             RPM order representation as a 2-D NumPy array. Each column corresponds to a specific
             order's complex level over RPM or time, in the input signal's unit.
-        """
-        return self.get_output_as_nparray()[0]
 
-    def get_orders(self) -> np.ndarray:
+        Notes
+        -----
+            This method returns the "one-sided" rpm-order representation, which means only the
+            orders between 0 and :attr:`max_order` are included. Consequently, the level of the
+            excluded symmetric part of the representation is compensated for in the one-sided
+            representation (i.e., the overall level remains the same).
+        """
+        representation = self.get_output_as_nparray()[0]
+        half_length = representation.shape[1] // 2
+        return representation[:, 0:half_length] * np.sqrt(2)
+
+    def get_order_scale(self) -> np.ndarray:
         """Get the order values associated with the RPM-order representation.
 
         Returns
         -------
         numpy.ndarray
-            Order values corresponding to the columns of the RPM-order representation.
+            Order values corresponding to the columns of the RPM-order representation returned by
+            :meth:`get_rpm_order_representation`. Return the values between 0 and :attr:`max_order`.
         """
-        return self.get_output_as_nparray()[1]
+        order_numbers = self.get_output_as_nparray()[1]
+        half_length = order_numbers.shape[0] // 2
+        return order_numbers[:half_length]
 
     def get_rpm_scale(self) -> np.ndarray:
         """Get the RPM scale associated with the RPM-order representation.
@@ -307,3 +320,71 @@ class RpmOrderRepresentation(OrderAnalysisParent, min_sound_version="2027.1.0"):
             Time values, in seconds, corresponding to the rows of the RPM-order representation.
         """
         return self.get_output_as_nparray()[3]
+
+    def plot(
+        self,
+        display_in_dB: bool = True,
+        reference_value: float = 1.0,
+    ):
+        """Plot the RPM-order representation as a colormap of level against order and RPM.
+
+        Parameters
+        ----------
+        display_in_dB : bool, default: True
+            Whether to display levels in the input signal's unit (False), or in dB (True).
+        reference_value : float, default: 1.0
+            Reference value for dB conversion. Ignored if ``display_in_dB`` is False.
+            For example, if the input signal is in Pa, use a reference value equal to 2e-5 Pa to
+            display levels in dB SPL.
+        """
+        if self._output is None:
+            raise PyAnsysSoundException(
+                f"Output is not processed yet. Use the `{__class__.__name__}.process()` method."
+            )
+
+        if display_in_dB and reference_value <= 0:
+            raise PyAnsysSoundException("Reference value must be greater than 0.")
+
+        representation = self.get_rpm_order_representation()
+        orders = self.get_order_scale()
+        rpm_values = self.get_rpm_scale()
+
+        # Compute the magnitude of the RPM-order representation.
+        magnitude = np.abs(representation.transpose())
+
+        unit = self.signal.unit if isinstance(self.signal.unit, str) else self.signal.unit[1]
+
+        if display_in_dB:
+            magnitude = 20.0 * np.log10(magnitude / reference_value + 1e-12)
+            str_unit = f"dB re. {reference_value}"
+            if len(unit) > 0:
+                str_unit += f" {unit}"
+        else:
+            str_unit = unit if len(unit) > 0 else ""
+
+        # Limit the colormap scale to the top 60-dB range when displaying in dB.
+        vmax = np.max(magnitude) if display_in_dB else None
+        vmin = vmax - 60.0 if display_in_dB else None
+
+        plt.figure()
+
+        # Use pcolormesh instead of imshow, because rpm_values is not regularly spaced.
+        plt.pcolormesh(
+            rpm_values,
+            orders,
+            magnitude,
+            shading="gouraud",
+            cmap="jet",
+            vmin=vmin,
+            vmax=vmax,
+        )
+        plt.colorbar(label=f"Level {str_unit}")
+
+        title = "RPM-order representation"
+        if len(self.signal.name) > 0:
+            title += f": {self.signal.name}"
+        plt.title(title)
+        plt.xlabel("RPM")
+        plt.ylabel("Order")
+        plt.tight_layout()
+        plt.show()
