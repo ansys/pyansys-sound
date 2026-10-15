@@ -49,7 +49,7 @@ tests = [
     "pytest==9.1.1",
     "pytest-cov==7.1.0",
     "pytest-dependency==0.6.1",
-    "platformdirs==4.12.2",
+    "platformdirs==4.12.4",
     "regex==2026.9.29",
     "scipy==1.14.1; python_version<'3.11'",
     "scipy==1.17.1; python_version>='3.11'"
@@ -73,7 +73,7 @@ doc = [
     "pypandoc==1.17",
     "jupyter-sphinx==0.5.3",
     "sphinx-autobuild==2024.10.3",
-    "platformdirs==4.12.2",
+    "platformdirs==4.12.4",
     "scikit-learn==1.7.2"
 ]
 
