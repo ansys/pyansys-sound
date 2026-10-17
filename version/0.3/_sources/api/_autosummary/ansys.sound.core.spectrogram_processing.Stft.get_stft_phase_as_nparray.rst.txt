@@ -1,0 +1,6 @@
+get\_stft\_phase\_as\_nparray
+=============================
+
+.. currentmodule:: ansys.sound.core.spectrogram_processing
+
+.. automethod:: Stft.get_stft_phase_as_nparray

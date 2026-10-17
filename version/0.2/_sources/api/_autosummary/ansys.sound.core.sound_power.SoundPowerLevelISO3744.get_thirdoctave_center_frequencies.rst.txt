@@ -1,0 +1,6 @@
+get\_thirdoctave\_center\_frequencies
+=====================================
+
+.. currentmodule:: ansys.sound.core.sound_power
+
+.. automethod:: SoundPowerLevelISO3744.get_thirdoctave_center_frequencies

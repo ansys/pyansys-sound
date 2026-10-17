@@ -1,0 +1,6 @@
+fields
+======
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoproperty:: CreateSignalFieldsContainer.fields

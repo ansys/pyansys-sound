@@ -1,0 +1,6 @@
+fft\_size
+=========
+
+.. currentmodule:: ansys.sound.core.spectrogram_processing
+
+.. autoproperty:: Stft.fft_size

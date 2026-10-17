@@ -1,0 +1,6 @@
+process
+=======
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: LoudnessISO532_1_TimeVarying.process

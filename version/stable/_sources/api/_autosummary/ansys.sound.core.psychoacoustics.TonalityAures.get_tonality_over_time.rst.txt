@@ -1,0 +1,6 @@
+get\_tonality\_over\_time
+=========================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: TonalityAures.get_tonality_over_time

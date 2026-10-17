@@ -1,0 +1,6 @@
+use\_ansi\_s1\_11\_1986
+=======================
+
+.. currentmodule:: ansys.sound.core.standard_levels
+
+.. autoproperty:: OneThirdOctaveLevelsFromPSD.use_ansi_s1_11_1986
