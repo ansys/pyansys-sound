@@ -25,9 +25,8 @@
 from contextlib import contextmanager
 import os
 
-from ansys.dpf.core import download_file, make_tmp_dir_server
+from ansys.dpf.core import download_file, make_tmp_dir_server, upload_file_in_tmp_folder
 from ansys.dpf.core import server as server_module
-from ansys.dpf.core import upload_file_in_tmp_folder
 
 
 @contextmanager
