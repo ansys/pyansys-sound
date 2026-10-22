@@ -1,0 +1,6 @@
+get\_order\_scale
+=================
+
+.. currentmodule:: ansys.sound.core.order_analysis
+
+.. automethod:: RpmOrderRepresentation.get_order_scale

@@ -1,0 +1,6 @@
+overlap
+=======
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: TonalityISOTS20065.overlap

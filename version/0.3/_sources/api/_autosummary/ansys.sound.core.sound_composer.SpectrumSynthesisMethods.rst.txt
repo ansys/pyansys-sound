@@ -1,0 +1,23 @@
+﻿SpectrumSynthesisMethods
+========================
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. autoclass:: SpectrumSynthesisMethods
+
+   
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SpectrumSynthesisMethods.IFFT
+      SpectrumSynthesisMethods.Hybrid
+   
+   

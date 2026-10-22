@@ -1,0 +1,6 @@
+regularity
+==========
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoproperty:: XtractTonalParameters.regularity

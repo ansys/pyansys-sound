@@ -1,0 +1,6 @@
+effective\_analysis\_bandwidth
+==============================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: TonalityISO1996_2_OverTime.effective_analysis_bandwidth

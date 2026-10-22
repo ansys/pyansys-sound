@@ -1,0 +1,59 @@
+﻿Roughness
+=========
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: Roughness
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Roughness.get_bark_band_frequencies
+      
+      
+      Roughness.get_bark_band_indexes
+      
+      
+      Roughness.get_output
+      
+      
+      Roughness.get_output_as_nparray
+      
+      
+      Roughness.get_roughness
+      
+      
+      Roughness.get_roughness_over_time
+      
+      
+      Roughness.get_specific_roughness
+      
+      
+      Roughness.get_time_scale
+      
+      
+      Roughness.plot
+      
+      
+      Roughness.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Roughness.signal
+   
+   

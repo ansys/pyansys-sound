@@ -1,0 +1,88 @@
+﻿SoundPowerLevelISO3744
+======================
+
+.. currentmodule:: ansys.sound.core.sound_power
+
+.. autoclass:: SoundPowerLevelISO3744
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SoundPowerLevelISO3744.add_microphone_signal
+      
+      
+      SoundPowerLevelISO3744.convert_fields_container_to_np_array
+      
+      
+      SoundPowerLevelISO3744.delete_microphone_signal
+      
+      
+      SoundPowerLevelISO3744.get_Lw
+      
+      
+      SoundPowerLevelISO3744.get_Lw_A
+      
+      
+      SoundPowerLevelISO3744.get_Lw_octave
+      
+      
+      SoundPowerLevelISO3744.get_Lw_thirdoctave
+      
+      
+      SoundPowerLevelISO3744.get_all_signal_names
+      
+      
+      SoundPowerLevelISO3744.get_microphone_signal
+      
+      
+      SoundPowerLevelISO3744.get_octave_center_frequencies
+      
+      
+      SoundPowerLevelISO3744.get_output
+      
+      
+      SoundPowerLevelISO3744.get_output_as_nparray
+      
+      
+      SoundPowerLevelISO3744.get_thirdoctave_center_frequencies
+      
+      
+      SoundPowerLevelISO3744.load_project
+      
+      
+      SoundPowerLevelISO3744.plot
+      
+      
+      SoundPowerLevelISO3744.process
+      
+      
+      SoundPowerLevelISO3744.set_C1_C2_from_meteo_parameters
+      
+      
+      SoundPowerLevelISO3744.set_K2_from_room_properties
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SoundPowerLevelISO3744.C1
+      SoundPowerLevelISO3744.C2
+      SoundPowerLevelISO3744.K1
+      SoundPowerLevelISO3744.K2
+      SoundPowerLevelISO3744.surface_radius
+      SoundPowerLevelISO3744.surface_shape
+   
+   

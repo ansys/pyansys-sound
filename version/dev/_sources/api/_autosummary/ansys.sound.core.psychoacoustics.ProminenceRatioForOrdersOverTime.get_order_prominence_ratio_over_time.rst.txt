@@ -1,0 +1,6 @@
+get\_order\_prominence\_ratio\_over\_time
+=========================================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: ProminenceRatioForOrdersOverTime.get_order_prominence_ratio_over_time

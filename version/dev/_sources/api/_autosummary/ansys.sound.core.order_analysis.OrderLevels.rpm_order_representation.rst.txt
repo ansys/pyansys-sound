@@ -1,0 +1,6 @@
+rpm\_order\_representation
+==========================
+
+.. currentmodule:: ansys.sound.core.order_analysis
+
+.. autoproperty:: OrderLevels.rpm_order_representation

@@ -1,0 +1,6 @@
+minimum\_duration
+=================
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoproperty:: XtractTonalParameters.minimum_duration

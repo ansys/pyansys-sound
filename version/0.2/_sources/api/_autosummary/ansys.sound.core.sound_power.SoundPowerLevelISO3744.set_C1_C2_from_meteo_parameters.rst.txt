@@ -1,0 +1,6 @@
+set\_C1\_C2\_from\_meteo\_parameters
+====================================
+
+.. currentmodule:: ansys.sound.core.sound_power
+
+.. automethod:: SoundPowerLevelISO3744.set_C1_C2_from_meteo_parameters

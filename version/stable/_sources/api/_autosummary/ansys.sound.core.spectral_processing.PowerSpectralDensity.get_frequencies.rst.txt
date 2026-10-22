@@ -1,0 +1,6 @@
+get\_frequencies
+================
+
+.. currentmodule:: ansys.sound.core.spectral_processing
+
+.. automethod:: PowerSpectralDensity.get_frequencies
