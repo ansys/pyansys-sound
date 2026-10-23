@@ -54,7 +54,7 @@ class OrderLevels(OrderAnalysisParent, min_sound_version="2027.1.0"):
         resolution is in the obtained RPM-order representation;
     -   :attr:`~.OrderLevels.order_width` (in percent of order): defines the width over which the
         representation energy is summed to produce an order level. It is expected that the order
-        width is greater or equal to the order resolution.
+        width is greater than or equal to the order resolution.
 
     .. seealso::
         :class:`RpmOrderRepresentation`
