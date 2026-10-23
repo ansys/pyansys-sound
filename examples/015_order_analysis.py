@@ -27,7 +27,7 @@ Compute order levels
 --------------------
 
 This example shows how to compute the levels over RPM of a list of orders using the
-:class:`.OrderLevels` class from a vibro-acoustic measurement, of a rotating machinery typically,
+:class:`.OrderLevels` class from a vibro-acoustic measurement, typically of rotating machinery,
 together with the related tachometric information. Orders are harmonic components of a sound or
 vibration that are related to the rotational speed of a machine.
 

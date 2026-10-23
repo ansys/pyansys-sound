@@ -38,6 +38,7 @@ The following indicators are included:
 - Sharpness according to DIN 45692, over time.
 - Roughness and roughness over time according to Daniel and Weber, "Psychoacoustical Roughness:
   Implementation of an Optimized Model, 1997.
+- Roughness according to ECMA-418-2.
 - Fluctuation strength according to Sontacchi, "Entwicklung eines Modulkonzeptes für die
   psychoakustische Geräuschanalyse under MatLab", 1998.
 
