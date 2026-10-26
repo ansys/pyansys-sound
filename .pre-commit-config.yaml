@@ -28,11 +28,11 @@ repos:
     args:
     - --ignore-words=.codespellignorewords
 
-- repo: https://github.com/pycqa/pydocstyle
-  rev: 6.3.0
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.17.2
   hooks:
-  - id: pydocstyle
-    additional_dependencies: [toml]
+  - id: ruff-check
+    types_or: [python]
     exclude: "^(tests/|examples/)"
 
 - repo: https://github.com/pre-commit/pre-commit-hooks
