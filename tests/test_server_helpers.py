@@ -21,7 +21,6 @@
 # SOFTWARE.
 
 import os
-from types import SimpleNamespace
 
 from ansys.dpf.core import download_file, upload_file_in_tmp_folder, _global_server
 from ansys.dpf.core.server import get_or_create_server
@@ -37,7 +36,6 @@ from ansys.sound.core.server_helpers import (
     requires_sound_version,
     validate_dpf_sound_connection,
     get_sound_version,
-    _check_version,
 )
 
 
