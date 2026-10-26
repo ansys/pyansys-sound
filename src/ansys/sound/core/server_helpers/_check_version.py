@@ -166,7 +166,7 @@ def get_sound_version() -> str:
             )
 
         return sound_version
-    
+
     version_retriever = Operator("get_version_info")
     version_retriever.run()
     year = version_retriever.get_output(0, types.int)
