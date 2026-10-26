@@ -23,7 +23,7 @@
 import os
 from types import SimpleNamespace
 
-from ansys.dpf.core import download_file, upload_file_in_tmp_folder, _global_server
+from ansys.dpf.core import _global_server, download_file, upload_file_in_tmp_folder
 from ansys.dpf.core.server import get_or_create_server
 from ansys.tools.common.exceptions import VersionError, VersionSyntaxError
 import pytest
@@ -31,13 +31,13 @@ import pytest
 from ansys.sound.core.server_helpers import (
     _check_sound_version,
     _check_sound_version_and_raise,
+    _check_version,
     _server_download,
     _server_upload,
     connect_to_or_start_server,
+    get_sound_version,
     requires_sound_version,
     validate_dpf_sound_connection,
-    get_sound_version,
-    _check_version,
 )
 
 
@@ -153,8 +153,9 @@ def test_get_sound_version():
     assert isinstance(version, str)
     assert len(version.split(".")) == 3
 
+
 @pytest.mark.skipif(
-    pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1, 
+    pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1,
     reason="Exception can only occur with Sound plugin < 2027 R1.",
 )
 def test_get_sound_version_exceptions(mocker):
