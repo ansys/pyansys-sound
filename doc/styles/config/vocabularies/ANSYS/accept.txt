@@ -22,3 +22,5 @@ wav
 WAV
 resampling
 denoising
+Synopsys
+synopsys
