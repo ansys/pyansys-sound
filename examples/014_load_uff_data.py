@@ -158,7 +158,8 @@ for i, block in enumerate(datasets_58b):
 # Plot the time-domain signals
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Display the two extracted signals.
-# first figure: channels 1 and 2
+
+# First figure: channels 1 and 2
 fig1, axs1 = plt.subplots(2, figsize=(10, 6), sharex=True)
 fig1.suptitle("Time-domain signals (channels 1 & 2) from UFF type 58b file")
 for i in range(2):
@@ -243,6 +244,6 @@ plt.show()
 #   :class:`.CreateSignalField`
 # - Compute and display dBA levels over time using :class:`.LevelOverTime`
 #
-# Only data blocks of (type 58 and 58b) with evenly spaced time data are supported by PyAnsys Sound.
+# Only data blocks (of type 58 and 58b) with evenly spaced time data are supported by PyAnsys Sound.
 # The ``pyuff`` package can be installed as an optional dependency via
 # ``pip install ansys-sound-core[full]``.

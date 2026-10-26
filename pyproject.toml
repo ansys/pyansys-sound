@@ -91,6 +91,12 @@ line_length = 100
 default_section = "THIRDPARTY"
 src_paths = ["doc", "src", "tests"]
 
+[tool.ruff.lint]
+select = ["D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
 [tool.coverage.run]
 source = ["ansys.sound.core"]
 
