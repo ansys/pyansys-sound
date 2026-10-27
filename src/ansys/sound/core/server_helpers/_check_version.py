@@ -123,10 +123,6 @@ def _check_sound_version_and_raise(min_sound_version: str, error_msg: str):
 def _check_sound_version(min_sound_version: str) -> bool:
     """Check the current DPF Sound plugin version against the specified minimum version.
 
-    Before Ansys 2027 R1, the DPF Sound plugin version is verified according to the DPF Server/DPF
-    Sound version matching dictionary. From Ansys 2027 R1 onwards, the DPF Sound plugin version is
-    retrieved directly from the server.
-
     Parameters
     ----------
     min_sound_version : str
@@ -138,33 +134,38 @@ def _check_sound_version(min_sound_version: str) -> bool:
         True if the current DPF Sound plugin version is greater than or equal to the specified
         version, False otherwise.
     """
-    if "get_version_info" not in available_operator_names():
-        # Operator get_version_info is only introduced in Ansys 2027 R1, so if it does not exist,
-        # we use the matching DPF server version to perform the check.
-        if min_sound_version not in MATCHING_VERSIONS:
-            raise VersionError(f"Unknown DPF Sound plugin version {min_sound_version}.")
-
-        return _global_server().meet_version(MATCHING_VERSIONS[min_sound_version])
-
     return parse(get_sound_version()) >= parse(min_sound_version)
 
 
 def get_sound_version() -> str:
     """Get the current DPF Sound plugin version.
 
+    Before Ansys 2027 R1, the DPF Sound plugin version is inferred from the DPF Server version
+    according to the version matching dictionary. From Ansys 2027 R1 onwards, the DPF Sound plugin
+    version is retrieved directly from the server.
+
     Returns
     -------
     str
         The DPF Sound plugin version in the form YEAR.MAJOR.MINOR, for example "2026.1.0".
-
-    Notes
-    -----
-    This function requires DPF Sound plugin version 2027.1.0 or higher.
     """
     if "get_version_info" not in available_operator_names():
-        raise VersionError(
-            "Function get_sound_version() requires DPF Sound plugin version 2027.1.0 or higher."
+        # Operator get_version_info is only introduced in Ansys 2027 R1, so if it does not exist,
+        # we match the DPF server version to the corresponding DPF Sound plugin version.
+        dpf_version = _global_server().version
+
+        sound_version = next(
+            (v_snd for v_snd, v_dpf in MATCHING_VERSIONS.items() if v_dpf == dpf_version),
+            None,
         )
+
+        if sound_version is None:
+            raise VersionError(
+                f"Current DPF Server version {dpf_version} is not associated with any known "
+                "Sound version."
+            )
+
+        return sound_version
 
     version_retriever = Operator("get_version_info")
     version_retriever.run()
