@@ -41,7 +41,7 @@ full = [
 ]
 
 tests = [
-    "ansys-dpf-core==0.16.1",
+    "ansys-dpf-core==0.16.3",
     "ansys-tools-common==0.5.3",
     "numpy==2.2.6; python_version<'3.12'",
     "numpy==2.5.3; python_version>='3.12'",
@@ -57,7 +57,7 @@ tests = [
 ]
 
 doc = [
-    "ansys-dpf-core==0.16.1",
+    "ansys-dpf-core==0.16.3",
     "Sphinx==8.2.3",
     "ansys-sphinx-theme==1.9.0",
     "numpy==2.5.3",
