@@ -1,0 +1,66 @@
+﻿LoudnessISO532\_1\_TimeVarying
+==============================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: LoudnessISO532_1_TimeVarying
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      LoudnessISO532_1_TimeVarying.convert_fields_container_to_np_array
+      
+      
+      LoudnessISO532_1_TimeVarying.get_L10_phon
+      
+      
+      LoudnessISO532_1_TimeVarying.get_L5_phon
+      
+      
+      LoudnessISO532_1_TimeVarying.get_N10_sone
+      
+      
+      LoudnessISO532_1_TimeVarying.get_N5_sone
+      
+      
+      LoudnessISO532_1_TimeVarying.get_loudness_level_phon_vs_time
+      
+      
+      LoudnessISO532_1_TimeVarying.get_loudness_sone_vs_time
+      
+      
+      LoudnessISO532_1_TimeVarying.get_output
+      
+      
+      LoudnessISO532_1_TimeVarying.get_output_as_nparray
+      
+      
+      LoudnessISO532_1_TimeVarying.get_time_scale
+      
+      
+      LoudnessISO532_1_TimeVarying.plot
+      
+      
+      LoudnessISO532_1_TimeVarying.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      LoudnessISO532_1_TimeVarying.field_type
+      LoudnessISO532_1_TimeVarying.signal
+   
+   

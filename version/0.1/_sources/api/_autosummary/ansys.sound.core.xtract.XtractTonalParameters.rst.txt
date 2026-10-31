@@ -1,0 +1,52 @@
+﻿XtractTonalParameters
+=====================
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoclass:: XtractTonalParameters
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      XtractTonalParameters.convert_fields_container_to_np_array
+      
+      
+      XtractTonalParameters.get_output
+      
+      
+      XtractTonalParameters.get_output_as_nparray
+      
+      
+      XtractTonalParameters.get_parameters_as_generic_data_container
+      
+      
+      XtractTonalParameters.plot
+      
+      
+      XtractTonalParameters.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      XtractTonalParameters.fft_size
+      XtractTonalParameters.intertonal_gap
+      XtractTonalParameters.local_emergence
+      XtractTonalParameters.maximum_slope
+      XtractTonalParameters.minimum_duration
+      XtractTonalParameters.regularity
+   
+   

@@ -1,0 +1,6 @@
+get\_rpm\_order\_representation
+===============================
+
+.. currentmodule:: ansys.sound.core.order_analysis
+
+.. automethod:: RpmOrderRepresentation.get_rpm_order_representation

@@ -1,0 +1,6 @@
+window\_type
+============
+
+.. currentmodule:: ansys.sound.core.order_analysis
+
+.. autoproperty:: IsolateOrders.window_type

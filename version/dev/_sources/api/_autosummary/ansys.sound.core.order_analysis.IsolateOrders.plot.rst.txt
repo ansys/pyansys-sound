@@ -1,0 +1,6 @@
+plot
+====
+
+.. currentmodule:: ansys.sound.core.order_analysis
+
+.. automethod:: IsolateOrders.plot

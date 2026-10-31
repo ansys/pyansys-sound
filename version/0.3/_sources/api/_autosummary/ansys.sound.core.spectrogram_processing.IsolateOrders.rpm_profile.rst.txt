@@ -1,0 +1,6 @@
+rpm\_profile
+============
+
+.. currentmodule:: ansys.sound.core.spectrogram_processing
+
+.. autoproperty:: IsolateOrders.rpm_profile

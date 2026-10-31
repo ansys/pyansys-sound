@@ -1,0 +1,6 @@
+get\_time\_scale
+================
+
+.. currentmodule:: ansys.sound.core.spectrogram_processing
+
+.. automethod:: Stft.get_time_scale
