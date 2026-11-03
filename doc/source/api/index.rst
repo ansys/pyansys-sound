@@ -12,6 +12,7 @@ This section describes how to use Python to interact with PyAnsys Sound programm
     signal_processing
     spectral_processing
     spectrogram_processing
+    order_analysis
     standard_levels
     sound_composer
     sound_power

@@ -57,6 +57,7 @@ The example shows how to perform these operations:
 # and connecting to the DPF server.
 
 # Load Ansys libraries.
+from ansys.sound.core import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
 from ansys.sound.core.examples_helpers import download_sound_composer_project_whatif
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.sound_composer import SoundComposer
@@ -77,7 +78,7 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # project file has the extension .scn, and can be created with Ansys Sound SAS.
 
 # Download the Sound Composer project file used in this example.
-path_sound_composer_project_scn = download_sound_composer_project_whatif(server=my_server)
+path_sound_composer_project_scn = download_sound_composer_project_whatif()
 
 # Create a SoundComposer object and load the project.
 sound_composer_project = SoundComposer()
@@ -157,7 +158,10 @@ track_gear.plot()
 
 spectrogram_gear = Stft(signal=track_gear.get_output())
 spectrogram_gear.process()
-spectrogram_gear.plot()
+spectrogram_gear.plot_custom(
+    display_phase=False,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+)
 
 # %%
 # If needed, you can access the output signal of a track using :meth:`.Track.get_output()`.
@@ -182,7 +186,10 @@ sound_composer_project.plot()
 
 spectrogram = Stft(signal=sound_composer_project.get_output())
 spectrogram.process()
-spectrogram.plot()
+spectrogram.plot_custom(
+    display_phase=False,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+)
 
 # %%
 # Conclusion

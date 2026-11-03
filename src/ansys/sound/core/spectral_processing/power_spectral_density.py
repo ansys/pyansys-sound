@@ -344,11 +344,14 @@ class PowerSpectralDensity(SpectralProcessingParent):
         else:
             # Get the output in dB/Hz.
             psd_dB_values = self.get_PSD_dB_as_nparray(ref_value=ref_value)
+            signal = self.input_signal
+            unit = signal.unit if isinstance(signal.unit, str) else signal.unit[1]
+            unit_str = f" {unit}" if len(unit) > 0 else ""
 
             # Plot the PSD in dB/Hz.
             plt.plot(frequencies.data, psd_dB_values)
             plt.title("Power Spectral Density (PSD)")
-            plt.ylabel(f"Level (dB/Hz re {ref_value})")
+            plt.ylabel(f"Level (dB/Hz re. {ref_value}{unit_str})")
         plt.xlabel(f"Frequency ({frequencies.unit})")
         plt.tight_layout()
         plt.show()

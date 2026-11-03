@@ -43,7 +43,6 @@ The example shows how to perform these operations:
 - Get calculation outputs.
 - Plot some corresponding curves.
 - Export levels into a .csv files.
-
 """
 
 # %%
@@ -75,8 +74,8 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # :class:`Field <ansys.dpf.core.field.Field>` objects, where each field corresponds to a channel.
 
 # Load example data from two wav files.
-path_fan_wav = download_fan_wav(server=my_server)
-path_aircraft_wav = download_aircraft_wav(server=my_server)
+path_fan_wav = download_fan_wav()
+path_aircraft_wav = download_aircraft_wav()
 
 
 # %%

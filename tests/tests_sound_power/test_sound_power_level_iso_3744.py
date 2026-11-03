@@ -444,15 +444,15 @@ def test_sound_power_level_iso_3744_plot_exception():
         swl.plot()
 
 
-def test_sound_power_level_iso_3744___get_surface_area():
-    """Test __get_surface_area method."""
+def test_sound_power_level_iso_3744__get_surface_area():
+    """Test _get_surface_area method."""
     swl = SoundPowerLevelISO3744()
 
-    area = swl._SoundPowerLevelISO3744__get_surface_area()
+    area = swl._get_surface_area()
     assert area == pytest.approx(EXP_AREA_H)
 
     swl.surface_shape = "Half-hemisphere"
-    area = swl._SoundPowerLevelISO3744__get_surface_area()
+    area = swl._get_surface_area()
     assert area == pytest.approx(EXP_AREA_HH)
 
 

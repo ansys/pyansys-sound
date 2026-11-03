@@ -28,6 +28,8 @@ from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operato
 from matplotlib import pyplot as plt
 import numpy as np
 
+from ansys.sound.core.server_helpers._server_io import _server_upload
+
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._source_parent import SourceParent
 from .source_control_time import SourceControlTime
@@ -98,7 +100,7 @@ class SourceBroadbandNoise(SourceParent):
         # Source info.
         if self.source_bbn is not None:
             spectrum_type, delta_f, control_name, control_unit, control_values = (
-                self.__extract_bbn_info()
+                self._extract_bbn_info()
             )
 
             # Source name.
@@ -236,14 +238,15 @@ class SourceBroadbandNoise(SourceParent):
             Path to the broadband noise source file. Supported files have the same text format
             (with the `AnsysSound_BBN` header) as supported by Ansys Sound SAS.
         """
-        # Set operator inputs.
-        self.__operator_load.connect(0, file)
+        with _server_upload(file) as path:
+            # Set operator inputs.
+            self.__operator_load.connect(0, path)
 
-        # Run the operator.
-        self.__operator_load.run()
+            # Run the operator.
+            self.__operator_load.run()
 
-        # Get the loaded sound power level parameters.
-        self.source_bbn = self.__operator_load.get_output(0, "fields_container")
+            # Get the loaded sound power level parameters.
+            self.source_bbn = self.__operator_load.get_output(0, "fields_container")
 
     def set_from_generic_data_containers(
         self,
@@ -420,23 +423,22 @@ class SourceBroadbandNoise(SourceParent):
         plt.tight_layout()
         plt.show()
 
-    def __extract_bbn_info(self) -> tuple[str, float, str, str, list[float]]:
+    def _extract_bbn_info(self) -> tuple[str, float, str, str, list[float]]:
         """Extract the broadband noise source information.
 
         Returns
         -------
-        tuple[str, float, str, str, list[float]]
-            Broadband noise source information, consisting of the following elements:
-                -   First element: spectrum type ('Narrow band', 'Octave', or 'Third octave').
-
-                -   Second element: spectrum frequency resolution in Hz (only if spectrum type is
-                    'Narrow band', 0.0 otherwise).
-
-                -   Third element: name of the control parameter.
-
-                -   Fourth element: unit of the control parameter.
-
-                -   Fifth element: list of control parameter values.
+        str
+            Spectrum type ('Narrow band', 'Octave', or 'Third octave').
+        float
+            Spectrum frequency resolution in Hz (only if spectrum type is 'Narrow band', 0.0
+            otherwise).
+        str
+            Name of the control parameter.
+        str
+            Unit of the control parameter.
+        list[float]
+            List of control parameter values.
         """
         if self.source_bbn is None:
             return ("", 0.0, "", "", [])

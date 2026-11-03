@@ -28,6 +28,8 @@ from ansys.dpf.core import Field, Operator, fields_container_factory
 import matplotlib.pyplot as plt
 import numpy as np
 
+from ansys.sound.core.server_helpers._server_io import _server_upload
+
 from . import SoundPowerParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
@@ -122,7 +124,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
             + "  Measurement surface:\n"
             + f"    Shape: {self.surface_shape}\n"
             + f"    Radius: {np.round(self.surface_radius, 1)} m\n"
-            + f"    Area: {np.round(self.__get_surface_area(), 1)} m^2\n"
+            + f"    Area: {np.round(self._get_surface_area(), 1)} m^2\n"
             + f"    Number of microphone signals: {len(self.__signals)}\n"
             + "  Correction coefficient:\n"
             + f"    K1 (background noise): {np.round(self.K1, 1)} dB\n"
@@ -328,7 +330,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         # Equation A.7 of ISO 3744.
         A = alpha * 2 * (length * width + length * height + width * height)
 
-        S = self.__get_surface_area()
+        S = self._get_surface_area()
 
         # Equation A.2 of ISO 3744.
         K2 = 10 * np.log10(1 + 4 * S / A)
@@ -380,26 +382,27 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         filename: string
             Sound power level project file.
         """
-        # Set operator inputs.
-        self.__operator_load.connect(0, filename)
+        with _server_upload(filename) as path:
+            # Set operator inputs.
+            self.__operator_load.connect(0, path)
 
-        # Run the operator.
-        self.__operator_load.run()
+            # Run the operator.
+            self.__operator_load.run()
 
-        # Get the loaded sound power level parameters.
-        self.surface_shape = self.__operator_load.get_output(0, "string")
-        self.surface_radius = self.__operator_load.get_output(1, "double")
-        self.K1 = self.__operator_load.get_output(2, "double")
-        self.K2 = self.__operator_load.get_output(3, "double")
-        self.C1 = self.__operator_load.get_output(4, "double")
-        self.C2 = self.__operator_load.get_output(5, "double")
-        fc_signals = self.__operator_load.get_output(6, "fields_container")
+            # Get the loaded sound power level parameters.
+            self.surface_shape = self.__operator_load.get_output(0, "string")
+            self.surface_radius = self.__operator_load.get_output(1, "double")
+            self.K1 = self.__operator_load.get_output(2, "double")
+            self.K2 = self.__operator_load.get_output(3, "double")
+            self.C1 = self.__operator_load.get_output(4, "double")
+            self.C2 = self.__operator_load.get_output(5, "double")
+            fc_signals = self.__operator_load.get_output(6, "fields_container")
 
-        # Convert signals stored as a fields container into a list of fields.
-        del self.__signals
-        self.__signals = []
-        for isig in range(len(fc_signals)):
-            self.__signals.append(fc_signals[isig])
+            # Convert signals stored as a fields container into a list of fields.
+            del self.__signals
+            self.__signals = []
+            for isig in range(len(fc_signals)):
+                self.__signals.append(fc_signals[isig])
 
     def process(self):
         """Calculate the sound power level.
@@ -608,7 +611,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
         plt.tight_layout()
         plt.show()
 
-    def __get_surface_area(self) -> float:
+    def _get_surface_area(self) -> float:
         """Calculate measurement surface.
 
         Calculates measurement surface area from its shape and radius, as indicated in section

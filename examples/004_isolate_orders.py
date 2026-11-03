@@ -30,11 +30,7 @@ Orders are harmonic and partial components in the sound related to the speed of 
 rotating machine. This example shows how to isolate orders in a signal containing an RPM profile.
 It also uses additional classes from PyAnsys Sound to compute spectrograms
 and the loudness of the isolated signals.
-
 """
-
-# Maximum frequency for STFT plots, change according to your need
-MAX_FREQUENCY_PLOT_STFT = 2000.0
 
 # %%
 # Set up analysis
@@ -48,15 +44,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Load Ansys libraries.
+from ansys.sound.core import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
 from ansys.sound.core.examples_helpers import (
     download_accel_with_rpm_2_wav,
     download_accel_with_rpm_3_wav,
     download_accel_with_rpm_wav,
 )
+from ansys.sound.core.order_analysis import IsolateOrders
 from ansys.sound.core.psychoacoustics import LoudnessISO532_1_Stationary
 from ansys.sound.core.server_helpers import connect_to_or_start_server
 from ansys.sound.core.signal_utilities import LoadWav, WriteWav
-from ansys.sound.core.spectrogram_processing import IsolateOrders, Stft
+from ansys.sound.core.spectrogram_processing import Stft
 
 # sphinx_gallery_start_ignore
 # sphinx_gallery_thumbnail_path = '_static/_image/example004_thumbnail.png'
@@ -67,84 +65,16 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 
 
 # %%
-# Define custom STFT plot function
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Define a custom function for STFT plots. It differs from the ``Stft.plot()`` method in that it
-# does not display the phase and allows setting custom title, maximum SPL, and maximum frequency.
-def plot_stft(
-    stft: Stft,
-    fs: float,
-    SPLmax: float,
-    title: str = "STFT",
-    maximum_frequency: float = MAX_FREQUENCY_PLOT_STFT,
-) -> None:
-    """Plot a short-term Fourier transform (STFT) into a figure window.
-
-    Parameters
-    ----------
-    stft: Stft
-        Object containing the STFT.
-    fs: float
-        Sampling frequency of the signal in Hz.
-    SPLmax: float
-        Maximum value (here in dB SPL) for the colormap.
-    title: str, default: "STFT"
-        Title of the figure.
-    maximum_frequency: float, default: MAX_FREQUENCY_PLOT_STFT
-        Maximum frequency in Hz to display.
-    """
-    magnitude = stft.get_stft_magnitude_as_nparray()
-    magnitude_unit = stft.get_output()[0].unit
-    if isinstance(magnitude_unit, tuple):
-        magnitude_unit = magnitude_unit[1]
-    frequency_unit = stft.get_output()[0].time_freq_support.time_frequencies.unit
-    time_unit = stft.get_output().time_freq_support.time_frequencies.unit
-
-    # Only extract the first half of the STFT, as it is symmetrical
-    half_nfft = int(magnitude.shape[0] / 2) + 1
-
-    # Voluntarily ignore a numpy warning
-    np.seterr(divide="ignore")
-    magnitude = 20 * np.log10(magnitude[0:half_nfft, :])
-    np.seterr(divide="warn")
-
-    # Obtain sampling frequency, time steps, and number of time samples
-    time_data_spectrogram = stft.get_output().time_freq_support.time_frequencies.data
-
-    # Define boundaries of the plot
-    extent = [time_data_spectrogram[0], time_data_spectrogram[-1], 0.0, fs / 2.0]
-
-    # Plot
-    plt.figure()
-    plt.imshow(
-        magnitude,
-        origin="lower",
-        aspect="auto",
-        cmap="jet",
-        extent=extent,
-        vmax=SPLmax,
-        vmin=SPLmax - 70.0,
-    )
-    plt.colorbar(label=f"Magnitude ({magnitude_unit})")
-    plt.ylabel(f"Frequency ({frequency_unit})")
-    plt.xlabel(f"Time ({time_unit})")
-    plt.ylim([0.0, maximum_frequency])  # Change the value of MAX_FREQUENCY_PLOT_STFT if needed.
-    plt.title(title)
-    plt.show()
-
-
-# %%
 # Load a signal with an RPM profile
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Load a signal that has been generated with Ansys Sound Analysis
-# and Specification (SAS) from a WAV file using the ``LoadWav`` class.
+# Load a signal from a WAV file using the :class:`.LoadWav` class.
 # This class contains two channels:
 #
 # - The actual signal (an acceleration recording)
 # - The associated RPM profile
 
 # Return the input data of the example file.
-path_accel_wav = download_accel_with_rpm_wav(server=my_server)
+path_accel_wav = download_accel_with_rpm_wav()
 
 # Load the WAV file.
 wav_loader = LoadWav(path_accel_wav)
@@ -177,24 +107,30 @@ plt.show()
 
 stft = Stft(signal=signal, window_overlap=0.9, fft_size=8192)
 stft.process()
-max_stft = 20 * np.log10(np.max(stft.get_stft_magnitude_as_nparray()))
-plot_stft(stft, fs, max_stft)
+max_stft_dBSPL = 20 * np.log10(np.max(stft.get_magnitude()) / REFERENCE_ACOUSTIC_PRESSURE_IN_AIR)
+max_frequency_Hz = 2000.0
+stft.plot_custom(
+    display_phase=False,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+    max_magnitude=max_stft_dBSPL,
+    max_frequency=max_frequency_Hz,
+)
 
 # %%
 # Isolate orders
 # ~~~~~~~~~~~~~~
-# Isolate orders 2, 4, and 6 with the ``IsolateOrders`` class.
+# Isolate orders 2, 4, and 6 with the :class:`.IsolateOrders` class.
 
 rpm_profile = wav_loader.get_output()[1]
 
-# Define parameters for order isolation
+# Define parameters for order isolation.
 order_to_isolate = [2, 4, 6]  # Orders indexes to isolate as a list
 fft_size = 8192  # FFT Size (in samples)
 window_type = "HANN"  # Window type
 window_overlap = 0.9  # Window overlap
 width_selection = 3  # Width of the order selection in Hz
 
-# Instantiate the ``IsolateOrders`` class with the parameters.
+# Instantiate the :class:`.IsolateOrders` class with the parameters.
 isolate_orders = IsolateOrders(
     signal=signal,
     rpm_profile=rpm_profile,
@@ -211,7 +147,12 @@ isolate_orders.process()
 # Plot the spectrogram of the isolated orders.
 stft.signal = isolate_orders.get_output()
 stft.process()
-plot_stft(stft, fs, max_stft)
+stft.plot_custom(
+    display_phase=False,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+    max_magnitude=max_stft_dBSPL,
+    max_frequency=max_frequency_Hz,
+)
 
 # %%
 # Isolate different orders
@@ -228,17 +169,23 @@ isolate_orders.process()
 # Plot the spectrogram of the isolated orders.
 stft.signal = isolate_orders.get_output()
 stft.process()
-plot_stft(stft, fs, max_stft)
+stft.plot_custom(
+    display_phase=False,
+    reference_value=REFERENCE_ACOUSTIC_PRESSURE_IN_AIR,
+    max_magnitude=max_stft_dBSPL,
+    max_frequency=max_frequency_Hz,
+)
 
 # %%
 # Work with the isolated signal
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Plot the signal containing the isolated orders and compute its loudness.
 
-# Plot the signal directly using the method from the ``IsolateOrders`` class.
+# Plot the signal directly using the method from the :class:`.IsolateOrders` class.
 isolate_orders.plot()
 
-# Use the ``Loudness`` class to compute the loudness of the isolate signal.
+# Use the :class:`.LoudnessISO532_1_Stationary` class to compute the loudness of the order-isolated
+# signal.
 signal_isolated = isolate_orders.get_output()
 signal_isolated.unit = "Pa"
 loudness = LoudnessISO532_1_Stationary(signal=signal_isolated)
@@ -260,8 +207,8 @@ print(f"The loudness level of the isolated signal is {loudness_level_isolated_si
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Loop over a list of given signals and write them as a WAV file.
 
-path_accel_wav_2 = download_accel_with_rpm_2_wav(server=my_server)
-path_accel_wav_3 = download_accel_with_rpm_3_wav(server=my_server)
+path_accel_wav_2 = download_accel_with_rpm_2_wav()
+path_accel_wav_3 = download_accel_with_rpm_3_wav()
 paths = (path_accel_wav, path_accel_wav_2, path_accel_wav_3)
 
 fft_sizes = [256, 2048, 4096]

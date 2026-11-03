@@ -30,7 +30,6 @@ This example shows how to load a signal from a WAV file, modify the signal's
 sampling frequency, and amplify it. It also shows how to access the corresponding
 data, display it using Matplotlib, and then write the modified signal to the disk as
 a new WAV file.
-
 """
 
 # %%
@@ -58,7 +57,7 @@ my_server, my_license_context = connect_to_or_start_server(use_license_context=T
 # in the DPF-Core API documentation.
 
 # Return the input data of the example file
-path_flute_wav = download_flute_wav(server=my_server)
+path_flute_wav = download_flute_wav()
 
 # Load the WAV file.
 wav_loader = LoadWav(path_flute_wav)

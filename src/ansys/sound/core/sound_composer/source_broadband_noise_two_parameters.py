@@ -28,6 +28,8 @@ from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operato
 from matplotlib import pyplot as plt
 import numpy as np
 
+from ansys.sound.core.server_helpers._server_io import _server_upload
+
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._source_parent import SourceParent
 from .source_control_time import SourceControlTime
@@ -114,7 +116,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
                 control_name2,
                 control_unit2,
                 control_min_max2,
-            ) = self.__extract_bbn_two_parameters_info()
+            ) = self._extract_bbn_two_parameters_info()
 
             # Source name.
             str_name = self.source_bbn_two_parameters.name
@@ -289,14 +291,15 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
             same text format (with the `AnsysSound_BBN_MultipleParameters` header) as supported by
             Ansys Sound SAS.
         """
-        # Set operator inputs.
-        self.__operator_load.connect(0, file)
+        with _server_upload(file) as path:
+            # Set operator inputs.
+            self.__operator_load.connect(0, path)
 
-        # Run the operator.
-        self.__operator_load.run()
+            # Run the operator.
+            self.__operator_load.run()
 
-        # Get the loaded sound power level parameters.
-        self.source_bbn_two_parameters = self.__operator_load.get_output(0, "fields_container")
+            # Get the loaded sound power level parameters.
+            self.source_bbn_two_parameters = self.__operator_load.get_output(0, "fields_container")
 
     def set_from_generic_data_containers(
         self,
@@ -506,34 +509,30 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
         plt.tight_layout()
         plt.show()
 
-    def __extract_bbn_two_parameters_info(
+    def _extract_bbn_two_parameters_info(
         self,
     ) -> tuple[str, float, str, str, tuple[float], str, str, tuple[float]]:
-        """Extract the broadband noise source with two parameters information.
+        """Extract the information of the broadband noise source with two parameters.
 
         Returns
         -------
-        tuple[str, float, str, str, tuple[float], str, str, tuple[float]]
-            Broadband noise source with two parameters information, consisting of the following
-            elements:
-                -   First element: spectrum type ('Narrow band', 'Octave', or 'Third octave').
-
-                -   Second element: spectrum frequency resolution in Hz (only if spectrum type is
-                    'Narrow band', 0.0 otherwise).
-
-                -   Third element: name of the first control parameter.
-
-                -   Fourth element: unit of the first control parameter.
-
-                -   Fifth element: min and max values of the first control parameter, in a tuple.
-
-                -   Sixth element: name of the second control parameter.
-
-                -   Seventh element: unit of the second control parameter.
-
-                -   Eighth element: min and max values of the second control parameter.
-
-
+        str
+            Spectrum type ('Narrow band', 'Octave', or 'Third octave').
+        float
+            Spectrum frequency resolution in Hz (only if spectrum type is 'Narrow band', 0.0
+            otherwise).
+        str
+            Name of the first control parameter.
+        str
+            Unit of the first control parameter.
+        tuple[float]
+            Minimum and maximum values of the first control parameter, in a tuple.
+        str
+            Name of the second control parameter.
+        str
+            Unit of the second control parameter.
+        tuple[float]
+            Minimum and maximum values of the second control parameter, in a tuple.
         """
         if self.source_bbn_two_parameters is None:
             return ("", 0.0, "", "", (), "", "", ())

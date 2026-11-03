@@ -122,7 +122,7 @@ plt.semilogx(
 
 plt.title("Octave levels from signal")
 plt.xlabel("Frequency (Hz)")
-plt.ylabel(f"Octave levels (dB re {REFERENCE_ACOUSTIC_PRESSURE_IN_AIR} {signal_flute.unit})")
+plt.ylabel(f"Octave levels (dB re. {REFERENCE_ACOUSTIC_PRESSURE_IN_AIR} {signal_flute.unit})")
 plt.grid()
 plt.show()
 
@@ -184,7 +184,7 @@ plt.semilogx(
 )
 plt.title("1/3-octave levels from signal and from PSD")
 plt.xlabel("Frequency (Hz)")
-plt.ylabel(f"1/3-octave levels (dB re {REFERENCE_ACOUSTIC_PRESSURE_IN_AIR} {signal_flute.unit})")
+plt.ylabel(f"1/3-octave levels (dB re. {REFERENCE_ACOUSTIC_PRESSURE_IN_AIR} {signal_flute.unit})")
 plt.xticks(rotation=90)
 plt.grid()
 plt.legend()
@@ -234,7 +234,7 @@ plt.semilogx(
 )
 plt.title("1/3-octave levels from signal and from PSD")
 plt.xlabel("Frequency (Hz)")
-plt.ylabel(f"1/3-octave levels (dB re {REFERENCE_ACOUSTIC_PRESSURE_IN_AIR} {signal_flute.unit})")
+plt.ylabel(f"1/3-octave levels (dB re. {REFERENCE_ACOUSTIC_PRESSURE_IN_AIR} {signal_flute.unit})")
 plt.grid()
 plt.legend()
 plt.show()

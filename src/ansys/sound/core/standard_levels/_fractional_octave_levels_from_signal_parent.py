@@ -68,13 +68,18 @@ class FractionalOctaveLevelsFromSignalParent(
 
     def __str__(self) -> str:
         """Return the string representation of the object."""
-        str_name = f'"{self.signal.name}"' if self.signal is not None else "Not set"
+        signal_unit = ""
+        signal = self.signal
+        if signal is not None:
+            signal_unit = signal.unit if isinstance(signal.unit, str) else signal.unit[1]
+        signal_unit_str = f" {signal_unit}" if len(signal_unit) > 0 else ""
+        str_name = f'"{signal.name}"' if signal is not None else "Not set"
         if len(self.frequency_weighting) > 0:
             str_frequency_weighting = self.frequency_weighting
-            str_unit = f"dB{self.frequency_weighting} (re {self.reference_value})"
+            str_unit = f"dB{self.frequency_weighting} re. {self.reference_value}{signal_unit_str}"
         else:
             str_frequency_weighting = "None"
-            str_unit = f"dB (re {self.reference_value})"
+            str_unit = f"dB re. {self.reference_value}{signal_unit_str}"
 
         if self._output is not None:
             levels, frequencies = self.get_output_as_nparray()
@@ -89,7 +94,7 @@ class FractionalOctaveLevelsFromSignalParent(
             f"{self.__class__.__name__} object.\n"
             "Data\n"
             f"\tSignal: {str_name}\n"
-            f"\tReference value: {self.reference_value}\n"
+            f"\tReference value: {self.reference_value}{signal_unit_str}\n"
             f"\tFrequency weighting: {str_frequency_weighting}\n"
             f"Output levels:{str_levels}"
         )
@@ -131,7 +136,7 @@ class FractionalOctaveLevelsFromSignalParent(
         # Retrieve frequency weighting at 1/3-octave-band center frequencies.
         weights_dB = self._get_frequency_weightings(center_frequencies)
 
-        # Convert weights to squared unit, and apply them to computed 1/3-octave levels.
+        # Convert weights to squared units, and apply them to computed 1/3-octave levels.
         weights = 10.0 ** (weights_dB / 10.0)
         levels *= weights
 
@@ -146,7 +151,7 @@ class FractionalOctaveLevelsFromSignalParent(
         Parameters
         ----------
         levels : numpy.ndarray
-            The computed levels to include in the output field, in squared unit. These will be
+            The computed levels to include in the output field, in squared units. These will be
             converted to dB in the set field.
         center_frequencies : numpy.ndarray
             The center frequencies corresponding to the computed levels, in Hz.

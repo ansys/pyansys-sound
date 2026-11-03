@@ -36,6 +36,7 @@ import numpy as np
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ansys.sound.core.server_helpers import _server_upload
 from ansys.sound.core.sound_composer import SourceBroadbandNoise, SourceControlTime
 from ansys.sound.core.spectral_processing import PowerSpectralDensity
 
@@ -226,7 +227,8 @@ def test_source_specrum_load_source_bbn():
 def test_source_broadband_noise_set_from_generic_data_containers():
     """Test SourceBroadbandNoise set_from_generic_data_containers method."""
     op = Operator("sound_composer_load_source_bbn")
-    op.connect(0, pytest.data_path_sound_composer_bbn_source)
+    with _server_upload(pytest.data_path_sound_composer_bbn_source) as path:
+        op.connect(0, path)
     op.run()
     fc_data: FieldsContainer = op.get_output(0, "fields_container")
 
@@ -550,13 +552,13 @@ def test_source_broadband_noise_plot_control_exceptions():
         source_bbn_obj.plot_control()
 
 
-def test_source_broadband_noise___extract_bbn_info():
-    """Test SourceBroadbandNoise __extract_bbn_info method."""
+def test_source_broadband_noise__extract_bbn_info():
+    """Test SourceBroadbandNoise _extract_bbn_info method."""
     source_bbn_obj = SourceBroadbandNoise()
-    assert source_bbn_obj._SourceBroadbandNoise__extract_bbn_info() == ("", 0.0, "", "", [])
+    assert source_bbn_obj._extract_bbn_info() == ("", 0.0, "", "", [])
 
     source_bbn_obj.load_source_bbn(pytest.data_path_sound_composer_bbn_source)
-    assert source_bbn_obj._SourceBroadbandNoise__extract_bbn_info() == (
+    assert source_bbn_obj._extract_bbn_info() == (
         "Octave",
         31.0,
         "Speed of wind",
@@ -566,7 +568,7 @@ def test_source_broadband_noise___extract_bbn_info():
 
     # Test with empty control support (delta_f not applicable).
     source_bbn_obj.source_bbn[0].time_freq_support.time_frequencies.data = []
-    assert source_bbn_obj._SourceBroadbandNoise__extract_bbn_info() == (
+    assert source_bbn_obj._extract_bbn_info() == (
         "Octave",
         0.0,
         "Speed of wind",

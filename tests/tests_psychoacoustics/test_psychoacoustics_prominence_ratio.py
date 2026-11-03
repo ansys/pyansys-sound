@@ -29,6 +29,64 @@ import pytest
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException
 from ansys.sound.core.psychoacoustics import ProminenceRatio
 
+EXP_TONE_COUNT = 14
+
+if pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1:
+    # Bug fix (ID#1457510)
+    EXP_FREQ_LIST = [
+        261.1,
+        524.9,
+        786.0,
+        1047.1,
+        1835.7,
+        3404.9,
+        3671.4,
+        3929.8,
+        5765.5,
+        6029.3,
+    ]
+
+    EXP_PR_0 = 38.90429
+    EXP_PR_6 = 2.689856
+
+    EXP_LEVEL_0 = 71.11819
+    EXP_LEVEL_6 = 45.15756
+
+    EXP_BANDWIDTH_LOW_0 = 231.5
+    EXP_BANDWIDTH_LOW_6 = 3654.9
+
+    EXP_BANDWIDTH_HIGH_0 = 280.8
+    EXP_BANDWIDTH_HIGH_6 = 3698.1
+
+    EXP_PR_MAX = 45.05140
+else:
+    EXP_FREQ_LIST = [
+        261.0901,
+        524.8718,
+        785.9619,
+        1047.052,
+        1835.706,
+        3404.938,
+        3671.411,
+        3929.810,
+        5765.515,
+        6029.297,
+    ]
+
+    EXP_PR_0 = 38.79766083
+    EXP_PR_6 = 2.68530488
+
+    EXP_LEVEL_0 = 71.11832306
+    EXP_LEVEL_6 = 45.19826385
+
+    EXP_BANDWIDTH_LOW_0 = 231.4819
+    EXP_BANDWIDTH_LOW_6 = 3652.570
+
+    EXP_BANDWIDTH_HIGH_0 = 282.6233
+    EXP_BANDWIDTH_HIGH_6 = 3698.328
+
+    EXP_PR_MAX = 44.87331
+
 
 def test_prominence_ratio_instantiation():
     """Test the instantiation of ProminenceRatio class."""
@@ -116,33 +174,33 @@ def test_prominence_ratio_get_output_as_nparray(create_psd_from_txt_data):
     ) = pr.get_output_as_nparray()
 
     assert type(frequency_Hz) == np.ndarray
-    assert frequency_Hz.size == 14
-    assert frequency_Hz[0] == pytest.approx(261.09008789)
-    assert frequency_Hz[6] == pytest.approx(3671.41113281)
+    assert frequency_Hz.size == EXP_TONE_COUNT
+    assert frequency_Hz[0] == pytest.approx(EXP_FREQ_LIST[0])
+    assert frequency_Hz[6] == pytest.approx(EXP_FREQ_LIST[6])
 
     assert type(pr_db) == np.ndarray
-    assert pr_db.size == 14
-    assert pr_db[0] == pytest.approx(38.79766083)
-    assert pr_db[6] == pytest.approx(2.68530488)
+    assert pr_db.size == EXP_TONE_COUNT
+    assert pr_db[0] == pytest.approx(EXP_PR_0)
+    assert pr_db[6] == pytest.approx(EXP_PR_6)
 
     assert type(level_db) == np.ndarray
-    assert level_db.size == 14
-    assert level_db[0] == pytest.approx(71.11832306)
-    assert level_db[6] == pytest.approx(45.19826385)
+    assert level_db.size == EXP_TONE_COUNT
+    assert level_db[0] == pytest.approx(EXP_LEVEL_0)
+    assert level_db[6] == pytest.approx(EXP_LEVEL_6)
 
     assert type(bandwidth_low) == np.ndarray
-    assert bandwidth_low.size == 14
-    assert bandwidth_low[0] == pytest.approx(231.48193359)
-    assert bandwidth_low[6] == pytest.approx(3652.56958008)
+    assert bandwidth_low.size == EXP_TONE_COUNT
+    assert bandwidth_low[0] == pytest.approx(EXP_BANDWIDTH_LOW_0)
+    assert bandwidth_low[6] == pytest.approx(EXP_BANDWIDTH_LOW_6)
 
     assert type(bandwidth_high) == np.ndarray
-    assert bandwidth_high.size == 14
-    assert bandwidth_high[0] == pytest.approx(282.62329102)
-    assert bandwidth_high[6] == pytest.approx(3698.32763672)
+    assert bandwidth_high.size == EXP_TONE_COUNT
+    assert bandwidth_high[0] == pytest.approx(EXP_BANDWIDTH_HIGH_0)
+    assert bandwidth_high[6] == pytest.approx(EXP_BANDWIDTH_HIGH_6)
 
     assert type(pr_max) == np.ndarray
     assert pr_max.size == 1
-    assert pr_max == pytest.approx(44.87330627441406)
+    assert pr_max == pytest.approx(EXP_PR_MAX)
 
 
 def test_prominence_ratio_get_nb_tones(create_psd_from_txt_data):
@@ -158,7 +216,7 @@ def test_prominence_ratio_get_nb_tones(create_psd_from_txt_data):
                     Use the 'ProminenceRatio.process()' method."
 
     pr.process()
-    assert pr.get_nb_tones() == 14
+    assert pr.get_nb_tones() == EXP_TONE_COUNT
 
     # flat spectrum -> no peaks to detect
     psd.data = np.ones(len(psd.data))
@@ -179,9 +237,9 @@ def test_prominence_ratio_get_peaks_frequencies(create_psd_from_txt_data):
     pr.process()
     peaks_frequencies = pr.get_peaks_frequencies()
     assert type(peaks_frequencies) == np.ndarray
-    assert peaks_frequencies.size == 14
-    assert peaks_frequencies[0] == pytest.approx(261.09008789)
-    assert peaks_frequencies[6] == pytest.approx(3671.41113281)
+    assert peaks_frequencies.size == EXP_TONE_COUNT
+    assert peaks_frequencies[0] == pytest.approx(EXP_FREQ_LIST[0])
+    assert peaks_frequencies[6] == pytest.approx(EXP_FREQ_LIST[6])
 
 
 def test_prominence_ratio_get_PR_values(create_psd_from_txt_data):
@@ -197,9 +255,9 @@ def test_prominence_ratio_get_PR_values(create_psd_from_txt_data):
     pr.process()
     pr_db = pr.get_PR_values()
     assert type(pr_db) == np.ndarray
-    assert pr_db.size == 14
-    assert pr_db[0] == pytest.approx(38.79766083)
-    assert pr_db[6] == pytest.approx(2.68530488)
+    assert pr_db.size == EXP_TONE_COUNT
+    assert pr_db[0] == pytest.approx(EXP_PR_0)
+    assert pr_db[6] == pytest.approx(EXP_PR_6)
 
 
 def test_prominence_ratio_get_peaks_levels(create_psd_from_txt_data):
@@ -215,9 +273,9 @@ def test_prominence_ratio_get_peaks_levels(create_psd_from_txt_data):
     pr.process()
     level_db = pr.get_peaks_levels()
     assert type(level_db) == np.ndarray
-    assert level_db.size == 14
-    assert level_db[0] == pytest.approx(71.11832306)
-    assert level_db[6] == pytest.approx(45.19826385)
+    assert level_db.size == EXP_TONE_COUNT
+    assert level_db[0] == pytest.approx(EXP_LEVEL_0)
+    assert level_db[6] == pytest.approx(EXP_LEVEL_6)
 
 
 def test_prominence_ratio_get_peaks_low_frequencies(create_psd_from_txt_data):
@@ -233,9 +291,9 @@ def test_prominence_ratio_get_peaks_low_frequencies(create_psd_from_txt_data):
     pr.process()
     bandwidth_low = pr.get_peaks_low_frequencies()
     assert type(bandwidth_low) == np.ndarray
-    assert bandwidth_low.size == 14
-    assert bandwidth_low[0] == pytest.approx(231.48193359)
-    assert bandwidth_low[6] == pytest.approx(3652.56958008)
+    assert bandwidth_low.size == EXP_TONE_COUNT
+    assert bandwidth_low[0] == pytest.approx(EXP_BANDWIDTH_LOW_0)
+    assert bandwidth_low[6] == pytest.approx(EXP_BANDWIDTH_LOW_6)
 
 
 def test_prominence_ratio_get_peaks_high_frequencies(create_psd_from_txt_data):
@@ -251,9 +309,9 @@ def test_prominence_ratio_get_peaks_high_frequencies(create_psd_from_txt_data):
     pr.process()
     bandwidth_high = pr.get_peaks_high_frequencies()
     assert type(bandwidth_high) == np.ndarray
-    assert bandwidth_high.size == 14
-    assert bandwidth_high[0] == pytest.approx(282.62329102)
-    assert bandwidth_high[6] == pytest.approx(3698.32763672)
+    assert bandwidth_high.size == EXP_TONE_COUNT
+    assert bandwidth_high[0] == pytest.approx(EXP_BANDWIDTH_HIGH_0)
+    assert bandwidth_high[6] == pytest.approx(EXP_BANDWIDTH_HIGH_6)
 
 
 def test_prominence_ratio_get_max_PR_value(create_psd_from_txt_data):
@@ -270,7 +328,7 @@ def test_prominence_ratio_get_max_PR_value(create_psd_from_txt_data):
     pr_max = pr.get_max_PR_value()
     assert type(pr_max) == np.ndarray
     assert pr_max.size == 1
-    assert pr_max == pytest.approx(44.87330627441406)
+    assert pr_max == pytest.approx(EXP_PR_MAX)
 
 
 def test_prominence_ratio_get_all_tone_infos(create_psd_from_txt_data):
@@ -298,11 +356,11 @@ def test_prominence_ratio_get_all_tone_infos(create_psd_from_txt_data):
         bandwidth_high,
     ) = pr.get_single_tone_info(6)
 
-    assert peaks_frequency == pytest.approx(3671.41113281)
-    assert pr_db == pytest.approx(2.68530488)
-    assert level_db == pytest.approx(45.19826385)
-    assert bandwidth_low == pytest.approx(3652.56958008)
-    assert bandwidth_high == pytest.approx(3698.32763672)
+    assert peaks_frequency == pytest.approx(EXP_FREQ_LIST[6])
+    assert pr_db == pytest.approx(EXP_PR_6)
+    assert level_db == pytest.approx(EXP_LEVEL_6)
+    assert bandwidth_low == pytest.approx(EXP_BANDWIDTH_LOW_6)
+    assert bandwidth_high == pytest.approx(EXP_BANDWIDTH_HIGH_6)
 
     # flat PSD -> nothing to detect
     psd.data = np.ones(len(psd.data))
@@ -358,18 +416,6 @@ def test_prominence_ratio_plot(mock_show, create_psd_from_txt_data):
 def test_prominence_ratio_with_frequency_list(create_psd_from_txt_data):
     """Test ProminenceRatio computation with a custom frequency list."""
     psd = create_psd_from_txt_data
-    frequency_list = [
-        261.090087890625,
-        524.871826171875,
-        785.9619140625,
-        1047.052001953125,
-        1835.70556640625,
-        3404.937744140625,
-        3671.4111328125,
-        3929.8095703125,
-        5765.51513671875,
-        6029.296875,
-    ]
     frequency_list_rounded = [
         261.0,
         524.0,
@@ -386,6 +432,6 @@ def test_prominence_ratio_with_frequency_list(create_psd_from_txt_data):
 
     pr.process()
 
-    assert len(frequency_list) == len(pr.get_peaks_frequencies())
-    for l_i in range(len(frequency_list)):
-        assert frequency_list[l_i] == pytest.approx(pr.get_peaks_frequencies()[l_i])
+    assert len(EXP_FREQ_LIST) == len(pr.get_peaks_frequencies())
+    for l_i in range(len(EXP_FREQ_LIST)):
+        assert pr.get_peaks_frequencies()[l_i] == pytest.approx(EXP_FREQ_LIST[l_i])

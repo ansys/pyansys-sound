@@ -28,6 +28,8 @@ from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operato
 from matplotlib import pyplot as plt
 import numpy as np
 
+from ansys.sound.core.server_helpers import _server_upload
+
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._source_parent import SourceParent
 from .source_control_time import SourceControlTime
@@ -96,7 +98,7 @@ class SourceHarmonics(SourceParent):
         """Return the string representation of the object."""
         # Source info.
         if self.source_harmonics is not None:
-            orders, control_name, control_values = self.__extract_harmonics_info()
+            orders, control_name, control_values = self._extract_harmonics_info()
 
             # Source name.
             str_name = self.source_harmonics.name
@@ -182,6 +184,12 @@ class SourceHarmonics(SourceParent):
                     "Specified harmonics source must be provided as a DPF fields container."
                 )
 
+            if len(source.labels) != 1:
+                raise PyAnsysSoundException(
+                    "Specified harmonics source must contain exactly one label, that is, one "
+                    "control parameter."
+                )
+
             if (
                 len(source) < 1
                 or len(source[0].data) < 1
@@ -209,7 +217,7 @@ class SourceHarmonics(SourceParent):
                         "each field must contain the same number of data points)."
                     )
 
-            support_data = source.get_support("control_parameter_1")
+            support_data = source.get_support(source.labels[0])
             support_properties = support_data.available_field_supported_properties()
             support_values = support_data.field_support_by_property(support_properties[0])
             if len(support_values) != len(source):
@@ -248,14 +256,15 @@ class SourceHarmonics(SourceParent):
             Path to the harmonics source file. Supported files are the same XML and text (with the
             header `AnsysSound_Orders`) formats as supported by Ansys Sound SAS.
         """
-        # Set operator inputs.
-        self.__operator_load.connect(0, file)
+        with _server_upload(file) as path:
+            # Set operator inputs.
+            self.__operator_load.connect(0, path)
 
-        # Run the operator.
-        self.__operator_load.run()
+            # Run the operator.
+            self.__operator_load.run()
 
-        # Get the loaded sound power level parameters.
-        self.source_harmonics = self.__operator_load.get_output(0, "fields_container")
+            # Get the loaded sound power level parameters.
+            self.source_harmonics = self.__operator_load.get_output(0, "fields_container")
 
     def set_from_generic_data_containers(
         self,
@@ -432,18 +441,17 @@ class SourceHarmonics(SourceParent):
         plt.tight_layout()
         plt.show()
 
-    def __extract_harmonics_info(self) -> tuple[list[float], str, list[float]]:
+    def _extract_harmonics_info(self) -> tuple[list[float], str, list[float]]:
         """Extract the harmonics source information.
 
         Returns
         -------
-        tuple[list[float], str, list[float]]
-            Harmonics source information, consisting of the following elements:
-                First element: list of order values.
-
-                Second element: name of the control parameter.
-
-                Third element: list of control parameter values.
+        list[float]
+            List of order values.
+        str
+            Name of the control parameter.
+        list[float]
+            List of control parameter values.
         """
         if self.source_harmonics is None:
             return ([], "", [])

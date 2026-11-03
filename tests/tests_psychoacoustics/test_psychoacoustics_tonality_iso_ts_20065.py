@@ -363,8 +363,8 @@ def test_tonality_iso_ts_20065_plot_exception():
         tonality.plot()
 
 
-def test_tonality_iso_ts_20065___check_spectrum_index():
-    """Test __check_spectrum_index method."""
+def test_tonality_iso_ts_20065__check_spectrum_index():
+    """Test _check_spectrum_index method."""
     wav_loader = LoadWav(pytest.data_path_Acceleration_with_Tacho_nonUnitaryCalib)
     wav_loader.process()
     fc = wav_loader.get_output()
@@ -376,4 +376,4 @@ def test_tonality_iso_ts_20065___check_spectrum_index():
         PyAnsysSoundException,
         match="Spectrum index 10 is out of bounds \\(total spectrum count is 6\\).",
     ):
-        tonality._TonalityISOTS20065__check_spectrum_index(spectrum_index=10)
+        tonality._check_spectrum_index(spectrum_index=10)

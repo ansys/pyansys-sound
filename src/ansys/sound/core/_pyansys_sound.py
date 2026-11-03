@@ -105,7 +105,7 @@ class PyAnsysSound:
     def plot(self):
         """Plot the output.
 
-        There is nothing to plot.
+        Not implemented in this class.
         """
         warnings.warn(
             PyAnsysSoundWarning(
@@ -117,7 +117,7 @@ class PyAnsysSound:
     def process(self):
         """Process inputs.
 
-        There is nothing to process.
+        Not implemented in this class.
         """
         warnings.warn(
             PyAnsysSoundWarning(
@@ -129,7 +129,7 @@ class PyAnsysSound:
     def get_output(self) -> None:
         """Get output.
 
-        There is nothing to output.
+        Not implemented in this class.
 
         Returns
         -------
@@ -146,7 +146,7 @@ class PyAnsysSound:
     def get_output_as_nparray(self) -> np.ndarray:
         """Get output as a NumPy array.
 
-        There is nothing to output.
+        Not implemented in this class.
 
         Returns
         -------

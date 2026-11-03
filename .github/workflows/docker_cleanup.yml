@@ -18,7 +18,7 @@ permissions: {}
 
 env:
   # List of DPF Sound image tags to NOT delete
-  IMAGES_TO_KEEP: '25.2,26.1,latest'
+  IMAGES_TO_KEEP: '25.2,26.1,27.1,latest'
 
 jobs:
   cleanup-ghcr:
@@ -31,7 +31,7 @@ jobs:
 
     steps:
     - name: Docker image cleanup (GHCR)
-      uses: ansys/actions/hk-package-clean-except@d946b24b9a765f4169bcc94afdb27bd1a0533741 # v10.3.2
+      uses: ansys/actions/hk-package-clean-except@87ff2e65e8884121f9afc97728ca9f213228ecc2 # v11.1.4
       with:
         package-name: 'ansys-sound'
         token: ${{ secrets.GITHUB_TOKEN }}

@@ -358,7 +358,7 @@ class TonalityDIN45681(PsychoacousticsParent):
             -   Third element: decisive frequency in Hz.
         """
         # Check validity of the input spectrum index.
-        self.__check_spectrum_index(spectrum_index)
+        self._check_spectrum_index(spectrum_index)
 
         return (
             self.get_output_as_nparray()[3][spectrum_index],
@@ -383,7 +383,7 @@ class TonalityDIN45681(PsychoacousticsParent):
             Number of tones detected in this spectrum.
         """
         # Check validity of the input spectrum index.
-        self.__check_spectrum_index(spectrum_index)
+        self._check_spectrum_index(spectrum_index)
 
         # Extract collection.
         collection = self.get_output()[7]
@@ -430,7 +430,7 @@ class TonalityDIN45681(PsychoacousticsParent):
             -   Tenth element (float): masking index av, in dB.
         """
         # Check validities of input indexes.
-        self.__check_spectrum_index(spectrum_index)
+        self._check_spectrum_index(spectrum_index)
 
         if tone_index >= self.get_tone_number(spectrum_index):
             raise PyAnsysSoundException(
@@ -502,7 +502,7 @@ class TonalityDIN45681(PsychoacousticsParent):
         plt.tight_layout()
         plt.show()
 
-    def __check_spectrum_index(self, spectrum_index: int):
+    def _check_spectrum_index(self, spectrum_index: int):
         """Check whether a specific spectrum index is valid.
 
         Raises an error if the spectrum index is out of bounds.

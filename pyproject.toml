@@ -1,11 +1,11 @@
 [build-system]
-requires = ["flit_core >=3.2,<4"]
+requires = ["flit_core >=3.2,<5"]
 build-backend = "flit_core.buildapi"
 
 [project]
 # Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
 name = "ansys-sound-core"
-version = "0.2.dev1"
+version = "0.4.dev0"
 description = "A Python wrapper for Ansys DPF Sound."
 readme = "README.rst"
 requires-python = ">=3.10,<4"
@@ -25,57 +25,56 @@ classifiers = [
 dependencies = [
     "ansys-dpf-core>=0.13.8,<1",
     "ansys-tools-common>=0.1.0,<1",
+    "numpy>=1.26.4,<3",
     "matplotlib>=3.8.2,<4",
-    "platformdirs>=3.6.0",
-    "requests>=2.30.0"
+    "platformdirs>=3.6.0"
 ]
 
 [project.optional-dependencies]
+# Additional optional dependencies needed to cover the full functional scope of pyansys-sound,
+# including examples.
 full = [
-    "ansys-dpf-core==0.16.1",
-    "ansys-tools-common==0.5.0",
-    "matplotlib==3.10.9",
-    "pyuff==2.5.3",
-    "platformdirs==4.10.0",
-    "requests==2.34.2",
-    "scipy==1.14.1; python_version<'3.11'",
-    "scipy==1.17.1; python_version>='3.11'",
-    "scikit-learn==1.7.2"
+    "scipy>=1.14.1,<1.16; python_version<'3.11'",
+    "scipy>=1.17.1; python_version>='3.11'",
+    "scikit-learn>=1.7.2",
+    "pyuff>=2.5.3"
 ]
 
 tests = [
-    "ansys-dpf-core==0.16.1",
-    "ansys-tools-common==0.5.0",
+    "ansys-dpf-core==0.16.3",
+    "ansys-tools-common==0.5.3",
+    "numpy==2.2.6; python_version<'3.12'",
+    "numpy==2.5.3; python_version>='3.12'",
     "matplotlib==3.10.9",
-    "pytest==9.0.3",
+    "pytest==9.1.1",
     "pytest-cov==7.1.0",
     "pytest-dependency==0.6.1",
-    "platformdirs==4.10.0",
-    "regex==2026.5.9",
-    "requests==2.34.2",
+    "pytest-mock==3.17.0",
+    "platformdirs==4.12.4",
+    "regex==2026.9.29",
     "scipy==1.14.1; python_version<'3.11'",
     "scipy==1.17.1; python_version>='3.11'"
 ]
 
 doc = [
-    "ansys-dpf-core==0.16.1",
+    "ansys-dpf-core==0.16.3",
     "Sphinx==8.2.3",
-    "ansys-sphinx-theme==1.8.2",
-    "numpydoc==1.10.0",
-    "pyuff==2.5.3",
+    "ansys-sphinx-theme==1.9.0",
+    "numpy==2.5.3",
+    "numpydoc==1.11.0",
+    "pyuff==2.5.8",
     "sphinx-autodoc-typehints==3.1.0",
     "sphinx-copybutton==0.5.2",
-    "sphinx-gallery==0.21.0",
+    "sphinx-gallery==0.22.1",
     "sphinx-design==0.6.1",
-    "vtk==9.6.2",
+    "vtk==9.7.1",
     "trame==3.13.2",
-    "trame_vtk==2.11.11",
-    "pyvista==0.48.4",
+    "pyvista==0.49.1",
+    "trame_vtk==2.11.17",
     "pypandoc==1.17",
     "jupyter-sphinx==0.5.3",
     "sphinx-autobuild==2024.10.3",
-    "platformdirs==4.10.0",
-    "requests==2.34.2",
+    "platformdirs==4.12.4",
     "scikit-learn==1.7.2"
 ]
 
@@ -91,6 +90,12 @@ force_sort_within_sections = true
 line_length = 100
 default_section = "THIRDPARTY"
 src_paths = ["doc", "src", "tests"]
+
+[tool.ruff.lint]
+select = ["D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
 
 [tool.coverage.run]
 source = ["ansys.sound.core"]
