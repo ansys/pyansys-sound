@@ -1,0 +1,61 @@
+﻿TonalityISO1996\_2\_OverTime
+============================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: TonalityISO1996_2_OverTime
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      TonalityISO1996_2_OverTime.get_output
+      
+      
+      TonalityISO1996_2_OverTime.get_output_as_nparray
+      
+      
+      TonalityISO1996_2_OverTime.get_segment_count
+      
+      
+      TonalityISO1996_2_OverTime.get_segment_details
+      
+      
+      TonalityISO1996_2_OverTime.get_time_scale
+      
+      
+      TonalityISO1996_2_OverTime.get_tonal_adjustment_over_time
+      
+      
+      TonalityISO1996_2_OverTime.get_tonal_audibility_over_time
+      
+      
+      TonalityISO1996_2_OverTime.plot
+      
+      
+      TonalityISO1996_2_OverTime.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      TonalityISO1996_2_OverTime.effective_analysis_bandwidth
+      TonalityISO1996_2_OverTime.noise_bandwidth_ratio
+      TonalityISO1996_2_OverTime.noise_pause_threshold
+      TonalityISO1996_2_OverTime.overlap
+      TonalityISO1996_2_OverTime.signal
+      TonalityISO1996_2_OverTime.window_length
+   
+   

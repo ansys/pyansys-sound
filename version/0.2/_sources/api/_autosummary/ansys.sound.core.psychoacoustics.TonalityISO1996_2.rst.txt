@@ -1,0 +1,56 @@
+﻿TonalityISO1996\_2
+==================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: TonalityISO1996_2
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      TonalityISO1996_2.convert_fields_container_to_np_array
+      
+      
+      TonalityISO1996_2.get_computation_details
+      
+      
+      TonalityISO1996_2.get_output
+      
+      
+      TonalityISO1996_2.get_output_as_nparray
+      
+      
+      TonalityISO1996_2.get_tonal_adjustment
+      
+      
+      TonalityISO1996_2.get_tonal_audibility
+      
+      
+      TonalityISO1996_2.plot
+      
+      
+      TonalityISO1996_2.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      TonalityISO1996_2.effective_analysis_bandwidth
+      TonalityISO1996_2.noise_bandwidth_ratio
+      TonalityISO1996_2.noise_pause_threshold
+      TonalityISO1996_2.signal
+   
+   

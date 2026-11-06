@@ -1,0 +1,45 @@
+﻿Sharpness
+=========
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: Sharpness
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Sharpness.get_output
+      
+      
+      Sharpness.get_output_as_nparray
+      
+      
+      Sharpness.get_sharpness
+      
+      
+      Sharpness.plot
+      
+      
+      Sharpness.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Sharpness.field_type
+      Sharpness.signal
+   
+   

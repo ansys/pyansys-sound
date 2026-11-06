@@ -1,0 +1,6 @@
+window\_type
+============
+
+.. currentmodule:: ansys.sound.core.spectral_processing
+
+.. autoproperty:: PowerSpectralDensity.window_type

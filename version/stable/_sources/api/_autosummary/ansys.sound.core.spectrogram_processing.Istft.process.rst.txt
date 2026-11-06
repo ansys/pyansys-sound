@@ -1,0 +1,6 @@
+process
+=======
+
+.. currentmodule:: ansys.sound.core.spectrogram_processing
+
+.. automethod:: Istft.process

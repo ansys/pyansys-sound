@@ -1,0 +1,6 @@
+psd
+===
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: ProminenceRatio.psd

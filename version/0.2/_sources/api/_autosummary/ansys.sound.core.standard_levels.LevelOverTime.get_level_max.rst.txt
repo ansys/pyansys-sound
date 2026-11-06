@@ -1,0 +1,6 @@
+get\_level\_max
+===============
+
+.. currentmodule:: ansys.sound.core.standard_levels
+
+.. automethod:: LevelOverTime.get_level_max

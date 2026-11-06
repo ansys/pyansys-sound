@@ -1,0 +1,6 @@
+get\_frequencies
+================
+
+.. currentmodule:: ansys.sound.core.spectrogram_processing
+
+.. automethod:: Stft.get_frequencies

@@ -1,0 +1,6 @@
+load\_source\_harmonics
+=======================
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. automethod:: SourceHarmonics.load_source_harmonics

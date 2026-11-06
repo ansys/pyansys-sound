@@ -1,0 +1,6 @@
+parameters\_transient
+=====================
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoproperty:: Xtract.parameters_transient

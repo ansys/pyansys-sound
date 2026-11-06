@@ -1,0 +1,6 @@
+get\_loudness\_level\_phon\_vs\_time
+====================================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: LoudnessISO532_1_TimeVarying.get_loudness_level_phon_vs_time
