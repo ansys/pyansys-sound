@@ -27,7 +27,7 @@ repos:
     - --ignore-words=.codespellignorewords
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.17.3
+  rev: v0.17.4
   hooks:
   - id: ruff-check
     types_or: [python]
@@ -40,7 +40,7 @@ repos:
   - id: trailing-whitespace
 
 - repo: https://github.com/ansys/pre-commit-hooks
-  rev: v0.8.0
+  rev: v0.8.1
   hooks:
     - id: add-license-headers
       files: '(src|examples|tests|docker)/.*\.(py)|\.(proto)'
