@@ -1,0 +1,60 @@
+﻿SourceHarmonics
+===============
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. autoclass:: SourceHarmonics
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SourceHarmonics.convert_fields_container_to_np_array
+      
+      
+      SourceHarmonics.get_as_generic_data_containers
+      
+      
+      SourceHarmonics.get_output
+      
+      
+      SourceHarmonics.get_output_as_nparray
+      
+      
+      SourceHarmonics.is_source_control_valid
+      
+      
+      SourceHarmonics.load_source_harmonics
+      
+      
+      SourceHarmonics.plot
+      
+      
+      SourceHarmonics.plot_control
+      
+      
+      SourceHarmonics.process
+      
+      
+      SourceHarmonics.set_from_generic_data_containers
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SourceHarmonics.source_control
+      SourceHarmonics.source_harmonics
+   
+   

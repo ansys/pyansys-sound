@@ -1,0 +1,6 @@
+convert\_fields\_container\_to\_np\_array
+=========================================
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. automethod:: LoadWav.convert_fields_container_to_np_array

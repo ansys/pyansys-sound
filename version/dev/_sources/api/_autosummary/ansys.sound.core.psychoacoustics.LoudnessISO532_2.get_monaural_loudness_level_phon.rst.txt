@@ -1,0 +1,6 @@
+get\_monaural\_loudness\_level\_phon
+====================================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: LoudnessISO532_2.get_monaural_loudness_level_phon

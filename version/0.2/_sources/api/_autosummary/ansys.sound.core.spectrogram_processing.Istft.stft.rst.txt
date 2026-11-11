@@ -1,0 +1,6 @@
+stft
+====
+
+.. currentmodule:: ansys.sound.core.spectrogram_processing
+
+.. autoproperty:: Istft.stft

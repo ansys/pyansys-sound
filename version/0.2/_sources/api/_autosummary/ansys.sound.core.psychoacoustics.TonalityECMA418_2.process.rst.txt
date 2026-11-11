@@ -1,0 +1,6 @@
+process
+=======
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: TonalityECMA418_2.process

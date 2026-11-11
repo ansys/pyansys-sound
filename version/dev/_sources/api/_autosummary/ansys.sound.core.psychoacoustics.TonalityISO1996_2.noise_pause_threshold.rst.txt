@@ -1,0 +1,6 @@
+noise\_pause\_threshold
+=======================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: TonalityISO1996_2.noise_pause_threshold

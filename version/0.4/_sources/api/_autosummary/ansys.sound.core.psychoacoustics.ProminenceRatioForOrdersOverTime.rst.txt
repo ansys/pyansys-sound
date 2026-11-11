@@ -1,0 +1,52 @@
+﻿ProminenceRatioForOrdersOverTime
+================================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: ProminenceRatioForOrdersOverTime
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      ProminenceRatioForOrdersOverTime.get_order_prominence_ratio_over_time
+      
+      
+      ProminenceRatioForOrdersOverTime.get_output
+      
+      
+      ProminenceRatioForOrdersOverTime.get_output_as_nparray
+      
+      
+      ProminenceRatioForOrdersOverTime.get_rpm_scale
+      
+      
+      ProminenceRatioForOrdersOverTime.get_time_scale
+      
+      
+      ProminenceRatioForOrdersOverTime.plot
+      
+      
+      ProminenceRatioForOrdersOverTime.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      ProminenceRatioForOrdersOverTime.order_list
+      ProminenceRatioForOrdersOverTime.profile
+      ProminenceRatioForOrdersOverTime.signal
+   
+   

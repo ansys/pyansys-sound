@@ -1,0 +1,6 @@
+get\_L10\_phon
+==============
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: LoudnessISO532_1_TimeVarying.get_L10_phon

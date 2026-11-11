@@ -1,0 +1,6 @@
+profile
+=======
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: ProminenceRatioForOrdersOverTime.profile

@@ -1,0 +1,44 @@
+﻿XtractTransient
+===============
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoclass:: XtractTransient
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      XtractTransient.get_output
+      
+      
+      XtractTransient.get_output_as_nparray
+      
+      
+      XtractTransient.plot
+      
+      
+      XtractTransient.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      XtractTransient.input_parameters
+      XtractTransient.input_signal
+      XtractTransient.output_non_transient_signals
+      XtractTransient.output_transient_signals
+   
+   

@@ -1,0 +1,6 @@
+get\_time\_scale
+================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: RoughnessECMA418_2.get_time_scale
