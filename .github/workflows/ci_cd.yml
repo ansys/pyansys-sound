@@ -188,6 +188,19 @@ jobs:
           LICENSE_SERVER: ${{ secrets.LICENSE_SERVER }}
         run: |
           .\.venv\Scripts\Activate.ps1
+
+          # Check for a stale Docker container and remove it if exists
+          $existingContainer = docker ps -aq --filter "name=^/$env:DPF_SOUND_CONT_NAME$"
+          if ($LASTEXITCODE -ne 0) {
+              throw "Failed to query Docker containers."
+          }
+          if ($existingContainer) {
+              docker rm --force $existingContainer
+              if ($LASTEXITCODE -ne 0) {
+                  throw "Failed to remove the existing DPF-Sound container."
+              }
+          }
+
           docker run -d --name $env:DPF_SOUND_CONT_NAME -e "DPF_DEFAULT_GRPC_MODE=insecure" -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@$env:LICENSE_SERVER" -p $env:PORT_MAPPING --dns '8.8.8.8' $env:ANSRV_DPF_SOUND_IMAGE
           python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
@@ -281,6 +294,19 @@ jobs:
           LICENSE_SERVER: ${{ secrets.LICENSE_SERVER }}
         run: |
           .\.venv\Scripts\Activate.ps1
+
+          # Check for a stale Docker container and remove it if exists
+          $existingContainer = docker ps -aq --filter "name=^/$env:DPF_SOUND_CONT_NAME$"
+          if ($LASTEXITCODE -ne 0) {
+              throw "Failed to query Docker containers."
+          }
+          if ($existingContainer) {
+              docker rm --force $existingContainer
+              if ($LASTEXITCODE -ne 0) {
+                  throw "Failed to remove the existing DPF-Sound container."
+              }
+          }
+
           docker run -d --name $env:DPF_SOUND_CONT_NAME -e "DPF_DEFAULT_GRPC_MODE=insecure" -e "ANSYS_DPF_ACCEPT_LA=Y" -e "ANSYSLMD_LICENSE_FILE=1055@$env:LICENSE_SERVER" -p $env:PORT_MAPPING --dns '8.8.8.8' $env:ANSRV_DPF_SOUND_IMAGE
           python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
