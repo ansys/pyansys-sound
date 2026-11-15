@@ -208,15 +208,6 @@ jobs:
           }
           python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
 
-      # Capture host/container evidence before the existing cleanup steps change it.
-      - name: "Diagnose DPF-Sound startup failure"
-        if: ${{ failure() && steps.dpf-start.outcome == 'failure' }}
-        timeout-minutes: 3
-        continue-on-error: true
-        env:
-          ANSRV_DPF_SOUND_IMAGE: "${{ env.ANSRV_DPF_SOUND_REPO }}:${{ matrix.docker-image }}"
-        run: .\.github\scripts\diagnose-dpf-sound.ps1
-
       - name: "Testing"
         run: |
           .\.venv\Scripts\Activate.ps1
@@ -326,15 +317,6 @@ jobs:
               throw "Failed to start the DPF-Sound container."
           }
           python -c "from ansys.sound.core.server_helpers import validate_dpf_sound_connection; validate_dpf_sound_connection()"
-
-      # Capture host/container evidence before the existing cleanup steps change it.
-      - name: "Diagnose DPF-Sound startup failure"
-        if: ${{ failure() && steps.dpf-start.outcome == 'failure' }}
-        timeout-minutes: 3
-        continue-on-error: true
-        env:
-          ANSRV_DPF_SOUND_IMAGE: "${{ env.ANSRV_DPF_SOUND_REPO }}:${{ env.DOCUMENTATION_DPF_SOUND_TAG }}"
-        run: .\.github\scripts\diagnose-dpf-sound.ps1
 
       - name: "Run Ansys documentation building action"
         uses: ansys/actions/doc-build@f5e1481b9c128197a30d1dc1dfc52b8cd6865555 # v11.1.5
