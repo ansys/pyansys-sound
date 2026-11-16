@@ -50,10 +50,12 @@ __all__ = (
     "order_analysis",
     "psychoacoustics",
     "server_helpers",
+    "signal_processing",
     "signal_utilities",
     "sound_composer",
     "sound_power",
     "spectral_processing",
     "spectrogram_processing",
+    "standard_levels",
     "xtract",
 )
