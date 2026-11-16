@@ -271,7 +271,7 @@ class ProminenceRatioForOrdersOverTime(PsychoacousticsParent):
 
         Parameters
         ----------
-        use_rpm_scale : bool
+        use_rpm_scale : bool, default: False
             Indicates whether to plot the PR as a function of time or RPM.
         """
         output = self.get_output()

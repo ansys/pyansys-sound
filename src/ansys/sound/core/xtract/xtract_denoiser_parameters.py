@@ -76,7 +76,7 @@ class XtractDenoiserParameters(XtractParent):
 
         Parameters
         ----------
-        noise_psd : Field, optional
+        noise_psd : Field, default: None
             Power spectral density of the noise in unit^2/Hz (Pa^2/Hz for example).
             This parameter can be produced using one of the following methods:
 

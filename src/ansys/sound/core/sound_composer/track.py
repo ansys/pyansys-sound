@@ -111,8 +111,8 @@ class Track(SoundComposerParent):
             Name of the track.
         gain : float, default: 0.0
             Gain to apply to the track's generated sound, in dB.
-        source : SourceSpectrum, SourceBroadbandNoise, SourceBroadbandNoiseTwoParameters, \
-            SourceHarmonics, SourceHarmonicsTwoParameters or SourceAudio, default: None
+        source : SourceSpectrum | SourceBroadbandNoise | SourceBroadbandNoiseTwoParameters | \
+            SourceHarmonics | SourceHarmonicsTwoParameters | SourceAudio, default: None
             Source of the track.
         filter : Filter, default: None
             Filter of the track.

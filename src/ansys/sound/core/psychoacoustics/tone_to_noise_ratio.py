@@ -72,7 +72,7 @@ class ToneToNoiseRatio(PsychoacousticsParent):
 
         Parameters
         ----------
-        psd : Field
+        psd : Field, default: None
             PSD of the signal on which to compute TNR.
             The PSD field has the following characteristics:
 

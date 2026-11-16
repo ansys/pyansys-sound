@@ -53,7 +53,7 @@ class CreateSignalField(SignalUtilitiesParent):
 
     def __init__(
         self,
-        data: np.ndarray = np.empty(0),
+        data: np.ndarray = None,
         sampling_frequency: float = 44100.0,
         unit: str = "Pa",
     ):
@@ -61,7 +61,7 @@ class CreateSignalField(SignalUtilitiesParent):
 
         Parameters
         ----------
-        data : numpy.ndarray, default: np.empty(0)
+        data : numpy.ndarray, default: None
             Time-domain signal data in the form of a 1D NumPy array.
         sampling_frequency : float, default: 44100.0
             Sampling frequency of the data, in Hz.
@@ -111,7 +111,7 @@ class CreateSignalField(SignalUtilitiesParent):
 
         This method calls the appropriate DPF Sound operator to create the signal field.
         """
-        if np.size(self.data) == 0:
+        if self.data is None or np.size(self.data) == 0:
             raise PyAnsysSoundException("No data to use. Use 'CreateSignalField.data'.")
 
         self.__operator.connect(0, self.data.tolist())
