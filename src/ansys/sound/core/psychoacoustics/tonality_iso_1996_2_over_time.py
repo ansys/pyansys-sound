@@ -104,7 +104,7 @@ class TonalityISO1996_2_OverTime(PsychoacousticsParent):
             Noise pause detection threshold ("level excess") in dB.
         effective_analysis_bandwidth : float, default: 5.0
             Effective analysis bandwidth in Hz.
-        noise_critical_bandwidth_ratio : float, default: 0.75
+        noise_bandwidth_ratio : float, default: 0.75
             Noise bandwidth, in proportion to the critical bandwidth, that is taken into account
             for the calculation of the masking noise level (the default value `0.75` means that the
             masking noise level is estimated in a band delimited by 75 % of the critical bandwidth

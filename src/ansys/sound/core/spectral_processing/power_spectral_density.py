@@ -66,7 +66,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
 
         Parameters
         ----------
-        signal : Field
+        input_signal : Field
             Input signal on which to compute the PSD.
         fft_size : int, default: 2048
             Number of FFT points to use for the PSD estimate. Must be a power of 2.
