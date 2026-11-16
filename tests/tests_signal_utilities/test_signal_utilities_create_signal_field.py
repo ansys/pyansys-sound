@@ -40,7 +40,7 @@ def test_create_signal_field_process():
     # Error 1
     with pytest.raises(PyAnsysSoundException) as excinfo:
         signal_field_creator.process()
-    assert str(excinfo.value) == "No data to use. Use 'CreateSignalField.data()'."
+    assert str(excinfo.value) == "No data to use. Use 'CreateSignalField.data'."
 
     # No error
     arr = np.ones(100)

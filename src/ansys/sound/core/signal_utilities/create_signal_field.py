@@ -112,7 +112,7 @@ class CreateSignalField(SignalUtilitiesParent):
         This method calls the appropriate DPF Sound operator to create the signal field.
         """
         if np.size(self.data) == 0:
-            raise PyAnsysSoundException("No data to use. Use 'CreateSignalField.data()'.")
+            raise PyAnsysSoundException("No data to use. Use 'CreateSignalField.data'.")
 
         self.__operator.connect(0, self.data.tolist())
         self.__operator.connect(1, float(self.sampling_frequency))
