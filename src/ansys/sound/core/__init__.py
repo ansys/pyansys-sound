@@ -35,11 +35,13 @@ from . import (
     order_analysis,
     psychoacoustics,
     server_helpers,
+    signal_processing,
     signal_utilities,
     sound_composer,
     sound_power,
     spectral_processing,
     spectrogram_processing,
+    standard_levels,
     xtract,
 )
 from ._pyansys_sound import REFERENCE_ACOUSTIC_PRESSURE_IN_AIR
