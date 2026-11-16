@@ -22,13 +22,11 @@
 
 """Order analysis classes."""
 
-from ._order_analysis_parent import OrderAnalysisParent  # isort:skip
 from .isolate_orders import IsolateOrders
 from .order_levels import OrderLevels
 from .rpm_order_representation import RpmOrderRepresentation
 
 __all__ = (
-    "OrderAnalysisParent",
     "RpmOrderRepresentation",
     "IsolateOrders",
     "OrderLevels",

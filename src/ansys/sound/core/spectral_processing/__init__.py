@@ -25,7 +25,6 @@
 Helper functions related to spectral processing.
 """
 
-from ._spectral_processing_parent import SpectralProcessingParent
 from .power_spectral_density import PowerSpectralDensity
 
-__all__ = ("SpectralProcessingParent", "PowerSpectralDensity")
+__all__ = ("PowerSpectralDensity",)
