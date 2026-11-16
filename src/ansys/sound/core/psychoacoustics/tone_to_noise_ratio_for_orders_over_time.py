@@ -268,7 +268,7 @@ class ToneToNoiseRatioForOrdersOverTime(PsychoacousticsParent):
 
         Parameters
         ----------
-        use_rpm_scale : bool
+        use_rpm_scale : bool, default: False
             Indicates whether to plot the TNR as a function of time or RPM.
         """
         output = self.get_output()

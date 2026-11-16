@@ -114,12 +114,12 @@ class Filter(SignalProcessingParent):
 
         Parameters
         ----------
-        a_coefficients : list[float], default: None
-            Denominator coefficients of the filter. This is mutually exclusive with parameters
-            ``frf`` and ``file``.
         b_coefficients : list[float], default: None
             Numerator coefficients of the filter. This is mutually exclusive with parameters ``frf``
             and ``file``.
+        a_coefficients : list[float], default: None
+            Denominator coefficients of the filter. This is mutually exclusive with parameters
+            ``frf`` and ``file``.
         sampling_frequency : float, default: 44100.0
             Sampling frequency associated with the filter coefficients, in Hz.
         frf : Field, default: None

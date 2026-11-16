@@ -67,7 +67,7 @@ class XtractDenoiser(XtractParent):
         ----------
         input_signal : Field, default: None
             Input signal to denoise as a DPF field.
-        input_parameters : XtractDenoiserParametersm, default: None
+        input_parameters : XtractDenoiserParameters, default: None
             Structure that contains the parameters of the algorithm:
 
             - Noise PSD (Field): Power spectral density of the noise
