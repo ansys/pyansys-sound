@@ -25,6 +25,7 @@
 Helper functions related to sound power computation.
 """
 
+from ._sound_power_parent import SoundPowerParent  # isort:skip
 from .sound_power_level_iso_3744 import SoundPowerLevelISO3744
 
-__all__ = ("SoundPowerLevelISO3744",)
+__all__ = ("SoundPowerParent", "SoundPowerLevelISO3744")
