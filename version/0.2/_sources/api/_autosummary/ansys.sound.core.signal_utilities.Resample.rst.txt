@@ -1,0 +1,45 @@
+﻿Resample
+========
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoclass:: Resample
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Resample.convert_fields_container_to_np_array
+      
+      
+      Resample.get_output
+      
+      
+      Resample.get_output_as_nparray
+      
+      
+      Resample.plot
+      
+      
+      Resample.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Resample.new_sampling_frequency
+      Resample.signal
+   
+   

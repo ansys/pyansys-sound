@@ -1,0 +1,57 @@
+﻿LoudnessISO532\_1\_Stationary
+=============================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: LoudnessISO532_1_Stationary
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      LoudnessISO532_1_Stationary.get_bark_band_frequencies
+      
+      
+      LoudnessISO532_1_Stationary.get_bark_band_indexes
+      
+      
+      LoudnessISO532_1_Stationary.get_loudness_level_phon
+      
+      
+      LoudnessISO532_1_Stationary.get_loudness_sone
+      
+      
+      LoudnessISO532_1_Stationary.get_output
+      
+      
+      LoudnessISO532_1_Stationary.get_output_as_nparray
+      
+      
+      LoudnessISO532_1_Stationary.get_specific_loudness
+      
+      
+      LoudnessISO532_1_Stationary.plot
+      
+      
+      LoudnessISO532_1_Stationary.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      LoudnessISO532_1_Stationary.field_type
+      LoudnessISO532_1_Stationary.signal
+   
+   

@@ -1,0 +1,6 @@
+is\_source\_control\_valid
+==========================
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. automethod:: SourceAudio.is_source_control_valid

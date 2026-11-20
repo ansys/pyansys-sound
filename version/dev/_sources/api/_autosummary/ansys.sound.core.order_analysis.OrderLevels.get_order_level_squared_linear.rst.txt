@@ -1,0 +1,6 @@
+get\_order\_level\_squared\_linear
+==================================
+
+.. currentmodule:: ansys.sound.core.order_analysis
+
+.. automethod:: OrderLevels.get_order_level_squared_linear

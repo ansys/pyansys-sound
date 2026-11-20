@@ -1,0 +1,6 @@
+get\_computation\_details
+=========================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: TonalityISO1996_2.get_computation_details

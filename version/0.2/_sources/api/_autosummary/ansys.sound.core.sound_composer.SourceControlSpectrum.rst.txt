@@ -1,0 +1,45 @@
+﻿SourceControlSpectrum
+=====================
+
+.. currentmodule:: ansys.sound.core.sound_composer
+
+.. autoclass:: SourceControlSpectrum
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SourceControlSpectrum.convert_fields_container_to_np_array
+      
+      
+      SourceControlSpectrum.get_output
+      
+      
+      SourceControlSpectrum.get_output_as_nparray
+      
+      
+      SourceControlSpectrum.plot
+      
+      
+      SourceControlSpectrum.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SourceControlSpectrum.duration
+      SourceControlSpectrum.method
+   
+   

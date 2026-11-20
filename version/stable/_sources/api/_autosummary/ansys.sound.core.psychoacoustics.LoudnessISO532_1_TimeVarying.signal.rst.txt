@@ -1,0 +1,6 @@
+signal
+======
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: LoudnessISO532_1_TimeVarying.signal

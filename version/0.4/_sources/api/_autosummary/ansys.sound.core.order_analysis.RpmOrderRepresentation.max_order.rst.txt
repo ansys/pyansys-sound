@@ -1,0 +1,6 @@
+max\_order
+==========
+
+.. currentmodule:: ansys.sound.core.order_analysis
+
+.. autoproperty:: RpmOrderRepresentation.max_order

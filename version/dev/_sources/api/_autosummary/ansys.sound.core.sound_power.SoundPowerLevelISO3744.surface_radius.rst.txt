@@ -1,0 +1,6 @@
+surface\_radius
+===============
+
+.. currentmodule:: ansys.sound.core.sound_power
+
+.. autoproperty:: SoundPowerLevelISO3744.surface_radius
