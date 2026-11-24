@@ -43,7 +43,7 @@ class XtractDenoiser(XtractParent):
     --------
     Denoise a signal and display the resulting denoised and noise signals.
 
-    >>> from ._xtract_parent import XtractParent.xtract import XtractDenoiser
+    >>> from ansys.sound.core.xtract import XtractDenoiser
     >>> denoiser = XtractDenoiser(
     ...     input_signal=my_signal,
     ...     input_parameters=my_denoiser_parameters

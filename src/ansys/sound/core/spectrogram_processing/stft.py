@@ -43,7 +43,7 @@ class Stft(SpectrogramProcessingParent):
     --------
     Compute the STFT of a signal, and display the resulting spectrogram in a colormap.
 
-    >>> from ._xtract_parent import XtractParent.spectrogram_processing import Stft
+    >>> from ansys.sound.core.spectrogram_processing import Stft
     >>> stft = Stft(signal=signal)
     >>> stft.process()
     >>> spectrogram = stft.get_output()

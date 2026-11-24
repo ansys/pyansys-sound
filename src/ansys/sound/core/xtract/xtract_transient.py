@@ -44,7 +44,7 @@ class XtractTransient(XtractParent):
     Extract transient components from a signal, and display the transient and non-transient
     components.
 
-    >>> from ._xtract_parent import XtractParent.xtract import XtractTransient
+    >>> from ansys.sound.core.xtract import XtractTransient
     >>> xtract_transient = XtractTransient(
     ...     input_signal=my_signal,
     ...     input_parameters=my_parameters

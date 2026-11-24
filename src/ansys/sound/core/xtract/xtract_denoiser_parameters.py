@@ -41,12 +41,12 @@ class XtractDenoiserParameters(XtractParent):
     --------
     Create a set of Xtract denoiser parameters from a PSD.
 
-    >>> from ._xtract_parent import XtractParent.xtract import XtractDenoiserParameters
+    >>> from ansys.sound.core.xtract import XtractDenoiserParameters
     >>> denoiser_parameters = XtractDenoiserParameters(noise_psd=my_noise_psd)
 
     Create a set of Xtract denoiser parameters from a white noise level.
 
-    >>> from ._xtract_parent import XtractParent.xtract import XtractDenoiserParameters
+    >>> from ansys.sound.core.xtract import XtractDenoiserParameters
     >>> denoiser_parameters = XtractDenoiserParameters()
     >>> noise_psd = denoiser_parameters.create_noise_psd_from_white_noise_level(
     ...     white_noise_level=30.0,
@@ -57,7 +57,7 @@ class XtractDenoiserParameters(XtractParent):
 
     Create a set of Xtract denoiser parameters from noise samples.
 
-    >>> from ._xtract_parent import XtractParent.xtract import XtractDenoiserParameters
+    >>> from ansys.sound.core.xtract import XtractDenoiserParameters
     >>> denoiser_parameters = XtractDenoiserParameters()
     >>> noise_psd = denoiser_parameters.create_noise_psd_from_noise_samples(
     ...     signal=my_noise_signal,

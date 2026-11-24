@@ -42,7 +42,7 @@ class Istft(SpectrogramProcessingParent):
     --------
     Compute and display the signal resulting from the ISTFT.
 
-    >>> from ._xtract_parent import XtractParent.spectrogram_processing import Istft
+    >>> from ansys.sound.core.spectrogram_processing import Istft
     >>> istft = Istft(stft=stft)
     >>> istft.process()
     >>> signal = istft.get_output()

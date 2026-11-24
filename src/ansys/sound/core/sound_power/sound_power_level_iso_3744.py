@@ -45,7 +45,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     --------
     Compute and display sound power level following the ISO 3744 standard.
 
-    >>> from ._xtract_parent import XtractParent.sound_power import SoundPowerLevelISO3744
+    >>> from ansys.sound.core.sound_power import SoundPowerLevelISO3744
     >>> swl = SoundPowerLevelISO3744(
     ...     surface_shape="Hemisphere",
     ...     surface_radius=2.0,

@@ -42,7 +42,7 @@ class OneThirdOctaveLevelsFromPSD(
     --------
     Compute and plot the one-third-octave-band levels from a PSD.
 
-    >>> from ._xtract_parent import XtractParent.standard_levels import OneThirdOctaveLevelsFromPSD
+    >>> from ansys.sound.core.standard_levels import OneThirdOctaveLevelsFromPSD
     >>> one_third_octave_levels_from_psd = OneThirdOctaveLevelsFromPSD(
     ...     psd=my_psd,
     ...     reference_value=2e-5

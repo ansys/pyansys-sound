@@ -43,7 +43,7 @@ class XtractTonal(XtractParent):
     --------
     Extract tonal components from a signal, and display the tonal and non-tonal components.
 
-    >>> from ._xtract_parent import XtractParent.xtract import XtractTonal
+    >>> from ansys.sound.core.xtract import XtractTonal
     >>> xtract_tonal = XtractTonal(input_signal=my_signal, input_parameters=my_parameters)
     >>> xtract_tonal.process()
     >>> tonal_signals, non_tonal_signals = xtract_tonal.get_output()

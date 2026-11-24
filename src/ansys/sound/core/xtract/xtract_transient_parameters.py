@@ -42,7 +42,7 @@ class XtractTransientParameters(XtractParent):
     --------
     Create a set of Xtract transient extraction parameters.
 
-    >>> from ._xtract_parent import XtractParent.xtract import XtractTransientParameters
+    >>> from ansys.sound.core.xtract import XtractTransientParameters
     >>> transient_parameters = XtractTransientParameters(lower_threshold=20.0, upper_threshold=80.0)
 
     .. seealso::
