@@ -28,14 +28,12 @@ from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
-from . import (
-    XtractDenoiserParameters,
-    XtractTonalParameters,
-    XtractTransientParameters,
-)
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ..server_helpers._check_version import _check_sound_version
 from ._xtract_parent import XtractParent
+from .xtract_denoiser_parameters import XtractDenoiserParameters
+from .xtract_tonal_parameters import XtractTonalParameters
+from .xtract_transient_parameters import XtractTransientParameters
 
 
 class Xtract(XtractParent):
