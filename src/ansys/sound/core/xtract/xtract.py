@@ -54,7 +54,7 @@ class Xtract(XtractParent):
     --------
     Extract and display the different signal components using the Xtract algorithm.
 
-    >>> from ._xtract_parent import XtractParent import Xtract
+    >>> from ansys.sound.core import Xtract
     >>> xtract = Xtract(
     ...     input_signal=my_signal,
     ...     parameters_denoiser=my_denoiser_params,
