@@ -50,7 +50,7 @@ class SourceAudio(SourceParent):
     --------
     Create an audio source from a sound signal stored in a WAV file.
 
-    >>> from ._xtract_parent import XtractParent.sound_composer import SourceAudio
+    >>> from ansys.sound.core.sound_composer import SourceAudio
     >>> source_audio = SourceAudio(file="path/to/audio.wav")
     >>> source_audio.process(sampling_frequency=48000.0)
     >>> source_audio.plot()

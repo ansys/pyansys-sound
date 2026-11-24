@@ -57,7 +57,7 @@ class SourceBroadbandNoise(SourceParent):
     Create a broadband noise source from a source data file and a source control, and display the
     generated signal.
 
-    >>> from ._xtract_parent import XtractParent.sound_composer import SourceBroadbandNoise
+    >>> from ansys.sound.core.sound_composer import SourceBroadbandNoise
     >>> bbn_source = SourceBroadbandNoise(
     ...     file="path/to/source_data.txt",
     ...     source_control=source_control_time

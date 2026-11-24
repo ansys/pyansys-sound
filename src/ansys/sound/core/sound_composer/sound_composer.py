@@ -53,7 +53,7 @@ class SoundComposer(SoundComposerParent):
     --------
     Load a Sound Composer project created in Ansys Sound SAS, and plot the generated signal.
 
-    >>> from ._xtract_parent import XtractParent.sound_composer import SoundComposer
+    >>> from ansys.sound.core.sound_composer import SoundComposer
     >>> sound_composer = SoundComposer(project_path="path/to/project.scn")
     >>> sound_composer.process(sampling_frequency=48000.0)
     >>> sound_composer.plot()

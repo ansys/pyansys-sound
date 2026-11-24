@@ -50,7 +50,7 @@ class SourceControlTime(SourceControlParent):
     --------
     Create a time source control by loading the control data from a text file.
 
-    >>> from ._xtract_parent import XtractParent.sound_composer import SourceControlTime
+    >>> from ansys.sound.core.sound_composer import SourceControlTime
     >>> source_control = SourceControlTime(file_str="path/to/control/file.txt")
     >>> source_control.description = "Source control data from text file."
 

@@ -56,7 +56,7 @@ class SourceHarmonics(SourceParent):
     Create a harmonics source from a source data file and a source control, and display the
     generated signal.
 
-    >>> from ._xtract_parent import XtractParent.sound_composer import SourceHarmonics
+    >>> from ansys.sound.core.sound_composer import SourceHarmonics
     >>> harmonics_source = SourceHarmonics(
     ...     file="path/to/source_data.txt",
     ...     source_control=source_control_time

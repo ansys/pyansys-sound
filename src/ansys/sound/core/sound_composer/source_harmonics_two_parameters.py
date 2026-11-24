@@ -63,7 +63,7 @@ class SourceHarmonicsTwoParameters(SourceParent):
     Create a harmonics source with two parameters from a source data file and two source
     controls, and display the generated signal.
 
-    >>> from ._xtract_parent import XtractParent.sound_composer import SourceHarmonicsTwoParameters
+    >>> from ansys.sound.core.sound_composer import SourceHarmonicsTwoParameters
     >>> source_harmonics_two_params = SourceHarmonicsTwoParameters(
     >>>     file="path/to/source_data.txt",
     >>>     source_control1=source_control1,
