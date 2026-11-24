@@ -58,7 +58,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
     Create a broadband noise source with two parameters from a source data file and two source
     controls, and display the generated signal.
 
-    >>> from ._xtract_parent import XtractParent.sound_composer import SourceBroadbandNoiseTwoParameters
+    >>> from ansys.sound.core.sound_composer import SourceBroadbandNoiseTwoParameters
     >>> source_bbn_two_params = SourceBroadbandNoiseTwoParameters(
     >>>     file="path/to/source_data.txt",
     >>>     source_control1=source_control1,
