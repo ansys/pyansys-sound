@@ -25,7 +25,6 @@
 Helper functions related to signal processing.
 """
 
-from ._signal_processing_parent import SignalProcessingParent
 from .filter import Filter
 
-__all__ = ("SignalProcessingParent", "Filter")
+__all__ = ("Filter",)

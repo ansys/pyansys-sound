@@ -28,7 +28,7 @@ from ansys.dpf.core import Field, FieldsContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
 
-from . import SpectrogramProcessingParent
+from ._spectrogram_processing_parent import SpectrogramProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
@@ -42,7 +42,7 @@ class Istft(SpectrogramProcessingParent):
     --------
     Compute and display the signal resulting from the ISTFT.
 
-    >>> from ansys.sound.core.spectrogram_processing import Istft
+    >>> from ._xtract_parent import XtractParent.spectrogram_processing import Istft
     >>> istft = Istft(stft=stft)
     >>> istft.process()
     >>> signal = istft.get_output()

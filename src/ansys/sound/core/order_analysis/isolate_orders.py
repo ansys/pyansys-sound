@@ -28,7 +28,7 @@ from ansys.dpf.core import Field, Operator, locations, natures, types
 import matplotlib.pyplot as plt
 import numpy as np
 
-from . import OrderAnalysisParent
+from ._order_analysis_parent import OrderAnalysisParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 

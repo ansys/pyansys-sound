@@ -48,7 +48,7 @@ class SourceControlSpectrum(SourceControlParent):
     --------
     Create a spectrum source control with a duration of 5 seconds, and using the IFFT method.
 
-    >>> from ansys.sound.core.sound_composer import SourceControlSpectrum, SpectrumSynthesisMethods
+    >>> from ._xtract_parent import XtractParent.sound_composer import SourceControlSpectrum, SpectrumSynthesisMethods
     >>> source_control = SourceControlSpectrum(duration=5.0, method=SpectrumSynthesisMethods.IFFT)
     """
 

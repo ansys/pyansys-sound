@@ -29,10 +29,10 @@ from ansys.dpf.core import Field, GenericDataContainersCollection, Operator, typ
 from matplotlib import pyplot as plt
 import numpy as np
 
-from ansys.sound.core.server_helpers._server_io import _server_download, _server_upload
-from ansys.sound.core.signal_utilities import SumSignals
-from ansys.sound.core.sound_composer._sound_composer_parent import SoundComposerParent
-from ansys.sound.core.sound_composer.track import Track
+from ..server_helpers._server_io import _server_download, _server_upload
+from ..signal_utilities import SumSignals
+from ._sound_composer_parent import SoundComposerParent
+from .track import Track
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
@@ -54,7 +54,7 @@ class SoundComposer(SoundComposerParent):
     --------
     Load a Sound Composer project created in Ansys Sound SAS, and plot the generated signal.
 
-    >>> from ansys.sound.core.sound_composer import SoundComposer
+    >>> from ._xtract_parent import XtractParent.sound_composer import SoundComposer
     >>> sound_composer = SoundComposer(project_path="path/to/project.scn")
     >>> sound_composer.process(sampling_frequency=48000.0)
     >>> sound_composer.plot()

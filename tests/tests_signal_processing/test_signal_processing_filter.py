@@ -26,7 +26,7 @@ from ansys.dpf.core import Field, Operator, TimeFreqSupport, fields_factory, loc
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-from ansys.sound.core.server_helpers import _server_upload
+from ansys.sound.core.server_helpers._server_io import _server_upload
 from ansys.sound.core.signal_processing import Filter
 from ansys.sound.core.signal_utilities import LoadWav
 

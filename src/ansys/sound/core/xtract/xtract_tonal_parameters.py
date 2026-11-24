@@ -24,7 +24,7 @@
 
 from ansys.dpf.core import GenericDataContainer
 
-from . import XtractParent
+from ._xtract_parent import XtractParent
 from .._pyansys_sound import PyAnsysSoundException
 
 ID_TONAL_PARAMETERS_CLASS = "Xtract_tonal_parameters"
@@ -46,7 +46,7 @@ class XtractTonalParameters(XtractParent):
     --------
     Create a set of Xtract tonal extraction parameters.
 
-    >>> from ansys.sound.core.xtract import XtractTonalParameters
+    >>> from ._xtract_parent import XtractParent.xtract import XtractTonalParameters
     >>> tonal_parameters = XtractTonalParameters(
     ...     regularity=0.8,
     ...     maximum_slope=500.0,

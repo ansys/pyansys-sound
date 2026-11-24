@@ -44,7 +44,7 @@ class OverallLevel(OverallLevelParent):
     --------
     Compute the overall SPL of an acoustic signal.
 
-    >>> from ansys.sound.core.standard_levels import OverallLevel
+    >>> from ._xtract_parent import XtractParent.standard_levels import OverallLevel
     >>> overall_level = OverallLevel(signal=signal, reference_value=2e-5, scale="dB")
     >>> overall_level.process()
     >>> level_value = overall_level.get_level()

@@ -27,8 +27,8 @@ import warnings
 from ansys.dpf.core import Field, Operator
 from matplotlib import pyplot as plt
 
-from ansys.sound.core.server_helpers._server_io import _server_upload
-from ansys.sound.core.signal_utilities.load_wav import LoadWav
+from ..server_helpers._server_io import _server_upload
+from ..signal_utilities.load_wav import LoadWav
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._source_control_parent import SourceControlParent
@@ -51,7 +51,7 @@ class SourceControlTime(SourceControlParent):
     --------
     Create a time source control by loading the control data from a text file.
 
-    >>> from ansys.sound.core.sound_composer import SourceControlTime
+    >>> from ._xtract_parent import XtractParent.sound_composer import SourceControlTime
     >>> source_control = SourceControlTime(file_str="path/to/control/file.txt")
     >>> source_control.description = "Source control data from text file."
 

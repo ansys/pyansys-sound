@@ -28,7 +28,7 @@ from ansys.dpf.core import Field, Operator, TimeFreqSupport, fields_factory, loc
 import matplotlib.pyplot as plt
 import numpy as np
 
-from . import SpectralProcessingParent
+from ._spectral_processing_parent import SpectralProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 ID_POWER_SPECTRAL_DENSITY = "compute_power_spectral_density"
@@ -47,7 +47,7 @@ class PowerSpectralDensity(SpectralProcessingParent):
     --------
     Compute and display the Power Spectral Density (PSD) of an acoustic signal (in Pa).
 
-    >>> from ansys.sound.core.spectral_processing import PowerSpectralDensity
+    >>> from ._xtract_parent import XtractParent.spectral_processing import PowerSpectralDensity
     >>> power_spectral_density = PowerSpectralDensity(input_signal=signal)
     >>> power_spectral_density.process()
     >>> psd_dB = power_spectral_density.get_PSD_dB(ref_value=2e-5)

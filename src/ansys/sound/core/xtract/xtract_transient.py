@@ -28,7 +28,8 @@ from ansys.dpf.core import Field, Operator
 import matplotlib.pyplot as plt
 import numpy as np
 
-from . import XtractParent, XtractTransientParameters
+from ._xtract_parent import XtractParent
+from . import XtractTransientParameters
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
@@ -43,7 +44,7 @@ class XtractTransient(XtractParent):
     Extract transient components from a signal, and display the transient and non-transient
     components.
 
-    >>> from ansys.sound.core.xtract import XtractTransient
+    >>> from ._xtract_parent import XtractParent.xtract import XtractTransient
     >>> xtract_transient = XtractTransient(
     ...     input_signal=my_signal,
     ...     input_parameters=my_parameters

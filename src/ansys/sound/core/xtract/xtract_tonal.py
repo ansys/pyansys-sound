@@ -28,7 +28,8 @@ from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
-from . import XtractParent, XtractTonalParameters
+from ._xtract_parent import XtractParent
+from . import XtractTonalParameters
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
@@ -42,7 +43,7 @@ class XtractTonal(XtractParent):
     --------
     Extract tonal components from a signal, and display the tonal and non-tonal components.
 
-    >>> from ansys.sound.core.xtract import XtractTonal
+    >>> from ._xtract_parent import XtractParent.xtract import XtractTonal
     >>> xtract_tonal = XtractTonal(input_signal=my_signal, input_parameters=my_parameters)
     >>> xtract_tonal.process()
     >>> tonal_signals, non_tonal_signals = xtract_tonal.get_output()

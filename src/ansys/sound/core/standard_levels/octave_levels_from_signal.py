@@ -25,7 +25,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ansys.sound.core._pyansys_sound import PyAnsysSoundException
+from .._pyansys_sound import PyAnsysSoundException
 
 from ._fractional_octave_levels_from_signal_parent import FractionalOctaveLevelsFromSignalParent
 
@@ -52,7 +52,7 @@ class OctaveLevelsFromSignal(FractionalOctaveLevelsFromSignalParent, min_sound_v
     --------
     Compute and plot the octave-band levels from a time-domainsignal.
 
-    >>> from ansys.sound.core.standard_levels import OctaveLevelsFromSignal
+    >>> from ._xtract_parent import XtractParent.standard_levels import OctaveLevelsFromSignal
     >>> octave_levels_from_signal = OctaveLevelsFromSignal(signal=my_signal, reference_value=2e-5)
     >>> octave_levels_from_signal.process()
     >>> band_levels = octave_levels_from_signal.get_band_levels()

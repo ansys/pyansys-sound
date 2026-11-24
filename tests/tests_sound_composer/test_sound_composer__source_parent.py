@@ -23,7 +23,7 @@
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundWarning
-from ansys.sound.core.sound_composer import SourceParent
+from ansys.sound.core.sound_composer._source_parent import SourceParent
 
 
 def test__source_parent_is_source_control_valid():

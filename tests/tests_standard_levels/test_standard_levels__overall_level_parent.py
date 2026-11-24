@@ -23,7 +23,7 @@
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-from ansys.sound.core.standard_levels import OverallLevelParent
+from ansys.sound.core.standard_levels._overall_level_parent import OverallLevelParent
 
 
 def test__overall_level_parent_instantiation():

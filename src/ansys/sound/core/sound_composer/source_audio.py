@@ -28,8 +28,8 @@ from ansys.dpf.core import Field, GenericDataContainer, Operator
 from matplotlib import pyplot as plt
 import numpy as np
 
-from ansys.sound.core.server_helpers._server_io import _server_upload
-from ansys.sound.core.signal_utilities import LoadWav, Resample
+from ..server_helpers._server_io import _server_upload
+from ..signal_utilities import LoadWav, Resample
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._source_parent import SourceParent
@@ -51,7 +51,7 @@ class SourceAudio(SourceParent):
     --------
     Create an audio source from a sound signal stored in a WAV file.
 
-    >>> from ansys.sound.core.sound_composer import SourceAudio
+    >>> from ._xtract_parent import XtractParent.sound_composer import SourceAudio
     >>> source_audio = SourceAudio(file="path/to/audio.wav")
     >>> source_audio.process(sampling_frequency=48000.0)
     >>> source_audio.plot()

@@ -28,7 +28,8 @@ from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
-from . import XtractDenoiserParameters, XtractParent
+from ._xtract_parent import XtractParent
+from . import XtractDenoiserParameters
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
@@ -42,7 +43,7 @@ class XtractDenoiser(XtractParent):
     --------
     Denoise a signal and display the resulting denoised and noise signals.
 
-    >>> from ansys.sound.core.xtract import XtractDenoiser
+    >>> from ._xtract_parent import XtractParent.xtract import XtractDenoiser
     >>> denoiser = XtractDenoiser(
     ...     input_signal=my_signal,
     ...     input_parameters=my_denoiser_parameters

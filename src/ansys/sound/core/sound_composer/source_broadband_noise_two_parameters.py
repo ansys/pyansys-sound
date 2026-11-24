@@ -28,7 +28,7 @@ from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operato
 from matplotlib import pyplot as plt
 import numpy as np
 
-from ansys.sound.core.server_helpers._server_io import _server_upload
+from ..server_helpers._server_io import _server_upload
 
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._source_parent import SourceParent
@@ -59,7 +59,7 @@ class SourceBroadbandNoiseTwoParameters(SourceParent):
     Create a broadband noise source with two parameters from a source data file and two source
     controls, and display the generated signal.
 
-    >>> from ansys.sound.core.sound_composer import SourceBroadbandNoiseTwoParameters
+    >>> from ._xtract_parent import XtractParent.sound_composer import SourceBroadbandNoiseTwoParameters
     >>> source_bbn_two_params = SourceBroadbandNoiseTwoParameters(
     >>>     file="path/to/source_data.txt",
     >>>     source_control1=source_control1,

@@ -27,10 +27,10 @@ import warnings
 from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
-
+    
+from ._xtract_parent import XtractParent
 from . import (
     XtractDenoiserParameters,
-    XtractParent,
     XtractTonalParameters,
     XtractTransientParameters,
 )
@@ -54,7 +54,7 @@ class Xtract(XtractParent):
     --------
     Extract and display the different signal components using the Xtract algorithm.
 
-    >>> from ansys.sound.core import Xtract
+    >>> from ._xtract_parent import XtractParent import Xtract
     >>> xtract = Xtract(
     ...     input_signal=my_signal,
     ...     parameters_denoiser=my_denoiser_params,

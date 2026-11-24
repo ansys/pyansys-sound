@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.sound.core.signal_utilities import SignalUtilitiesParent
+from ansys.sound.core.signal_utilities._signal_utilities_parent import SignalUtilitiesParent
 
 
 def test_signal_utilities_parent_instantiate():

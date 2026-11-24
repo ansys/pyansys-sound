@@ -27,7 +27,7 @@ import warnings
 from ansys.dpf.core import Field, Operator, fields_container_factory, types
 import numpy as np
 
-from . import SignalUtilitiesParent
+from ._signal_utilities_parent import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 

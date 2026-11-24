@@ -28,9 +28,9 @@ from ansys.dpf.core import Field, FieldsContainer, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ansys.sound.core.server_helpers._check_version import _check_sound_version
+from ..server_helpers._check_version import _check_sound_version
 
-from . import SpectrogramProcessingParent
+from ._spectrogram_processing_parent import SpectrogramProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 
@@ -44,7 +44,7 @@ class Stft(SpectrogramProcessingParent):
     --------
     Compute the STFT of a signal, and display the resulting spectrogram in a colormap.
 
-    >>> from ansys.sound.core.spectrogram_processing import Stft
+    >>> from ._xtract_parent import XtractParent.spectrogram_processing import Stft
     >>> stft = Stft(signal=signal)
     >>> stft.process()
     >>> spectrogram = stft.get_output()

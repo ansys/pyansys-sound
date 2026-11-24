@@ -28,9 +28,9 @@ from ansys.dpf.core import Field, Operator, fields_container_factory
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ansys.sound.core.server_helpers._server_io import _server_upload
+from ..server_helpers._server_io import _server_upload
 
-from . import SoundPowerParent
+from ._sound_power_parent import SoundPowerParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 ID_COMPUTE_SOUND_POWER_LEVEL = "compute_sound_power_level_iso3744"
@@ -46,7 +46,7 @@ class SoundPowerLevelISO3744(SoundPowerParent):
     --------
     Compute and display sound power level following the ISO 3744 standard.
 
-    >>> from ansys.sound.core.sound_power import SoundPowerLevelISO3744
+    >>> from ._xtract_parent import XtractParent.sound_power import SoundPowerLevelISO3744
     >>> swl = SoundPowerLevelISO3744(
     ...     surface_shape="Hemisphere",
     ...     surface_radius=2.0,

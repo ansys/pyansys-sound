@@ -24,7 +24,7 @@
 
 import matplotlib.pyplot as plt
 
-from ansys.sound.core._pyansys_sound import PyAnsysSoundException
+from .._pyansys_sound import PyAnsysSoundException
 
 from ._fractional_octave_levels_from_psd_parent import FractionalOctaveLevelsFromPSDParent
 
@@ -42,7 +42,7 @@ class OctaveLevelsFromPSD(FractionalOctaveLevelsFromPSDParent, min_sound_version
     --------
     Compute and plot the octave-band levels from a PSD.
 
-    >>> from ansys.sound.core.standard_levels import OctaveLevelsFromPSD
+    >>> from ._xtract_parent import XtractParent.standard_levels import OctaveLevelsFromPSD
     >>> octave_levels_from_psd = OctaveLevelsFromPSD(psd=my_psd, reference_value=2e-5)
     >>> octave_levels_from_psd.process()
     >>> band_levels = octave_levels_from_psd.get_band_levels()

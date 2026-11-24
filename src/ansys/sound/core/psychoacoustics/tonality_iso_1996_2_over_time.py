@@ -35,7 +35,7 @@ from ansys.dpf.core.collection import Collection
 import matplotlib.pyplot as plt
 import numpy as np
 
-from . import PsychoacousticsParent
+from ._psychoacoustics_parent import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 # Name of the DPF Sound operator used in this module.
