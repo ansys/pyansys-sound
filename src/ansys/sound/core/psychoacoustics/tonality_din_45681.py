@@ -28,8 +28,8 @@ from ansys.dpf.core import Field, GenericDataContainersCollection, Operator, typ
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ._psychoacoustics_parent import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ._psychoacoustics_parent import PsychoacousticsParent
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_TONALITY_DIN_45681 = "compute_tonality_din45681"

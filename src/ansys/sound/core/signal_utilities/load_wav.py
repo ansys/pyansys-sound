@@ -27,11 +27,10 @@ import warnings
 from ansys.dpf.core import DataSources, Field, Operator, types
 import numpy as np
 
-from ..server_helpers._server_io import _server_upload
-from ..server_helpers._check_version import requires_sound_version
-
-from ._signal_utilities_parent import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ..server_helpers._check_version import requires_sound_version
+from ..server_helpers._server_io import _server_upload
+from ._signal_utilities_parent import SignalUtilitiesParent
 
 
 class LoadWav(SignalUtilitiesParent):

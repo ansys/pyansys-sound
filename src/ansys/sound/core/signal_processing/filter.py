@@ -29,10 +29,9 @@ from ansys.dpf.core.available_result import Homogeneity
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ..server_helpers._server_io import _server_upload
-
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning, scipy_required
 from ..server_helpers._check_version import _check_sound_version
+from ..server_helpers._server_io import _server_upload
 from ._signal_processing_parent import SignalProcessingParent
 
 ID_OPERATOR_DESIGN = "filter_design_minimum_phase_FIR_filter_from_FRF"

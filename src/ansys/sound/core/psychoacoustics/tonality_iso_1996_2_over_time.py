@@ -35,8 +35,8 @@ from ansys.dpf.core.collection import Collection
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ._psychoacoustics_parent import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ._psychoacoustics_parent import PsychoacousticsParent
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_TONALITY_ISO_1996_2_OVER_TIME = "compute_tonality_iso1996_2_over_time"

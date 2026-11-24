@@ -29,8 +29,8 @@ from ansys.dpf.core import Field, GenericDataContainer, Operator
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ._psychoacoustics_parent import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ._psychoacoustics_parent import PsychoacousticsParent
 
 
 class ProminenceRatio(PsychoacousticsParent):

@@ -27,10 +27,9 @@ import warnings
 from ansys.dpf.core import Field, Operator
 from matplotlib import pyplot as plt
 
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ..server_helpers._server_io import _server_upload
 from ..signal_utilities.load_wav import LoadWav
-
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ._source_control_parent import SourceControlParent
 
 ID_LOAD_FROM_TEXT = "load_sound_samples_from_txt"

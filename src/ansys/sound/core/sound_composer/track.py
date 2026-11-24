@@ -29,6 +29,7 @@ from ansys.dpf.core import Field, GenericDataContainer
 from matplotlib import pyplot as plt
 import numpy as np
 
+from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ..signal_processing import Filter
 from ..signal_utilities import ApplyGain
 from ._sound_composer_parent import SoundComposerParent
@@ -38,8 +39,6 @@ from .source_broadband_noise_two_parameters import SourceBroadbandNoiseTwoParame
 from .source_harmonics import SourceHarmonics
 from .source_harmonics_two_parameters import SourceHarmonicsTwoParameters
 from .source_spectrum import SourceSpectrum
-
-from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 
 # Here is defined the list of available source types (class names), as a dictionary where the key
 # is the source type ID used in DPF Sound. Whenever a new source type (and corresponding class

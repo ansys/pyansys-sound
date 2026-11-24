@@ -28,8 +28,8 @@ from ansys.dpf.core import Field, Operator, TimeFreqSupport, fields_factory, loc
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ._spectral_processing_parent import SpectralProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ._spectral_processing_parent import SpectralProcessingParent
 
 ID_POWER_SPECTRAL_DENSITY = "compute_power_spectral_density"
 

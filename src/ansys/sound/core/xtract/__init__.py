@@ -25,14 +25,13 @@
 Helper functions related to Xtract.
 """
 
-from .xtract_denoiser_parameters import XtractDenoiserParameters
-from .xtract_tonal_parameters import XtractTonalParameters
-from .xtract_transient_parameters import XtractTransientParameters
-
-from .xtract_transient import XtractTransient
-from .xtract_tonal import XtractTonal
-from .xtract_denoiser import XtractDenoiser
 from .xtract import Xtract
+from .xtract_denoiser import XtractDenoiser
+from .xtract_denoiser_parameters import XtractDenoiserParameters
+from .xtract_tonal import XtractTonal
+from .xtract_tonal_parameters import XtractTonalParameters
+from .xtract_transient import XtractTransient
+from .xtract_transient_parameters import XtractTransientParameters
 
 __all__ = (
     "Xtract",

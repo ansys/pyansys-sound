@@ -28,8 +28,8 @@ from ansys.dpf.core import Field, FieldsContainer, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ._order_analysis_parent import OrderAnalysisParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ._order_analysis_parent import OrderAnalysisParent
 
 ID_COMPUTE_RPM_ORDER_REPRESENTATION = "compute_rpm_order_representation"
 

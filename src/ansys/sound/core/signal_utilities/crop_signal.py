@@ -27,8 +27,8 @@ import warnings
 from ansys.dpf.core import Field, Operator, types
 import numpy as np
 
-from ._signal_utilities_parent import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ._signal_utilities_parent import SignalUtilitiesParent
 
 
 class CropSignal(SignalUtilitiesParent):

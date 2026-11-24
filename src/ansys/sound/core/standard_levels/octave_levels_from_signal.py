@@ -26,7 +26,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from .._pyansys_sound import PyAnsysSoundException
-
 from ._fractional_octave_levels_from_signal_parent import FractionalOctaveLevelsFromSignalParent
 
 

@@ -27,8 +27,7 @@ import warnings
 from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
-    
-from ._xtract_parent import XtractParent
+
 from . import (
     XtractDenoiserParameters,
     XtractTonalParameters,
@@ -36,6 +35,7 @@ from . import (
 )
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
 from ..server_helpers._check_version import _check_sound_version
+from ._xtract_parent import XtractParent
 
 
 class Xtract(XtractParent):

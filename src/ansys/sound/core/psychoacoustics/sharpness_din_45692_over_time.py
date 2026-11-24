@@ -28,8 +28,8 @@ from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ._psychoacoustics_parent import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ._psychoacoustics_parent import FIELD_DIFFUSE, FIELD_FREE, PsychoacousticsParent
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_SHARPNESS_DIN = "compute_sharpness_din45692"

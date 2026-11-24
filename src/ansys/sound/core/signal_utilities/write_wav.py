@@ -26,10 +26,9 @@ import warnings
 
 from ansys.dpf.core import DataSources, Field, Operator, fields_container_factory
 
-from ..server_helpers._server_io import _server_download
-
-from ._signal_utilities_parent import SignalUtilitiesParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ..server_helpers._server_io import _server_download
+from ._signal_utilities_parent import SignalUtilitiesParent
 
 
 class WriteWav(SignalUtilitiesParent):

@@ -29,8 +29,8 @@ from ansys.dpf.core import Field, FieldsContainer, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ._order_analysis_parent import OrderAnalysisParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ._order_analysis_parent import OrderAnalysisParent
 from .rpm_order_representation import RpmOrderRepresentation
 
 ID_EXTRACT_ORDER_LEVELS = "extract_order_levels"
