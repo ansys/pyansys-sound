@@ -27,8 +27,8 @@ import warnings
 from ansys.dpf.core import DataTree, Field, Operator, types
 import numpy as np
 
-from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ._psychoacoustics_parent import PsychoacousticsParent
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_TONALITY_ISO1996_2 = "compute_tonality_iso1996_2"

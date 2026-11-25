@@ -29,12 +29,11 @@ from ansys.dpf.core import Field, GenericDataContainersCollection, Operator, typ
 from matplotlib import pyplot as plt
 import numpy as np
 
-from ansys.sound.core.server_helpers._server_io import _server_download, _server_upload
-from ansys.sound.core.signal_utilities import SumSignals
-from ansys.sound.core.sound_composer._sound_composer_parent import SoundComposerParent
-from ansys.sound.core.sound_composer.track import Track
-
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ..server_helpers._server_io import _server_download, _server_upload
+from ..signal_utilities import SumSignals
+from ._sound_composer_parent import SoundComposerParent
+from .track import Track
 
 ID_OPERATOR_LOAD = "sound_composer_load_project"
 ID_OPERATOR_SAVE = "sound_composer_save_project"

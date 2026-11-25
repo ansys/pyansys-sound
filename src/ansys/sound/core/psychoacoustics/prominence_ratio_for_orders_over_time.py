@@ -28,8 +28,8 @@ from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
-from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ._psychoacoustics_parent import PsychoacousticsParent
 
 # Name of the DPF Sound operator used in this module.
 ID_COMPUTE_PR_FOR_ORDERS_OVER_TIME = "compute_prominence_ratio_for_orders_over_time"

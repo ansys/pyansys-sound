@@ -28,10 +28,9 @@ from ansys.dpf.core import Field, GenericDataContainer, Operator
 from matplotlib import pyplot as plt
 import numpy as np
 
-from ansys.sound.core.server_helpers._server_io import _server_upload
-from ansys.sound.core.signal_utilities import LoadWav, Resample
-
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ..server_helpers._server_io import _server_upload
+from ..signal_utilities import LoadWav, Resample
 from ._source_parent import SourceParent
 
 ID_LOAD_FROM_TEXT = "load_sound_samples_from_txt"

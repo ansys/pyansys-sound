@@ -28,10 +28,9 @@ from ansys.dpf.core import Field, Operator, fields_container_factory
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ansys.sound.core.server_helpers._server_io import _server_upload
-
-from . import SoundPowerParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ..server_helpers._server_io import _server_upload
+from ._sound_power_parent import SoundPowerParent
 
 ID_COMPUTE_SOUND_POWER_LEVEL = "compute_sound_power_level_iso3744"
 ID_LOAD_SOUND_POWER_LEVEL = "load_project_sound_power_level_iso3744"

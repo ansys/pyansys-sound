@@ -24,7 +24,7 @@
 
 from ansys.dpf.core import Operator
 
-from ansys.sound.core.server_helpers import connect_to_or_start_server
+from ..server_helpers import connect_to_or_start_server
 
 
 def validate_dpf_sound_connection(port=None) -> None:
