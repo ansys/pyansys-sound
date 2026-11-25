@@ -50,6 +50,7 @@ def pytest_configure(config):
     pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2025R2 = _check_sound_version("2025.2.0")
     pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2026R1 = _check_sound_version("2026.1.0")
     pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R1 = _check_sound_version("2027.1.0")
+    pytest.SOUND_VERSION_GREATER_THAN_OR_EQUAL_TO_2027R2 = _check_sound_version("2027.2.0")
 
     # Use the conftest.py file's directory to set the base directory for the test data files.
     base_dir = os.path.join(os.path.dirname(__file__), "data")
