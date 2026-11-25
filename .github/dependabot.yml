@@ -45,6 +45,3 @@ updates:
       pre-commit-hooks:
         patterns:
           - "*"
-    assignees:
-      - "ansaminard"
-      - "anssmolla"
