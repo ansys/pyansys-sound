@@ -25,7 +25,6 @@
 Helper functions related to signal management.
 """
 
-from ._signal_utilities_parent import SignalUtilitiesParent  # isort:skip
 from .apply_gain import ApplyGain
 from .create_signal_field import CreateSignalField
 from .crop_signal import CropSignal
@@ -36,7 +35,6 @@ from .write_wav import WriteWav
 from .zero_pad import ZeroPad
 
 __all__ = (
-    "SignalUtilitiesParent",
     "LoadWav",
     "WriteWav",
     "Resample",

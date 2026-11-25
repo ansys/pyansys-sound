@@ -28,9 +28,8 @@ from ansys.dpf.core import Field, FieldsContainer, GenericDataContainer, Operato
 from matplotlib import pyplot as plt
 import numpy as np
 
-from ansys.sound.core.server_helpers._server_io import _server_upload
-
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ..server_helpers._server_io import _server_upload
 from ._source_parent import SourceParent
 from .source_control_time import SourceControlTime
 

@@ -30,7 +30,7 @@ from ansys.dpf.core import FieldsContainer
 from ansys.tools.common.exceptions import VersionSyntaxError
 import numpy as np
 
-from ansys.sound.core.server_helpers._check_version import _check_sound_version_and_raise
+from .server_helpers._check_version import _check_sound_version_and_raise
 
 REFERENCE_ACOUSTIC_PRESSURE_IN_AIR = 2e-5
 

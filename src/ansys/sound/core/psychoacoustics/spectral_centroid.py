@@ -27,8 +27,8 @@ import warnings
 from ansys.dpf.core import Field, Operator
 import numpy as np
 
-from . import PsychoacousticsParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ._psychoacoustics_parent import PsychoacousticsParent
 
 
 class SpectralCentroid(PsychoacousticsParent):

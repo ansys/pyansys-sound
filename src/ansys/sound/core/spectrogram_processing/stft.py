@@ -28,10 +28,9 @@ from ansys.dpf.core import Field, FieldsContainer, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ansys.sound.core.server_helpers._check_version import _check_sound_version
-
-from . import SpectrogramProcessingParent
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ..server_helpers._check_version import _check_sound_version
+from ._spectrogram_processing_parent import SpectrogramProcessingParent
 
 
 class Stft(SpectrogramProcessingParent):

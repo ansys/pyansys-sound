@@ -28,8 +28,9 @@ from ansys.dpf.core import Field, Operator, types
 import matplotlib.pyplot as plt
 import numpy as np
 
-from . import XtractParent, XtractTonalParameters
 from .._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
+from ._xtract_parent import XtractParent
+from .xtract_tonal_parameters import XtractTonalParameters
 
 
 class XtractTonal(XtractParent):

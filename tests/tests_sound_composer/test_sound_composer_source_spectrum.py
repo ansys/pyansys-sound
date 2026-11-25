@@ -34,7 +34,7 @@ import numpy as np
 import pytest
 
 from ansys.sound.core._pyansys_sound import PyAnsysSoundException, PyAnsysSoundWarning
-from ansys.sound.core.server_helpers import _server_upload
+from ansys.sound.core.server_helpers._server_io import _server_upload
 from ansys.sound.core.signal_utilities.load_wav import LoadWav
 from ansys.sound.core.sound_composer import SourceControlSpectrum, SourceSpectrum
 from ansys.sound.core.sound_composer import SpectrumSynthesisMethods as Methods

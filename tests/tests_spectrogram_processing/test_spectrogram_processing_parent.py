@@ -20,7 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.sound.core.spectrogram_processing import SpectrogramProcessingParent
+from ansys.sound.core.spectrogram_processing._spectrogram_processing_parent import (
+    SpectrogramProcessingParent,
+)
 
 
 def test_spectrogram_processing_parent_instantiate():
