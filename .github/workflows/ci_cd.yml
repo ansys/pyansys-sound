@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      checks: write
+      checks: write # Create check runs for documentation style
     steps:
       - uses: ansys/actions/doc-style@5a91d7c2c4da2e86f2b3b62ba62daad189a6b77c # v11.2.0
         with:
@@ -103,6 +103,8 @@ jobs:
           library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
           python-version: ${{ matrix.python-version }}
+          # The uv lockfile only covers Python 3.12 and newer. Other versions use pip install.
+          use-uv: ${{ matrix.python-version != '3.10' && matrix.python-version != '3.11' }}
 
   vulnerabilities:
     name: "Check library vulnerabilities"
