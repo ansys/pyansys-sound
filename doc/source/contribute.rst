@@ -65,6 +65,10 @@ Follow these steps to install PyAnsys Sound in development mode:
 
         pip install -e.[doc,tests]
 
+.. note::
+   Consider using ``uv`` as an alternative to ``pip`` for installing development requirements, as it
+   ensures consistent and reproducible environments. See :ref:`uv-install` for guidance.
+
 .. _code_style:
 
 Adhere to code style

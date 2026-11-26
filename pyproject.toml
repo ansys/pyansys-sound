@@ -78,6 +78,12 @@ doc = [
     "scikit-learn==1.7.2"
 ]
 
+[tool.uv]
+# This is to ignore requirements specific to Python<3.12 (typically avoid a numpy version conflict
+# between tests and doc dependencies). It ensures uv.lock can be automatically generated with
+# `uv lock`. Consider removing when support for 3.10 and 3.11 is dropped.
+environments = ["python_version >= '3.12'"]
+
 [tool.flit.module]
 name = "ansys.sound.core"
 

@@ -45,13 +45,33 @@ jobs:
           bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
 
   doc-style:
-    name: "Running documentation style checks"
+    name: "Documentation style"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write # Create check runs for documentation style
     steps:
-      - name: "Running documentation style checks"
-        uses: ansys/actions/doc-style@5a91d7c2c4da2e86f2b3b62ba62daad189a6b77c # v11.2.0
+      - uses: ansys/actions/doc-style@5a91d7c2c4da2e86f2b3b62ba62daad189a6b77c # v11.2.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fail-level: warning
+
+  code-style:
+    name: "Code style"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # push the fixes
+      pull-requests: write  # comment on non-fixable issues
+    env:
+      GH_ACTOR_EMAIL: ${{ github.actor }}@users.noreply.github.com
+    steps:
+      - uses: ansys/actions/code-style@v11.2
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          commit-changes: true
+          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN || github.token }}
+          bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME || github.actor }}
+          bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL || env.GH_ACTOR_EMAIL }}
 
   pull-request-name:
     if: github.event_name == 'pull_request'
@@ -83,6 +103,8 @@ jobs:
           library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
           python-version: ${{ matrix.python-version }}
+          # The uv lockfile only covers Python 3.12 and newer. Other versions use pip install.
+          use-uv: ${{ matrix.python-version != '3.10' && matrix.python-version != '3.11' }}
 
   vulnerabilities:
     name: "Check library vulnerabilities"

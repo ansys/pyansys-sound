@@ -38,22 +38,77 @@ The DPF Server and DPF Sound plugin can be found in major Ansys releases, or in 
 Installation
 ------------
 
-To install the latest ``ansys-sound-core`` package with ``pip``, run this command:
+Virtual environment
+^^^^^^^^^^^^^^^^^^^
+
+It is recommended to create a `virtual environment <https://docs.python.org/3/library/venv.html>`_
+before installing PyAnsys Sound to keep Python packages isolated from your system Python. You can
+create and activate a virtual environment using the following commands:
+
+.. code::
+
+    # Create a virtual environment.
+      python -m venv .venv
+
+    # Activate it in a POSIX system.
+    source .venv/bin/activate
+
+    # Activate it in Windows CMD environment.
+    .venv/Scripts/activate.bat
+
+    # Activate it in Windows Powershell.
+    .venv/Scripts/Activate.ps1
+
+.. _uv-install:
+
+Installing with ``uv``
+^^^^^^^^^^^^^^^^^^^^^^
+
+``uv`` is a package manager. It is the preferred installation method to ensure consistent
+installations of PyAnsys Sound. It manages dependencies using a lockfile, which ensures reproducible
+environments. In case of conflicts or issues during installation, consider :ref:`pip-install`
+instead, which does not rely on the lockfile and allow more flexibility in resolving dependencies.
+
+.. note::
+  ``uv`` can be installed with the following command:
+
+  .. code::
+
+      pip install uv
+
+To install the latest ``ansys-sound-core`` package, use:
+
+.. code::
+
+    uv pip install ansys-sound-core
+
+To install a specific package version, specify the version in the ``uv`` command. For example, to
+install version 0.1.0 specifically, run this command:
+
+.. code::
+
+    uv pip install ansys-sound-core==0.1.0
+
+.. _pip-install:
+
+Installing with ``pip``
+^^^^^^^^^^^^^^^^^^^^^^^
+
+``pip`` is another package manager for Python. It comes pre-installed with Python. It does not rely
+on a lockfile, giving more flexibility in resolving dependencies, but it may lead to less
+reproducible environments.
+
+To install the latest ``ansys-sound-core`` package, use:
 
 .. code::
 
     pip install ansys-sound-core
 
-To install a specific package version, specify the version in the ``pip`` command. For example, Ansys 2024 R2
-requires version 0.1.0 of the ``ansys-sound-core`` package. To install version 0.1.0, you would run this command:
+As with ``uv``, you can specify the version in the ``pip`` command:
 
 .. code::
 
     pip install ansys-sound-core==0.1.0
-
-You should use a `virtual environment <https://docs.python.org/3/library/venv.html>`_
-because it keeps Python packages isolated from your Python system.
-
 
 .. _Compatibility:
 
