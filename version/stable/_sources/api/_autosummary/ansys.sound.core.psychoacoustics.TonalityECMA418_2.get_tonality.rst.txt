@@ -1,0 +1,6 @@
+get\_tonality
+=============
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: TonalityECMA418_2.get_tonality

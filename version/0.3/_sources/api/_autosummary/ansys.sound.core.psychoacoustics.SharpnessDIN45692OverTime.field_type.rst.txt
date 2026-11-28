@@ -1,0 +1,6 @@
+field\_type
+===========
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: SharpnessDIN45692OverTime.field_type

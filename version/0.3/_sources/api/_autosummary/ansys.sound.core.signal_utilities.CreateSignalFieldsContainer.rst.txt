@@ -1,0 +1,41 @@
+﻿CreateSignalFieldsContainer
+===========================
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoclass:: CreateSignalFieldsContainer
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      CreateSignalFieldsContainer.get_output
+      
+      
+      CreateSignalFieldsContainer.get_output_as_nparray
+      
+      
+      CreateSignalFieldsContainer.plot
+      
+      
+      CreateSignalFieldsContainer.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      CreateSignalFieldsContainer.fields
+   
+   

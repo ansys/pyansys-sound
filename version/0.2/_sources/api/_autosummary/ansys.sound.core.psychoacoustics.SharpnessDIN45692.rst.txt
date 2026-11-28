@@ -1,0 +1,48 @@
+﻿SharpnessDIN45692
+=================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoclass:: SharpnessDIN45692
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      SharpnessDIN45692.convert_fields_container_to_np_array
+      
+      
+      SharpnessDIN45692.get_output
+      
+      
+      SharpnessDIN45692.get_output_as_nparray
+      
+      
+      SharpnessDIN45692.get_sharpness
+      
+      
+      SharpnessDIN45692.plot
+      
+      
+      SharpnessDIN45692.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      SharpnessDIN45692.field_type
+      SharpnessDIN45692.signal
+   
+   

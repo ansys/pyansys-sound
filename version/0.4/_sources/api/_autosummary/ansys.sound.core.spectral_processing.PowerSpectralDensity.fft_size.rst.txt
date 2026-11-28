@@ -1,0 +1,6 @@
+fft\_size
+=========
+
+.. currentmodule:: ansys.sound.core.spectral_processing
+
+.. autoproperty:: PowerSpectralDensity.fft_size

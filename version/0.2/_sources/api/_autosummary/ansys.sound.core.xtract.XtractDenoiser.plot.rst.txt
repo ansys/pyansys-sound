@@ -1,0 +1,6 @@
+plot
+====
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. automethod:: XtractDenoiser.plot

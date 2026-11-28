@@ -1,0 +1,48 @@
+﻿Xtract
+======
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoclass:: Xtract
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      
+      
+      Xtract.get_output
+      
+      
+      Xtract.get_output_as_nparray
+      
+      
+      Xtract.plot
+      
+      
+      Xtract.process
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      Xtract.input_signal
+      Xtract.output_noise_signal
+      Xtract.output_remainder_signal
+      Xtract.output_tonal_signal
+      Xtract.output_transient_signal
+      Xtract.parameters_denoiser
+      Xtract.parameters_tonal
+      Xtract.parameters_transient
+   
+   

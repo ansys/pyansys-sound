@@ -1,0 +1,6 @@
+﻿get\_sound\_version
+===================
+
+.. currentmodule:: ansys.sound.core.server_helpers._check_version
+
+.. autofunction:: get_sound_version

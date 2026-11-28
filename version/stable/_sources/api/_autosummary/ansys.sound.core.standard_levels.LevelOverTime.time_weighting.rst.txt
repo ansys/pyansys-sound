@@ -1,0 +1,6 @@
+time\_weighting
+===============
+
+.. currentmodule:: ansys.sound.core.standard_levels
+
+.. autoproperty:: LevelOverTime.time_weighting

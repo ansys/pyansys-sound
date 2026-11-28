@@ -1,0 +1,6 @@
+fft\_size
+=========
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoproperty:: XtractTonalParameters.fft_size

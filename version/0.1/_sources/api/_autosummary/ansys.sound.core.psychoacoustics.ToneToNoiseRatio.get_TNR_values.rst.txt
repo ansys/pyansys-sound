@@ -1,0 +1,6 @@
+get\_TNR\_values
+================
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. automethod:: ToneToNoiseRatio.get_TNR_values

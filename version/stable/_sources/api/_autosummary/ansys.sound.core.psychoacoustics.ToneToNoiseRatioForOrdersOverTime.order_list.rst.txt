@@ -1,0 +1,6 @@
+order\_list
+===========
+
+.. currentmodule:: ansys.sound.core.psychoacoustics
+
+.. autoproperty:: ToneToNoiseRatioForOrdersOverTime.order_list

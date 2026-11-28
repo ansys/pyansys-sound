@@ -1,0 +1,6 @@
+plot\_FRF
+=========
+
+.. currentmodule:: ansys.sound.core.signal_processing
+
+.. automethod:: Filter.plot_FRF

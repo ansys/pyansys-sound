@@ -1,0 +1,6 @@
+signals
+=======
+
+.. currentmodule:: ansys.sound.core.signal_utilities
+
+.. autoproperty:: SumSignals.signals

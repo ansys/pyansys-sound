@@ -1,0 +1,6 @@
+upper\_threshold
+================
+
+.. currentmodule:: ansys.sound.core.xtract
+
+.. autoproperty:: XtractTransientParameters.upper_threshold
